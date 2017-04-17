@@ -200,6 +200,12 @@ header {
     }
 }
 
+@media (min-width: 1600px) {
+    header .navbar .nav-ul-container {
+        width: 47%;
+    }
+}
+
 @media (min-width: 1705px) {
     .navbar-expand-lg .navbar-collapse {
         display: -webkit-box !important;
@@ -215,7 +221,7 @@ header {
 
 @media (min-width: 1920px) {
     header .navbar .nav-ul-container {
-        width: 36%;
+        width: 40%;
     }
 }
 
