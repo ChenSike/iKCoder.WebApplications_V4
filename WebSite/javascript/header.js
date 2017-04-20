@@ -23,7 +23,7 @@ function buildHeaderHTML() {
     tmpHtmlStrArr.push('                <div class="collapse navbar-collapse" id="navbarSupportedContent">');
     tmpHtmlStrArr.push('                    <ul class="navbar-nav">');
     tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                                <a class="nav-link" href="#" id="linkBtn_Course">' + _getLabel('课程') + '</a>');
+    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Course">' + _getLabel('课程') + '</a>');
     tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                        <li class="nav-item">');
     tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_OnlineCourse">' + _getLabel('在线体验课') + '</a>');
@@ -42,8 +42,8 @@ function buildHeaderHTML() {
     tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                    </ul>');
     tmpHtmlStrArr.push('                    <form class="form-inline my-2 my-lg-0  justify-content-center">');
-    tmpHtmlStrArr.push('                        <button class="btn btn-outline-secondary my-2 my-sm-1 ml-md-5 mr-3" id="linkBtn_SignIn" type="button" data-toggle="modal" data-target="#mWindow_SignIn">' + _getLabel('登录') + '</button>');
-    tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1" id="linkBtn_SignUp" type="button" data-toggle="modal" data-target="#mWindow_SignUp">' + _getLabel('免费注册') + '</button>');
+    tmpHtmlStrArr.push('                        <button class="btn btn-outline-secondary my-2 my-sm-1 ml-md-5 mr-3" id="btn_SignIn" type="button" data-toggle="modal" data-target="#mWindow_SignIn">' + _getLabel('登录') + '</button>');
+    tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1" id="btn_FreeSignUp" type="button" data-toggle="modal" data-target="#mWindow_SignUp">' + _getLabel('免费注册') + '</button>');
     tmpHtmlStrArr.push('                    </form>');
     tmpHtmlStrArr.push('                </div>');
     tmpHtmlStrArr.push('            </div>');
@@ -60,7 +60,7 @@ function buildSignInWindowHTML() {
     tmpHtmlStrArr.push('        <div class="modal-content">');
     tmpHtmlStrArr.push('            <div class="modal-header" style="border:none;">');
     //tmpHtmlStrArr.push('                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>');
-    tmpHtmlStrArr.push('                <img src="image/logo-new-gray.png" width="150" height="50"/>');
+    tmpHtmlStrArr.push('                <img id="img_HomeLogo" src="image/logo-new-gray.png" width="150" height="50"/>');
     tmpHtmlStrArr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -10px;">');
     tmpHtmlStrArr.push('                    <span aria-hidden="true">&times;</span>');
     tmpHtmlStrArr.push('                </button>');
@@ -159,7 +159,7 @@ function buildSignInWindowHTML() {
     tmpHtmlStrArr.push('                            <p class="padding-bottom0">' + _getLabel('还没有通行证?') + '</p>');
     tmpHtmlStrArr.push('                        </div>');
     tmpHtmlStrArr.push('                        <div class="col-4">');
-    tmpHtmlStrArr.push('                            <a id="linkBtn_SignUp" href="#"><p class="text-signin-dialog-regist-link">' + _getLabel('立即申请') + '</p></a>');
+    tmpHtmlStrArr.push('                            <a id="linkBtn_ShowSignUp" href="#"><p class="text-signin-dialog-regist-link">' + _getLabel('立即申请') + '</p></a>');
     tmpHtmlStrArr.push('                        </div>');
     tmpHtmlStrArr.push('                    </div>');
     tmpHtmlStrArr.push('                </div>');
@@ -248,7 +248,7 @@ function buildSignUpWindowHTML() {
     tmpHtmlStrArr.push('                            <div class="col-sm-12">');
     tmpHtmlStrArr.push('                                <p class="text-center">');
     tmpHtmlStrArr.push(_getLabel('同意'));
-    tmpHtmlStrArr.push('                                    <a href="#" id="linkBtn_IKCoder_Agreement"> ' + _getLabel('《艾酷用户协议》') + '</a>');
+    tmpHtmlStrArr.push('                                    <a href="#" id="linkBtn_IKCoder_Agreement" data-toggle="modal" data-target="#mWindow_Agreement" data-flag="0"> ' + _getLabel('《艾酷用户协议》') + '</a>');
     tmpHtmlStrArr.push('                                </p>');
     tmpHtmlStrArr.push('                            </div>');
     tmpHtmlStrArr.push('                        </div>');
@@ -264,6 +264,32 @@ function buildSignUpWindowHTML() {
 
     $('body').append($(tmpHtmlStrArr.join('')));
 };
+
+function buildAgreementWindowHTML() {
+    var tmpHtmlStrArr = [];
+    tmpHtmlStrArr.push('<div class="modal fade" id="mWindow_Agreement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">');
+    tmpHtmlStrArr.push('    <div class="modal-dialog" role="document">');
+    tmpHtmlStrArr.push('        <div class="modal-content">');
+    tmpHtmlStrArr.push('            <div class="modal-header">');
+    tmpHtmlStrArr.push('                <h5 class="modal-title" id="exampleModalLongTitle" style="text-align: center; width: calc(100% - 50px);">《艾酷用户用户协议》</h5>');
+    tmpHtmlStrArr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+    tmpHtmlStrArr.push('                    <span aria-hidden="true">&times;</span>');
+    tmpHtmlStrArr.push('                </button>');
+    tmpHtmlStrArr.push('            </div>');
+    tmpHtmlStrArr.push('            <div class="modal-body">');
+    tmpHtmlStrArr.push('                <div class="wrap-ifram-agreement" style="overflow-y: scroll;">');
+    tmpHtmlStrArr.push('                    <iframe src="agreement.html" id="iframe_Agreement" scrolling="no" frameborder="0" width="100%"></iframe>');
+    tmpHtmlStrArr.push('                </div>');
+    tmpHtmlStrArr.push('            </div>');
+    tmpHtmlStrArr.push('            <div class="modal-footer">');
+    tmpHtmlStrArr.push('                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>');
+    tmpHtmlStrArr.push('                <button type="button" class="btn btn-primary disabled" id="btn_Agree_Agreement">同意</button>');
+    tmpHtmlStrArr.push('            </div>');
+    tmpHtmlStrArr.push('        </div>');
+    tmpHtmlStrArr.push('    </div>');
+    tmpHtmlStrArr.push('</div>');
+    $('body').append($(tmpHtmlStrArr.join('')));
+}
 
 function buildCheckPhoneWindowHTML() {
     var tmpHtmlStrArr = [];
@@ -321,42 +347,46 @@ function initHeader() {
     buildHeaderHTML();
     buildSignInWindowHTML();
     buildSignUpWindowHTML();
+    buildAgreementWindowHTML();
     buildCheckPhoneWindowHTML();
     initHeaderEvent();
     updateUserInfor();
 };
 
 function initNavBarEvent() {
-    $("#linkBtn_Home").on('click',
-        function () {
-            window.location.href = "index.html?cid=" + _gCID;
-        });
+    $("#img_HomeLogo").on('click', function () {
+        window.location.href = "index.html?cid=" + _gCID;
+    });
 
-    $("#linkBtn_OnlineCourse").on('click',
-        function () {
-            window.location.href = "index.html?cid=" + _gCID;
-        });
+    $("#linkBtn_Course").on('click', function () {
+        //window.location.href = "index.html?cid=" + _gCID;
+        alert('go to course');
+    });
 
-    $("#linkBtn_Parents").on('click',
-        function () {
-            window.location.href = "parents.html?cid=" + _gCID;
-        });
+    $("#linkBtn_OnlineCourse").on('click', function () {
+        //window.location.href = "index.html?cid=" + _gCID;
+        alert('go to online course');
+    });
 
-    $("#linkBtn_Student").on('click',
-        function () {
-            window.location.href = "studentcenter.html?cid=" + _gCID;
-        });
+    $("#linkBtn_Price").on('click', function () {
+        //window.location.href = "parents.html?cid=" + _gCID;
+        alert('go to price');
+    });
 
-    $("#linkBtn_Product").on('click',
-        function () {
-            window.location.href = "product.html?cid=" + _gCID;
-        });
-    $("#linkBtn_AboutUs").on('click',
-        function () {
-            window.location.href = "aboutus.html?cid=" + _gCID;
-        });
+    $("#linkBtn_Help").on('click', function () {
+        //window.location.href = "studentcenter.html?cid=" + _gCID;
+        alert('go to help');
+    });
 
-    //$("#linkBtn_Search").on('click', headerSearch);
+    $("#linkBtn_Blog").on('click', function () {
+        //window.location.href = "product.html?cid=" + _gCID;
+        alert('go to blog');
+    });
+
+    $("#linkBtn_AboutUs").on('click', function () {
+        //window.location.href = "aboutus.html?cid=" + _gCID;
+        alert('go to about');
+    });
 };
 
 function initSignInWindowEvent() {
@@ -365,12 +395,18 @@ function initSignInWindowEvent() {
     });
 
     $("#linkBtn_ForgetPwd").on('click', function () {
+        $("#signinAlert").alert('close');
         $('.sign-in-form').css('display', 'none');
         $('.sign-in-forget-pwd-form').css('display', 'block');
     });
 
-    $("#btn_SignInOK").on('click', signIn);
-    $("#linkBtn_SignUp").on('click', openSignUp);
+    $("#btn_SignInOK").on('click', function () {
+        signIn();
+    });
+
+    $("#linkBtn_ShowSignUp").on('click', function () {
+        openSignUp();
+    });
 
     $("#txt_ForgetPWD_NewPwd").on('blur', function () {
         checkPwdIntension($("#txt_ForgetPWD_NewPwd"), $('#lb_FPwd_Pwd_Intension'));
@@ -396,8 +432,14 @@ function initSignInWindowEvent() {
         }
     });
 
-    $('#btn_UpdatePwdOK').on('click', updatePassword);
-    $('#mWindow_SignIn').on('show.bs.modal', reinitSignInFileds);
+    $('#btn_UpdatePwdOK').on('click', function () {
+        updatePassword();
+    });
+
+    $('#mWindow_SignIn').on('show.bs.modal', function () {
+        reinitSignInFileds();
+    });
+
     $('#mWindow_SignIn').on('hide.bs.modal', function () {
         $("#signinAlert").alert('close');
         $('.sign-in-form').css('display', 'block');
@@ -406,9 +448,18 @@ function initSignInWindowEvent() {
 };
 
 function initSignUpWindowEvent() {
-    $("#linkBtn_IKCoder_Agreement").on('click', openAgreement);
-    $("#linkBtn_Goto_Login").on('click', openSignIn);
-    $("#btn_SignUpOK").on('click', signUp);
+    $("#linkBtn_Goto_Login").on('click', function () {
+        openSignIn();
+    });
+
+    $("#btn_SignUpOK").on('click', function () {
+        if ($('#linkBtn_IKCoder_Agreement').attr('data-flag') == '0') {
+            showAlertMessage('mWindow_SignUp_Dialog', 'signupAlert', '请先阅读《艾酷用户用户协议》并确认!');
+        } else {
+            signUp();
+        }
+    });
+
     $("#img_SignUp_CheckCode").on('click', function () {
         $("#img_SignUp_CheckCode").attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
     });
@@ -429,9 +480,39 @@ function initSignUpWindowEvent() {
         }
     });
 
-    $('#mWindow_SignUp').on('show.bs.modal', reinitSignUpFileds);
+    $('#mWindow_SignUp').on('show.bs.modal', function () {
+        reinitSignUpFileds();
+    });
+
     $('#mWindow_SignUp').on('hide.bs.modal', function () {
         $("#signupAlert").alert('close');
+    });
+
+    $('#mWindow_Agreement').on('show.bs.modal', function () {
+        var tmpHeight = $('#mWindow_Agreement').height() - $('#mWindow_Agreement .modal-dialog').offset().top - $('#mWindow_Agreement .modal-dialog .modal-header').height() - $('#mWindow_Agreement .modal-dialog .modal-footer').height();
+        $('.wrap-ifram-agreement').height(Math.floor(tmpHeight * 0.65));
+        $('#iframe_Agreement').height($($('#iframe_Agreement')[0].contentWindow.document.body).height());
+        if ($('#linkBtn_IKCoder_Agreement').attr('data-flag') == '0') {
+            $('.wrap-ifram-agreement').scrollTop(0);
+            if (!$('#btn_Agree_Agreement').hasClass('disabled')) {
+                $('#btn_Agree_Agreement').addClass('disabled');
+            }
+        }
+    });
+
+    $('.wrap-ifram-agreement').scroll(function () {
+        var bodyHeight = $($('#iframe_Agreement')[0].contentWindow.document.body).height();
+        var wrap = $('.wrap-ifram-agreement');
+        if (wrap[0].scrollTop + wrap.height() > bodyHeight) {
+            if ($('#btn_Agree_Agreement').hasClass('disabled')) {
+                $('#btn_Agree_Agreement').removeClass('disabled');
+            }
+        }
+    });
+
+    $('#btn_Agree_Agreement').on('click', function () {
+        $('#mWindow_Agreement').modal('hide');
+        $('#linkBtn_IKCoder_Agreement').attr('data-flag', '1');
     });
 
     var cpnParames = {
@@ -628,13 +709,10 @@ function openSignIn() {
     $('#mWindow_SignUp').modal('hide');
 }
 
-function openSignUp() {
+function openSignUp(phoneNumber) {
     $('#mWindow_SignIn').modal('hide');
     $('#mWindow_SignUp').modal('show');
-};
-
-function openAgreement() {
-
+    $('#txt_SignUp_PhoneNumber').val(!phoneNumber ? '' : phoneNumber);
 };
 
 function updatePassword() {

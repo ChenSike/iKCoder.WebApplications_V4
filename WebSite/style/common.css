@@ -2,6 +2,10 @@
     font-family: 微软雅黑;
 }
 
+button {
+    cursor: pointer;
+}
+
 .text-5BC0DE {
     color: #5BC0DE;
 }
@@ -11,10 +15,10 @@
     text-align: center;
 }
 
-.navbar-light .navbar-nav .nav-link:hover {
-    color: #5BC0DE;
-    text-align: center;
-}
+    .navbar-light .navbar-nav .nav-link:hover {
+        color: #5BC0DE;
+        text-align: center;
+    }
 
     .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
         color: rgb(255,255,255);
@@ -37,8 +41,8 @@ header {
 
 .text-signin-dialog-title {
     color: rgb(102,102,102);
-    font-size: 18px;
-    font-weight:bold;
+    font-size: 1.2rem;
+    font-weight: bold;
     text-align: center;
     line-height: 40px;
     padding-bottom: 10px;
@@ -153,7 +157,7 @@ header {
 #footer .copyright-txt {
     color: rgb(102,102,102);
     float: left;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 300;
     padding: 13px 0px;
     margin: 0px;
@@ -172,7 +176,7 @@ header {
         width: 36px;
         height: 36px;
         color: rgb(102,102,102);
-        font-size: 18px;
+        font-size: 1.2rem;
         line-height: 34px;
         text-align: center;
         margin: 7px 0px 7px 20px;
@@ -181,7 +185,7 @@ header {
     }
 
         #footer .socials a:hover {
-            color: rgb(40,99,249);
+            color: #5BC0DE;
             background-color: rgb(255,255,255);
         }
 
@@ -205,10 +209,14 @@ header {
 }
 
     #footer .footer-hypelink > a {
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: 300;
         color: rgb(187,187,187);
     }
+
+        #footer .footer-hypelink > a:hover {
+            color: #5BC0DE;
+        }
 /* ========================= Footer ========================= */
 @media screen and (max-width:767px) {
     #footer .scrollup {

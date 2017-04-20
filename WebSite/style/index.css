@@ -6,24 +6,39 @@
 
 #wrap_FreeSignUp {
     position: absolute;
+    cursor: pointer;
 }
 
-#btn_FreeSingUp {
+#btn_Fast_FreeSignUp {
     color: rgb(255,255,255);
     background-color: transparent;
     background-image: none;
     border-color: #5bc0de;
 }
 
-    #btn_FreeSingUp:hover {
+    #btn_Fast_FreeSignUp:hover {
         background-color: #5bc0de;
     }
 
-#txt_FreeSingUp {
+#txt_Fast_FreeSignUp {
     border-color: #5bc0de;
 }
 
-#section_3 .col-12. bootom-image{
+#section_3 .col-12.bootom-image {
     margin-top: 3rem !important;
-    margin-bottom:0px;
+    margin-bottom: 0px;
+}
+
+.wrap_section_1_tip {
+    position: absolute;
+    display: none;
+}
+
+.img-tip-bakcground {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
 }

@@ -36,10 +36,10 @@
                         <div class="col-6 offset-1">
                             <form class="form-inline">
                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                    <input type="text" class="form-control rounded-right" id="txt_FreeSingUp" placeholder="请输入手机号码">
-                                    <div class="input-group-addon btn btn-outline-info" id="btn_FreeSingUp">免费注册</div>
+                                    <input type="text" class="form-control rounded-right" id="txt_Fast_FreeSignUp" placeholder="请输入手机号码">
+                                    <div class="input-group-addon btn btn-outline-info" id="btn_Fast_FreeSignUp">免费注册</div>
                                 </div>
-                                <button type="submit" class="btn btn-outline-secondary my-5">视频介绍</button>
+                                <button type="button" id="btn_Fast_HelpVideo" class="btn btn-outline-secondary my-5">视频介绍</button>
                             </form>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         <div class="col-12 col-sm-4 col-md-3 marginTop-30">
                             <div class="row">
                                 <div class="col-12">
-                                    <i class="fa fa-graduation-cap fa-5x text-5BC0DE"></i>
+                                    <i class="fa fa-graduation-cap fa-5x text-5BC0DE feature-item" data-target="curriculum"></i>
                                 </div>
                             </div>
                             <div class="row">
@@ -70,7 +70,7 @@
                         <div class="col-12 col-sm-4 col-md-3 marginTop-30">
                             <div class="row">
                                 <div class="col-12">
-                                    <i class="fa fa-desktop fa-5x text-5BC0DE"></i>
+                                    <i class="fa fa-desktop fa-5x text-5BC0DE feature-item" data-target="plat"></i>
                                 </div>
                             </div>
                             <div class="row">
@@ -82,7 +82,7 @@
                         <div class="col-12 col-sm-4 col-md-3 marginTop-30">
                             <div class="row">
                                 <div class="col-12">
-                                    <i class="fa fa-id-card-o fa-5x text-5BC0DE"></i>
+                                    <i class="fa fa-id-card-o fa-5x text-5BC0DE feature-item" data-target="personal"></i>
                                 </div>
                             </div>
                             <div class="row">
@@ -94,7 +94,7 @@
                         <div class="col-12 col-sm-4 col-md-3 marginTop-30">
                             <div class="row">
                                 <div class="col-12">
-                                    <i class="fa fa-pie-chart fa-5x text-5BC0DE"></i>
+                                    <i class="fa fa-pie-chart fa-5x text-5BC0DE feature-item" data-target="reportcircle"></i>
                                 </div>
                             </div>
                             <div class="row">
@@ -106,7 +106,7 @@
                         <div class="col-12 col-sm-4 col-md-3 marginTop-30">
                             <div class="row">
                                 <div class="col-12">
-                                    <i class="fa fa-users fa-5x text-5BC0DE"></i>
+                                    <i class="fa fa-users fa-5x text-5BC0DE feature-item" data-target="project"></i>
                                 </div>
                             </div>
                             <div class="row">
@@ -118,7 +118,7 @@
                         <div class="col-12 col-sm-4 col-md-3 marginTop-30">
                             <div class="row">
                                 <div class="col-12">
-                                    <i class="fa fa-language fa-5x text-5BC0DE"></i>
+                                    <i class="fa fa-language fa-5x text-5BC0DE feature-item" data-target="language"></i>
                                 </div>
                             </div>
                             <div class="row">
@@ -130,7 +130,7 @@
                         <div class="col-12 col-sm-4 col-md-3 marginTop-30">
                             <div class="row">
                                 <div class="col-12">
-                                    <i class="fa fa-share-square-o fa-5x text-5BC0DE"></i>
+                                    <i class="fa fa-share-square-o fa-5x text-5BC0DE feature-item" data-target="share"></i>
                                 </div>
                             </div>
                             <div class="row">
@@ -142,12 +142,12 @@
                         <div class="col-12 col-sm-4 col-md-3 marginTop-30">
                             <div class="row">
                                 <div class="col-12">
-                                    <i class="fa fa-space-shuttle fa-5x text-5BC0DE"></i>
+                                    <i class="fa fa-space-shuttle fa-5x text-5BC0DE feature-item" data-target="intelaccess"></i>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <p>只能外设辅助学习</p>
+                                    <p>智能外设辅助学习</p>
                                 </div>
                             </div>
                         </div>
@@ -156,7 +156,7 @@
             </div>
             <div class="col-12 my-5 justify-content-center">
                 <form class="form-inline justify-content-center">
-                    <button type="submit" class="btn btn-outline-info">查看详细介绍></button>
+                    <button type="button" class="btn btn-outline-info" id="btn_ShowDetail">查看详细介绍></button>
                 </form>
             </div>
         </div>
@@ -257,13 +257,18 @@
                 </div>
             </div>
         </div>
-        <a href="#" class="scrollup" title="Back to Top!"><i class="ion ion-ios-arrow-up"></i></a>
+        <a href="#" class="scrollup" title="Back to Top!"><i class="fa fa-arrow-circle-up fa-lg"></i></a>
     </footer>
+    <div class="wrap_section_1_tip">
+        <img src="image/tips/circle.png"width="265" height="295" />
+        <img class="img-tip-bakcground" src="" width="255" height="255" />
+    </div>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();
             initHeader();
             //initFooter();
+            initPage();
         });
     </script>
 </body>
