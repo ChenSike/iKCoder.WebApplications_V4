@@ -8,7 +8,7 @@ var _checkCodeParams = {
     height: 30
 };
 
-function buildHeaderHTML() {
+function buildHeaderHTML(isIndexPage) {
     var tmpHtmlStrArr = [];
     tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" style="background-color:transparent;">');
     tmpHtmlStrArr.push('    <a class="navbar-brand" href="index.html">');
@@ -50,7 +50,11 @@ function buildHeaderHTML() {
     tmpHtmlStrArr.push('        </div>');
     tmpHtmlStrArr.push('    </div>');
     tmpHtmlStrArr.push('</nav>');
-    $('header').append($(tmpHtmlStrArr.join('')));
+    if (isIndexPage) {
+        $('header').append($(tmpHtmlStrArr.join('')));
+    } else {
+        $('body').prepend($(tmpHtmlStrArr.join('')));
+    }
 };
 
 function buildSignInWindowHTML() {
@@ -343,8 +347,8 @@ function buildCheckPhoneWindowHTML() {
     $('body').append($(tmpHtmlStrArr.join('')));
 };
 
-function initHeader() {
-    buildHeaderHTML();
+function initHeader(isIndexPage) {
+    buildHeaderHTML(isIndexPage);
     buildSignInWindowHTML();
     buildSignUpWindowHTML();
     buildAgreementWindowHTML();
