@@ -17,7 +17,10 @@
     background: -o-linear-gradient(top, #ffffff, #eaeaea); /*Opera 11.10+*/
 }
 
-    #section_1 h4 {
-        vertical-align: middle;
+    #section_1 div.subtitle {
+        font-size: 1.5rem;
+        margin: 0px;
         display: inline-block;
+        height: 100%;
+        vertical-align: top;
     }
