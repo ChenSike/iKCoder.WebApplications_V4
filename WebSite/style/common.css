@@ -6,6 +6,11 @@ button {
     cursor: pointer;
 }
 
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
 .text-5BC0DE {
     color: #5BC0DE;
 }

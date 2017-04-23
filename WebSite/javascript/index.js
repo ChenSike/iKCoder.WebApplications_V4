@@ -10,7 +10,7 @@ function initPageEvents() {
     });
 
     $('#btn_ShowDetail').on('click', function () {
-        alert('Show Detail about platform');
+        window.location.href = "detailedintroduce.html?cid=" + _gCID;
     });
 
     $('.feature-item').on('mouseenter', function (event) {

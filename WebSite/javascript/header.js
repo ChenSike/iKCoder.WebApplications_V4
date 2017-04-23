@@ -12,7 +12,7 @@ function buildHeaderHTML() {
     var tmpHtmlStrArr = [];
     tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" style="background-color:transparent;">');
     tmpHtmlStrArr.push('    <a class="navbar-brand" href="index.html">');
-    tmpHtmlStrArr.push('        <img src="image/logo-new-white.png" width="150" height="50" class="d-inline-block align-top" alt="">');
+    tmpHtmlStrArr.push('        <img src="image/logo-new-white.png" width="150" height="50" class="d-inline-block align-top img-header-logo" alt="">');
     tmpHtmlStrArr.push('    </a>');
     tmpHtmlStrArr.push('    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">');
     tmpHtmlStrArr.push('        <span class="navbar-toggler-icon"></span>');
@@ -21,7 +21,7 @@ function buildHeaderHTML() {
     tmpHtmlStrArr.push('        <div class="row w-100 justify-content-end">');
     tmpHtmlStrArr.push('            <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container">');
     tmpHtmlStrArr.push('                <div class="collapse navbar-collapse" id="navbarSupportedContent">');
-    tmpHtmlStrArr.push('                    <ul class="navbar-nav">');
+    tmpHtmlStrArr.push('                    <ul class="navbar-nav" id="ul_NavBar_Container">');
     tmpHtmlStrArr.push('                        <li class="nav-item">');
     tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Course">' + _getLabel('课程') + '</a>');
     tmpHtmlStrArr.push('                        </li>');
@@ -41,7 +41,7 @@ function buildHeaderHTML() {
     tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Blog">' + _getLabel('博客') + '</a>');
     tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                    </ul>');
-    tmpHtmlStrArr.push('                    <form class="form-inline my-2 my-lg-0  justify-content-center">');
+    tmpHtmlStrArr.push('                    <form class="form-inline my-2 my-lg-0  justify-content-center" id="form_NavBar_Sign">');
     tmpHtmlStrArr.push('                        <button class="btn btn-outline-secondary my-2 my-sm-1 ml-md-5 mr-3" id="btn_SignIn" type="button" data-toggle="modal" data-target="#mWindow_SignIn">' + _getLabel('登录') + '</button>');
     tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1" id="btn_FreeSignUp" type="button" data-toggle="modal" data-target="#mWindow_SignUp">' + _getLabel('免费注册') + '</button>');
     tmpHtmlStrArr.push('                    </form>');
@@ -863,8 +863,8 @@ function updateUserInfor(responseData) {
 
 function removeUserInfoItem() {
     $('li#nav_UserInfo_Item').remove();
-    if ($('li#nav_SignIn_Item').hasClass('hidden')) {
-        $('li#nav_SignIn_Item').removeClass('hidden');
+    if ($('#form_NavBar_Sign').hasClass('hidden')) {
+        $('#form_NavBar_Sign').removeClass('hidden');
     }
 }
 
@@ -890,38 +890,25 @@ function createUserInfoItem(data) {
     }
 
     if (nickName != '') {
-        /*
-        $('#navbar_collapse_ul').append(
-            $(
-                '<li class="nav-item" id="nav_UserInfo_Item">' +
-                '   <a href="#"  id="linkBtn_UserInfo" >' +
-                '       Welcome back &nbsp;' +
-                '       <span class="glyphicon glyphicon-user"></span>' +
-                '       <span class="text-header-userinfo">' + nickName + '</span>' +
-                '   </a>' +
-                '</li>'
-            )
-        );
-        */
-        $('#navbar_collapse_ul').append(
+        $('#ul_NavBar_Container').append(
             $(
                 '<li class="nav-item dropdown" id="nav_UserInfo_Item">' +
-                '   <a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
+                '   <a href="#" class="nav-link dropdown-toggle" id="dd_Nav_UserInfo_Item"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
                 '       Welcome back &nbsp;' +
-                '       <span class="glyphicon glyphicon-user"></span>' +
+                '       <i class="fa fa-user-circle" aria-hidden="true"></i>' +
                 '       <span class="text-header-userinfo">' + nickName + '</span>' +
                 '       <b class="caret"></b>' +
                 '   </a>' +
-                '   <ul class="dropdown-menu">' +
-                '       <li class="nav-item"><a href="#" id="linkBtn_SignOut" style="font-weight:100;">退出登录</a></li>' +
-                '       <li class="nav-item"><a href="#" id="linkBtn_UserInfo" style="font-weight:100;">用户信息</a></li>' +
-                '   </ul>' +
+                '   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">' +
+                '       <a href="#" class="dropdown-item" id="linkBtn_UserInfo" style="font-weight:100;">用户信息</a>' +
+                '       <a href="#" class="dropdown-item" id="linkBtn_SignOut" style="font-weight:100;">退出登录</a>' +
+                '   </div>' +
                 '</li>'
             )
         );
 
-        if (!$('li#nav_SignIn_Item').hasClass('hidden')) {
-            $('li#nav_SignIn_Item').addClass('hidden');
+        if (!$('#form_NavBar_Sign').hasClass('hidden')) {
+            $('#form_NavBar_Sign').addClass('hidden');
         }
 
         $("#linkBtn_UserInfo").on('click', function () {
@@ -991,8 +978,4 @@ function showAlertMessage(containerId, alertId, message) {
             '</div>'
         )
     );
-};
-
-function headerSearch() {
-
 };

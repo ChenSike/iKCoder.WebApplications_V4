@@ -3,8 +3,8 @@
 var _gRegisterServer = false;
 var _gLabelMap = {};
 //var _gHostName = 'http://ikcoder.iok.la:24525/ikcoder';
-var _gHostName = 'http://10.86.18.67/ikcoder';
-//var _gHostName = 'http://192.168.199.182/ikcoder';
+//var _gHostName = 'http://10.86.18.67/ikcoder';
+var _gHostName = 'http://192.168.199.182/ikcoder';
 var _gURLMapping = {
     server: {
         reg: '/Sys/SYS_RegServer.aspx'
@@ -17,7 +17,8 @@ var _gURLMapping = {
         signsstatus: '/Account/GET_SignStatus.aspx',
         nickname: '/Account/Profile/GET_NickName.aspx',
         updatepwd: '/Account/SET_ResetPassword.aspx',
-        logout: '/Account/SET_Logout.aspx'
+        logout: '/Account/SET_Logout.aspx',
+        getselectnodesvalue: '/Account/Profile/GET_SelectNodesValues.aspx'
     },
     data: {
         studentcenter: '/Data/GET_ResourceDataText.aspx',
@@ -28,10 +29,10 @@ var _gURLMapping = {
         getimage: '/Data/GET_image.aspx',
         getimageheader: '/Data/GET_ImageHeader.aspx'
     },
-    util:{
+    util: {
         setclipimage: '/Util/SET_ClipImage.aspx'
     },
-    bus:{
+    bus: {
         getworkspace: '/Bus/Workspace/GET_Workspace.aspx',
         saveworkspace: '/Bus/Workspace/GET_Workspace.aspx'
     }
@@ -61,7 +62,7 @@ function _initURLMapping() {
 }
 
 function _registerRemoteServer() {
-    return;
+    //return;
     //if (!_gRegisterServer) {
     $.ajax({
         type: 'GET',
@@ -379,7 +380,7 @@ function _showGlobalMessage(msg, type, id) {
 
             return (document.cookie = [
 				encode(key), '=', stringifyCookieValue(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '', 
+				options.expires ? '; expires=' + options.expires.toUTCString() : '',
 				options.path ? '; path=' + options.path : '',
 				options.domain ? '; domain=' + options.domain : '',
 				options.secure ? '; secure' : ''
