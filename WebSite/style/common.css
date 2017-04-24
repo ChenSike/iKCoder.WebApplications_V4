@@ -230,19 +230,19 @@ header {
 }
 
 @media (min-width: 1200px) {
-    header .navbar .nav-ul-container {
+    .navbar .nav-ul-container {
         width: 64%;
     }
 }
 
 @media (min-width: 1440px) {
-    header .navbar .nav-ul-container {
+    .navbar .nav-ul-container {
         width: 51%;
     }
 }
 
 @media (min-width: 1600px) {
-    header .navbar .nav-ul-container {
+    .navbar .nav-ul-container {
         width: 47%;
     }
 }
@@ -261,13 +261,13 @@ header {
 }
 
 @media (min-width: 1920px) {
-    header .navbar .nav-ul-container {
+    .navbar .nav-ul-container {
         width: 40%;
     }
 }
 
 @media (min-width: 2560px) {
-    header .navbar .nav-ul-container {
+    .navbar .nav-ul-container {
         width: 27%;
     }
 }

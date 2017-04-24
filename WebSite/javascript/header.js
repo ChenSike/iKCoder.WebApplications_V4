@@ -387,9 +387,8 @@ function initNavBarEvent() {
         alert('go to blog');
     });
 
-    $("#linkBtn_AboutUs").on('click', function () {
-        //window.location.href = "aboutus.html?cid=" + _gCID;
-        alert('go to about');
+    $("#linkBtn_About").on('click', function () {
+        window.location.href = "aboutus.html?cid=" + _gCID;
     });
 };
 
@@ -599,6 +598,7 @@ function signUp() {
     _registerRemoteServer();
     $.ajax({
         type: 'POST',
+        async: false,
         url: _getRequestURL(_gURLMapping.account.reg),
         data: '<root>' +
             '<symbol>' + $("#txt_SignUp_PhoneNumber").val() + '</symbol>' +
@@ -617,6 +617,7 @@ function signUp() {
                 $('#mWindow_SignUp').modal('hide');
                 $.ajax({
                     type: 'POST',
+                    async: false,
                     url: _getRequestURL(_gURLMapping.account.sign),
                     data: '<root>' +
                         '<symbol>' + $("#txt_SignUp_PhoneNumber").val() + '</symbol>' +
@@ -635,7 +636,7 @@ function signUp() {
                     },
                     dataType: 'xml',
                     xhrFields: {
-                        withCredentials: true
+                        //withCredentials: true
                     },
                     error: function () {
                         openSignIn();
@@ -646,7 +647,7 @@ function signUp() {
         },
         dataType: 'xml',
         xhrFields: {
-            withCredentials: true
+            //withCredentials: true
         },
         error: function () {
             $("#signupAlert").alert('close');
@@ -678,6 +679,7 @@ function signIn() {
     _registerRemoteServer();
     $.ajax({
         type: 'POST',
+        async: false,
         url: _getRequestURL(_gURLMapping.account.signwithcode),
         data: '<root>' +
             '<symbol>' + $("#txt_SignIn_UserName").val() + '</symbol>' +
@@ -699,7 +701,7 @@ function signIn() {
         },
         dataType: 'xml',
         xhrFields: {
-            withCredentials: true
+            //withCredentials: false
         },
         error: function () {
             $("#signinAlert").alert('close');
@@ -749,6 +751,7 @@ function updatePassword() {
 
     $.ajax({
         type: 'POST',
+        async: false,
         url: _getRequestURL(_gURLMapping.account.sign),
         data: '<root>' +
             '<username>' + $("#txt_ForgetPWD_PhoneNumber").val() + '</username>' +
@@ -763,7 +766,7 @@ function updatePassword() {
         },
         dataType: 'xml',
         xhrFields: {
-            withCredentials: true
+            //withCredentials: true
         },
         error: function () {
             $("#signinAlert").alert('close');
@@ -783,6 +786,7 @@ function sendNoteCode() {
         }, 1000);
         $.ajax({
             type: 'POST',
+            async: false,
             url: _getRequestURL(_gURLMapping.account.sign),
             data: '<root><username>' + $("#" + data.textId).val() + '</username></root>',
             success: function (data, status) {
@@ -790,7 +794,7 @@ function sendNoteCode() {
             },
             dataType: 'xml',
             xhrFields: {
-                withCredentials: true
+                //withCredentials: true
             },
             error: function () {
                 $("#" + data.alertId).alert('close');
@@ -821,6 +825,7 @@ function updateUserInfor(responseData) {
         _registerRemoteServer();
         $.ajax({
             type: 'GET',
+            async: false,
             url: _getRequestURL(_gURLMapping.account.signsstatus),
             data: '<root></root>',
             success: function (data_1, status) {
@@ -834,6 +839,7 @@ function updateUserInfor(responseData) {
                     } else {
                         $.ajax({
                             type: 'GET',
+                            async: false,
                             url: _getRequestURL(_gURLMapping.account.nickname),
                             data: '<root></root>',
                             success: function (data_2, status) {
@@ -845,7 +851,7 @@ function updateUserInfor(responseData) {
                             },
                             dataType: 'xml',
                             xhrFields: {
-                                withCredentials: true
+                                //withCredentials: true
                             },
                             error: function () {
                                 removeUserInfoItem();
@@ -856,7 +862,7 @@ function updateUserInfor(responseData) {
             },
             dataType: 'xml',
             xhrFields: {
-                withCredentials: true
+                //withCredentials: true
             },
             error: function () {
                 removeUserInfoItem();
@@ -923,6 +929,7 @@ function createUserInfoItem(data) {
             _registerRemoteServer();
             $.ajax({
                 type: 'GET',
+                async: false,
                 url: _getRequestURL(_gURLMapping.account.logout),
                 data: '<root></root>',
                 success: function (data_2, status) {
@@ -936,7 +943,7 @@ function createUserInfoItem(data) {
                 },
                 dataType: 'xml',
                 xhrFields: {
-                    withCredentials: true
+                    //withCredentials: true
                 },
                 error: function () {
                     removeUserInfoItem();

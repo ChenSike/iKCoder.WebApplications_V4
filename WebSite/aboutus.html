@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style/font-awesome.min.css">
     <link rel="stylesheet" href="style/common.css">
     <link rel="stylesheet" href="style/aboutus.css">
-    <script src="javascript/common/jquery-2.1.1.min.js"></script>
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
     <script src="javascript/common/tether.min.js"></script>
     <script src="javascript/common/bootstrap.js"></script>
     <script src="javascript/common/common.js"></script>
@@ -21,11 +21,11 @@
     <script src="javascript/aboutus.js"></script>
 </head>
 <body>
-    <div class="container-fluid" id="section_1">
-        <div class="row">
-            <div class="col-sm-12">
+    <div class="container-fluid" id="section_1" style="padding: 0px;">
+        <div class="row" style="margin-left: 0px; margin-right: 0px;">
+            <div class="col-sm-12" id="wrap_section_1_title" style="padding: 0px;">
                 <img src="image/about-header.png" class="img-fluid" style="min-width:100%;" />
-                <div class="wrap-section-1-title" id="">
+                <div class="wrap-section-1-title">
                     只要有梦想, 谁都可以创造非凡
                 </div>
             </div>
@@ -63,20 +63,13 @@
             </div>
         </div>
     </div>
-
     <div class="container-fluid" id="section_Provide" style="padding-top:50px;">
         <div class="row justify-content-center">
             <div class="col-12 my-5" style="margin-bottom: 0rem !important;">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <h2 class="text-center"> 我们提供</h2>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="text-center"> 我们提供</h2>
             </div>
         </div>
-        <div class="row  justify-content-center" style="padding-top:60px; padding-bottom:30px;">
+        <div class="row  justify-content-center" style="padding-top:60px;">
             <div class="col-12">
                 <div class="container">
                     <div class="row">
@@ -134,93 +127,105 @@
             </div>
         </div>
     </div>
-
-
-    <div class="container margin-top-20" id="sector_Team">
-        <div class="row">
-            <div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
-                <h3 class="text-center text-black padding-top100 padding-bottom50">
-                    我们的团队
-                </h3>
+    <div class="container-fluid" id="section_Team" style="padding-top:50px;">
+        <div class="row justify-content-center">
+            <div class="col-12 my-5">
+                <h2 class="text-center"> 我们的团队</h2>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 col-md-offset-1 col-lg-offset-2">
-                <img style="box-shadow: 6px 6px 10px rgb(80,80,80);" src="images/background/team-temp.png" />
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5">
-                <p class="text-sector-team-content">
-                    我们是一群来自中国和美国的教育工作者和开发人员。
-                </p>
-                <p class="text-sector-team-content">
-                    多年的青少年教育经验，帮助我们为中国孩子设计有效和科学的教学体系；同时，多元化的
-                    开发经验和丰富的编程经历，让我们有能力同步全球最先进的编程教育平台，使得孩子们的
-                    学习高效切有趣。
-                </p>
-                <p class="text-sector-team-content">
-                    我们中的很多团队成员也是爸爸妈妈，更懂得家长们对孩子学习的目标和关注点，我们将这些
-                    目标和关注点转换成孩子的学习经历和体验，帮助孩子们打开通往世界的窗户。
-                </p>
-            </div>
-        </div>
-        <hr class="split-line" />
-    </div>
-    <div class="container margin-top-20" id="sector_Partner">
-        <div class="row">
-            <div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
-                <h3 class="text-center text-black padding-top100 padding-bottom50">
-                    合作伙伴
-                </h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-8 col-sm-offset-1 col-md-offset-1 col-lg-offset-2">
+        <div class="row justify-content-center">
+            <div class="col-12">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-3 text-center padding-bottom20">
-                            <img src="images/label/eccu.png" />
+                        <div class="col-12 col-sm-5 col-md-5 col-lg-4">
+                            <img class="img-fluid" style="box-shadow: 6px 6px 10px rgb(80,80,80);" src="image/team-temp.png" />
                         </div>
-                        <div class="col-sm-3 text-center padding-bottom20">
-                            <img src="images/label/google.png" />
-                        </div>
-                        <div class="col-sm-3 text-center padding-bottom20">
-                            <img src="images/label/microsoft.png" />
-                        </div>
-                        <div class="col-sm-3 text-center padding-bottom20">
-                            <img src="images/label/parrot.png" />
+                        <div class="col-12 col-sm-7 col-md-7 col-lg-8">
+                            <p class="text-section-team-content">
+                                我们是一群来自中国和美国的教育工作者和开发人员。
+                            </p>
+                            <p class="text-section-team-content">
+                                多年的青少年教育经验，帮助我们为中国孩子设计有效和科学的教学体系；同时，多元化的
+                                开发经验和丰富的编程经历，让我们有能力同步全球最先进的编程教育平台，使得孩子们的
+                                学习高效切有趣。
+                            </p>
+                            <p class="text-section-team-content">
+                                我们中的很多团队成员也是爸爸妈妈，更懂得家长们对孩子学习的目标和关注点，我们将这些
+                                目标和关注点转换成孩子的学习经历和体验，帮助孩子们打开通往世界的窗户。
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <hr class="split-line" />
-    </div>
-    <div class="container margin-top-20 padding-bottom100" id="sector_Team">
         <div class="row">
-            <div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
-                <h3 class="text-center text-black padding-top100 padding-bottom50">
-                    联系我们
-                </h3>
+            <div class="col-12 text-center">
+                <hr class="split-line" />
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="section_Partner" style="padding-top:50px;">
+        <div class="row justify-content-center">
+            <div class="col-12 my-5">
+                <h2 class="text-center"> 合作伙伴</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-3 text-center">
+                            <img src="image/logos/eccu.png" class="d-inline-block img-fluid marginTop-30" alt="">
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 text-center" ">
+                            <img src="image/logos/google.png" class="d-inline-block img-fluid marginTop-30" alt="">
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 text-center" ">
+                            <img src="image/logos/microsoft.png" class="d-inline-block img-fluid marginTop-30" alt="">
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 text-center" ">
+                            <img src="image/logos/parrot.png" class="d-inline-block img-fluid marginTop-30" alt="">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 col-md-offset-1 col-lg-offset-2">
-                <img style="box-shadow: 8px 8px 10px rgb(80,80,80);" src="images/background/map.png" />
+            <div class="col-12 text-center">
+                <hr class="split-line" />
             </div>
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <p class="text-sector-team-content">
-                    <strong>艾酷总部</strong><br />
-                    地址：深圳市龙岗区天安数码城5号大厦A座6层<br />
-                    电话：0755－2822 - 5799<br />
-                    邮件：contact@ikcoder.com<br />
-                    邮编：518116<br />
-                </p>
-                <p class="text-sector-team-content">
-                    <strong>艾酷美国开发中心</strong><br />
-                    地址：1200 Lancaster Ave. Frazer, PA 19355<br />
-                    电话：+1 484.701.6380<br />
-                    邮件： USdev@ikcoder.com
-                </p>
+        </div>
+    </div>
+    <div class="container-fluid" id="section_Partner" style="padding-top:50px; padding-bottom:30px;">
+        <div class="row justify-content-center">
+            <div class="col-12 my-5">
+                <h2 class="text-center"> 联系我们</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-sm-7">
+                            <img class="img-fluid" style="box-shadow: 8px 8px 10px rgb(80,80,80);" src="image/map.png" />
+                        </div>
+                        <div class="col-12 col-sm-5">
+                            <p class="text-section-team-content">
+                                <strong>艾酷总部</strong><br />
+                                地址：深圳市龙岗区天安数码城5号大厦A座6层<br />
+                                电话：0755－2822 - 5799<br />
+                                邮件：contact@ikcoder.com<br />
+                                邮编：518116<br />
+                            </p>
+                            <p class="text-section-team-content">
+                                <strong>艾酷美国开发中心</strong><br />
+                                地址：1200 Lancaster Ave. Frazer, PA 19355<br />
+                                电话：+1 484.701.6380<br />
+                                邮件： USdev@ikcoder.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -41,6 +41,7 @@ var _gCID = null;
 function _initURLMapping() {
     $.ajax({
         type: 'GET',
+        async: false,
         url: _gHostName + '/data/get_UrlMap.aspx?showall=1&cid=' + _gCID,
         success: function (xml, status) {
             for (var key in _gURLMapping) {
@@ -51,7 +52,7 @@ function _initURLMapping() {
         },
         dataType: 'xml',
         xhrFields: {
-            withCredentials: true
+            //withCredentials: true
         },
         error: function () {
             alert('Fail to load URL Mapping.');
@@ -64,6 +65,7 @@ function _registerRemoteServer() {
     //if (!_gRegisterServer) {
     $.ajax({
         type: 'GET',
+        async: false,
         data: '<root></root>',
         url: _getRequestURL(_gURLMapping.server.reg, { domain: window.location.origin }),
         success: function (xml, status) {
@@ -72,7 +74,7 @@ function _registerRemoteServer() {
         },
         dataType: 'xml',
         xhrFields: {
-            withCredentials: true
+            //withCredentials: true
         },
         error: function () {
             //alert('Fail to regist remote server.');
