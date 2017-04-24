@@ -10,7 +10,7 @@ var _checkCodeParams = {
 
 function buildHeaderHTML(isIndexPage) {
     var tmpHtmlStrArr = [];
-    tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" style="background-color:transparent;">');
+    tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header" style="background-color:transparent;">');
     tmpHtmlStrArr.push('    <a class="navbar-brand" href="index.html">');
     tmpHtmlStrArr.push('        <img src="image/logo-new-white.png" width="150" height="50" class="d-inline-block align-top img-header-logo" alt="">');
     tmpHtmlStrArr.push('    </a>');
