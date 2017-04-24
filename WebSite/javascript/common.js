@@ -15,8 +15,7 @@ var _gURLMapping = {
         signsstatus: '/Account/GET_SignStatus.aspx',
         nickname: '/Account/Profile/GET_NickName.aspx',
         updatepwd: '/Account/SET_ResetPassword.aspx',
-        logout: '/Account/SET_Logout.aspx',
-        getselectnodesvalue: '/Account/Profile/GET_SelectNodesValues.aspx'
+        logout: '/Account/SET_Logout.aspx'
     },
     data: {
         studentcenter: '/Data/GET_ResourceDataText.aspx',
@@ -24,6 +23,7 @@ var _gURLMapping = {
         updateprofile: '/data/get_checkcodenua.aspx',
         getwordlist: '/data/get_checkcodenua.aspx',
         setbinresource: '/Data/SET_BinResource.aspx',
+        getbinresource: '/Data/GET_BinResource.aspx',
         getimage: '/Data/GET_image.aspx',
         getimageheader: '/Data/GET_ImageHeader.aspx'
     },
@@ -32,7 +32,8 @@ var _gURLMapping = {
     },
     bus: {
         getworkspace: '/Bus/Workspace/GET_Workspace.aspx',
-        saveworkspace: '/Bus/Workspace/GET_Workspace.aspx'
+        saveworkspace: '/Bus/Workspace/SET_WorkspaceStatus.aspx',
+        setcurrentstep: '/Bus/Workspace/SET_CurrentStep.aspx'
     }
 };
 
@@ -61,15 +62,12 @@ function _initURLMapping() {
 }
 
 function _registerRemoteServer() {
-    //return;
-    //if (!_gRegisterServer) {
     $.ajax({
         type: 'GET',
         async: false,
         data: '<root></root>',
         url: _getRequestURL(_gURLMapping.server.reg, { domain: window.location.origin }),
         success: function (xml, status) {
-            //alert('111');
             _gRegisterServer = true;
         },
         dataType: 'xml',
@@ -77,7 +75,6 @@ function _registerRemoteServer() {
             //withCredentials: true
         },
         error: function () {
-            //alert('Fail to regist remote server.');
             _gRegisterServer = false;
         }
     });

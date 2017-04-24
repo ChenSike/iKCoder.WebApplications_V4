@@ -276,16 +276,6 @@ function resetCitySelect() {
 
 };
 
-function adjustFooter() {
-    var bodyHeight = $('html').height();
-    var titleHeight = $("#section_Top_Title").height();
-    var contentHeight = $("#section_Content").height();
-    var headerHeight = $("#navbar_Header").height();
-    var footerHeight = $("footer").height();
-    var tmpHeight = bodyHeight - titleHeight - contentHeight - headerHeight - footerHeight - 36;
-    $(".space-row-bottom").height(tmpHeight > 0 ? tmpHeight : 0);
-};
-
 function loadHeaderImg() {
     var tmpSrc = _getRequestURL(_gURLMapping.data.getimageheader);
     $('#img_Infor_Header').attr('src', tmpSrc);

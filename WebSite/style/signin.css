@@ -1,0 +1,12 @@
+﻿.navbar-light .navbar-nav .nav-link {
+    color: rgb(102,102,120);
+}
+
+    .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
+        color: rgb(67,166,239);
+        font-weight: bold;
+    }
+
+    .space-row-bottom {
+    width: 100%;
+}
