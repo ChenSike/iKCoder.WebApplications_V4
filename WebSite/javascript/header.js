@@ -20,7 +20,7 @@ function buildHeaderHTML(isIndexPage) {
     tmpHtmlStrArr.push('    <div class="container-fluid">');
     tmpHtmlStrArr.push('        <div class="row w-100 justify-content-end">');
     tmpHtmlStrArr.push('            <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container">');
-    tmpHtmlStrArr.push('                <div class="collapse navbar-collapse" id="navbarSupportedContent">');
+    tmpHtmlStrArr.push('                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">');
     tmpHtmlStrArr.push('                    <ul class="navbar-nav" id="ul_NavBar_Container">');
     tmpHtmlStrArr.push('                        <li class="nav-item">');
     tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Course">' + _getLabel('课程') + '</a>');
@@ -679,7 +679,7 @@ function signIn() {
     _registerRemoteServer();
     $.ajax({
         type: 'POST',
-        async: false,
+        async: true,
         url: _getRequestURL(_gURLMapping.account.signwithcode),
         data: '<root>' +
             '<symbol>' + $("#txt_SignIn_UserName").val() + '</symbol>' +
@@ -701,7 +701,7 @@ function signIn() {
         },
         dataType: 'xml',
         xhrFields: {
-            //withCredentials: false
+            withCredentials: true
         },
         error: function () {
             $("#signinAlert").alert('close');
@@ -819,19 +819,19 @@ function updateCountDown(data) {
 
 function updateUserInfor(responseData) {
     removeUserInfoItem();
-    if (responseData) {
+    if (typeof responseData != 'undefined' && typeof responseData != 'boolean') {
         createUserInfoItem(responseData);
-    } else {
+    } else if (typeof responseData == 'boolean') {
         _registerRemoteServer();
         $.ajax({
             type: 'GET',
-            async: false,
+            async: true,
             url: _getRequestURL(_gURLMapping.account.signsstatus),
             data: '<root></root>',
             success: function (data_1, status) {
                 if ($(data_1).find('err').length > 0) {
-                    openSignIn(true);
-                    showAlertMessage('mWindow_SignIn_Dialog', 'signinAlert', $(data_1).find('err').attr('msg'));
+                    //openSignIn(true);
+                    //showAlertMessage('mWindow_SignIn_Dialog', 'signinAlert', $(data_1).find('err').attr('msg'));
                     return;
                 } else {
                     if ($.cookie('logined_user_name') && $.cookie('logined_nick_name') && $.cookie('logined_user_name') != "" && $.cookie('logined_nick_name') != "") {
@@ -851,7 +851,7 @@ function updateUserInfor(responseData) {
                             },
                             dataType: 'xml',
                             xhrFields: {
-                                //withCredentials: true
+                                withCredentials: true
                             },
                             error: function () {
                                 removeUserInfoItem();
@@ -862,7 +862,7 @@ function updateUserInfor(responseData) {
             },
             dataType: 'xml',
             xhrFields: {
-                //withCredentials: true
+                withCredentials: true
             },
             error: function () {
                 removeUserInfoItem();
@@ -910,6 +910,7 @@ function createUserInfoItem(data) {
                 '       <b class="caret"></b>' +
                 '   </a>' +
                 '   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">' +
+                '       <a href="workplatform.html?scene=b_01_001" class="dropdown-item" id="linkBtn_TestWorkPlatform" style="font-weight:100;">测试-进入工作台</a>' +
                 '       <a href="#" class="dropdown-item" id="linkBtn_UserInfo" style="font-weight:100;">用户信息</a>' +
                 '       <a href="#" class="dropdown-item" id="linkBtn_SignOut" style="font-weight:100;">退出登录</a>' +
                 '   </div>' +

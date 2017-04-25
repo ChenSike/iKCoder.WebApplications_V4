@@ -12,7 +12,7 @@ var _gURLMapping = {
         sign: '/Account/GET_Sign.aspx',
         signwithcode: '/Account/GET_SignWithCheckCode.aspx',
         checkcode: '/data/get_checkcodenua.aspx',
-        signsstatus: '/Account/GET_SignStatus.aspx',
+        signstatus: '/Account/GET_SignStatus.aspx',
         nickname: '/Account/Profile/GET_NickName.aspx',
         updatepwd: '/Account/SET_ResetPassword.aspx',
         logout: '/Account/SET_Logout.aspx'
@@ -64,7 +64,7 @@ function _initURLMapping() {
 function _registerRemoteServer() {
     $.ajax({
         type: 'GET',
-        async: false,
+        async: true,
         data: '<root></root>',
         url: _getRequestURL(_gURLMapping.server.reg, { domain: window.location.origin }),
         success: function (xml, status) {
@@ -72,7 +72,7 @@ function _registerRemoteServer() {
         },
         dataType: 'xml',
         xhrFields: {
-            //withCredentials: true
+            withCredentials: true
         },
         error: function () {
             _gRegisterServer = false;
@@ -91,7 +91,7 @@ function _getLabel(key) {
 
 function _getRequestURL(page, params) {
     var url = _gHostName + page;
-    url += '?cid=' + _gCID;
+    url += '?aid=' + _gCID;
     if (params) {
         for (var key in params) {
             url += '&' + key + '=' + params[key];
