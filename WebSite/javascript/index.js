@@ -28,4 +28,12 @@ function initPageEvents() {
 
 function initPage() {
     initPageEvents();
+    _loadIMG('image/tips/curriculum.png');
+    _loadIMG('image/tips/plat.png');
+    _loadIMG('image/tips/personal.png');
+    _loadIMG('image/tips/reportcircle.png');
+    _loadIMG('image/tips/project.png');
+    _loadIMG('image/tips/language.png');
+    _loadIMG('image/tips/share.png');
+    _loadIMG('image/tips/intelaccess.png');
 }

@@ -221,6 +221,14 @@ function _refereshCheckCode(checkCodeId) {
     $("#" + checkCodeId).attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
 }
 
+function _loadIMG(src) {
+    var img = new Image();
+    img.src = src;
+    img.onload = function () {
+        console.log('complete');
+    };
+}
+
 function listMovePrev() {
     if (arguments[0] && arguments[0].data) {
         var targetId = arguments[0].data.id;
