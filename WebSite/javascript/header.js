@@ -256,12 +256,12 @@ function initNavBarEvent() {
     });
 
     $("#linkBtn_Blog").on('click', function () {
-        //window.location.href = "product.html?cid=" + _gCID;
+        //window.location.href = "product.html?qid=" + _gCID;
         alert('go to blog');
     });
 
     $("#linkBtn_About").on('click', function () {
-        window.location.href = "aboutus.html?cid=" + _gCID;
+        window.location.href = "aboutus.html?qid=" + _gCID;
     });
 
     $("#btn_SignIn").on('click', function () {

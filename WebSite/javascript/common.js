@@ -43,7 +43,7 @@ function _initURLMapping() {
     $.ajax({
         type: 'GET',
         async: false,
-        url: _gHostName + '/data/get_UrlMap.aspx?showall=1&cid=' + _gCID,
+        url: _gHostName + '/data/get_UrlMap.aspx?showall=1&qid=' + _gCID,
         success: function (xml, status) {
             for (var key in _gURLMapping) {
                 $(xml).find("item[group='" + key + "']").each(function (index, ele) {
@@ -91,7 +91,7 @@ function _getLabel(key) {
 
 function _getRequestURL(page, params) {
     var url = _gHostName + page;
-    url += '?aid=' + _gCID;
+    url += '?qid=' + _gCID;
     if (params) {
         for (var key in params) {
             url += '&' + key + '=' + params[key];
@@ -341,7 +341,7 @@ function _showGlobalMessage(msg, type, id) {
         if (!window.top._gCID) {
             var searchArr = window.location.search.replace('?', '').split('&');
             for (var i = 0; i < searchArr.length; i++) {
-                if (searchArr[i].indexOf('cid') == 0) {
+                if (searchArr[i].indexOf('qid') == 0) {
                     var tmpSearchArr = searchArr[i].split('=');
                     if (tmpSearchArr.length == 2 && tmpSearchArr[1].trim() != '') {
                         _gCID = tmpSearchArr[1];
