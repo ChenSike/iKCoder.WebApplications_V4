@@ -826,7 +826,7 @@ function updateUserInfor(responseData) {
         $.ajax({
             type: 'GET',
             async: true,
-            url: _getRequestURL(_gURLMapping.account.signsstatus),
+            url: _getRequestURL(_gURLMapping.account.signstatus),
             data: '<root></root>',
             success: function (data_1, status) {
                 if ($(data_1).find('err').length > 0) {
