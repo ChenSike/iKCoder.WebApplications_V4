@@ -52,13 +52,13 @@
                         <div class="col-12 col-sm-4" style="padding: 30px 10px;">
                             <div class="container" style="background-color:rgb(255,255,255);">
                                 <div class="row">
-                                    <div class="col-12 text-center" style="border-bottom:solid 1px rgb(195,195,195); padding:20px 0px;font-size: 20px;">
+                                    <div class="col-12 text-center" style="border-bottom:solid 1px rgb(195,195,195); padding:10px 0px;font-size: 20px;">
                                         账号登录
                                     </div>
                                 </div>
                                 <div class="row justify-content-center">
                                     <div class="col-10">
-                                        <form class="my-4">
+                                        <form class="my-3">
                                             <div class="form-group row">
                                                 <div class="col-12">
                                                     <div class="input-group">
@@ -79,6 +79,16 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <div class="input-group" style="width:100%;">
+                                                        <input type="text" class="form-control" id="txt_SignIn_CheckCode" placeholder="验证码" />
+                                                        <div class="input-group-addon" style="width:75px; padding:2px;">
+                                                            <img class="cursor-hand check-code-image" id="img_SignIn_CheckCode" src="" title="点击刷新验证码">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -88,7 +98,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12 text-center my-4" style="padding-right:20px;font-size: 14px;color:rgb(195,195,195);cursor:pointer;">
+                                    <div class="col-12 text-center my-3" style="padding-right:20px;font-size: 14px;color:rgb(195,195,195);cursor:pointer;">
                                         <button class="btn btn-outline-primary my-2 my-sm-1 ml-md-5 mr-3" id="btn_SignIn" style="width:100px;" type="button">登录</button>
                                     </div>
                                 </div>

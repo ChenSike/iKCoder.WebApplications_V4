@@ -89,16 +89,16 @@ function initEvnets() {
     $(".js-password-change-btn").on('click', function () {
         if ($(".js-password-change-control").attr("type") == 'text') {
             $(".js-password-change-control").attr("type", "password");
-            $("#btn_New_Show_Hide_Pwd").addClass('glyphicon-eye-close');
-            $("#btn_New_Show_Hide_Pwd").removeClass('glyphicon-eye-open');
-            $("#btn_Confirm_Show_Hide_Pwd").addClass('glyphicon-eye-close');
-            $("#btn_Confirm_Show_Hide_Pwd").removeClass('glyphicon-eye-open');
+            $("#btn_New_Show_Hide_Pwd").addClass('fa-eye-slash');
+            $("#btn_New_Show_Hide_Pwd").removeClass('fa-eye');
+            $("#btn_Confirm_Show_Hide_Pwd").addClass('fa-eye-slash');
+            $("#btn_Confirm_Show_Hide_Pwd").removeClass('fa-eye');
         } else {
             $(".js-password-change-control").attr("type", "text");
-            $("#btn_Confirm_Show_Hide_Pwd").addClass('glyphicon-eye-open');
-            $("#btn_Confirm_Show_Hide_Pwd").removeClass('glyphicon-eye-close');
-            $("#btn_New_Show_Hide_Pwd").addClass('glyphicon-eye-open');
-            $("#btn_New_Show_Hide_Pwd").removeClass('glyphicon-eye-close');
+            $("#btn_Confirm_Show_Hide_Pwd").addClass('fa-eye');
+            $("#btn_Confirm_Show_Hide_Pwd").removeClass('fa-eye-slash');
+            $("#btn_New_Show_Hide_Pwd").addClass('fa-eye');
+            $("#btn_New_Show_Hide_Pwd").removeClass('fa-eye-slash');
         }
     });
 
@@ -280,7 +280,17 @@ function loadHeaderImg() {
     var tmpSrc = _getRequestURL(_gURLMapping.data.getimageheader);
     $('#img_Infor_Header').attr('src', tmpSrc);
     $('#img_Card_Header').attr('src', tmpSrc);
-}
+};
+
+function adjustFooter() {
+    var bodyHeight = $('html').height();
+    var headerHeight = $("#navbar_Header").height();
+    var titleHeight = $("#section_Top_Title").height();
+    var contentHeight = $("#section_Content").height();
+    var footerHeight = $("footer").height();
+    var tmpHeight = bodyHeight - headerHeight - titleHeight - contentHeight - footerHeight - 36;
+    $(".space-row-bottom").height(tmpHeight > 0 ? tmpHeight : 0);
+};
 
 var _currentHeaderImageSrc = '';
 function initCustomHeaderImg(uploadType) {

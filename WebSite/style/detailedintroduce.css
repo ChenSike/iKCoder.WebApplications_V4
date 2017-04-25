@@ -18,9 +18,15 @@
 }
 
     #section_1 div.subtitle {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         margin: 0px;
         display: inline-block;
         height: 100%;
         vertical-align: top;
     }
+
+    @media (max-width: 767px) {
+    #section_1 div.subtitle {
+        padding-left: 5px;
+    }
+}
