@@ -9,9 +9,9 @@ var _checkCodeParams = {
 
 function initPage() {
     $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
-    $("#img_SignIn_CheckCode").attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
+    _refereshCheckCode('img_SignIn_CheckCode');
     $("#img_SignIn_CheckCode").on('click', function () {
-        $("#img_SignIn_CheckCode").attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
+        _refereshCheckCode('img_SignIn_CheckCode');
     });
 
     $("#btn_SignIn").on('click', function () {
@@ -63,8 +63,6 @@ function signIn() {
 
             $.cookie('logined_user_name', $($(data).find('msg')[0]).attr('logined_user_name'));
             $.cookie('logined_nick_name', $($(data).find('msg')[0]).attr('logined_nick_name'));
-            $("#signinAlert").alert('close');
-            $('#mWindow_SignIn').modal('hide');
             window.history.back();
         },
         dataType: 'xml',
@@ -77,6 +75,19 @@ function signIn() {
     });
 }
 
+function checkPwdIntension(txtField, lbField) {
+    var checkVal = _checkPassword(txtField.val().trim());
+    if (checkVal == 1) {
+        lbField.text('弱');
+        lbField.css('color', 'rgb(255,0,0)');
+    } else if (checkVal == 2) {
+        lbField.text('中');
+        lbField.css('color', 'rgb(255,215,0)');
+    } else if (checkVal == 3) {
+        lbField.text('强');
+        lbField.css('color', 'rgb(50,205,50)');
+    }
+};
 
 function adjustFooter() {
     var bodyHeight = $('html').height();

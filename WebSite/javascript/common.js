@@ -181,6 +181,46 @@ function _getOffsetPosition(target, topParentClass) {
     return offsetPos;
 }
 
+function _startCheckState() {
+    _registerRemoteServer();
+    $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.signstatus),
+        data: '<root></root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                window.location.href = "signin.html";
+                $.removeCookie('logined_user_name');
+                $.removeCookie('logined_nick_name');
+                return;
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            window.location.href = "signin.html";
+            $.removeCookie('logined_user_name');
+            $.removeCookie('logined_nick_name');
+        }
+    });
+
+    window.setTimeout(_startCheckState, 30000);
+}
+
+function _refereshCheckCode(checkCodeId) {
+    var _checkCodeParams = {
+        length: 4,
+        name: 'signincode',
+        width: 70,
+        height: 30
+    };
+
+    $("#" + checkCodeId).attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
+}
+
 function listMovePrev() {
     if (arguments[0] && arguments[0].data) {
         var targetId = arguments[0].data.id;

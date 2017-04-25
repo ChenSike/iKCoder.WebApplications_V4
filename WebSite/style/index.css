@@ -6,7 +6,6 @@
 
 #wrap_FreeSignUp {
     position: absolute;
-    cursor: pointer;
 }
 
 #btn_Fast_FreeSignUp {
@@ -14,6 +13,7 @@
     background-color: transparent;
     background-image: none;
     border-color: #5bc0de;
+    cursor: pointer;
 }
 
     #btn_Fast_FreeSignUp:hover {
