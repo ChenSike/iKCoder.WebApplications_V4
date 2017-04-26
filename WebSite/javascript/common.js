@@ -1,6 +1,7 @@
 ﻿'use strict';
 
-var _gRegisterServer = false;
+var _gCID = null;
+var _gExpires = 15;
 var _gLabelMap = {};
 var _gHostName = 'http://119.23.233.224/ikcoderapi';
 var _gURLMapping = {
@@ -37,8 +38,6 @@ var _gURLMapping = {
     }
 };
 
-var _gCID = null;
-
 function _initURLMapping() {
     $.ajax({
         type: 'GET',
@@ -68,17 +67,14 @@ function _registerRemoteServer() {
         data: '<root></root>',
         url: _getRequestURL(_gURLMapping.server.reg, { domain: window.location.origin }),
         success: function (xml, status) {
-            _gRegisterServer = true;
         },
         dataType: 'xml',
         xhrFields: {
             withCredentials: true
         },
         error: function () {
-            _gRegisterServer = false;
         }
     });
-    //}
 };
 
 function _loadLabels() {
@@ -194,6 +190,61 @@ function _startCheckState() {
                 $.removeCookie('logined_user_name');
                 $.removeCookie('logined_nickname');
                 return;
+            } else {
+                if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') == '1') {
+                    $.cookie("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), {
+                        path: '/',
+                        expires: (new Date(Date.now() + (15 * 60 * 1000)))
+                    });
+                    if (!$.cookie("logined_nickname") || $.cookie("logined_nickname") == '') {
+                        _registerRemoteServer();
+                        $.ajax({
+                            type: 'GET',
+                            async: true,
+                            url: _getRequestURL(_gURLMapping.account.nickname),
+                            data: '<root></root>',
+                            success: function (responseData_2, status) {
+                                if ($(responseData_2).find('err').length > 0) {
+                                    window.location.href = "signin.html";
+                                    $.removeCookie('logined_user_name');
+                                    $.removeCookie('logined_nickname');
+                                    return;
+                                } else {
+                                    var nickName = '';
+                                    var tmpObject = $(responseData_2).find('msg');
+                                    if (tmpObject.length > 0) {
+                                        if (tmpObject.length > 1) {
+                                            for (var i = 0; i < tmpObject.length; i++) {
+                                                if ($(tmpObject[i]).attr('type') != '1') {
+                                                    nickName = $(tmpObject[i]).attr('msg');
+                                                }
+                                            }
+                                        } else {
+                                            nickName = $(tmpObject[0]).attr('logined_nickname');
+                                        }
+
+
+                                        $.cookie("logined_nickname", nickName, { path: '/', expires: (new Date(Date.now() + (_gExpires * 60 * 1000))) });
+                                    }
+                                }
+                            },
+                            dataType: 'xml',
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            error: function () {
+                                window.location.href = "signin.html";
+                                $.removeCookie('logined_user_name');
+                                $.removeCookie('logined_nickname');
+                            }
+                        });
+
+                    }
+                } else {
+                    window.location.href = "signin.html";
+                    $.removeCookie('logined_user_name');
+                    $.removeCookie('logined_nickname');
+                }
             }
         },
         dataType: 'xml',
@@ -235,7 +286,7 @@ function listMovePrev() {
         var step = arguments[0].data.step;
         var container = $('#' + targetId);
         var wrap = container.parent();
-        var left = parseInt(container.css('left').replace('px', ''));
+        var left = parseInt(container.css('margin-left').replace('px', ''));
         var width = container.width();
         var wrapWidth = wrap.width();
         if (left < 0) {
@@ -244,7 +295,7 @@ function listMovePrev() {
                 tmpStep = Math.abs(left);
             }
 
-            container.animate({ left: left + tmpStep + 'px', });
+            container.animate({ marginLeft: left + tmpStep + 'px', });
         }
     }
 };
@@ -255,7 +306,7 @@ function listMoveNext() {
         var step = arguments[0].data.step;
         var container = $('#' + targetId);
         var wrap = container.parent();
-        var left = parseInt(container.css('left').replace('px', ''));
+        var left = parseInt(container.css('margin-left').replace('px', ''));
         var width = container.width();
         var wrapWidth = wrap.width();
         if (width + left > wrapWidth) {
@@ -264,7 +315,7 @@ function listMoveNext() {
                 tmpStep = width + left - wrapWidth;
             }
 
-            container.animate({ left: left - tmpStep + 'px', });
+            container.animate({ marginLeft: left - tmpStep + 'px', });
         }
     }
 };

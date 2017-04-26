@@ -602,7 +602,7 @@ function updateUserInfor() {
             }
 
             $("#linkBtn_UserInfo").on('click', function () {
-                window.location.href = "accountcenter.html?qid=" + _gCID;
+                window.location.href = "profile.html?qid=" + _gCID;
             });
 
             $("#linkBtn_SignOut").on('click', function () {

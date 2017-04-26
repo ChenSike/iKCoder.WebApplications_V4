@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <title>iKCoder・中国儿童编程教育创导者</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <link rel="stylesheet" href="style/profile.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common/xmloperator.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/header.js"></script>
+    <script src="javascript/footer.js"></script>
+    <script src="javascript/profile.js"></script>
+</head>
+<body style="height:100%;">
+    <div class="container-fluid">
+        <div class="row justify-content-start" style="background-color:rgb(38,50,56);">
+            <div class="col-1" style="min-width:160px; max-width:200px; background-color:rgb(38,50,56); color:rgb(255,255,255); padding: 0px;">
+                <div class="container-fluid" style="padding: 0px;">
+                    <div class="row justify-content-center">
+                        <div class="col-12 text-center" style="padding: 20px 0px;">
+                            <img class="img-fluid" id="img_Profile_Title" src="image/ikcoderkid.png" />
+                            <p id="txt_NickName_Profile_Title" style="padding-top:20px;">可乐</p>
+                            <p id="txt_Title_Profile_Title">实习工程师</p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="overview" style="background-color:rgb(46,60,66)">
+                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                            <i class="fa fa-tachometer" aria-hidden="true" style="font-size:24px;"></i>
+                        </div>
+                        <div class="col-9 text-left">
+                            概览
+                        </div>
+                    </div>
+                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="message">
+                        <div class="col-3 text-center " style="height:60px; line-height:60px;">
+                            <i class="fa fa-envelope-o" aria-hidden="true" style="font-size:24px;"></i>
+                        </div>
+                        <div class="col-9 text-right">
+
+                        </div>
+                    </div>
+                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="report">
+                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                            <i class="fa fa-bar-chart" aria-hidden="true" style="font-size:24px;"></i>
+                        </div>
+                        <div class="col-9 text-left">
+                            报表
+                        </div>
+                    </div>
+                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="settings">
+                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                            <i class="fa fa-cogs" aria-hidden="true" style="font-size:24px;"></i>
+                        </div>
+                        <div class="col-9 text-left">
+                            设定
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2" id="wrap_Category_Title" style="min-width:350px; max-width:500px; background-color:rgb(248,250,251); padding: 0px;">
+            </div>
+            <div class="col" id="wrap_Category_Content" style="width:50%; padding:0px;">
+
+                <div class="container" id="" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">
+                    <div class="row align-items-center" id="" style="height:212px;">
+                        <div class="col-12">
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="container" id="" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">
+                    <div class="row align-items-center" id="" style="height:212px;">
+                        <div class="col-12">
+                        </div>
+                    </div>
+                </div>
+                <div class="container" id="" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">
+                    <div class="row align-items-center" id="" style="height:212px;">
+                        <div class="col-12">
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <footer id="footer"></footer>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            _loadLabels();
+            initHeader();
+            initFooter();
+            initPage();
+            _startCheckState();
+            //_startIntroJs();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+﻿body {
+    font-family: 微软雅黑;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: rgb(102,102,120);
+}
+
+    .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
+        color: rgb(67,166,239);
+        font-weight: bold;
+    }
+
+#img_Profile_Title {
+    width: 100px;
+    height: 100px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.left-bar-category-item {
+    margin: 0px;
+    cursor: pointer;
+}
+
+.overview-title-item-data {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: rgb(0,0,0);
+}
+
+.overview-title-item-text {
+    color: rgb(107,129,140);
+}
+
+.overview-honor-item-text {
+    color: rgb(147,146,145);
+    font-size: 13px;
+    font-weight: bold;
+    padding-top: 10px;
+    margin: 0px;
+}
+
+    .overview-honor-item-text.active-item {
+        color: rgb(68,191,160);
+    }
