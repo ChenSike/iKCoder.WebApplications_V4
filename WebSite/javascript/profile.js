@@ -129,8 +129,53 @@ function buildOverviewHonor(data, height) {
     }
 }
 
+function buildOverviewCourse(data, height) {
+    var itemCount = 9;
+    var nameArr = ['算法小达人', '计算机小专家', '语言大师', '小画家', '小小数学家', '音乐家', '科学智多星', '分享达人', '无人机小飞手'];
+    var padding = Math.floor(65 / 350 * height);
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Course" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">');
+    tmpHTMLArr.push('    <div class="row align-items-center" style="height:' + (height - 1) + 'px;">');
+    tmpHTMLArr.push('        <div class="col-1 text-center">');
+    tmpHTMLArr.push('           <div class="overview-course-list-arrow" id="arrow_Overview_Course_Left">');
+    tmpHTMLArr.push('               <i class="fa fa-chevron-left"></i>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-10 align-items-center" id="wrap_Overview_Course_Items" style="height:100%; overflow: hidden;">');
+    tmpHTMLArr.push('            <div id="container_Overview_Course_Items" style="height:100%;">');
+    for (var i = 1; i < itemCount + 1; i++) {
+        tmpHTMLArr.push('                <div class="text-center" style="display: inline-block; height:100%; padding-right:10px;">');
+        tmpHTMLArr.push('                    <div style="height:100%; padding:' + padding + 'px 0px;">');
+        tmpHTMLArr.push('                        <img src="image/honor/h_' + i + '_u.png" style="height: calc(100% - 30px);" />');
+        tmpHTMLArr.push('                    </div>');
+        tmpHTMLArr.push('                </div>');
+    }
+
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-1 text-center">');
+    tmpHTMLArr.push('           <div class="overview-course-list-arrow" id="arrow_Overview_Course_Right">');
+    tmpHTMLArr.push('               <i class="fa fa-chevron-right"></i>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
+    var itemWidth = height - Math.floor(65 / 350 * height) + 10;
+    $('#container_Overview_Course_Items').width(itemWidth * itemCount);
+    var funData = { id: "container_Overview_Course_Items", step: itemWidth };
+    $('#arrow_Overview_Course_Left').on('click', funData, listMovePrev);
+    $('#arrow_Overview_Course_Right').on('click', funData, listMoveNext);
+    if ($('#wrap_Overview_Course_Items').width() > $('#container_Overview_Course_Items').width()) {
+        $('.overview-course-list-arrow').hide();
+    }
+}
+
+
 function rebuildOverviewContents(datas, contentHeight, itemHeight) {
     buildOverviewHonor({}, itemHeight.s);
+    //buildOverviewCourse({}, itemHeight.l);
 }
 
 function rebuildOverviewTitles(datas, contentHeight, itemHeight) {
