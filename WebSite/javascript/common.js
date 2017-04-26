@@ -192,7 +192,7 @@ function _startCheckState() {
             if ($(responseData).find('err').length > 0) {
                 window.location.href = "signin.html";
                 $.removeCookie('logined_user_name');
-                $.removeCookie('logined_nick_name');
+                $.removeCookie('logined_nickname');
                 return;
             }
         },
@@ -203,7 +203,7 @@ function _startCheckState() {
         error: function () {
             window.location.href = "signin.html";
             $.removeCookie('logined_user_name');
-            $.removeCookie('logined_nick_name');
+            $.removeCookie('logined_nickname');
         }
     });
 

@@ -62,7 +62,7 @@ function signIn() {
             }
 
             $.cookie('logined_user_name', $($(data).find('msg')[0]).attr('logined_user_name'));
-            $.cookie('logined_nick_name', $($(data).find('msg')[0]).attr('logined_nickname'));
+            $.cookie('logined_nickname', $($(data).find('msg')[0]).attr('logined_nickname'));
             window.history.back();
         },
         dataType: 'xml',

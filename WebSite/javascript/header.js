@@ -448,7 +448,7 @@ function signUp() {
                         }
 
                         $.cookie('logined_user_name', $($(data).find('msg')[0]).attr('logined_user_name'));
-                        $.cookie('logined_nick_name', $($(data).find('msg')[0]).attr('logined_nick_name'));
+                        $.cookie('logined_nickname', $($(data).find('msg')[0]).attr('logined_nickname'));
                         updateUserInfor(data);
                     },
                     dataType: 'xml',
@@ -576,8 +576,8 @@ function updateCountDown(data) {
 
 function updateUserInfor() {
     removeUserInfoItem();
-    if ($.cookie('logined_user_name') && $.cookie('logined_nick_name') && $.cookie('logined_user_name') != "" && $.cookie('logined_nick_name') != "") {
-        var nickName = $.cookie('logined_nick_name');
+    if ($.cookie('logined_user_name') && $.cookie('logined_nickname') && $.cookie('logined_user_name') != "" && $.cookie('logined_nickname') != "") {
+        var nickName = $.cookie('logined_nickname');
         if (nickName != '') {
             $('#ul_NavBar_Container').append(
                 $(
@@ -618,7 +618,7 @@ function updateUserInfor() {
                         } else {
                             removeUserInfoItem();
                             $.removeCookie('logined_user_name');
-                            $.removeCookie('logined_nick_name');
+                            $.removeCookie('logined_nickname');
                         }
                     },
                     dataType: 'xml',
@@ -628,7 +628,7 @@ function updateUserInfor() {
                     error: function () {
                         removeUserInfoItem();
                         $.removeCookie('logined_user_name');
-                        $.removeCookie('logined_nick_name');
+                        $.removeCookie('logined_nickname');
                     }
                 });
             });
