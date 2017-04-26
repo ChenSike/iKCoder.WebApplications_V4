@@ -188,7 +188,7 @@ function _startCheckState() {
             if ($(responseData).find('err').length > 0) {
                 window.location.href = "signin.html";
                 $.removeCookie('logined_user_name');
-                $.removeCookie('logined_nickname');
+                $.removeCookie('logined_user_nickname');
                 return;
             } else {
                 if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') == '1') {
@@ -196,7 +196,7 @@ function _startCheckState() {
                         path: '/',
                         expires: (new Date(Date.now() + (15 * 60 * 1000)))
                     });
-                    if (!$.cookie("logined_nickname") || $.cookie("logined_nickname") == '') {
+                    if (!$.cookie("logined_user_nickname") || $.cookie("logined_user_nickname") == '') {
                         _registerRemoteServer();
                         $.ajax({
                             type: 'GET',
@@ -207,7 +207,7 @@ function _startCheckState() {
                                 if ($(responseData_2).find('err').length > 0) {
                                     window.location.href = "signin.html";
                                     $.removeCookie('logined_user_name');
-                                    $.removeCookie('logined_nickname');
+                                    $.removeCookie('logined_user_nickname');
                                     return;
                                 } else {
                                     var nickName = '';
@@ -224,7 +224,7 @@ function _startCheckState() {
                                         }
 
 
-                                        $.cookie("logined_nickname", nickName, { path: '/', expires: (new Date(Date.now() + (_gExpires * 60 * 1000))) });
+                                        $.cookie("logined_user_nickname", nickName, { path: '/', expires: (new Date(Date.now() + (_gExpires * 60 * 1000))) });
                                     }
                                 }
                             },
@@ -235,7 +235,7 @@ function _startCheckState() {
                             error: function () {
                                 window.location.href = "signin.html";
                                 $.removeCookie('logined_user_name');
-                                $.removeCookie('logined_nickname');
+                                $.removeCookie('logined_user_nickname');
                             }
                         });
 
@@ -243,7 +243,7 @@ function _startCheckState() {
                 } else {
                     window.location.href = "signin.html";
                     $.removeCookie('logined_user_name');
-                    $.removeCookie('logined_nickname');
+                    $.removeCookie('logined_user_nickname');
                 }
             }
         },
@@ -254,7 +254,7 @@ function _startCheckState() {
         error: function () {
             window.location.href = "signin.html";
             $.removeCookie('logined_user_name');
-            $.removeCookie('logined_nickname');
+            $.removeCookie('logined_user_nickname');
         }
     });
 
