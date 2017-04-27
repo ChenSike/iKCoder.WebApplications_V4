@@ -41,7 +41,7 @@ function Extend(target, settings, params) {
     return target;
 };
 
-function CloneObject(source) {   
+function CloneObject(source) {
     return $.extend(true, {}, source);
 };
 
@@ -141,17 +141,11 @@ function ConvertImgToBase64(url, callback, outputFormat) {
 //ConvertImgToBase64('http://bit.ly/18g0VNp', function (base64Img) {
 //    // Base64DataURL
 //});
-
-function testTextWidth(sourceTagId) {
-    var sourceTag = document.getElementById(sourceTagId);
-    if (!sourceTag) {
-        return -1;
-    }
-
-    var testDiv = document.getElementById("div_test_text_widht");
+function testTextWidth(text, fontSize, fontWeight, fontFamily) {
+    var testDiv = document.getElementById("div_test_text_width");
     if (!testDiv) {
         testDiv = document.createElement("div");
-        testDiv.id = "div_test_text_widht";
+        testDiv.id = "div_test_text_width";
         testDiv.style.position = "absolute";
         testDiv.style.left = "-10000px";
         testDiv.style.top = "-10000px";
@@ -159,15 +153,24 @@ function testTextWidth(sourceTagId) {
         document.body.appendChild(testDiv);
     }
 
-    testDiv.style.fontFamily = sourceTag.style.fontFamily;
-    testDiv.style.fontSize = sourceTag.style.fontSize;
-    testDiv.style.fontWeight = sourceTag.style.fontWeight;
-    testDiv.innerHTML = sourceTag.innerHTML;
+    testDiv.style.fontFamily = fontFamily;
+    testDiv.style.fontSize = fontSize;
+    testDiv.style.fontWeight = fontWeight;
+    testDiv.innerHTML = text;
 
     return testDiv.clientWidth;
 };
 
-function randomInt(minVal, maxVal) {    
+function testTextWidth(sourceTagId) {
+    var sourceTag = document.getElementById(sourceTagId);
+    if (!sourceTag) {
+        return -1;
+    }
+
+    return testTextWidth(sourceTag.innerHTML, sourceTag.style.fontSize, sourceTag.style.fontWeight, sourceTag.style.fontFamily);
+};
+
+function randomInt(minVal, maxVal) {
     var rand = parseInt(Math.random() * (maxVal - minVal + 1) + minVal);
     return rand;
 }

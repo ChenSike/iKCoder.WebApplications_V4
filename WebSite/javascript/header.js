@@ -448,7 +448,7 @@ function signUp() {
                         }
 
                         $.cookie('logined_user_name', $($(data).find('msg')[0]).attr('logined_user_name'));
-                        $.cookie('logined_user_nickname', $($(data).find('msg')[0]).attr('logined_nickname'));
+                        $.cookie('logined_user_nickname', $($(data).find('msg')[0]).attr('logined_user_nickname'));
                         updateUserInfor(data);
                     },
                     dataType: 'xml',

@@ -24,10 +24,24 @@
     cursor: pointer;
 }
 
+.left-bar-message-count {
+    width: 40px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    background-color: rgb(236,64,122);
+    color: rgb(255,255,255);
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+}
+
 .overview-title-item-data {
     font-size: 1.6rem;
     font-weight: bold;
     color: rgb(0,0,0);
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 .overview-title-item-text {
@@ -45,3 +59,35 @@
     .overview-honor-item-text.active-item {
         color: rgb(68,191,160);
     }
+
+.overview-course-item-wrap {
+    padding: 1px 0px;
+    border: solid 1px rgb(246,246,246);
+    border-left: none;
+    border-right: solid 2px rgb(246,246,246);
+}
+
+.overview-list-arrow {
+    cursor: pointer;
+}
+
+    .overview-list-arrow:hover {
+        font-size: 20px;
+    }
+
+#img_Settings_Profile_Header {
+    width: 100px;
+    height: 100px;
+    padding: 0px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+#wrap_Settings_PWD form label {
+    color: rgb(128,128,128);
+}
+
+#wrap_Settings_Profile form label {
+    color: rgb(56,56,56);
+}
