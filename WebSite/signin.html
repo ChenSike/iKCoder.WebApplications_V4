@@ -19,127 +19,236 @@
     <script src="javascript/signin.js"></script>
 </head>
 <body>
-    <div class="container" id="navbar_Header">
-        <div class="row">
-            <div class="col-12">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="navbar-brand" href="index.html">
-                        <img src="image/logo-new-gray.png" width="150" height="50" class="d-inline-block align-top img-header-logo" alt="">
-                    </a>
-                    <div class="container-fluid">
-                        <div class="row w-100 justify-content-center">
-                            <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container" style="font-size: 20px;">
-                                只要有梦想, 谁都可以创造非凡
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+    <div class="container-fluid" id="navbar_Header">
+        <div class="row justify-content-start">
+            <div class="col-6" style="padding:30px;">
+                <img src="image/logo-new-gray.png" width="150" height="50" class="d-inline-block align-top img-header-logo" alt="">
             </div>
         </div>
     </div>
-    <div class="container-fluid" style="background-color:rgb(89,185,231);">
-        <div class="row space-row-content">
-            <div class="col-12">
+    <div class="container-fluid" style="padding-top:5%">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center" style="text-align:center; color:rgb(255,255,255);">
+                <h1 class="display-1" style="font-weight: normal;">Hello, World.</h1>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="container" id="section_Content">
-                    <div class="row">
-                        <div class="col-12 col-sm-6">
-                            <img class="img-fluid" src="image/ikcoderkid.png" />
+            <div class="col-1 d-flex justify-content-center">
+                <div class="wrap-content-panel" id="wrap_SignIn_Panel">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 text-center title-panel" id="title_SignIn_Panel">
+                                登录
+                            </div>
                         </div>
-                        <div class="col-12 col-sm-4" style="padding: 30px 10px;">
-                            <div class="container" style="background-color:rgb(255,255,255);">
-                                <div class="row">
-                                    <div class="col-12 text-center" style="border-bottom:solid 1px rgb(195,195,195); padding:10px 0px;font-size: 20px;">
-                                        账号登录
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <form class="my-3">
+                                    <div class="form-group">
+                                        <label for="txt_SignIn_PhoneNumber">注册手机号</label>
+                                        <input class="form-control form-control-sm" id="txt_SignIn_PhoneNumber" name="signin_phonenumber" type="text" placeholder="">
                                     </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-10">
-                                        <form class="my-3">
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-user" style="width:15px; height:15px;"></i>
-                                                        </span>
-                                                        <input class="form-control" id="txt_SignIn_PhoneNumber" name="signin_phonenumber" type="text" placeholder="已验证手机" aria-describedby="basic-addon1">
-                                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_SignIn_Password">登录密码</label>
+                                        <input class="form-control form-control-sm" id="txt_SignIn_Password" name="signin_phonenumber" type="text" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_SignIn_CheckCode">图片识别码</label>
+                                        <div class="col-12" style="padding: 0px;">
+                                            <div class="input-group" style="width:100%;">
+                                                <input type="text" class="form-control form-control-sm" id="txt_SignIn_CheckCode" placeholder="" />
+                                                <div class="input-group-addon" style="width:75px; padding:2px;">
+                                                    <img class="check-code-image rounded-right" id="img_SignIn_CheckCode" src="" title="点击刷新图片识别码">
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-lock" style="width:15px; height:15px;"></i>
-                                                        </span>
-                                                        <input class="form-control" id="txt_SignIn_Password" name="signin_password" type="password" placeholder="密码" aria-describedby="basic-addon1">
-                                                    </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <form class="form-inline">
+                                    <div class="col-6 form-group d-flex justify-content-start" style="padding-left:0px;">
+                                        <div class="form-check form-control-sm">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="chk_SignIn_Remember" type="checkbox" checked>记住我
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 form-group  form-control-sm  d-flex justify-content-end">
+                                            <label class="form-check-label" id="linkBtn_SignIn_Goto_ForgetPWD" style="color:#31b0d5;cursor:pointer;">
+                                                忘记密码
+                                            </label>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center my-3">
+                                <button class="btn btn-sm btn-info" id="btn_SignIn" style="width:100px;" type="button">登录</button>
+                            </div>
+                        </div>
+                        <div class="row" style="background-color:transparent">
+                            <div class="col-12 d-flex justify-content-center my-3">
+                                <p class="link-button-panel-bottom" id="linkBtn_Goto_SignUp">还没有账号? 立即注册</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="wrap-content-panel" id="wrap_ForgetPWD_Panel">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 text-center title-panel" id="title_ForgetPWD_Panel" style="width:260px;">
+                                忘记密码
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <form class="my-3">
+                                    <div class="form-group">
+                                        <label for="txt_ForgetPWD_PhoneNumber">注册手机号</label>
+                                        <input class="form-control form-control-sm" id="txt_ForgetPWD_PhoneNumber" name="forgetpwd_phonenumber" type="text" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_ForgetPWD_CheckCode">图片识别码</label>
+                                        <div class="col-12" style="padding: 0px;">
+                                            <div class="input-group" style="width:100%;">
+                                                <input type="text" class="form-control form-control-sm" id="txt_ForgetPWD_CheckCode" placeholder="" />
+                                                <div class="input-group-addon" style="width:75px; padding:2px;">
+                                                    <img class="check-code-image rounded-right" id="img_ForgetPWD_CheckCode" src="" title="点击刷新图片识别码">
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <div class="input-group" style="width:100%;">
-                                                        <input type="text" class="form-control" id="txt_SignIn_CheckCode" placeholder="验证码" />
-                                                        <div class="input-group-addon" style="width:75px; padding:2px;">
-                                                            <img class="cursor-hand check-code-image" id="img_SignIn_CheckCode" src="" title="点击刷新验证码">
-                                                        </div>
-                                                    </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_ForgetPWD_NoteCode">输入短信中的验证码</label>
+                                        <div class="col-12" style="padding: 0px;">
+                                            <div class="input-group" style="width:100%;">
+                                                <input type="text" class="form-control form-control-sm" id="txt_ForgetPWD_NoteCode" placeholder="" />
+                                                <div class="input-group-addon send-note-code-btn" id="btn_ForgetPWD_Send_NoteCode">
+                                                    发送验证码
                                                 </div>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-10 text-right" style="padding-right:20px;font-size: 14px;color:rgb(195,195,195);cursor:pointer;">
-                                        忘记密码
+                                    <div class="form-group">
+                                        <label for="txt_ForgetPWD_New_PWD" class="col-form-label" style="justify-content: flex-start;">8-16位新密码, 需包含字母和数字</label>
+                                        <div class="input-group">
+                                            <input class="form-control js-password-forgetpwd-control" id="txt_ForgetPWD_New_PWD" name="forgetpwd_new_password" type="password" placeholder="">
+                                            <div class="input-group-addon js-password-forgetpwd-btn">
+                                                <i class="label-pwd-intension" id="lb_ForgetPWD_NewPwd_Intension">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                <i class="fa fa-eye-slash" name="btn_forgetpwd_toggle" style="width:15px; height:15px;"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 text-center my-3" style="padding-right:20px;font-size: 14px;color:rgb(195,195,195);cursor:pointer;">
-                                        <button class="btn btn-outline-primary my-2 my-sm-1 ml-md-5 mr-3" id="btn_SignIn" style="width:100px;" type="button">登录</button>
+                                    <div class="form-group">
+                                        <label for="txt_ForgetPWD_Confirm_PWD" class="col-form-label" style="justify-content: flex-start;">确认新密码</label>
+                                        <div class="input-group">
+                                            <input class="form-control js-password-forgetpwd-control" id="txt_ForgetPWD_Confirm_PWD" name="forgetpwd_confirm_password" type="password" placeholder="">
+                                            <div class="input-group-addon js-password-forgetpwd-btn">
+                                                <i class="label-pwd-intension" id="lb_ForgetPWD_Confirm_Intension">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                <i class="fa fa-eye-slash" name="btn_forgetpwd_toggle" style="width:15px; height:15px;"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center my-3">
+                                <button class="btn btn-sm btn-info" id="btn_UpdatePWD" style="width:100px;" type="button">修改密码</button>
+                            </div>
+                        </div>
+                        <div class="row" style="background-color:transparent">
+                            <div class="col-12 d-flex justify-content-center my-3">
+                                <p class="link-button-panel-bottom" id="linkBtn_ForgetPWD_Goto_SignIn">返回登录页</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="wrap-content-panel" id="wrap_SignUp_Panel">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 text-center title-panel" id="title_SignUp_Panel" style="width:260px;">
+                                账户注册
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <form class="my-3">
+                                    <div class="form-group">
+                                        <label for="txt_SignUp_PhoneNumber">请输入用于登录的手机号码</label>
+                                        <input class="form-control form-control-sm" id="txt_SignUp_PhoneNumber" name="signup_phonenumber" type="text" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_SignUp_CheckCode">图片识别码</label>
+                                        <div class="col-12" style="padding: 0px;">
+                                            <div class="input-group" style="width:100%;">
+                                                <input type="text" class="form-control form-control-sm" id="txt_SignUp_CheckCode" placeholder="" />
+                                                <div class="input-group-addon" style="width:75px; padding:2px;">
+                                                    <img class="check-code-image rounded-right" id="img_SignUp_CheckCode" src="" title="点击刷新图片识别码">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_SignUp_NoteCode">输入短信中的验证码</label>
+                                        <div class="col-12" style="padding: 0px;">
+                                            <div class="input-group" style="width:100%;">
+                                                <input type="text" class="form-control form-control-sm" id="txt_SignUp_NoteCode" placeholder="" />
+                                                <div class="input-group-addon send-note-code-btn" id="btn_SignUp_Send_NoteCode">
+                                                    发送验证码
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_SignUp_Nickname">起一个具有辨识度的用户名</label>
+                                        <input class="form-control form-control-sm" id="txt_SignUp_Nickname" name="signup_nickname" type="text" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_SignUp_New_PWD" class="col-form-label" style="justify-content: flex-start;">8-16位新密码, 需包含字母和数字</label>
+                                        <div class="input-group">
+                                            <input class="form-control js-password-signup-control" id="txt_SignUp_New_PWD" name="signup_new_password" type="password" placeholder="">
+                                            <div class="input-group-addon js-password-signup-btn">
+                                                <i class="label-pwd-intension" id="lb_SignUp_NewPwd_Intension">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                <i class="fa fa-eye-slash" name="btn_signup_toggle" style="width:15px; height:15px;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center my-3">
+                                <button class="btn btn-sm btn-info" id="btn_SignUp" style="width:100px;" type="button">注册</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="form-check  form-control-sm">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" checked>
+                                                <span id="linkBtn_Agree_Agreement">同意<span>《艾酷用户协议》</span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row" style="background-color:transparent">
+                            <div class="col-12 d-flex justify-content-center my-3">
+                                <p class="link-button-panel-bottom" id="linkBtn_SignUp_Goto_SignIn">已有账号? 立即登录</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row space-row-content">
-            <div class="col-12">
-            </div>
-        </div>
     </div>
-    <footer id="footer">
-        <div class="footer-txt" style="background-color: rgb(23,23,23);">
-            <div class="container w-100">
-                <div class="row justify-content-center">
-                    <div class="col-10">
-                        <p class="copyright-txt">
-                            Designed By
-                            <span style="font-weight:bold">
-                                iKCoder.Co (ShenZhen)
-                            </span>
-                            |&nbsp;Powered by
-                            <span style="font-weight:bold">
-                                iKCoder.Co (ShenZhen)
-                            </span>
-                        </p>
-                        <div class="socials">
-                            <a href="#" title="微信"><i class="fa fa-weixin fa-lg"></i></a>
-                            <a href="#" title="新浪微博"><i class="fa fa-weibo fa-lg"></i></a>
-                            <a href="#" title="QQ"><i class="fa fa-qq fa-lg"></i></a>
-                            <a href="#" title="人人"><i class="fa fa-renren fa-lg"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <a href="#" class="scrollup" title="Back to Top!"><i class="fa fa-arrow-circle-up fa-lg"></i></a>
-    </footer>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();

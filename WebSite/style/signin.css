@@ -1,12 +1,68 @@
-﻿.navbar-light .navbar-nav .nav-link {
-    color: rgb(102,102,120);
+﻿body {
+    background-image: url(../image/gaosiback.jpg);
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
-    .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
-        color: rgb(67,166,239);
-        font-weight: bold;
+.check-code-image {
+    cursor: pointer;
+    /*-moz-border-radius-topright: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-bottomright: 5px;*/
+}
+
+.wrap-content-panel{
+    display:none;
+}
+
+.wrap-content-panel form label {
+    color: rgb(159,159,159);
+}
+
+.wrap-content-panel div.row {
+    background-color: rgb(255,255,255);
+}
+
+.title-panel {
+    width: 240px;
+    border-bottom: solid 1px rgb(195,195,195);
+    padding: 10px 0px;
+    font-size: 20px;
+    color: rgb(159,159,159);
+}
+
+.link-button-panel-bottom {
+    color: rgb(255,255,255);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+    .link-button-panel-bottom:hover {
+        color: #31b0d5;
     }
 
-    .space-row-bottom {
-    width: 100%;
+#wrap_ForgetPWD_Panel, #wrap_SignUp_Panel form label {
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 0px;
+}
+
+.send-note-code-btn {
+    width: 90px;
+    padding: 8px;
+    cursor: pointer;
+    background-color: rgb(139,195,74);
+    color: rgb(255,255,255);
+    font-size: 14px;
+}
+
+#linkBtn_Agree_Agreement span{
+    color: #31b0d5;
+    cursor:pointer;
 }

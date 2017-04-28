@@ -72,7 +72,7 @@ var _gCitys = [
     { p: '香港', pt: '特区', c: [] },
     { p: '澳门', pt: '特区', c: [] },
     { p: '台湾', c: [] }
-]
+];
 
 function _initURLMapping() {
     $.ajax({
@@ -94,7 +94,7 @@ function _initURLMapping() {
             alert('Fail to load URL Mapping.');
         }
     });
-}
+};
 
 function _registerRemoteServer() {
     $.ajax({
@@ -119,7 +119,7 @@ function _loadLabels() {
 
 function _getLabel(key) {
     return _gLabelMap[key] ? _gLabelMap[key] : key;
-}
+};
 
 function _getRequestURL(page, params) {
     var url = _gHostName + page;
@@ -132,7 +132,7 @@ function _getRequestURL(page, params) {
 
     url += '&rnd=' + Date.now();
     return url;
-}
+};
 
 function _checkUserName(name) {
     if (!(/^[a-zA-Z]{1}[0-9a-zA-Z_]{3,}$/.test(phone))) {
@@ -140,7 +140,7 @@ function _checkUserName(name) {
     }
 
     return true;
-}
+};
 
 function _checkPhoneNumber(phone) {
     if (!(/^1(3|4|5|7|8)\d{9}$/.test(phone))) {
@@ -148,7 +148,7 @@ function _checkPhoneNumber(phone) {
     }
 
     return true;
-}
+};
 
 function _checkPassword(pwd) {
     pwd = pwd.trim();
@@ -171,11 +171,10 @@ function _checkPassword(pwd) {
             return -1;
         }
     }
-}
+};
 
-
-function _checkPwdIntension(txtField, lbField) {
-    var checkVal = _checkPassword(txtField.val().trim());
+function _checkPwdIntension(value, lbField) {
+    var checkVal = _checkPassword(value);
     if (checkVal == 1) {
         lbField.text('弱');
         lbField.css('color', 'rgb(255,0,0)');
@@ -197,7 +196,6 @@ function _checkPwdIntension(txtField, lbField) {
     }
 };
 
-
 function _getCSSRule(ruleName) {
     for (var i = 0; i < document.styleSheets.length; i++) {
         var sheet = document.styleSheets[i];
@@ -210,7 +208,7 @@ function _getCSSRule(ruleName) {
     }
 
     return null;
-}
+};
 
 function _setCssRuleStyle(rule, style, value) {
     if (typeof rule == 'string') {
@@ -220,7 +218,7 @@ function _setCssRuleStyle(rule, style, value) {
     if (rule) {
         rule.style[style] = value;
     }
-}
+};
 
 function _getOffsetPosition(target, topParentClass) {
     var offsetPos = { left: 0, top: 0 };
@@ -242,7 +240,7 @@ function _getOffsetPosition(target, topParentClass) {
     }
 
     return offsetPos;
-}
+};
 
 function _startCheckState() {
     _registerRemoteServer();
@@ -288,8 +286,10 @@ function _startCheckState() {
                                             }
                                         } else {
                                             nickName = $(tmpObject[0]).attr('logined_user_nickname');
+                                            if (typeof nickname != 'string' || nickname == '') {
+                                                nickname = $(tmpObject[0]).attr('logined_nickname');
+                                            }
                                         }
-
 
                                         $.cookie("logined_user_nickname", nickName, { path: '/', expires: (new Date(Date.now() + (_gExpires * 60 * 1000))) });
                                     }
@@ -326,7 +326,7 @@ function _startCheckState() {
     });
 
     window.setTimeout(_startCheckState, 30000);
-}
+};
 
 function _refereshCheckCode(checkCodeId) {
     var _checkCodeParams = {
@@ -337,7 +337,7 @@ function _refereshCheckCode(checkCodeId) {
     };
 
     $("#" + checkCodeId).attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
-}
+};
 
 function _loadIMG(src) {
     var img = new Image();
@@ -345,7 +345,19 @@ function _loadIMG(src) {
     img.onload = function () {
         console.log('complete');
     };
-}
+};
+
+function _getSearchValue(key) {
+    var tmpArr = window.location.search.substr(1).split('&');
+    for (var i = 0; i < tmpArr.length; i++) {
+        var tmpOptArr = tmpArr[i].split('=');
+        if (tmpOptArr[0] == key) {
+            return tmpOptArr[1];
+        }
+    }
+
+    return '';
+};
 
 function listMovePrev() {
     if (arguments[0] && arguments[0].data) {
@@ -387,45 +399,6 @@ function listMoveNext() {
     }
 };
 
-function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
-    var angle = a || 0;
-    var counterclockwise = c || false;
-    var vertex = [];
-    if (fillStyle) {
-        context.fillStyle = fillStyle;
-    }
-
-    if (strokeStyle) {
-        context.strokeStyle = strokeStyle;
-    }
-
-    var tmpX = x + r * Math.sin(angle);
-    var tmpY = y - r * Math.cos(angle);
-    context.moveTo(tmpX, tmpY);
-    vertex.push({ x: tmpX, y: tmpY });
-    context.beginPath();
-    var delta = 2 * Math.PI / n;
-    for (var i = 0; i < n; i++) {
-        angle += counterclockwise ? -delta : delta;
-        tmpX = x + r * Math.sin(angle);
-        tmpY = y - r * Math.cos(angle);
-        context.lineTo(tmpX, tmpY);
-        vertex.push({ x: tmpX, y: tmpY });
-    }
-
-    context.closePath();
-    if (strokeStyle) {
-        context.stroke();
-    }
-
-    if (fillStyle) {
-        context.fill();
-    }
-
-    context.restore();
-    return vertex;
-}
-
 function _startIntroJs() {
     var flag = true;
     $('head').find('link').each(function (index, ele) {
@@ -459,6 +432,7 @@ function _showGlobalMessage(msg, type, id) {
     $('body').append($('<div class="alert alert-' + type + '  alert-dismissable custom-global-alert" id="' + id + '"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + msg + '</div>'));
     $('#' + id).bind('close.bs.alert', function () {
         $('.alert-mask-custom').hide();
+        $('body').remove('#' + id);
     });
 };
 

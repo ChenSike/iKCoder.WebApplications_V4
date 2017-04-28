@@ -867,7 +867,7 @@ function initSettingsEvents() {
     });
 
     $("#txt_Settings_PWD_New_PWD").on('blur', function () {
-        _checkPwdIntension($("#txt_Settings_PWD_New_PWD"), $('#lb_Settings_New_Pwd_Intension'));
+        _checkPwdIntension($("#txt_Settings_PWD_New_PWD").val().trim(), $('#lb_Settings_New_Pwd_Intension'));
     });
 
     $('#mWindow_customHeaderModal').on('show.bs.modal', function () {
