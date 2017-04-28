@@ -152,8 +152,14 @@ function _checkPhoneNumber(phone) {
 
 function _checkPassword(pwd) {
     pwd = pwd.trim();
-    if (pwd.length < 8 || pwd.length > 16) {
-        return -2;
+    if (pwd.length < 8) {
+        if (pwd.length == 0) {
+            return -100;
+        } else {
+            return -200;
+        }
+    } else if (pwd.length > 16) {
+        return -300;
     } else {
         if (/^((?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%^&*]+$)(?![\d!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+){8}$/.test(pwd)) {
             return 3;
@@ -166,6 +172,31 @@ function _checkPassword(pwd) {
         }
     }
 }
+
+
+function _checkPwdIntension(txtField, lbField) {
+    var checkVal = _checkPassword(txtField.val().trim());
+    if (checkVal == 1) {
+        lbField.text('弱');
+        lbField.css('color', 'rgb(255,0,0)');
+    } else if (checkVal == 2) {
+        lbField.text('中');
+        lbField.css('color', 'rgb(255,215,0)');
+    } else if (checkVal == 3) {
+        lbField.text('强');
+        lbField.css('color', 'rgb(50,205,50)');
+    } else if (checkVal == -100) {
+        lbField.html('&nbsp;&nbsp;&nbsp;&nbsp;');
+        lbField.css('color', 'rgb(255,255,255)');
+    } else if (checkVal == -200) {
+        lbField.text('过短');
+        lbField.css('color', 'rgb(255,0,0)');
+    } else if (checkVal == -300) {
+        lbField.text('过长');
+        lbField.css('color', 'rgb(255,0,0)');
+    }
+};
+
 
 function _getCSSRule(ruleName) {
     for (var i = 0; i < document.styleSheets.length; i++) {

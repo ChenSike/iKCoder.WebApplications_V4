@@ -7,21 +7,21 @@ function initPage() {
     //rebuildContent('overview');
     rebuildContent('settings');
     refereshMessage();
-}
+};
 
 function initEvents() {
     $('.left-bar-category-item').on('click', function () {
         resetCategoryItemCSS($(arguments[0].currentTarget));
         rebuildContent($(arguments[0].currentTarget).attr('data-target'));
     })
-}
+};
 
 function resetCategoryItemCSS(current) {
     $('.left-bar-category-item').css('background-color', 'rgb(38,50,56)');
     $($('.left-bar-category-item').find('div').find('i')).css('color', 'rgb(85,103,110)');
     current.css('background-color', 'rgb(46,60,66)');
     $(current.find('div').find('i')[0]).css('color', 'rgb(236,64,122)');
-}
+};
 
 function rebuildContent(symbol) {
     var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();
@@ -48,7 +48,7 @@ function rebuildContent(symbol) {
     }
 
     resetCategoryItemCSS(currentItem);
-}
+};
 
 function rebuildOverviewPanel(contentHeight) {
     var tmpHeight = calcOverviewItemheight(contentHeight);
@@ -118,7 +118,7 @@ function rebuildOverviewPanel(contentHeight) {
 
     rebuildOverviewTitles(data, contentHeight, tmpHeight);
     rebuildOverviewContents(data, contentHeight, tmpHeight);
-}
+};
 
 function calcOverviewItemheight(contentHeight) {
     var minHeight = Math.floor(150 / 1200 * contentHeight);
@@ -130,7 +130,7 @@ function calcOverviewItemheight(contentHeight) {
 
     bigHeight = Math.floor((contentHeight - minHeight) / 3);
     return { s: minHeight, l: bigHeight, e: contentHeight - minHeight - bigHeight * 3 + bigHeight };
-}
+};
 
 function buildOverviewHonor(datas, height) {
     var itemCount = datas.length;
@@ -173,7 +173,7 @@ function buildOverviewHonor(datas, height) {
     if ($('#wrap_Overview_Honor_Items').width() > $('#container_Overview_Honor_Items').width()) {
         $('.overview-list-arrow.honor').hide();
     }
-}
+};
 
 function buildOverviewCourse(datas, height) {
     var itemCount = datas.length;
@@ -239,7 +239,7 @@ function buildOverviewCourse(datas, height) {
     if ($('#wrap_Overview_Course_Items').width() > $('#container_Overview_Course_Items').width()) {
         $('.overview-list-arrow.course').hide();
     }
-}
+};
 
 function buildOverviewExperience(data, height) {
     var idArr = ['Distribution']
@@ -294,7 +294,7 @@ function buildOverviewExperience(data, height) {
     if ($('#wrap_Overview_Experience_Items').width() > $('#container_Overview_Experience_Items').width()) {
         $('.overview-list-arrow.experience').hide();
     }
-}
+};
 
 function drawExpDistributionGraph(canvasId, datas) {
     var canvas = $('#canvas_Overview_Experience_' + canvasId);
@@ -353,7 +353,7 @@ function drawExpDistributionGraph(canvasId, datas) {
         context.fillStyle = "rgb(71,71,71)";
         context.fillText(datas[i].name, tmpX + legendWidth + legendWidth / 2, tmpY + legendWidth);
     }
-}
+};
 
 function drawExpCourseLevelGraph(canvasId, data) {
     var canvas = $('#canvas_Overview_Experience_' + canvasId);
@@ -398,7 +398,7 @@ function drawExpCourseLevelGraph(canvasId, data) {
     context.font = 'normal normal bold ' + bigFontSize + 'px \"微软雅黑\"';
     context.fillStyle = "rgb(71,71,71)";
     context.fillText(data.value + '%', (width - (bigFontSize) * ((data.value + '%').length - 1)) / 2, tmpY + bigFontSize / 2);
-}
+};
 
 function buildOverviewTimes(data, height) {
     var padding = Math.floor(20 / 350 * height);
@@ -437,7 +437,7 @@ function buildOverviewTimes(data, height) {
     var funData = { id: "container_Overview_Times_Items", step: 100 };
     $('#arrow_Overview_Times_Left').on('click', funData, listMovePrev);
     $('#arrow_Overview_Times_Right').on('click', funData, listMoveNext);
-}
+};
 
 function drawTimesGraph(datas) {
     var barWidth = 15;
@@ -513,7 +513,7 @@ function drawTimesGraph(datas) {
         //calculate next X
         startX = rtX + barSpace;
     }
-}
+};
 
 function rebuildOverviewContents(data, contentHeight, itemHeight) {
     buildOverviewHonor(data.honor, itemHeight.s);
@@ -526,7 +526,7 @@ function rebuildOverviewContents(data, contentHeight, itemHeight) {
 
     buildOverviewTimes(data.codetimes, itemHeight.e);
     drawTimesGraph(data.codetimes.times);
-}
+};
 
 function rebuildOverviewTitles(data, contentHeight, itemHeight) {
     var totalCourse = 0;
@@ -620,7 +620,7 @@ function refereshMessage() {
     });
 
     window.setTimeout(refereshMessage, 15000);
-}
+};
 
 function rebuildSettingsPanel(contentHeight) {
     var tmpHeight = calcSettingsItemheight(contentHeight);
@@ -651,16 +651,17 @@ function rebuildSettingsPanel(contentHeight) {
         profile: {
             header: 'image/ikcoderkid.png',
             name: 'Terry',
-            gender: '男',
-            birthday: '2009-10-1',
-            city: '广东-深圳',
+            gender: '1',
+            birthday: '2009-10-01',
+            province: '广东',
+            city: '深圳',
             school: '深圳实验小学'
         }
     }
 
     rebuildSettingsTitles(tmpHeight);
     rebuildSettingsContents(data, tmpHeight);
-}
+};
 
 function calcSettingsItemheight(contentHeight) {
     var profileHeight = Math.floor(700 / 1050 * contentHeight);
@@ -682,7 +683,7 @@ function calcSettingsItemheight(contentHeight) {
     }
 
     return { p: profileHeight, c: pwdHeight };
-}
+};
 
 function buildSettingsProfile(data, tmpHeight) {
     var tmpHTMLArr = [];
@@ -693,8 +694,8 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                <div class="form-group row">');
     tmpHTMLArr.push('                    <label for="img_Settings_Profile_Header" class="col-2 col-form-label">头像</label>');
     tmpHTMLArr.push('                    <div class="col-7">');
-    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" style="width: 100px; height: 100px;">');
-    tmpHTMLArr.push('                        <button type="button" class="btn btn-info" id="btn_Settings_Profile_Upload_Header" style="margin-bottom: -60px;" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
+    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="' + data.header + '" style="width: 100px; height: 100px;">');
+    tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" style="margin-left:20px;margin-bottom: -60px;" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
@@ -721,43 +722,30 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
-    tmpHTMLArr.push('                    <label class="col-2">生日</label>');
-    tmpHTMLArr.push('                    <div class="col-2">');
-    tmpHTMLArr.push('                        <select class="form-control" id="select_Settings_Profile_User_Birthday_Year" style="height: calc(1.85rem) !important;"></select>');
-    tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                    <label class="col-1">年</label>');
-    tmpHTMLArr.push('                    <div class="col-1" style="padding: 0px;">');
-    tmpHTMLArr.push('                        <select class="form-control" id="select_Settings_Profile_User_Birthday_Month" style="height: calc(1.85rem) !important;">');
-    tmpHTMLArr.push('                            <option selected>1</option>');
-    tmpHTMLArr.push('                            <option>2</option>');
-    tmpHTMLArr.push('                            <option>3</option>');
-    tmpHTMLArr.push('                            <option>4</option>');
-    tmpHTMLArr.push('                            <option>5</option>');
-    tmpHTMLArr.push('                            <option>6</option>');
-    tmpHTMLArr.push('                            <option>7</option>');
-    tmpHTMLArr.push('                            <option>8</option>');
-    tmpHTMLArr.push('                            <option>9</option>');
-    tmpHTMLArr.push('                            <option>10</option>');
-    tmpHTMLArr.push('                            <option>11</option>');
-    tmpHTMLArr.push('                            <option>12</option>');
-    tmpHTMLArr.push('                        </select>');
-    tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                    <label class="col-1">月</label>');
-    tmpHTMLArr.push('                    <div class="col-1" style="padding: 0px;">');
-    tmpHTMLArr.push('                        <select class="form-control" id="select_Settings_Profile_User_City_Province" style="height: calc(1.85rem) !important;"></select>');
-    tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                    <label class="col-1"> 日</label>');
+    tmpHTMLArr.push('                   <label for="datetime_Settings_Profile_User_Birthday" class="col-2 col-form-label">生日</label>');
+    tmpHTMLArr.push('                   <div class="col-8">');
+    tmpHTMLArr.push('                       <input class="form-control" type="date" value="4/22/2017" id="datetime_Settings_Profile_User_Birthday">');
+    tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
-    tmpHTMLArr.push('                    <label class="col-2">所在城市</label>');
-    tmpHTMLArr.push('                    <div class="col-2">');
-    tmpHTMLArr.push('                        <select class="form-control" id="select_Settings_Profile_User_City_Province" style="height: calc(1.85rem) !important;"></select>');
+    tmpHTMLArr.push('                    <label class="col-2" style="line-height: 38px;">所在城市</label>');
+    tmpHTMLArr.push('                    <div class="col-3">');
+    tmpHTMLArr.push('                        <select class="form-control" id="select_Settings_Profile_User_City_Province">');
+    for (var i = 0; i < _gCitys.length; i++) {
+        tmpHTMLArr.push('                            <option value="' + _gCitys[i].p + '">' + _gCitys[i].p + '</option>');
+    }
+
+    tmpHTMLArr.push('                        </select>');
     tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                    <label class="col-1" id="title_Settings_Profile_User_City_Province"></label>');
-    tmpHTMLArr.push('                    <div class="col-2" style="padding: 0px;">');
-    tmpHTMLArr.push('                        <select class="form-control" id="select_Settings_Profile_User_City_City" style="height: calc(1.85rem) !important;"></select>');
+    tmpHTMLArr.push('                    <label class="col-1" id="title_Settings_Profile_User_City_Province" style="line-height: 38px;">市</label>');
+    tmpHTMLArr.push('                    <div class="col-3" style="padding: 0px;">');
+    tmpHTMLArr.push('                        <select class="form-control" id="select_Settings_Profile_User_City_City">');
+    for (var i = 0; i < _gCitys[0].c.length; i++) {
+        tmpHTMLArr.push('                            <option value="' + _gCitys[0].c[i] + '">' + _gCitys[0].c[i] + '</option>');
+    }
+    tmpHTMLArr.push('                        </select>');
     tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                    <label class="col-1" id="title_Settings_Profile_User_City_City"></label>');
+    tmpHTMLArr.push('                    <label class="col-1" id="title_Settings_Profile_User_City_City" style="line-height: 38px;">区</label>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
     tmpHTMLArr.push('                    <label for="txt_Settings_Profile_User_School" class="col-2 col-form-label">就读学校</label>');
@@ -767,7 +755,7 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
     tmpHTMLArr.push('                    <div class="col text-center">');
-    tmpHTMLArr.push('                        <button type="button" class="btn btn-info col-3" id="btn_Settings_Profile_Save_Profile">保存</button>');
+    tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info col-3" id="btn_Settings_Profile_Save_Profile">保存</button>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('            </form>');
@@ -775,7 +763,23 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
-}
+};
+
+function updateProfileValue(data) {
+    $('#img_Settings_Profile_Header').attr('src', data.header);
+    $('#txt_Settings_Profile_User_Name').val(data.name);
+    $("[name='settings_profile_user_gender']").each(function () {
+        $(this).removeAttr("checked");
+        if ($(this).attr("value") == data.gender) {
+            $(this).prop("checked", true);
+        }
+    });
+
+    $('#datetime_Settings_Profile_User_Birthday').val(data.birthday);
+    $("#select_Settings_Profile_User_City_Province").val(data.province).trigger("change");
+    $('#select_Settings_Profile_User_City_City').val(data.city);
+    $('#txt_Settings_Profile_User_School').val(data.school);
+};
 
 function buildSettingsChangePWD(tmpHeight) {
     var tmpHTMLArr = [];
@@ -786,27 +790,39 @@ function buildSettingsChangePWD(tmpHeight) {
     tmpHTMLArr.push('                <div class="form-group row">');
     tmpHTMLArr.push('                    <h4 style="color:rgb(107,129,140);">密码修改</h4>');
     tmpHTMLArr.push('                </div>');
-    tmpHTMLArr.push('                <div class="form-group row">');
-    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_Old_PWD" class="col-3 col-form-label">旧密码</label>');
-    tmpHTMLArr.push('                    <div class="col-8">');
-    tmpHTMLArr.push('                        <input type="password" class="form-control" id="txt_Settings_PWD_Old_PWD" placeholder="请输入姓名">');
+    tmpHTMLArr.push('                <div class="form-inline row">');
+    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_Old_PWD" class="col-3 col-form-label" style="justify-content: flex-start;">旧密码</label>');
+    tmpHTMLArr.push('                    <div class="input-group col-5">');
+    tmpHTMLArr.push('                       <input class="form-control js-password-settings-control" id="txt_Settings_PWD_Old_PWD" name="settings_old_password" type="password" placeholder="请输入旧密码">');
+    tmpHTMLArr.push('                       <div class="input-group-addon js-password-settings-btn">');
+    tmpHTMLArr.push('                           <i class="label-pwd-intension" id="lb_Settings_Old_Pwd_Intension">&nbsp;&nbsp;&nbsp;&nbsp;</i>');
+    tmpHTMLArr.push('                           <i class="fa fa-eye-slash" name="btn_Settings_Show_Hide_Pwd" style="width:15px; height:15px;"></i>');
+    tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
-    tmpHTMLArr.push('                <div class="form-group row">');
-    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_New_PWD" class="col-3 col-form-label">新密码</label>');
-    tmpHTMLArr.push('                    <div class="col-8">');
-    tmpHTMLArr.push('                        <input type="password" class="form-control" id="txt_Settings_PWD_New_PWD" placeholder="请输入姓名">');
+    tmpHTMLArr.push('                <div class="form-inline row my-2">');
+    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_New_PWD" class="col-3 col-form-label" style="justify-content: flex-start;">新密码</label>');
+    tmpHTMLArr.push('                    <div class="input-group col-5">');
+    tmpHTMLArr.push('                       <input class="form-control js-password-settings-control" id="txt_Settings_PWD_New_PWD" name="settings_new_password" type="password" placeholder="请输入新密码">');
+    tmpHTMLArr.push('                       <div class="input-group-addon js-password-settings-btn">');
+    tmpHTMLArr.push('                           <i class="label-pwd-intension" id="lb_Settings_New_Pwd_Intension">&nbsp;&nbsp;&nbsp;&nbsp;</i>');
+    tmpHTMLArr.push('                           <i class="fa fa-eye-slash" name="btn_Settings_Show_Hide_Pwd" style="width:15px; height:15px;"></i>');
+    tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
-    tmpHTMLArr.push('                <div class="form-group row">');
-    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_Confirm_PWD" class="col-3 col-form-label">确认新密码</label>');
-    tmpHTMLArr.push('                    <div class="col-8">');
-    tmpHTMLArr.push('                        <input type="password" class="form-control" id="txt_Settings_PWD_Confirm_PWD" placeholder="请输入姓名">');
+    tmpHTMLArr.push('                <div class="form-inline row">');
+    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_Confirm_PWD" class="col-3 col-form-label" style="justify-content: flex-start;">确认新密码</label>');
+    tmpHTMLArr.push('                    <div class="input-group col-5">');
+    tmpHTMLArr.push('                       <input class="form-control js-password-settings-control" id="txt_Settings_PWD_Confirm_PWD" name="settings_confirm_password" type="password" placeholder="请确认新密码">');
+    tmpHTMLArr.push('                       <div class="input-group-addon js-password-settings-btn">');
+    tmpHTMLArr.push('                           <i class="label-pwd-intension" id="lb_SignUp_Pwd_Intension">&nbsp;&nbsp;&nbsp;&nbsp;</i>');
+    tmpHTMLArr.push('                           <i class="fa fa-eye-slash" name="btn_Settings_Show_Hide_Pwd" style="width:15px; height:15px;"></i>');
+    tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
-    tmpHTMLArr.push('                <div class="form-group row">');
+    tmpHTMLArr.push('                <div class="form-group row my-3">');
     tmpHTMLArr.push('                    <div class="col text-center">');
-    tmpHTMLArr.push('                        <button type="button" class="btn btn-info col-3" id="btn_Settings_PWD_Save_PWD">保存</button>');
+    tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info col-3" id="btn_Settings_PWD_Save_PWD">保存</button>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('            </form>');
@@ -814,12 +830,352 @@ function buildSettingsChangePWD(tmpHeight) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
+};
+
+function initSettingsEvents() {
+    $("#select_Settings_Profile_User_City_Province").change(function () {
+        var pVal = $("#select_Settings_Profile_User_City_Province").val();
+        var item = {};
+        for (var i = 0; i < _gCitys.length; i++) {
+            item = _gCitys[i];
+            if (item.p == pVal) {
+                break;
+            }
+        }
+
+        $("#title_Settings_Profile_User_City_Province").val(item.pt);
+        $("#title_Settings_Profile_User_City_City").val(item.ct);
+        var tmpHTMLArr = [];
+        for (var i = 0; i < item.c.length; i++) {
+            tmpHTMLArr.push('<option value="' + item.c[i] + '">' + item.c[i] + '</option>');
+        }
+
+        $("#select_Settings_Profile_User_City_City").empty();
+        $("#select_Settings_Profile_User_City_City").append(tmpHTMLArr.join(''));
+    });
+
+    $(".js-password-settings-btn").on('click', function () {
+        if ($(".js-password-settings-control").attr("type") == 'text') {
+            $(".js-password-settings-control").attr("type", "password");
+            $("[name='btn_Settings_Show_Hide_Pwd']").addClass('fa-eye-slash');
+            $("[name='btn_Settings_Show_Hide_Pwd']").removeClass('fa-eye');
+        } else {
+            $(".js-password-settings-control").attr("type", "text");
+            $("[name='btn_Settings_Show_Hide_Pwd']").addClass('fa-eye');
+            $("[name='btn_Settings_Show_Hide_Pwd']").removeClass('fa-eye-slash');
+        }
+    });
+
+    $("#txt_Settings_PWD_New_PWD").on('blur', function () {
+        _checkPwdIntension($("#txt_Settings_PWD_New_PWD"), $('#lb_Settings_New_Pwd_Intension'));
+    });
+
+    $('#mWindow_customHeaderModal').on('show.bs.modal', function () {
+        $('#progress_HeaderUpload').hide();
+        $('#warnning_HeaderUpload').hide();
+        $('#wrap_CropBox_Header').hide();
+        initCustomHeaderImg();
+    });
+
+    $('#mWindow_customHeaderModal').on('hide.bs.modal', function () {
+        $('#progress_HeaderUpload').hide();
+        $('#warnning_HeaderUpload').hide();
+        $('#wrap_CropBox_Header').hide();
+    });
+
+    $('#linkBtn_Upload_HeaderFile').on('click', function () {
+        $('#progress_HeaderUpload').hide();
+        $('#warnning_HeaderUpload').hide();
+        $('#wrap_CropBox_Header').hide();
+        $('#file_Upload').click();
+    });
+
+    $('#file_Upload').on('change', function () {
+        var regExp = /(\.|\/)(gif|jpe?g|png|bmp)$/i;
+        var fileName = $(this).val();
+        if (!regExp.test(fileName)) {
+            $('#warnning_HeaderUpload').show();
+            $('#warnning_HeaderUpload').text("仅支持.jpg .jpeg .gif .png .bmp格式的图片");
+            return;
+        } else if (this.files[0].size / 1024 > 256) {
+            $('#warnning_HeaderUpload').show();
+            $('#warnning_HeaderUpload').text("图片大小不能超过256K");
+            return;
+        } else {
+            $('#progress_HeaderUpload').show();
+            _registerRemoteServer();
+            var fileType = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+            $('#form_Upload').attr('action', _getRequestURL(_gURLMapping.data.setbinresource, {sumitdata: 1,}));
+            $('#form_Upload').submit();
+            _UploadHeaderHandle = setTimeout('initCustomHeaderImg()', 2000);
+        }
+    });
+
+    $('#btn_CustomHeader_Save').on('click', function () {
+        var tmpStr = $('#btn_CustomHeader_Save').attr('data-content');
+        var tmpParams = tmpStr.split(',');
+        if (tmpStr != '' && tmpParams.length == 4) {
+            tmpParams = {
+                startx: tmpParams[0],
+                starty: tmpParams[1],
+                width: tmpParams[2],
+                height: tmpParams[3]
+            };
+            _registerRemoteServer();
+            $.ajax({
+                type: 'POST',
+                async: true,
+                url: _getRequestURL(_gURLMapping.util.setclipimage, tmpParams),
+                data: '',
+                success: function (data, status) {
+                    if ($(data).find('err').length > 0) {
+                        showAlertMessage('mWindow_CustomHeader_Dialog', 'customHeaderAlert', $(data).find('err').attr('msg'));
+                        return;
+                    } else {
+                        $("#customHeaderAlert").alert('close');
+                        $('#mWindow_customHeaderModal').modal('hide');
+                        loadHeaderImg();
+                    }
+                },
+                dataType: 'xml',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+
+                }
+            });
+        }
+    });
+
+    $("#btn_Settings_Profile_Save_Profile").click(function () {
+        updateProfile();
+    });
+
+    $("#btn_Settings_PWD_Save_PWD").click(function () {
+        updatePWD();
+    });
+};
+
+var _currentHeaderImageSrc = '';
+function initCustomHeaderImg(uploadType) {
+    var canvas = document.getElementById("canvas_CustomHeader");
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, 320, 320);
+    $('#progress_HeaderUpload').hide();
+    var image = new Image();
+    if (!uploadType && _currentHeaderImageSrc == '') {
+        image.src = _getRequestURL(_gURLMapping.data.getimageheader);
+    } else if (typeof uploadType == 'string' && uploadType != '') {
+        image.src = _getRequestURL(_gURLMapping.data.getimage, {});
+        //image.src = "images/head/head_11.jpg";
+    } else {
+        image.src = _currentHeaderImageSrc + "&rnd=" + Date.now();
+    }
+
+    image.onload = function () {
+        var tmpSize = calcExhibitionSize(image);
+        ctx.drawImage(image, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
+        fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
+    };
+
+    _currentHeaderImageSrc = image.src
+    var tmpSize = calcExhibitionSize(image);
+    fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
 }
+
+var _eventBinded = false;
+var fnImageCropRot = function (o, newSize) {
+    var ID = function (id) {
+        return document.getElementById(id);
+    };
+
+    var oCanvas = ID("canvas_CustomHeader");
+    oCanvas.onselectstart = function () {
+        return false;
+    };
+
+    var oCreateImg = o;
+    var iOrigWidth = (oCreateImg.width > 320 ? 320 : oCreateImg.width);
+    var iOrigHeight = (oCreateImg.height > 320 ? 320 : oCreateImg.height);
+    if ($('#wrap_CropBox_Header').length == 0) {
+        var tmpHTMLArr = [];
+        tmpHTMLArr.push('<div id="wrap_CropBox_Header" style="width:' + iOrigWidth + 'px; height:' + iOrigHeight + 'px;">');
+        tmpHTMLArr.push('   <div id="CropBox_Header">');
+        tmpHTMLArr.push('       <div id="DragBg_Header"></div>');
+        tmpHTMLArr.push('       <div id="dragRightBot" ></div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
+        $("#canvas_CustomHeader").after(tmpHTMLArr.join(""));
+    }
+
+    var tmpParams = {
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0,
+        currentX: 0,
+        currentY: 0,
+        flag: false,
+        kind: "drag"
+    };
+    $('#wrap_CropBox_Header').show();
+    var cropWidth = (iOrigWidth > 100 ? 100 : iOrigWidth);
+    var cropHeight = (iOrigHeight > 100 ? 100 : iOrigHeight);
+    var orgLeft = (320 - cropWidth) / 2;
+    var orgTop = (320 - cropHeight) / 2;
+    $("#CropBox_Header").width(cropWidth);
+    $("#CropBox_Header").height(cropHeight);
+    $("#CropBox_Header").css('top', orgTop + "px");
+    $("#CropBox_Header").css('left', orgLeft + "px");
+    showSampleImage(o, orgLeft, orgTop, cropWidth, cropHeight, newSize);
+    startDrag.image = o;
+    startDrag.newSize = newSize;
+    if (!_eventBinded) {
+        startDrag(ID("DragBg_Header"), ID("CropBox_Header"), "drag", tmpParams);
+        startDrag(ID("dragRightBot"), ID("CropBox_Header"), "se", tmpParams);
+        _eventBinded = true;
+    }
+};
+
+var startDrag = function (point, target, kind, params) {
+    params.width = $(target).width();
+    params.height = $(target).height();
+    params.left = $(target).position().left;
+    params.top = $(target).position().top;
+
+    point.onmousedown = function (event) {
+        params.kind = kind;
+        params.flag = true;
+        if (!event) {
+            event = window.event;
+        }
+
+        var e = event;
+        params.currentX = e.clientX;
+        params.currentY = e.clientY;
+        point.onselectstart = function () {
+            return false;
+        }
+
+        return false;
+    };
+
+    document.onmouseup = function () {
+        params.flag = false;
+        params.left = $(target).position().left;
+        params.top = $(target).position().top;
+        params.width = $(target).width();
+        params.height = $(target).height();
+        showSampleImage(startDrag.image, params.left, params.top, params.width, params.height, startDrag.newSize);
+    };
+
+    document.onmousemove = function (event) {
+        var e = event ? event : window.event;
+        if (params.flag) {
+            var nowX = e.clientX, nowY = e.clientY;
+            var disX = nowX - params.currentX;
+            var disY = nowY - params.currentY;
+            var tmpWidth = parseInt(params.width);
+            var tmpHeighth = parseInt(params.height);
+            var tmpLeft = parseInt(params.left);
+            var tmpTop = parseInt(params.top);
+            if (params.kind === "se") {
+                var newWidth = tmpWidth + disX;
+                var newHeight = tmpHeighth + disY;
+                newWidth = (newWidth + tmpLeft > 320 ? 320 - tmpLeft : newWidth); 320
+                newHeight = (newHeight + tmpTop > 320 ? 320 - tmpTop : newHeight);
+                $(target).width(newWidth);
+                $(target).height(newHeight);
+            } else {
+                var newLeft = tmpLeft + disX;
+                var newTop = tmpTop + disY;
+                newLeft = (newLeft < 0 ? 0 : newLeft);
+                newTop = (newTop < 0 ? 0 : newTop);
+                newLeft = (newLeft + tmpWidth > 320 ? 320 - tmpWidth : newLeft);
+                newTop = (newTop + tmpHeighth > 320 ? 320 - tmpHeighth : newTop);
+                $(target).css('left', newLeft + "px");
+                $(target).css('top', newTop + "px");
+            }
+        }
+    }
+}
+
+startDrag.image = null;
+startDrag.newSize = null;
+function calcExhibitionSize(image) {
+    var imgHeight = image.height;
+    var imgWidth = image.width;
+    var newWidth = imgWidth;
+    var newHeight = imgHeight;
+    var scaleX = imgWidth / 320;
+    var scaleY = imgHeight / 320;
+    if (imgHeight > imgWidth) {
+        newHeight = 320;
+        newWidth = imgWidth / imgHeight * newHeight;
+    } else {
+        newWidth = 320;
+        newHeight = imgHeight / imgWidth * newWidth;
+    }
+
+    return { w: imgWidth, h: imgHeight, nw: newWidth, nh: newHeight };
+};
+
+function transCropBoxSizeToRealSize(image, left, top, width, height, newSize) {
+    var tmpLeft = left - (320 - newSize.w) / 2;
+    var tmpTop = top - (320 - newSize.h) / 2;
+    var tmpWidth = width;
+    var tmpHeight = height;
+    if (tmpLeft < 0 && left + width > newSize.w) {
+        tmpWidth = width + tmpLeft - (left + width - (320 + newSize.w) / 2);
+        tmpLeft = 0;
+    } else if (tmpLeft < 0) {
+        tmpWidth = width + tmpLeft;
+        tmpLeft = 0;
+    } else if (left + width > newSize.w) {
+        tmpWidth = (320 + newSize.w) / 2 - left;
+    }
+
+    if (tmpTop < 0 && top + height > newSize.h) {
+        tmpHeight = height + tmpTop - (top + height - (320 + newSize.h) / 2);
+        tmpTop = 0;
+    } else if (tmpTop < 0) {
+        tmpHeight = height + tmpTop;
+        tmpTop = 0;
+    } else if (top + height > newSize.h) {
+        tmpHeight = (320 + newSize.h) / 2 - top;
+    }
+
+    var scaleX = image.width / newSize.w;
+    var scaleY = image.height / newSize.h;
+    left = tmpLeft * scaleX;
+    top = tmpTop * scaleY;
+    width = tmpWidth * scaleX;
+    height = tmpHeight * scaleY;
+    return { l: left, t: top, w: width, h: height };
+};
+
+function showSampleImage(image, left, top, width, height, newSize) {
+    var sizeObj = transCropBoxSizeToRealSize(image, left, top, width, height, newSize)
+    var ctx = document.getElementById("canvas_Sample_1").getContext('2d');
+    ctx.clearRect(0, 0, 100, 100);
+    ctx.drawImage(image, sizeObj.l, sizeObj.t, sizeObj.w, sizeObj.h, 0, 0, 100, 100);
+    ctx = document.getElementById("canvas_Sample_2").getContext('2d');
+    ctx.clearRect(0, 0, 64, 64);
+    ctx.drawImage(image, sizeObj.l, sizeObj.t, sizeObj.w, sizeObj.h, 0, 0, 64, 64);
+    ctx = document.getElementById("canvas_Sample_3").getContext('2d');
+    ctx.clearRect(0, 0, 24, 24);
+    ctx.drawImage(image, sizeObj.l, sizeObj.t, sizeObj.w, sizeObj.h, 0, 0, 24, 24);
+    $('#btn_Settings_Profile_Save_Profile').attr('data-content', sizeObj.l + ',' + sizeObj.t + ',' + sizeObj.w + ',' + sizeObj.h)
+};
+
 
 function rebuildSettingsContents(data, tmpHeight) {
     buildSettingsProfile(data.profile, tmpHeight.p - 1);
     buildSettingsChangePWD(tmpHeight.c - 1);
-}
+    initSettingsEvents();
+    updateProfileValue(data.profile);
+};
 
 function rebuildSettingsTitles(tmpHeight) {
     var constArr = [
@@ -893,4 +1249,4 @@ function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
 
     context.restore();
     return vertex;
-}
+};

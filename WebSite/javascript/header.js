@@ -287,7 +287,7 @@ function initSignUpWindowEvent() {
     });
 
     $("#txt_SignUp_Pwd").on('blur', function () {
-        checkPwdIntension($("#txt_SignUp_Pwd"), $('#lb_SignUp_Pwd_Intension'));
+        _checkPwdIntension($("#txt_SignUp_Pwd"), $('#lb_SignUp_Pwd_Intension'));
     });
 
     $(".js-password-signup-btn").on('click', function () {
@@ -352,20 +352,6 @@ function initHeaderEvent() {
     initSignUpWindowEvent();
 };
 
-function checkPwdIntension(txtField, lbField) {
-    var checkVal = _checkPassword(txtField.val().trim());
-    if (checkVal == 1) {
-        lbField.text('弱');
-        lbField.css('color', 'rgb(255,0,0)');
-    } else if (checkVal == 2) {
-        lbField.text('中');
-        lbField.css('color', 'rgb(255,215,0)');
-    } else if (checkVal == 3) {
-        lbField.text('强');
-        lbField.css('color', 'rgb(50,205,50)');
-    }
-};
-
 function signUp() {
     //$('#mWindow_CheckPhoneNumber').modal('show');
     //$('#txt_CheckPhoneNumber_Number').attr('placeholder', $("#txt_SignUp_PhoneNumber").val() + '');
@@ -416,7 +402,7 @@ function signUp() {
     _registerRemoteServer();
     $.ajax({
         type: 'POST',
-        async: false,
+        async: true,
         url: _getRequestURL(_gURLMapping.account.reg),
         data: '<root>' +
             '<symbol>' + $("#txt_SignUp_PhoneNumber").val() + '</symbol>' +
@@ -435,7 +421,7 @@ function signUp() {
                 $('#mWindow_SignUp').modal('hide');
                 $.ajax({
                     type: 'POST',
-                    async: false,
+                    async: true,
                     url: _getRequestURL(_gURLMapping.account.sign),
                     data: '<root>' +
                         '<symbol>' + $("#txt_SignUp_PhoneNumber").val() + '</symbol>' +

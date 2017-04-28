@@ -75,20 +75,6 @@ function signIn() {
     });
 }
 
-function checkPwdIntension(txtField, lbField) {
-    var checkVal = _checkPassword(txtField.val().trim());
-    if (checkVal == 1) {
-        lbField.text('弱');
-        lbField.css('color', 'rgb(255,0,0)');
-    } else if (checkVal == 2) {
-        lbField.text('中');
-        lbField.css('color', 'rgb(255,215,0)');
-    } else if (checkVal == 3) {
-        lbField.text('强');
-        lbField.css('color', 'rgb(50,205,50)');
-    }
-};
-
 function adjustFooter() {
     var bodyHeight = $('html').height();
     var contentHeight = $("#section_Content").height();

@@ -72,6 +72,96 @@
         </div>
     </div>
     <footer id="footer"></footer>
+    <div class="modal fade" id="mWindow_customHeaderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" id="mWindow_CustomHeader_Dialog" style="max-width:600px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">编辑个人头像</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <canvas id="canvas_CustomHeader" width="320" height="320"></canvas>
+                                            <div id="warnning_HeaderUpload" class="warnning"></div>
+                                            <div id="progress_HeaderUpload" class="progress">
+                                                <div id="loading">
+                                                    <div id="loading-center">
+                                                        <div id="loading-center-absolute">
+                                                            <div class="object" id="object_one"></div>
+                                                            <div class="object" id="object_two"></div>
+                                                            <div class="object" id="object_three"></div>
+                                                            <div class="object" id="object_four"></div>
+                                                            <div class="object" id="object_five"></div>
+                                                            <div class="object" id="object_six"></div>
+                                                            <div class="object" id="object_seven"></div>
+                                                            <div class="object" id="object_eight"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <a class="fileinput-button" href="#" id="linkBtn_Upload_HeaderFile" data-holder-rendered="true">
+                                                <i class="glyphicon glyphicon-picture"></i>
+                                                选择图片
+                                            </a>
+                                            <span class="color-all-128">(最佳尺寸100×100, 可以上传高质量图片进行裁切)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p style="text-align:left;color:rgb(56,56,56); ">图片预览</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-11 offset-1" style="text-align: center;">
+                                            <canvas class="canvas-sample" id="canvas_Sample_1" width="100" height="100"></canvas>
+                                            <p class="color-all-128">100×100</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-11 offset-1" style="text-align: center;">
+                                            <canvas class="canvas-sample" id="canvas_Sample_2" width="64" height="64"></canvas>
+                                            <p class="color-all-128">64×64</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-11 offset-1" style="text-align: center;">
+                                            <canvas class="canvas-sample" id="canvas_Sample_3" width="24" height="24"></canvas>
+                                            <p class="color-all-128">24×24</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btn_CustomHeader_Save" data-content="">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div style="display:none;">
+        <form target="iFrame_Upload" name="uploadForm" id="form_Upload" action="" method="post" enctype="multipart/form-data">
+            <input name="file_Upload" type="file" id="file_Upload" />
+        </form>
+        <iframe name="iFrame_Upload"></iframe>
+    </div>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();
