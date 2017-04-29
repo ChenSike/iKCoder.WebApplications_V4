@@ -161,7 +161,7 @@ function testTextWidth(text, fontSize, fontWeight, fontFamily) {
     return testDiv.clientWidth;
 };
 
-function testTextWidth(sourceTagId) {
+function testTextWidthFromEl(sourceTagId) {
     var sourceTag = document.getElementById(sourceTagId);
     if (!sourceTag) {
         return -1;

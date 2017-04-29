@@ -107,7 +107,6 @@ function updateUserInfor() {
                 $(
                     '<li class="nav-item dropdown" id="nav_UserInfo_Item">' +
                     '   <a href="#" class="nav-link dropdown-toggle" id="dd_Nav_UserInfo_Item"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                    '       Welcome back &nbsp;' +
                     '       <i class="fa fa-user-circle" aria-hidden="true"></i>' +
                     '       <span class="text-header-userinfo">' + nickName + '</span>' +
                     '       <b class="caret"></b>' +

@@ -26,10 +26,10 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid" style="padding-top:5%">
+    <div class="container-fluid" id="wrap_Page_Content">
         <div class="row justify-content-center">
             <div class="col-12 text-center" style="text-align:center; color:rgb(255,255,255);">
-                <h1 class="display-1" style="font-weight: normal;">Hello, World.</h1>
+                <div id="title_PageTop" style="font-weight: normal;">Hello, world.</div>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="txt_SignIn_Password">登录密码</label>
-                                        <input class="form-control form-control-sm" id="txt_SignIn_Password" name="signin_phonenumber" type="text" placeholder="">
+                                        <input class="form-control form-control-sm" id="txt_SignIn_Password" name="signin_phonenumber" type="password" placeholder="">
                                     </div>
                                     <div class="form-group">
                                         <label for="txt_SignIn_CheckCode">图片识别码</label>
@@ -77,10 +77,10 @@
                                         </div>
                                     </div>
                                     <div class="col-6 form-group  form-control-sm  d-flex justify-content-end">
-                                            <label class="form-check-label" id="linkBtn_SignIn_Goto_ForgetPWD" style="color:#31b0d5;cursor:pointer;">
-                                                忘记密码
-                                            </label>
-                                        </div>
+                                        <label class="form-check-label" id="linkBtn_SignIn_Goto_ForgetPWD" style="color:#31b0d5;cursor:pointer;">
+                                            忘记密码
+                                        </label>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -248,6 +248,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="wrap-background-body">
+        <img src="image/gaosiback.jpg" style="position:absolute" width="1920" height="1080" />
     </div>
     <script type="text/javascript">
         $(document).ready(function () {

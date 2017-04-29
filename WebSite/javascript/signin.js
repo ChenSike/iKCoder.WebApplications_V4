@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+var _bodyMinWidth = 320;
 var _checkCodeParams = {
     length: 4,
     name: 'signincode',
@@ -70,6 +71,7 @@ function initPage() {
     buildAgreementWindow();
     showCurrentPanel();
     initEvents();
+    adjustPositions()
 };
 
 function showCurrentPanel() {
@@ -132,6 +134,9 @@ function initEvents() {
     initSignInEvent();
     initSignUpEvent();
     initForgetPWDEvent();
+    $(window).resize(function () {
+        adjustPositions();
+    });
 };
 
 function initSignInEvent() {
@@ -494,3 +499,53 @@ function updatePWD() {
         }
     });
 };
+
+function adjustPositions() {
+    var titleWidthRate = 560 / 1920;
+    var titleTopRate = 185 / 1920;
+    var panelTopRate = 60 / 1920;
+    var panelWidthRate = 280 / 1920;
+    var bodyWidth = Math.max($('body').width(), $('html').width());
+    var bodyHeight = Math.max($('body').height(), $('html').height());
+    var title = $('#title_PageTop');
+    var titleWidth = titleWidthRate * bodyWidth;
+    titleWidth = (titleWidth < _bodyMinWidth ? _bodyMinWidth : titleWidth);
+    for (var i = 10; i < 199; i++) {
+        if (testTextWidth('Hello, world.', i + 'px', 'normal', '微软雅黑') >= titleWidth - 5) {
+            title.css('font-size', i + 'px');
+            title.css('line-height', i + 'px');
+            break;
+        }
+    }
+
+    var titleTop = titleTopRate * bodyWidth - title.offset().top;
+    titleTop = (titleTop < 0 ? 0 : titleTop);
+    $('#wrap_Page_Content').css('padding-top', titleTop + 'px');
+
+    title.css('padding-bottom', panelTopRate * bodyWidth + 'px');
+    $('.col-12.text-center.title-panel').css('width', panelWidthRate * bodyWidth + 'px');
+
+    var background = $('.wrap-background-body img');
+
+    var tRate = 1;
+    if (bodyWidth > 1920 || bodyHeight > 1080) {
+        if (bodyWidth / 1920 > bodyHeight / 1080) {
+            tRate = bodyWidth / 1920;
+        } else {
+            tRate = bodyHeight / 1080;
+        }
+    }
+
+    var imgWidth = 1920 * tRate;
+    var imgHeight = 1080 * tRate;
+    background.width(imgWidth);
+    background.height(imgHeight);
+
+    var tTop = (imgHeight - bodyHeight) / 2;
+    var tLeft = (imgWidth - bodyWidth) / 2;
+    var tRight = tLeft + bodyWidth;
+    var tBottom = tTop + bodyHeight;
+    background.css('clip', 'rect(' + tTop + 'px ' + imgWidth + 'px ' + imgHeight + 'px ' + tLeft + 'px)');
+    background.css('left', (-tLeft) + 'px');
+    background.css('top', (-tTop) + 'px');
+}

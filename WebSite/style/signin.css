@@ -1,8 +1,19 @@
 ﻿body {
-    background-image: url(../image/gaosiback.jpg);
+    min-width: 320px;
+}
+
+.wrap-background-body {
+    /*background-image: url(../image/gaosiback.jpg);
     background-size: 100% 100%;
     -moz-background-size: 100% 100%;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    overflow:hidden;
 }
 
 .check-code-image {
@@ -15,24 +26,25 @@
     -moz-border-radius-bottomright: 5px;*/
 }
 
-.wrap-content-panel{
-    display:none;
+.wrap-content-panel {
+    display: none;
 }
 
-.wrap-content-panel form label {
-    color: rgb(159,159,159);
-}
+    .wrap-content-panel form label {
+        color: rgb(159,159,159);
+    }
 
-.wrap-content-panel div.row {
-    background-color: rgb(255,255,255);
-}
+    .wrap-content-panel div.row {
+        background-color: rgb(255,255,255);
+    }
 
 .title-panel {
-    width: 240px;
+    width: 280px;
     border-bottom: solid 1px rgb(195,195,195);
     padding: 10px 0px;
     font-size: 20px;
     color: rgb(159,159,159);
+    min-width: 280px;
 }
 
 .link-button-panel-bottom {
@@ -53,6 +65,11 @@
     margin-bottom: 0px;
 }
 
+label {
+    margin-bottom: 0rem;
+    padding-top: 0.2rem;
+}
+
 .send-note-code-btn {
     width: 90px;
     padding: 8px;
@@ -62,7 +79,7 @@
     font-size: 14px;
 }
 
-#linkBtn_Agree_Agreement span{
+#linkBtn_Agree_Agreement span {
     color: #31b0d5;
-    cursor:pointer;
+    cursor: pointer;
 }
