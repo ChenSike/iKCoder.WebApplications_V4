@@ -107,7 +107,7 @@ function updateUserInfor() {
                 $(
                     '<li class="nav-item dropdown" id="nav_UserInfo_Item">' +
                     '   <a href="#" class="nav-link dropdown-toggle" id="dd_Nav_UserInfo_Item"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                    '       <i class="fa fa-user-circle" aria-hidden="true"></i>' +
+                    '       <img class="rounded-circle" id="img_Page_Header_Navbar" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" width="24" height="24"/>' +
                     '       <span class="text-header-userinfo">' + nickName + '</span>' +
                     '       <b class="caret"></b>' +
                     '   </a>' +

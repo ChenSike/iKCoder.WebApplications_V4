@@ -3,20 +3,25 @@
 var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
-var _gHostName = 'http://119.23.233.224/ikcoderapi';
+//var _gHostName = 'http://119.23.233.224/ikcoderapi';
+var _gHostName = 'http://10.111.0.243/ikcoderapi';
 var _gURLMapping = {
     server: {
-        reg: '/Sys/SYS_RegServer.aspx'
+        reg: '/Sys/api_iKCoder_Sys_Set_RegDomain.aspx'
     },
     account: {
-        reg: '/Account/SET_Reg.aspx',
-        sign: '/Account/GET_Sign.aspx',
-        signwithcode: '/Account/GET_SignWithCheckCode.aspx',
-        checkcode: '/data/get_checkcodenua.aspx',
-        signstatus: '/Account/GET_SignStatus.aspx',
-        nickname: '/Account/Profile/GET_NickName.aspx',
-        updatepwd: '/Account/SET_ResetPassword.aspx',
-        logout: '/Account/SET_Logout.aspx'
+        reg: '/Account/User/api_iKCoder_User_Set_Reg.aspx',
+        sign: '/Account/User/api_iKCoder_User_Set_Sign.aspx',
+        signwithcode: '/Account/User/api_iKCoder_User_Set_SignWithCheckCode.aspx',
+        checkcode: '/Util/api_iKCoder_Util_Get_CheckCode.aspx',
+        signstatus: '/Account/User/api_iKCoder_User_Get_SignStatus.aspx',
+        util: '/Account/Profile/api_iKCoder_Profile_Get_SelectNodes.aspx',
+        updatepwd: '/Account/User/api_iKCoder_User_Set_ResetPassword.aspx',
+        logout: '/Account/User/api_iKCoder_User_Set_Logout.aspx',
+        getheader: '/Account/Profile/api_iKCoder_Profile_Get_HeaderImg.aspx',
+        updateheader: '/Account/Profile/api_iKCoder_Profile_Set_UploadTmpHeaderImg.aspx',
+        clipheaderimg: '/Account/Profile/api_iKCoder_Profile_Set_ClipHeaderImg.aspx',
+        updateutil: '/Account/Profile/api_iKCoder_Profile_Set_Nodes.aspx'
     },
     data: {
         studentcenter: '/Data/GET_ResourceDataText.aspx',
@@ -264,10 +269,14 @@ function _startCheckState() {
                     if (!$.cookie("logined_user_nickname") || $.cookie("logined_user_nickname") == '') {
                         _registerRemoteServer();
                         $.ajax({
-                            type: 'GET',
+                            type: 'POST',
                             async: true,
-                            url: _getRequestURL(_gURLMapping.account.nickname),
-                            data: '<root></root>',
+                            url: _getRequestURL(_gURLMapping.account.util),
+                            data: '<root>' +
+                                '<select>' +
+                                '<items value="/root/usrbasic/usr_nickname"></items>' +
+                                '</select>' +
+                                '</root>',
                             success: function (responseData_2, status) {
                                 if ($(responseData_2).find('err').length > 0) {
                                     window.location.href = "signin.html";
@@ -277,21 +286,15 @@ function _startCheckState() {
                                 } else {
                                     var nickName = '';
                                     var tmpObject = $(responseData_2).find('msg');
-                                    if (tmpObject.length > 0) {
-                                        if (tmpObject.length > 1) {
-                                            for (var i = 0; i < tmpObject.length; i++) {
-                                                if ($(tmpObject[i]).attr('type') != '1') {
-                                                    nickName = $(tmpObject[i]).attr('msg');
-                                                }
-                                            }
-                                        } else {
-                                            nickName = $(tmpObject[0]).attr('logined_user_nickname');
-                                            if (typeof nickname != 'string' || nickname == '') {
-                                                nickname = $(tmpObject[0]).attr('logined_nickname');
-                                            }
+                                    for (var i = 0; i < tmpObject.length; i++) {
+                                        if ($(tmpObject[i]).attr('type') != '1' && $(tmpObject[i]).attr('xpath') == '/root/usrbasic/usr_nickname') {
+                                            nickName = $(tmpObject[i]).attr('value');
                                         }
+                                    }
 
+                                    if (nickName) {
                                         $.cookie("logined_user_nickname", nickName, { path: '/', expires: (new Date(Date.now() + (_gExpires * 60 * 1000))) });
+
                                     }
                                 }
                             },

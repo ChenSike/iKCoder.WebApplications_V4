@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-var _bodyMinWidth = 320;
+var _bodyMinWidth = 330;
 var _checkCodeParams = {
     length: 4,
     name: 'signincode',
@@ -501,12 +501,13 @@ function updatePWD() {
 };
 
 function adjustPositions() {
+    $('.wrap-background-body').css('width', '100%');
+    $('.wrap-background-body').css('height', '100%');
     var titleWidthRate = 560 / 1920;
     var titleTopRate = 185 / 1920;
     var panelTopRate = 60 / 1920;
-    var panelWidthRate = 280 / 1920;
-    var bodyWidth = Math.max($('body').width(), $('html').width());
-    var bodyHeight = Math.max($('body').height(), $('html').height());
+    var panelWidthRate = 320 / 1920;
+    var bodyWidth = Math.max($('body').width(), $('html').width(), $('body')[0].scrollWidth);
     var title = $('#title_PageTop');
     var titleWidth = titleWidthRate * bodyWidth;
     titleWidth = (titleWidth < _bodyMinWidth ? _bodyMinWidth : titleWidth);
@@ -525,8 +526,8 @@ function adjustPositions() {
     title.css('padding-bottom', panelTopRate * bodyWidth + 'px');
     $('.col-12.text-center.title-panel').css('width', panelWidthRate * bodyWidth + 'px');
 
+    var bodyHeight = Math.max($('body').height(), $('html').height(), $('body')[0].scrollHeight);
     var background = $('.wrap-background-body img');
-
     var tRate = 1;
     if (bodyWidth > 1920 || bodyHeight > 1080) {
         if (bodyWidth / 1920 > bodyHeight / 1080) {
@@ -543,9 +544,12 @@ function adjustPositions() {
 
     var tTop = (imgHeight - bodyHeight) / 2;
     var tLeft = (imgWidth - bodyWidth) / 2;
-    var tRight = tLeft + bodyWidth;
-    var tBottom = tTop + bodyHeight;
+    var tRight = (tRate > 1 ? tLeft + bodyWidth : 1920);
+    var tBottom = (tRate > 1 ? tTop + bodyHeight : 1080);
     background.css('clip', 'rect(' + tTop + 'px ' + imgWidth + 'px ' + imgHeight + 'px ' + tLeft + 'px)');
     background.css('left', (-tLeft) + 'px');
     background.css('top', (-tTop) + 'px');
+
+    $('.wrap-background-body').width(bodyWidth);
+    $('.wrap-background-body').height(Math.max($('body').height(), $('html').height(), $('body')[0].scrollHeight));
 }

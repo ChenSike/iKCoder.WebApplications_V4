@@ -1,5 +1,5 @@
 ﻿body {
-    min-width: 320px;
+    min-width: 330px;
 }
 
 .wrap-background-body {
@@ -39,7 +39,7 @@
     }
 
 .title-panel {
-    width: 280px;
+    width: 320px;
     border-bottom: solid 1px rgb(195,195,195);
     padding: 10px 0px;
     font-size: 20px;

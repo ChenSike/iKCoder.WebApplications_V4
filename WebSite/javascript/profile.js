@@ -3,6 +3,7 @@
 function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
     $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
+    loadHeaderImg();
     initEvents();
     //rebuildContent('overview');
     rebuildContent('settings');
@@ -623,44 +624,74 @@ function refereshMessage() {
 };
 
 function rebuildSettingsPanel(contentHeight) {
+    var mapping = [
+        { n: 'name', p: '/root/usrbasic/usr_nickname' },
+        { n: 'gender', p: '/root/usrbasic/sex' },
+        { n: 'birthday', p: '/root/usrbasic/birthday' },
+        { n: 'province', p: '/root/usrbasic/state' },
+        { n: 'city', p: '/root/usrbasic/city' },
+        { n: 'school', p: '/root/usrbasic/school' }
+    ];
     var tmpHeight = calcSettingsItemheight(contentHeight);
-    //_registerRemoteServer();
-    //$.ajax({
-    //    type: 'POST',
-    //    async: true,
-    //    url: _getRequestURL(_gURLMapping.data.studentcenter, { symbol: 'config_student_index' }),
-    //    data: '',
-    //    success: function (responseData, status) {
-    //        if ($(responseData).find('err').length > 0) {
-    //            _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
-    //            return;
-    //        } else {
-    //            rebuildOverviewTitles(responseData, contentHeight, itemHeight);
-    //            rebuildOverviewContents(responseData, contentHeight, itemHeight);
-    //        }
-    //    },
-    //    dataType: 'xml',
-    //    xhrFields: {
-    //        withCredentials: true
-    //    },
-    //    error: function () {
-    //        _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
-    //    }
-    //});
-    var data = {
-        profile: {
-            header: 'image/ikcoderkid.png',
-            name: 'Terry',
-            gender: '1',
-            birthday: '2009-10-01',
-            province: '广东',
-            city: '深圳',
-            school: '深圳实验小学'
-        }
-    }
+    _registerRemoteServer();
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.util),
+        data: '<root>' +
+                '<select>' +
+                '<items value="/root/usrbasic/usr_nickname"></items>' +
+                '<items value="/root/usrbasic/sex"></items>' +
+                '<items value="/root/usrbasic/birthday"></items>' +
+                '<items value="/root/usrbasic/state"></items>' +
+                '<items value="/root/usrbasic/city"></items>' +
+                '<items value="/root/usrbasic/school"></items>' +
+                '</select>' +
+                '</root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
+                return;
+            } else {
+                var tmpNodes = $(responseData).find('msg');
+                var data = { profile: {} };
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    var tmpNode = $(tmpNodes[i]);
+                    if (tmpNode.attr('xpath')) {
+                        for (var j = 0; j < mapping.length; j++) {
+                            if (mapping[j].p == tmpNode.attr('xpath')) {
+                                data.profile[mapping[j].n] = tmpNode.attr('value');
+                            }
+                        }
+                    }
+                }
 
-    rebuildSettingsTitles(tmpHeight);
-    rebuildSettingsContents(data, tmpHeight);
+                rebuildSettingsTitles(tmpHeight);
+                rebuildSettingsContents(data, tmpHeight);
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
+        }
+    });
+    //var data = {
+    //    profile: {
+    //        header: _getRequestURL(_gURLMapping.account.getheader, {}),
+    //        name: 'Terry',
+    //        gender: '1',
+    //        birthday: '2009-10-01',
+    //        province: '广东',
+    //        city: '深圳',
+    //        school: '深圳实验小学'
+    //    }
+    //}
+
+    //rebuildSettingsTitles(tmpHeight);
+    //rebuildSettingsContents(data, tmpHeight);
 };
 
 function calcSettingsItemheight(contentHeight) {
@@ -694,7 +725,7 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                <div class="form-group row">');
     tmpHTMLArr.push('                    <label for="img_Settings_Profile_Header" class="col-2 col-form-label">头像</label>');
     tmpHTMLArr.push('                    <div class="col-7">');
-    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="' + data.header + '" style="width: 100px; height: 100px;">');
+    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" style="width: 100px; height: 100px;">');
     tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" style="margin-left:20px;margin-bottom: -60px;" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
@@ -832,6 +863,7 @@ function buildSettingsChangePWD(tmpHeight) {
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
+var _UploadHeaderHandle = '';
 function initSettingsEvents() {
     $("#select_Settings_Profile_User_City_Province").change(function () {
         var pVal = $("#select_Settings_Profile_User_City_Province").val();
@@ -897,15 +929,15 @@ function initSettingsEvents() {
             $('#warnning_HeaderUpload').show();
             $('#warnning_HeaderUpload').text("仅支持.jpg .jpeg .gif .png .bmp格式的图片");
             return;
-        } else if (this.files[0].size / 1024 > 256) {
+        } else if (this.files[0].size / 1024 > 4096) {
             $('#warnning_HeaderUpload').show();
-            $('#warnning_HeaderUpload').text("图片大小不能超过256K");
+            $('#warnning_HeaderUpload').text("图片大小不能超过4M");
             return;
         } else {
             $('#progress_HeaderUpload').show();
             _registerRemoteServer();
             var fileType = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
-            $('#form_Upload').attr('action', _getRequestURL(_gURLMapping.data.setbinresource, {sumitdata: 1,}));
+            $('#form_Upload').attr('action', _getRequestURL(_gURLMapping.account.updateheader, { sumitdata: 1, }));
             $('#form_Upload').submit();
             _UploadHeaderHandle = setTimeout('initCustomHeaderImg()', 2000);
         }
@@ -925,14 +957,13 @@ function initSettingsEvents() {
             $.ajax({
                 type: 'POST',
                 async: true,
-                url: _getRequestURL(_gURLMapping.util.setclipimage, tmpParams),
+                url: _getRequestURL(_gURLMapping.account.clipheaderimg, tmpParams),
                 data: '',
                 success: function (data, status) {
                     if ($(data).find('err').length > 0) {
-                        showAlertMessage('mWindow_CustomHeader_Dialog', 'customHeaderAlert', $(data).find('err').attr('msg'));
+                        _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_Save_CustHead_Error');
                         return;
                     } else {
-                        $("#customHeaderAlert").alert('close');
                         $('#mWindow_customHeaderModal').modal('hide');
                         loadHeaderImg();
                     }
@@ -957,6 +988,100 @@ function initSettingsEvents() {
     });
 };
 
+function updateProfile() {
+    var tSex = '1';
+    $('[name="settings_profile_user_gender"]').each(function () {
+        if ($(this).is(':checked')) {
+            tSex = $(this).val();
+        }
+    });
+
+
+    _registerRemoteServer();
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.updateutil),
+        data: '<root>' +
+            '<parent>/root/usrbasic</parent>' +
+            '<newnodes>' +
+            '<item name="usr_nickname" value="' + $('#txt_Settings_Profile_User_Name').val() + '" ></item>' +
+            '<item name="sex" value="' + tSex + '" ></item>' +
+            '<item name="birthday" value="' + $('#datetime_Settings_Profile_User_Birthday').val() + '" ></item>' +
+            '<item name="state" value="' + $('#select_Settings_Profile_User_City_Province').val() + '" ></item>' +
+            '<item name="city" value="' + $('#select_Settings_Profile_User_City_City').val() + '" ></item>' +
+            '<item name="school" value="' + $('#txt_Settings_Profile_User_School').val() + '" ></item>' +
+            '</newnodes>' +
+            '</root>',
+        success: function (data, status) {
+            if ($(data).find('err').length > 0) {
+                _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_ForgetPWD_Error');
+            } else if ($(data).find('msg').length > 0) {
+
+            } else {
+                _showGlobalMessage('发生未知的错误, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('修改密码失败, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
+        }
+    });
+}
+
+function updatePWD() {
+    if ($("#txt_Settings_PWD_Old_PWD").val().trim() == "") {
+        _showGlobalMessage('请输入旧密码', 'danger', 'alert_Settings_OldPWD');
+        return;
+    }
+
+    if ($("#txt_Settings_PWD_New_PWD").val().trim() == "") {
+        _showGlobalMessage('请输入密码', 'danger', 'alert_Settings_PWD');
+        return;
+    } else {
+        var checkVal = _checkPassword($("#txt_Settings_PWD_New_PWD").val().trim());
+        if (checkVal < 0) {
+            _showGlobalMessage('密码不符合要求，请重新输入!', 'danger', 'alert_Settings_PWD');
+            return;
+        }
+    }
+
+    if ($("#txt_Settings_PWD_Confirm_PWD").val() != $("#txt_Settings_PWD_New_PWD").val()) {
+        _showGlobalMessage('两次输入的密码不一致，请重新输入', 'danger', 'alert_Settings_Confirm');
+        return;
+    }
+
+    _registerRemoteServer();
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.updatepwd),
+        data: '<root>' +
+            '<oldpassword>' + $("#txt_Settings_PWD_Old_PWD").val() + '</oldpassword>' +
+            '<newpassword>' + $("#txt_Settings_PWD_New_PWD").val() + '</newpassword>' +
+            '</root>',
+        success: function (data, status) {
+            if ($(data).find('err').length > 0) {
+                _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_ForgetPWD_Error');
+            } else if ($(data).find('msg').length > 0) {
+
+            } else {
+                _showGlobalMessage('发生未知的错误, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('修改密码失败, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
+        }
+    });
+}
+
 var _currentHeaderImageSrc = '';
 function initCustomHeaderImg(uploadType) {
     var canvas = document.getElementById("canvas_CustomHeader");
@@ -965,9 +1090,9 @@ function initCustomHeaderImg(uploadType) {
     $('#progress_HeaderUpload').hide();
     var image = new Image();
     if (!uploadType && _currentHeaderImageSrc == '') {
-        image.src = _getRequestURL(_gURLMapping.data.getimageheader);
+        image.src = _getRequestURL(_gURLMapping.account.getheader);
     } else if (typeof uploadType == 'string' && uploadType != '') {
-        image.src = _getRequestURL(_gURLMapping.data.getimage, {});
+        image.src = _getRequestURL(_gURLMapping.account.getheader, {});
         //image.src = "images/head/head_11.jpg";
     } else {
         image.src = _currentHeaderImageSrc + "&rnd=" + Date.now();
@@ -1082,8 +1207,8 @@ var startDrag = function (point, target, kind, params) {
             var tmpTop = parseInt(params.top);
             if (params.kind === "se") {
                 var newWidth = tmpWidth + disX;
-                var newHeight = tmpHeighth + disY;
-                newWidth = (newWidth + tmpLeft > 320 ? 320 - tmpLeft : newWidth); 320
+                var newHeight = tmpHeighth + disX;
+                newWidth = (newWidth + tmpLeft > 320 ? 320 - tmpLeft : newWidth); 
                 newHeight = (newHeight + tmpTop > 320 ? 320 - tmpTop : newHeight);
                 $(target).width(newWidth);
                 $(target).height(newHeight);
@@ -1133,7 +1258,9 @@ function transCropBoxSizeToRealSize(image, left, top, width, height, newSize) {
         tmpWidth = width + tmpLeft;
         tmpLeft = 0;
     } else if (left + width > newSize.w) {
-        tmpWidth = (320 + newSize.w) / 2 - left;
+        //tmpWidth = (320 + newSize.w) / 2 - left;
+        tmpWidth = newSize.w - tmpLeft;
+        tmpHeight = tmpWidth;
     }
 
     if (tmpTop < 0 && top + height > newSize.h) {
@@ -1143,7 +1270,9 @@ function transCropBoxSizeToRealSize(image, left, top, width, height, newSize) {
         tmpHeight = height + tmpTop;
         tmpTop = 0;
     } else if (top + height > newSize.h) {
-        tmpHeight = (320 + newSize.h) / 2 - top;
+        //tmpHeight = (320 + newSize.h) / 2 - top;
+        tmpHeight = newSize.h - tmpTop;
+        tmpWidth = tmpHeight;
     }
 
     var scaleX = image.width / newSize.w;
@@ -1166,9 +1295,8 @@ function showSampleImage(image, left, top, width, height, newSize) {
     ctx = document.getElementById("canvas_Sample_3").getContext('2d');
     ctx.clearRect(0, 0, 24, 24);
     ctx.drawImage(image, sizeObj.l, sizeObj.t, sizeObj.w, sizeObj.h, 0, 0, 24, 24);
-    $('#btn_Settings_Profile_Save_Profile').attr('data-content', sizeObj.l + ',' + sizeObj.t + ',' + sizeObj.w + ',' + sizeObj.h)
+    $('#btn_CustomHeader_Save').attr('data-content', sizeObj.l + ',' + sizeObj.t + ',' + sizeObj.w + ',' + sizeObj.h)
 };
-
 
 function rebuildSettingsContents(data, tmpHeight) {
     buildSettingsProfile(data.profile, tmpHeight.p - 1);
@@ -1211,6 +1339,12 @@ function rebuildSettingsTitles(tmpHeight) {
     }
 };
 
+function loadHeaderImg() {
+    var imgSrc=_getRequestURL(_gURLMapping.account.getheader, {});
+    $('#img_Profile_Title').attr('src', imgSrc);
+    $('#img_Settings_Profile_Header').attr('src', imgSrc);
+    $('#img_Page_Header_Navbar').attr('src', imgSrc);
+}
 
 function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
     var angle = a || 0;
