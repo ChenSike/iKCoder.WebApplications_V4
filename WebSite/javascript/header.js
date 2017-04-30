@@ -113,7 +113,7 @@ function updateUserInfor() {
                     '   </a>' +
                     '   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">' +
                     '       <a href="workplatform.html?scene=b_01_001" class="dropdown-item" id="linkBtn_TestWorkPlatform" style="font-weight:100;">测试-进入工作台</a>' +
-                    '       <a href="#" class="dropdown-item" id="linkBtn_UserInfo" style="font-weight:100;">用户信息</a>' +
+                    '       <a href="#" class="dropdown-item" id="linkBtn_UserInfo" style="font-weight:100;">个人中心</a>' +
                     '       <a href="#" class="dropdown-item" id="linkBtn_SignOut" style="font-weight:100;">退出登录</a>' +
                     '   </div>' +
                     '</li>'

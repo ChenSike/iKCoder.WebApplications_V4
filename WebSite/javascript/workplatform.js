@@ -11,7 +11,7 @@ var _messages = {
     faild: ''
 };
 
-function initPage() {
+function initPage() {    
     _registerRemoteServer();
     $.ajax({
         type: 'GET',
@@ -43,6 +43,7 @@ function initPage() {
                         adjustWorkSpaceType(data);
                         $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
                         LoadSceneLib(data.blockly);
+                        $('#mask_Page_Loading').hide();
                     },
                     dataType: 'xml',
                     xhrFields: {

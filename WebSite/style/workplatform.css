@@ -23,10 +23,15 @@ body {
     background-image: url(../image/stageprogress.png);
 }
 
-.goto-profile-image-button{
-    cursor:pointer;
-    margin-left:20px;
+.goto-profile-image-button {
+    cursor: pointer;
+    margin-left: 20px;
 }
+
+    .goto-profile-image-button:hover {
+        width: 30px;
+        height: 30px;
+    }
 
 .head-stage-label {
     width: 15%;
@@ -97,7 +102,7 @@ body {
 
 .header-user-image {
     background-color: rgb(255,255,255);
-    border:solid 1px rgb(203,204,203);
+    border: solid 1px rgb(203,204,203);
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -567,7 +572,7 @@ textarea {
     text-align: center;
     color: rgb(255,255,255);
     font-size: 20px;
-    padding-left:10px;
+    padding-left: 10px;
 }
 
 .step-complete-button {
