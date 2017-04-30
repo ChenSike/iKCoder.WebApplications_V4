@@ -81,6 +81,10 @@ function initEvents() {
         siderBarExpand();
     });
 
+    $('.goto-profile-image-button').on('click', function () {
+        window.location.href = "profile.html?rnd=" + Date.now();
+    });
+
     $(document).mouseup(function () {
         $(document).unbind("mousemove");
         var dragProxy = $(".siderbar-drag-proxy")

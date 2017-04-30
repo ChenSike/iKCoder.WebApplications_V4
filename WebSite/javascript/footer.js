@@ -2,18 +2,18 @@
 
 function BuildFooterHTML() {
     var tmpHtmlStrArr = [];
-    tmpHtmlStrArr.push('    <div class="footer-txt" style="background-color: rgb(45,45,45);">');
-    tmpHtmlStrArr.push('        <div class="container w-100">');
-    tmpHtmlStrArr.push('            <div class="row  justify-content-center">');
-    tmpHtmlStrArr.push('                <div class="col-10">');
-    tmpHtmlStrArr.push('                    <p class="footer-hypelink">');
-    tmpHtmlStrArr.push('                        <a href="#" id="linkBtn_Foot_About">' + _getLabel('关于艾酷') + '</a>');
-    tmpHtmlStrArr.push('                        <a href="#" id="linkBtn_Foot_OnlineCourse" style="padding-left:20px;">' + _getLabel('线上体验课') + '</a>');
-    tmpHtmlStrArr.push('                    </p>');
-    tmpHtmlStrArr.push('                </div>');
-    tmpHtmlStrArr.push('            </div>');
-    tmpHtmlStrArr.push('        </div>');
-    tmpHtmlStrArr.push('    </div>');
+    //tmpHtmlStrArr.push('    <div class="footer-txt" style="background-color: rgb(45,45,45);">');
+    //tmpHtmlStrArr.push('        <div class="container w-100">');
+    //tmpHtmlStrArr.push('            <div class="row  justify-content-center">');
+    //tmpHtmlStrArr.push('                <div class="col-10">');
+    //tmpHtmlStrArr.push('                    <p class="footer-hypelink">');
+    //tmpHtmlStrArr.push('                        <a href="#" id="linkBtn_Foot_About">' + _getLabel('关于艾酷') + '</a>');
+    //tmpHtmlStrArr.push('                        <a href="#" id="linkBtn_Foot_OnlineCourse" style="padding-left:20px;">' + _getLabel('线上体验课') + '</a>');
+    //tmpHtmlStrArr.push('                    </p>');
+    //tmpHtmlStrArr.push('                </div>');
+    //tmpHtmlStrArr.push('            </div>');
+    //tmpHtmlStrArr.push('        </div>');
+    //tmpHtmlStrArr.push('    </div>');
     tmpHtmlStrArr.push('    <div class="footer-txt" style="background-color: rgb(23,23,23);">');
     tmpHtmlStrArr.push('        <div class="container w-100">');
     tmpHtmlStrArr.push('            <div class="row justify-content-center">');
