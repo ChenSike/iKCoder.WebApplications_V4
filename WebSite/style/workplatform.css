@@ -23,6 +23,11 @@ body {
     background-image: url(../image/stageprogress.png);
 }
 
+.goto-profile-image-button{
+    cursor:pointer;
+    margin-left:20px;
+}
+
 .head-stage-label {
     width: 15%;
     height: 30px;
