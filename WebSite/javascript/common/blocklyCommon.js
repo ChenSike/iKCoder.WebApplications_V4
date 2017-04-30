@@ -222,6 +222,7 @@ WorkScene.saveStatus = function () {
     _registerRemoteServer();
     $.ajax({
         type: 'POST',
+        async: true,
         url: _getRequestURL(_gURLMapping.bus.saveworkspace, { symbol: _currentStage, stage: _currentStep }),
         data: tempXML,
         success: function (response, status) {

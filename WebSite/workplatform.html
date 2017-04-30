@@ -224,6 +224,47 @@
     <div style="display:none">
         <audio id="audio_Soundmark"></audio>
     </div>
+    <div class="wrap-workstatus-alert">
+        <div class="wrap-complete-alert" style="display: block;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-8 text-center" style="padding: 30px 0px; color:rgb(255,255,2555);">
+                        <i class="fa fa-check-circle-o fa-5x" aria-hidden="true"></i>
+                        <div class="step-complete-title" id="title_StepComplete">恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了.</div>
+                    </div>
+                </div>
+                <div class="row justify-content-center my-3">
+                    <div class="col-2 text-center">
+                        <div class="step-complete-button" id="btn_Step_Restart"><span class="glyphicon glyphicon-repeat" style="padding-right:10px;"></span>重新开始</div>
+                    </div>
+                    <div class="col-2">
+                        <div class="step-complete-button" id="btn_Step_GoNext"><span class="glyphicon glyphicon-hand-right" style="padding-right:10px;"></span>挑战下一步</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center margin-top20 step-evaluate-wrap" style="border-top:solid 2px rgb(255,255,255); padding-top:20px">
+                        <span>喜欢这个课程吗?</span>
+                        <span class="fa fa-thumbs-o-up step-evaluate-button" style="padding-left:20px;" data-target="1"></span>
+                        <span class="fa fa-thumbs-o-down step-evaluate-button" style="padding-left:20px;" data-target="0"></span>
+                    </div>
+                </div>
+            </div>
+        </div>        <div class="wrap-complete-alert wrap-faild-alert my-5" style="display: block;">
+            <div class="container" style="padding-top: 50px;">
+                <div class="row justify-content-center">
+                    <div class="col-6 text-center" style="padding: 30px 0px; color:rgb(255,255,2555);">
+                        <i class="fa fa-exclamation-circle fa-5x" aria-hidden="true"></i>
+                        <div class="step-complete-title" id="title_StepFaild">非常抱歉，您的工作出现错误，请检查后继续运行.</div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-4 text-center">
+                        <div class="step-complete-button" id="btn_Step_FindError"><span class="glyphicon glyphicon-hand-right" style="padding-right:10px;"></span>查找问题</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();

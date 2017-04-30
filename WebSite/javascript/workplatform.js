@@ -393,7 +393,7 @@ function initData(response) {
 };
 
 function updateUserInfo(data) {
-    $('.img-rounded.header-user-image').attr('src', data.img);
+    $('.header-user-image').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
     $('.header-user-name-text').text(data.name);
     $('.header-user-name-text').text(data.name);
 };
@@ -644,7 +644,7 @@ function gotoSpecialStep(step) {
                 return;
             }
 
-            window.location.href = "workplatform.html?rnd=" + Date.now();
+            window.location.href = 'workplatform.html?scene=' + _currentStage + '&rnd=' + Date.now();
         },
         dataType: 'xml',
         xhrFields: {

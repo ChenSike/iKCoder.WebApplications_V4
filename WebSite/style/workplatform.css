@@ -556,14 +556,13 @@ textarea {
     background-color: rgba(162,202,92,0.9);
     z-index: 9909;
     display: none;
-    padding-top: 2%;
 }
 
 .step-complete-title {
     text-align: center;
     color: rgb(255,255,255);
     font-size: 20px;
-    padding-bottom: 30px;
+    padding-left:10px;
 }
 
 .step-complete-button {
@@ -595,6 +594,7 @@ textarea {
 
     .step-evaluate-button:hover {
         font-weight: bold;
+        font-size: 20px;
     }
 
 .spinner {

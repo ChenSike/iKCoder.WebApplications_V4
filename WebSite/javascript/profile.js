@@ -324,7 +324,7 @@ function drawExpDistributionGraph(canvasId, datas) {
     var tmpY = 0;
     var legendItemWidth = Math.floor(width / datas.length);
     var legendWidth = width / 215 * 8;
-    var fontSize = legendWidth / 8 * 12;
+    var fontSize = legendWidth / 8 * 10;
     for (var i = 0; i < datas.length; i++) {
         startRadian = endRadian;
         tmpRadian = datas[i].value / total * Math.PI * 2;
@@ -338,7 +338,7 @@ function drawExpDistributionGraph(canvasId, datas) {
 
         tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - legendWidth;
         tmpY = centerY + radius * Math.sin(startRadian + tmpRadian / 2);
-        context.font = 'normal normal bold  ' + fontSize + 'px \"微软雅黑\"';
+        context.font = 8 + 'px \"微软雅黑\"';
         context.fillStyle = "rgb(255,255,255)";
         context.fillText(datas[i].value, tmpX, tmpY);
 
@@ -350,7 +350,7 @@ function drawExpDistributionGraph(canvasId, datas) {
         context.fill();
         context.closePath();
 
-        context.font = 'normal normal bold ' + fontSize + 'px \"微软雅黑\"';
+        context.font = fontSize + 'px \"微软雅黑\"';
         context.fillStyle = "rgb(71,71,71)";
         context.fillText(datas[i].name, tmpX + legendWidth + legendWidth / 2, tmpY + legendWidth);
     }
@@ -1208,7 +1208,7 @@ var startDrag = function (point, target, kind, params) {
             if (params.kind === "se") {
                 var newWidth = tmpWidth + disX;
                 var newHeight = tmpHeighth + disX;
-                newWidth = (newWidth + tmpLeft > 320 ? 320 - tmpLeft : newWidth); 
+                newWidth = (newWidth + tmpLeft > 320 ? 320 - tmpLeft : newWidth);
                 newHeight = (newHeight + tmpTop > 320 ? 320 - tmpTop : newHeight);
                 $(target).width(newWidth);
                 $(target).height(newHeight);
@@ -1247,32 +1247,28 @@ function calcExhibitionSize(image) {
 };
 
 function transCropBoxSizeToRealSize(image, left, top, width, height, newSize) {
-    var tmpLeft = left - (320 - newSize.w) / 2;
-    var tmpTop = top - (320 - newSize.h) / 2;
+    var tmpSpaceH = (320 - newSize.w) / 2;
+    var tmpSpaceV = (320 - newSize.h) / 2;
+    var tmpLeft = left - tmpSpaceH;
+    var tmpTop = top - tmpSpaceV;
     var tmpWidth = width;
     var tmpHeight = height;
-    if (tmpLeft < 0 && left + width > newSize.w) {
-        tmpWidth = width + tmpLeft - (left + width - (320 + newSize.w) / 2);
+    if (tmpLeft < 0) {
+        tmpWidth = tmpWidth + tmpLeft;
         tmpLeft = 0;
-    } else if (tmpLeft < 0) {
-        tmpWidth = width + tmpLeft;
-        tmpLeft = 0;
-    } else if (left + width > newSize.w) {
-        //tmpWidth = (320 + newSize.w) / 2 - left;
-        tmpWidth = newSize.w - tmpLeft;
-        tmpHeight = tmpWidth;
     }
 
-    if (tmpTop < 0 && top + height > newSize.h) {
-        tmpHeight = height + tmpTop - (top + height - (320 + newSize.h) / 2);
+    if (tmpWidth > newSize.w) {
+        tmpWidth = newSize.w;
+    }
+
+    if (tmpTop < 0) {
+        tmpHeight = tmpHeight + tmpTop;
         tmpTop = 0;
-    } else if (tmpTop < 0) {
-        tmpHeight = height + tmpTop;
-        tmpTop = 0;
-    } else if (top + height > newSize.h) {
-        //tmpHeight = (320 + newSize.h) / 2 - top;
-        tmpHeight = newSize.h - tmpTop;
-        tmpWidth = tmpHeight;
+    }
+
+    if (tmpHeight > newSize.h) {
+        tmpHeight = newSize.h;
     }
 
     var scaleX = image.width / newSize.w;
@@ -1340,7 +1336,7 @@ function rebuildSettingsTitles(tmpHeight) {
 };
 
 function loadHeaderImg() {
-    var imgSrc=_getRequestURL(_gURLMapping.account.getheader, {});
+    var imgSrc = _getRequestURL(_gURLMapping.account.getheader, {});
     $('#img_Profile_Title').attr('src', imgSrc);
     $('#img_Settings_Profile_Header').attr('src', imgSrc);
     $('#img_Page_Header_Navbar').attr('src', imgSrc);

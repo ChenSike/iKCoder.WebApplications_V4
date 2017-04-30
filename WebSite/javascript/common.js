@@ -3,8 +3,8 @@
 var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
-var _gHostName = 'http://119.23.233.224/ikcoderapiv4';
-//var _gHostName = 'http://10.111.0.243/ikcoderapi';
+//var _gHostName = 'http://119.23.233.224/ikcoderapiv4';
+var _gHostName = 'http://10.111.0.243/ikcoderapi';
 var _gURLMapping = {
     server: {
         reg: '/Sys/api_iKCoder_Sys_Set_RegDomain.aspx'
@@ -26,20 +26,12 @@ var _gURLMapping = {
     data: {
         studentcenter: '/Data/GET_ResourceDataText.aspx',
         parentreport: '/Data/GET_ResourceDataText.aspx',
-        updateprofile: '/data/get_checkcodenua.aspx',
-        getwordlist: '/data/get_checkcodenua.aspx',
-        setbinresource: '/Data/SET_BinResource.aspx',
-        getbinresource: '/Data/GET_BinResource.aspx',
-        getimage: '/Data/GET_image.aspx',
-        getimageheader: '/Data/GET_ImageHeader.aspx'
-    },
-    util: {
-        setclipimage: '/Util/SET_ClipImage.aspx'
+        getwordlist: '/data/get_checkcodenua.aspx'
     },
     bus: {
-        getworkspace: '/Bus/Workspace/GET_Workspace.aspx',
-        saveworkspace: '/Bus/Workspace/SET_WorkspaceStatus.aspx',
-        setcurrentstep: '/Bus/Workspace/SET_CurrentStep.aspx'
+        getworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Get_Workspace.aspx',
+        saveworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Set_WorkspaceStatus.aspx',
+        setcurrentstep: '/Bus/Workspace/api_iKCoder_Workspace_Set_CurrentStage.aspx'
     }
 };
 var _gCitys = [
