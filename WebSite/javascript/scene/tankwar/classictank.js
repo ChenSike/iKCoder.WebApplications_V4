@@ -38,7 +38,7 @@ TankGame.importPrettify = function () {
     link.setAttribute('href', '../../styles/prettify.css');
     document.head.appendChild(link);
     var script = document.createElement('script');
-    script.setAttribute('src', '../../javascript/common/prettify.js');
+    script.setAttribute('src', '../../javascripts/common/prettify.js');
     document.head.appendChild(script);
 };
 

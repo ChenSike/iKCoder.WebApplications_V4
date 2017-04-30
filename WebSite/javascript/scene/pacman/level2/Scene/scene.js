@@ -75,7 +75,7 @@ Scene._MODEL = '1'; //0:static; 1: dynamic
 Scene._MOVEPATHS = [];
 Scene.APPLEIMG = new Image();
 //Scene.APPLEIMG.src = "data:image/svg+xml;base64," + window.btoa(svg_xml);
-Scene.APPLEIMG.src = "image/scene/PACOrange.svg";
+Scene.APPLEIMG.src = "images/scene/PACOrange.svg";
 
 Scene.init = function (containerId, model, configs) {
     Scene._MODEL = model;
