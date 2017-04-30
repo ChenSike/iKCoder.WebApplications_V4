@@ -156,6 +156,24 @@ function initSignInEvent() {
         $('#wrap_SignUp_Panel').show(1, resetSignUpFields);
     });
 
+    $("#txt_SignIn_PhoneNumber").keydown(function (event) {
+        if (event.which == 13) {
+            doSignIn();
+        }
+    });
+
+    $("#txt_SignIn_Password").keydown(function (event) {
+        if (event.which == 13) {
+            doSignIn();
+        }
+    });
+
+    $("#txt_SignIn_CheckCode").keydown(function (event) {
+        if (event.which == 13) {
+            doSignIn();
+        }
+    });
+
     $('#btn_SignIn').on('click', function () {
         doSignIn();
     });
