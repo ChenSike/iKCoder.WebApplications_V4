@@ -3,8 +3,8 @@
 var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
-//var _gHostName = 'http://119.23.233.224/ikcoderapiv4';
-var _gHostName = 'http://10.111.0.243/ikcoderapi';
+var _gHostName = 'http://119.23.233.224/ikcoderapiv4';
+//var _gHostName = 'http://10.111.0.243/ikcoderapi';
 var _gURLMapping = {
     server: {
         reg: '/Sys/api_iKCoder_Sys_Set_RegDomain.aspx'
@@ -279,7 +279,7 @@ function _startCheckState() {
                                     var nickName = '';
                                     var tmpObject = $(responseData_2).find('msg');
                                     for (var i = 0; i < tmpObject.length; i++) {
-                                        if ($(tmpObject[i]).attr('type') != '1' && $(tmpObject[i]).attr('xpath') == '/root/usrbasic/usr_nickname') {
+                                        if ((!$(tmpObject[i]).attr('type') || $(tmpObject[i]).attr('type') != '1') && $(tmpObject[i]).attr('xpath') == '/root/usrbasic/usr_nickname') {
                                             nickName = $(tmpObject[i]).attr('value');
                                         }
                                     }
