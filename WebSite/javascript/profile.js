@@ -903,7 +903,7 @@ function initSettingsEvents() {
     });
 
     $('#mWindow_customHeaderModal').on('show.bs.modal', function () {
-        $('#progress_HeaderUpload').hide();
+        $('#progress_HeaderUpload').show();
         $('#warnning_HeaderUpload').hide();
         $('#wrap_CropBox_Header').hide();
         initCustomHeaderImg();
@@ -918,20 +918,25 @@ function initSettingsEvents() {
     $('#linkBtn_Upload_HeaderFile').on('click', function () {
         $('#progress_HeaderUpload').hide();
         $('#warnning_HeaderUpload').hide();
-        $('#wrap_CropBox_Header').hide();
+        //$('#wrap_CropBox_Header').hide();
+        $('#btn_Form_File_Upload').click();
         $('#file_Upload').click();
     });
 
     $('#file_Upload').on('change', function () {
         var regExp = /(\.|\/)(gif|jpe?g|png|bmp)$/i;
         var fileName = $(this).val();
-        if (!regExp.test(fileName)) {
+        if (fileName != '' && !regExp.test(fileName)) {
             $('#warnning_HeaderUpload').show();
             $('#warnning_HeaderUpload').text("仅支持.jpg .jpeg .gif .png .bmp格式的图片");
+            //var tmpSize = calcExhibitionSize(_currentHeaderImage);
+            //fnImageCropRot(_currentHeaderImage, { w: tmpSize.nw, h: tmpSize.nh });
             return;
         } else if (this.files[0].size / 1024 > 4096) {
             $('#warnning_HeaderUpload').show();
             $('#warnning_HeaderUpload').text("图片大小不能超过4M");
+            //var tmpSize = calcExhibitionSize(_currentHeaderImage);
+            //fnImageCropRot(_currentHeaderImage, { w: tmpSize.nw, h: tmpSize.nh });
             return;
         } else {
             $('#progress_HeaderUpload').show();
@@ -939,7 +944,16 @@ function initSettingsEvents() {
             var fileType = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
             $('#form_Upload').attr('action', _getRequestURL(_gURLMapping.account.updateheader, { sumitdata: 1, }));
             $('#form_Upload').submit();
-            _UploadHeaderHandle = setTimeout('initCustomHeaderImg()', 2000);
+            var timeout = 2000;
+            if (this.files[0].size / 1024 > 3072) {
+                timeout = 8000;
+            } else if (this.files[0].size / 1024 > 2048) {
+                timeout = 5000;
+            } else if (this.files[0].size / 1024 > 1024) {
+                timeout = 3000;
+            }
+
+            _UploadHeaderHandle = setTimeout('initCustomHeaderImg()', timeout);
         }
     });
 
@@ -1017,6 +1031,14 @@ function updateProfile() {
             if ($(data).find('err').length > 0) {
                 _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_ForgetPWD_Error');
             } else if ($(data).find('msg').length > 0) {
+                var tmpNodes = $(data).find('msg');
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    if (!$(tmpNodes[i]).attr('type') || $(tmpNodes[i]).attr('type') != '1') {
+                        $('body').append($('<div class="alert alert-success" role="alert"  data-dismiss="alert"><strong>' + $(tmpNodes[i]).attr('msg') + '</strong></div>'));
+
+                    }
+                }
+
 
             } else {
                 _showGlobalMessage('发生未知的错误, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
@@ -1083,11 +1105,11 @@ function updatePWD() {
 }
 
 var _currentHeaderImageSrc = '';
+var _currentHeaderImage = null;
 function initCustomHeaderImg(uploadType) {
     var canvas = document.getElementById("canvas_CustomHeader");
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, 320, 320);
-    $('#progress_HeaderUpload').hide();
     var image = new Image();
     if (!uploadType && _currentHeaderImageSrc == '') {
         image.src = _getRequestURL(_gURLMapping.account.getheader);
@@ -1102,9 +1124,18 @@ function initCustomHeaderImg(uploadType) {
         var tmpSize = calcExhibitionSize(image);
         ctx.drawImage(image, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
         fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
+        $('#progress_HeaderUpload').hide();
     };
 
-    _currentHeaderImageSrc = image.src
+    image.onerror = function () {
+        var tmpSize = calcExhibitionSize(_currentHeaderImage);
+        ctx.drawImage(_currentHeaderImage, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
+        fnImageCropRot(_currentHeaderImage, { w: tmpSize.nw, h: tmpSize.nh });
+        $('#progress_HeaderUpload').hide();
+    };
+
+    _currentHeaderImageSrc = image.src;
+    _currentHeaderImage = image;
     var tmpSize = calcExhibitionSize(image);
     fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
 }
@@ -1210,6 +1241,10 @@ var startDrag = function (point, target, kind, params) {
                 var newHeight = tmpHeighth + disX;
                 newWidth = (newWidth + tmpLeft > 320 ? 320 - tmpLeft : newWidth);
                 newHeight = (newHeight + tmpTop > 320 ? 320 - tmpTop : newHeight);
+                if (newWidth != newHeight) {
+                    return;
+                }
+
                 $(target).width(newWidth);
                 $(target).height(newHeight);
             } else {
@@ -1260,6 +1295,8 @@ function transCropBoxSizeToRealSize(image, left, top, width, height, newSize) {
 
     if (tmpWidth > newSize.w) {
         tmpWidth = newSize.w;
+    } else if (tmpLeft + tmpWidth > newSize.w) {
+        tmpWidth = tmpWidth - (tmpLeft + tmpWidth - newSize.w);
     }
 
     if (tmpTop < 0) {
@@ -1269,6 +1306,8 @@ function transCropBoxSizeToRealSize(image, left, top, width, height, newSize) {
 
     if (tmpHeight > newSize.h) {
         tmpHeight = newSize.h;
+    } else if (tmpTop + tmpHeight > newSize.h) {
+        tmpHeight = tmpHeight - (tmpTop + tmpHeight - newSize.h);
     }
 
     var scaleX = image.width / newSize.w;
@@ -1295,7 +1334,7 @@ function showSampleImage(image, left, top, width, height, newSize) {
 };
 
 function rebuildSettingsContents(data, tmpHeight) {
-    buildSettingsProfile(data.profile, tmpHeight.p - 1);
+    buildSettingsProfile(data.profile, tmpHeight.p);
     buildSettingsChangePWD(tmpHeight.c - 1);
     initSettingsEvents();
     updateProfileValue(data.profile);
