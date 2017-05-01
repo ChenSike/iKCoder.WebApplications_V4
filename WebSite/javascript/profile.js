@@ -24,7 +24,22 @@ function resetCategoryItemCSS(current) {
     $(current.find('div').find('i')[0]).css('color', 'rgb(236,64,122)');
 };
 
+function showLoadingMask() {
+    $('#mask_Page_Loading').css('top', $('#wrap_Category_Title').offset().top);
+    $('#mask_Page_Loading').css('left', $('#wrap_Category_Title').offset().left);
+    $('#mask_Page_Loading').height($('body').height() - $('#wrap_Category_Title').offset().top);
+    $('#mask_Page_Loading').width($('body').width() - $('#wrap_Category_Title').offset().left);
+    $('#mask_Page_Loading').show();
+    $('#mask_Page_Loading').css('visibility', 'visible');
+}
+
+function hideLoadingMask() {
+    $('#mask_Page_Loading').hide();
+    $('#mask_Page_Loading').css('visibility', 'hidden');
+}
+
 function rebuildContent(symbol) {
+    showLoadingMask();
     var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();
     $('#wrap_Category_Title').empty();
     $('#wrap_Category_Content').empty();
@@ -36,9 +51,11 @@ function rebuildContent(symbol) {
             break;
         case 'message':
             currentItem = $($('.left-bar-category-item')[1]);
+            rebuildMesagesPanel();
             break;
         case 'report':
             currentItem = $($('.left-bar-category-item')[2]);
+            rebuildReportPanel();
             break;
         case 'settings':
             rebuildSettingsPanel(contentHeight);
@@ -119,7 +136,16 @@ function rebuildOverviewPanel(contentHeight) {
 
     rebuildOverviewTitles(data, contentHeight, tmpHeight);
     rebuildOverviewContents(data, contentHeight, tmpHeight);
+    hideLoadingMask();
 };
+
+function rebuildMesagesPanel() {
+    hideLoadingMask()
+}
+
+function rebuildReportPanel() {
+    hideLoadingMask()
+}
 
 function calcOverviewItemheight(contentHeight) {
     var minHeight = Math.floor(150 / 1200 * contentHeight);
@@ -668,6 +694,7 @@ function rebuildSettingsPanel(contentHeight) {
 
                 rebuildSettingsTitles(tmpHeight);
                 rebuildSettingsContents(data, tmpHeight);
+                hideLoadingMask()
             }
         },
         dataType: 'xml',
@@ -726,7 +753,7 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                    <label for="img_Settings_Profile_Header" class="col-2 col-form-label">头像</label>');
     tmpHTMLArr.push('                    <div class="col-7">');
     //tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" style="width: 100px; height: 100px;">');
-    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="image/circles.svg" style="width: 100px; height: 100px; background-color:rgb(76,76,76)">'); 
+    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="image/circles.svg" style="width: 100px; height: 100px; background-color:rgb(76,76,76)">');
     tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" style="margin-left:20px;margin-bottom: -60px;" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
@@ -797,7 +824,7 @@ function buildSettingsProfile(data, tmpHeight) {
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
-function updateProfileValue(data) {    
+function updateProfileValue(data) {
     var headerImg = new Image();
     headerImg.src = _getRequestURL(_gURLMapping.account.getheader, {});
     headerImg.onload = function () {
