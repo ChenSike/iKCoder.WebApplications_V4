@@ -4,10 +4,57 @@ function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
     $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
     loadHeaderImg();
+    loadSiderbarData();
     initEvents();
     //rebuildContent('overview');
     rebuildContent('settings');
     refereshMessage();
+};
+
+function loadSiderbarData() {
+    var mapping = [
+        { n: 'name', p: '/root/usrbasic/usr_nickname' }
+    ];
+    _registerRemoteServer();
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.util),
+        data: '<root>' +
+                '<select>' +
+                '<items value="/root/usrbasic/usr_nickname"></items>' +
+                '</select>' +
+                '</root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetBasicInfo_Error');
+                return;
+            } else {
+                var tmpNodes = $(responseData).find('msg');
+                var data = {name:'', title:''};
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    var tmpNode = $(tmpNodes[i]);
+                    if (tmpNode.attr('xpath')) {
+                        for (var j = 0; j < mapping.length; j++) {
+                            if (mapping[j].p == tmpNode.attr('xpath')) {
+                                data[mapping[j].n] = tmpNode.attr('value');
+                            }
+                        }
+                    }
+                }
+                
+                $('#txt_NickName_Profile_Title').text(data.name);
+                $('#txt_Title_Profile_Title').text(data.title);
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetBasicInfo_Error');
+        }
+    });
 };
 
 function initEvents() {
