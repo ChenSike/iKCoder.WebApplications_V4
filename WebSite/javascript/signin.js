@@ -134,6 +134,9 @@ function resetForgetPWDFields() {
 };
 
 function initEvents() {
+    $(".img-header-logo").on('click', function () {
+        window.location.href = "index.html";
+    });
     initSignInEvent();
     initSignUpEvent();
     initForgetPWDEvent();

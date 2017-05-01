@@ -34,7 +34,7 @@ function buildHeaderHTML(isIndexPage) {
     tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                    </ul>');
     tmpHtmlStrArr.push('                    <form class="form-inline my-2 my-lg-0  justify-content-center" id="form_NavBar_Sign">');
-    tmpHtmlStrArr.push('                        <button class="btn btn-outline-secondary my-2 my-sm-1 ml-md-5 mr-3" id="btn_SignIn" type="button">' + _getLabel('登录') + '</button>');
+    tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1 ml-md-5 mr-3" id="btn_SignIn" type="button">' + _getLabel('登录') + '</button>');
     tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1" id="btn_FreeSignUp" type="button">' + _getLabel('免费注册') + '</button>');
     tmpHtmlStrArr.push('                    </form>');
     tmpHtmlStrArr.push('                </div>');
