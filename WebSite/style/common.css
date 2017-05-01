@@ -292,3 +292,10 @@ div.alert-mask-custom {
         width: 27%;
     }
 }
+
+.alert{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    text-align: center;
+}

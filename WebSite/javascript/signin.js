@@ -84,17 +84,20 @@ function showCurrentPanel() {
             signInWrap.hide(1);
             changeWrap.hide(1);
             signUpWrap.show(1, resetSignUpFields);
+            _refereshCheckCode('img_SignUp_CheckCode');
             break;
         case 'change':
             signInWrap.hide(1);
             signUpWrap.hide(1);
             changeWrap.show(1, resetForgetPWDFields);
+            _refereshCheckCode('img_ForgetPWD_CheckCode');
             break;
         case 'signin':
         default:
             signUpWrap.hide(1);
             changeWrap.hide(1);
             signInWrap.show(1, resetSignInFields);
+            _refereshCheckCode('img_SignIn_CheckCode');
             break;
     }
 }
@@ -148,12 +151,14 @@ function initSignInEvent() {
         $('#wrap_SignIn_Panel').hide();
         $('#wrap_SignUp_Panel').hide();
         $('#wrap_ForgetPWD_Panel').show(1, resetForgetPWDFields);
+        _refereshCheckCode('img_ForgetPWD_CheckCode');
     });
 
     $('#linkBtn_Goto_SignUp').on('click', function () {
         $('#wrap_SignIn_Panel').hide();
         $('#wrap_ForgetPWD_Panel').hide();
         $('#wrap_SignUp_Panel').show(1, resetSignUpFields);
+        _refereshCheckCode('img_SignUp_CheckCode');
     });
 
     $("#txt_SignIn_PhoneNumber").keydown(function (event) {
@@ -212,6 +217,7 @@ function initSignUpEvent() {
         $('#wrap_SignUp_Panel').hide();
         $('#wrap_ForgetPWD_Panel').hide();
         $('#wrap_SignIn_Panel').show(1, resetSignInFields);
+        _refereshCheckCode('img_SignIn_CheckCode');
     });
 
     $('#btn_SignUp').on('click', function () {
@@ -285,6 +291,7 @@ function initForgetPWDEvent() {
         $('#wrap_SignUp_Panel').hide();
         $('#wrap_ForgetPWD_Panel').hide();
         $('#wrap_SignIn_Panel').show(1, resetSignInFields);
+        _refereshCheckCode('img_SignIn_CheckCode');
     });
 
     $('#btn_UpdatePWD').on('click', function () {
@@ -415,6 +422,7 @@ function doSignUp() {
                             $('#wrap_SignUp_Panel').hide();
                             $('#wrap_ForgetPWD_Panel').hide();
                             $('#wrap_SignIn_Panel').show(1, resetSignInFields);
+                            _refereshCheckCode('img_SignIn_CheckCode');
                         } else {
                             $.cookie('logined_user_name', $($(data).find('msg')[0]).attr('logined_user_name'));
                             var nickname = $($(data).find('msg')[0]).attr('logined_user_nickname');
@@ -434,6 +442,7 @@ function doSignUp() {
                         $('#wrap_SignUp_Panel').hide();
                         $('#wrap_ForgetPWD_Panel').hide();
                         $('#wrap_SignIn_Panel').show(1, resetSignInFields);
+                        _refereshCheckCode('img_SignIn_CheckCode');
                     }
                 });
             } else {
@@ -504,6 +513,7 @@ function updatePWD() {
                 $('#wrap_SignUp_Panel').hide();
                 $('#wrap_ForgetPWD_Panel').hide();
                 $('#wrap_SignIn_Panel').show(1, resetSignInFields);
+                _refereshCheckCode('img_SignIn_CheckCode');
             } else {
                 _showGlobalMessage('发生未知的错误, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
             }

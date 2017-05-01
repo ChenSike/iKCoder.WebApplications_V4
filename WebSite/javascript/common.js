@@ -3,7 +3,7 @@
 var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
-var _gHostName = 'http://119.23.233.224/ikcoderapiv4';
+var _gHostName = 'http://119.23.233.224/ikcoderapi';
 //var _gHostName = 'http://10.111.0.243/ikcoderapi';
 var _gURLMapping = {
     server: {
