@@ -411,7 +411,7 @@ function drawExpDistributionGraph(canvasId, datas) {
 
         tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - legendWidth;
         tmpY = centerY + radius * Math.sin(startRadian + tmpRadian / 2);
-        context.font = 8 + 'px \"微软雅黑\"';
+        context.font = 'normal normal normal' + fontSize + 'px \"微软雅黑\"';
         context.fillStyle = "rgb(255,255,255)";
         context.fillText(datas[i].value, tmpX, tmpY);
 
@@ -423,7 +423,7 @@ function drawExpDistributionGraph(canvasId, datas) {
         context.fill();
         context.closePath();
 
-        context.font = fontSize + 'px \"微软雅黑\"';
+        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
         context.fillStyle = "rgb(71,71,71)";
         context.fillText(datas[i].name, tmpX + legendWidth + legendWidth / 2, tmpY + legendWidth);
     }
