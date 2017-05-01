@@ -9,7 +9,7 @@ function buildHeaderHTML(isIndexPage) {
     tmpHtmlStrArr.push('    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">');
     tmpHtmlStrArr.push('        <span class="navbar-toggler-icon"></span>');
     tmpHtmlStrArr.push('    </button>');
-    tmpHtmlStrArr.push('    <div class="container-fluid">');
+    tmpHtmlStrArr.push('    <div class="container-fluid" style="padding-right: 35px;">');
     tmpHtmlStrArr.push('        <div class="row w-100 justify-content-end">');
     tmpHtmlStrArr.push('            <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container">');
     tmpHtmlStrArr.push('                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">');
@@ -66,8 +66,7 @@ function initNavBarEvent() {
     });
 
     $("#linkBtn_OnlineCourse").on('click', function () {
-        //window.location.href = "index.html?qid=" + _gCID;
-        alert('go to online course');
+        window.location.href = "OnlineExperience.html?qid=" + _gCID;
     });
 
     $("#linkBtn_Price").on('click', function () {
