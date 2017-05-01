@@ -31,7 +31,7 @@ function loadSiderbarData() {
                 return;
             } else {
                 var tmpNodes = $(responseData).find('msg');
-                var data = {name:'', title:''};
+                var data = { name: '', title: '' };
                 for (var i = 0; i < tmpNodes.length; i++) {
                     var tmpNode = $(tmpNodes[i]);
                     if (tmpNode.attr('xpath')) {
@@ -42,7 +42,7 @@ function loadSiderbarData() {
                         }
                     }
                 }
-                
+
                 $('#txt_NickName_Profile_Title').text(data.name);
                 $('#txt_Title_Profile_Title').text(data.title);
             }
@@ -325,6 +325,7 @@ function buildOverviewExperience(data, height) {
     var padding = Math.floor(40 / 350 * height);
     var width = Math.floor(padding / 40 * 215);
     var spaceWidth = Math.floor(padding / 40 * 110);
+    var disWidth = Math.max(width, data.distribution.length * 35);
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Experience" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">');
     tmpHTMLArr.push('    <div class="row align-items-center" id="" style="height:' + (height - 1) + 'px;">');
@@ -337,8 +338,9 @@ function buildOverviewExperience(data, height) {
     tmpHTMLArr.push('            <div id="container_Overview_Experience_Items" style="height:100%;">');
     for (var i = 0; i < itemCount; i++) {
         tmpHTMLArr.push('<div class="text-center" style="display: inline-block; height:100%; padding-right:' + (i == itemCount - 1 ? 0 : spaceWidth) + 'px;">');
-        tmpHTMLArr.push('   <div style="height:100%; padding:' + padding + 'px 0px;">');
-        tmpHTMLArr.push('       <div class="container-fluid overview-experience-item-wrap" style="padding:0px; width:' + (width - 2) + 'px;">');
+        tmpHTMLArr.push('   <div id="size_parent_canvas_' + idArr[i] + '" style="height:100%; padding:' + padding + 'px 0px;">');
+        var tmpWidth = (idArr[i] == 'Distribution' ? disWidth : width);
+        tmpHTMLArr.push('       <div class="container-fluid overview-experience-item-wrap" style="padding:0px; width:' + (tmpWidth - 2) + 'px;">');
         tmpHTMLArr.push('           <div class="row" style="margin:0px;">');
         tmpHTMLArr.push('               <div class="col-12" style="padding:0px; ">');
         tmpHTMLArr.push('                   <canvas id="canvas_Overview_Experience_' + idArr[i] + '"></canvavs>');
@@ -361,7 +363,7 @@ function buildOverviewExperience(data, height) {
 
     $('#Content_Overview_Course').after($(tmpHTMLArr.join('')));
     var itemWidth = width + spaceWidth;
-    $('#container_Overview_Experience_Items').width(itemWidth * itemCount - spaceWidth);
+    $('#container_Overview_Experience_Items').width(disWidth + itemWidth * (itemCount - 1));
     var funData = { id: "container_Overview_Experience_Items", step: itemWidth };
     $('#arrow_Overview_Experience_Left').on('click', funData, listMovePrev);
     $('#arrow_Overview_Experience_Right').on('click', funData, listMoveNext);
@@ -372,7 +374,8 @@ function buildOverviewExperience(data, height) {
 
 function drawExpDistributionGraph(canvasId, datas) {
     var canvas = $('#canvas_Overview_Experience_' + canvasId);
-    var parent = $($('.overview-experience-item-wrap').parent());
+    //var parent = $($('.overview-experience-item-wrap').parent());
+    var parent = $('#size_parent_canvas_' + canvasId);
     var width = parent.width();
     var height = parent.height();
     canvas.attr('height', height);
@@ -381,10 +384,16 @@ function drawExpDistributionGraph(canvasId, datas) {
     canvas[0].height = height;
     var context = canvas[0].getContext('2d');
     context.clearRect(0, 0, width, height);
-    var lineWidth = width / 215 * 30;
-    var radius = Math.floor(width / 2) - lineWidth + lineWidth / 2;
+    //var lineWidth = width / 215 * 30;
+    var lineWidth = 30;
+    var tmpWidth = width;
+    if (width / height > 210 / 250) {
+        tmpWidth = Math.floor(210 / 250 * height);
+    }
+
+    var radius = Math.floor(tmpWidth / 2) - lineWidth + lineWidth / 2;
     var centerX = Math.floor(width / 2);
-    var centerY = Math.floor(width / 2);
+    var centerY = Math.floor(radius + lineWidth / 2);
     var total = 0;
     for (var i = 0; i < datas.length; i++) {
         total += datas[i].value;
@@ -396,8 +405,9 @@ function drawExpDistributionGraph(canvasId, datas) {
     var tmpX = 0;
     var tmpY = 0;
     var legendItemWidth = Math.floor(width / datas.length);
+    //var legendItemWidth = 35;
     var legendWidth = width / 215 * 8;
-    var fontSize = legendWidth / 8 * 10;
+    var fontSize = 10;
     for (var i = 0; i < datas.length; i++) {
         startRadian = endRadian;
         tmpRadian = datas[i].value / total * Math.PI * 2;
@@ -409,14 +419,15 @@ function drawExpDistributionGraph(canvasId, datas) {
         context.stroke();
         context.closePath();
 
-        tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - legendWidth;
+        tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - 8;
         tmpY = centerY + radius * Math.sin(startRadian + tmpRadian / 2);
-        context.font = 'normal normal normal' + fontSize + 'px \"微软雅黑\"';
+        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
         context.fillStyle = "rgb(255,255,255)";
         context.fillText(datas[i].value, tmpX, tmpY);
 
         tmpX = legendItemWidth * i;
-        tmpY = (radius + lineWidth / 2) * 2 + 20;
+        //tmpY = (radius + lineWidth / 2) * 2 + 20;
+        tmpY = tmpWidth + 15;
         context.beginPath();
         context.rect(tmpX, tmpY, legendWidth, legendWidth);
         context.fillStyle = datas[i].color;
@@ -425,13 +436,14 @@ function drawExpDistributionGraph(canvasId, datas) {
 
         context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
         context.fillStyle = "rgb(71,71,71)";
-        context.fillText(datas[i].name, tmpX + legendWidth + legendWidth / 2, tmpY + legendWidth);
+        context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 8);
     }
 };
 
 function drawExpCourseLevelGraph(canvasId, data) {
     var canvas = $('#canvas_Overview_Experience_' + canvasId);
-    var parent = $($('.overview-experience-item-wrap').parent());
+    //var parent = $($('.overview-experience-item-wrap').parent());
+    var parent = $('#size_parent_canvas_' + canvasId);
     var width = parent.width();
     var height = parent.height();
     canvas.attr('height', height);
