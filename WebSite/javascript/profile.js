@@ -725,7 +725,8 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                <div class="form-group row">');
     tmpHTMLArr.push('                    <label for="img_Settings_Profile_Header" class="col-2 col-form-label">头像</label>');
     tmpHTMLArr.push('                    <div class="col-7">');
-    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" style="width: 100px; height: 100px;">');
+    //tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" style="width: 100px; height: 100px;">');
+    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="image/circles.svg" style="width: 100px; height: 100px; background-color:rgb(76,76,76)">'); 
     tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" style="margin-left:20px;margin-bottom: -60px;" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
@@ -796,9 +797,15 @@ function buildSettingsProfile(data, tmpHeight) {
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
-function updateProfileValue(data) {
-    $('#img_Settings_Profile_Header').attr('src', data.header);
+function updateProfileValue(data) {    
+    var headerImg = new Image();
+    headerImg.src = _getRequestURL(_gURLMapping.account.getheader, {});
+    headerImg.onload = function () {
+        $('#img_Settings_Profile_Header').attr('src', headerImg.src);
+    }
+
     $('#txt_Settings_Profile_User_Name').val(data.name);
+    data.gender = (data.gender == '' ? '1' : data.gender);
     $("[name='settings_profile_user_gender']").each(function () {
         $(this).removeAttr("checked");
         if ($(this).attr("value") == data.gender) {
@@ -806,9 +813,14 @@ function updateProfileValue(data) {
         }
     });
 
+    data.birthday = (data.birthday == '' ? new Date().toLocaleDateString() : data.birthday);
     $('#datetime_Settings_Profile_User_Birthday').val(data.birthday);
+    data.province = (data.province == '' ? '北京' : data.province);
     $("#select_Settings_Profile_User_City_Province").val(data.province).trigger("change");
-    $('#select_Settings_Profile_User_City_City').val(data.city);
+    if (data.city != '') {
+        $('#select_Settings_Profile_User_City_City').val(data.city);
+    }
+
     $('#txt_Settings_Profile_User_School').val(data.school);
 };
 
