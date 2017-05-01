@@ -996,6 +996,7 @@ Blockly.Flyout.prototype.createDom = function (tagName) {
 
 Blockly.Flyout.prototype.layout_ = function (contents, gaps) {
     this.workspace_.scale = this.targetWorkspace_.scale;
+    this.blocks_ = [];
     var margin = this.MARGIN;
     var cursorX = this.RTL ? margin : margin + Blockly.BlockSvg.TAB_WIDTH;
     var cursorY = margin;
@@ -1006,6 +1007,7 @@ Blockly.Flyout.prototype.layout_ = function (contents, gaps) {
     for (var i = 0, item; item = contents[i]; i++) {
         if (item.type == 'block') {
             var block = item.block;
+            this.blocks_.push(block);
             var allBlocks = block.getDescendants();
             for (var j = 0, child; child = allBlocks[j]; j++) {
                 child.isInFlyout = true;

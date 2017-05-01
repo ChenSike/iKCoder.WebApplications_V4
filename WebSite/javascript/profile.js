@@ -783,7 +783,7 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                <div class="form-group row">');
     tmpHTMLArr.push('                   <label for="datetime_Settings_Profile_User_Birthday" class="col-2 col-form-label">生日</label>');
     tmpHTMLArr.push('                   <div class="col-8">');
-    tmpHTMLArr.push('                       <input class="form-control" type="date" value="4/22/2017" id="datetime_Settings_Profile_User_Birthday">');
+    tmpHTMLArr.push('                       <input class="form-control" type="date" value="' + formatDate(new Date()) + '" id="datetime_Settings_Profile_User_Birthday">');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
@@ -824,6 +824,31 @@ function buildSettingsProfile(data, tmpHeight) {
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
+function formatDate(date) {
+    if (typeof (date) == 'number' || typeof (date) == 'string') {
+        date = new Date(date);
+    }
+
+    if (date = 'Invalid Date') {
+        date = new Date();
+    }
+
+    var dateArr = [date.getFullYear().toString()];
+    var tmpVal = date.getMonth();
+    if (tmpVal < 10) {
+        tmpVal = '0' + tmpVal;
+    }
+
+    dateArr.push(tmpVal);
+    tmpVal = date.getDate();
+    if (tmpVal < 10) {
+        tmpVal = '0' + tmpVal;
+    }
+
+    dateArr.push(tmpVal);
+    return dateArr.join('-');
+}
+
 function updateProfileValue(data) {
     var headerImg = new Image();
     headerImg.src = _getRequestURL(_gURLMapping.account.getheader, {});
@@ -840,7 +865,7 @@ function updateProfileValue(data) {
         }
     });
 
-    data.birthday = (data.birthday == '' ? new Date().toLocaleDateString() : data.birthday);
+    data.birthday = formatDate(data.birthday);
     $('#datetime_Settings_Profile_User_Birthday').val(data.birthday);
     data.province = (data.province == '' ? '北京' : data.province);
     $("#select_Settings_Profile_User_City_Province").val(data.province).trigger("change");

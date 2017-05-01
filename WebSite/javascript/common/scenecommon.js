@@ -53,7 +53,7 @@ function _refereshScene() {
 var _blockExample = [];
 var _highlightCount = 0;
 function hightlightExampleBlock() {
-    var blocks = WorkScene.workspace.topBlocks_;
+    var blocks = WorkScene.workspace.flyout_.blocks_;
     var targetBtn = $(arguments[0].target);
     _highlightCount = 0;
     for (var i = 0; i < blocks.length; i++) {
