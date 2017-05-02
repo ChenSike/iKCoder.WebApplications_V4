@@ -3,21 +3,13 @@
 var currSceneSymbol = '';
 
 function LoadSceneLib(data) {
-    if (data.lib.length == 1) {
+    if (data.lib.length > 0) {        
         $.getScript(data.lib[0], function () {
-            WorkScene.init();
-        });
-    } else if (data.lib.length == 3) {
-        $.getScript(data.lib[0], function () {
-            $.getScript(data.lib[1], function () {
-                $.getScript(data.lib[2], function () {
-                    WorkScene.init();
-                });
-            });
+            data.lib.shift();
+            LoadSceneLib(data);
         });
     } else {
         WorkScene.init();
-        return;
     }
 }
 
@@ -65,7 +57,6 @@ function hightlightExampleBlock() {
 
     selectBlockExample();
 };
-
 
 function selectBlockExample() {
     if (_highlightCount < 3) {

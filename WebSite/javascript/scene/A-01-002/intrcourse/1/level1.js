@@ -3,10 +3,10 @@
 
     var configuration = {
         "Input Device": [{
-            cn: "鼠标",
-            en: "Mouse",
-            path: "image/scene/intrcourse/svg/mouse.svg"
-        },
+                cn: "鼠标",
+                en: "Mouse",
+                path: "image/scene/intrcourse/svg/mouse.svg"
+            },
             {
                 cn: "键盘",
                 en: "Keyboard",
@@ -14,10 +14,10 @@
             }
         ],
         "Output Device": [{
-            cn: "显示器",
-            en: "Monitor",
-            path: "image/scene/intrcourse/svg/monitor.svg"
-        },
+                cn: "显示器",
+                en: "Monitor",
+                path: "image/scene/intrcourse/svg/monitor.svg"
+            },
             {
                 cn: "打印机",
                 en: "Printer",
@@ -30,10 +30,10 @@
             }
         ],
         "Storage": [{
-            cn: "硬盘",
-            en: "Harddrive",
-            path: "image/scene/intrcourse/svg/hard-drive.svg"
-        },
+                cn: "硬盘",
+                en: "Harddrive",
+                path: "image/scene/intrcourse/svg/hard-drive.svg"
+            },
             {
                 cn: "CD",
                 en: "CD",
@@ -51,13 +51,13 @@
             }
         ],
         "Computing": [{
-            cn: "CPU",
-            en: "CPU",
-            path: "image/scene/intrcourse/svg/cpu.svg"
-        },
+                cn: "CPU",
+                en: "CPU",
+                path: "image/scene/intrcourse/svg/cpu.svg"
+            },
             {
                 cn: "显卡",
-                en: "Graphics Card",
+                en: "Grahpics Card",
                 path: "image/scene/intrcourse/svg/graphics-card.svg"
             },
             {
@@ -118,10 +118,10 @@
             ccomponents = Array.prototype.concat.apply(ccomponents, config[group]);
         }
 
-        var cellDimension = 100,
+        var cellDimension = 180,
             numberOfComponents = ccomponents.length || 0,
-            verticalMargin = 50,
-            horizontalMargin = 50,
+            verticalMargin = 200,
+            horizontalMargin = 100,
             columns = Math.floor((stage.getWidth() - horizontalMargin) / cellDimension),
             rows = Math.floor((stage.getHeight() - verticalMargin) / cellDimension),
             cells = columns * rows;
@@ -130,8 +130,8 @@
             var cn = cellConfig.cn,
                 en = cellConfig.en,
                 path = cellConfig.path,
-                height = cellConfig.height || 60,
-                width = cellConfig.width || 60,
+                height = cellConfig.height || 120,
+                width = cellConfig.width || 120,
                 offsetX = (cellDimension - width) / 2,
                 offsetY = (cellDimension - height) / 2,
 
@@ -149,9 +149,7 @@
                 file: path,
                 en: en,
                 cn: cn,
-                id: en,
-                row: rowIndex,
-                column: columnIndex
+                id: en
             };
         };
 
@@ -300,15 +298,13 @@
             id: config.id
         });
 
-        box.componentPosition(config.row, config.column);
-
         var imageObj = new Image();
-        imageObj.src = 'images/Scene/intrcourse/' + config.file;
+        imageObj.src = config.file;
         imageObj.onload = function() {
             box.image(imageObj);
             layer.draw();
         };
-        
+                
         imageObj.onerror = function() {
             imageObj.src = config.file + '?rnd=' + Date.now();
         };
@@ -394,21 +390,19 @@
 
 
     var _categorizer;
-    // Used for exposing ComputerScene related API
-    function ComputerScene(config, containerId) {
+    // Used for exposing Scene related API
+    function Scene(config) {
         this.config = config;
-        this.containerId = containerId;
-        // this.___init();
+        this.___init();
     }
 
-    ComputerScene.prototype = {
-        constructor: ComputerScene,
-        init: function() {
-            this.containerId = this.containerId || 'game_container';
+    Scene.prototype = {
+        constructor: Scene,
+        ___init: function() {
             this.stage = new Konva.Stage({
-                container: this.containerId,
-                width: $('#' + this.containerId).width(),
-                height: $('#' + this.containerId).height()
+                container: 'container_Static_Stage',
+                width: window.innerWidth,
+                height: window.innerHeight
             });
 
             this.layer = new Konva.Layer();
@@ -417,49 +411,11 @@
             this.connectionLayer = new Konva.Layer({
                 clearBeforeDraw: true
             });
-
-            this.__paint();
-            this.__connectionSet = [];
-            this.registerResize();
-            this.__correctConnectionArr = [
-                ["Mouse", "Computer Tower"],
-                ["Keyboard", "Computer Tower"],
-                ["Monitor", "Computer Tower"],
-                ["Computer Tower", "Printer"],
-                ["Computer Tower", "Earphones"],
-                ["Harddrive", "Computer Tower"],
-                ["Computer Tower", "Pendrive"],
-                ["RAM", "Computer Tower"],
-                ["CPU", "Computer Tower"],
-                ["Graphics Card", "Computer Tower"],
-                ["Computer Tower"]
-            ];
         },
 
-        getImages: function() {
-            return (this.layer && this.layer.children) || [];
-        },
-
-        registerResize: function() {
-            var that = this;
-            $("#" + this.containerId).resize(function() {
-                var width = $('#' + that.containerId).width(),
-                    height = $('#' + that.containerId).height();
-                that.stage.width(width);
-                that.stage.height(height);
-                // clear content in layers
-                [that.layer, this.resultLayer, this.connectionLayer].forEach(function(layer) {
-                    that._clearLayer(layer);
-                });
-                console.log('onresize to width=' + width + ' height= ' + height);
-                that.__connectionSet = [];
-                that._paint();
-            });
-        },
-
-        __paint: function() {
+        start: function() {
             placeComponents(this.config, this.layer, this.categoryLayer, this.stage);
-            // placeComponentGroups(this.config, this.categoryLayer, this.stage);
+            placeComponentGroups(this.config, this.categoryLayer, this.stage);
 
             _categorizer = categoryManager(this.categoryLayer);
             this.stage.add(this.categoryLayer);
@@ -468,141 +424,28 @@
             this.stage.add(this.connectionLayer);
         },
 
-        __getTurningPoints(comp1, comp2) {
-            var points = [],
-                start,
-                end,
-                diffStart,
-                diffEnd;
-            if (comp1.row === comp2.row) {
-                start = this.__getBottomPoint(comp1);
-                end = this.__getBottomPoint(comp2);
-                points.push(start);
-                points.push([start[0], start[1] + 20]);
-                points.push([end[0], end[1] + 20]);
-                points.push(end);
-            } else if (comp1.column === comp2.column) {
-                start = this.__getLeftSidePoint(comp1);
-                end = this.__getLeftSidePoint(comp2);
-                points.push(start);
-                points.push([start[0] - 20, start[1]]);
-                points.push([end[0] - 20, end[1]]);
-                points.push(end);
-            } else if ((comp1.row < comp2.row) && Math.abs(comp1.row - comp2.row) === 1) {
-                start = this.__getBottomPoint(comp1);
-                end = this.__getTopPoint(comp2);
-                diffStart = Math.floor(Math.abs(start[1] - end[1]) / 2);
-                diffEnd = Math.abs(start[1] - end[1]) - diffStart;
-                points.push(start);
-                points.push([start[0], start[1] + diffStart]);
-                points.push([end[0], end[1] - diffEnd]);
-                points.push(end);
-            } else if (comp1.row > comp2.row && Math.abs(comp1.row - comp2.row) === 1) {
-                start = this.__getTopPoint(comp1);
-                end = this.__getBottomPoint(comp2);
-                diffStart = Math.floor(Math.abs(start[1] - end[1]) / 2);
-                diffEnd = Math.abs(start[1] - end[1]) - diffStart;
-                points.push(start);
-                points.push([start[0], start[1] - diffStart]);
-                points.push([end[0], end[1] + diffEnd]);
-                points.push(end);
-            } else if (Math.abs(comp1.row - comp2.row) > 1) {
-                if ((comp1.row - comp2.row) < 0) {
-                    start = this.__getLeftSidePoint(comp1);
-                    end = this.__getBottomPoint(comp2);
-                    points.push(start);
-                    points.push([start[0] - 20, start[1]]);
-                    points.push([start[0] - 20, end[1] + 20]);
-                    points.push([end[0], end[1] + 20]);
-                    points.push(end);
-                } else {
-                    start = this.__getBottomPoint(comp1);
-                    end = this.__getLeftSidePoint(comp2);
-                    points.push(start);
-                    points.push([start[0], start[1] + 20]);
-                    points.push([end[0] - 20, start[1] + 20]);
-                    points.push([end[0] - 20, end[1]]);
-                    points.push(end);
-                }
-            }
-
-            return points;
-        },
-
-        getByName: function(name) {
-            var cc = this.layer.children,
-                c;
-
-            for (var i in cc) {
-                c = cc[i];
-                if (c.en === name || c.cn === name) break;
-            }
-
-            return c;
-        },
-
-        __getBottomPoint(comp) {
-            return [
-                comp.x() + comp.width() / 2,
-                comp.y() + comp.height()
-            ];
-        },
-
-        __getTopPoint(comp) {
-            return [
-                comp.x() + comp.width() / 2,
-                comp.y()
-            ];
-        },
-        __getLeftSidePoint(comp) {
-            return [
-                comp.x(),
-                comp.y() + comp.height() / 2
-            ];
-        },
-
-        startGame() {
-            if (this.__connectionSet.length > 0)
-                for (var i in this.__connectionSet) {
-                    var names = this.__connectionSet[i];
-                    ComputerScene.prototype._doConnect.apply(this, names);
-                }
-        },
-
-        endGame() {
-            this.connectionLayer.getCanvas().getContext().clear();
-        },
-
-        clear() {
-            this._clearLayer(this.connectionLayer);
-            this.connectionLayer.removeChildren();
-            this.__connectionSet = [];
-        },
-
-        _clearLayer(layer) {
-            layer && layer.getCanvas().getContext().clear();
-        },
-
-        buildConnect(name1, name2) {
-            this.__connectionSet.push([name1, name2]);
-        },
-
-        _doConnect(comp1Id, comp2Id) {
+        connect(comp1, comp2) {
             var that = this;
 
-            var
-                comp1 = this.getByName(comp1Id),
-                comp2 = this.getByName(comp2Id),
+            var x0 = comp1.x() + comp1.width() / 2,
+                y0 = comp1.y() + comp1.height(),
+
                 arc = new Konva.ConnectionPoint({
+                    tmpX: x0,
+                    tmpY: y0,
                     componentsLayer: that.layer,
-                    inc: 8,
-                    turnings: this.__getTurningPoints(comp1, comp2)
+                    direction: Konva.ConnectionPoint.DOWN,
+                    target: comp2,
+                    inc: 8
                 });
 
+            arc.on('mouseover', function() {
+                console.log(this.getStage().getPointerPosition());
+            });
             this.connectionLayer.add(arc);
 
             var anim = new Konva.Animation(function(frame) {
-                if (!arc.isDone()) {
+                if(!arc.isDone()){
                     arc.moveAction();
                 } else {
                     anim.stop();
@@ -617,32 +460,9 @@
             var comp1 = this.layer.children[x];
             var comp2 = this.layer.children[y];
             this.connect(comp1, comp2);
-        },
-
-        checkComplete() {
-            var rightConnectionNum = 0;
-
-            this.__correctConnectionArr.forEach(function(fromto) {
-                var from = fromto[0],
-                    to = fromto[1];
-                this.__connectionSet.forEach(function(conntected){
-                    var conntectedFrom = conntected[0],
-                        conntectedTo = conntected[1];
-
-                    if (from === conntectedFrom && to === conntectedTo) {
-                        rightConnectionNum++;
-                    }
-                });
-            });
-
-            return rightConnectionNum >= 3;
         }
     };
 
-    window.Scene = new ComputerScene(configuration);
+    window.ComputerScene = new Scene(configuration);
+    ComputerScene.start();
 })();
-
-function test() {
-    ComputerScene.testConnect(1, 17);
-    ComputerScene.testConnect(5, 7);
-}

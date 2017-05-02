@@ -31,7 +31,8 @@ var _gURLMapping = {
     bus: {
         getworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Get_Workspace.aspx',
         saveworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Set_WorkspaceStatus.aspx',
-        setcurrentstep: '/Bus/Workspace/api_iKCoder_Workspace_Set_CurrentStage.aspx'
+        setcurrentstep: '/Bus/Workspace/api_iKCoder_Workspace_Set_CurrentStage.aspx',
+        setfinishscene: 'Bus/Workspace/api_iKCoder_Workspace_Set_FinishSence.aspx'
     }
 };
 var _gCitys = [

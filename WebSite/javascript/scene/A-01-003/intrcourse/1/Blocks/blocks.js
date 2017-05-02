@@ -5,65 +5,65 @@
         "Input Device": [{
                 cn: "鼠标",
                 en: "Mouse",
-                path: "svg/mouse.svg"
+                path: "image/scene/intrcourse/svg/mouse.svg"
             },
             {
                 cn: "键盘",
                 en: "Keyboard",
-                path: "svg/keyboard.svg"
+                path: "image/scene/intrcourse/svg/keyboard.svg"
             }
         ],
         "Output Device": [{
                 cn: "显示器",
                 en: "Monitor",
-                path: "svg/monitor.svg"
+                path: "image/scene/intrcourse/svg/monitor.svg"
             },
             {
                 cn: "打印机",
                 en: "Printer",
-                path: "svg/printer.svg"
+                path: "image/scene/intrcourse/svg/printer.svg"
             },
             {
                 cn: "耳机",
                 en: "Earphones",
-                path: "svg/earphones.svg"
+                path: "image/scene/intrcourse/svg/earphones.svg"
             }
         ],
         "Storage": [{
                 cn: "硬盘",
                 en: "Harddrive",
-                path: "svg/hard-drive.svg"
+                path: "image/scene/intrcourse/svg/hard-drive.svg"
             },
             {
                 cn: "CD",
                 en: "CD",
-                path: "svg/cd.svg"
+                path: "image/scene/intrcourse/svg/cd.svg"
             },
             {
                 cn: "U盘",
                 en: "Pendrive",
-                path: "svg/pendrive.svg"
+                path: "image/scene/intrcourse/svg/pendrive.svg"
             },
             {
                 cn: "RAM",
                 en: "RAM",
-                path: "svg/ram-memory.svg"
+                path: "image/scene/intrcourse/svg/ram-memory.svg"
             }
         ],
         "Computing": [{
                 cn: "CPU",
                 en: "CPU",
-                path: "svg/cpu.svg"
+                path: "image/scene/intrcourse/svg/cpu.svg"
             },
             {
                 cn: "显卡",
                 en: "Graphics Card",
-                path: "svg/graphics-card.svg"
+                path: "image/scene/intrcourse/svg/graphics-card.svg"
             },
             {
                 cn: "主机",
                 en: "Computer Tower",
-                path: "svg/computer.svg"
+                path: "image/scene/intrcourse/svg/computer.svg"
             }
 
         ]

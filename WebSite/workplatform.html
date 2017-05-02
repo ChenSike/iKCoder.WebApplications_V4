@@ -281,6 +281,32 @@
                 transform: rotate(364deg);
             }
         }
+
+
+        #tooltip_Component {
+            z-index: 9999;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            opacity: 0.8;
+            display: none;
+        }
+
+        .tooltip-warning-wrap {
+            z-index: -10;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            display: none;
+            border: solid 5px rgb(255,204,51);
+            border-radius: 15px;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+        }
+
+            .tooltip-warning-wrap.hidden {
+                display: none;
+            }
     </style>
     <link rel="stylesheet" href="style/jquery-ui.min.css">
     <link rel="stylesheet" href="style/tether.min.css">
@@ -307,7 +333,6 @@
     <script src="javascript/common/scenecommon.js"></script>
     <script src="javascript/common/blocklycommon.js"></script>
     <script src="javascript/workplatform.js"></script>
-    <!--<script src="javascripts/scene/intrcourse/konvas.js"></script>-->
     <!--<script src="javascripts/websit/workplatform_tank.js"></script>
     <script src="javascripts/scene/tankwar/Blocks/blocks.js"></script>
     <script src="javascripts/scene/tankwar/Engine/game_engine.js"></script>
@@ -338,12 +363,10 @@
                     <div class="bottom_part"></div>
                     <div class="bottom_part"></div>
                     <div class="bottom_part"></div>
-                    <div class="bottom_hole"><!-- lol --></div>
+                    <div class="bottom_hole"></div>
                 </div>
-                <p>loading</p>
+                <p style="text-align:center;">loading</p>
             </div>
-
-
         </div>
     </div>
     <div class="container-fluid" style="height:60px; background-color:rgb(41,49,67);">
@@ -390,7 +413,7 @@
     </div>
     <div class="container-fluid" style="height:35px;background-color:rgb(26,164,216);border-top: solid 2px rgb(245,245,245);">
         <div class="row align-items-center" style="height: 100%;padding-left:15px;">
-            <div style="width: 260px; background-image: url(image/blockly/blocklyicons.svg); background-repeat: no-repeat; background-position: 0px 0px; padding-left: 30px; line-height: 22px; font-size: 13px; font-weight: bolder; color:rgb(255,255,255);">
+            <div class="wrap-workspace-toolbox">
                 工具箱
             </div>
             <div class="col" style="font-size: 13px; font-weight: bolder; color:rgb(255,255,255);">
@@ -422,7 +445,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid" style="padding:0px;">
+    <div class="container-fluid" id="wrap_Workspace_Blockly" style="padding:0px;">
         <div class="row" style="margin:0px;">
             <div class="col-12" style="padding:0px;">
                 <div class="blockly-workspace-wrap" id="wrap_WorkSpace">
@@ -430,10 +453,11 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container-fluid" id="wrap_Workspace_Static" style="padding:0px;">
         <div class="row">
             <div class="col-12">
-                <div class="wrap-static-canvas">
-                    <canvas></canvas>
+                <div class="wrap-static-canvas" id="container_Static_Stage">
                 </div>
             </div>
         </div>
@@ -536,7 +560,7 @@
                 <div class="row justify-content-center">
                     <div class="col-8 text-center" style="padding: 30px 0px; color:rgb(255,255,2555);">
                         <i class="fa fa-check-circle-o fa-5x" aria-hidden="true"></i>
-                        <div class="step-complete-title" id="title_StepComplete">恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了.</div>
+                        <div class="step-complete-title" id="title_StepComplete"></div>
                     </div>
                 </div>
                 <div class="row justify-content-center my-3">
@@ -571,6 +595,11 @@
             </div>
         </div>
     </div>
+    <div class="tooltip tooltip-top" id="tooltip_Component" role="tooltip">
+        <div class="tooltip-arrow"></div>
+        <div class="tooltip-inner"></div>
+    </div>
+    <div class="tooltip-warning-wrap"></div>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();
@@ -578,6 +607,8 @@
             _startCheckState();
         });
     </script>
+    <!--<script src="javascript/scene/A-01-001/intrcouse/1/konvas.js"></script>
+    <script src="javascript/scene/A-01-001/intrcouse/1/components.js"></script>
+    <script src="javascript/scene/A-01-001/intrcouse/1/level1.js"></script>-->
 </body>
-
 </html>
