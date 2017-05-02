@@ -41,8 +41,8 @@ function initPage() {
                         _workspaceCfg = data.blockly;
                         buildStageHTML(data.course);
                         updateUserInfo(data.user);
-                        adjustAfterSiderBarResize();
                         adjustWorkSpaceType(data);
+                        adjustAfterSiderBarResize();
                         $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
                         LoadSceneLib(data.blockly);
                         $('#mask_Page_Loading').hide();
@@ -455,6 +455,7 @@ function initData(response) {
         addLibPath($(tmpPaths[i]));
     }
 
+    if (_currentStage.toLowerCase() == "a_01_001" || _currentStage.toLowerCase() == "a_01_002") {
         var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
         data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
         data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
@@ -725,7 +726,7 @@ function gotoSpecialStep(step) {
         error: function () {
         }
     });
-};
+}
 
 function showCompleteAlert() {
     _registerRemoteServer();
@@ -934,4 +935,4 @@ function getQueryString() {
             return strArr[1];
         }
     }
-}
+};
