@@ -52,7 +52,7 @@ body {
     }
 
     .head-stage-label .complete-item {
-        background: url(../images/label/stepdone.png);
+        background: url(../image/label/stepdone.png);
         background-color: rgb(26,164,216);
         cursor: pointer;
     }

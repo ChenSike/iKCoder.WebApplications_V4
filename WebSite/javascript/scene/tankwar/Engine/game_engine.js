@@ -121,9 +121,9 @@ var SCREEN_HEIGHT = 448;//屏幕高
 
 /**************图片资源*****************/
 var MENU_IMAGE = new Image();
-MENU_IMAGE.src = "images/scene/tankwar/menu.gif";
+MENU_IMAGE.src = "image/scene/tankwar/menu.gif";
 var RESOURCE_IMAGE = new Image();
-RESOURCE_IMAGE.src = "images/scene/tankwar/tankAll.gif";
+RESOURCE_IMAGE.src = "image/scene/tankwar/tankAll.gif";
 
 
 /**************各个图块在图片中的位置*****************/

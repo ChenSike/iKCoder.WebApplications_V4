@@ -303,7 +303,7 @@
         box.componentPosition(config.row, config.column);
 
         var imageObj = new Image();
-        imageObj.src = 'images/Scene/intrcourse/' + config.file;
+        imageObj.src = 'image/Scene/intrcourse/' + config.file;
         imageObj.onload = function() {
             box.image(imageObj);
             layer.draw();

@@ -869,7 +869,7 @@ Blockly.BlockSvg.prototype.renderDrawLeft_ = function (steps, highlightSteps) {
             steps.push('z');
             if (!this.svgEventIcon_) {
                 this.svgEventIcon_ = Blockly.utils.createSvgElement('g', { 'transform': 'translate(-15.5,-6)' }, this.svgGroup_);
-                Blockly.utils.createSvgElement('image', { 'class': 'blocklyTypeIcon', 'height': '28px', 'width': '28px', 'href': "images/icon/" + this.getEventIcon() }, this.svgEventIcon_);
+                Blockly.utils.createSvgElement('image', { 'class': 'blocklyTypeIcon', 'height': '28px', 'width': '28px', 'href': "image/icon/" + this.getEventIcon() }, this.svgEventIcon_);
             } else {
                 if (this.nextConnection.targetBlock()) {
                     this.svgEventIcon_.setAttribute('transform', 'translate(-17.5,-6)');
@@ -886,7 +886,7 @@ Blockly.BlockSvg.prototype.renderDrawLeft_ = function (steps, highlightSteps) {
             var tmpX = this.cateIconX - this.cateIconRadius + 2;
             if (!this.svgCategoryIcon_) {
                 this.svgCategoryIconRoot_ = Blockly.utils.createSvgElement('g', { 'transform': 'translate(' + tmpX + ',2)' }, this.svgGroup_);
-                this.svgCategoryIcon_ = Blockly.utils.createSvgElement('image', { 'class': 'blocklyTypeIcon', 'height': tmpSize + 'px', 'width': tmpSize + 'px', 'href': "images/icon/" + this.getCategoryIcon() }, this.svgCategoryIconRoot_);
+                this.svgCategoryIcon_ = Blockly.utils.createSvgElement('image', { 'class': 'blocklyTypeIcon', 'height': tmpSize + 'px', 'width': tmpSize + 'px', 'href': "image/icon/" + this.getCategoryIcon() }, this.svgCategoryIconRoot_);
             } else {
                 this.svgCategoryIconRoot_.setAttribute('transform', 'translate(' + tmpX + ',2)');
                 this.svgCategoryIcon_.setAttribute('height', tmpSize + 'px');

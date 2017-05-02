@@ -134,7 +134,7 @@
             tmplArr.push('Blockly.Blocks["computer_component_block_' + identifier + '"] = {');
             tmplArr.push('init: function() {');
             tmplArr.push('this.appendDummyInput()');
-            tmplArr.push('.appendField(new Blockly.FieldImage("images/Scene/intrcourse/' + path + '", 30, 30, "' + alt + '"));');
+            tmplArr.push('.appendField(new Blockly.FieldImage("image/Scene/intrcourse/' + path + '", 30, 30, "' + alt + '"));');
             tmplArr.push('this.setInputsInline(true);');
             tmplArr.push('this.setOutput(true, null);');
             tmplArr.push('this.setColour(230);');
