@@ -8,8 +8,8 @@ function initPage() {
     initEvents();
     $('#wrap_Category_Title').show();
     //rebuildContent('overview');
-    //rebuildContent('settings');
-    rebuildContent('report');
+    rebuildContent('settings');
+    //rebuildContent('report');
     refereshMessage();
 };
 
@@ -93,9 +93,10 @@ function hideLoadingMask() {
 
 function rebuildContent(symbol) {
     showLoadingMask();
-    var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();
-    //$('#wrap_Category_Title').empty();
-    //$('#wrap_Category_Content').empty();
+    var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();   
+    $('#wrap_Category_Title').empty();
+    $('#wrap_Category_Content').empty();
+    $('#wrap_Category_Content')[0].className='col';
     var currentItem = null;
     switch (symbol) {
         case 'overview':
@@ -107,6 +108,7 @@ function rebuildContent(symbol) {
             rebuildMesagesPanel();
             break;
         case 'report':
+            $('#wrap_Category_Content')[0].className = 'col-9';
             currentItem = $($('.left-bar-category-item')[2]);
             rebuildReportPanel();
             break;
