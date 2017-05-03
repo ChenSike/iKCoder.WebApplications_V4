@@ -334,3 +334,109 @@ div.alert-mask-custom {
     opacity: 0.5;
     display: none;
 }
+
+.wrap-profile-report-section {
+    min-width: 800px;
+    border-bottom: solid 1px rgb(243,243,243);
+    padding-left:50px;
+}
+
+.report-overview-rank-part-1 {
+    height: 77px;
+    display: inline-block;
+    FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=1,startColorStr=rgb(195,236,148),endColorStr=rgb(139,195,74));
+    background: -ms-linear-gradient(left, rgb(195,236,148), rgb(139,195,74));
+    background: -moz-linear-gradient(left, rgb(195,236,148), rgb(139,195,74));
+    background: -webkit-gradient(linear, 0% 0%, 100% 0%, from(rgb(195,236,148)), to(rgb(139,195,74)));
+    background: -webkit-linear-gradient(left, rgb(195,236,148), rgb(139,195,74));
+    background: -o-linear-gradient(left, rgb(195,236,148), rgb(139,195,74));
+}
+
+.report-overview-rank-part-2 {
+    height: 115px;
+    width: 50px;
+    max-width: 50px;
+    min-width: 50px;
+    background-color: rgb(139,195,74);
+    display: inline-block;
+}
+
+.report-overview-rank-part-3 {
+    height: 77px;
+    background-color: rgb(223,223,222);
+    display: inline-block;
+}
+
+.report-overview-header {
+    width: 85px;
+    height: 85px;
+    background-color: rgb(255,255,255);
+    border: 3px solid rgb(151,185,224);
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgb(46,88,136);
+}
+
+.no-padding {
+    padding: 0px;
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.text-size-10 {
+    font-size: 10px;
+}
+
+.text-size-11 {
+    font-size: 11px;
+}
+
+.text-size-12 {
+    font-size: 12px;
+}
+
+.text-size-13 {
+    font-size: 13px;
+}
+
+.text-size-16 {
+    font-size: 16px;
+}
+
+.text-size-21 {
+    font-size: 21px;
+}
+
+.text-size-75 {
+    font-size: 75px;
+   font-weight:bold;
+    line-height: 75px;
+}
+
+.text-color-index {
+    color: rgb(234,234,234);
+}
+
+.text-color-data {
+    color: rgb(252,136,35);
+}
+
+.text-color-text {
+    color: rgb(0,0,0);
+}
+
+.text-color-smart {
+    color: rgb(144,197,83);
+}
+
+.wrap-report-works-item{
+    width:250px;
+    height:150px;
+    padding:0px;
+    padding-right:20px;
+    padding-bottom:20px;
+    background:rgb(0,0,0);
+}

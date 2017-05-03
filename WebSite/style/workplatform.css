@@ -526,23 +526,19 @@ textarea {
 }
 
 .run-scene-fullscreen-play-button {
-    font-size: 200px;
-    color: rgba(255,255,255,0.7);
-    width: 200px;
-    height: 200px;
+    font-size: 130px;
+    color: rgba(255,255,255,0.5);
+    width: 30%;
+    height: 30%;
     position: absolute;
-    top: calc(50% - 100px);
-    left: calc(50% - 100px);
-    cursor:pointer;
+    top: 23%;
+    left: 35%;
+    cursor: pointer;
 }
 
-.run-scene-fullscreen-play-button:hover {
-    font-size: 220px;
-    width: 220px;
-    height: 220px;
-    top: calc(50% - 110px);
-    left: calc(50% - 110px);
-}
+    .run-scene-fullscreen-play-button:hover {
+        color: rgba(255,255,255,0.8);
+    }
 
 .knowledge-panel {
     width: 400px;

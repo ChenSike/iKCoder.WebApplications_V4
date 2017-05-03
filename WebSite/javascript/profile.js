@@ -6,8 +6,10 @@ function initPage() {
     loadHeaderImg();
     loadSiderbarData();
     initEvents();
+    $('#wrap_Category_Title').show();
     //rebuildContent('overview');
-    rebuildContent('settings');
+    //rebuildContent('settings');
+    rebuildContent('report');
     refereshMessage();
 };
 
@@ -75,21 +77,25 @@ function showLoadingMask() {
     $('#mask_Page_Loading').css('top', $('#wrap_Category_Title').offset().top);
     $('#mask_Page_Loading').css('left', $('#wrap_Category_Title').offset().left);
     $('#mask_Page_Loading').height($('body').height() - $('#wrap_Category_Title').offset().top);
-    $('#mask_Page_Loading').width($('body').width() - $('#wrap_Category_Title').offset().left);
+    $('#mask_Page_Loading').width(Math.min($('body').width(), $('body')[0].scrollWidth) - $('#wrap_Category_Title').offset().left);
     $('#mask_Page_Loading').show();
+    $('#mask_Page_Loading').css('diaplay', 'flex !important');
     $('#mask_Page_Loading').css('visibility', 'visible');
 }
 
 function hideLoadingMask() {
+    $('#mask_Page_Loading').width(0);
+    $('#mask_Page_Loading').height(0);
     $('#mask_Page_Loading').hide();
     $('#mask_Page_Loading').css('visibility', 'hidden');
+    $('#mask_Page_Loading').css('diaplay', 'none !important');
 }
 
 function rebuildContent(symbol) {
     showLoadingMask();
     var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();
-    $('#wrap_Category_Title').empty();
-    $('#wrap_Category_Content').empty();
+    //$('#wrap_Category_Title').empty();
+    //$('#wrap_Category_Content').empty();
     var currentItem = null;
     switch (symbol) {
         case 'overview':
@@ -115,6 +121,7 @@ function rebuildContent(symbol) {
     resetCategoryItemCSS(currentItem);
 };
 
+/*Overview panel*/
 function rebuildOverviewPanel(contentHeight) {
     var tmpHeight = calcOverviewItemheight(contentHeight);
     //_registerRemoteServer();
@@ -372,120 +379,6 @@ function buildOverviewExperience(data, height) {
     }
 };
 
-function drawExpDistributionGraph(canvasId, datas) {
-    var canvas = $('#canvas_Overview_Experience_' + canvasId);
-    //var parent = $($('.overview-experience-item-wrap').parent());
-    var parent = $('#size_parent_canvas_' + canvasId);
-    var width = parent.width();
-    var height = parent.height();
-    canvas.attr('height', height);
-    canvas.attr('width', width);
-    canvas[0].width = width;
-    canvas[0].height = height;
-    var context = canvas[0].getContext('2d');
-    context.clearRect(0, 0, width, height);
-    //var lineWidth = width / 215 * 30;
-    var lineWidth = 30;
-    var tmpWidth = width;
-    if (width / height > 210 / 250) {
-        tmpWidth = Math.floor(210 / 250 * height);
-    }
-
-    var radius = Math.floor(tmpWidth / 2) - lineWidth + lineWidth / 2;
-    var centerX = Math.floor(width / 2);
-    var centerY = Math.floor(radius + lineWidth / 2);
-    var total = 0;
-    for (var i = 0; i < datas.length; i++) {
-        total += datas[i].value;
-    }
-
-    var startRadian = 0;
-    var endRadian = 0;
-    var tmpRadian = 0;
-    var tmpX = 0;
-    var tmpY = 0;
-    var legendItemWidth = Math.floor(width / datas.length);
-    //var legendItemWidth = 35;
-    var legendWidth = width / 215 * 8;
-    var fontSize = 10;
-    for (var i = 0; i < datas.length; i++) {
-        startRadian = endRadian;
-        tmpRadian = datas[i].value / total * Math.PI * 2;
-        endRadian += tmpRadian;
-        context.beginPath();
-        context.strokeStyle = datas[i].color;
-        context.arc(centerX, centerY, radius, startRadian, endRadian);
-        context.lineWidth = lineWidth;
-        context.stroke();
-        context.closePath();
-
-        tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - 8;
-        tmpY = centerY + radius * Math.sin(startRadian + tmpRadian / 2);
-        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
-        context.fillStyle = "rgb(255,255,255)";
-        context.fillText(datas[i].value, tmpX, tmpY);
-
-        tmpX = legendItemWidth * i;
-        //tmpY = (radius + lineWidth / 2) * 2 + 20;
-        tmpY = tmpWidth + 15;
-        context.beginPath();
-        context.rect(tmpX, tmpY, legendWidth, legendWidth);
-        context.fillStyle = datas[i].color;
-        context.fill();
-        context.closePath();
-
-        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
-        context.fillStyle = "rgb(71,71,71)";
-        context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 8);
-    }
-};
-
-function drawExpCourseLevelGraph(canvasId, data) {
-    var canvas = $('#canvas_Overview_Experience_' + canvasId);
-    //var parent = $($('.overview-experience-item-wrap').parent());
-    var parent = $('#size_parent_canvas_' + canvasId);
-    var width = parent.width();
-    var height = parent.height();
-    canvas.attr('height', height);
-    canvas.attr('width', width);
-    canvas[0].width = width;
-    canvas[0].height = height;
-    var context = canvas[0].getContext('2d');
-    context.clearRect(0, 0, width, height);
-    var lineWidth = width / 215 * 10;
-    var radius = Math.floor(width / 2) - lineWidth + lineWidth / 2;
-    var centerX = Math.floor(width / 2);
-    var centerY = Math.floor(width / 2);
-    var total = 100;
-    var tmpX = 0;
-    var tmpY = 0;
-    var fontSize = Math.floor(width / 215 * 16);
-    var bigFontSize = Math.floor(width / 215 * 36);
-    context.beginPath();
-    context.strokeStyle = 'rgb(230,230,230)';
-    context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    context.lineWidth = lineWidth;
-    context.stroke();
-    context.closePath();
-
-    context.beginPath();
-    context.strokeStyle = 'rgb(124,218,36)';
-    context.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + data.value / 100 * Math.PI * 2);
-    context.lineWidth = lineWidth;
-    context.stroke();
-    context.closePath();
-
-    tmpY = (radius + lineWidth / 2) * 2 + 20;
-    context.font = 'normal normal bold ' + fontSize + 'px \"微软雅黑\"';
-    context.fillStyle = "rgb(71,71,71)";
-    context.fillText(data.name, (width - (fontSize) * data.name.length) / 2, tmpY + fontSize / 2);
-
-    tmpY = radius + lineWidth / 2;
-    context.font = 'normal normal bold ' + bigFontSize + 'px \"微软雅黑\"';
-    context.fillStyle = "rgb(71,71,71)";
-    context.fillText(data.value + '%', (width - (bigFontSize) * ((data.value + '%').length - 1)) / 2, tmpY + bigFontSize / 2);
-};
-
 function buildOverviewTimes(data, height) {
     var padding = Math.floor(20 / 350 * height);
     var tmpHTMLArr = [];
@@ -523,82 +416,6 @@ function buildOverviewTimes(data, height) {
     var funData = { id: "container_Overview_Times_Items", step: 100 };
     $('#arrow_Overview_Times_Left').on('click', funData, listMovePrev);
     $('#arrow_Overview_Times_Right').on('click', funData, listMoveNext);
-};
-
-function drawTimesGraph(datas) {
-    var barWidth = 15;
-    var barSpace = 10;
-    var lineWidth = 1;
-    var canvas = $('#canvas_Overview_Time');
-    var parent = $($('.overview-times-item-wrap').parent());
-    var width = (barWidth + barSpace) * datas.length;
-    var height = parent.height();
-    $('#container_Overview_Times_Items').width(width);
-    if ($('#wrap_Overview_Times_Items').width() > $('#container_Overview_Times_Items').width()) {
-        $('.overview-list-arrow.times').hide();
-    }
-
-    canvas.attr('height', height);
-    canvas.attr('width', width);
-    canvas[0].width = width;
-    canvas[0].height = height;
-    var context = canvas[0].getContext('2d');
-    context.clearRect(0, 0, width, height);
-    var maxValue = datas[0].value;
-    for (var i = 0; i < datas.length; i++) {
-        maxValue = Math.max(maxValue, datas[i].value);
-    }
-
-    var unit = Math.floor((height - 10 - 20) / maxValue);
-    var startX = 0;
-    var startY = height - 20;
-    var ltX, ltY, rtX, rtY, rbX, rbY, linearGradient, bHeight, bWidth, tmpX, tmpY, tmpArr, tmpData;
-    for (var i = 0; i < datas.length; i++) {
-        tmpData = datas[i];
-        if (tmpData.value <= 0) {
-            startX = rtX + barSpace;
-            continue;
-        }
-
-        ltX = startX;
-        ltY = startY - tmpData.value * unit - lineWidth * 2;
-        rtX = startX + barWidth + lineWidth;
-        rtY = ltY;
-        rbX = rtX;
-        rbY = startY;
-        bHeight = tmpData.value * unit + lineWidth * 2;
-        bWidth = barWidth + lineWidth * 2;
-        //draw bar
-        linearGradient = context.createLinearGradient(ltX, ltY, 0, bHeight);
-        linearGradient.addColorStop(0, "rgb(98,163,54)");
-        linearGradient.addColorStop(1, "rgb(128,184,95)");
-        context.fillStyle = linearGradient;
-        context.fillRect(ltX, ltY, bWidth, bHeight);
-        //draw border
-        context.strokeStyle = 'rgb(167,196,150)';
-        context.lineWidth = 1;
-        context.moveTo(startX, startY);
-        context.lineTo(ltX, ltY);
-        context.lineTo(rtX, rtY);
-        context.lineTo(rbX, rbY);
-        context.lineTo(startX, startY);
-        context.stroke();
-        //draw time label
-        tmpX = ltX + 4;
-        tmpY = ltY - 2;
-        context.font = "normal normal bold 11px \"微软雅黑\"";
-        context.fillStyle = "rgb(97,97,97)";
-        context.fillText(tmpData.value, tmpX, tmpY);
-        //draw date label
-        tmpX = startX;
-        tmpY = startY + 12;
-        context.font = "normal normal 600 8px \"微软雅黑\"";
-        context.fillStyle = "rgb(97,97,97)";
-        tmpArr = tmpData.date.split('-');
-        context.fillText(tmpArr[1] + '-' + tmpArr[2], tmpX, tmpY);
-        //calculate next X
-        startX = rtX + barSpace;
-    }
 };
 
 function rebuildOverviewContents(data, contentHeight, itemHeight) {
@@ -680,34 +497,7 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
     }
 };
 
-function refereshMessage() {
-    return;
-    _registerRemoteServer();
-    $.ajax({
-        type: 'GET',
-        async: true,
-        url: _getRequestURL(_gURLMapping.data.studentcenter, { symbol: 'config_student_index' }),
-        data: '',
-        success: function (responseData, status) {
-            if ($(responseData).find('err').length > 0) {
-                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetMessage_Error');
-                return;
-            } else {
-                $('.left-bar-message-count').text($(responseData).find('msg').length);
-            }
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-            _showGlobalMessage('无法获取消息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
-        }
-    });
-
-    window.setTimeout(refereshMessage, 15000);
-};
-
+/*Settings panel*/
 function rebuildSettingsPanel(contentHeight) {
     var mapping = [
         { n: 'name', p: '/root/usrbasic/usr_nickname' },
@@ -882,31 +672,6 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('</div>');
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
-
-function formatDate(date) {
-    if (typeof (date) == 'number' || typeof (date) == 'string') {
-        date = new Date(date);
-    }
-
-    if (date = 'Invalid Date') {
-        date = new Date();
-    }
-
-    var dateArr = [date.getFullYear().toString()];
-    var tmpVal = date.getMonth();
-    if (tmpVal < 10) {
-        tmpVal = '0' + tmpVal;
-    }
-
-    dateArr.push(tmpVal);
-    tmpVal = date.getDate();
-    if (tmpVal < 10) {
-        tmpVal = '0' + tmpVal;
-    }
-
-    dateArr.push(tmpVal);
-    return dateArr.join('-');
-}
 
 function updateProfileValue(data) {
     var headerImg = new Image();
@@ -1497,12 +1262,120 @@ function rebuildSettingsTitles(tmpHeight) {
     }
 };
 
-function loadHeaderImg() {
-    var imgSrc = _getRequestURL(_gURLMapping.account.getheader, {});
-    $('#img_Profile_Title').attr('src', imgSrc);
-    $('#img_Settings_Profile_Header').attr('src', imgSrc);
-    $('#img_Page_Header_Navbar').attr('src', imgSrc);
-}
+/*Report panel*/
+function rebuildReportPanel() {
+    //var mapping = [
+    //{ n: 'name', p: '/root/usrbasic/usr_nickname' },
+    //{ n: 'gender', p: '/root/usrbasic/sex' },
+    //{ n: 'birthday', p: '/root/usrbasic/birthday' },
+    //{ n: 'province', p: '/root/usrbasic/state' },
+    //{ n: 'city', p: '/root/usrbasic/city' },
+    //{ n: 'school', p: '/root/usrbasic/school' }
+    //];
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'POST',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.account.util),
+    //    data: '<root>' +
+    //            '<select>' +
+    //            '<items value="/root/usrbasic/usr_nickname"></items>' +
+    //            '<items value="/root/usrbasic/sex"></items>' +
+    //            '<items value="/root/usrbasic/birthday"></items>' +
+    //            '<items value="/root/usrbasic/state"></items>' +
+    //            '<items value="/root/usrbasic/city"></items>' +
+    //            '<items value="/root/usrbasic/school"></items>' +
+    //            '</select>' +
+    //            '</root>',
+    //    success: function (responseData, status) {
+    //        if ($(responseData).find('err').length > 0) {
+    //            _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
+    //            return;
+    //        } else {
+    //            var tmpNodes = $(responseData).find('msg');
+    //            var data = { profile: {} };
+    //            for (var i = 0; i < tmpNodes.length; i++) {
+    //                var tmpNode = $(tmpNodes[i]);
+    //                if (tmpNode.attr('xpath')) {
+    //                    for (var j = 0; j < mapping.length; j++) {
+    //                        if (mapping[j].p == tmpNode.attr('xpath')) {
+    //                            data.profile[mapping[j].n] = tmpNode.attr('value');
+    //                        }
+    //                    }
+    //                }
+    //            }
+
+    //            rebuildSettingsTitles(tmpHeight);
+    //            rebuildSettingsContents(data, tmpHeight);
+    //            hideLoadingMask()
+    //        }
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //        _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
+    //    }
+    //});
+    var data = {
+        profile: {
+            header: _getRequestURL(_gURLMapping.account.getheader, {}),
+            name: 'Terry',
+            gender: '1',
+            birthday: '2009-10-01',
+            province: '广东',
+            city: '深圳',
+            school: '深圳实验小学'
+        }
+    }
+
+    rebuildReportTitles();
+    rebuildReportContents();
+    hideLoadingMask();
+};
+
+function rebuildReportTitles() {
+    $('#wrap_Category_Title').hide();
+};
+
+function rebuildReportContents() {
+    var minWidth = $('#sideBar_Page_Left').width() + 800;
+    if ($('body').width < minWidth) {
+        $('body').width = minWidth;
+    }
+
+    $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width());
+    buildReportOverviewPanel();
+    buildReportAchievePanel();
+    buildReportAbilityPanel();
+    buildReportTimePanel();
+    buildReportPotentialPanel();
+    buildReportWorksPanel();
+    buildReportAttentionPanel();
+};
+
+function buildReportOverviewPanel() {
+
+};
+
+function buildReportAchievePanel() {
+};
+
+function buildReportAbilityPanel() {
+};
+
+function buildReportTimePanel() {
+};
+
+function buildReportPotentialPanel() {
+};
+
+function buildReportWorksPanel() {
+};
+
+function buildReportAttentionPanel() {
+};
 
 function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
     var angle = a || 0;
@@ -1542,3 +1415,254 @@ function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
     context.restore();
     return vertex;
 };
+
+/*Global*/
+function loadHeaderImg() {
+    var imgSrc = _getRequestURL(_gURLMapping.account.getheader, {});
+    $('#img_Profile_Title').attr('src', imgSrc);
+    $('#img_Settings_Profile_Header').attr('src', imgSrc);
+    $('#img_Page_Header_Navbar').attr('src', imgSrc);
+}
+
+function refereshMessage() {
+    return;
+    _registerRemoteServer();
+    $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.data.studentcenter, { symbol: 'config_student_index' }),
+        data: '',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetMessage_Error');
+                return;
+            } else {
+                $('.left-bar-message-count').text($(responseData).find('msg').length);
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取消息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
+        }
+    });
+
+    window.setTimeout(refereshMessage, 15000);
+};
+
+function drawExpDistributionGraph(canvasId, datas) {
+    var canvas = $('#canvas_Overview_Experience_' + canvasId);
+    //var parent = $($('.overview-experience-item-wrap').parent());
+    var parent = $('#size_parent_canvas_' + canvasId);
+    var width = parent.width();
+    var height = parent.height();
+    canvas.attr('height', height);
+    canvas.attr('width', width);
+    canvas[0].width = width;
+    canvas[0].height = height;
+    var context = canvas[0].getContext('2d');
+    context.clearRect(0, 0, width, height);
+    //var lineWidth = width / 215 * 30;
+    var lineWidth = 30;
+    var tmpWidth = width;
+    if (width / height > 210 / 250) {
+        tmpWidth = Math.floor(210 / 250 * height);
+    }
+
+    var radius = Math.floor(tmpWidth / 2) - lineWidth + lineWidth / 2;
+    var centerX = Math.floor(width / 2);
+    var centerY = Math.floor(radius + lineWidth / 2);
+    var total = 0;
+    for (var i = 0; i < datas.length; i++) {
+        total += datas[i].value;
+    }
+
+    var startRadian = 0;
+    var endRadian = 0;
+    var tmpRadian = 0;
+    var tmpX = 0;
+    var tmpY = 0;
+    var legendItemWidth = Math.floor(width / datas.length);
+    //var legendItemWidth = 35;
+    var legendWidth = width / 215 * 8;
+    var fontSize = 10;
+    for (var i = 0; i < datas.length; i++) {
+        startRadian = endRadian;
+        tmpRadian = datas[i].value / total * Math.PI * 2;
+        endRadian += tmpRadian;
+        context.beginPath();
+        context.strokeStyle = datas[i].color;
+        context.arc(centerX, centerY, radius, startRadian, endRadian);
+        context.lineWidth = lineWidth;
+        context.stroke();
+        context.closePath();
+
+        tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - 8;
+        tmpY = centerY + radius * Math.sin(startRadian + tmpRadian / 2);
+        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
+        context.fillStyle = "rgb(255,255,255)";
+        context.fillText(datas[i].value, tmpX, tmpY);
+
+        tmpX = legendItemWidth * i;
+        //tmpY = (radius + lineWidth / 2) * 2 + 20;
+        tmpY = tmpWidth + 15;
+        context.beginPath();
+        context.rect(tmpX, tmpY, legendWidth, legendWidth);
+        context.fillStyle = datas[i].color;
+        context.fill();
+        context.closePath();
+
+        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
+        context.fillStyle = "rgb(71,71,71)";
+        context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 8);
+    }
+};
+
+function drawExpCourseLevelGraph(canvasId, data) {
+    var canvas = $('#canvas_Overview_Experience_' + canvasId);
+    //var parent = $($('.overview-experience-item-wrap').parent());
+    var parent = $('#size_parent_canvas_' + canvasId);
+    var width = parent.width();
+    var height = parent.height();
+    canvas.attr('height', height);
+    canvas.attr('width', width);
+    canvas[0].width = width;
+    canvas[0].height = height;
+    var context = canvas[0].getContext('2d');
+    context.clearRect(0, 0, width, height);
+    var lineWidth = width / 215 * 10;
+    var radius = Math.floor(width / 2) - lineWidth + lineWidth / 2;
+    var centerX = Math.floor(width / 2);
+    var centerY = Math.floor(width / 2);
+    var total = 100;
+    var tmpX = 0;
+    var tmpY = 0;
+    var fontSize = Math.floor(width / 215 * 16);
+    var bigFontSize = Math.floor(width / 215 * 36);
+    context.beginPath();
+    context.strokeStyle = 'rgb(230,230,230)';
+    context.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    context.lineWidth = lineWidth;
+    context.stroke();
+    context.closePath();
+
+    context.beginPath();
+    context.strokeStyle = 'rgb(124,218,36)';
+    context.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + data.value / 100 * Math.PI * 2);
+    context.lineWidth = lineWidth;
+    context.stroke();
+    context.closePath();
+
+    tmpY = (radius + lineWidth / 2) * 2 + 20;
+    context.font = 'normal normal bold ' + fontSize + 'px \"微软雅黑\"';
+    context.fillStyle = "rgb(71,71,71)";
+    context.fillText(data.name, (width - (fontSize) * data.name.length) / 2, tmpY + fontSize / 2);
+
+    tmpY = radius + lineWidth / 2;
+    context.font = 'normal normal bold ' + bigFontSize + 'px \"微软雅黑\"';
+    context.fillStyle = "rgb(71,71,71)";
+    context.fillText(data.value + '%', (width - (bigFontSize) * ((data.value + '%').length - 1)) / 2, tmpY + bigFontSize / 2);
+};
+
+function drawTimesGraph(datas) {
+    var barWidth = 15;
+    var barSpace = 10;
+    var lineWidth = 1;
+    var canvas = $('#canvas_Overview_Time');
+    var parent = $($('.overview-times-item-wrap').parent());
+    var width = (barWidth + barSpace) * datas.length;
+    var height = parent.height();
+    $('#container_Overview_Times_Items').width(width);
+    if ($('#wrap_Overview_Times_Items').width() > $('#container_Overview_Times_Items').width()) {
+        $('.overview-list-arrow.times').hide();
+    }
+
+    canvas.attr('height', height);
+    canvas.attr('width', width);
+    canvas[0].width = width;
+    canvas[0].height = height;
+    var context = canvas[0].getContext('2d');
+    context.clearRect(0, 0, width, height);
+    var maxValue = datas[0].value;
+    for (var i = 0; i < datas.length; i++) {
+        maxValue = Math.max(maxValue, datas[i].value);
+    }
+
+    var unit = Math.floor((height - 10 - 20) / maxValue);
+    var startX = 0;
+    var startY = height - 20;
+    var ltX, ltY, rtX, rtY, rbX, rbY, linearGradient, bHeight, bWidth, tmpX, tmpY, tmpArr, tmpData;
+    for (var i = 0; i < datas.length; i++) {
+        tmpData = datas[i];
+        if (tmpData.value <= 0) {
+            startX = rtX + barSpace;
+            continue;
+        }
+
+        ltX = startX;
+        ltY = startY - tmpData.value * unit - lineWidth * 2;
+        rtX = startX + barWidth + lineWidth;
+        rtY = ltY;
+        rbX = rtX;
+        rbY = startY;
+        bHeight = tmpData.value * unit + lineWidth * 2;
+        bWidth = barWidth + lineWidth * 2;
+        //draw bar
+        linearGradient = context.createLinearGradient(ltX, ltY, 0, bHeight);
+        linearGradient.addColorStop(0, "rgb(98,163,54)");
+        linearGradient.addColorStop(1, "rgb(128,184,95)");
+        context.fillStyle = linearGradient;
+        context.fillRect(ltX, ltY, bWidth, bHeight);
+        //draw border
+        context.strokeStyle = 'rgb(167,196,150)';
+        context.lineWidth = 1;
+        context.moveTo(startX, startY);
+        context.lineTo(ltX, ltY);
+        context.lineTo(rtX, rtY);
+        context.lineTo(rbX, rbY);
+        context.lineTo(startX, startY);
+        context.stroke();
+        //draw time label
+        tmpX = ltX + 4;
+        tmpY = ltY - 2;
+        context.font = "normal normal bold 11px \"微软雅黑\"";
+        context.fillStyle = "rgb(97,97,97)";
+        context.fillText(tmpData.value, tmpX, tmpY);
+        //draw date label
+        tmpX = startX;
+        tmpY = startY + 12;
+        context.font = "normal normal 600 8px \"微软雅黑\"";
+        context.fillStyle = "rgb(97,97,97)";
+        tmpArr = tmpData.date.split('-');
+        context.fillText(tmpArr[1] + '-' + tmpArr[2], tmpX, tmpY);
+        //calculate next X
+        startX = rtX + barSpace;
+    }
+};
+
+function formatDate(date) {
+    if (typeof (date) == 'number' || typeof (date) == 'string') {
+        date = new Date(date);
+    }
+
+    if (date = 'Invalid Date') {
+        date = new Date();
+    }
+
+    var dateArr = [date.getFullYear().toString()];
+    var tmpVal = date.getMonth();
+    if (tmpVal < 10) {
+        tmpVal = '0' + tmpVal;
+    }
+
+    dateArr.push(tmpVal);
+    tmpVal = date.getDate();
+    if (tmpVal < 10) {
+        tmpVal = '0' + tmpVal;
+    }
+
+    dateArr.push(tmpVal);
+    return dateArr.join('-');
+}

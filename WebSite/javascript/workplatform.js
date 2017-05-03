@@ -179,11 +179,18 @@ function initEvents() {
         var width = parseInt(value[0]);
         var height = parseInt(value[1]);
         $('.run-scene-fullscreen').hide("slow", function () {
-            $('.siderbar-scene-container').append($('#game_container'));
+            var container = $('#game_container');
+            $('.siderbar-scene-container').append(container);
             adjustAfterSiderBarResize();
-            $('#game_container').find('canvas').height(height);
-            $('#game_container').find('canvas').width(width);
-            $('#game_container').css('padding-left', '0px');
+            container.find('canvas').height(height);
+            container.find('canvas').width(width);
+            container.css('padding-left', '0px');
+
+            var playButton = $('.run-scene-fullscreen-play-button');
+            var fontSize = width * 30 / 100;
+            playButton.css('font-size', fontSize + 'px');
+            playButton.css('left', 'calc(50% - ' + (fontSize / 2) + 'px');
+            playButton.css('top', ((width - fontSize) / 2) + 'px');
         });
     });
 

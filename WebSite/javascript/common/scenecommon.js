@@ -33,17 +33,24 @@ function _fullScreen() {
 };
 
 function setsizeWhenFullScreen() {
-    var canvas = $('#game_container').find('canvas');
+    var container = $('#game_container');
+    var canvas = container.find('canvas');
     $('.run-scene-fullscreen-close-button').attr('data-content', canvas.width() + ',' + canvas.height());
     var tmpHeight = $('.run-scene-fullscreen').height();
     var tmpWidth = $('.run-scene-fullscreen').width();
-    $('#game_container').height(tmpHeight);
-    $('#game_container').width(tmpWidth);
+    container.height(tmpHeight);
+    container.width(tmpWidth);
     var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
     var tmpRate = canvas.height() / canvas.width();
     canvas.height(tmpRate * tmpSize);
     canvas.width(tmpSize);
-    $('#game_container').css('padding-left', (tmpWidth - tmpSize) / 2 + 'px');
+    container.css('padding-left', (tmpWidth - tmpSize) / 2 + 'px');
+
+    var playButton = $('.run-scene-fullscreen-play-button');
+    var fontSize = tmpSize * 30 / 100;
+    playButton.css('font-size', fontSize + 'px');
+    playButton.css('left', 'calc(50% - ' + (fontSize / 2) + 'px');
+    playButton.css('top', ((tmpSize - fontSize) / 2) + 'px');
 }
 
 function addOperatorButton() {
