@@ -213,9 +213,11 @@ function initEvents() {
             }
         });
 
-        var tmpParam = '';
+        var tmpParam = '&scene=';
         if (_currentStep == _totalSteps) {
-            tmpParam = '&scene=' + _nextStage;
+            tmpParam += _nextStage;
+        } else {
+            tmpParam += _currentStage;
         }
 
         window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
@@ -262,7 +264,7 @@ function siderBarDrag(e) {
 };
 
 function buildStageHTML(data) {
-    var container = $('#Course_Stage_Container');
+    var container = $('#Course_Stage_Container .wrap-head-stage-steps');
     var isFuture = false;
     var labelClass = "";
     var itemClass = "";
@@ -303,6 +305,7 @@ function buildStageHTML(data) {
         container.append(tmpItem);
     }
 
+    container.css('left', (-itemWidth / 2) + "%")
     $('.head-course-name').text(data.name);
     var tmpWidth = itemWidth * (data.stage_count - 1);
     $('.head-stage-background').css('width', tmpWidth + "%");

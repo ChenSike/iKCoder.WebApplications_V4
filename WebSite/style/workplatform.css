@@ -14,13 +14,23 @@ body {
 }
 
 .head-stage-background {
+    top: 0px;
+    left: 0px;
     width: 80%;
     height: 30px;
     margin-left: 10%;
     margin-right: 10%;
-    position: relative;
+    position: absolute;
     display: inline-block;
     background-image: url(../image/stageprogress.png);
+}
+
+.wrap-head-stage-steps {
+    position: absolute;
+    top: 0px;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 100%;
 }
 
 .goto-profile-image-button {
@@ -36,30 +46,32 @@ body {
 .head-stage-label {
     width: 15%;
     height: 30px;
-    top: -35px;
+    top: 0px;
     position: relative;
     display: inline-block;
 }
 
     .head-stage-label div {
-        width: 30px;
-        height: 30px;
+        width: 26px;
+        height: 26px;
         position: relative;
+        top: 2px;
         left: calc(50% - 15px);
-        border-radius: 15px;
-        -moz-border-radius: 15px;
-        -webkit-border-radius: 15px;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
     }
 
     .head-stage-label .complete-item {
-        background: url(../image/label/stepdone.png);
+        background: url(../image/stepdone.png);
         background-color: rgb(26,164,216);
+        background-position: -2px -2px;
         cursor: pointer;
     }
 
     .head-stage-label.show-stage-index {
-        height: 34px;
-        top: -45px;
+        height: 30px;
+        top: 0px;
         font-size: 16px;
         font-weight: bold;
         color: rgb(255,255,255);
@@ -70,16 +82,17 @@ body {
         }
 
     .head-stage-label .current-item {
-        width: 34px;
-        height: 34px;
-        line-height: 34px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        top: 0px;
         font-size: 16px;
         font-weight: bold;
         color: rgb(255,255,255);
         background-color: rgb(233,139,58);
-        border-radius: 17px;
-        -moz-border-radius: 17px;
-        -webkit-border-radius: 17px;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
     }
 
     .head-stage-label .future-item {
