@@ -93,10 +93,11 @@ function hideLoadingMask() {
 
 function rebuildContent(symbol) {
     showLoadingMask();
-    var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();   
+    var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();
     $('#wrap_Category_Title').empty();
     $('#wrap_Category_Content').empty();
-    $('#wrap_Category_Content')[0].className='col';
+    $('#wrap_Category_Title').show();
+    $('#wrap_Category_Content')[0].className = 'col';
     var currentItem = null;
     switch (symbol) {
         case 'overview':
@@ -108,7 +109,6 @@ function rebuildContent(symbol) {
             rebuildMesagesPanel();
             break;
         case 'report':
-            $('#wrap_Category_Content')[0].className = 'col-9';
             currentItem = $($('.left-bar-category-item')[2]);
             rebuildReportPanel();
             break;
@@ -196,10 +196,6 @@ function rebuildOverviewPanel(contentHeight) {
 };
 
 function rebuildMesagesPanel() {
-    hideLoadingMask()
-}
-
-function rebuildReportPanel() {
     hideLoadingMask()
 }
 
@@ -1321,19 +1317,70 @@ function rebuildReportPanel() {
     //    }
     //});
     var data = {
-        profile: {
+        user: {
             header: _getRequestURL(_gURLMapping.account.getheader, {}),
             name: 'Terry',
-            gender: '1',
-            birthday: '2009-10-01',
-            province: '广东',
-            city: '深圳',
-            school: '深圳实验小学'
-        }
+            title: '高级工程师',
+            exp: 55,
+            over: 88,
+            work: 20,
+            course: 18,
+            friend: 30,
+            date: '2017-5-1',
+            qr: 'image/qr_wechat.png'
+        },
+        achieve: [
+            { id: 1, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' },
+            { id: 2, title: '分享小达人', content: '分享了18个已完成作品， 这些作品已被565人次浏览；' },
+        ],
+        ability: {
+            type: ['科学', '技术', '工程', '数学', '语言'],
+            course: 25,
+            time: 125,
+            items: [
+                '计算机原理',
+                '空间概念和有序移动',
+                '基础数据结构',
+                '键盘及鼠标控制',
+                '数学输入与输出',
+                '条件循环',
+                '条件判断语句',
+                '音乐播放原理',
+                '基本绘图指令'
+            ]
+        },
+        time: {
+            over: 95,
+            times: [
+                { date: '20070-01-01', time: 2 },
+                { date: '20070-01-02', time: 6 },
+                { date: '20070-01-03', time: 3 }
+            ],
+            course: [
+                { id: '1', rate: 85, title: '初级课程' },
+                { id: '２', rate: 85, title: '中级课程' },
+                { id: '３', rate: 85, title: '高级课程' }
+            ]
+        },
+        potential: [
+            { title: '科学', value: 100 },
+            { title: '数学', value: 80 },
+            { title: '技术', value: 55 },
+            { title: '工程', value: 20 },
+            { title: '语言', value: 10 }
+        ],
+        works: [
+            { id: '1', title: '', img: '', content: '' },
+            { id: '1', title: '', img: '', content: '' },
+            { id: '1', title: '', img: '', content: '' },
+            { id: '1', title: '', img: '', content: '' },
+            { id: '1', title: '', img: '', content: '' },
+            { id: '1', title: '', img: '', content: '' }
+        ]
     }
 
     rebuildReportTitles();
-    rebuildReportContents();
+    rebuildReportContents(data);
     hideLoadingMask();
 };
 
@@ -1341,42 +1388,366 @@ function rebuildReportTitles() {
     $('#wrap_Category_Title').hide();
 };
 
-function rebuildReportContents() {
+function rebuildReportContents(data) {
     var minWidth = $('#sideBar_Page_Left').width() + 800;
     if ($('body').width < minWidth) {
         $('body').width = minWidth;
     }
 
-    $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width());
-    buildReportOverviewPanel();
-    buildReportAchievePanel();
-    buildReportAbilityPanel();
-    buildReportTimePanel();
-    buildReportPotentialPanel();
-    buildReportWorksPanel();
-    buildReportAttentionPanel();
+    $('#wrap_Category_Content')[0].className = 'col-9';
+    $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width() - 18);
+    buildReportOverviewPanel(data.user);
+    buildReportAchievePanel(data.achieve);
+    buildReportAbilityPanel(data.ability);
+    buildReportTimePanel(data.time);
+    buildReportPotentialPanel(data.potential);
+    buildReportWorksPanel(data.works);
+    buildReportAttentionPanel(data.user);
 };
 
-function buildReportOverviewPanel() {
+function buildReportOverviewPanel(data) {
+    var tmpCount = Math.round(data.over / 5);
+    var width_1 = (33 - 0.4) * tmpCount;
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('    <div class="row" style="padding-top:15px;">');
+    tmpHTMLArr.push('        <div class="col-12 text-right">');
+    tmpHTMLArr.push('            <p class="text-size-11 text-color-smart">报告生成日期: ' + data.date + '</p>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('        <div class="col-12 text-left">');
+    tmpHTMLArr.push('            <h2 class="report-section-title">概览</h2>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    tmpHTMLArr.push('        <div class="col-10 offset-1">');
+    tmpHTMLArr.push('            <div class="container-fluid">');
+    tmpHTMLArr.push('                <div class="row">');
+    tmpHTMLArr.push('                    <div class="col-12">');
+    tmpHTMLArr.push('                        <div class="d-flex align-items-center" id="report_overview_userinfor" style="position: relative; left: 269px; width: 380px;">');
+    tmpHTMLArr.push('                            <div class="text-size-13 text-right">');
+    tmpHTMLArr.push('                                超越<span class="text-size-21 text-color-data">' + data.over + '%</span>的全国学员');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                            <div style="padding:10px 20px;">');
+    tmpHTMLArr.push('                                <img class="report-overview-header" src="image/Addicon.png" />');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                            <div>');
+    tmpHTMLArr.push('                                <div class="container-fluid no-padding">');
+    tmpHTMLArr.push('                                    <div class="row no-margin">');
+    tmpHTMLArr.push('                                        <div class="col-12 no-padding">');
+    tmpHTMLArr.push('                                            <p class="text-size-10">' + data.name + ',' + data.title + '</p>');
+    tmpHTMLArr.push('                                            <p class="text-size-10">当前课程经验值: <span class="text-size-12 text-color-data">' + data.exp + '%</span></p>');
+    tmpHTMLArr.push('                                            <hr style="height:2px; color:rgb(239,239,239); margin: 5px 0px;" />');
+    tmpHTMLArr.push('                                        </div>');
+    tmpHTMLArr.push('                                    </div>');
+    tmpHTMLArr.push('                                    <div class="row no-margin">');
+    tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
+    tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.work + '</p>');
+    tmpHTMLArr.push('                                        </div>');
+    tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
+    tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.course + '</p>');
+    tmpHTMLArr.push('                                        </div>');
+    tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
+    tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.friend + '</p>');
+    tmpHTMLArr.push('                                        </div>');
+    tmpHTMLArr.push('                                    </div>');
+    tmpHTMLArr.push('                                    <div class="row no-margin">');
+    tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
+    tmpHTMLArr.push('                                            <p class="text-size-10">作品</p>');
+    tmpHTMLArr.push('                                        </div>');
+    tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
+    tmpHTMLArr.push('                                            <p class="text-size-10">课程</p>');
+    tmpHTMLArr.push('                                        </div>');
+    tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
+    tmpHTMLArr.push('                                            <p class="text-size-10">小伙伴</p>');
+    tmpHTMLArr.push('                                        </div>');
+    tmpHTMLArr.push('                                    </div>');
+    tmpHTMLArr.push('                                </div>');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('                <div class="row justify-content-center">');
+    tmpHTMLArr.push('                    <div class="col" style="width:677px; max-width:677px;">');
+    tmpHTMLArr.push('                        <div class="d-flex align-items-baseline">');
+    tmpHTMLArr.push('                            <div class="report-overview-rank-part-1" style="width:' + width_1 + 'px;max-width:' + width_1 + 'px;min-width:' + width_1 + 'px;">');
+    tmpHTMLArr.push('                                <div style="background-image:url(image/smlperson.png); background-size:33px 77px; height:77px; width:100%;"></div>');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                            <div class="report-overview-rank-part-2">');
+    tmpHTMLArr.push('                                <div style="background-image:url(image/smlperson.png); height:115px; width:50px;"></div>');
+    tmpHTMLArr.push('                            </div>');
+    var width_2 = (33 - 0.4) * (19 - tmpCount);
+    tmpHTMLArr.push('                            <div class="report-overview-rank-part-3" style="width: ' + width_2 + 'px; max-width: ' + width_2 + 'px; min-width: ' + width_2 + 'px;">');
+    tmpHTMLArr.push('                                <div style="background-image:url(image/smlperson.png); background-size:33px 77px; height:77px; width:100%;"></div>');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
+    var left = $('.report-overview-rank-part-1').parent().parent().position().left + width_1 + 25;
+    var tmpPos = $('.report-overview-header').position().left + $('.report-overview-header').width() / 2 + 20;
+    left = left - tmpPos;
+    $('#report_overview_userinfor').css('left', left + 'px');
+};
+
+function buildReportAchievePanel(data) {
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('        <div class="col-12 text-left">');
+    tmpHTMLArr.push('            <h2 class="report-section-title">成就</h2>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    for (var i = 0; i < data.length; i += 2) {
+        var tmpId = (data[i].id < 10 ? '0' + data[i].id : data[i].id);
+        tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+        tmpHTMLArr.push('        <div class="col-5 offset-1">');
+        tmpHTMLArr.push('            <div class="container-fluid">');
+        tmpHTMLArr.push('                <div class="row">');
+        tmpHTMLArr.push('                    <div class="col-3 text-size-75 text-color-index">' + tmpId + '</div>');
+        tmpHTMLArr.push('                    <div class="col-8">');
+        tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">' + data[i].title + '</p>');
+        tmpHTMLArr.push('                        <p class="text-size-10">' + data[i].content + '</p>');
+        tmpHTMLArr.push('                    </div>');
+        tmpHTMLArr.push('                </div>');
+        tmpHTMLArr.push('            </div>');
+        tmpHTMLArr.push('        </div>');
+        if (i + 1 < data.length) {
+            tmpId = (data[i + 1].id < 10 ? '0' + data[i + 1].id : data[i + 1].id);
+            tmpHTMLArr.push('        <div class="col-5">');
+            tmpHTMLArr.push('            <div class="container-fluid">');
+            tmpHTMLArr.push('                <div class="row">');
+            tmpHTMLArr.push('                    <div class="col-3 text-size-75 text-color-index">' + tmpId + '</div>');
+            tmpHTMLArr.push('                    <div class="col-8">');
+            tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">' + data[i + 1].title + '</p>');
+            tmpHTMLArr.push('                        <p class="text-size-10">' + data[i + 1].content + '</p>');
+            tmpHTMLArr.push('                    </div>');
+            tmpHTMLArr.push('                </div>');
+            tmpHTMLArr.push('            </div>');
+            tmpHTMLArr.push('        </div>');
+            tmpHTMLArr.push('    </div>');
+        }
+    }
+    tmpHTMLArr.push('</div>');
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
+};
+
+function buildReportAbilityPanel(data) {
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('        <div class="col-12 text-left">');
+    tmpHTMLArr.push('            <h2 class="report-section-title">能力</h2>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    tmpHTMLArr.push('        <div class="col-7">');
+    tmpHTMLArr.push('            <div class="container-fluid">');
+    tmpHTMLArr.push('                <div class="row" style="padding-bottom:50px;">');
+    tmpHTMLArr.push('                    <div class="col-12">');
+    tmpHTMLArr.push('                        <p class="text-size-10">');
+    tmpHTMLArr.push('                            基于艾酷为中国孩子开发的STEML课程体系，目前您的孩子已经进行了');
+    tmpHTMLArr.push('<span>' + data.type.length + '</span>');
+    tmpHTMLArr.push('大类，');
+    tmpHTMLArr.push('<span>' + data.course + '</span>');
+    tmpHTMLArr.push('个课程');
+    tmpHTMLArr.push('，');
+    tmpHTMLArr.push('<span>' + data.time + '</span>');
+    tmpHTMLArr.push('个课时的学习；在');
+    var tmpStr = [];
+    for (var i = 0; i < data.type.length - 1; i++) {
+        tmpStr.push(data.type[i]);
+    }
+
+    tmpStr = tmpStr.join('、');
+    if (tmpStr.length > 0) {
+        tmpStr += '和' + data.type[data.type.length - 1];
+    }
+
+    tmpHTMLArr.push(tmpStr);
+    tmpHTMLArr.push('等各个领域都获得了显著的能力提升。');
+    tmpHTMLArr.push('                        </p>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('                <div class="row">');
+    tmpHTMLArr.push('                    <div class="col-12">');
+    tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">已完成课程列表</p>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('                <div class="row">');
+    tmpHTMLArr.push('                    <div class="col-12">');
+    tmpHTMLArr.push('                        <div class="container-fluid">');
+    tmpHTMLArr.push('                            <div class="row" style="padding-top:10px;">');
+    for (var i = 0; i < data.items.length; i++) {
+        tmpHTMLArr.push('                                <div class="col-4 text-size-10">');
+        tmpHTMLArr.push('                                    【' + (i + 1) + '】' + data.items[i]);
+        tmpHTMLArr.push('                                </div>');
+    }
+
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-5">');
+    tmpHTMLArr.push('            <canvas id="canvas_Report_Ability"></canvas>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 
 };
 
-function buildReportAchievePanel() {
+function buildReportTimePanel(data) {
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('        <div class="col-12 text-left">');
+    tmpHTMLArr.push('            <h2 class="report-section-title">时间</h2>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:65px;">');
+    tmpHTMLArr.push('        <div class="col-12" style="padding-left:30px;">');
+    tmpHTMLArr.push('            <p class="text-size-10">');
+    tmpHTMLArr.push('               到今天为止，您的孩子已经累计学习编程 ');
+    var total = 0;
+    for (var i = 0; i < data.times.length; i++) {
+        total += data.times[i].time;
+    }
+
+    tmpHTMLArr.push('               <span class="text-size-16 text-color-data">' + total + '</span>');
+    tmpHTMLArr.push('                小时，超过 ');
+    tmpHTMLArr.push('               <span class="text-size-16 text-color-data">' + data.over + '%</span> 的小伙伴。');
+    tmpHTMLArr.push('            </p>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    tmpHTMLArr.push('        <div class="col-6 text-center text-size-13 text-color-smart">');
+    tmpHTMLArr.push('            本月学习时间及趋势');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-6 text-center text-size-13 text-color-smart">');
+    tmpHTMLArr.push('            各级课程完成率');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    tmpHTMLArr.push('        <div class="col-6" style="height:210px;">');
+    tmpHTMLArr.push('           <canvas id="canvas_Report_Time_Time"></canvas>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-6">');
+    tmpHTMLArr.push('           <canvas id="canvas_Report_Time_Course"></canvas>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
-function buildReportAbilityPanel() {
+function buildReportPotentialPanel(data) {
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('        <div class="col-12 text-left">');
+    tmpHTMLArr.push('            <h2 class="report-section-title">潜力</h2>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    tmpHTMLArr.push('        <div class="col-5">');
+    tmpHTMLArr.push('            <div class="container-fluid">');
+    tmpHTMLArr.push('                <div class="row" style="padding-bottom:100px;">');
+    tmpHTMLArr.push('                    <div class="col-12 text-center">');
+    tmpHTMLArr.push('                        <p class="text-size-10">');
+    tmpHTMLArr.push('                            通过目前已经完成的课程，您的孩子在');
+    tmpHTMLArr.push('                        </p>');
+    tmpHTMLArr.push('                        <p class="text-size-16 text-color-data">');
+    tmpHTMLArr.push(data[0].title);
+    tmpHTMLArr.push('                            <span class="text-size-10 text-color-text">以及</span>');
+    tmpHTMLArr.push(data[1].title);
+    tmpHTMLArr.push('                        </p>');
+    tmpHTMLArr.push('                        <p class="text-size-10">');
+    tmpHTMLArr.push('                            这两个领域体现出了过人的潜力。');
+    tmpHTMLArr.push('                        </p>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('                <div class="row">');
+    tmpHTMLArr.push('                    <div class="col-12">');
+    tmpHTMLArr.push('                        <p class="text-size-10">');
+    tmpHTMLArr.push('                            【1】分析结果基于艾酷PTAS潜力感知模型计算得出，模型计算准确率与孩子的课程参与数据量成正比；');
+    tmpHTMLArr.push('                        </p>');
+    tmpHTMLArr.push('                        <p class="text-size-10">');
+    tmpHTMLArr.push('                            【2】潜力分析结果可能随孩子年龄和知识结构变化而改变，因此谨供参考。');
+    tmpHTMLArr.push('                        </p>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-7">');
+    tmpHTMLArr.push('            <canvas id="canvas_Report_Potential"></canvas>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
-function buildReportTimePanel() {
+function buildReportWorksPanel(data) {
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('        <div class="col-12 text-left">');
+    tmpHTMLArr.push('            <h2 class="report-section-title">作品</h2>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:40px;">');
+    tmpHTMLArr.push('        <div class="col-12 text-left" style="padding-left:30px;">');
+    tmpHTMLArr.push('            <p class="text-size-10"><span class="text-size-13 text-color-smart">只要有梦想，谁都可以创造非凡。</span>您的孩子在学习期间创造出了许多有趣的作品。</p>');
+    tmpHTMLArr.push('            <p class="text-size-10">这些作品背后体现了您孩子独一无二的创造力、理解力，以及在艾酷教育所学到的编程知识。和您一样，我们为孩子的成就而感到无比骄傲。</p>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:40px; padding-left:30px;">');
+    for (var i = 0; i < data.length; i++) {
+        tmpHTMLArr.push('        <div class="col-4 wrap-report-works-item"></div>');
+    }
+
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
-function buildReportPotentialPanel() {
-};
-
-function buildReportWorksPanel() {
-};
-
-function buildReportAttentionPanel() {
+function buildReportAttentionPanel(data) {
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255); border:none;">');
+    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('        <div class="col-12 text-left">');
+    tmpHTMLArr.push('            <h2 class="report-section-title">关注</h2>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('        <div class="col-6 text-left" style="padding-left:30px;">');
+    tmpHTMLArr.push('            <p class="text-size-10" style="padding-bottom:20px;">');
+    tmpHTMLArr.push('               感谢您阅读');
+    tmpHTMLArr.push('               的艾酷学习报告。我们为您孩子的进步和成就感到同样骄傲。</p>');
+    tmpHTMLArr.push('            <p class="text-size-10" style="padding-bottom:30px;">您可以通过点击下面的链接下载本报告全文。</p>');
+    tmpHTMLArr.push('            <p class="text-center">');
+    tmpHTMLArr.push('               <img src="image/pdf.png" width="60" height="80" />');
+    tmpHTMLArr.push('            </p>');
+    tmpHTMLArr.push('            <p class="text-center text-size-10" style="padding-bottom:40px;">');
+    tmpHTMLArr.push('                或者，您可以扫描添加艾酷微信号，让我们可以第一时间把孩子的信息推送到您的指尖。');
+    tmpHTMLArr.push('            </p>');
+    tmpHTMLArr.push('            <p class="text-center">');
+    tmpHTMLArr.push('                <img src="' + data.qr + '" width="100" height="100" />');
+    tmpHTMLArr.push('            </p>');
+    tmpHTMLArr.push('            <p class="text-center text-size-10 text-color-smart" style="padding-bottom:40px;">艾酷教育，为中国孩子学习编程而生</p>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-6" style="padding-left:30px;">');
+    tmpHTMLArr.push('            <img src="image/iphone7.png" class="img-fluid" />');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
 function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
