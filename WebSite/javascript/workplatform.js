@@ -276,8 +276,8 @@ function buildStageHTML(data) {
     var labelStyle = '';
     for (var i = 1; i < data.stage_count + 1; i++) {
         labelClass = "";
-        itemClass = "future-item";
-        innerTxt = "";
+        itemClass = 'future-item';
+        innerTxt = '';
         style = '';
         labelStyle = '';
         if (i <= data.complete_count + 1) {
@@ -301,19 +301,27 @@ function buildStageHTML(data) {
         }
 
         var tmpItem = $('<div class="head-stage-label ' + labelClass + '" ' + labelStyle + '><div class="' + itemClass + '" data-target="' + i + '" style="' + style + '">' + innerTxt + '</div></div>');
-        tmpItem.css('width', itemWidth + "%");
+        tmpItem.css('width', itemWidth + '%');
         container.append(tmpItem);
     }
 
-    container.css('left', (-itemWidth / 2) + "%")
+    var background = $('.head-stage-background');
+    var parent = $('#Course_Stage_Container');
     $('.head-course-name').text(data.name);
     var tmpWidth = itemWidth * (data.stage_count - 1);
-    $('.head-stage-background').css('width', tmpWidth + "%");
+    background.css('width', tmpWidth + '%');
     tmpWidth = 100 / (data.stage_count - 1) * (data.complete_count);
-    $('.head-stage-space').css('width', tmpWidth + "%");
+    $('.head-stage-space').css('width', tmpWidth + '%');
+    var tmpLeft = (parent.width() - background.width()) / 2;
+    background.css('left', tmpLeft + 'px');
+    container.css('left', 'calc(' + (-itemWidth / 2) + '% + ' + tmpLeft + 'px)');
+    if (data.stage_count == 1) {
+        container.css('top', "-5px");
+    }
+
     updateTipsText(data.note);
 
-    $("#btn_Step_GoNext").text((data.stage_count == data.complete_count ? '挑战下一课' : '挑战下一步'));
+    $('#btn_Step_GoNext').text((data.stage_count == data.complete_count ? '挑战下一课' : '挑战下一步'));
     $('div.head-stage-label .complete-item').on('click', function () {
         gotoSpecialStep($(arguments[0].target).attr('data-target'));
     })
@@ -778,7 +786,7 @@ function showTooltip(eventObj) {
         var wrap = $('#container_Static_Stage');
         var tip = $('#tooltip_Component');
         var tipFrame = $('.tooltip-warning-wrap');
-        var html = '<p style="font-family: 微软雅黑; font-size: 15px;"><strong <%style%>>' + target.cn + ': </strong><span>(' + target.en + ')' + target.dt + '</span></p>';
+        var html = '<p style="font-family: 微软雅黑; font-size: 15px;"><strong <%style%>>' + target.cn + '</strong><span>(' + target.en + ')&nbsp;:&nbsp;' + target.dt + '</span></p>';
         updateTipsText(html.replace('<%style%>', 'style="color:rgb(2,117,216);"'));
         $('#tooltip_Component .tooltip-inner').html(html.replace('<%style%>', ''));
         var offset = wrap.offset();
