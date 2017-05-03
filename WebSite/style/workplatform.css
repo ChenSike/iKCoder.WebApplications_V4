@@ -522,6 +522,26 @@ textarea {
     position: absolute;
     top: 10px;
     left: calc(100% - 40px);
+    color: rgb(255,255,255);
+}
+
+.run-scene-fullscreen-play-button {
+    font-size: 200px;
+    color: rgba(255,255,255,0.7);
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: calc(50% - 100px);
+    left: calc(50% - 100px);
+    cursor:pointer;
+}
+
+.run-scene-fullscreen-play-button:hover {
+    font-size: 220px;
+    width: 220px;
+    height: 220px;
+    top: calc(50% - 110px);
+    left: calc(50% - 110px);
 }
 
 .knowledge-panel {

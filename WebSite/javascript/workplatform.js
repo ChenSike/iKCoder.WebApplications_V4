@@ -175,11 +175,19 @@ function initEvents() {
     });
 
     $('.run-scene-fullscreen-close-button').on('click', function (e) {
-        //$('.run-scene-fullscreen').css('display', 'none');
+        var value = $('.run-scene-fullscreen-close-button').attr('data-content').split(',');
+        var width = parseInt(value[0]);
+        var height = parseInt(value[1]);
         $('.run-scene-fullscreen').hide("slow", function () {
             $('.siderbar-scene-container').append($('#game_container'));
+            adjustAfterSiderBarResize();
+            $('#game_container').find('canvas').height(height);
+            $('#game_container').find('canvas').width(width);
+            $('#game_container').css('padding-left', '0px');
         });
     });
+
+    $('.run-scene-fullscreen-play-button').on('click', _playSceneFullScreen);
 
     $('#panel_CodeMode').draggable({ containment: "body", scroll: false }).resizable();
 
