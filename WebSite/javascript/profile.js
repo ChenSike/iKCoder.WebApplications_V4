@@ -8,8 +8,8 @@ function initPage() {
     initEvents();
     $('#wrap_Category_Title').show();
     //rebuildContent('overview');
-    rebuildContent('settings');
-    //rebuildContent('report');
+    //rebuildContent('settings');
+    rebuildContent('report');
     refereshMessage();
 };
 
@@ -1332,9 +1332,16 @@ function rebuildReportPanel() {
         achieve: [
             { id: 1, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' },
             { id: 2, title: '分享小达人', content: '分享了18个已完成作品， 这些作品已被565人次浏览；' },
+            { id: 3, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' }
         ],
         ability: {
-            type: ['科学', '技术', '工程', '数学', '语言'],
+            type: [
+                { name: '科学', value: 700 },
+                { name: '技术', value: 400 },
+                { name: '工程', value: 550 },
+                { name: '数学', value: 700 },
+                { name: '语言', value: 450 }
+            ],
             course: 25,
             time: 125,
             items: [
@@ -1403,6 +1410,7 @@ function rebuildReportContents(data) {
     buildReportPotentialPanel(data.potential);
     buildReportWorksPanel(data.works);
     buildReportAttentionPanel(data.user);
+    drawAbilityGraph(data.ability.type);
 };
 
 function buildReportOverviewPanel(data) {
@@ -1503,10 +1511,40 @@ function buildReportAchievePanel(data) {
     tmpHTMLArr.push('            <h2 class="report-section-title">成就</h2>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    for (var i = 0; i < data.length; i += 2) {
+    //for (var i = 0; i < data.length; i += 2) {
+    //    var tmpId = (data[i].id < 10 ? '0' + data[i].id : data[i].id);
+    //    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    //    tmpHTMLArr.push('        <div class="col-5 offset-1">');
+    //    tmpHTMLArr.push('            <div class="container-fluid">');
+    //    tmpHTMLArr.push('                <div class="row">');
+    //    tmpHTMLArr.push('                    <div class="col-3 text-size-75 text-color-index">' + tmpId + '</div>');
+    //    tmpHTMLArr.push('                    <div class="col-8">');
+    //    tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">' + data[i].title + '</p>');
+    //    tmpHTMLArr.push('                        <p class="text-size-10">' + data[i].content + '</p>');
+    //    tmpHTMLArr.push('                    </div>');
+    //    tmpHTMLArr.push('                </div>');
+    //    tmpHTMLArr.push('            </div>');
+    //    tmpHTMLArr.push('        </div>');
+    //    if (i + 1 < data.length) {
+    //        tmpId = (data[i + 1].id < 10 ? '0' + data[i + 1].id : data[i + 1].id);
+    //        tmpHTMLArr.push('        <div class="col-5">');
+    //        tmpHTMLArr.push('            <div class="container-fluid">');
+    //        tmpHTMLArr.push('                <div class="row">');
+    //        tmpHTMLArr.push('                    <div class="col-3 text-size-75 text-color-index">' + tmpId + '</div>');
+    //        tmpHTMLArr.push('                    <div class="col-8">');
+    //        tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">' + data[i + 1].title + '</p>');
+    //        tmpHTMLArr.push('                        <p class="text-size-10">' + data[i + 1].content + '</p>');
+    //        tmpHTMLArr.push('                    </div>');
+    //        tmpHTMLArr.push('                </div>');
+    //        tmpHTMLArr.push('            </div>');
+    //        tmpHTMLArr.push('        </div>');
+    //        tmpHTMLArr.push('    </div>');
+    //    }
+    //}
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    for (var i = 0; i < data.length; i++) {
         var tmpId = (data[i].id < 10 ? '0' + data[i].id : data[i].id);
-        tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
-        tmpHTMLArr.push('        <div class="col-5 offset-1">');
+        tmpHTMLArr.push('        <div class="col-4 ">');
         tmpHTMLArr.push('            <div class="container-fluid">');
         tmpHTMLArr.push('                <div class="row">');
         tmpHTMLArr.push('                    <div class="col-3 text-size-75 text-color-index">' + tmpId + '</div>');
@@ -1517,23 +1555,9 @@ function buildReportAchievePanel(data) {
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
         tmpHTMLArr.push('        </div>');
-        if (i + 1 < data.length) {
-            tmpId = (data[i + 1].id < 10 ? '0' + data[i + 1].id : data[i + 1].id);
-            tmpHTMLArr.push('        <div class="col-5">');
-            tmpHTMLArr.push('            <div class="container-fluid">');
-            tmpHTMLArr.push('                <div class="row">');
-            tmpHTMLArr.push('                    <div class="col-3 text-size-75 text-color-index">' + tmpId + '</div>');
-            tmpHTMLArr.push('                    <div class="col-8">');
-            tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">' + data[i + 1].title + '</p>');
-            tmpHTMLArr.push('                        <p class="text-size-10">' + data[i + 1].content + '</p>');
-            tmpHTMLArr.push('                    </div>');
-            tmpHTMLArr.push('                </div>');
-            tmpHTMLArr.push('            </div>');
-            tmpHTMLArr.push('        </div>');
-            tmpHTMLArr.push('    </div>');
-        }
     }
     tmpHTMLArr.push('</div>');
+
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
@@ -1561,12 +1585,12 @@ function buildReportAbilityPanel(data) {
     tmpHTMLArr.push('个课时的学习；在');
     var tmpStr = [];
     for (var i = 0; i < data.type.length - 1; i++) {
-        tmpStr.push(data.type[i]);
+        tmpStr.push(data.type[i].name);
     }
 
     tmpStr = tmpStr.join('、');
     if (tmpStr.length > 0) {
-        tmpStr += '和' + data.type[data.type.length - 1];
+        tmpStr += '和' + data.type[data.type.length - 1].name;
     }
 
     tmpHTMLArr.push(tmpStr);
@@ -1749,6 +1773,98 @@ function buildReportAttentionPanel(data) {
     tmpHTMLArr.push('</div>');
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
+
+function drawAbilityGraph(datas) {
+    var fontSize = 28;
+    var valFontSize = 20;
+    var canvas = document.getElementById('canvas_Report_Ability');
+    var parent = $($(canvas).parent());
+    var height = parent.height() - 10;
+    var width = parent.width();
+    var tmpSize = (height > width ? width : (width > 500) ? 500 : width);
+    canvas.width = tmpSize;
+    canvas.height = tmpSize;
+    var context = canvas.getContext('2d');
+    context.clearRect(0, 0, tmpSize, tmpSize);
+    var tmpSpaceUnit = Math.ceil(fontSize / 10) * 10;
+    var tmpCtxWidth = tmpSize - tmpSpaceUnit * 4;
+    //var border = (tmpCtxWidth / 2) / Math.sin(Math.PI / 180 * 54);
+    var radius = (tmpCtxWidth / 2) / Math.sin(Math.PI / 180 * 72);
+    var lightStyle = 'rgb(247,247,247)';
+    var boldStyle = 'rgb(230,230,230)';
+    var centerX = tmpSize / 2;
+    var centerY = tmpSize / 2;
+    var maxValue = datas[0].value;
+    for (var i = 0; i < datas.length; i++) {
+        maxValue = (maxValue < datas[i].value ? datas[i].value : maxValue);
+    }
+
+    maxValue = Math.ceil(maxValue / 100) * 100;
+    var tmpSteps = maxValue / 20;
+    var tmpRadius = radius / tmpSteps;
+    var vertex = [];
+    for (var i = 1; i < 36; i++) {
+        var tmpStyle = lightStyle;
+        if (i % 5 == 0) {
+            tmpStyle = boldStyle;
+        }
+
+        vertex.push(drawPolygon(context, datas.length, centerX, centerY, tmpRadius * i, 0, false, null, tmpStyle));
+    }
+
+    var tmpX, tmpY;
+    for (var i = 0; i < datas.length; i++) {
+        tmpX = vertex[vertex.length - 1][i].x;
+        tmpY = vertex[vertex.length - 1][i].y;
+        switch (i) {
+            case 0:
+                tmpX -= fontSize;
+                tmpY -= fontSize / 2;
+                break;
+            case 1:
+                tmpX += 2;
+                tmpY += fontSize / 2;
+                break;
+            case 2:
+                tmpY += fontSize;
+                break;
+            case 3:
+                tmpX -= tmpSpaceUnit * 2;
+                tmpY += fontSize;
+                break;
+            case 4:
+                tmpX -= fontSize * 2;
+                tmpY += fontSize / 2;
+                break;
+        }
+
+        context.font = fontSize + "px '微软雅黑'";
+        context.fillStyle = "rgb(86,86,86)";
+        context.fillText(datas[i].name, tmpX, tmpY);
+        context.restore();
+    }
+
+    var tmpVertex = [];
+    for (var i = 0; i < datas.length; i++) {
+        var tmpIdx = Math.floor(datas[i].value / 20);
+        tmpVertex.push(vertex[tmpIdx - 1][i]);
+    }
+
+    context.strokeStyle = 'rgb(64,112,196)';
+    context.lineWidth = 3;
+    context.font = valFontSize + "px '微软雅黑'";
+    context.fillStyle = "rgb(252,136,35)";
+    context.beginPath();
+    context.moveTo(tmpVertex[0].x, tmpVertex[0].y);
+    context.fillText(datas[0].value, tmpVertex[0].x, tmpVertex[0].y);
+    for (var i = 1; i < tmpVertex.length; i++) {
+        context.lineTo(tmpVertex[i].x, tmpVertex[i].y);
+        context.fillText(datas[i].value, tmpVertex[i].x, tmpVertex[i].y);
+    }
+    context.closePath();
+    context.stroke();
+};
+
 
 function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
     var angle = a || 0;
