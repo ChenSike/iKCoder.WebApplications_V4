@@ -4,13 +4,15 @@ function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
     $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
     loadHeaderImg();
-    loadSiderbarData();
+    //loadSiderbarData();
+    //getUnreadMsgCount();
     initEvents();
     $('#wrap_Category_Title').show();
     //rebuildContent('overview');
-    //rebuildContent('settings');
-    rebuildContent('report');
+    rebuildContent('settings');
+    //rebuildContent('report');
     refereshMessage();
+    //window.setInterval(getUnreadMsgCount, 120000);
 };
 
 function loadSiderbarData() {
@@ -19,14 +21,10 @@ function loadSiderbarData() {
     ];
     _registerRemoteServer();
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         async: true,
-        url: _getRequestURL(_gURLMapping.account.util),
-        data: '<root>' +
-                '<select>' +
-                '<items value="/root/usrbasic/usr_nickname"></items>' +
-                '</select>' +
-                '</root>',
+        url: _getRequestURL(_gURLMapping.bus.getcenterinfo),
+        data: '<root></root>',
         success: function (responseData, status) {
             if ($(responseData).find('err').length > 0) {
                 _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetBasicInfo_Error');
@@ -58,6 +56,37 @@ function loadSiderbarData() {
         }
     });
 };
+
+function getUnreadMsgCount() {
+    _registerRemoteServer();
+    $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.bus.getunreadmsgcount),
+        data: '<root></root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetUnReadsMsgCount_Error');
+                return;
+            } else {
+                var tmpNodes = $(responseData).find('msg');
+                var count = 100;
+                if (count > 99) {
+                    count = '99+';
+                }
+
+                $('.left-bar-message-count').text(count);
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取未读消息的数量！', 'danger', 'alert_GetUnReadsMsgCount_Error');
+        }
+    });
+}
 
 function initEvents() {
     $('.left-bar-category-item').on('click', function () {
@@ -492,6 +521,196 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('</div>');
         $('#wrap_Category_Title').append($(tmpHTMLArr.join('')));
+    }
+};
+
+function drawExpDistributionGraph(canvasId, datas) {
+    var canvas = $('#canvas_Overview_Experience_' + canvasId);
+    //var parent = $($('.overview-experience-item-wrap').parent());
+    var parent = $('#size_parent_canvas_' + canvasId);
+    var width = parent.width();
+    var height = parent.height();
+    canvas.attr('height', height);
+    canvas.attr('width', width);
+    canvas[0].width = width;
+    canvas[0].height = height;
+    var context = canvas[0].getContext('2d');
+    context.clearRect(0, 0, width, height);
+    //var lineWidth = width / 215 * 30;
+    var lineWidth = 30;
+    var tmpWidth = width;
+    if (width / height > 210 / 250) {
+        tmpWidth = Math.floor(210 / 250 * height);
+    }
+
+    var radius = Math.floor(tmpWidth / 2) - lineWidth + lineWidth / 2;
+    var centerX = Math.floor(width / 2);
+    var centerY = Math.floor(radius + lineWidth / 2);
+    var total = 0;
+    for (var i = 0; i < datas.length; i++) {
+        total += datas[i].value;
+    }
+
+    var startRadian = 0;
+    var endRadian = 0;
+    var tmpRadian = 0;
+    var tmpX = 0;
+    var tmpY = 0;
+    var legendItemWidth = Math.floor(width / datas.length);
+    //var legendItemWidth = 35;
+    var legendWidth = width / 215 * 8;
+    var fontSize = 10;
+    for (var i = 0; i < datas.length; i++) {
+        startRadian = endRadian;
+        tmpRadian = datas[i].value / total * Math.PI * 2;
+        endRadian += tmpRadian;
+        context.beginPath();
+        context.strokeStyle = datas[i].color;
+        context.arc(centerX, centerY, radius, startRadian, endRadian);
+        context.lineWidth = lineWidth;
+        context.stroke();
+        context.closePath();
+
+        tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - 8;
+        tmpY = centerY + radius * Math.sin(startRadian + tmpRadian / 2);
+        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
+        context.fillStyle = "rgb(255,255,255)";
+        context.fillText(datas[i].value, tmpX, tmpY);
+
+        tmpX = legendItemWidth * i;
+        //tmpY = (radius + lineWidth / 2) * 2 + 20;
+        tmpY = tmpWidth + 15;
+        context.beginPath();
+        context.rect(tmpX, tmpY, legendWidth, legendWidth);
+        context.fillStyle = datas[i].color;
+        context.fill();
+        context.closePath();
+
+        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
+        context.fillStyle = "rgb(71,71,71)";
+        context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 8);
+    }
+};
+
+function drawExpCourseLevelGraph(canvasId, data) {
+    var canvas = $('#canvas_Overview_Experience_' + canvasId);
+    //var parent = $($('.overview-experience-item-wrap').parent());
+    var parent = $('#size_parent_canvas_' + canvasId);
+    var width = parent.width();
+    var height = parent.height();
+    canvas.attr('height', height);
+    canvas.attr('width', width);
+    canvas[0].width = width;
+    canvas[0].height = height;
+    var context = canvas[0].getContext('2d');
+    context.clearRect(0, 0, width, height);
+    var lineWidth = width / 215 * 10;
+    var radius = Math.floor(width / 2) - lineWidth + lineWidth / 2;
+    var centerX = Math.floor(width / 2);
+    var centerY = Math.floor(width / 2);
+    var total = 100;
+    var tmpX = 0;
+    var tmpY = 0;
+    var fontSize = Math.floor(width / 215 * 16);
+    var bigFontSize = Math.floor(width / 215 * 36);
+    context.beginPath();
+    context.strokeStyle = 'rgb(230,230,230)';
+    context.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    context.lineWidth = lineWidth;
+    context.stroke();
+    context.closePath();
+
+    context.beginPath();
+    context.strokeStyle = 'rgb(124,218,36)';
+    context.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + data.value / 100 * Math.PI * 2);
+    context.lineWidth = lineWidth;
+    context.stroke();
+    context.closePath();
+
+    tmpY = (radius + lineWidth / 2) * 2 + 20;
+    context.font = 'normal normal bold ' + fontSize + 'px \"微软雅黑\"';
+    context.fillStyle = "rgb(71,71,71)";
+    context.fillText(data.name, (width - (fontSize) * data.name.length) / 2, tmpY + fontSize / 2);
+
+    tmpY = radius + lineWidth / 2;
+    context.font = 'normal normal bold ' + bigFontSize + 'px \"微软雅黑\"';
+    context.fillStyle = "rgb(71,71,71)";
+    context.fillText(data.value + '%', (width - (bigFontSize) * ((data.value + '%').length - 1)) / 2, tmpY + bigFontSize / 2);
+};
+
+function drawTimesGraph(datas) {
+    var barWidth = 15;
+    var barSpace = 10;
+    var lineWidth = 1;
+    var canvas = $('#canvas_Overview_Time');
+    var parent = $($('.overview-times-item-wrap').parent());
+    var width = (barWidth + barSpace) * datas.length;
+    var height = parent.height();
+    $('#container_Overview_Times_Items').width(width);
+    if ($('#wrap_Overview_Times_Items').width() > $('#container_Overview_Times_Items').width()) {
+        $('.overview-list-arrow.times').hide();
+    }
+
+    canvas.attr('height', height);
+    canvas.attr('width', width);
+    canvas[0].width = width;
+    canvas[0].height = height;
+    var context = canvas[0].getContext('2d');
+    context.clearRect(0, 0, width, height);
+    var maxValue = datas[0].value;
+    for (var i = 0; i < datas.length; i++) {
+        maxValue = Math.max(maxValue, datas[i].value);
+    }
+
+    var unit = Math.floor((height - 10 - 20) / maxValue);
+    var startX = 0;
+    var startY = height - 20;
+    var ltX, ltY, rtX, rtY, rbX, rbY, linearGradient, bHeight, bWidth, tmpX, tmpY, tmpArr, tmpData;
+    for (var i = 0; i < datas.length; i++) {
+        tmpData = datas[i];
+        if (tmpData.value <= 0) {
+            startX = rtX + barSpace;
+            continue;
+        }
+
+        ltX = startX;
+        ltY = startY - tmpData.value * unit - lineWidth * 2;
+        rtX = startX + barWidth + lineWidth;
+        rtY = ltY;
+        rbX = rtX;
+        rbY = startY;
+        bHeight = tmpData.value * unit + lineWidth * 2;
+        bWidth = barWidth + lineWidth * 2;
+        //draw bar
+        linearGradient = context.createLinearGradient(ltX, ltY, 0, bHeight);
+        linearGradient.addColorStop(0, "rgb(98,163,54)");
+        linearGradient.addColorStop(1, "rgb(128,184,95)");
+        context.fillStyle = linearGradient;
+        context.fillRect(ltX, ltY, bWidth, bHeight);
+        //draw border
+        context.strokeStyle = 'rgb(167,196,150)';
+        context.lineWidth = 1;
+        context.moveTo(startX, startY);
+        context.lineTo(ltX, ltY);
+        context.lineTo(rtX, rtY);
+        context.lineTo(rbX, rbY);
+        context.lineTo(startX, startY);
+        context.stroke();
+        //draw time label
+        tmpX = ltX + 4;
+        tmpY = ltY - 2;
+        context.font = "normal normal bold 11px \"微软雅黑\"";
+        context.fillStyle = "rgb(97,97,97)";
+        context.fillText(tmpData.value, tmpX, tmpY);
+        //draw date label
+        tmpX = startX;
+        tmpY = startY + 12;
+        context.font = "normal normal 600 8px \"微软雅黑\"";
+        context.fillStyle = "rgb(97,97,97)";
+        tmpArr = tmpData.date.split('-');
+        context.fillText(tmpArr[1] + '-' + tmpArr[2], tmpX, tmpY);
+        //calculate next X
+        startX = rtX + barSpace;
     }
 };
 
@@ -1364,17 +1583,17 @@ function rebuildReportPanel() {
                 { date: '20070-01-03', time: 3 }
             ],
             course: [
-                { id: '1', rate: 85, title: '初级课程' },
-                { id: '２', rate: 85, title: '中级课程' },
-                { id: '３', rate: 85, title: '高级课程' }
+                { id: '1', rate: 85, name: '初级课程' },
+                { id: '２', rate: 45, name: '中级课程' },
+                { id: '３', rate: 15, name: '高级课程' }
             ]
         },
         potential: [
-            { title: '科学', value: 100 },
-            { title: '数学', value: 80 },
-            { title: '技术', value: 55 },
-            { title: '工程', value: 20 },
-            { title: '语言', value: 10 }
+            { name: '科学', value: 100 },
+            { name: '数学', value: 80 },
+            { name: '技术', value: 55 },
+            { name: '工程', value: 20 },
+            { name: '语言', value: 10 }
         ],
         works: [
             { id: '1', title: '', img: '', content: '' },
@@ -1411,6 +1630,13 @@ function rebuildReportContents(data) {
     buildReportWorksPanel(data.works);
     buildReportAttentionPanel(data.user);
     drawAbilityGraph(data.ability.type);
+    drawTimeGraph(data.time);
+    drawPotentialGraph(data.potential);
+    adjustAttentionImg();
+    _loadIMG(data.user.header, function () {
+        $('.report-overview-header').attr('src', data.user.header);
+        $('.report-attention-header').attr('src', data.user.header);
+    });
 };
 
 function buildReportOverviewPanel(data) {
@@ -1438,14 +1664,14 @@ function buildReportOverviewPanel(data) {
     tmpHTMLArr.push('                                超越<span class="text-size-21 text-color-data">' + data.over + '%</span>的全国学员');
     tmpHTMLArr.push('                            </div>');
     tmpHTMLArr.push('                            <div style="padding:10px 20px;">');
-    tmpHTMLArr.push('                                <img class="report-overview-header" src="image/Addicon.png" />');
+    tmpHTMLArr.push('                                <img class="report-overview-header" src="image/circles.svg"  />');
     tmpHTMLArr.push('                            </div>');
     tmpHTMLArr.push('                            <div>');
     tmpHTMLArr.push('                                <div class="container-fluid no-padding">');
     tmpHTMLArr.push('                                    <div class="row no-margin">');
     tmpHTMLArr.push('                                        <div class="col-12 no-padding">');
     tmpHTMLArr.push('                                            <p class="text-size-10">' + data.name + ',' + data.title + '</p>');
-    tmpHTMLArr.push('                                            <p class="text-size-10">当前课程经验值: <span class="text-size-12 text-color-data">' + data.exp + '%</span></p>');
+    tmpHTMLArr.push('                                            <p class="text-size-10" style="min-width: 120px;">当前课程经验值: <span class="text-size-12 text-color-data">' + data.exp + '%</span></p>');
     tmpHTMLArr.push('                                            <hr style="height:2px; color:rgb(239,239,239); margin: 5px 0px;" />');
     tmpHTMLArr.push('                                        </div>');
     tmpHTMLArr.push('                                    </div>');
@@ -1545,12 +1771,12 @@ function buildReportAchievePanel(data) {
     for (var i = 0; i < data.length; i++) {
         var tmpId = (data[i].id < 10 ? '0' + data[i].id : data[i].id);
         tmpHTMLArr.push('        <div class="col-4 ">');
-        tmpHTMLArr.push('            <div class="container-fluid">');
+        tmpHTMLArr.push('            <div class="container-fluid no-padding">');
         tmpHTMLArr.push('                <div class="row">');
-        tmpHTMLArr.push('                    <div class="col-3 text-size-75 text-color-index">' + tmpId + '</div>');
-        tmpHTMLArr.push('                    <div class="col-8">');
-        tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">' + data[i].title + '</p>');
-        tmpHTMLArr.push('                        <p class="text-size-10">' + data[i].content + '</p>');
+        tmpHTMLArr.push('                    <div class="col-3 no-padding text-size-75 text-color-index">' + tmpId + '</div>');
+        tmpHTMLArr.push('                    <div class="col-7 no-padding">');
+        tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart" style="padding-left: 10px;">' + data[i].title + '</p>');
+        tmpHTMLArr.push('                        <p class="text-size-10" style="padding-left: 10px;">' + data[i].content + '</p>');
         tmpHTMLArr.push('                    </div>');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
@@ -1569,7 +1795,7 @@ function buildReportAbilityPanel(data) {
     tmpHTMLArr.push('            <h2 class="report-section-title">能力</h2>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
     tmpHTMLArr.push('        <div class="col-7">');
     tmpHTMLArr.push('            <div class="container-fluid">');
     tmpHTMLArr.push('                <div class="row" style="padding-bottom:50px;">');
@@ -1636,7 +1862,7 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('            <h2 class="report-section-title">时间</h2>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:65px;">');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
     tmpHTMLArr.push('        <div class="col-12" style="padding-left:30px;">');
     tmpHTMLArr.push('            <p class="text-size-10">');
     tmpHTMLArr.push('               到今天为止，您的孩子已经累计学习编程 ');
@@ -1651,7 +1877,7 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('            </p>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
     tmpHTMLArr.push('        <div class="col-6 text-center text-size-13 text-color-smart">');
     tmpHTMLArr.push('            本月学习时间及趋势');
     tmpHTMLArr.push('        </div>');
@@ -1660,10 +1886,28 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
-    tmpHTMLArr.push('        <div class="col-6" style="height:210px;">');
-    tmpHTMLArr.push('           <canvas id="canvas_Report_Time_Time"></canvas>');
+    tmpHTMLArr.push('        <div class="col-6" style="height:210px; padding-left:30px;">');
+    tmpHTMLArr.push('           <div class="container-fluid no-padding">');
+    tmpHTMLArr.push('               <div class="row align-items-center">');
+    tmpHTMLArr.push('                   <div class="col-1 no-padding">');
+    tmpHTMLArr.push('                       <div class="report-list-arrow time" id="arrow_Report_Time_Left">');
+    tmpHTMLArr.push('                           <i class="fa fa-chevron-left"></i>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('                   <div class="col-10 no-padding" style="height:210px;">');
+    tmpHTMLArr.push('                       <div id="container_Report_Time_Graph" style="height:100%;">');
+    tmpHTMLArr.push('                           <canvas id="canvas_Report_Time_Time"></canvas>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('                   <div class="col-1 no-padding">');
+    tmpHTMLArr.push('                       <div class="report-list-arrow time" id="arrow_Report_Time_Right">');
+    tmpHTMLArr.push('                           <i class="fa fa-chevron-right"></i>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-6">');
+    tmpHTMLArr.push('        <div class="col-6" style="padding-left:30px;">');
     tmpHTMLArr.push('           <canvas id="canvas_Report_Time_Course"></canvas>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
@@ -1680,7 +1924,7 @@ function buildReportPotentialPanel(data) {
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
-    tmpHTMLArr.push('        <div class="col-5">');
+    tmpHTMLArr.push('        <div class="col-4">');
     tmpHTMLArr.push('            <div class="container-fluid">');
     tmpHTMLArr.push('                <div class="row" style="padding-bottom:100px;">');
     tmpHTMLArr.push('                    <div class="col-12 text-center">');
@@ -1688,9 +1932,9 @@ function buildReportPotentialPanel(data) {
     tmpHTMLArr.push('                            通过目前已经完成的课程，您的孩子在');
     tmpHTMLArr.push('                        </p>');
     tmpHTMLArr.push('                        <p class="text-size-16 text-color-data">');
-    tmpHTMLArr.push(data[0].title);
+    tmpHTMLArr.push(data[0].name);
     tmpHTMLArr.push('                            <span class="text-size-10 text-color-text">以及</span>');
-    tmpHTMLArr.push(data[1].title);
+    tmpHTMLArr.push(data[1].name);
     tmpHTMLArr.push('                        </p>');
     tmpHTMLArr.push('                        <p class="text-size-10">');
     tmpHTMLArr.push('                            这两个领域体现出了过人的潜力。');
@@ -1709,7 +1953,7 @@ function buildReportPotentialPanel(data) {
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('            </div>');
     tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-7">');
+    tmpHTMLArr.push('        <div class="col-8" style="padding-right:30px;">');
     tmpHTMLArr.push('            <canvas id="canvas_Report_Potential"></canvas>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
@@ -1758,6 +2002,9 @@ function buildReportAttentionPanel(data) {
     tmpHTMLArr.push('            <p class="text-center">');
     tmpHTMLArr.push('               <img src="image/pdf.png" width="60" height="80" />');
     tmpHTMLArr.push('            </p>');
+    tmpHTMLArr.push('            <p class="text-size-10 text-center" style="padding-bottom:40px;">');
+    tmpHTMLArr.push(data.name + '的艾酷学习报告');
+    tmpHTMLArr.push('            </p>');
     tmpHTMLArr.push('            <p class="text-center text-size-10" style="padding-bottom:40px;">');
     tmpHTMLArr.push('                或者，您可以扫描添加艾酷微信号，让我们可以第一时间把孩子的信息推送到您的指尖。');
     tmpHTMLArr.push('            </p>');
@@ -1767,7 +2014,9 @@ function buildReportAttentionPanel(data) {
     tmpHTMLArr.push('            <p class="text-center text-size-10 text-color-smart" style="padding-bottom:40px;">艾酷教育，为中国孩子学习编程而生</p>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('        <div class="col-6" style="padding-left:30px;">');
-    tmpHTMLArr.push('            <img src="image/iphone7.png" class="img-fluid" />');
+    tmpHTMLArr.push('            <img src="image/iphone7.png" class="img-fluid  report-attention-bakcground" />');
+    tmpHTMLArr.push('            <img src="image/circles.svg"  class="report-overview-header report-attention-header"/>');
+    tmpHTMLArr.push('            <div class="report-attention-header-point"></div>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
@@ -1775,13 +2024,15 @@ function buildReportAttentionPanel(data) {
 };
 
 function drawAbilityGraph(datas) {
-    var fontSize = 28;
-    var valFontSize = 20;
+    //var fontSize = 28;
+    //var valFontSize = 20;
+    var fontSize = 20;
+    var valFontSize = 16;
     var canvas = document.getElementById('canvas_Report_Ability');
     var parent = $($(canvas).parent());
     var height = parent.height() - 10;
     var width = parent.width();
-    var tmpSize = (height > width ? width : (width > 500) ? 500 : width);
+    var tmpSize = (height > width ? width : (width > 300) ? 300 : width);
     canvas.width = tmpSize;
     canvas.height = tmpSize;
     var context = canvas.getContext('2d');
@@ -1865,7 +2116,6 @@ function drawAbilityGraph(datas) {
     context.stroke();
 };
 
-
 function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
     var angle = a || 0;
     var counterclockwise = c || false;
@@ -1905,230 +2155,224 @@ function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
     return vertex;
 };
 
+function drawTimeGraph(data) {
+    drawTimeBarGraph(data.times);
+    drawTimeCompleteRate(data.course);
+};
+
+function drawTimeBarGraph(datas) {
+    var barWidth = 18;
+    var barSpace = 14;
+    var lineWidth = 1;
+    var canvas = document.getElementById('canvas_Report_Time_Time');
+    var parent = $($(canvas).parent());
+    var width = Math.max(Math.floor((barWidth + barSpace) * datas.length), parent.width());
+    var height = parent.height();
+    canvas.width = width;
+    canvas.height = height;
+    var context = canvas.getContext('2d');
+    context.clearRect(0, 0, width, height);
+    var maxValue = datas[0].time;
+    for (var i = 1; i < datas.length; i++) {
+        maxValue = Math.max(maxValue, datas[i].time);
+    }
+
+    var unit = Math.floor((height - 30) / maxValue);
+    var startX = 0;
+    var startY = height - 15;
+    var linearGradient, barHeight, barX, tmpX, tmpY, lineRTX, lineRTY, tmpDate, tmpMonth;
+    for (var i = 0; i < datas.length; i++) {
+        if (datas[i].time > 0) {
+            //draw bar
+            barHeight = datas[i].time * unit;
+            barX = startX + barSpace / 2;
+            lineRTX = barX + barWidth;
+            lineRTY = startY - barHeight;
+            linearGradient = context.createLinearGradient(barX, lineRTY, 0, barHeight);
+            linearGradient.addColorStop(0, "rgb(98,163,54)");
+            linearGradient.addColorStop(1, "rgb(128,184,95)");
+            context.fillStyle = linearGradient;
+            context.fillRect(barX, lineRTY, barWidth, barHeight);
+            //draw border
+            context.strokeStyle = 'rgba(210,210,210,0.5)';
+            context.lineWidth = lineWidth;
+            context.moveTo(barX, startY);
+            context.lineTo(barX, lineRTY);
+            context.lineTo(lineRTX, lineRTY);
+            context.lineTo(lineRTX, startY);
+            context.stroke();
+            //draw time label
+            tmpX = barX + 4;
+            tmpY = lineRTY - 2;
+            context.font = "normal normal bold 10px \"微软雅黑\"";
+            context.fillStyle = "rgb(97,97,97)";
+            context.fillText(datas[i].time, tmpX, tmpY);
+            //draw date label
+            tmpX = startX + 2;
+            tmpY = startY + 12;
+            context.font = "normal normal 600 10px \"微软雅黑\"";
+            context.fillStyle = "rgb(97,97,97)";
+            tmpDate = new Date(datas[i].date);
+            tmpMonth = (tmpDate.getMonth() + 1 < 10 ? '0' + (tmpDate.getMonth() + 1) : tmpDate.getMonth() + 1);
+            tmpDate = (tmpDate.getDate() < 10 ? '0' + tmpDate.getDate() : tmpDate.getDate());
+            context.fillText(tmpMonth + '-' + tmpDate, tmpX, tmpY);
+        }
+
+        startX += barWidth + barSpace;
+    }
+    //draw base line
+    context.strokeStyle = 'rgba(210,210,210,0.5)';
+    context.lineWidth = lineWidth;
+    context.moveTo(0, startY);
+    context.lineTo(canvas.width, startY);
+    context.stroke();
+
+    var funData = { id: "canvas_Report_Time_Time", step: (barWidth + barSpace) * 3 };
+    $('#arrow_Report_Time_Left').on('click', funData, listMovePrev);
+    $('#arrow_Report_Time_Right').on('click', funData, listMoveNext);
+    if ($('#canvas_Report_Time_Time').width() <= $('#container_Report_Time_Graph').width()) {
+        $('.report-list-arrow.time').hide();
+    }
+};
+
+function drawTimeCompleteRate(datas) {
+    var lineWidth = 6;
+    var rateFontSize = 20;
+    var textFontSize = 16;
+    var id = 'canvas_Report_Time_Course';
+    var canvas = document.getElementById(id);
+    var parent = $($(canvas).parent());
+    var width = parent.width();
+    var height = parent.height();
+    canvas.width = Math.floor(width);
+    canvas.height = Math.floor(height)
+    width = (width - 20 * (datas.length - 1)) / datas.length;
+    for (var i = 0; i < datas.length; i++) {
+        var context = canvas.getContext('2d');
+        var radius = Math.floor(Math.min(width, height) / 2) - lineWidth / 2;
+        var centerX = (width + 20) * i + Math.floor(width / 2);
+        var centerY = Math.floor(height / 2);
+        var startRadian = 0
+        var endRadian = Math.PI * 2;
+        context.lineWidth = lineWidth;
+        context.strokeStyle = 'rgb(230,230,230)';
+        context.beginPath();
+        context.arc(centerX, centerY, radius, startRadian, endRadian);
+        context.stroke();
+        context.closePath();
+        startRadian = Math.PI * 2 * 3 / 4;
+        endRadian = startRadian + datas[i].rate / 100 * Math.PI * 2;
+        context.strokeStyle = 'rgb(124,218,36)';
+        context.beginPath();
+        context.arc(centerX, centerY, radius, startRadian, endRadian);
+        context.stroke();
+        context.closePath();
+        //context.strokeStyle = 'rgb(230,230,230)';
+        //context.moveTo(width/2, 0);
+        //context.lineTo(width / 2, height);
+        //context.stroke();
+        var tmpX = centerX;
+        if (datas[i].rate < 10) {
+            tmpX = centerX - rateFontSize * 0.5;
+        } else {
+            tmpX = centerX - rateFontSize * 1;
+        }
+
+        var tmpY = centerY + rateFontSize / 2;
+        context.font = "normal normal bolder " + rateFontSize + "px \"微软雅黑\"";
+        context.fillStyle = "rgb(105,105,105)";
+        context.fillText(datas[i].rate + '%', tmpX, tmpY);
+
+        tmpX = centerX - textFontSize * 1.5;
+        tmpY = height / 2 + radius + (height / 2 - radius - lineWidth);
+        context.font = "normal normal bold " + textFontSize + "px \"微软雅黑\"";
+        context.fillStyle = "rgb(61,61,61)";
+        context.fillText(datas[i].name, tmpX, tmpY);
+    }
+};
+
+function drawPotentialGraph(datas) {
+    var shadowStyles = ['rgb(158,163,168)', 'rgb(178,182,186)', 'rgb(194,196,199)', 'rgb(209,211,213)', 'rgb(244,244,244)'];
+    var titleFontSize = 14;
+    var valueFontSize = 12;
+    var shadowHeight = 2;
+    var barCount = datas.length;
+    var canvas = document.getElementById('canvas_Report_Potential');
+    var parent = $($(canvas).parent());
+    var width = parent.width();
+    var height = parent.height();
+    var barHeight = Math.max(parseInt((height - shadowHeight * barCount) / barCount), 45);
+    height = barHeight * barCount;
+    var maxWidth = Math.max((405 / 45) * barHeight, width - shadowHeight - 20 - titleFontSize * 2);
+    canvas.width = width;
+    canvas.height = height;
+    var context = canvas.getContext('2d');
+    context.clearRect(0, 0, width, height);
+    var startX = 10 + titleFontSize * 2 + 10;
+    var barUnit = maxWidth / datas[0].value;
+    context.textBaseline = "middle";
+    var titleX, titleY, lineStartX, lineStartY, lineEndX, tmpBarWidth;
+    for (var i = 0; i < datas.length; i++) {
+        //draw title
+        titleX = 10;
+        titleY = (barHeight) * i + barHeight / 2 + shadowHeight;
+        context.fillStyle = "rgb(74,74,74)";
+        context.font = 'normal normal bolder ' + titleFontSize + "px '微软雅黑'";
+        context.fillText(datas[i].name, titleX, titleY);
+        context.restore();
+        //draw bar
+        context.lineWidth = barHeight;
+        tmpBarWidth = barUnit * datas[i].value;
+        lineStartX = startX + (maxWidth - tmpBarWidth) / 2;
+        lineStartY = (barHeight + shadowHeight) * i + barHeight / 2;
+        lineEndX = lineStartX + tmpBarWidth;
+        context.beginPath();
+        context.strokeStyle = 'rgb(91,155,213)';
+        context.shadowColor = "rgb(195,195,195)";
+        context.shadowBlur = 10;
+        context.shadowOffsetX = 3;
+        context.shadowOffsetY = 3;
+        context.moveTo(lineStartX, lineStartY);
+        context.lineTo(lineEndX, lineStartY);
+        context.closePath();
+        context.stroke();
+        //draw Value
+        titleX = startX + maxWidth / 2;
+        titleX -= (datas[i].value < 10 ? valueFontSize * 0.5 : valueFontSize * 1);
+        context.fillStyle = (i == 0 ? 'rgb(252,136,35)' : "rgb(255,255,255)");
+        context.font = 'normal normal bolder ' + valueFontSize + "px '微软雅黑'";
+        context.fillText(datas[i].value + '%', titleX, titleY);
+        context.restore();
+    }
+};
+
+function adjustAttentionImg() {
+    var currWidth = $('.report-attention-bakcground').parent().width();
+    var position = $('.report-attention-bakcground').position();
+    var headImg = $('.report-attention-header');
+    var pointer = $('.report-attention-header-point');
+    var rate = currWidth / 360;
+    var size = rate * 60;
+    var left = rate * 15 + position.left;
+    var top = rate * 50 + position.top;
+    headImg.width(size);
+    headImg.height(size);
+    headImg.css('left', left + 'px');
+    headImg.css('top', top + 'px');
+    size = rate * 15;
+    left = left - rate * 5;
+    top = top - rate * 5;
+    pointer.width(size);
+    pointer.height(size);
+    pointer.css('left', left + 'px');
+    pointer.css('top', top + 'px');
+}
 /*Global*/
 function loadHeaderImg() {
     var imgSrc = _getRequestURL(_gURLMapping.account.getheader, {});
     $('#img_Profile_Title').attr('src', imgSrc);
     $('#img_Settings_Profile_Header').attr('src', imgSrc);
     $('#img_Page_Header_Navbar').attr('src', imgSrc);
-}
-
-function refereshMessage() {
-    return;
-    _registerRemoteServer();
-    $.ajax({
-        type: 'GET',
-        async: true,
-        url: _getRequestURL(_gURLMapping.data.studentcenter, { symbol: 'config_student_index' }),
-        data: '',
-        success: function (responseData, status) {
-            if ($(responseData).find('err').length > 0) {
-                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetMessage_Error');
-                return;
-            } else {
-                $('.left-bar-message-count').text($(responseData).find('msg').length);
-            }
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-            _showGlobalMessage('无法获取消息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
-        }
-    });
-
-    window.setTimeout(refereshMessage, 15000);
-};
-
-function drawExpDistributionGraph(canvasId, datas) {
-    var canvas = $('#canvas_Overview_Experience_' + canvasId);
-    //var parent = $($('.overview-experience-item-wrap').parent());
-    var parent = $('#size_parent_canvas_' + canvasId);
-    var width = parent.width();
-    var height = parent.height();
-    canvas.attr('height', height);
-    canvas.attr('width', width);
-    canvas[0].width = width;
-    canvas[0].height = height;
-    var context = canvas[0].getContext('2d');
-    context.clearRect(0, 0, width, height);
-    //var lineWidth = width / 215 * 30;
-    var lineWidth = 30;
-    var tmpWidth = width;
-    if (width / height > 210 / 250) {
-        tmpWidth = Math.floor(210 / 250 * height);
-    }
-
-    var radius = Math.floor(tmpWidth / 2) - lineWidth + lineWidth / 2;
-    var centerX = Math.floor(width / 2);
-    var centerY = Math.floor(radius + lineWidth / 2);
-    var total = 0;
-    for (var i = 0; i < datas.length; i++) {
-        total += datas[i].value;
-    }
-
-    var startRadian = 0;
-    var endRadian = 0;
-    var tmpRadian = 0;
-    var tmpX = 0;
-    var tmpY = 0;
-    var legendItemWidth = Math.floor(width / datas.length);
-    //var legendItemWidth = 35;
-    var legendWidth = width / 215 * 8;
-    var fontSize = 10;
-    for (var i = 0; i < datas.length; i++) {
-        startRadian = endRadian;
-        tmpRadian = datas[i].value / total * Math.PI * 2;
-        endRadian += tmpRadian;
-        context.beginPath();
-        context.strokeStyle = datas[i].color;
-        context.arc(centerX, centerY, radius, startRadian, endRadian);
-        context.lineWidth = lineWidth;
-        context.stroke();
-        context.closePath();
-
-        tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - 8;
-        tmpY = centerY + radius * Math.sin(startRadian + tmpRadian / 2);
-        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
-        context.fillStyle = "rgb(255,255,255)";
-        context.fillText(datas[i].value, tmpX, tmpY);
-
-        tmpX = legendItemWidth * i;
-        //tmpY = (radius + lineWidth / 2) * 2 + 20;
-        tmpY = tmpWidth + 15;
-        context.beginPath();
-        context.rect(tmpX, tmpY, legendWidth, legendWidth);
-        context.fillStyle = datas[i].color;
-        context.fill();
-        context.closePath();
-
-        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
-        context.fillStyle = "rgb(71,71,71)";
-        context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 8);
-    }
-};
-
-function drawExpCourseLevelGraph(canvasId, data) {
-    var canvas = $('#canvas_Overview_Experience_' + canvasId);
-    //var parent = $($('.overview-experience-item-wrap').parent());
-    var parent = $('#size_parent_canvas_' + canvasId);
-    var width = parent.width();
-    var height = parent.height();
-    canvas.attr('height', height);
-    canvas.attr('width', width);
-    canvas[0].width = width;
-    canvas[0].height = height;
-    var context = canvas[0].getContext('2d');
-    context.clearRect(0, 0, width, height);
-    var lineWidth = width / 215 * 10;
-    var radius = Math.floor(width / 2) - lineWidth + lineWidth / 2;
-    var centerX = Math.floor(width / 2);
-    var centerY = Math.floor(width / 2);
-    var total = 100;
-    var tmpX = 0;
-    var tmpY = 0;
-    var fontSize = Math.floor(width / 215 * 16);
-    var bigFontSize = Math.floor(width / 215 * 36);
-    context.beginPath();
-    context.strokeStyle = 'rgb(230,230,230)';
-    context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    context.lineWidth = lineWidth;
-    context.stroke();
-    context.closePath();
-
-    context.beginPath();
-    context.strokeStyle = 'rgb(124,218,36)';
-    context.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + data.value / 100 * Math.PI * 2);
-    context.lineWidth = lineWidth;
-    context.stroke();
-    context.closePath();
-
-    tmpY = (radius + lineWidth / 2) * 2 + 20;
-    context.font = 'normal normal bold ' + fontSize + 'px \"微软雅黑\"';
-    context.fillStyle = "rgb(71,71,71)";
-    context.fillText(data.name, (width - (fontSize) * data.name.length) / 2, tmpY + fontSize / 2);
-
-    tmpY = radius + lineWidth / 2;
-    context.font = 'normal normal bold ' + bigFontSize + 'px \"微软雅黑\"';
-    context.fillStyle = "rgb(71,71,71)";
-    context.fillText(data.value + '%', (width - (bigFontSize) * ((data.value + '%').length - 1)) / 2, tmpY + bigFontSize / 2);
-};
-
-function drawTimesGraph(datas) {
-    var barWidth = 15;
-    var barSpace = 10;
-    var lineWidth = 1;
-    var canvas = $('#canvas_Overview_Time');
-    var parent = $($('.overview-times-item-wrap').parent());
-    var width = (barWidth + barSpace) * datas.length;
-    var height = parent.height();
-    $('#container_Overview_Times_Items').width(width);
-    if ($('#wrap_Overview_Times_Items').width() > $('#container_Overview_Times_Items').width()) {
-        $('.overview-list-arrow.times').hide();
-    }
-
-    canvas.attr('height', height);
-    canvas.attr('width', width);
-    canvas[0].width = width;
-    canvas[0].height = height;
-    var context = canvas[0].getContext('2d');
-    context.clearRect(0, 0, width, height);
-    var maxValue = datas[0].value;
-    for (var i = 0; i < datas.length; i++) {
-        maxValue = Math.max(maxValue, datas[i].value);
-    }
-
-    var unit = Math.floor((height - 10 - 20) / maxValue);
-    var startX = 0;
-    var startY = height - 20;
-    var ltX, ltY, rtX, rtY, rbX, rbY, linearGradient, bHeight, bWidth, tmpX, tmpY, tmpArr, tmpData;
-    for (var i = 0; i < datas.length; i++) {
-        tmpData = datas[i];
-        if (tmpData.value <= 0) {
-            startX = rtX + barSpace;
-            continue;
-        }
-
-        ltX = startX;
-        ltY = startY - tmpData.value * unit - lineWidth * 2;
-        rtX = startX + barWidth + lineWidth;
-        rtY = ltY;
-        rbX = rtX;
-        rbY = startY;
-        bHeight = tmpData.value * unit + lineWidth * 2;
-        bWidth = barWidth + lineWidth * 2;
-        //draw bar
-        linearGradient = context.createLinearGradient(ltX, ltY, 0, bHeight);
-        linearGradient.addColorStop(0, "rgb(98,163,54)");
-        linearGradient.addColorStop(1, "rgb(128,184,95)");
-        context.fillStyle = linearGradient;
-        context.fillRect(ltX, ltY, bWidth, bHeight);
-        //draw border
-        context.strokeStyle = 'rgb(167,196,150)';
-        context.lineWidth = 1;
-        context.moveTo(startX, startY);
-        context.lineTo(ltX, ltY);
-        context.lineTo(rtX, rtY);
-        context.lineTo(rbX, rbY);
-        context.lineTo(startX, startY);
-        context.stroke();
-        //draw time label
-        tmpX = ltX + 4;
-        tmpY = ltY - 2;
-        context.font = "normal normal bold 11px \"微软雅黑\"";
-        context.fillStyle = "rgb(97,97,97)";
-        context.fillText(tmpData.value, tmpX, tmpY);
-        //draw date label
-        tmpX = startX;
-        tmpY = startY + 12;
-        context.font = "normal normal 600 8px \"微软雅黑\"";
-        context.fillStyle = "rgb(97,97,97)";
-        tmpArr = tmpData.date.split('-');
-        context.fillText(tmpArr[1] + '-' + tmpArr[2], tmpX, tmpY);
-        //calculate next X
-        startX = rtX + barSpace;
-    }
 };
 
 function formatDate(date) {
@@ -2154,4 +2398,4 @@ function formatDate(date) {
 
     dateArr.push(tmpVal);
     return dateArr.join('-');
-}
+};

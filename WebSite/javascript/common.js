@@ -24,15 +24,16 @@ var _gURLMapping = {
         updateutil: '/Account/Profile/api_iKCoder_Profile_Set_Nodes.aspx'
     },
     data: {
-        studentcenter: '/Data/GET_ResourceDataText.aspx',
-        parentreport: '/Data/GET_ResourceDataText.aspx',
         getwordlist: '/data/get_checkcodenua.aspx'
     },
     bus: {
         getworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Get_Workspace.aspx',
         saveworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Set_WorkspaceStatus.aspx',
         setcurrentstep: '/Bus/Workspace/api_iKCoder_Workspace_Set_CurrentStage.aspx',
-        setfinishscene: '/Bus/Workspace/api_iKCoder_Workspace_Set_FinishSence.aspx'
+        setfinishscene: '/Bus/Workspace/api_iKCoder_Workspace_Set_FinishSence.aspx',
+        getscenelist: '/Bus/Center/api_iKCoder_Center_Get_SencesList.aspx',
+        getcenterinfo: '/Bus/Center/api_iKCoder_Center_Get_CenterInfo.aspx',
+        getunreadmsgcount: '/Bus/Message/api_iKCoder_Workspace_Get_CountOfUnreadMessage.aspx'
     }
 };
 var _gCitys = [
@@ -335,11 +336,17 @@ function _refereshCheckCode(checkCodeId) {
     $("#" + checkCodeId).attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
 };
 
-function _loadIMG(src) {
+function _loadIMG(src, callback) {
     var img = new Image();
     img.src = src;
     img.onload = function () {
-        console.log('complete');
+        if (callback) {
+            callback();
+        }
+    };
+
+    img.onerror = function () {
+        _loadIMG(src);
     };
 };
 

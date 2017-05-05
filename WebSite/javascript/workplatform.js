@@ -78,6 +78,7 @@ function initPage() {
 
 function initEvents() {
     $('#btn_Footer_Logo').on('click', function (e) {
+        WorkScene.saveStatus();
         window.location.href = "index.html";
     });
 
@@ -86,6 +87,7 @@ function initEvents() {
     });
 
     $('.goto-profile-image-button').on('click', function () {
+        WorkScene.saveStatus();
         window.location.href = "profile.html?rnd=" + Date.now();
     });
 
@@ -244,6 +246,10 @@ function initEvents() {
 
     $(window).resize(function () {
         onWindowResize();
+    });
+
+    $(window).unload(function () {
+        WorkScene.saveStatus();
     });
 };
 
