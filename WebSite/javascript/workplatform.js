@@ -248,7 +248,7 @@ function initEvents() {
         onWindowResize();
     });
 
-    $(window).unload(function () {
+    $(window).on('beforeunload', function () {
         WorkScene.saveStatus();
     });
 };

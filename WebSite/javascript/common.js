@@ -559,3 +559,11 @@ function _showGlobalMessage(msg, type, id) {
         return !$.cookie(key);
     };
 }));
+
+//$(document).ready(function () {
+//    $('img').error(function () {
+//        var src = $(this).attr('src');
+//        src += (src.indexOf('?') < 0 ? '?err=' : '&err=') + Date.now();
+//        $(this).attr('src', src);
+//    });
+//});

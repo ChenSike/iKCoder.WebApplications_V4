@@ -10,8 +10,7 @@ function initPage() {
     $('#wrap_Category_Title').show();
     //rebuildContent('overview');
     rebuildContent('settings');
-    //rebuildContent('report');
-    refereshMessage();
+    //rebuildContent('report');    
     //window.setInterval(getUnreadMsgCount, 120000);
 };
 
@@ -124,26 +123,37 @@ function rebuildContent(symbol) {
     showLoadingMask();
     var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();
     $('#wrap_Category_Title').empty();
-    $('#wrap_Category_Content').empty();
     $('#wrap_Category_Title').show();
-    $('#wrap_Category_Content')[0].className = 'col';
+    var contertWrap = $('#wrap_Category_Content');
+    contertWrap.empty();
+    if (contertWrap.hasClass('col-9')) {
+        contertWrap.removeClass = 'col-9';
+    }
+    if (contertWrap.hasClass('col')) {
+        contertWrap.removeClass = 'col';
+    }
+
     var currentItem = null;
     switch (symbol) {
         case 'overview':
-            rebuildOverviewPanel(contentHeight);
             currentItem = $($('.left-bar-category-item')[0]);
+            contertWrap.addClass('col');
+            rebuildOverviewPanel(contentHeight);
             break;
         case 'message':
             currentItem = $($('.left-bar-category-item')[1]);
+            contertWrap.addClass('col');
             rebuildMesagesPanel();
             break;
         case 'report':
             currentItem = $($('.left-bar-category-item')[2]);
+            contertWrap.addClass('col-9');
             rebuildReportPanel();
             break;
         case 'settings':
-            rebuildSettingsPanel(contentHeight);
             currentItem = $($('.left-bar-category-item')[3]);
+            contertWrap.addClass('col');
+            rebuildSettingsPanel(contentHeight);
             break;
         default:
             break;
@@ -456,6 +466,8 @@ function rebuildOverviewContents(data, contentHeight, itemHeight) {
 
     buildOverviewTimes(data.codetimes, itemHeight.e);
     drawTimesGraph(data.codetimes.times);
+    //$('#wrap_Category_Content').css('width', '100%');
+    $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width() - $('#wrap_Category_Title').width() - 18);
 };
 
 function rebuildOverviewTitles(data, contentHeight, itemHeight) {
@@ -1596,12 +1608,12 @@ function rebuildReportPanel() {
             { name: '语言', value: 10 }
         ],
         works: [
-            { id: '1', title: '', img: '', content: '' },
-            { id: '1', title: '', img: '', content: '' },
-            { id: '1', title: '', img: '', content: '' },
-            { id: '1', title: '', img: '', content: '' },
-            { id: '1', title: '', img: '', content: '' },
-            { id: '1', title: '', img: '', content: '' }
+            { id: '1', title: 'test 1', img: 'image/course_simple.png', content: 'content 1', hits: 1 },
+            { id: '2', title: 'test 2', img: 'image/course_simple.png', content: 'content 2', hits: 2 },
+            { id: '3', title: 'test 3', img: 'image/course_simple.png', content: 'content 3', hits: 3 },
+            { id: '4', title: 'test 4', img: 'image/course_simple.png', content: 'content 4', hits: 4 },
+            { id: '5', title: 'test 5', img: 'image/course_simple.png', content: 'content 5', hits: 5 },
+            { id: '6', title: 'test 6', img: 'image/course_simple.png', content: 'content 6', hits: 6 }
         ]
     }
 
@@ -1620,7 +1632,6 @@ function rebuildReportContents(data) {
         $('body').width = minWidth;
     }
 
-    $('#wrap_Category_Content')[0].className = 'col-9';
     $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width() - 18);
     buildReportOverviewPanel(data.user);
     buildReportAchievePanel(data.achieve);
@@ -1977,12 +1988,41 @@ function buildReportWorksPanel(data) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('    <div class="row" style="padding-bottom:40px; padding-left:30px;">');
     for (var i = 0; i < data.length; i++) {
-        tmpHTMLArr.push('        <div class="col-4 wrap-report-works-item"></div>');
+        tmpHTMLArr.push('        <div class="col-4 wrap-report-works-item">');
+        tmpHTMLArr.push('           <div class="container-fluid container-report-works-item">');
+        tmpHTMLArr.push('               <div class="row">');
+        tmpHTMLArr.push('                   <div class="col-12 no-padding" style="height:125px">');
+        tmpHTMLArr.push('                       <img src="' + data[i].img + '"/>');
+        tmpHTMLArr.push('                       <div class="report-works-item-hits">' + data[i].hits + '</div>');
+        tmpHTMLArr.push('                       <div class="d-flex align-items-center justify-content-center report-works-item-mask">');
+        //tmpHTMLArr.push('                       <div class="report-works-item-button"><i class="fa fa-play" aria-hidden="true" title="运行"></i></div>');
+        //tmpHTMLArr.push('                       <div class="report-works-item-button"><i class="fa fa-share-alt" aria-hidden="true" title="运行"></i></div>');
+        tmpHTMLArr.push('                           <i class="report-works-item-button fa fa-play" aria-hidden="true" title="运行"></i>');
+        tmpHTMLArr.push('                           <i class="report-works-item-button fa fa-share-alt" aria-hidden="true" title="分享"></i>');
+        tmpHTMLArr.push('                       </div>');
+        tmpHTMLArr.push('                   </div>');
+        tmpHTMLArr.push('               </div>');
+        tmpHTMLArr.push('               <div class="row" style="background-color:rgb(21,21,21);">');
+        tmpHTMLArr.push('                   <div class="col-12" style="height:25px">');
+        tmpHTMLArr.push('                       <p class="text-size-10 text-bold text-color-white">' + data[i].title + '</p>');
+        tmpHTMLArr.push('                   </div>');
+        tmpHTMLArr.push('               </div>');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('        </div>');
     }
 
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
+    $('.container-report-works-item').mouseenter(function () {
+        $(this).find('.report-works-item-mask').show();
+        $(this).find('.report-works-item-mask').css('visibility', 'visible');
+    });
+
+    $('.container-report-works-item').mouseleave(function () {
+        $(this).find('.report-works-item-mask').hide();
+        $(this).find('.report-works-item-mask').css('visibility', 'hidden');
+    });
 };
 
 function buildReportAttentionPanel(data) {
@@ -2321,12 +2361,12 @@ function drawPotentialGraph(datas) {
         context.fillText(datas[i].name, titleX, titleY);
         context.restore();
         //draw bar
-        context.lineWidth = barHeight;
         tmpBarWidth = barUnit * datas[i].value;
         lineStartX = startX + (maxWidth - tmpBarWidth) / 2;
         lineStartY = (barHeight + shadowHeight) * i + barHeight / 2;
         lineEndX = lineStartX + tmpBarWidth;
         context.beginPath();
+        context.lineWidth = barHeight;
         context.strokeStyle = 'rgb(91,155,213)';
         context.shadowColor = "rgb(195,195,195)";
         context.shadowBlur = 10;
@@ -2344,6 +2384,15 @@ function drawPotentialGraph(datas) {
         context.fillText(datas[i].value + '%', titleX, titleY);
         context.restore();
     }
+
+    //draw Y Line
+    context.beginPath();
+    context.lineWidth = 1;
+    context.strokeStyle = 'rgb(241,241,241)';
+    context.moveTo(startX, 0);
+    context.lineTo(startX, (barHeight + shadowHeight) * datas.length);
+    context.closePath();
+    context.stroke();
 };
 
 function adjustAttentionImg() {

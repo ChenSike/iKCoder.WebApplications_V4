@@ -432,14 +432,26 @@ div.alert-mask-custom {
     color: rgb(144,197,83);
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
+.text-color-white {
+    color: rgb(255,255,255);
+}
+
 .wrap-report-works-item {
-    width: 250px;
-    height: 150px;
+    width: 270px;
+    height: 170px;
     padding: 0px;
     padding-right: 20px;
     padding-bottom: 20px;
-    background: rgb(0,0,0);
 }
+
+    .wrap-report-works-item img {
+        width: 250px;
+        height: 125px;
+    }
 
 .report-overview-header.report-attention-header {
     position: absolute;
@@ -458,3 +470,72 @@ div.alert-mask-custom {
     -webkit-border-radius: 50%;
     border-radius: 50%;
 }
+
+.report-works-item-hits {
+    height: 30px;
+    width: 30px;
+    background-color: rgb(139,195,74);
+    color: rgb(255,255,255);
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    left: calc(100% - 35px);
+}
+
+.report-works-item-mask {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(185,185,185, 0.5);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display:none;
+    visibility: hidden;
+}
+
+/*.report-works-item-button {
+    width: 35px;
+    height: 35px;
+    color: rgb(255,255,255);
+    background-color: rgb(123,191,106);
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 33px;
+    
+}*/
+
+.container-report-works-item{
+    cursor:pointer;
+}
+
+.report-works-item-button {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    color: rgb(255,255,255);
+    background-color: rgb(123,191,106);
+    text-align: center;
+    line-height: 35px;
+    cursor: pointer;
+}
+
+    .report-works-item-button.fa-play {
+        padding-left: 4px;
+    }
+
+    .report-works-item-button:hover {
+        background-color: rgb(39,189,35);
+        font-size: 1.1rem;
+    }
+
+    .report-works-item-button.fa-share-alt {
+        margin-left: 25px;
+    }
