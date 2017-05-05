@@ -471,6 +471,10 @@ div.alert-mask-custom {
     border-radius: 50%;
 }
 
+.report-attention-pdf-button {
+    cursor: pointer;
+}
+
 .report-works-item-hits {
     height: 30px;
     width: 30px;
@@ -495,7 +499,7 @@ div.alert-mask-custom {
     position: absolute;
     top: 0px;
     left: 0px;
-    display:none;
+    display: none;
     visibility: hidden;
 }
 
@@ -512,8 +516,8 @@ div.alert-mask-custom {
     
 }*/
 
-.container-report-works-item{
-    cursor:pointer;
+.container-report-works-item {
+    cursor: pointer;
 }
 
 .report-works-item-button {

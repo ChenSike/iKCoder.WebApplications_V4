@@ -2040,9 +2040,9 @@ function buildReportAttentionPanel(data) {
     tmpHTMLArr.push('               的艾酷学习报告。我们为您孩子的进步和成就感到同样骄傲。</p>');
     tmpHTMLArr.push('            <p class="text-size-10" style="padding-bottom:30px;">您可以通过点击下面的链接下载本报告全文。</p>');
     tmpHTMLArr.push('            <p class="text-center">');
-    tmpHTMLArr.push('               <img src="image/pdf.png" width="60" height="80" />');
+    tmpHTMLArr.push('               <img src="image/pdf.png" class="report-attention-pdf-button" width="60" height="80" />');
     tmpHTMLArr.push('            </p>');
-    tmpHTMLArr.push('            <p class="text-size-10 text-center" style="padding-bottom:40px;">');
+    tmpHTMLArr.push('            <p class="text-size-10 text-center report-attention-pdf-button" style="padding-bottom:40px;">');
     tmpHTMLArr.push(data.name + '的艾酷学习报告');
     tmpHTMLArr.push('            </p>');
     tmpHTMLArr.push('            <p class="text-center text-size-10" style="padding-bottom:40px;">');
@@ -2061,6 +2061,9 @@ function buildReportAttentionPanel(data) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
+    $('.report-attention-pdf-button').on('click', function () {
+        alert('start download report');
+    });
 };
 
 function drawAbilityGraph(datas) {
