@@ -102,21 +102,23 @@ function resetCategoryItemCSS(current) {
 };
 
 function showLoadingMask() {
-    $('#mask_Page_Loading').css('top', $('#wrap_Category_Title').offset().top);
-    $('#mask_Page_Loading').css('left', $('#wrap_Category_Title').offset().left);
-    $('#mask_Page_Loading').height($('body').height() - $('#wrap_Category_Title').offset().top);
-    $('#mask_Page_Loading').width(Math.min($('body').width(), $('body')[0].scrollWidth) - $('#wrap_Category_Title').offset().left);
-    $('#mask_Page_Loading').show();
-    $('#mask_Page_Loading').css('diaplay', 'flex !important');
-    $('#mask_Page_Loading').css('visibility', 'visible');
+    var mask = $('#mask_Page_Loading');
+    mask.css('top', $('#wrap_Category_Title').offset().top);
+    mask.css('left', $('#wrap_Category_Title').offset().left);
+    mask.height($('body').height() - $('#wrap_Category_Title').offset().top);
+    mask.width(Math.min($('body').width(), $('body')[0].scrollWidth) - $('#wrap_Category_Title').offset().left);
+    mask.show();
+    mask.css('diaplay', 'flex !important');
+    mask.css('visibility', 'visible');
 }
 
 function hideLoadingMask() {
-    $('#mask_Page_Loading').width(0);
-    $('#mask_Page_Loading').height(0);
-    $('#mask_Page_Loading').hide();
-    $('#mask_Page_Loading').css('visibility', 'hidden');
-    $('#mask_Page_Loading').css('diaplay', 'none !important');
+    var mask = $('#mask_Page_Loading');
+    mask.width(0);
+    mask.height(0);
+    mask.hide();
+    mask.css('visibility', 'hidden');
+    mask.css('diaplay', 'none !important');
 }
 
 function rebuildContent(symbol) {
@@ -143,12 +145,12 @@ function rebuildContent(symbol) {
         case 'message':
             currentItem = $($('.left-bar-category-item')[1]);
             contertWrap.addClass('col');
-            rebuildMesagesPanel();
+            rebuildMesagesPanel(contentHeight);
             break;
         case 'report':
             currentItem = $($('.left-bar-category-item')[2]);
             contertWrap.addClass('col-9');
-            rebuildReportPanel();
+            rebuildReportPanel(contentHeight);
             break;
         case 'settings':
             currentItem = $($('.left-bar-category-item')[3]);
@@ -233,10 +235,6 @@ function rebuildOverviewPanel(contentHeight) {
     rebuildOverviewContents(data, contentHeight, tmpHeight);
     hideLoadingMask();
 };
-
-function rebuildMesagesPanel() {
-    hideLoadingMask()
-}
 
 function calcOverviewItemheight(contentHeight) {
     var minHeight = Math.floor(150 / 1200 * contentHeight);
@@ -501,7 +499,7 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
             height: itemHeight.l,
             bgColor: 'rgb(248,250,251)', color: 'rgb(117,180,76)',
             icon: 'gamepad',
-            text: '<p class="overview-title-item-text">已完成<span class="overview-title-item-data">' + completeCourse + '/' + totalCourse + '</span>个课程</p>'
+            text: '<p class="overview-title-item-text">已完成</p><p class="overview-title-item-data">' + completeCourse + '/' + totalCourse + '</ｐ><p class="overview-title-item-text">个课程</p>'
         }, {
             id: 'Experience',
             height: itemHeight.l,
@@ -515,9 +513,9 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
             bgColor: 'rgb(248,250,251)',
             color: 'rgb(124,77,255)',
             icon: 'clock-o',
-            text: '<p class="overview-title-item-text">累计编程<span class="overview-title-item-data">' + totalTime +
-                '</span>小时</p><p class="overview-title-item-text">超过了<span class="overview-title-item-data">' + data.codetimes.beyond +
-                '%</span>的小伙伴</p>'
+            text: '<p class="overview-title-item-text">编程<span class="overview-title-item-data">' + totalTime +
+                '</span>小时</p><p class="overview-title-item-text">超了<span class="overview-title-item-data">' + data.codetimes.beyond +
+                '%</span>同学</p>'
         }
     ];
 
@@ -526,7 +524,7 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
         var tmpHTMLArr = [];
         tmpHTMLArr.push('<div class="container" id="' + id + '_Container" style="background-color:' + constArr[i].bgColor + ';">');
         tmpHTMLArr.push('   <div class="row align-items-center" id="' + id + '_Row" style="height:' + constArr[i].height + 'px;">');
-        tmpHTMLArr.push('       <div class="col-12 text-center">');
+        tmpHTMLArr.push('       <div class="col-12 text-center no-padding">');
         tmpHTMLArr.push('           <i class="fa fa-' + constArr[i].icon + ' aria-hidden="true" style="font-size:48px; color:' + constArr[i].color + '"></i>');
         tmpHTMLArr.push('           <p>' + constArr[i].text + '</p>');
         tmpHTMLArr.push('       </div>');
@@ -2290,11 +2288,12 @@ function drawTimeCompleteRate(datas) {
     canvas.width = Math.floor(width);
     canvas.height = Math.floor(height)
     width = (width - 20 * (datas.length - 1)) / datas.length;
+    var radius = Math.floor(Math.min(width, height - textFontSize - 10) / 2) - lineWidth;
+
+    var context = canvas.getContext('2d');
     for (var i = 0; i < datas.length; i++) {
-        var context = canvas.getContext('2d');
-        var radius = Math.floor(Math.min(width, height) / 2) - lineWidth / 2;
         var centerX = (width + 20) * i + Math.floor(width / 2);
-        var centerY = Math.floor(height / 2);
+        var centerY = radius + lineWidth / 2;// Math.floor(height / 2);
         var startRadian = 0
         var endRadian = Math.PI * 2;
         context.lineWidth = lineWidth;
@@ -2327,7 +2326,7 @@ function drawTimeCompleteRate(datas) {
         context.fillText(datas[i].rate + '%', tmpX, tmpY);
 
         tmpX = centerX - textFontSize * 1.5;
-        tmpY = height / 2 + radius + (height / 2 - radius - lineWidth);
+        tmpY = radius * 2 + lineWidth + textFontSize + 10; //(height - radius * 2 - lineWidth);
         context.font = "normal normal bold " + textFontSize + "px \"微软雅黑\"";
         context.fillStyle = "rgb(61,61,61)";
         context.fillText(datas[i].name, tmpX, tmpY);
@@ -2418,7 +2417,159 @@ function adjustAttentionImg() {
     pointer.height(size);
     pointer.css('left', left + 'px');
     pointer.css('top', top + 'px');
-}
+};
+
+/*Message*/
+function rebuildMesagesPanel(contentHeight) {
+    clearUnreadState();
+    rebuildMessageTitles(contentHeight);
+    displayMessageByType('');
+};
+
+function rebuildMessageTitles(contentHeight) {
+    var messageTypeMap = [
+        { type: '', id: 'all', name: '全部消息', icon: 'list' },
+        { type: '1', id: 'system', name: '系统消息', icon: 'desktop' },
+        { type: '2', id: 'q_a', name: '问答消息', icon: 'question', }
+    ];
+    var height = contentHeight / messageTypeMap.length;
+    var minWidth = $('#sideBar_Page_Left').width() + 550;
+    if ($('body').width < minWidth) {
+        $('body').width = minWidth;
+    }
+
+    $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width() - 18);
+    for (var i = 0; i < messageTypeMap.length; i++) {
+        var id = 'title_Message_' + messageTypeMap[i].id + '_Title';
+        var bgColor = (i == 0 ? 'rgb(237,87,138)' : 'rgb(130, 138, 142)');
+        var tmpHTMLArr = [];
+        tmpHTMLArr.push('<div class="container profile-message-title" id="' + id + '" style="background-color:' + bgColor + ';" data-target="' + messageTypeMap[i].type + '">');
+        tmpHTMLArr.push('   <div class="row align-items-center" id="' + id + '_Row" style="height:' + height + 'px;">');
+        tmpHTMLArr.push('       <div class="col-12 text-center">');
+        tmpHTMLArr.push('           <i class="fa fa-' + messageTypeMap[i].icon + '" aria-hidden="true" style="font-size:48px; cursor: pointer; color:rgb(255,255,255);"></i>');
+        tmpHTMLArr.push('           <p class="overview-title-item-text" style="color:rgb(255,255,255);">' + messageTypeMap[i].name + '</p>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
+        $('#wrap_Category_Title').append($(tmpHTMLArr.join('')));
+    }
+
+    $('.profile-message-title').on('click', function (eventObj) {
+        var titleItems = $('.profile-message-title');
+        for (var i = 0; i < titleItems.length; i++) {
+            $(titleItems[i]).css('background-color', 'rgb(130,138,142)');
+        }
+
+        $(eventObj.currentTarget).css('background-color', 'rgb(237,87,138)');
+        displayMessageByType($(eventObj.currentTarget).attr('data-target'));
+    });
+};
+
+function displayMessageByType(type) {
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'POST',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.getunreadmsgcount),
+    //    data: '<root></root>',
+    //    success: function (responseData, status) {
+    //        if ($(responseData).find('err').length > 0) {
+    //            _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetMessages_Error');
+    //            return;
+    //        } else {
+    //            var tmpNodes = $(responseData).find('msg');
+    //            var data = {};
+    //            rebuildMessageContents(data);
+    //            hideLoadingMask()
+    //        }
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //        _showGlobalMessage('无法获取消息，请联系技术支持！', 'danger', 'alert_GetMessages_Error');
+    //    }
+    //});
+    var data = [
+            { id: '1', top: 1, type: '1', content: 'System Message, Test 1, ID=1, 2017-5-2System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1', time: '2017-5-2', answer: null },
+            { id: '2', top: 1, type: '1', content: 'System Message, Test 2, ID=1, 2017-5-1', time: '2017-5-1', answer: null },
+            { id: '3', top: 1, type: '2', content: 'Questions and Answers, Test 1, ID=3, 2017-5-1', time: '2017-5-1', answer: { id: '8', type: '21', content: 'Answers, Test 1, ID=8, 2017-5-8', time: '2017-5-8', owner: '1' } },
+            { id: '4', top: 0, type: '1', content: 'System Message, Test 3, ID=4, 2017-5-4', time: '2017-5-4', answer: null },
+            { id: '5', top: 0, type: '1', content: 'System Message, Test 4, ID=5, 2017-5-3', time: '2017-5-3', answer: null },
+            { id: '6', top: 0, type: '2', content: 'Questions and Answers, Test 2, ID=6, 2017-5-3', time: '2017-5-3', answer: null },
+            { id: '7', top: 0, type: '2', content: 'Questions and Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-2', answer: { id: '9', type: '21', content: 'Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-9', owner: '1' } }
+    ];
+
+    var tmpDatas = data;
+    if (type != '') {
+        tmpDatas = [];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].type == type) {
+                tmpDatas.push(data[i]);
+            }
+        }
+    }
+
+    rebuildMessageContents(tmpDatas);
+    hideLoadingMask();
+};
+
+function rebuildMessageContents(data) {
+    $('#wrap_Category_Content').empty();
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid wrap-message-section" style="background-color:rgb(255,255,255); height:100%">');
+    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('        <div class="col-12 no-padding">');
+    tmpHTMLArr.push('           <div class="container-fluid wrap-message-items no-padding" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('               <div class="row no-margin">');
+    tmpHTMLArr.push('                   <div class="col-12 no-padding">');
+    tmpHTMLArr.push('                       <table class="table table-striped">');
+    tmpHTMLArr.push('                           <tbody>');
+    for (var i = 0; i < data.length; i++) {
+        var tHeader = '';
+        var contentCss = '';
+        if (data[i].top == 1) {
+            tHeader = '<i class="fa fa-exclamation profile-message-top-symbol"></i>';
+            contentCss = 'profile-message-top-content';
+        }
+
+        tmpHTMLArr.push('                               <tr>');
+        tmpHTMLArr.push('                                   <th>' + tHeader + '</th>');
+        tmpHTMLArr.push('                                   <td class="' + contentCss + '">' + data[i].content + '</td>');
+        tmpHTMLArr.push('                                   <td class="profile-message-date-text">' + data[i].time + '</td>');
+        tmpHTMLArr.push('                                   <td class="profile-message-remove-button"><i class="fa fa-remove"></i></td>');
+        tmpHTMLArr.push('                               </tr>');
+        if (data[i].type == 2 && data[i].answer != null) {
+            tmpHTMLArr.push('                               <tr>');
+            tmpHTMLArr.push('                                   <th></th>');
+            tmpHTMLArr.push('                                   <td class="profile-message-answer-text" style="padding-left:50px;">' + data[i].answer.content + '</td>');
+            tmpHTMLArr.push('                                   <td class="profile-message-date-text">' + data[i].answer.time + '</td>');
+            tmpHTMLArr.push('                                   <td></td>');
+            tmpHTMLArr.push('                               </tr>');
+        }
+    }
+
+    tmpHTMLArr.push('                           </tbody>');
+    tmpHTMLArr.push('                       </table>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
+    $('.message-remove-button').on('click', function (eventObj) {
+        $(eventObj.target).parent().parent().remove();
+    });
+};
+
+function clearUnreadState() {
+    $('.left-bar-message-count').text('');
+    $('.left-bar-message-count').hide();
+};
+
 /*Global*/
 function loadHeaderImg() {
     var imgSrc = _getRequestURL(_gURLMapping.account.getheader, {});

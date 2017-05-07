@@ -464,8 +464,9 @@ div.alert-mask-custom {
 .report-attention-header-point {
     background-color: rgb(255,51,102);
     position: absolute;
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
+    box-shadow: 0px 0px 20px rgb(255,51,102);
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     border-radius: 50%;
@@ -543,3 +544,27 @@ div.alert-mask-custom {
     .report-works-item-button.fa-share-alt {
         margin-left: 25px;
     }
+
+.profile-message-top-symbol {
+    color: rgb(237,87,138);
+}
+
+.profile-message-top-content {
+    font-weight: bold;
+}
+
+.profile-message-title {
+    cursor: pointer;
+}
+
+.profile-message-date-text {
+    min-width: 100px;
+}
+
+.profile-message-answer-text {
+    padding-left: 20px;
+}
+
+.profile-message-remove-button{
+    cursor: pointer;
+}
