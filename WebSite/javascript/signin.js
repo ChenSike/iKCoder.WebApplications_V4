@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+var _prevPage = '';
 var _bodyMinWidth = 330;
 var _checkCodeParams = {
     length: 4,
@@ -342,9 +343,21 @@ function doSignIn() {
             }
             $.cookie('logined_user_nickname', nickname);
             if (window.history.length == 0) {
-                window.location.href = "index.html";
+                window.location.href = "index.html?rnd=" + Date.now();
             } else {
-                window.history.back();
+                //window.history.back(); 
+                var referrer = document.referrer;
+                if (referrer.indexOf('rnd') > 0) {
+                    referrer.replace('rnd=', 'rnd=0');
+                } else {
+                    if (referrer.indexOf('?') < 0) {
+                        referrer += '?';
+                    }
+
+                    referrer += 'rnd=' + Date.now();
+                }
+
+                window.location.href = referrer;
             }
         },
         dataType: 'xml',

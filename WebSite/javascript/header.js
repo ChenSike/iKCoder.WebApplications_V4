@@ -137,11 +137,11 @@ function updateUserInfor() {
                     success: function (data_2, status) {
                         if ($(data_2).find('err').length > 0) {
                             _showGlobalMessage($(data_2).find('err').attr('msg'), 'danger', 'alert_Logout_Error');
-                        } else {
-                            removeUserInfoItem();
-                            $.removeCookie('logined_user_name');
-                            $.removeCookie('logined_user_nickname');
                         }
+
+                        removeUserInfoItem();
+                        $.removeCookie('logined_user_name');
+                        $.removeCookie('logined_user_nickname');
                     },
                     dataType: 'xml',
                     xhrFields: {
