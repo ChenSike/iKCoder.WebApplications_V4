@@ -3,6 +3,7 @@
 function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
     $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
+    $('#sideBar_Page_Left').height($('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height());
     loadHeaderImg();
     //loadSiderbarData();
     //getUnreadMsgCount();
@@ -167,45 +168,120 @@ function rebuildContent(symbol) {
 /*Overview panel*/
 function rebuildOverviewPanel(contentHeight) {
     var tmpHeight = calcOverviewItemheight(contentHeight);
-    //_registerRemoteServer();
-    //$.ajax({
-    //    type: 'POST',
-    //    async: true,
-    //    url: _getRequestURL(_gURLMapping.data.studentcenter, { symbol: 'config_student_index' }),
-    //    data: '',
-    //    success: function (responseData, status) {
-    //        if ($(responseData).find('err').length > 0) {
-    //            _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
-    //            return;
-    //        } else {
-    //            rebuildOverviewTitles(responseData, contentHeight, itemHeight);
-    //            rebuildOverviewContents(responseData, contentHeight, itemHeight);
-    //        }
-    //    },
-    //    dataType: 'xml',
-    //    xhrFields: {
-    //        withCredentials: true
-    //    },
-    //    error: function () {
-    //        _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
-    //    }
-    //});
+    _registerRemoteServer();
+    $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.bus.getcenterinfo),
+        data: '',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
+                return;
+            } else {
+                var data = formatOverviewData(responseData);
+                rebuildOverviewTitles(data, contentHeight, tmpHeight);
+                rebuildOverviewContents(data, contentHeight, tmpHeight);
+                hideLoadingMask();
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
+        }
+    });
+};
+
+function formatOverviewData(response) {
+    //var data = {
+    //    honor: [],
+    //    course: [],
+    //    experience: { distribution: [], level: {} },
+    //    codetimes: { over: 0, times: [] }
+    //};
+
+    //var tmpNodes = response.find('honor').find('item');
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    data.honor.push({ id: i + 1, title: tmpObj.attr('name'), img: tmpObj.attr('image') });
+    //}
+
+    //tmpNodes = response.find('course').find('item');
+    //var courseMap = [
+    //    { color: 'rgb(86,181,34)', symbol: 'A' },
+    //    { color: 'rgb(100,124,185)', symbol: 'B' },
+    //    { color: 'rgb(43,93,126)', symbol: 'C' },
+    //    { color: 'rgb(228,88,76)', symbol: 'D' }
+    //];
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    var newItemObj = {};
+    //    newItemObj.id = tmpObj.attr('id');
+    //    newItemObj.title = tmpObj.attr('title');
+    //    newItemObj.total = parseInt(tmpObj.attr('total'));
+    //    newItemObj.complete = parseInt(tmpObj.attr('complete'));
+    //    newItemObj.img = 'image/course/course_' + (i + 1) + '.png';
+    //    newItemObj.color = courseMap[i].color;
+    //    newItemObj.symbol = courseMap[i].symbol;
+    //    data.course.push(newItemObj);
+    //}
+
+    //tmpNodes = response.find('distributio').find('item');
+    //var distributionMap = {
+    //    science: { name: '科学', color: 'rgb(36,90,186)' },
+    //    skill: { name: '技术', color: 'rgb(236,15,33)' },
+    //    engineering: { name: '工程', color: 'rgb(165,165,165)' },
+    //    math: { name: '数学', color: 'rgb(255,191,0)' },
+    //    language: { name: '语言', color: 'rgb(71,143,208)' }
+    //};
+
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    var tmpItem = distributionMap[tmpObj.attr('id')];
+    //    data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
+    //}
+
+    //tmpNodes = response.find('level').find('item');
+    //var level = {};
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    level[tmpObj.attr('id')] = {
+    //        name: tmpObj.attr('name'),
+    //        id: tmpObj.attr('id'),
+    //        value: parseInt(tmpObj.attr('value'))
+    //    };
+    //}
+
+    //data.experience.level = level;
+
+    //var tmpNode = response.find('codetimes');
+    //data.codetimes.over = parseInt($(tmpNode[0]).attr('over'));
+    //tmpNodes = response.find('codetimes').find('item');
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    data.codetimes.times.push({ date: tmpObj.attr('date'), time: parseInt(tmpObj.attr('value')) });
+    //}
+
     var data = {
         honor: [
-            { id: 1, title: '算法小达人', img: 'image/honor/h_1_a.png' },
-            { id: 2, title: '计算机小专家', img: 'image/honor/h_2_u.png' },
-            { id: 3, title: '语言大师', img: 'image/honor/h_3_a.png' },
-            { id: 4, title: '小画家', img: 'image/honor/h_4_u.png' },
-            { id: 5, title: '小小数学家', img: 'image/honor/h_5_a.png' },
-            { id: 6, title: '音乐家', img: 'image/honor/h_6_a.png' },
-            { id: 7, title: '科学智多星', img: 'image/honor/h_7_u.png' },
-            { id: 8, title: '分享达人', img: 'image/honor/h_8_a.png' },
-            { id: 9, title: '无人机小飞手', img: 'image/honor/h_9_u.png' }
+            { id: 1, title: '算法小达人', img: 'image/honor/copper.png' },
+            { id: 2, title: '计算机小专家', img: 'image/honor/gold.png' },
+            { id: 3, title: '语言大师', img: 'image/honor/silver.png' },
+            { id: 4, title: '小画家', img: 'image/honor/copper.png' },
+            { id: 5, title: '小小数学家', img: 'image/honor/gold.png' },
+            { id: 6, title: '音乐家', img: 'image/honor/silver.png' },
+            { id: 7, title: '科学智多星', img: 'image/honor/copper.png' },
+            { id: 8, title: '分享达人', img: 'image/honor/gold.png' },
+            { id: 9, title: '无人机小飞手', img: 'image/honor/silver.png' }
         ],
         course: [
-            { id: 'primary', title: '跟着博士学Scratch编程(初级)', total: 32, complete: 20, img: 'image/course_simple.png' },
-            { id: 'middle', title: '跟着博士学Scratch编程(中级)', total: 64, complete: 8, img: 'image/course_simple.png' },
-            { id: 'advance', title: '跟着博士学Scratch编程(高级)', total: 96, complete: 3, img: 'image/course_simple.png' }
+            { id: 'enlighten', title: '启蒙课程', total: 32, complete: 4, img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'A' },
+            { id: 'primary', title: '初级课程', total: 32, complete: 3, img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B' },
+            { id: 'middle', title: '中级课程', total: 32, complete: 2, img: 'image/course/course_3.png', color: 'rgb(43,93,126)', symbol: 'C' },
+            { id: 'advance', title: '高级课程', total: 32, complete: 1, img: 'image/course/course_4.png', color: 'rgb(228,88,76)', symbol: 'D' }
         ],
         experience: {
             distribution: [
@@ -222,19 +298,17 @@ function rebuildOverviewPanel(contentHeight) {
             }
         },
         codetimes: {
-            beyond: 95,
+            over: 95,
             times: [
-                { date: "2017-1-1", value: 3 },
-                { date: "2017-1-2", value: 2 },
-                { date: "2017-1-3", value: 4 }
+                { date: "2017-1-1", time: 3 },
+                { date: "2017-1-2", time: 2 },
+                { date: "2017-1-3", time: 4 }
             ]
         }
     }
 
-    rebuildOverviewTitles(data, contentHeight, tmpHeight);
-    rebuildOverviewContents(data, contentHeight, tmpHeight);
-    hideLoadingMask();
-};
+    return data;
+}
 
 function calcOverviewItemheight(contentHeight) {
     var minHeight = Math.floor(150 / 1200 * contentHeight);
@@ -262,8 +336,8 @@ function buildOverviewHonor(datas, height) {
     tmpHTMLArr.push('        <div class="col-10 align-items-center" id="wrap_Overview_Honor_Items" style="height:100%; overflow: hidden;">');
     tmpHTMLArr.push('            <div id="container_Overview_Honor_Items" style="height:100%;">');
     for (var i = 0; i < itemCount; i++) {
-        tmpHTMLArr.push('                <div class="text-center" style="display: inline-block; height:100%; padding-right:' + (i == itemCount - 1 ? 0 : 10) + 'px;">');
-        tmpHTMLArr.push('                    <div style="height:100%; padding:' + padding + 'px 0px;">');
+        tmpHTMLArr.push('                <div class="text-center profile-overview-honor-item" style="' + (i == itemCount - 1 ? '' : 'padding-right:10px;') + '">');
+        tmpHTMLArr.push('                    <div style="height:100%; padding:' + padding + 'px 0px; min-width:85px;">');
         tmpHTMLArr.push('                        <img src="' + datas[i].img + '" style="height: calc(100% - 30px);" />');
         tmpHTMLArr.push('                        <p class="overview-honor-item-text active-item">' + datas[i].title + '</p>');
         tmpHTMLArr.push('                    </div>');
@@ -291,44 +365,99 @@ function buildOverviewHonor(datas, height) {
     }
 };
 
-function buildOverviewCourse(datas, height) {
+function buildOverviewCourse(datas, containerHeight) {
+    var orgPaddingTop = 35;
+    var orgContainerHeight = 350;
+    var orgHeight = 290;
+    var orgWidth = 215;
+    var orgImgHeight = 190;
+    var orgSpace = 90;
+    var orgProgWidth = 130;
+    var orgProgHeight = 10;
+    var orgProgTextWidth = 100;
+    var orgTitleWidth = 90;
+
+    var padding = Math.floor(orgPaddingTop / orgContainerHeight * containerHeight);
+    var scale = padding / orgPaddingTop;
     var itemCount = datas.length;
-    var padding = Math.floor(60 / 350 * height);
-    var width = Math.floor(padding / 60 * 225);
-    var imgHeight = Math.floor(padding / 60 * 95);
-    var spaceWidth = Math.floor(padding / 60 * 85);
+    var height = Math.floor(scale * orgHeight);
+    var width = Math.floor(scale * orgWidth);
+    var imgHeight = Math.floor(scale * orgImgHeight);
+    var progWidth = Math.floor(scale * orgProgWidth);
+    var progHeight = Math.floor(scale * orgProgHeight);
+    var progTextWidth = Math.floor(scale * orgProgTextWidth);
+    var progTextSize = 10;
+    for (var i = progTextSize; i < 50; i++) {
+        if (testTextWidth('已学习99/99课时', i + 'px', 'normal', '微软雅黑') >= progTextWidth - 5) {
+            progTextSize = i;
+            break;
+        }
+    }
+
+    var titleWidth = Math.floor(scale * orgTitleWidth);
+    var titleSize = 10;
+    for (var i = titleSize; i < 50; i++) {
+        if (testTextWidth('启蒙课程', i + 'px', 'normal', '微软雅黑') >= titleWidth - 5) {
+            titleSize = i;
+            break;
+        }
+    }
+
+    var symbolWidth = (width - progWidth) / 2 - progHeight;
+    var symbolSize = 10;
+    for (var i = symbolSize; i < 50; i++) {
+        if (testTextWidth('A', i + 'px', 'normal', '微软雅黑') >= symbolWidth - 3) {
+            symbolSize = i;
+            break;
+        }
+    }
+
+    var space = Math.floor(scale * orgSpace);
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Course" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">');
-    tmpHTMLArr.push('    <div class="row align-items-center" style="height:' + (height - 1) + 'px;">');
+    tmpHTMLArr.push('    <div class="row align-items-center" style="height:' + (containerHeight - 1) + 'px;">');
     tmpHTMLArr.push('        <div class="col-1 text-center">');
     tmpHTMLArr.push('           <div class="overview-list-arrow course" id="arrow_Overview_Course_Left">');
     tmpHTMLArr.push('               <i class="fa fa-chevron-left"></i>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-10 align-items-center" id="wrap_Overview_Course_Items" style="height:100%; overflow: hidden;">');
+    tmpHTMLArr.push('        <div class="col-10" id="wrap_Overview_Course_Items" style="height:100%; overflow: hidden;">');
     tmpHTMLArr.push('            <div id="container_Overview_Course_Items" style="height:100%;">');
     for (var i = 0; i < itemCount; i++) {
-        tmpHTMLArr.push('<div class="text-center" style="display: inline-block; height:100%; padding-right:' + (i == itemCount - 1 ? 0 : spaceWidth) + 'px;">');
-        tmpHTMLArr.push('    <div style="height:100%; padding:' + padding + 'px 0px;">');
-        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="width:' + (width - 2) + 'px;">');
+        tmpHTMLArr.push('<div class="text-center" style="display: inline-block; height:100%; padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;">');
+        tmpHTMLArr.push('    <div class="d-flex align-items-center" style="height:100%;">');
+        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="width:' + (width - 2) + 'px; height:' + height + 'px">');
         tmpHTMLArr.push('            <div class="row" style="margin:0px;">');
         tmpHTMLArr.push('                <div class="col-12" style="padding:0px;">');
         tmpHTMLArr.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="height:' + imgHeight + 'px;" />');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
-        tmpHTMLArr.push('            <div class="row mx-1" style="margin:0px;">');
-        tmpHTMLArr.push('                <div class="col-12" style="padding:0px; font-size:13px;">');
-        tmpHTMLArr.push('                    <p class="text-left">' + datas[i].title + '</p>');
+        tmpHTMLArr.push('            <div class="row" style="margin:0px;">');
+        tmpHTMLArr.push('                <div class="col no-padding" style="width:' + ((width - progWidth) / 2) + 'px">');
         tmpHTMLArr.push('                </div>');
-        tmpHTMLArr.push('            </div>');
-        tmpHTMLArr.push('            <div class="row mx-1" style="margin:0px;">');
-        tmpHTMLArr.push('                <div class="col-12" style="padding:0px;background-color:rgb(216,216,216);">');
-        tmpHTMLArr.push('                    <div style="height:2px; background-color:rgb(73,175,79); width:' + (datas[i].complete / datas[i].total * 100) + '%;"></div>');
+        tmpHTMLArr.push('                <div class="col no-padding" style="width:' + progWidth + 'px">');
+        tmpHTMLArr.push('                   <div class="container-fluid no-padding">');
+        tmpHTMLArr.push('                       <div class="row no-margin">');
+        tmpHTMLArr.push('                           <div class="col-12 no-padding">');
+        tmpHTMLArr.push('                               <p class="text-center" style="color:' + datas[i].color + '; font-size:' + titleSize + 'px;padding:' + progHeight + 'px 0px;">' + datas[i].title + '</p>');
+        tmpHTMLArr.push('                           </div>');
+        tmpHTMLArr.push('                       </div>');
+        tmpHTMLArr.push('                       <div class="row no-margin">');
+        tmpHTMLArr.push('                           <div class="col-12 no-padding d-flex justify-content-center">');
+        tmpHTMLArr.push('                               <div style="width:' + progWidth + 'px; height:' + progHeight + 'px; background-color:rgb(216,216,216);">');
+        tmpHTMLArr.push('                                   <div style="height:' + progHeight + 'px; background-color:rgb(73,175,79); width:' + (datas[i].complete / datas[i].total * 100) + '%;"></div>');
+        tmpHTMLArr.push('                               </div>');
+        tmpHTMLArr.push('                           </div>');
+        tmpHTMLArr.push('                       </div>');
+        tmpHTMLArr.push('                       <div class="row no-margin">');
+        tmpHTMLArr.push('                           <div class="col-12  no-padding" style="padding-top:5px;color:rgb(73,175,79);">');
+        tmpHTMLArr.push('                               <p class="text-center" style="font-size:' + progTextSize + 'px">已学习' + datas[i].complete + '/' + datas[i].total + '课时</p>');
+        tmpHTMLArr.push('                           </div>');
+        tmpHTMLArr.push('                       </div>');
+        tmpHTMLArr.push('                   </div>');
         tmpHTMLArr.push('                </div>');
-        tmpHTMLArr.push('            </div>');
-        tmpHTMLArr.push('            <div class="row mx-1" style="margin:0px;">');
-        tmpHTMLArr.push('                <div class="col-12" style="padding:0px; padding-top:5px;color:rgb(73,175,79); font-size:13px;">');
-        tmpHTMLArr.push('                    <p class="text-left">已学习' + datas[i].complete + '/' + datas[i].total + '课时</p>');
+        tmpHTMLArr.push('                <div class="col no-padding" style="width:' + ((width - progWidth) / 2) + 'px">');
+        tmpHTMLArr.push('                   <div class="profile-overview-course-item-symbol" style="right:' + progHeight + 'px; font-size:' + symbolSize + 'px;line-height: ' + symbolSize + 'px;">' + datas[i].symbol + '</div>');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
         tmpHTMLArr.push('        </div>');
@@ -347,8 +476,8 @@ function buildOverviewCourse(datas, height) {
     tmpHTMLArr.push('</div>');
 
     $('#Content_Overview_Honor').after($(tmpHTMLArr.join('')));
-    var itemWidth = width + spaceWidth;
-    $('#container_Overview_Course_Items').width(itemWidth * itemCount - spaceWidth);
+    var itemWidth = width + space;
+    $('#container_Overview_Course_Items').width(itemWidth * itemCount - space);
     var funData = { id: "container_Overview_Course_Items", step: itemWidth };
     $('#arrow_Overview_Course_Left').on('click', funData, listMovePrev);
     $('#arrow_Overview_Course_Right').on('click', funData, listMoveNext);
@@ -365,8 +494,8 @@ function buildOverviewExperience(data, height) {
 
     var itemCount = idArr.length;
     var padding = Math.floor(40 / 350 * height);
-    var width = Math.floor(padding / 40 * 215);
-    var spaceWidth = Math.floor(padding / 40 * 110);
+    var width = Math.floor(padding / 40 * 225);
+    var spaceWidth = Math.floor(padding / 40 * 90);
     var disWidth = Math.max(width, data.distribution.length * 35);
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Experience" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">');
@@ -425,19 +554,22 @@ function buildOverviewTimes(data, height) {
     tmpHTMLArr.push('            </div>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('        <div class="col-10 align-items-center" id="wrap_Overview_Times_Items" style="height:100%; overflow: hidden;">');
-    tmpHTMLArr.push('            <div id="container_Overview_Times_Items" style="height:100%;">');
-    tmpHTMLArr.push('               <div style="display: inline-block; height:100%; width: 100%;">');
-    tmpHTMLArr.push('                  <div style="height:100%; padding:0px; padding-top:' + padding + 'px;">');
-    tmpHTMLArr.push('                      <div class="container-fluid overview-times-item-wrap" style="padding:0px;">');
-    tmpHTMLArr.push('                          <div class="row" style="margin:0px;">');
-    tmpHTMLArr.push('                              <div class="col-12" style="padding:0px; ">');
-    tmpHTMLArr.push('                                   <canvas id="canvas_Overview_Time"></canvavs>');
-    tmpHTMLArr.push('                              </div>');
-    tmpHTMLArr.push('                           </div>');
-    tmpHTMLArr.push('                       </div>');
-    tmpHTMLArr.push('                   </div>');
-    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('            <div id="container_Overview_Times_Items" style="height:100%; padding:' + padding + 'px 0px;">');
+    tmpHTMLArr.push('               <canvas id="canvas_Overview_Time"></canvavs>');
     tmpHTMLArr.push('           </div>');
+    //tmpHTMLArr.push('            <div id="container_Overview_Times_Items" style="height:100%;">');
+    //tmpHTMLArr.push('               <div style="display: inline-block; height:100%; width: 100%;">');
+    //tmpHTMLArr.push('                  <div style="height:100%; padding:' + padding + 'px 0px;">');
+    //tmpHTMLArr.push('                      <div class="container-fluid no-padding overview-times-item-wrap" style="height:100%;">');
+    //tmpHTMLArr.push('                          <div class="row no-margin" style="height:100%;">');
+    //tmpHTMLArr.push('                              <div class="col-12 no-padding">');
+    //tmpHTMLArr.push('                                   <canvas id="canvas_Overview_Time"></canvavs>');
+    //tmpHTMLArr.push('                              </div>');
+    //tmpHTMLArr.push('                           </div>');
+    //tmpHTMLArr.push('                       </div>');
+    //tmpHTMLArr.push('                   </div>');
+    //tmpHTMLArr.push('               </div>');
+    //tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('       <div class="col-1 text-center">');
     tmpHTMLArr.push('            <div class="overview-list-arrow times" id="arrow_Overview_Times_Right">');
@@ -448,9 +580,6 @@ function buildOverviewTimes(data, height) {
     tmpHTMLArr.push('</div>');
 
     $('#Content_Overview_Experience').after($(tmpHTMLArr.join('')));
-    var funData = { id: "container_Overview_Times_Items", step: 100 };
-    $('#arrow_Overview_Times_Left').on('click', funData, listMovePrev);
-    $('#arrow_Overview_Times_Right').on('click', funData, listMoveNext);
 };
 
 function rebuildOverviewContents(data, contentHeight, itemHeight) {
@@ -463,7 +592,15 @@ function rebuildOverviewContents(data, contentHeight, itemHeight) {
     }
 
     buildOverviewTimes(data.codetimes, itemHeight.e);
-    drawTimesGraph(data.codetimes.times);
+    //drawTimesGraph(data.codetimes.times);
+    var step = drawTimeBarGraph(data.codetimes.times, 'canvas_Overview_Time');
+    var funData = { id: "container_Overview_Times_Items", step: 100 };
+    $('#arrow_Overview_Times_Left').on('click', funData, listMovePrev);
+    $('#arrow_Overview_Times_Right').on('click', funData, listMoveNext);
+    if ($('#canvas_Overview_Time').width() <= $('#wrap_Overview_Times_Items').width()) {
+        $('.overview-list-arrow').hide();
+    }
+
     //$('#wrap_Category_Content').css('width', '100%');
     $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width() - $('#wrap_Category_Title').width() - 18);
 };
@@ -483,7 +620,7 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
 
     var totalTime = 0;
     for (var i = 0; i < data.codetimes.times.length; i++) {
-        totalTime += data.codetimes.times[i].value;
+        totalTime += data.codetimes.times[i].time;
     }
 
     var constArr = [
@@ -514,7 +651,7 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
             color: 'rgb(124,77,255)',
             icon: 'clock-o',
             text: '<p class="overview-title-item-text">编程<span class="overview-title-item-data">' + totalTime +
-                '</span>小时</p><p class="overview-title-item-text">超了<span class="overview-title-item-data">' + data.codetimes.beyond +
+                '</span>小时</p><p class="overview-title-item-text">超了<span class="overview-title-item-data">' + data.codetimes.over +
                 '%</span>同学</p>'
         }
     ];
@@ -598,7 +735,7 @@ function drawExpDistributionGraph(canvasId, datas) {
 
         context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
         context.fillStyle = "rgb(71,71,71)";
-        context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 8);
+        context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 6);
     }
 };
 
@@ -621,7 +758,7 @@ function drawExpCourseLevelGraph(canvasId, data) {
     var total = 100;
     var tmpX = 0;
     var tmpY = 0;
-    var fontSize = Math.floor(width / 215 * 16);
+    var fontSize = Math.floor(width / 215 * 20);
     var bigFontSize = Math.floor(width / 215 * 36);
     context.beginPath();
     context.strokeStyle = 'rgb(230,230,230)';
@@ -646,82 +783,6 @@ function drawExpCourseLevelGraph(canvasId, data) {
     context.font = 'normal normal bold ' + bigFontSize + 'px \"微软雅黑\"';
     context.fillStyle = "rgb(71,71,71)";
     context.fillText(data.value + '%', (width - (bigFontSize) * ((data.value + '%').length - 1)) / 2, tmpY + bigFontSize / 2);
-};
-
-function drawTimesGraph(datas) {
-    var barWidth = 15;
-    var barSpace = 10;
-    var lineWidth = 1;
-    var canvas = $('#canvas_Overview_Time');
-    var parent = $($('.overview-times-item-wrap').parent());
-    var width = (barWidth + barSpace) * datas.length;
-    var height = parent.height();
-    $('#container_Overview_Times_Items').width(width);
-    if ($('#wrap_Overview_Times_Items').width() > $('#container_Overview_Times_Items').width()) {
-        $('.overview-list-arrow.times').hide();
-    }
-
-    canvas.attr('height', height);
-    canvas.attr('width', width);
-    canvas[0].width = width;
-    canvas[0].height = height;
-    var context = canvas[0].getContext('2d');
-    context.clearRect(0, 0, width, height);
-    var maxValue = datas[0].value;
-    for (var i = 0; i < datas.length; i++) {
-        maxValue = Math.max(maxValue, datas[i].value);
-    }
-
-    var unit = Math.floor((height - 10 - 20) / maxValue);
-    var startX = 0;
-    var startY = height - 20;
-    var ltX, ltY, rtX, rtY, rbX, rbY, linearGradient, bHeight, bWidth, tmpX, tmpY, tmpArr, tmpData;
-    for (var i = 0; i < datas.length; i++) {
-        tmpData = datas[i];
-        if (tmpData.value <= 0) {
-            startX = rtX + barSpace;
-            continue;
-        }
-
-        ltX = startX;
-        ltY = startY - tmpData.value * unit - lineWidth * 2;
-        rtX = startX + barWidth + lineWidth;
-        rtY = ltY;
-        rbX = rtX;
-        rbY = startY;
-        bHeight = tmpData.value * unit + lineWidth * 2;
-        bWidth = barWidth + lineWidth * 2;
-        //draw bar
-        linearGradient = context.createLinearGradient(ltX, ltY, 0, bHeight);
-        linearGradient.addColorStop(0, "rgb(98,163,54)");
-        linearGradient.addColorStop(1, "rgb(128,184,95)");
-        context.fillStyle = linearGradient;
-        context.fillRect(ltX, ltY, bWidth, bHeight);
-        //draw border
-        context.strokeStyle = 'rgb(167,196,150)';
-        context.lineWidth = 1;
-        context.moveTo(startX, startY);
-        context.lineTo(ltX, ltY);
-        context.lineTo(rtX, rtY);
-        context.lineTo(rbX, rbY);
-        context.lineTo(startX, startY);
-        context.stroke();
-        //draw time label
-        tmpX = ltX + 4;
-        tmpY = ltY - 2;
-        context.font = "normal normal bold 11px \"微软雅黑\"";
-        context.fillStyle = "rgb(97,97,97)";
-        context.fillText(tmpData.value, tmpX, tmpY);
-        //draw date label
-        tmpX = startX;
-        tmpY = startY + 12;
-        context.font = "normal normal 600 8px \"微软雅黑\"";
-        context.fillStyle = "rgb(97,97,97)";
-        tmpArr = tmpData.date.split('-');
-        context.fillText(tmpArr[1] + '-' + tmpArr[2], tmpX, tmpY);
-        //calculate next X
-        startX = rtX + barSpace;
-    }
 };
 
 /*Settings panel*/
@@ -1034,7 +1095,6 @@ function initSettingsEvents() {
         $('#progress_HeaderUpload').hide();
         $('#warnning_HeaderUpload').hide();
         //$('#wrap_CropBox_Header').hide();
-        $('#btn_Form_File_Upload').click();
         $('#file_Upload').click();
     });
 
@@ -1069,6 +1129,7 @@ function initSettingsEvents() {
             }
 
             _UploadHeaderHandle = setTimeout('initCustomHeaderImg()', timeout);
+            $('#btn_Form_File_Upload').click();
         }
     });
 
@@ -2197,83 +2258,15 @@ function drawPolygon(context, n, x, y, r, a, c, fillStyle, strokeStyle) {
 };
 
 function drawTimeGraph(data) {
-    drawTimeBarGraph(data.times);
-    drawTimeCompleteRate(data.course);
-};
-
-function drawTimeBarGraph(datas) {
-    var barWidth = 18;
-    var barSpace = 14;
-    var lineWidth = 1;
-    var canvas = document.getElementById('canvas_Report_Time_Time');
-    var parent = $($(canvas).parent());
-    var width = Math.max(Math.floor((barWidth + barSpace) * datas.length), parent.width());
-    var height = parent.height();
-    canvas.width = width;
-    canvas.height = height;
-    var context = canvas.getContext('2d');
-    context.clearRect(0, 0, width, height);
-    var maxValue = datas[0].time;
-    for (var i = 1; i < datas.length; i++) {
-        maxValue = Math.max(maxValue, datas[i].time);
-    }
-
-    var unit = Math.floor((height - 30) / maxValue);
-    var startX = 0;
-    var startY = height - 15;
-    var linearGradient, barHeight, barX, tmpX, tmpY, lineRTX, lineRTY, tmpDate, tmpMonth;
-    for (var i = 0; i < datas.length; i++) {
-        if (datas[i].time > 0) {
-            //draw bar
-            barHeight = datas[i].time * unit;
-            barX = startX + barSpace / 2;
-            lineRTX = barX + barWidth;
-            lineRTY = startY - barHeight;
-            linearGradient = context.createLinearGradient(barX, lineRTY, 0, barHeight);
-            linearGradient.addColorStop(0, "rgb(98,163,54)");
-            linearGradient.addColorStop(1, "rgb(128,184,95)");
-            context.fillStyle = linearGradient;
-            context.fillRect(barX, lineRTY, barWidth, barHeight);
-            //draw border
-            context.strokeStyle = 'rgba(210,210,210,0.5)';
-            context.lineWidth = lineWidth;
-            context.moveTo(barX, startY);
-            context.lineTo(barX, lineRTY);
-            context.lineTo(lineRTX, lineRTY);
-            context.lineTo(lineRTX, startY);
-            context.stroke();
-            //draw time label
-            tmpX = barX + 4;
-            tmpY = lineRTY - 2;
-            context.font = "normal normal bold 10px \"微软雅黑\"";
-            context.fillStyle = "rgb(97,97,97)";
-            context.fillText(datas[i].time, tmpX, tmpY);
-            //draw date label
-            tmpX = startX + 2;
-            tmpY = startY + 12;
-            context.font = "normal normal 600 10px \"微软雅黑\"";
-            context.fillStyle = "rgb(97,97,97)";
-            tmpDate = new Date(datas[i].date);
-            tmpMonth = (tmpDate.getMonth() + 1 < 10 ? '0' + (tmpDate.getMonth() + 1) : tmpDate.getMonth() + 1);
-            tmpDate = (tmpDate.getDate() < 10 ? '0' + tmpDate.getDate() : tmpDate.getDate());
-            context.fillText(tmpMonth + '-' + tmpDate, tmpX, tmpY);
-        }
-
-        startX += barWidth + barSpace;
-    }
-    //draw base line
-    context.strokeStyle = 'rgba(210,210,210,0.5)';
-    context.lineWidth = lineWidth;
-    context.moveTo(0, startY);
-    context.lineTo(canvas.width, startY);
-    context.stroke();
-
-    var funData = { id: "canvas_Report_Time_Time", step: (barWidth + barSpace) * 3 };
+    var step = drawTimeBarGraph(data.times, 'canvas_Report_Time_Time');
+    var funData = { id: "canvas_Report_Time_Time", step: step };
     $('#arrow_Report_Time_Left').on('click', funData, listMovePrev);
     $('#arrow_Report_Time_Right').on('click', funData, listMoveNext);
     if ($('#canvas_Report_Time_Time').width() <= $('#container_Report_Time_Graph').width()) {
         $('.report-list-arrow.time').hide();
     }
+
+    drawTimeCompleteRate(data.course);
 };
 
 function drawTimeCompleteRate(datas) {
@@ -2470,7 +2463,7 @@ function displayMessageByType(type) {
     //$.ajax({
     //    type: 'POST',
     //    async: true,
-    //    url: _getRequestURL(_gURLMapping.bus.getunreadmsgcount),
+    //    url: _getRequestURL(_gURLMapping.bus.getmsglist),
     //    data: '<root></root>',
     //    success: function (responseData, status) {
     //        if ($(responseData).find('err').length > 0) {
@@ -2601,4 +2594,73 @@ function formatDate(date) {
 
     dateArr.push(tmpVal);
     return dateArr.join('-');
+};
+
+function drawTimeBarGraph(datas, canvasId) {
+    var barWidth = 18;
+    var barSpace = 14;
+    var lineWidth = 1;
+    var canvas = document.getElementById(canvasId);
+    var parent = $($(canvas).parent());
+    var width = Math.max(Math.floor((barWidth + barSpace) * datas.length), parent.width());
+    var height = parent.height();
+    canvas.width = width;
+    canvas.height = height;
+    var context = canvas.getContext('2d');
+    context.clearRect(0, 0, width, height);
+    var maxValue = datas[0].time;
+    for (var i = 1; i < datas.length; i++) {
+        maxValue = Math.max(maxValue, datas[i].time);
+    }
+
+    var unit = Math.floor((height - 30) / maxValue);
+    var startX = 0;
+    var startY = height - 15;
+    var linearGradient, barHeight, barX, tmpX, tmpY, lineRTX, lineRTY, tmpDate, tmpMonth;
+    for (var i = 0; i < datas.length; i++) {
+        if (datas[i].time > 0) {
+            //draw bar
+            barHeight = datas[i].time * unit;
+            barX = startX + barSpace / 2;
+            lineRTX = barX + barWidth;
+            lineRTY = startY - barHeight;
+            linearGradient = context.createLinearGradient(barX, lineRTY, 0, barHeight);
+            linearGradient.addColorStop(0, "rgb(98,163,54)");
+            linearGradient.addColorStop(1, "rgb(128,184,95)");
+            context.fillStyle = linearGradient;
+            context.fillRect(barX, lineRTY, barWidth, barHeight);
+            //draw border
+            context.strokeStyle = 'rgba(210,210,210,0.5)';
+            context.lineWidth = lineWidth;
+            context.moveTo(barX, startY);
+            context.lineTo(barX, lineRTY);
+            context.lineTo(lineRTX, lineRTY);
+            context.lineTo(lineRTX, startY);
+            context.stroke();
+            //draw time label
+            tmpX = barX + 4;
+            tmpY = lineRTY - 2;
+            context.font = "normal normal bold 10px \"微软雅黑\"";
+            context.fillStyle = "rgb(97,97,97)";
+            context.fillText(datas[i].time, tmpX, tmpY);
+            //draw date label
+            tmpX = startX + 2;
+            tmpY = startY + 12;
+            context.font = "normal normal 600 10px \"微软雅黑\"";
+            context.fillStyle = "rgb(97,97,97)";
+            tmpDate = new Date(datas[i].date);
+            tmpMonth = (tmpDate.getMonth() + 1 < 10 ? '0' + (tmpDate.getMonth() + 1) : tmpDate.getMonth() + 1);
+            tmpDate = (tmpDate.getDate() < 10 ? '0' + tmpDate.getDate() : tmpDate.getDate());
+            context.fillText(tmpMonth + '-' + tmpDate, tmpX, tmpY);
+        }
+
+        startX += barWidth + barSpace;
+    }
+    //draw base line
+    context.strokeStyle = 'rgba(210,210,210,0.5)';
+    context.lineWidth = lineWidth;
+    context.moveTo(0, startY);
+    context.lineTo(canvas.width, startY);
+    context.stroke();
+    return (barWidth + barSpace) * 3;
 };

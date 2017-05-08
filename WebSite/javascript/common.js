@@ -5,6 +5,7 @@ var _gExpires = 15;
 var _gLabelMap = {};
 var _gHostName = 'http://119.23.233.224/ikcoderapi';
 //var _gHostName = 'http://10.111.0.243/ikcoderapi';
+//var _gHostName = 'http://10.86.209.100/ikcoderapi';
 var _gURLMapping = {
     server: {
         reg: '/Sys/api_iKCoder_Sys_Set_RegDomain.aspx'
@@ -33,7 +34,8 @@ var _gURLMapping = {
         setfinishscene: '/Bus/Workspace/api_iKCoder_Workspace_Set_FinishSence.aspx',
         getscenelist: '/Bus/Center/api_iKCoder_Center_Get_SencesList.aspx',
         getcenterinfo: '/Bus/Center/api_iKCoder_Center_Get_CenterInfo.aspx',
-        getunreadmsgcount: '/Bus/Message/api_iKCoder_Workspace_Get_CountOfUnreadMessage.aspx'
+        getunreadmsgcount: '/Bus/Message/api_iKCoder_Workspace_Get_CountOfUnreadMessage.aspx',
+        getmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_MessageList.aspx'
     }
 };
 var _gCitys = [

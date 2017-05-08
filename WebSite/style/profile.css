@@ -48,6 +48,12 @@
     color: rgb(107,129,140);
 }
 
+.profile-overview-honor-item {
+    display: inline-block;
+    height: 100%;
+    padding-right: 10px;
+}
+
 .overview-honor-item-text {
     color: rgb(147,146,145);
     font-size: 13px;
@@ -61,10 +67,17 @@
     }
 
 .overview-course-item-wrap {
-    padding: 1px 0px;
-    border: solid 1px rgb(246,246,246);
-    border-left: none;
-    border-right: solid 2px rgb(246,246,246);
+    padding: 0px;
+    border: solid 1px rgb(237,240,242);
+    box-shadow: 1px 1px 5px rgb(188,188,188);
+}
+
+.profile-overview-course-item-symbol {
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+    color: rgb(119,118,123);
+    font-weight: bold;
 }
 
 .overview-list-arrow {
@@ -565,6 +578,6 @@ div.alert-mask-custom {
     padding-left: 20px;
 }
 
-.profile-message-remove-button{
+.profile-message-remove-button {
     cursor: pointer;
 }
