@@ -80,6 +80,12 @@
     font-weight: bold;
 }
 
+.profile-overview-course-item-title {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
 .overview-list-arrow {
     cursor: pointer;
 }

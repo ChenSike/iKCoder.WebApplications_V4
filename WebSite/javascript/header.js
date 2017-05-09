@@ -142,6 +142,7 @@ function updateUserInfor() {
                         removeUserInfoItem();
                         $.removeCookie('logined_user_name');
                         $.removeCookie('logined_user_nickname');
+                        window.location.href = 'index.html?rnd=' + Date.now();
                     },
                     dataType: 'xml',
                     xhrFields: {
