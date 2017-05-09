@@ -346,15 +346,19 @@ function doSignIn() {
                 window.location.href = "index.html?rnd=" + Date.now();
             } else {
                 //window.history.back(); 
-                var referrer = document.referrer;
-                if (referrer.indexOf('rnd') > 0) {
-                    referrer.replace('rnd=', 'rnd=0');
+                var referrer = document.referrer.toLowerCase();
+                if (referrer.indexOf('sign.html')) {
+                    referrer = 'index.html';
                 } else {
-                    if (referrer.indexOf('?') < 0) {
-                        referrer += '?';
-                    }
+                    if (referrer.indexOf('rnd') > 0) {
+                        referrer.replace('rnd=', 'rnd=0');
+                    } else {
+                        if (referrer.indexOf('?') < 0) {
+                            referrer += '?';
+                        }
 
-                    referrer += 'rnd=' + Date.now();
+                        referrer += 'rnd=' + Date.now();
+                    }
                 }
 
                 window.location.href = referrer;

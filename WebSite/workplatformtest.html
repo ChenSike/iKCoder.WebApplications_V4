@@ -1,0 +1,618 @@
+﻿<!DOCTYPE html>
+<html style="height:100%">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <style>
+        #mask_Page_Loading {
+            display: flex !important;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(242,242,242);
+            z-index: 99999;
+            -webkit-box-align: center !important;
+            -webkit-align-items: center !important;
+            -ms-flex-align: center !important;
+            align-items: center !important;
+        }
+
+        body p {
+            margin: 0 auto;
+        }
+
+        body .loader {
+            height: 100%;
+            position: relative;
+            margin: auto;
+            width: 400px;
+        }
+
+        body .loader_overlay {
+            width: 150px;
+            height: 150px;
+            background: transparent;
+            box-shadow: 0px 0px 0px 1000px rgba(255, 255, 255, 0.67), 0px 0px 19px 0px rgba(0, 0, 0, 0.16) inset;
+            border-radius: 100%;
+            z-index: -1;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        body .loader_cogs {
+            z-index: -2;
+            width: 100px;
+            height: 100px;
+            top: -120px !important;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        body .loader_cogs__top {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            -webkit-transform-origin: 50px 50px;
+            transform-origin: 50px 50px;
+            -webkit-animation: rotate 10s infinite linear;
+            animation: rotate 10s infinite linear;
+        }
+
+            body .loader_cogs__top div:nth-of-type(1) {
+                -webkit-transform: rotate(30deg);
+                transform: rotate(30deg);
+            }
+
+            body .loader_cogs__top div:nth-of-type(2) {
+                -webkit-transform: rotate(60deg);
+                transform: rotate(60deg);
+            }
+
+            body .loader_cogs__top div:nth-of-type(3) {
+                -webkit-transform: rotate(90deg);
+                transform: rotate(90deg);
+            }
+
+            body .loader_cogs__top div.top_part {
+                width: 100px;
+                border-radius: 10px;
+                position: absolute;
+                height: 100px;
+                background: #f98db9;
+            }
+
+            body .loader_cogs__top div.top_hole {
+                width: 50px;
+                height: 50px;
+                border-radius: 100%;
+                background: white;
+                position: absolute;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+            }
+
+        body .loader_cogs__left {
+            position: relative;
+            width: 80px;
+            -webkit-transform: rotate(16deg);
+            transform: rotate(16deg);
+            top: 28px;
+            -webkit-transform-origin: 40px 40px;
+            transform-origin: 40px 40px;
+            -webkit-animation: rotate_left 10s .1s infinite reverse linear;
+            animation: rotate_left 10s .1s infinite reverse linear;
+            left: -24px;
+            height: 80px;
+        }
+
+            body .loader_cogs__left div:nth-of-type(1) {
+                -webkit-transform: rotate(30deg);
+                transform: rotate(30deg);
+            }
+
+            body .loader_cogs__left div:nth-of-type(2) {
+                -webkit-transform: rotate(60deg);
+                transform: rotate(60deg);
+            }
+
+            body .loader_cogs__left div:nth-of-type(3) {
+                -webkit-transform: rotate(90deg);
+                transform: rotate(90deg);
+            }
+
+            body .loader_cogs__left div.left_part {
+                width: 80px;
+                border-radius: 6px;
+                position: absolute;
+                height: 80px;
+                background: #97ddff;
+            }
+
+            body .loader_cogs__left div.left_hole {
+                width: 40px;
+                height: 40px;
+                border-radius: 100%;
+                background: white;
+                position: absolute;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+            }
+
+        body .loader_cogs__bottom {
+            position: relative;
+            width: 60px;
+            top: -65px;
+            -webkit-transform-origin: 30px 30px;
+            transform-origin: 30px 30px;
+            -webkit-animation: rotate_left 10.2s .4s infinite linear;
+            animation: rotate_left 10.2s .4s infinite linear;
+            -webkit-transform: rotate(4deg);
+            transform: rotate(4deg);
+            left: 79px;
+            height: 60px;
+        }
+
+            body .loader_cogs__bottom div:nth-of-type(1) {
+                -webkit-transform: rotate(30deg);
+                transform: rotate(30deg);
+            }
+
+            body .loader_cogs__bottom div:nth-of-type(2) {
+                -webkit-transform: rotate(60deg);
+                transform: rotate(60deg);
+            }
+
+            body .loader_cogs__bottom div:nth-of-type(3) {
+                -webkit-transform: rotate(90deg);
+                transform: rotate(90deg);
+            }
+
+            body .loader_cogs__bottom div.bottom_part {
+                width: 60px;
+                border-radius: 5px;
+                position: absolute;
+                height: 60px;
+                background: #ffcd66;
+            }
+
+            body .loader_cogs__bottom div.bottom_hole {
+                width: 30px;
+                height: 30px;
+                border-radius: 100%;
+                background: white;
+                position: absolute;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+            }
+
+        /* Animations */
+        @-webkit-keyframes rotate {
+            from {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes rotate_left {
+            from {
+                -webkit-transform: rotate(16deg);
+                transform: rotate(16deg);
+            }
+
+            to {
+                -webkit-transform: rotate(376deg);
+                transform: rotate(376deg);
+            }
+        }
+
+        @keyframes rotate_left {
+            from {
+                -webkit-transform: rotate(16deg);
+                transform: rotate(16deg);
+            }
+
+            to {
+                -webkit-transform: rotate(376deg);
+                transform: rotate(376deg);
+            }
+        }
+
+        @-webkit-keyframes rotate_right {
+            from {
+                -webkit-transform: rotate(4deg);
+                transform: rotate(4deg);
+            }
+
+            to {
+                -webkit-transform: rotate(364deg);
+                transform: rotate(364deg);
+            }
+        }
+
+        @keyframes rotate_right {
+            from {
+                -webkit-transform: rotate(4deg);
+                transform: rotate(4deg);
+            }
+
+            to {
+                -webkit-transform: rotate(364deg);
+                transform: rotate(364deg);
+            }
+        }
+
+
+        #tooltip_Component {
+            z-index: 9999;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            opacity: 0.8;
+            display: none;
+        }
+
+        .tooltip-warning-wrap {
+            z-index: -10;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            display: none;
+            border: solid 5px rgb(255,204,51);
+            border-radius: 15px;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+        }
+
+            .tooltip-warning-wrap.hidden {
+                display: none;
+            }
+    </style>
+    <link rel="stylesheet" href="style/jquery-ui.min.css">
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.min.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <link rel="stylesheet" href="style/workplatform.css">
+    <link rel="stylesheet" href="style/workspace.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/jquery-ui.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.min.js"></script>
+    <script src="javascript/common/storage.js"></script>
+    <script src="javascript/blockly_compressed.js"></script>
+    <script src="javascript/blocks_compressed.js"></script>
+    <script src="javascript/javascript_compressed.js"></script>
+    <script src="msg/messages.js"></script>
+    <script src="msg/js/zh-hans.js"></script>
+    <script src="javascript/common/ExtendBlockly.js"></script>
+    <script src="javascript/common/ExtendBlockRenderSvg.js"></script>
+    <script src="javascript/common/xmloperator.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/common/scenecommon.js"></script>
+    <script src="javascript/common/blocklycommon.js"></script>
+    <script src="javascript/workplatformtest.js"></script>
+    <!--<script src="javascripts/websit/workplatform_tank.js"></script>
+    <script src="javascripts/scene/tankwar/Blocks/blocks.js"></script>
+    <script src="javascripts/scene/tankwar/Engine/game_engine.js"></script>
+    <script src="javascripts/scene/tankwar/Scene/scene.js"></script>-->
+    <!--<script src="javascripts/websit/workplatform_pacman_l2.js"></script>-->
+    <script src="javascript/scene/B-01-001test/pacman/1/Blocks/blocks.js"></script>
+    <script src="javascript/scene/B-01-001test/pacman/1/Engine/game_engine.JS"></script>
+    <script src="javascript/scene/B-01-001test/pacman/1/Scene/scene.js"></script>
+</head>
+<body>
+    <div id="mask_Page_Loading">
+        <div class="loader">
+            <div class="loader_overlay"></div>
+            <div class="loader_cogs">
+                <div class="loader_cogs__top">
+                    <div class="top_part"></div>
+                    <div class="top_part"></div>
+                    <div class="top_part"></div>
+                    <div class="top_hole"></div>
+                </div>
+                <div class="loader_cogs__left">
+                    <div class="left_part"></div>
+                    <div class="left_part"></div>
+                    <div class="left_part"></div>
+                    <div class="left_hole"></div>
+                </div>
+                <div class="loader_cogs__bottom">
+                    <div class="bottom_part"></div>
+                    <div class="bottom_part"></div>
+                    <div class="bottom_part"></div>
+                    <div class="bottom_hole"></div>
+                </div>
+                <p style="text-align:center;">loading</p>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="height:60px; background-color:rgb(41,49,67);">
+        <div class="row">
+            <div class="col-sm-2 text-center" style="padding-top:15px;">
+                <span class="head-course-name"></span>
+            </div>
+            <div class="col-sm-7">
+                <div class="container">
+                    <div class="row justify-content-center" style="padding-top:15px;">
+                        <div class="col-12 text-center" id="Course_Stage_Container" style="height: 30px;">
+                            <div class="head-stage-background">
+                                <div class="head-stage-space"></div>
+                            </div>
+                            <div class="wrap-head-stage-steps d-flex align-items-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="container">
+                    <div class="row justify-content-end" style="padding-top:7px; padding-bottom:8px; text-align:center;text-align:-webkit-center;">
+                        <div class="col-12 text-center">
+                            <img class="header-user-image" src="" width="45" height="45" />
+                            <span class="header-user-name-text" style="padding-left:20px;"></span>
+                            <img class="goto-profile-image-button" src="image/exit.svg" width="25" height="25" title="进入个人中心" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="height:95px; border-left:solid 1px rgb(245,245,245); background-color: rgb(223,228,231);">
+        <div class="row">
+            <div class="col-2 col-sm-2 justify-content-center" style="padding: 0px; padding-top: 20px; width:70px;">
+                <div class="spinner" style="left:10px;">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+            <div class="col-9 col-sm-9 text-left">
+                <p class="course-stage-note"></p>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="height:35px;background-color:rgb(26,164,216);border-top: solid 2px rgb(245,245,245);">
+        <div class="row align-items-center" style="height: 100%;padding-left:15px;">
+            <div class="wrap-workspace-toolbox">
+                工具箱
+            </div>
+            <div class="col" style="font-size: 13px; font-weight: bolder; color:rgb(255,255,255);">
+                <div class="container-fluid" id="wrap_Workspace_Toolbar">
+                    <div class="row">
+                        <div class="col text-center">
+                            <span>工作区域</span>
+                        </div>
+                        <div class="col" style="min-width:200px; max-width:200px;">
+                            <div class="container-fluid">
+                                <div class="row" style="height: 23px;">
+                                    <div class="col-3">
+                                        <i class="workspace-tool-item fa fa-play" aria-hidden="true" title="运行"></i>
+                                    </div>
+                                    <div class="col-3">
+                                        <i class="workspace-tool-item fa fa-share-alt" aria-hidden="true" title="分享"></i>
+                                    </div>
+                                    <div class="col-3">
+                                        <i class="workspace-tool-item fa fa-arrows-alt" aria-hidden="true" title="全屏"></i>
+                                    </div>
+                                    <div class="col-3">
+                                        <i class="workspace-tool-item fa fa-repeat" aria-hidden="true" title="重置"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="wrap_Workspace_Blockly" style="padding:0px;">
+        <div class="row" style="margin:0px;">
+            <div class="col-12" style="padding:0px;">
+                <div class="blockly-workspace-wrap" id="wrap_WorkSpace">
+                    <div id="content_WorkSpace"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="wrap_Workspace_Static" style="padding:0px;">
+        <div class="row">
+            <div class="col-12">
+                <div class="wrap-static-canvas" id="container_Static_Stage">
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer" id="footer">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-2">
+                    <img id="btn_Footer_Logo" src="image/logo-new-white.png" width="100" height="35">
+                </div>
+                <div class="col-3 offset-3">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-3">
+                                <div class="footer-tool-item selected" id="btn_Footer_CreateMode" data-tip="创作模式">
+                                    <i class="fa fa-gamepad fa-lg"></i>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="footer-tool-item" id="btn_Footer_KnowledgeMode" data-tip="查看知识点">
+                                    <i class="fa fa-book fa-lg"></i>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="footer-tool-item" id="btn_Footer_CodeMode" data-tip="代码模式">
+                                    <i class="fa fa-code fa-lg"></i>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="footer-tool-item" id="btn_Footer_WordMode" data-tip="词汇术语">
+                                    <i class="fa fa-language fa-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="siderbar-wrap expanded">
+        <div class="siderbar-expand" id="btn_SiderBar_Expand">
+            <i class="fa fa-angle-double-right fa-2x" id="icon_SiderBar_Expand" style="line-height:50px;" aria-hidden="true"></i>
+        </div>
+        <div class="siderbar-drag expanded"></div>
+        <div class="sidebar-content-wrap">
+            <div class="siderbar-content">
+                <div class="container-fluid">
+                    <div class="row" style="margin:0px;">
+                        <div class="col-12 siderbar-scene-container" style="padding:0px;">
+                            <div id="game_container" style="text-align: center;">
+                                <i class="fa fa-play-circle-o run-scene-fullscreen-play-button" title="开始运行"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid" id="wrap_Scene_Help_Content" style="padding-top:20px;">
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <p class="course-help-title">需要帮助吗? 请看看课程视频和帮助</p>
+                            <div class="course-help-container">
+                                <div class="course-help-hits">12</div>
+                                <img class="course-help-image" src="image/works/works_4.png">
+                                <div class="course-help-footer">CORPORATE, ONE-PAGE, TECHNOLOGY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="siderbar-drag-proxy"></div>
+    <div class="modle-tip">创作模式</div>
+    <div class="code-panel" id="panel_CodeMode">
+        <div class="code-panel-header">
+            <div class="code-panel-header-close"><i class="fa fa-times-circle-o"></i></div>
+        </div>
+        <div class="code-panel-content">
+            <textarea type="text" class="code-text-content" id="txt_Code_Content" spellcheck="false"></textarea>
+        </div>
+    </div>
+    <div class="word-panel" id="panel_WordMode">
+        <div class="word-panel-header">
+            <div class="word-panel-header-close"><i class="fa fa-times-circle-o"></i></div>
+        </div>
+        <div class="word-panel-content container"></div>
+    </div>
+    <div class="knowledge-panel" id="panel_KnowledgeMode">
+        <div class="knowledge-panel-header">
+            <div class="knowledge-panel-header-close"><i class="fa fa-times-circle-o"></i></div>
+        </div>
+        <div class="knowledge-panel-content container"></div>
+    </div>
+    <div class="run-scene-fullscreen">
+        <i class="fa fa-times-circle-o run-scene-fullscreen-close-button"></i>
+    </div>
+    <div style="display:none">
+        <audio id="audio_Soundmark"></audio>
+    </div>
+    <div class="wrap-workstatus-alert">
+        <div class="wrap-complete-alert" style="display: block;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-8 text-center" style="padding: 30px 0px; color:rgb(255,255,2555);">
+                        <i class="fa fa-check-circle-o fa-5x" aria-hidden="true"></i>
+                        <div class="step-complete-title" id="title_StepComplete"></div>
+                    </div>
+                </div>
+                <div class="row justify-content-center my-3">
+                    <div class="col-2 text-center">
+                        <div class="step-complete-button" id="btn_Step_Restart"><span class="glyphicon glyphicon-repeat" style="padding-right:10px;"></span>重新开始</div>
+                    </div>
+                    <div class="col-2">
+                        <div class="step-complete-button" id="btn_Step_GoNext"><span class="glyphicon glyphicon-hand-right" style="padding-right:10px;"></span>挑战下一步</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center margin-top20 step-evaluate-wrap" style="border-top:solid 2px rgb(255,255,255); padding-top:20px">
+                        <span>喜欢这个课程吗?</span>
+                        <span class="fa fa-thumbs-o-up step-evaluate-button" style="padding-left:20px;" data-target="1"></span>
+                        <span class="fa fa-thumbs-o-down step-evaluate-button" style="padding-left:20px;" data-target="0"></span>
+                    </div>
+                </div>
+            </div>
+        </div>        <div class="wrap-complete-alert wrap-faild-alert my-5" style="display: block;">
+            <div class="container" style="padding-top: 50px;">
+                <div class="row justify-content-center">
+                    <div class="col-6 text-center" style="padding: 30px 0px; color:rgb(255,255,2555);">
+                        <i class="fa fa-exclamation-circle fa-5x" aria-hidden="true"></i>
+                        <div class="step-complete-title" id="title_StepFaild">非常抱歉，您的工作出现错误，请检查后继续运行.</div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-4 text-center">
+                        <div class="step-complete-button" id="btn_Step_FindError"><span class="glyphicon glyphicon-hand-right" style="padding-right:10px;"></span>查找问题</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tooltip tooltip-top" id="tooltip_Component" role="tooltip">
+        <div class="tooltip-arrow"></div>
+        <div class="tooltip-inner"></div>
+    </div>
+    <div class="tooltip-warning-wrap"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            _loadLabels();
+            initPage();
+            //_startCheckState();
+        });
+    </script>
+    <!--<script src="javascript/scene/A-01-001/intrcouse/1/konvas.js"></script>
+    <script src="javascript/scene/A-01-001/intrcouse/1/components.js"></script>
+    <script src="javascript/scene/A-01-001/intrcouse/1/level1.js"></script>-->
+</body>
+</html>
