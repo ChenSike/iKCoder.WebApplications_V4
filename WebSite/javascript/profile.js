@@ -478,7 +478,7 @@ function buildOverviewCourse(datas, containerHeight) {
         tmpHTMLArr.push('                       </div>');
         tmpHTMLArr.push('                       <div class="row no-margin">');
         tmpHTMLArr.push('                           <div class="col-12  no-padding" style="padding-top:5px;color:rgb(73,175,79);">');
-        tmpHTMLArr.push('                               <p class="text-center" style="font-size:' + progTextSize + 'px">已学习' + datas[i].complete + '/' + datas[i].total + '课时</p>');
+        tmpHTMLArr.push('                               <p class="text-center profile-overview-course-item-title" style="font-size:' + progTextSize + 'px">已学习' + datas[i].complete + '/' + datas[i].total + '课时</p>');
         tmpHTMLArr.push('                           </div>');
         tmpHTMLArr.push('                       </div>');
         tmpHTMLArr.push('                   </div>');
@@ -803,7 +803,7 @@ function drawExpCourseLevelGraph(canvasId, data) {
     context.stroke();
     context.closePath();
     data.name = (typeof (data.name) == 'string' ? data.name : '');
-    tmpY = (radius + lineWidth / 2) * 2 + 20;
+    tmpY = (radius + lineWidth / 2) * 2 + 15;
     context.font = 'normal normal bold ' + fontSize + 'px \"微软雅黑\"';
     context.fillStyle = "rgb(71,71,71)";
     context.fillText(data.name, (width - (fontSize) * data.name.length) / 2, tmpY + fontSize / 2);
@@ -811,7 +811,7 @@ function drawExpCourseLevelGraph(canvasId, data) {
     tmpY = radius + lineWidth / 2;
     context.font = 'normal normal bold ' + bigFontSize + 'px \"微软雅黑\"';
     context.fillStyle = "rgb(71,71,71)";
-    context.fillText(data.value + '%', (((width - (bigFontSize) * data.value) + '%').length - 1) / 2, tmpY + bigFontSize / 2);
+    context.fillText(data.value + '%', (width - bigFontSize * ((data.value + '%').length - 1)) / 2, tmpY + bigFontSize / 2);
 };
 
 /*Settings panel*/
