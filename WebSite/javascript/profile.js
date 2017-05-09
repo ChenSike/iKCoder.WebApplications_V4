@@ -9,11 +9,37 @@ function initPage() {
     //getUnreadMsgCount();
     initEvents();
     $('#wrap_Category_Title').show();
-    //rebuildContent('overview');
-    rebuildContent('settings');
-    //rebuildContent('report');    
-    //window.setInterval(getUnreadMsgCount, 120000);
+    preloadPageImg();
 };
+
+function preloadPageImg() {
+    var tmpArr = [
+        'image/honor/a.png',
+        'image/honor/b.png',
+        'image/honor/b.png',
+        'image/course/course_1.png',
+        'image/course/course_2.png',
+        'image/course/course_3.png',
+        'image/course/course_4.png',
+        'image/qr_wechat.png'
+    ];
+
+    _preloadCount = tmpArr.length;
+    for (var i = 0; i < tmpArr.length; i++) {
+        _loadIMG(tmpArr[i], initPage_Do);
+    }
+}
+
+var _preloadCount = 1;
+function initPage_Do() {
+    _preloadCount--;
+    if (_preloadCount == 0) {
+        //rebuildContent('overview');
+        rebuildContent('settings');
+        //rebuildContent('report');    
+        //window.setInterval(getUnreadMsgCount, 120000);
+    }
+}
 
 function loadSiderbarData() {
     var mapping = [
@@ -196,116 +222,117 @@ function rebuildOverviewPanel(contentHeight) {
 };
 
 function formatOverviewData(response) {
-    //var data = {
-    //    honor: [],
-    //    course: [],
-    //    experience: { distribution: [], level: {} },
-    //    codetimes: { over: 0, times: [] }
-    //};
-
-    //var tmpNodes = response.find('honor').find('item');
-    //for (var i = 0; i < tmpNodes.length; i++) {
-    //    var tmpObj = $(tmpNodes[i]);
-    //    data.honor.push({ id: i + 1, title: tmpObj.attr('name'), img: tmpObj.attr('image') });
-    //}
-
-    //tmpNodes = response.find('course').find('item');
-    //var courseMap = [
-    //    { color: 'rgb(86,181,34)', symbol: 'A' },
-    //    { color: 'rgb(100,124,185)', symbol: 'B' },
-    //    { color: 'rgb(43,93,126)', symbol: 'C' },
-    //    { color: 'rgb(228,88,76)', symbol: 'D' }
-    //];
-    //for (var i = 0; i < tmpNodes.length; i++) {
-    //    var tmpObj = $(tmpNodes[i]);
-    //    var newItemObj = {};
-    //    newItemObj.id = tmpObj.attr('id');
-    //    newItemObj.title = tmpObj.attr('title');
-    //    newItemObj.total = parseInt(tmpObj.attr('total'));
-    //    newItemObj.complete = parseInt(tmpObj.attr('complete'));
-    //    newItemObj.img = 'image/course/course_' + (i + 1) + '.png';
-    //    newItemObj.color = courseMap[i].color;
-    //    newItemObj.symbol = courseMap[i].symbol;
-    //    data.course.push(newItemObj);
-    //}
-
-    //tmpNodes = response.find('distributio').find('item');
-    //var distributionMap = {
-    //    science: { name: '科学', color: 'rgb(36,90,186)' },
-    //    skill: { name: '技术', color: 'rgb(236,15,33)' },
-    //    engineering: { name: '工程', color: 'rgb(165,165,165)' },
-    //    math: { name: '数学', color: 'rgb(255,191,0)' },
-    //    language: { name: '语言', color: 'rgb(71,143,208)' }
-    //};
-
-    //for (var i = 0; i < tmpNodes.length; i++) {
-    //    var tmpObj = $(tmpNodes[i]);
-    //    var tmpItem = distributionMap[tmpObj.attr('id')];
-    //    data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
-    //}
-
-    //tmpNodes = response.find('level').find('item');
-    //var level = {};
-    //for (var i = 0; i < tmpNodes.length; i++) {
-    //    var tmpObj = $(tmpNodes[i]);
-    //    level[tmpObj.attr('id')] = {
-    //        name: tmpObj.attr('name'),
-    //        id: tmpObj.attr('id'),
-    //        value: parseInt(tmpObj.attr('value'))
-    //    };
-    //}
-
-    //data.experience.level = level;
-
-    //var tmpNode = response.find('codetimes');
-    //data.codetimes.over = parseInt($(tmpNode[0]).attr('over'));
-    //tmpNodes = response.find('codetimes').find('item');
-    //for (var i = 0; i < tmpNodes.length; i++) {
-    //    var tmpObj = $(tmpNodes[i]);
-    //    data.codetimes.times.push({ date: tmpObj.attr('date'), time: parseInt(tmpObj.attr('value')) });
-    //}
-
     var data = {
-        honor: [
-            { id: 1, title: '算法小达人', img: 'image/honor/copper.png' },
-            { id: 2, title: '计算机小专家', img: 'image/honor/gold.png' },
-            { id: 3, title: '语言大师', img: 'image/honor/silver.png' },
-            { id: 4, title: '小画家', img: 'image/honor/copper.png' },
-            { id: 5, title: '小小数学家', img: 'image/honor/gold.png' },
-            { id: 6, title: '音乐家', img: 'image/honor/silver.png' },
-            { id: 7, title: '科学智多星', img: 'image/honor/copper.png' },
-            { id: 8, title: '分享达人', img: 'image/honor/gold.png' },
-            { id: 9, title: '无人机小飞手', img: 'image/honor/silver.png' }
-        ],
-        course: [
-            { id: 'enlighten', title: '启蒙课程', total: 32, complete: 4, img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'A' },
-            { id: 'primary', title: '初级课程', total: 32, complete: 3, img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B' },
-            { id: 'middle', title: '中级课程', total: 32, complete: 2, img: 'image/course/course_3.png', color: 'rgb(43,93,126)', symbol: 'C' },
-            { id: 'advance', title: '高级课程', total: 32, complete: 1, img: 'image/course/course_4.png', color: 'rgb(228,88,76)', symbol: 'D' }
-        ],
-        experience: {
-            distribution: [
-                { id: "science", name: "科学", value: 250, color: "rgb(36,90,186)" },
-                { id: "skill", name: "技术", value: 400, color: "rgb(236,15,33)" },
-                { id: "engineering", name: "工程", value: 550, color: "rgb(165,165,165)" },
-                { id: "math", name: "数学", value: 700, color: "rgb(255,191,0)" },
-                { id: "language", name: "语言", value: 700, color: "rgb(71,143,208)" }
-            ],
-            level: {
-                primary: { name: "初级课程", id: "Primary", value: 85 },
-                middle: { name: "中级课程", id: "Middle", value: 11 },
-                advance: { name: "高级课程", id: "Advance", value: 5 }
-            }
-        },
-        codetimes: {
-            over: 95,
-            times: [
-                { date: "2017-1-1", time: 3 },
-                { date: "2017-1-2", time: 2 },
-                { date: "2017-1-3", time: 4 }
-            ]
-        }
+        honor: [],
+        course: [],
+        experience: { distribution: [], level: {} },
+        codetimes: { over: 0, times: [] }
+    };
+
+    var tmpNodes = $(response).find('honor').find('item');
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        data.honor.push({ id: i + 1, title: tmpObj.attr('name'), img: tmpObj.attr('image') });
     }
+
+    tmpNodes = $(response).find('course').find('item');
+    var courseMap = [
+        { color: 'rgb(86,181,34)', symbol: 'A' },
+        { color: 'rgb(100,124,185)', symbol: 'B' },
+        { color: 'rgb(43,93,126)', symbol: 'C' },
+        { color: 'rgb(228,88,76)', symbol: 'D' },
+        { color: 'rgb(228,88,76)', symbol: 'E' }
+    ];
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        var newItemObj = {};
+        newItemObj.id = tmpObj.attr('id');
+        newItemObj.title = tmpObj.attr('title');
+        newItemObj.total = parseInt(tmpObj.attr('total'));
+        newItemObj.complete = parseInt(tmpObj.attr('complete'));
+        newItemObj.img = 'image/course/course_' + (i + 1) + '.png';
+        newItemObj.color = courseMap[i].color;
+        newItemObj.symbol = courseMap[i].symbol;
+        data.course.push(newItemObj);
+    }
+
+    tmpNodes = $(response).find('distributio').find('item');
+    var distributionMap = {
+        science: { name: '科学', color: 'rgb(36,90,186)' },
+        skill: { name: '技术', color: 'rgb(236,15,33)' },
+        engineering: { name: '工程', color: 'rgb(165,165,165)' },
+        math: { name: '数学', color: 'rgb(255,191,0)' },
+        language: { name: '语言', color: 'rgb(71,143,208)' }
+    };
+
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        var tmpItem = distributionMap[tmpObj.attr('id')];
+        data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
+    }
+
+    tmpNodes = $(response).find('level').find('item');
+    var level = {};
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        level[tmpObj.attr('id')] = {
+            name: tmpObj.attr('name'),
+            id: tmpObj.attr('id'),
+            value: parseInt(tmpObj.attr('value'))
+        };
+    }
+
+    data.experience.level = level;
+
+    var tmpNode = $(response).find('codetimes');
+    data.codetimes.over = parseInt($(tmpNode[0]).attr('over'));
+    tmpNodes = $(response).find('codetimes').find('item');
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        data.codetimes.times.push({ date: tmpObj.attr('date'), time: parseInt(tmpObj.attr('value')) });
+    }
+
+    //var data = {
+    //    honor: [
+    //        { id: 1, title: '算法小达人', img: 'image/honor/copper.png' },
+    //        { id: 2, title: '计算机小专家', img: 'image/honor/gold.png' },
+    //        { id: 3, title: '语言大师', img: 'image/honor/silver.png' },
+    //        { id: 4, title: '小画家', img: 'image/honor/copper.png' },
+    //        { id: 5, title: '小小数学家', img: 'image/honor/gold.png' },
+    //        { id: 6, title: '音乐家', img: 'image/honor/silver.png' },
+    //        { id: 7, title: '科学智多星', img: 'image/honor/copper.png' },
+    //        { id: 8, title: '分享达人', img: 'image/honor/gold.png' },
+    //        { id: 9, title: '无人机小飞手', img: 'image/honor/silver.png' }
+    //    ],
+    //    course: [
+    //        { id: 'enlighten', title: '启蒙课程', total: 32, complete: 4, img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'A' },
+    //        { id: 'primary', title: '初级课程', total: 32, complete: 3, img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B' },
+    //        { id: 'middle', title: '中级课程', total: 32, complete: 2, img: 'image/course/course_3.png', color: 'rgb(43,93,126)', symbol: 'C' },
+    //        { id: 'advance', title: '高级课程', total: 32, complete: 1, img: 'image/course/course_4.png', color: 'rgb(228,88,76)', symbol: 'D' }
+    //    ],
+    //    experience: {
+    //        distribution: [
+    //            { id: "science", name: "科学", value: 250, color: "rgb(36,90,186)" },
+    //            { id: "skill", name: "技术", value: 400, color: "rgb(236,15,33)" },
+    //            { id: "engineering", name: "工程", value: 550, color: "rgb(165,165,165)" },
+    //            { id: "math", name: "数学", value: 700, color: "rgb(255,191,0)" },
+    //            { id: "language", name: "语言", value: 700, color: "rgb(71,143,208)" }
+    //        ],
+    //        level: {
+    //            primary: { name: "初级课程", id: "Primary", value: 85 },
+    //            middle: { name: "中级课程", id: "Middle", value: 11 },
+    //            advance: { name: "高级课程", id: "Advance", value: 5 }
+    //        }
+    //    },
+    //    codetimes: {
+    //        over: 95,
+    //        times: [
+    //            { date: "2017-1-1", time: 3 },
+    //            { date: "2017-1-2", time: 2 },
+    //            { date: "2017-1-3", time: 4 }
+    //        ]
+    //    }
+    //}
 
     return data;
 }
@@ -439,7 +466,7 @@ function buildOverviewCourse(datas, containerHeight) {
         tmpHTMLArr.push('                   <div class="container-fluid no-padding">');
         tmpHTMLArr.push('                       <div class="row no-margin">');
         tmpHTMLArr.push('                           <div class="col-12 no-padding">');
-        tmpHTMLArr.push('                               <p class="text-center" style="color:' + datas[i].color + '; font-size:' + titleSize + 'px;padding:' + progHeight + 'px 0px;">' + datas[i].title + '</p>');
+        tmpHTMLArr.push('                               <p class="text-center profile-overview-course-item-title" style="color:' + datas[i].color + '; font-size:' + titleSize + 'px;padding:' + progHeight + 'px 0px;">' + datas[i].title + '</p>');
         tmpHTMLArr.push('                           </div>');
         tmpHTMLArr.push('                       </div>');
         tmpHTMLArr.push('                       <div class="row no-margin">');
@@ -650,8 +677,10 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
             bgColor: 'rgb(248,250,251)',
             color: 'rgb(124,77,255)',
             icon: 'clock-o',
-            text: '<p class="overview-title-item-text">编程<span class="overview-title-item-data">' + totalTime +
-                '</span>小时</p><p class="overview-title-item-text">超了<span class="overview-title-item-data">' + data.codetimes.over +
+            text: '<p class="overview-title-item-text">编程<span class="overview-title-item-data">' +
+                totalTime +
+                '</span>小时</p><p class="overview-title-item-text">超了<span class="overview-title-item-data">' +
+                (isNaN(data.codetimes.over) ? 0 : data.codetimes.over) +
                 '%</span>同学</p>'
         }
     ];
@@ -766,14 +795,14 @@ function drawExpCourseLevelGraph(canvasId, data) {
     context.lineWidth = lineWidth;
     context.stroke();
     context.closePath();
-
+    data.value = (isNaN(data.value) ? 0 : data.value);
     context.beginPath();
     context.strokeStyle = 'rgb(124,218,36)';
     context.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + data.value / 100 * Math.PI * 2);
     context.lineWidth = lineWidth;
     context.stroke();
     context.closePath();
-
+    data.name = (typeof (data.name) == 'string' ? data.name : '');
     tmpY = (radius + lineWidth / 2) * 2 + 20;
     context.font = 'normal normal bold ' + fontSize + 'px \"微软雅黑\"';
     context.fillStyle = "rgb(71,71,71)";
@@ -782,7 +811,7 @@ function drawExpCourseLevelGraph(canvasId, data) {
     tmpY = radius + lineWidth / 2;
     context.font = 'normal normal bold ' + bigFontSize + 'px \"微软雅黑\"';
     context.fillStyle = "rgb(71,71,71)";
-    context.fillText(data.value + '%', (width - (bigFontSize) * ((data.value + '%').length - 1)) / 2, tmpY + bigFontSize / 2);
+    context.fillText(data.value + '%', (((width - (bigFontSize) * data.value) + '%').length - 1) / 2, tmpY + bigFontSize / 2);
 };
 
 /*Settings panel*/
@@ -2564,12 +2593,17 @@ function clearUnreadState() {
 };
 
 /*Global*/
+var _headerImgSrc = '';
 function loadHeaderImg() {
-    var imgSrc = _getRequestURL(_gURLMapping.account.getheader, {});
-    $('#img_Profile_Title').attr('src', imgSrc);
-    $('#img_Settings_Profile_Header').attr('src', imgSrc);
-    $('#img_Page_Header_Navbar').attr('src', imgSrc);
+    _headerImgSrc = _getRequestURL(_gURLMapping.account.getheader, {});
+    _loadIMG(_headerImgSrc, loadHeaderImg_Do);
 };
+
+function loadHeaderImg_Do() {
+    $('#img_Profile_Title').attr('src', _headerImgSrc);
+    $('#img_Settings_Profile_Header').attr('src', _headerImgSrc);
+    $('#img_Page_Header_Navbar').attr('src', _headerImgSrc);
+}
 
 function formatDate(date) {
     if (typeof (date) == 'number' || typeof (date) == 'string') {
@@ -2608,12 +2642,12 @@ function drawTimeBarGraph(datas, canvasId) {
     canvas.height = height;
     var context = canvas.getContext('2d');
     context.clearRect(0, 0, width, height);
-    var maxValue = datas[0].time;
-    for (var i = 1; i < datas.length; i++) {
+    var maxValue = 0;
+    for (var i = 0; i < datas.length; i++) {
         maxValue = Math.max(maxValue, datas[i].time);
     }
 
-    var unit = Math.floor((height - 30) / maxValue);
+    var unit = (maxValue == 0 ? 0 : Math.floor((height - 30) / maxValue));
     var startX = 0;
     var startY = height - 15;
     var linearGradient, barHeight, barX, tmpX, tmpY, lineRTX, lineRTY, tmpDate, tmpMonth;
