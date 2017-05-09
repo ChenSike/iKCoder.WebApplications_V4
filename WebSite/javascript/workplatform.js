@@ -22,7 +22,7 @@ function initPage() {
         data: '<root></root>',
         success: function (data_1, status) {
             if ($(data_1).find('err').length > 0) {
-                window.location.href = "signin.html";
+                window.location.href = "signin.html?rnd=" + Date.now();
                 return;
             } else {
                 $.ajax({
@@ -62,7 +62,7 @@ function initPage() {
             withCredentials: true
         },
         error: function () {
-            window.location.href = "signin.html";
+            window.location.href = "signin.html?rnd=" + Date.now();
         }
     });
 

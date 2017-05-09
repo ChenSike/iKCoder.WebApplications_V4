@@ -10,7 +10,7 @@ function initPageEvents() {
     });
 
     $('#btn_ShowDetail').on('click', function () {
-        window.location.href = "detailedintroduce.html?qid=" + _gCID;
+        window.location.href = "detailedintroduce.html?rnd=" + Date.now();
     });
 
     $('.feature-item').on('mouseenter', function (event) {

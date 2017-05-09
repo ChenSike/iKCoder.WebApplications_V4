@@ -450,7 +450,7 @@ function doSignUp() {
                                 nickname = $($(data).find('msg')[0]).attr('logined_nickname');
                             }
                             $.cookie('logined_user_nickname', nickname);
-                            window.location.href = "index.html";
+                            window.location.href = "index.html?rnd=" + Date.now();
                         }
                     },
                     dataType: 'xml',
