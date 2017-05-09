@@ -44,12 +44,12 @@ function setsizeWhenFullScreen() {
     var tmpRate = canvas.height() / canvas.width();
     canvas.height(tmpRate * tmpSize);
     canvas.width(tmpSize);
-    container.css('padding-left', (tmpWidth - tmpSize) / 2 + 'px');
+    //container.css('padding-left', (tmpWidth - tmpSize) / 2 + 'px');
 
     var playButton = $('.run-scene-fullscreen-play-button');
     var fontSize = tmpSize * 30 / 100;
     playButton.css('font-size', fontSize + 'px');
-    playButton.css('left', 'calc(50% - ' + (fontSize / 2) + 'px');
+    playButton.css('left', 'calc(50% - ' + (playButton.width() / 2) + 'px');
     playButton.css('top', ((tmpSize - fontSize) / 2) + 'px');
 }
 

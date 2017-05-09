@@ -187,6 +187,7 @@ function initEvents() {
             container.find('canvas').height(height);
             container.find('canvas').width(width);
             container.css('padding-left', '0px');
+            container.width($('.siderbar-scene-container').width());
 
             var playButton = $('.run-scene-fullscreen-play-button');
             var fontSize = width * 30 / 100;

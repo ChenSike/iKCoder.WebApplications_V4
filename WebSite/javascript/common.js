@@ -258,10 +258,7 @@ function _startCheckState() {
                 return;
             } else {
                 if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') == '1') {
-                    $.cookie("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), {
-                        path: '/',
-                        expires: (new Date(Date.now() + (15 * 60 * 1000)))
-                    });
+                    $.cookie("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), { path: '/', expires: 0.125 });
                     if (!$.cookie("logined_user_nickname") || $.cookie("logined_user_nickname") == '') {
                         _registerRemoteServer();
                         $.ajax({
@@ -275,7 +272,7 @@ function _startCheckState() {
                                 '</root>',
                             success: function (responseData_2, status) {
                                 if ($(responseData_2).find('err').length > 0) {
-                                    window.location.href = "signin.html";
+                                    window.location.href = "signin.html?rnd=" + Date.now();
                                     $.removeCookie('logined_user_name');
                                     $.removeCookie('logined_user_nickname');
                                     return;
@@ -289,8 +286,7 @@ function _startCheckState() {
                                     }
 
                                     if (nickName) {
-                                        $.cookie("logined_user_nickname", nickName, { path: '/', expires: (new Date(Date.now() + (_gExpires * 60 * 1000))) });
-
+                                        $.cookie("logined_user_nickname", nickName, { path: '/', expires: 0.125 });
                                     }
                                 }
                             },

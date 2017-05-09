@@ -85,15 +85,15 @@ function initNavBarEvent() {
     });
 
     $("#linkBtn_About").on('click', function () {
-        window.location.href = "aboutus.html?qid=" + _gCID;
+        window.location.href = "aboutus.html?rnd=" + Date.now();
     });
 
     $("#btn_SignIn").on('click', function () {
-        window.location.href = "signin.html?opt=signin&qid=" + _gCID;
+        window.location.href = "signin.html?opt=signin&rnd=" + Date.now();
     });
 
     $("#btn_FreeSignUp").on('click', function () {
-        window.location.href = "signin.html?opt=signup&qid=" + _gCID;
+        window.location.href = "signin.html?opt=signup&rnd=" + Date.now();
     });
 };
 
@@ -124,7 +124,7 @@ function updateUserInfor() {
             }
 
             $("#linkBtn_UserInfo").on('click', function () {
-                window.location.href = "profile.html?qid=" + _gCID;
+                window.location.href = "profile.html?rnd=" + Date.now();
             });
 
             $("#linkBtn_SignOut").on('click', function () {

@@ -2,7 +2,7 @@
 
 function initPageEvents() {
     $('#btn_Fast_FreeSignUp').on('click', function () {
-        window.location.href = 'signin.html?opt=signup&number=' + $('#txt_Fast_FreeSignUp').val().trim() + '&qid=' + _gCID;
+        window.location.href = 'signin.html?opt=signup&number=' + $('#txt_Fast_FreeSignUp').val().trim()+'?rnd=' + Date.now();;
     });
 
     $('#btn_Fast_HelpVideo').on('click', function () {
