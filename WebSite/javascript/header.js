@@ -155,6 +155,8 @@ function updateUserInfor() {
                     }
                 });
             });
+
+            _startCheckState();
         }
     }
 };
