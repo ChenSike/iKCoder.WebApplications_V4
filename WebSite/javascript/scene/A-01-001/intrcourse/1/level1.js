@@ -1,72 +1,72 @@
-(function() {
+(function () {
     'use strict';
 
     var configuration = {
         "Input Device": [{
             cn: "鼠标",
             en: "Mouse",
-            dt:"左键，右键以及滚轮",
+            dt: "左键，右键以及滚轮",
             path: "image/scene/intrcourse/svg/mouse.svg"
-        },            {
+        }, {
             cn: "键盘",
             en: "Keyboard",
-            dt:"输入文字，数字，字母以及特殊字符， 命令",
+            dt: "输入文字，数字，字母以及特殊字符， 命令",
             path: "image/scene/intrcourse/svg/keyboard.svg"
         }
         ],
         "Output Device": [{
             cn: "显示器",
             en: "Monitor",
-            dt:"显示图像，播放动画片以及游戏",
+            dt: "显示图像，播放动画片以及游戏",
             path: "image/scene/intrcourse/svg/monitor.svg"
-        },            {
+        }, {
             cn: "打印机",
             en: "Printer",
-            dt:"将文字,图片输出在纸张上",
+            dt: "将文字,图片输出在纸张上",
             path: "image/scene/intrcourse/svg/printer.svg"
-        },            {
+        }, {
             cn: "耳机",
             en: "Earphones",
-            dt:"输出声音",
+            dt: "输出声音",
             path: "image/scene/intrcourse/svg/earphones.svg"
         }
         ],
         "Storage": [{
             cn: "硬盘",
             en: "Harddrive",
-            dt:"存放数据，书柜",
+            dt: "存放数据，书柜",
             path: "image/scene/intrcourse/svg/hard-drive.svg"
-        },            {
+        }, {
             cn: "光盘",
             en: "CD",
-            dt:"Compact Disc",
+            dt: "Compact Disc",
             path: "image/scene/intrcourse/svg/cd.svg"
-        },            {
+        }, {
             cn: "USB闪存盘",
             en: "USB Flash Disk",
-            dt:"使用USB接口的移动存储设备",
+            dt: "使用USB接口的移动存储设备",
             path: "image/scene/intrcourse/svg/pendrive.svg"
-        },            {
+        }, {
             cn: "内存",
             en: "RAM",
-            dt:"临时存储数据， 书包（根据需要存放数据）",
+            dt: "临时存储数据， 书包（根据需要存放数据）",
             path: "image/scene/intrcourse/svg/ram-memory.svg"
         }
         ],
         "Computing": [{
             cn: "中央处理器",
             en: "CPU",
-            dt:"运算中心，大脑",
+            dt: "运算中心，大脑",
             path: "image/scene/intrcourse/svg/cpu.svg"
-        },            {
+        }, {
             cn: "显卡",
             en: "Grahpics Card",
-            dt:"显示适配器",
+            dt: "显示适配器",
             path: "image/scene/intrcourse/svg/graphics-card.svg"
-        },            {
+        }, {
             cn: "主机",
             en: "Computer Tower",
-            dt:"",
+            dt: "",
             path: "image/scene/intrcourse/svg/computer.svg"
         }
         ]
@@ -129,7 +129,7 @@
             rows = Math.floor((stage.getHeight() - verticalMargin) / cellDimension),
             cells = columns * rows;
 
-        var calcCcomponentConfig = function(cellIndex, cellConfig) {
+        var calcCcomponentConfig = function (cellIndex, cellConfig) {
             var cn = cellConfig.cn,
                 en = cellConfig.en,
                 dt = cellConfig.dt,
@@ -153,12 +153,12 @@
                 file: path,
                 en: en,
                 cn: cn,
-                dt:dt,
+                dt: dt,
                 id: en.replace(/ /g, "")
             };
         };
 
-        for (var i = 0; i < Math.min(cells, ccomponents.length); i++) {
+        for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
             loadImage(calcCcomponentConfig(i, ccomponents[i]), layer, categoryLayer);
         }
     }
@@ -168,19 +168,19 @@
         CATEGORY_PADDING_BOTTOM = 5;
 
 
-    var categoryManager = (function() {
+    var categoryManager = (function () {
         var categoryToContainer = new Map();
 
         window.categoryToContainer = categoryToContainer;
 
         function init(_categoryLayer) {
-            _categoryLayer.children.forEach(function(element) {
+            _categoryLayer.children.forEach(function (element) {
                 categoryToContainer.set(element, new CategoryContainer(element));
             });
         }
 
         function isAssignedRight(rect, image) {
-            var group = searchForGroup(image, configuration, function(key, component) {
+            var group = searchForGroup(image, configuration, function (key, component) {
                 return key.en === component.en;
             });
 
@@ -188,7 +188,9 @@
         }
 
         function removeExistingFromCategories(image) {
-            for (var [k, v] of categoryToContainer) {
+            //for (var [k, v] of categoryToContainer) {
+            for (var tempArr of categoryToContainer) {
+                var v = tempArr[1];
                 for (var i in v.children) {
                     if (v.children[i]._id === image._id) {
                         Array.prototype.splice.call(v.children, i, 1);
@@ -210,18 +212,18 @@
                 this.add(children);
         }
 
-        CategoryContainer.prototype.add = function(child) {
+        CategoryContainer.prototype.add = function (child) {
             var that = this;
 
             // add children
             if (Array.isArray(child)) {
-                child.forEach(function(element) {
+                child.forEach(function (element) {
                     CategoryContainer.prototype.add.apply(that, element);
                 });
             }
 
             // add child
-            var isExist = this.children.some(function(element) {
+            var isExist = this.children.some(function (element) {
                 return element._id == child._id;
             });
 
@@ -232,7 +234,7 @@
             return this.children.length - 1 || 0;
         };
 
-        CategoryContainer.prototype.categorize = function(image, categoryRect, options) {
+        CategoryContainer.prototype.categorize = function (image, categoryRect, options) {
             removeExistingFromCategories(image);
 
             if (categoryRect !== undefined) {
@@ -251,7 +253,7 @@
                     deltaHeight = (CATEGORY_THUMB_NAIL_SIZE_Y - height0) / slices;
 
                 var i = 0;
-                var anim = new Konva.Animation(function(frame) {
+                var anim = new Konva.Animation(function (frame) {
                     if (i < slices) {
                         image.height(image.height() + deltaHeight);
                         image.width(image.width() + deltaWidth);
@@ -281,9 +283,9 @@
         };
 
         // return a function that return the associated CategoryContainer instance
-        return function(_categoryLayer) {
+        return function (_categoryLayer) {
             init(_categoryLayer);
-            return function(categoryRect, image, options) {
+            return function (categoryRect, image, options) {
                 var container = categoryToContainer.get(categoryRect);
                 CategoryContainer.prototype.categorize.call(container, image, categoryRect, options);
             };
@@ -307,54 +309,54 @@
 
         var imageObj = new Image();
         imageObj.src = config.file;
-        imageObj.onload = function() {
+        imageObj.onload = function () {
             box.image(imageObj);
             layer.draw();
         };
 
-        imageObj.onerror = function() {
+        imageObj.onerror = function () {
             imageObj.src = config.file + '?rnd=' + Date.now();
         };
 
-        box.on('click', function(){
-            if(!this.comp){
+        box.on('click', function () {
+            if (!this.comp) {
                 this.comp = true;
                 showTooltip(arguments[0], true);
                 drawCompleteRound(arguments[0]);
                 var count = 0;
                 var total = 0;
-                for(var i=0;i<this.parent.children.length;i++){
+                for (var i = 0; i < this.parent.children.length; i++) {
                     var item = this.parent.children[i];
-                    if(item instanceof Konva.Ccomponent && item.comp){
+                    if (item instanceof Konva.Ccomponent && item.comp) {
                         count++;
                     }
 
                     total++;
                 }
 
-                if(count==total/2){
-                    window.setTimeout('Scene.stepComplete()',5000);
+                if (count == total / 2) {
+                    window.setTimeout('Scene.stepComplete()', 5000);
                 }
             }
         });
 
-        box.on('mouseover', function() {
+        box.on('mouseover', function () {
             document.body.style.cursor = 'pointer';
-            if(!this.comp){
+            if (!this.comp) {
                 showWarning(arguments[0]);
                 showTooltip(arguments[0], true);
             }
         });
 
-        box.on('mouseout', function() {
-            document.body.style.cursor = 'default';            
+        box.on('mouseout', function () {
+            document.body.style.cursor = 'default';
             showWarning(null);
-            if(!this.comp){
+            if (!this.comp) {
                 showTooltip(arguments[0], false);
             }
         });
 
-        box.on('dragend', function() {
+        box.on('dragend', function () {
             var detectedCategoryRect = detectIntersection(this, categoryLayer.children);
             if (!!detectedCategoryRect) {
                 _categorizer(detectedCategoryRect, this, {});
@@ -370,7 +372,7 @@
         layer.add(box);
     }
 
-    function drawCompleteRound(eventObj){
+    function drawCompleteRound(eventObj) {
         var target = eventObj.target;
         var context = target.parent.getContext();
         var width = target.attrs.width;
@@ -380,26 +382,26 @@
 
         context.lineWidth = 6;
         context.strokeStyle = "rgb(255,204,51)";
-        context.beginPath();        
+        context.beginPath();
         context.moveTo(x + 15, y);
         context.lineTo(x + width + 24 - 15, y);
         context.arc(x + width + 24 - 15, y + 15, 15, 1.5 * Math.PI, 2 * Math.PI);
-        context.lineTo(x + width + 24, y + height + 24 -15);
-        context.arc(x + width + 24 - 15, y + height + 24 -15, 15, 0, 0.5 * Math.PI);
+        context.lineTo(x + width + 24, y + height + 24 - 15);
+        context.arc(x + width + 24 - 15, y + height + 24 - 15, 15, 0, 0.5 * Math.PI);
         context.lineTo(x + 15, y + height + 24);
-        context.arc(x + 15, y + height + 24 -15, 15, 0.5 * Math.PI, 1 * Math.PI);
+        context.arc(x + 15, y + height + 24 - 15, 15, 0.5 * Math.PI, 1 * Math.PI);
         context.lineTo(x, y + 15);
         context.arc(x + 15, y + 15, 15, 1 * Math.PI, 1.5 * Math.PI);
-        context.stroke(); 
+        context.stroke();
     }
 
-    function showWarning(eventObj){
+    function showWarning(eventObj) {
         if (!eventObj) {
             window.clearInterval(_staticSelectFrameInterval);
             $('.tooltip-warning-wrap').hide();
         } else {
             var tipFrame = $('.tooltip-warning-wrap');
-            if(tipFrame.length == 0){
+            if (tipFrame.length == 0) {
                 $('body').append($('<div class="tooltip-warning-wrap"></div>'));
             }
 
@@ -426,7 +428,7 @@
             updateTipsText(null);
         } else {
             var target = eventObj.currentTarget;
-            if(tip.length == 0){
+            if (tip.length == 0) {
                 $('body').append($('<div class="tooltip tooltip-top" id="' + tmpId + '" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'));
                 tip = $('#' + tmpId);
             }
@@ -461,7 +463,7 @@
         layer.add(groupText);
     }
 
-    var detectIntersection = (function() {
+    var detectIntersection = (function () {
         function intersectRect(r1, r2) {
             return !(r2.left > r1.right ||
                 r2.right < r1.left ||
@@ -487,7 +489,7 @@
             return intersectRect(translateToRect(r1), translateToRect(r2));
         }
 
-        return function(r) {
+        return function (r) {
             var rects = Array.prototype.slice.call(arguments, 1)[0];
             for (var index = 0; index < rects.length; index++) {
                 if (isDetect(rects[index], r)) {
@@ -507,7 +509,7 @@
 
     Scene.prototype = {
         constructor: Scene,
-        ___init: function() {
+        ___init: function () {
             this.stage = new Konva.Stage({
                 container: 'container_Static_Stage',
                 width: window.innerWidth,
@@ -522,7 +524,7 @@
             });
         },
 
-        start: function() {
+        start: function () {
             placeComponents(this.config, this.layer, this.categoryLayer, this.stage);
             // placeComponentGroups(this.config, this.categoryLayer, this.stage);
 
@@ -548,13 +550,13 @@
                     inc: 8
                 });
 
-            arc.on('mouseover', function() {
+            arc.on('mouseover', function () {
                 console.log(this.getStage().getPointerPosition());
             });
             this.connectionLayer.add(arc);
 
-            var anim = new Konva.Animation(function(frame) {
-                if(!arc.isDone()){
+            var anim = new Konva.Animation(function (frame) {
+                if (!arc.isDone()) {
                     arc.moveAction();
                 } else {
                     anim.stop();

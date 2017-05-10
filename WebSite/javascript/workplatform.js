@@ -509,9 +509,9 @@ function initData(response) {
 
     if (_currentStage.toLowerCase() == "a_01_001" || _currentStage.toLowerCase() == "a_01_002") {
         var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
-        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
-        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
-        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
+        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
+        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
+        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
     }
 
     _messages.success = $($(response).find("message").find('suc')[0]).attr('msg');
@@ -819,12 +819,14 @@ function adjustWorkSpaceType(data) {
     var siderbar = $('.siderbar-wrap');
     var blocklyWrap = $('#wrap_Workspace_Blockly');
     var staticWrap = $('#wrap_Workspace_Static');
-    if (data.blockly.toolbox == '') {
+    if (data === true || data.blockly.toolbox == '') {
         siderbar.hide();
         blocklyWrap.hide();
         staticWrap.show();
-        staticWrap.height('calc(100% - ' + ($('footer').height() + staticWrap.offset().top) + 'px)');
+        staticWrap.css('height', 'calc(100% - ' + ($('footer').height() + staticWrap.offset().top) + 'px)');
         siderBarCollapse();
+        //window.ComputerScene.stage.width(staticWrap.width());
+        //window.ComputerScene.stage.height(staticWrap.height());
     } else {
         siderbar.show();
         blocklyWrap.show();

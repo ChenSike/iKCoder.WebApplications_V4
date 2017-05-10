@@ -1,72 +1,71 @@
-(function() {
+(function () {
     'use strict';
 
     var configuration = {
         "Input Device": [{
-                cn: "鼠标",
-                en: "Mouse",
-                path: "image/scene/intrcourse/svg/mouse.svg"
-            },
-            {
-                cn: "键盘",
-                en: "Keyboard",
-                path: "image/scene/intrcourse/svg/keyboard.svg"
-            }
-        ],
+            cn: "鼠标",
+            en: "Mouse",
+            dt: "左键，右键以及滚轮",
+            path: "image/scene/intrcourse/svg/mouse.svg"
+        }, {
+            cn: "键盘",
+            en: "Keyboard",
+            dt: "输入文字，数字，字母以及特殊字符， 命令",
+            path: "image/scene/intrcourse/svg/keyboard.svg"
+        }],
         "Output Device": [{
-                cn: "显示器",
-                en: "Monitor",
-                path: "image/scene/intrcourse/svg/monitor.svg"
-            },
-            {
-                cn: "打印机",
-                en: "Printer",
-                path: "image/scene/intrcourse/svg/printer.svg"
-            },
-            {
-                cn: "耳机",
-                en: "Earphones",
-                path: "image/scene/intrcourse/svg/earphones.svg"
-            }
-        ],
+            cn: "显示器",
+            en: "Monitor",
+            dt: "显示图像，播放动画片以及游戏",
+            path: "image/scene/intrcourse/svg/monitor.svg"
+        }, {
+            cn: "打印机",
+            en: "Printer",
+            dt: "将文字,图片输出在纸张上",
+            path: "image/scene/intrcourse/svg/printer.svg"
+        }, {
+            cn: "耳机",
+            en: "Earphones",
+            dt: "输出声音",
+            path: "image/scene/intrcourse/svg/earphones.svg"
+        }],
         "Storage": [{
-                cn: "硬盘",
-                en: "Harddrive",
-                path: "image/scene/intrcourse/svg/hard-drive.svg"
-            },
-            {
-                cn: "CD",
-                en: "CD",
-                path: "image/scene/intrcourse/svg/cd.svg"
-            },
-            {
-                cn: "U盘",
-                en: "Pendrive",
-                path: "image/scene/intrcourse/svg/pendrive.svg"
-            },
-            {
-                cn: "RAM",
-                en: "RAM",
-                path: "image/scene/intrcourse/svg/ram-memory.svg"
-            }
-        ],
+            cn: "硬盘",
+            en: "Harddrive",
+            dt: "存放数据，书柜",
+            path: "image/scene/intrcourse/svg/hard-drive.svg"
+        }, {
+            cn: "光盘",
+            en: "CD",
+            dt: "Compact Disc",
+            path: "image/scene/intrcourse/svg/cd.svg"
+        }, {
+            cn: "USB闪存盘",
+            en: "USB Flash Disk",
+            dt: "使用USB接口的移动存储设备",
+            path: "image/scene/intrcourse/svg/pendrive.svg"
+        }, {
+            cn: "内存",
+            en: "RAM",
+            dt: "临时存储数据， 书包（根据需要存放数据）",
+            path: "image/scene/intrcourse/svg/ram-memory.svg"
+        }],
         "Computing": [{
-                cn: "CPU",
-                en: "CPU",
-                path: "image/scene/intrcourse/svg/cpu.svg"
-            },
-            {
-                cn: "显卡",
-                en: "Grahpics Card",
-                path: "image/scene/intrcourse/svg/graphics-card.svg"
-            },
-            {
-                cn: "主机",
-                en: "Computer Tower",
-                path: "image/scene/intrcourse/svg/computer.svg"
-            }
-
-        ]
+            cn: "中央处理器",
+            en: "CPU",
+            dt: "运算中心，大脑",
+            path: "image/scene/intrcourse/svg/cpu.svg"
+        }, {
+            cn: "显卡",
+            en: "Grahpics Card",
+            dt: "显示适配器",
+            path: "image/scene/intrcourse/svg/graphics-card.svg"
+        }, {
+            cn: "主机",
+            en: "Computer Tower",
+            dt: "",
+            path: "image/scene/intrcourse/svg/computer.svg"
+        }]
     };
 
     function searchForGroup(key, config, predicate) {
@@ -90,7 +89,7 @@
         }
 
         var groupNum = groups.length,
-            groupHeight = 200,
+            groupHeight = 280,
             groupSideMargin = 30,
             horizontalMargin = 100,
             groupWidth = ((stage.getWidth() - horizontalMargin) / groupNum) - groupSideMargin * 2;
@@ -98,7 +97,7 @@
 
         for (var i = 0; i < groupNum; i++) {
             var categoryConfig = {
-                stroke: 'grey',
+                stroke: '#FF0000',
                 strokeWidth: 1,
                 height: groupHeight,
                 width: groupWidth,
@@ -120,15 +119,16 @@
 
         var cellDimension = 180,
             numberOfComponents = ccomponents.length || 0,
-            verticalMargin = 200,
+            verticalMargin = 50,
             horizontalMargin = 100,
             columns = Math.floor((stage.getWidth() - horizontalMargin) / cellDimension),
             rows = Math.floor((stage.getHeight() - verticalMargin) / cellDimension),
             cells = columns * rows;
 
-        var calcCcomponentConfig = function(cellIndex, cellConfig) {
+        var calcCcomponentConfig = function (cellIndex, cellConfig) {
             var cn = cellConfig.cn,
                 en = cellConfig.en,
+                dt = cellConfig.dt,
                 path = cellConfig.path,
                 height = cellConfig.height || 120,
                 width = cellConfig.width || 120,
@@ -149,11 +149,12 @@
                 file: path,
                 en: en,
                 cn: cn,
-                id: en
+                dt: dt,
+                id: en.replace(/ /g, "")
             };
         };
 
-        for (var i = 0; i < Math.min(cells, ccomponents.length); i++) {
+        for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
             loadImage(calcCcomponentConfig(i, ccomponents[i]), layer, categoryLayer);
         }
     }
@@ -163,19 +164,19 @@
         CATEGORY_PADDING_BOTTOM = 5;
 
 
-    var categoryManager = (function() {
+    var categoryManager = (function () {
         var categoryToContainer = new Map();
 
         window.categoryToContainer = categoryToContainer;
 
         function init(_categoryLayer) {
-            _categoryLayer.children.forEach(function(element) {
+            _categoryLayer.children.forEach(function (element) {
                 categoryToContainer.set(element, new CategoryContainer(element));
             });
         }
 
         function isAssignedRight(rect, image) {
-            var group = searchForGroup(image, configuration, function(key, component) {
+            var group = searchForGroup(image, configuration, function (key, component) {
                 return key.en === component.en;
             });
 
@@ -183,7 +184,9 @@
         }
 
         function removeExistingFromCategories(image) {
-            for (var [k, v] of categoryToContainer) {
+            //for (var [k, v] of categoryToContainer) {
+            for (var tempArr of categoryToContainer) {
+                var v = tempArr[1];
                 for (var i in v.children) {
                     if (v.children[i]._id === image._id) {
                         Array.prototype.splice.call(v.children, i, 1);
@@ -205,18 +208,18 @@
                 this.add(children);
         }
 
-        CategoryContainer.prototype.add = function(child) {
+        CategoryContainer.prototype.add = function (child) {
             var that = this;
 
             // add children
             if (Array.isArray(child)) {
-                child.forEach(function(element) {
+                child.forEach(function (element) {
                     CategoryContainer.prototype.add.apply(that, element);
                 });
             }
 
             // add child
-            var isExist = this.children.some(function(element) {
+            var isExist = this.children.some(function (element) {
                 return element._id == child._id;
             });
 
@@ -227,7 +230,7 @@
             return this.children.length - 1 || 0;
         };
 
-        CategoryContainer.prototype.categorize = function(image, categoryRect, options) {
+        CategoryContainer.prototype.categorize = function (image, categoryRect, options) {
             removeExistingFromCategories(image);
 
             if (categoryRect !== undefined) {
@@ -246,7 +249,7 @@
                     deltaHeight = (CATEGORY_THUMB_NAIL_SIZE_Y - height0) / slices;
 
                 var i = 0;
-                var anim = new Konva.Animation(function(frame) {
+                var anim = new Konva.Animation(function (frame) {
                     if (i < slices) {
                         image.height(image.height() + deltaHeight);
                         image.width(image.width() + deltaWidth);
@@ -276,9 +279,9 @@
         };
 
         // return a function that return the associated CategoryContainer instance
-        return function(_categoryLayer) {
+        return function (_categoryLayer) {
             init(_categoryLayer);
-            return function(categoryRect, image, options) {
+            return function (categoryRect, image, options) {
                 var container = categoryToContainer.get(categoryRect);
                 CategoryContainer.prototype.categorize.call(container, image, categoryRect, options);
             };
@@ -295,30 +298,32 @@
             draggable: config.draggable === undefined ? true : false,
             en: config.en,
             cn: config.cn,
-            id: config.id
+            dt: config.dt,
+            id: config.id,
+            comp: false
         });
 
         var imageObj = new Image();
         imageObj.src = config.file;
-        imageObj.onload = function() {
+        imageObj.onload = function () {
             box.image(imageObj);
             layer.draw();
         };
-                
-        imageObj.onerror = function() {
+
+        imageObj.onerror = function () {
             imageObj.src = config.file + '?rnd=' + Date.now();
         };
 
         // add cursor styling
-        box.on('mouseover', function() {
+        box.on('mouseover', function () {
             document.body.style.cursor = 'pointer';
         });
 
-        box.on('mouseout', function() {
+        box.on('mouseout', function () {
             document.body.style.cursor = 'default';
         });
 
-        box.on('dragend', function() {
+        box.on('dragend', function () {
             // locate the hit category
             var detectedCategoryRect = detectIntersection(this, categoryLayer.children);
             if (!!detectedCategoryRect) {
@@ -336,6 +341,82 @@
         layer.add(box);
     }
 
+    function drawCompleteRound(eventObj) {
+        var target = eventObj.target;
+        var context = target.parent.getContext();
+        var width = target.attrs.width;
+        var height = target.attrs.height;
+        var x = target.attrs.x - 12;
+        var y = target.attrs.y - 12;
+
+        context.lineWidth = 6;
+        context.strokeStyle = "rgb(255,204,51)";
+        context.beginPath();
+        context.moveTo(x + 15, y);
+        context.lineTo(x + width + 24 - 15, y);
+        context.arc(x + width + 24 - 15, y + 15, 15, 1.5 * Math.PI, 2 * Math.PI);
+        context.lineTo(x + width + 24, y + height + 24 - 15);
+        context.arc(x + width + 24 - 15, y + height + 24 - 15, 15, 0, 0.5 * Math.PI);
+        context.lineTo(x + 15, y + height + 24);
+        context.arc(x + 15, y + height + 24 - 15, 15, 0.5 * Math.PI, 1 * Math.PI);
+        context.lineTo(x, y + 15);
+        context.arc(x + 15, y + 15, 15, 1 * Math.PI, 1.5 * Math.PI);
+        context.stroke();
+    }
+
+    function showWarning(eventObj) {
+        if (!eventObj) {
+            window.clearInterval(_staticSelectFrameInterval);
+            $('.tooltip-warning-wrap').hide();
+        } else {
+            var tipFrame = $('.tooltip-warning-wrap');
+            if (tipFrame.length == 0) {
+                $('body').append($('<div class="tooltip-warning-wrap"></div>'));
+            }
+
+            tipFrame = $('.tooltip-warning-wrap');
+            var wrap = $('#container_Static_Stage');
+            var target = eventObj.currentTarget;
+            var offset = wrap.offset();
+            tipFrame.width(target.width() + 20);
+            tipFrame.height(target.height() + 20);
+            tipFrame.css('left', (target.x() + offset.left - 10 - 5) + 'px');
+            tipFrame.css('top', (target.y() + offset.top - 10 - 5) + 'px');
+            tipFrame.show();
+            _staticSelectFrameInterval = window.setInterval("$('.tooltip-warning-wrap').toggleClass('hidden');", 300);
+        }
+    }
+
+    var _staticSelectFrameInterval = '';
+    function showTooltip(eventObj, show) {
+        var tmpId = 'tooltip_Component_' + eventObj.target.id();
+        var tip = $('#' + tmpId);
+        if (!show) {
+            window.clearInterval(_staticSelectFrameInterval);
+            tip.hide();
+            updateTipsText(null);
+        } else {
+            var target = eventObj.currentTarget;
+            if (tip.length == 0) {
+                $('body').append($('<div class="tooltip tooltip-top" id="' + tmpId + '" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'));
+                tip = $('#' + tmpId);
+            }
+
+            tip.width(target.width() + 40);
+            var wrap = $('#container_Static_Stage');
+            var html = '<p style="font-family: 微软雅黑; font-size: 15px;"><strong <%style%>>' + target.cn + '</strong><span>(' + target.en + ')&nbsp;:&nbsp;' + target.dt + '</span></p>';
+            updateTipsText(html.replace('<%style%>', 'style="color:rgb(2,117,216);"'));
+            $('#' + tmpId + ' .tooltip-inner').html(html.replace('<%style%>', ''));
+            var offset = wrap.offset();
+            var x = target.x() + offset.left + target.width() / 2 - tip.width() / 2;
+            var y = target.y() + offset.top - tip.height() - 20;
+            tip.css('left', x + 'px');
+            tip.css('top', y + 'px');
+            tip.css('opacity', '0.8');
+            tip.show();
+        }
+    }
+
     function loadCategory(config, layer) {
         var rect = new Konva.ComponentGroup(config);
         var groupText = new Konva.Text({
@@ -351,7 +432,7 @@
         layer.add(groupText);
     }
 
-    var detectIntersection = (function() {
+    var detectIntersection = (function () {
         function intersectRect(r1, r2) {
             return !(r2.left > r1.right ||
                 r2.right < r1.left ||
@@ -377,7 +458,7 @@
             return intersectRect(translateToRect(r1), translateToRect(r2));
         }
 
-        return function(r) {
+        return function (r) {
             var rects = Array.prototype.slice.call(arguments, 1)[0];
             for (var index = 0; index < rects.length; index++) {
                 if (isDetect(rects[index], r)) {
@@ -398,11 +479,13 @@
 
     Scene.prototype = {
         constructor: Scene,
-        ___init: function() {
+        ___init: function () {
             this.stage = new Konva.Stage({
                 container: 'container_Static_Stage',
-                width: window.innerWidth,
-                height: window.innerHeight
+                //width: window.innerWidth,
+                //height: window.innerHeight
+                width: $('#container_Static_Stage').width(),
+                height: $('#container_Static_Stage').height()
             });
 
             this.layer = new Konva.Layer();
@@ -413,7 +496,7 @@
             });
         },
 
-        start: function() {
+        start: function () {
             placeComponents(this.config, this.layer, this.categoryLayer, this.stage);
             placeComponentGroups(this.config, this.categoryLayer, this.stage);
 
@@ -439,13 +522,13 @@
                     inc: 8
                 });
 
-            arc.on('mouseover', function() {
+            arc.on('mouseover', function () {
                 console.log(this.getStage().getPointerPosition());
             });
             this.connectionLayer.add(arc);
 
-            var anim = new Konva.Animation(function(frame) {
-                if(!arc.isDone()){
+            var anim = new Konva.Animation(function (frame) {
+                if (!arc.isDone()) {
                     arc.moveAction();
                 } else {
                     anim.stop();
