@@ -54,6 +54,11 @@ WorkScene.importPrettify = function () {
 };
 
 WorkScene.init = function () {
+    if (_workspaceCfg.toolbox == '') {
+        WorkScene.init_Static();
+        return;
+    }
+
     var container = document.getElementById('wrap_WorkSpace');
     var onresize = function (e) {
         var el = $('#content_WorkSpace');
@@ -123,6 +128,12 @@ WorkScene.init = function () {
     window.setTimeout(WorkScene.importPrettify, 1);
     CheckSceneObject();
     Scene.init('game_container', '0', { RowCol: { row: 9, col: 9 } });
+};
+
+WorkScene.init_Static = function () {
+    window.ComputerScene = new Scene(configuration);
+    ComputerScene.start();
+    CheckSceneObject();
 };
 
 WorkScene.runJS = function () {

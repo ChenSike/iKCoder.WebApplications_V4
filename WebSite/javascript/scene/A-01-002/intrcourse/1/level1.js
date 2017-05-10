@@ -1,4 +1,4 @@
-(function () {
+//(function () {
     'use strict';
 
     var configuration = {
@@ -546,6 +546,4 @@
         }
     };
 
-    window.ComputerScene = new Scene(configuration);
-    ComputerScene.start();
-})();
+//})();

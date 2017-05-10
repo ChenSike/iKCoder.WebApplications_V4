@@ -40,9 +40,9 @@ Scene.APPLEIMG = new Image();
 Scene.ORANGEIMG = new Image();
 Scene.wallimg = new Image();
 //Scene.APPLEIMG.src = "data:image/svg+xml;base64," + window.btoa(svg_xml);
-Scene.ORANGEIMG.src = "image/scene/PACOrange.svg";
-Scene.APPLEIMG.src = "image/scene/PACApple.svg";
-Scene.wallimg.src = "image/icon/blocklyicons.svg";
+Scene.ORANGEIMG.src = "images/scene/PACOrange.svg";
+Scene.APPLEIMG.src = "images/scene/PACApple.svg";
+Scene.wallimg.src = "images/icon/blocklyicons.svg";
 //Scene.initValue = '';
 Scene.timer = '1';
 Scene.startTick = '0';
@@ -1110,8 +1110,5 @@ function checkString (searchString) {
 	if (len == 0) {
 		Scene.ResetConfig();
 		alert("请使用If语句完成本节!");
-	}else if (len == 1 || len == 2){
-		Scene.ResetConfig();
-		alert("请使用3个If语句完成本节!");
 	}
 };

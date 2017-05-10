@@ -1,4 +1,4 @@
-(function () {
+//(function () {
     'use strict';
 
     var configuration = {
@@ -512,8 +512,10 @@
         ___init: function () {
             this.stage = new Konva.Stage({
                 container: 'container_Static_Stage',
-                width: window.innerWidth,
-                height: window.innerHeight
+                //width: window.innerWidth,
+                //height: window.innerHeight
+                width: $('#container_Static_Stage').width(),
+                height: $('#container_Static_Stage').height()
             });
 
             this.layer = new Konva.Layer();
@@ -574,6 +576,6 @@
         }
     };
 
-    window.ComputerScene = new Scene(configuration);
-    ComputerScene.start();
-})();
+    //window.ComputerScene = new Scene(configuration);
+    //ComputerScene.start();
+//})();
