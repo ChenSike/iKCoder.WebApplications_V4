@@ -32,6 +32,7 @@ var _gURLMapping = {
         saveworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Set_WorkspaceStatus.aspx',
         setcurrentstep: '/Bus/Workspace/api_iKCoder_Workspace_Set_CurrentStage.aspx',
         setfinishscene: '/Bus/Workspace/api_iKCoder_Workspace_Set_FinishSence.aspx',
+        setfinishstep: '/Bus/Workspace/api_iKCoder_Workspace_Set_FinishStage.aspx',
         getscenelist: '/Bus/Center/api_iKCoder_Center_Get_SencesList.aspx',
         getcenterinfo: '/Bus/Center/api_iKCoder_Center_Get_CenterInfo.aspx',
         getunreadmsgcount: '/Bus/Message/api_iKCoder_Workspace_Get_CountOfUnreadMessage.aspx',

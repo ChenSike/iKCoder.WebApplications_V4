@@ -154,7 +154,7 @@
                 en: en,
                 cn: cn,
                 dt:dt,
-                id: en
+                id: en.replace(/ /g, "")
             };
         };
 
@@ -297,11 +297,12 @@
             y: config.y,
             width: config.width,
             height: config.height,
-            draggable: config.draggable === undefined ? true : false,
+            draggable: false,//config.draggable === undefined ? true : false,
             en: config.en,
             cn: config.cn,
             dt: config.dt,
-            id: config.id
+            id: config.id,
+            comp: false
         });
 
         var imageObj = new Image();
@@ -316,17 +317,41 @@
         };
 
         box.on('click', function(){
+            if(!this.comp){
+                this.comp = true;
+                showTooltip(arguments[0], true);
+                drawCompleteRound(arguments[0]);
+                var count = 0;
+                var total = 0;
+                for(var i=0;i<this.parent.children.length;i++){
+                    var item = this.parent.children[i];
+                    if(item instanceof Konva.Ccomponent && item.comp){
+                        count++;
+                    }
+
+                    total++;
+                }
+
+                if(count==total/2){
+                    window.setTimeout('Scene.stepComplete()',5000);
+                }
+            }
         });
 
         box.on('mouseover', function() {
-            document.body.style.cursor = 'pointer';            
-            showTooltip(arguments[0]);
-
+            document.body.style.cursor = 'pointer';
+            if(!this.comp){
+                showWarning(arguments[0]);
+                showTooltip(arguments[0], true);
+            }
         });
 
         box.on('mouseout', function() {
-            document.body.style.cursor = 'default';
-            showTooltip(null);
+            document.body.style.cursor = 'default';            
+            showWarning(null);
+            if(!this.comp){
+                showTooltip(arguments[0], false);
+            }
         });
 
         box.on('dragend', function() {
@@ -343,6 +368,82 @@
         //console.log('adding ' + config.file + ' at ' + config.x + ' ' + config.y);
         box instanceof Konva.Ccomponent && layer.add(box.resultImage);
         layer.add(box);
+    }
+
+    function drawCompleteRound(eventObj){
+        var target = eventObj.target;
+        var context = target.parent.getContext();
+        var width = target.attrs.width;
+        var height = target.attrs.height;
+        var x = target.attrs.x - 12;
+        var y = target.attrs.y - 12;
+
+        context.lineWidth = 6;
+        context.strokeStyle = "rgb(255,204,51)";
+        context.beginPath();        
+        context.moveTo(x + 15, y);
+        context.lineTo(x + width + 24 - 15, y);
+        context.arc(x + width + 24 - 15, y + 15, 15, 1.5 * Math.PI, 2 * Math.PI);
+        context.lineTo(x + width + 24, y + height + 24 -15);
+        context.arc(x + width + 24 - 15, y + height + 24 -15, 15, 0, 0.5 * Math.PI);
+        context.lineTo(x + 15, y + height + 24);
+        context.arc(x + 15, y + height + 24 -15, 15, 0.5 * Math.PI, 1 * Math.PI);
+        context.lineTo(x, y + 15);
+        context.arc(x + 15, y + 15, 15, 1 * Math.PI, 1.5 * Math.PI);
+        context.stroke(); 
+    }
+
+    function showWarning(eventObj){
+        if (!eventObj) {
+            window.clearInterval(_staticSelectFrameInterval);
+            $('.tooltip-warning-wrap').hide();
+        } else {
+            var tipFrame = $('.tooltip-warning-wrap');
+            if(tipFrame.length == 0){
+                $('body').append($('<div class="tooltip-warning-wrap"></div>'));
+            }
+
+            tipFrame = $('.tooltip-warning-wrap');
+            var wrap = $('#container_Static_Stage');
+            var target = eventObj.currentTarget;
+            var offset = wrap.offset();
+            tipFrame.width(target.width() + 20);
+            tipFrame.height(target.height() + 20);
+            tipFrame.css('left', (target.x() + offset.left - 10 - 5) + 'px');
+            tipFrame.css('top', (target.y() + offset.top - 10 - 5) + 'px');
+            tipFrame.show();
+            _staticSelectFrameInterval = window.setInterval("$('.tooltip-warning-wrap').toggleClass('hidden');", 300);
+        }
+    }
+
+    var _staticSelectFrameInterval = '';
+    function showTooltip(eventObj, show) {
+        var tmpId = 'tooltip_Component_' + eventObj.target.id();
+        var tip = $('#' + tmpId);
+        if (!show) {
+            window.clearInterval(_staticSelectFrameInterval);
+            tip.hide();
+            updateTipsText(null);
+        } else {
+            var target = eventObj.currentTarget;
+            if(tip.length == 0){
+                $('body').append($('<div class="tooltip tooltip-top" id="' + tmpId + '" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'));
+                tip = $('#' + tmpId);
+            }
+
+            tip.width(target.width() + 40);
+            var wrap = $('#container_Static_Stage');
+            var html = '<p style="font-family: 微软雅黑; font-size: 15px;"><strong <%style%>>' + target.cn + '</strong><span>(' + target.en + ')&nbsp;:&nbsp;' + target.dt + '</span></p>';
+            updateTipsText(html.replace('<%style%>', 'style="color:rgb(2,117,216);"'));
+            $('#' + tmpId + ' .tooltip-inner').html(html.replace('<%style%>', ''));
+            var offset = wrap.offset();
+            var x = target.x() + offset.left + target.width() / 2 - tip.width() / 2;
+            var y = target.y() + offset.top - tip.height() - 20;
+            tip.css('left', x + 'px');
+            tip.css('top', y + 'px');
+            tip.css('opacity', '0.8');
+            tip.show();
+        }
     }
 
     function loadCategory(config, layer) {

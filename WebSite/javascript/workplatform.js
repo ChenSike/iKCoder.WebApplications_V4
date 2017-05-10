@@ -217,10 +217,10 @@ function initEvents() {
     $('#btn_Step_GoNext').on('click', function (e) {
         _registerRemoteServer();
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             async: true,
-            url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
-            data: '<root></root>',
+            url: _getRequestURL(_gURLMapping.bus.setfinishstep, { symbol: _currentStage }),
+            data: '',
             success: function (response, status) {
             },
             dataType: 'xml',
@@ -230,6 +230,23 @@ function initEvents() {
             error: function () {
             }
         });
+
+        if (_currentStep == _totalSteps) {
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
+                data: '',
+                success: function (response, status) {
+                },
+                dataType: 'xml',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+                }
+            });
+        }
 
         var tmpParam = '&scene=';
         if (_currentStep == _totalSteps) {
@@ -354,6 +371,7 @@ function updateTipsText(data) {
     if (typeof (data) == 'string') {
         $('.course-stage-note').html(data);
     } else {
+        data = (data == null ? _topTooltip : data);
         var needEvent = false;
         for (var i = 0; i < data.length; i++) {
             var tmpStrArr = [];
@@ -415,8 +433,9 @@ function initData(response) {
     _currentStep = sceneItem.attr('currentstage');
     _totalSteps = sceneItem.attr('totalstage');
     _nextStage = sceneItem.attr('next');
+    _nextStep = parseInt(_currentStep);
     if (parseInt(_currentStep) < parseInt(_totalSteps)) {
-        _nextStep = parseInt(_currentStep) + 1;
+        _nextStep += 1;
     }
 
     var completeCount = _currentStep;
@@ -490,9 +509,9 @@ function initData(response) {
 
     if (_currentStage.toLowerCase() == "a_01_001" || _currentStage.toLowerCase() == "a_01_002") {
         var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
-        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
-        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
-        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
+        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
+        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
+        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
     }
 
     _messages.success = $($(response).find("message").find('suc')[0]).attr('msg');
@@ -795,37 +814,6 @@ function showFaildAlert() {
     $('.wrap-faild-alert').show();
     $('#title_StepFaild').html(_messages.faild);
 };
-
-var _staticSelectFrameInterval = '';
-function showTooltip(eventObj) {
-    if (!eventObj) {
-        window.clearInterval(_staticSelectFrameInterval);
-        $('#tooltip_Component').hide();
-        $('.tooltip-warning-wrap').hide();
-        updateTipsText(_topTooltip);
-    } else {
-        var target = eventObj.currentTarget;
-        var wrap = $('#container_Static_Stage');
-        var tip = $('#tooltip_Component');
-        var tipFrame = $('.tooltip-warning-wrap');
-        var html = '<p style="font-family: 微软雅黑; font-size: 15px;"><strong <%style%>>' + target.cn + '</strong><span>(' + target.en + ')&nbsp;:&nbsp;' + target.dt + '</span></p>';
-        updateTipsText(html.replace('<%style%>', 'style="color:rgb(2,117,216);"'));
-        $('#tooltip_Component .tooltip-inner').html(html.replace('<%style%>', ''));
-        var offset = wrap.offset();
-        var x = target.x() + offset.left + target.width() / 2 - tip.width() / 2;
-        var y = target.y() + offset.top - tip.height() - 20;
-        tip.css('left', x + 'px');
-        tip.css('top', y + 'px');
-        tip.show();
-
-        tipFrame.width(target.width() + 20);
-        tipFrame.height(target.height() + 20);
-        tipFrame.css('left', (target.x() + offset.left - 10) + 'px');
-        tipFrame.css('top', (target.y() + offset.top - 10) + 'px');
-        tipFrame.show();
-        _staticSelectFrameInterval = window.setInterval("$('.tooltip-warning-wrap').toggleClass('hidden');", 300);
-    }
-}
 
 function adjustWorkSpaceType(data) {
     var siderbar = $('.siderbar-wrap');

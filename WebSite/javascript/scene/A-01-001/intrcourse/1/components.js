@@ -140,6 +140,7 @@
         this.en = config.en;
         this.cn = config.cn;
         this.dt = config.dt;
+        this.comp = config.comp;
     };
 
     Konva.Ccomponent.prototype = {
