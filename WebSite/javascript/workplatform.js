@@ -509,9 +509,9 @@ function initData(response) {
 
     if (_currentStage.toLowerCase() == "a_01_001" || _currentStage.toLowerCase() == "a_01_002") {
         var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
-        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
-        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
-        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
+        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
+        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
+        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
     }
 
     _messages.success = $($(response).find("message").find('suc')[0]).attr('msg');
@@ -832,6 +832,39 @@ function adjustWorkSpaceType(data) {
         blocklyWrap.show();
         staticWrap.hide();
     }
+};
+
+function showFullScreen() {
+    $('.run-scene-fullscreen').append($('#game_container'));
+    $('.run-scene-fullscreen').show("slow", function () {
+        setsizeWhenFullScreen();
+        addOperatorButton();
+    });
+};
+
+function setsizeWhenFullScreen() {
+    var container = $('#game_container');
+    var canvas = container.find('canvas');
+    $('.run-scene-fullscreen-close-button').attr('data-content', canvas.width() + ',' + canvas.height());
+    var tmpHeight = $('.run-scene-fullscreen').height();
+    var tmpWidth = $('.run-scene-fullscreen').width();
+    container.height(tmpHeight);
+    container.width(tmpWidth);
+    var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
+    var tmpRate = canvas.height() / canvas.width();
+    canvas.height(tmpRate * tmpSize);
+    canvas.width(tmpSize);
+    //container.css('padding-left', (tmpWidth - tmpSize) / 2 + 'px');
+
+    var playButton = $('.run-scene-fullscreen-play-button');
+    var fontSize = tmpSize * 30 / 100;
+    playButton.css('font-size', fontSize + 'px');
+    playButton.css('left', 'calc(50% - ' + (playButton.width() / 2) + 'px');
+    playButton.css('top', ((tmpSize - fontSize) / 2) + 'px');
+};
+
+function addOperatorButton() {
+
 };
 
 (function ($) {

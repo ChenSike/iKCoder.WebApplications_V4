@@ -25,85 +25,49 @@ function _shareScene() {
 };
 
 function _fullScreen() {
-    $('.run-scene-fullscreen').append($('#game_container'));
-    $('.run-scene-fullscreen').show("slow", function () {
-        setsizeWhenFullScreen();
-        addOperatorButton();
-    });
-};
-
-function setsizeWhenFullScreen() {
-    var container = $('#game_container');
-    var canvas = container.find('canvas');
-    $('.run-scene-fullscreen-close-button').attr('data-content', canvas.width() + ',' + canvas.height());
-    var tmpHeight = $('.run-scene-fullscreen').height();
-    var tmpWidth = $('.run-scene-fullscreen').width();
-    container.height(tmpHeight);
-    container.width(tmpWidth);
-    var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
-    var tmpRate = canvas.height() / canvas.width();
-    canvas.height(tmpRate * tmpSize);
-    canvas.width(tmpSize);
-    //container.css('padding-left', (tmpWidth - tmpSize) / 2 + 'px');
-
-    var playButton = $('.run-scene-fullscreen-play-button');
-    var fontSize = tmpSize * 30 / 100;
-    playButton.css('font-size', fontSize + 'px');
-    playButton.css('left', 'calc(50% - ' + (playButton.width() / 2) + 'px');
-    playButton.css('top', ((tmpSize - fontSize) / 2) + 'px');
-}
-
-function addOperatorButton() {
-
+    WorkScene.fullScreen();
 }
 
 function _playScene() {
-    if (typeof (_blocklyFn) != 'undefined' && _blocklyFn != null) {
-        WorkScene.startGame_Fn();
-    } else {
-        WorkScene.startGame();
-    }
-
-    if ($(this).hasClass('fa-play')) {
-        $(this).removeClass('fa-play');
-        $(this).addClass('fa-undo');
-        $(this).attr('title', '重新开始');
-        //} else if ($(this).hasClass('fa-stop')) {
-        //    $(this).removeClass('fa-stop');
-        //    $(this).addClass('fa-undo');
-        //    $(this).attr('title', '重新开始');
-    } else if ($(this).hasClass('fa-undo')) {
-        $(this).removeClass('fa-undo');
-        $(this).addClass('fa-play');
-        $(this).attr('title', '开始运行');
+    var flag = WorkScene.startGame();
+    if (flag) {
+        if ($(this).hasClass('fa-play')) {
+            $(this).removeClass('fa-play');
+            $(this).addClass('fa-undo');
+            $(this).attr('title', '重新开始');
+            //} else if ($(this).hasClass('fa-stop')) {
+            //    $(this).removeClass('fa-stop');
+            //    $(this).addClass('fa-undo');
+            //    $(this).attr('title', '重新开始');
+        } else if ($(this).hasClass('fa-undo')) {
+            $(this).removeClass('fa-undo');
+            $(this).addClass('fa-play');
+            $(this).attr('title', '开始运行');
+        }
     }
 };
 
 function _playSceneFullScreen() {
-    if (typeof (_blocklyFn) != 'undefined' && _blocklyFn != null) {
-        WorkScene.startGame_Fn();
-    } else {
-        WorkScene.startGame();
-    }
-
-    if ($(this).hasClass('fa-play-circle-o')) {
-        $(this).removeClass('fa-play-circle-o');
-        $(this).addClass('fa-undo');
-        $(this).attr('title', '重新开始');
-        //} else if ($(this).hasClass('fa-stop-circle-o')) {
-        //    $(this).removeClass('fa-stop-circle-o');
-        //    $(this).addClass('fa-undo');
-        //    $(this).attr('title', '重新开始');
-    } else if ($(this).hasClass('fa-undo')) {
-        $(this).removeClass('fa-undo');
-        $(this).addClass('fa-play-circle-o');
-        $(this).attr('title', '开始运行');
+    var flag = WorkScene.startGame();
+    if (flag) {
+        if ($(this).hasClass('fa-play-circle-o')) {
+            $(this).removeClass('fa-play-circle-o');
+            $(this).addClass('fa-undo');
+            $(this).attr('title', '重新开始');
+            //} else if ($(this).hasClass('fa-stop-circle-o')) {
+            //    $(this).removeClass('fa-stop-circle-o');
+            //    $(this).addClass('fa-undo');
+            //    $(this).attr('title', '重新开始');
+        } else if ($(this).hasClass('fa-undo')) {
+            $(this).removeClass('fa-undo');
+            $(this).addClass('fa-play-circle-o');
+            $(this).attr('title', '开始运行');
+        }
     }
 };
 
-
 function _refereshScene() {
-    WorkScene.workspace.clear();
+    WorkScene.reset(true);
 };
 
 var _blockExample = [];

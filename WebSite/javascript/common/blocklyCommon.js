@@ -1,16 +1,5 @@
 'use strict';
 
-Blockly.Blocks['TestForSVG'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField("");
-        this.setInputsInline(true);
-        this.setNextStatement(true, null);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
 var WorkScene = {};
 WorkScene.workspace = null;
 WorkScene.SCORE = 0;
@@ -72,7 +61,7 @@ WorkScene.init = function () {
     var blocksXMLDoc = Blockly.Xml.textToDom(_workspaceCfg.toolbox);
     //var blocksXMLDoc = Blockly.Xml.textToDom('<xml id="toolbox" style="display: none"></xml>');
     //blocksXMLDoc = Blockly.Xml.textToDom(XMLToString(LoadXMLFile(_workspaceCfg.toolbox)));
-	
+
     WorkScene.workspace = Blockly.inject('content_WorkSpace',
         {
             scrollbars: true,
@@ -110,10 +99,10 @@ WorkScene.init = function () {
     Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
     var defaultXml = (!_workspaceCfg.workspace ? '<xml></xml>' : _workspaceCfg.workspace);
     //defaultXml = XMLToString(LoadXMLFile(_workspaceCfg.workspace));
-	//WorkScene.loadBlocks(_workspaceCfg.workspace);
+    //WorkScene.loadBlocks(_workspaceCfg.workspace);
     WorkScene.loadBlocks(defaultXml);
     WorkScene.workspace.addChangeListener(WorkScene.outputCode);
-	
+
     if ('BlocklyStorage' in window) {
         BlocklyStorage.backupOnUnload(WorkScene.workspace);
     }
@@ -203,32 +192,52 @@ WorkScene.pauseScene = function () {
 WorkScene.startGame_Fn = function () {
     var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
     var fnCode = "";
-    fnCode+="_blocklyFn.fn=function (){"+code+"}";
+    fnCode += "_blocklyFn.fn=function (){" + code + "}";
     Scene.ResetConfig();
     eval(fnCode);
     Scene.startGame();
 };
 
 WorkScene.startGame = function () {
-    var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
-    Scene.ResetConfig();
-    eval(code);
-    Scene.startGame();
+    if (_workspaceCfg.toolbox == '') {
+        return false;
+    }
+
+    if (typeof (_blocklyFn) != 'undefined' && _blocklyFn != null) {
+        WorkScene.startGame_Fn();
+    } else {
+        var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
+        Scene.ResetConfig();
+        eval(code);
+        Scene.startGame();
+    }
+
+    return true;
 };
 
 WorkScene.endGame = function () {
     Scene.endGame();
 };
 
-WorkScene.reset = function () {
-    WorkScene.workspace.clear();
-    var defaultXml = (!_workspaceCfg.workspace ? '<xml></xml>' : _workspaceCfg.workspace);
-    //defaultXml = XMLToString(LoadXMLFile(_workspaceCfg.workspace));
-    WorkScene.loadBlocks(defaultXml);
-    WorkScene.startGame();
+WorkScene.reset = function (force) {
+    if (WorkScene.workspace && WorkScene.workspace.clear) {
+        WorkScene.workspace.clear();
+        if (force !== true) {
+            var defaultXml = (!_workspaceCfg.workspace ? '<xml></xml>' : _workspaceCfg.workspace);
+            //defaultXml = XMLToString(LoadXMLFile(_workspaceCfg.workspace));
+            WorkScene.loadBlocks(defaultXml);
+            WorkScene.startGame();
+        }
+    } else {
+        Scene.reset();
+    }
 };
 
 WorkScene.saveStatus = function () {
+    if (_workspaceCfg.toolbox == '') {
+        return;
+    }
+
     var tempXML = XMLToString(Blockly.Xml.workspaceToDom(WorkScene.workspace));
     _registerRemoteServer();
     $.ajax({
@@ -249,6 +258,12 @@ WorkScene.saveStatus = function () {
         error: function () {
         }
     });
+};
+
+WorkScene.fullScreen = function () {
+    if (_workspaceCfg.toolbox != '') {
+        showFullScreen();
+    }
 };
 
 function CheckSceneObject() {

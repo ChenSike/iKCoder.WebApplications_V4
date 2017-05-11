@@ -5,7 +5,7 @@ var _gExpires = 15;
 var _gLabelMap = {};
 var _gHostName = 'http://119.23.233.224/ikcoderapi';
 //var _gHostName = 'http://10.111.0.243/ikcoderapi';
-//var _gHostName = 'http://10.86.209.108/ikcoderapi';
+//var _gHostName = 'http://10.86.209.76/ikcoderapi';
 var _gURLMapping = {
     server: {
         reg: '/Sys/api_iKCoder_Sys_Set_RegDomain.aspx'
@@ -37,7 +37,9 @@ var _gURLMapping = {
         getcenterinfo: '/Bus/Center/api_iKCoder_Center_Get_CenterInfo.aspx',
         getunreadmsgcount: '/Bus/Message/api_iKCoder_Workspace_Get_CountOfUnreadMessage.aspx',
         getmsgcontent: '/Bus/Message/api_iKCoder_Workspace_Get_MessageContent.aspx?id=',
-        getmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_MessageList.aspx',
+        getallmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_AllMessageList.aspx',
+        getsysmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_SysMessageList',
+        getqamsglist: '/Bus/Message/api_iKCoder_Workspace_Get_QAMessageList.aspx',
         removemsg: '/Bus/Message/api_iKCoder_Workspace_Set_RemoveMessage.aspx?id=&operationid='//ID=MESSAGEID OPERATIONID=OPERATONID
     }
 };

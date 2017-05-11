@@ -37,7 +37,8 @@ function initPage_Do() {
         //rebuildContent('overview');
         rebuildContent('settings');
         //rebuildContent('report');    
-        //window.setInterval(getUnreadMsgCount, 120000);
+        getUnreadMsgCount();
+        window.setInterval(getUnreadMsgCount, 120000);
     }
 }
 
@@ -95,13 +96,18 @@ function getUnreadMsgCount() {
                 _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetUnReadsMsgCount_Error');
                 return;
             } else {
+                var count = 0;
                 var tmpNodes = $(responseData).find('msg');
-                var count = 100;
-                if (count > 99) {
-                    count = '99+';
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    if ($(tmpNodes[i]).attr('type') != '1') {
+                        count = parseInt($(tmpNodes[i]).attr('msg'));
+                        break;
+                    }
                 }
 
+                count = (isNaN(count) ? '0' : count > 99 ? '99+' : count);
                 $('.left-bar-message-count').text(count);
+                $('.left-bar-message-count').css('background-color', (count == 0 ? 'rgb(185,185,185)' : 'rgb(236,64,122)'));
             }
         },
         dataType: 'xml',
@@ -232,7 +238,7 @@ function formatOverviewData(response) {
     var tmpNodes = $(response).find('honor').find('item');
     for (var i = 0; i < tmpNodes.length; i++) {
         var tmpObj = $(tmpNodes[i]);
-        data.honor.push({ id: i + 1, title: tmpObj.attr('name'), img: tmpObj.attr('image') });
+        data.honor.push({ id: i + 1, title: tmpObj.attr('name'), img: 'image/honor/' + tmpObj.attr('image') });
     }
 
     tmpNodes = $(response).find('course').find('item');
@@ -258,11 +264,11 @@ function formatOverviewData(response) {
 
     tmpNodes = $(response).find('distributio').find('item');
     var distributionMap = {
-        science: { name: '科学', color: 'rgb(36,90,186)' },
-        skill: { name: '技术', color: 'rgb(236,15,33)' },
-        engineering: { name: '工程', color: 'rgb(165,165,165)' },
-        math: { name: '数学', color: 'rgb(255,191,0)' },
-        language: { name: '语言', color: 'rgb(71,143,208)' }
+        S: { name: '科学', color: 'rgb(36,90,186)' },
+        T: { name: '技术', color: 'rgb(236,15,33)' },
+        E: { name: '工程', color: 'rgb(165,165,165)' },
+        M: { name: '数学', color: 'rgb(255,191,0)' },
+        L: { name: '语言', color: 'rgb(71,143,208)' }
     };
 
     for (var i = 0; i < tmpNodes.length; i++) {
@@ -289,7 +295,8 @@ function formatOverviewData(response) {
     tmpNodes = $(response).find('codetimes').find('item');
     for (var i = 0; i < tmpNodes.length; i++) {
         var tmpObj = $(tmpNodes[i]);
-        data.codetimes.times.push({ date: tmpObj.attr('date'), time: parseInt(tmpObj.attr('value')) });
+        var tmpValue = parseFloat(tmpObj.attr('value'));
+        data.codetimes.times.push({ date: tmpObj.attr('date'), time: (isNaN(tmpValue) ? 0 : tmpValue) });
     }
 
     //var data = {
@@ -364,7 +371,7 @@ function buildOverviewHonor(datas, height) {
     tmpHTMLArr.push('            <div id="container_Overview_Honor_Items" style="height:100%;">');
     for (var i = 0; i < itemCount; i++) {
         tmpHTMLArr.push('                <div class="text-center profile-overview-honor-item" style="' + (i == itemCount - 1 ? '' : 'padding-right:10px;') + '">');
-        tmpHTMLArr.push('                    <div style="height:100%; padding:' + padding + 'px 0px; min-width:85px;">');
+        tmpHTMLArr.push('                    <div style="height:100%; padding:' + padding + 'px 0px; min-width:140px;">');
         tmpHTMLArr.push('                        <img src="' + datas[i].img + '" style="height: calc(100% - 30px);" />');
         tmpHTMLArr.push('                        <p class="overview-honor-item-text active-item">' + datas[i].title + '</p>');
         tmpHTMLArr.push('                    </div>');
@@ -382,7 +389,8 @@ function buildOverviewHonor(datas, height) {
     tmpHTMLArr.push('</div>');
 
     $('#wrap_Category_Content').prepend($(tmpHTMLArr.join('')));
-    var itemWidth = height - Math.floor(20 / 150 * height * 2) - 30 + 13;
+    //var itemWidth = height - Math.floor(20 / 150 * height * 2) - 30 + 13;
+    var itemWidth = 140 + padding;
     $('#container_Overview_Honor_Items').width(itemWidth * itemCount);
     var funData = { id: "container_Overview_Honor_Items", step: itemWidth };
     $('#arrow_Overview_Honor_Left').on('click', funData, listMovePrev);
@@ -466,7 +474,7 @@ function buildOverviewCourse(datas, containerHeight) {
         tmpHTMLArr.push('                   <div class="container-fluid no-padding">');
         tmpHTMLArr.push('                       <div class="row no-margin">');
         tmpHTMLArr.push('                           <div class="col-12 no-padding">');
-        tmpHTMLArr.push('                               <p class="text-center profile-overview-course-item-title" style="color:' + datas[i].color + '; font-size:' + titleSize + 'px;padding:' + progHeight + 'px 0px;">' + datas[i].title + '</p>');
+        tmpHTMLArr.push('                               <p class="text-center profile-overview-course-item-title" style="color:' + datas[i].color + '; font-size:' + titleSize + 'px;padding:' + progHeight + 'px 0px;" title="' + datas[i].title + '">' + datas[i].title + '</p>');
         tmpHTMLArr.push('                           </div>');
         tmpHTMLArr.push('                       </div>');
         tmpHTMLArr.push('                       <div class="row no-margin">');
@@ -625,7 +633,7 @@ function rebuildOverviewContents(data, contentHeight, itemHeight) {
     $('#arrow_Overview_Times_Left').on('click', funData, listMovePrev);
     $('#arrow_Overview_Times_Right').on('click', funData, listMoveNext);
     if ($('#canvas_Overview_Time').width() <= $('#wrap_Overview_Times_Items').width()) {
-        $('.overview-list-arrow').hide();
+        $('.overview-list-arrow.times').hide();
     }
 
     //$('#wrap_Category_Content').css('width', '100%');
@@ -736,9 +744,15 @@ function drawExpDistributionGraph(canvasId, datas) {
     //var legendItemWidth = 35;
     var legendWidth = width / 215 * 8;
     var fontSize = 10;
+
     for (var i = 0; i < datas.length; i++) {
         startRadian = endRadian;
-        tmpRadian = datas[i].value / total * Math.PI * 2;
+        if (total != 0) {
+            tmpRadian = datas[i].value / total * Math.PI * 2;
+        } else {
+            tmpRadian = 20 / 100 * Math.PI * 2;
+        }
+
         endRadian += tmpRadian;
         context.beginPath();
         context.strokeStyle = datas[i].color;
@@ -2492,7 +2506,7 @@ function displayMessageByType(type) {
     $.ajax({
         type: 'GET',
         async: true,
-        url: _getRequestURL(_gURLMapping.bus.getmsglist),
+        url: _getRequestURL(type == '' ? _gURLMapping.bus.getallmsglist : type == '1' ? _gURLMapping.bus.getsysmsglist : _gURLMapping.bus.getqamsglist),
         data: '<root></root>',
         success: function (responseData, status) {
             if ($(responseData).find('err').length > 0) {
@@ -2619,8 +2633,9 @@ function rebuildMessageContents(data) {
 };
 
 function clearUnreadState() {
-    $('.left-bar-message-count').text('');
-    $('.left-bar-message-count').hide();
+    $('.left-bar-message-count').text('0');
+    //$('.left-bar-message-count').hide();
+    $('.left-bar-message-count').css('background-color', 'rgb(185,185,185)');
 };
 
 /*Global*/
