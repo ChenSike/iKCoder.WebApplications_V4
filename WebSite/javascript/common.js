@@ -36,7 +36,9 @@ var _gURLMapping = {
         getscenelist: '/Bus/Center/api_iKCoder_Center_Get_SencesList.aspx',
         getcenterinfo: '/Bus/Center/api_iKCoder_Center_Get_CenterInfo.aspx',
         getunreadmsgcount: '/Bus/Message/api_iKCoder_Workspace_Get_CountOfUnreadMessage.aspx',
-        getmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_MessageList.aspx'
+        getmsgcontent: '/Bus/Message/api_iKCoder_Workspace_Get_MessageContent.aspx?id=',
+        getmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_MessageList.aspx',
+        removemsg: '/Bus/Message/api_iKCoder_Workspace_Set_RemoveMessage.aspx?id=&operationid='//ID=MESSAGEID OPERATIONID=OPERATONID
     }
 };
 var _gCitys = [

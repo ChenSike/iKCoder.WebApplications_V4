@@ -2488,53 +2488,63 @@ function rebuildMessageTitles(contentHeight) {
 };
 
 function displayMessageByType(type) {
-    //_registerRemoteServer();
-    //$.ajax({
-    //    type: 'POST',
-    //    async: true,
-    //    url: _getRequestURL(_gURLMapping.bus.getmsglist),
-    //    data: '<root></root>',
-    //    success: function (responseData, status) {
-    //        if ($(responseData).find('err').length > 0) {
-    //            _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetMessages_Error');
-    //            return;
-    //        } else {
-    //            var tmpNodes = $(responseData).find('msg');
-    //            var data = {};
-    //            rebuildMessageContents(data);
-    //            hideLoadingMask()
-    //        }
-    //    },
-    //    dataType: 'xml',
-    //    xhrFields: {
-    //        withCredentials: true
-    //    },
-    //    error: function () {
-    //        _showGlobalMessage('无法获取消息，请联系技术支持！', 'danger', 'alert_GetMessages_Error');
-    //    }
-    //});
-    var data = [
-            { id: '1', top: 1, type: '1', content: 'System Message, Test 1, ID=1, 2017-5-2System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1', time: '2017-5-2', answer: null },
-            { id: '2', top: 1, type: '1', content: 'System Message, Test 2, ID=1, 2017-5-1', time: '2017-5-1', answer: null },
-            { id: '3', top: 1, type: '2', content: 'Questions and Answers, Test 1, ID=3, 2017-5-1', time: '2017-5-1', answer: { id: '8', type: '21', content: 'Answers, Test 1, ID=8, 2017-5-8', time: '2017-5-8', owner: '1' } },
-            { id: '4', top: 0, type: '1', content: 'System Message, Test 3, ID=4, 2017-5-4', time: '2017-5-4', answer: null },
-            { id: '5', top: 0, type: '1', content: 'System Message, Test 4, ID=5, 2017-5-3', time: '2017-5-3', answer: null },
-            { id: '6', top: 0, type: '2', content: 'Questions and Answers, Test 2, ID=6, 2017-5-3', time: '2017-5-3', answer: null },
-            { id: '7', top: 0, type: '2', content: 'Questions and Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-2', answer: { id: '9', type: '21', content: 'Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-9', owner: '1' } }
-    ];
+    _registerRemoteServer();
+    $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.bus.getmsglist),
+        data: '<root></root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetMessages_Error');
+                return;
+            } else {
+                var tmpNodes = $(responseData).find('msg');
+                var data = [];
+                var tmpDatas = data;
+                if (type != '') {
+                    tmpDatas = [];
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].type == type) {
+                            tmpDatas.push(data[i]);
+                        }
+                    }
+                }
 
-    var tmpDatas = data;
-    if (type != '') {
-        tmpDatas = [];
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].type == type) {
-                tmpDatas.push(data[i]);
+                rebuildMessageContents(tmpDatas);
+                hideLoadingMask()
             }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取消息，请联系技术支持！', 'danger', 'alert_GetMessages_Error');
         }
-    }
+    });
+    //var data = [
+    //        { id: '1', top: 1, type: '1', content: 'System Message, Test 1, ID=1, 2017-5-2System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1', time: '2017-5-2', answer: null },
+    //        { id: '2', top: 1, type: '1', content: 'System Message, Test 2, ID=1, 2017-5-1', time: '2017-5-1', answer: null },
+    //        { id: '3', top: 1, type: '2', content: 'Questions and Answers, Test 1, ID=3, 2017-5-1', time: '2017-5-1', answer: { id: '8', type: '21', content: 'Answers, Test 1, ID=8, 2017-5-8', time: '2017-5-8', owner: '1' } },
+    //        { id: '4', top: 0, type: '1', content: 'System Message, Test 3, ID=4, 2017-5-4', time: '2017-5-4', answer: null },
+    //        { id: '5', top: 0, type: '1', content: 'System Message, Test 4, ID=5, 2017-5-3', time: '2017-5-3', answer: null },
+    //        { id: '6', top: 0, type: '2', content: 'Questions and Answers, Test 2, ID=6, 2017-5-3', time: '2017-5-3', answer: null },
+    //        { id: '7', top: 0, type: '2', content: 'Questions and Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-2', answer: { id: '9', type: '21', content: 'Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-9', owner: '1' } }
+    //];
 
-    rebuildMessageContents(tmpDatas);
-    hideLoadingMask();
+    //var tmpDatas = data;
+    //if (type != '') {
+    //    tmpDatas = [];
+    //    for (var i = 0; i < data.length; i++) {
+    //        if (data[i].type == type) {
+    //            tmpDatas.push(data[i]);
+    //        }
+    //    }
+    //}
+
+    //rebuildMessageContents(tmpDatas);
+    //hideLoadingMask();
 };
 
 function rebuildMessageContents(data) {
@@ -2583,7 +2593,28 @@ function rebuildMessageContents(data) {
 
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
     $('.message-remove-button').on('click', function (eventObj) {
-        $(eventObj.target).parent().parent().remove();
+        _registerRemoteServer();
+        $.ajax({
+            type: 'GET',
+            async: true,
+            url: _getRequestURL(_gURLMapping.bus.removemsg),
+            data: '<root></root>',
+            success: function (responseData, status) {
+                if ($(responseData).find('err').length > 0) {
+                    _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_RemoveMessages_Error');
+                    return;
+                } else {
+                    $(eventObj.target).parent().parent().remove();
+                }
+            },
+            dataType: 'xml',
+            xhrFields: {
+                withCredentials: true
+            },
+            error: function () {
+                _showGlobalMessage('无法删除消息，请联系技术支持！', 'danger', 'alert_RemoveMessages_Error');
+            }
+        });
     });
 };
 
