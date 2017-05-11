@@ -159,29 +159,23 @@
             var that = this;
 
             var imageObj = new Image();
-            imageObj.src = !this._isAssigned ? null : this._isAssignedCorrectly ? 'image/scene/intrcourse/svg/success.svg' : 'image/scene/intrcourse/svg/error.svg';
-            that.resultImage.image(imageObj);
-
-            this.parent.draw();
-            if (imageObj.src) {
+            var tmpSrc = !this._isAssigned ? null : this._isAssignedCorrectly ? 'image/scene/intrcourse/svg/success.svg' : 'image/scene/intrcourse/svg/error.svg';
+            if (tmpSrc == null) {
+                imageObj.src = tmpSrc;
+                that.resultImage.image(imageObj);
+                that.parent.draw();
                 that.resultImage.draw();
-                that.resultImage.on('mouseover', function () {
-                    document.body.style.cursor = 'pointer';
-                });
+            } else {
+                imageObj.src = tmpSrc;
+                imageObj.onload = function () {
+                    that.resultImage.image(imageObj);
+                    that.parent.draw();
+                    that.resultImage.draw();
+                };
 
-                that.resultImage.on('mouseout', function () {
-                    document.body.style.cursor = 'default';
-                });
-
-                that.resultImage.on('click', function () {
-                    that.resultImage.image(null);
-                    that._isAssigned = false;
-                    that.attrs.x = that.attrs.orgX;
-                    that.attrs.y = that.attrs.orgY;
-                    that.attrs.width = that.attrs.orgWidth;
-                    that.attrs.height = that.attrs.orgHeight;
-                    that.draw();
-                });
+                imageObj.onerror = function () {
+                    imageObj.src = tmpSrc + '?rnd=' + Date.now();
+                };
             }
         },
 

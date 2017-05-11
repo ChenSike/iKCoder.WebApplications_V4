@@ -360,15 +360,16 @@ function loadImage(config, layer, categoryLayer) {
             var total = 0;
             for (var i = 0; i < this.parent.children.length; i++) {
                 var item = this.parent.children[i];
-                if (item instanceof Konva.Ccomponent && item.comp) {
-                    count++;
+                if (item instanceof Konva.Ccomponent) {
+                    total++;
+                    if (item.comp) {
+                        count++;
+                    }
                 }
-
-                total++;
             }
 
-            if (count == total / 2) {
-                window.setTimeout('Scene.stepComplete()', 5000);
+            if (count == total) {
+                window.setTimeout('Scene.stepComplete()', 3000);
             }
         }
 

@@ -509,9 +509,9 @@ function initData(response) {
 
     if (_currentStage.toLowerCase() == "a_01_001" || _currentStage.toLowerCase() == "a_01_002") {
         var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
-        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
-        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
-        //data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
+        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
+        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
+        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
     }
 
     _messages.success = $($(response).find("message").find('suc')[0]).attr('msg');

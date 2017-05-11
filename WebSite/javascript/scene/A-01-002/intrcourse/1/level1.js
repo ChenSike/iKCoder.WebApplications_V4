@@ -278,51 +278,21 @@ var categoryManager = (function () {
 
     CategoryContainer.prototype.categorize = function (image, categoryRect, options) {
         removeExistingFromCategories(image);
-
         if (categoryRect !== undefined) {
-            var nth = this.add(image);
-
-            var x0 = image.x(),
-                y0 = image.y(),
-                width0 = image.width(),
-                height0 = image.height(),
-                RESULT_HEIGHT = 20,
-
-                slices = 50,
-                delta = (categoryRect.x() + 5 - x0) / slices,
-                deltaY = (categoryRect.y() + 5 + calculateOffsetY(nth) - y0) / slices,
-                deltaWidth = (CATEGORY_THUMB_NAIL_SIZE_X - width0) / slices,
-                deltaHeight = (CATEGORY_THUMB_NAIL_SIZE_Y - height0) / slices;
-
-            var i = 0;
-            var anim = new Konva.Animation(function (frame) {
-                if (i < slices) {
-                    image.height(image.height() + deltaHeight);
-                    image.width(image.width() + deltaWidth);
-                    image.x(image.x() + delta);
-                    image.y(image.y() + deltaY);
-                    i++;
-                } else {
-                    anim.stop();
-
-                    image._isAssigned = categoryRect === undefined ? false : true;
-                    image._isAssignedCorrectly = isAssignedRight(categoryRect, image);
-
-                    image.resultImage.x(image.x() + image.width() + 10);
-                    image.resultImage.y(image.y() + (image.height() - RESULT_HEIGHT) / 2);
-
-                    image.draw();
-                    image.parent.draw();
-                    image.resultImage.draw();
-                }
-            }, image.parent);
-
+            image._isAssigned = categoryRect === undefined ? false : true;
+            image._isAssignedCorrectly = isAssignedRight(categoryRect, image);
+            var anim = createAnimation(image, categoryRect, calculateOffsetY(this.add(image)));
             anim.start();
+            if (image._isAssigned && image._isAssignedCorrectly) {
+                image.draggable(false);
+                image.comp = true;
+            }
 
-            image.draggable(false);
             image.off('mouseover');
+            image.on('mouseover', function () {
+                document.body.style.cursor = 'pointer';
+            });
         }
-
     };
 
     // return a function that return the associated CategoryContainer instance
@@ -335,6 +305,76 @@ var categoryManager = (function () {
     };
 
 })();
+
+function createAnimation(image, categoryRect, offsetY) {
+    var i = 0;
+    var RESULT_HEIGHT = 20;
+    var deltaObj = calcDeltaObject(image, categoryRect, offsetY);
+    var anim = new Konva.Animation(function (frame) {
+        if (i < deltaObj.s) {
+            image.height(image.height() + deltaObj.h);
+            image.width(image.width() + deltaObj.w);
+            image.x(image.x() + deltaObj.x);
+            image.y(image.y() + deltaObj.y);
+            i++;
+        } else {
+            anim.stop();
+            if (image._isAssigned) {
+                image.resultImage.x(image.x() + image.width() + 10);
+                image.resultImage.y(image.y() + (image.height() - RESULT_HEIGHT) / 2);
+
+            } else {
+                image.resultImage.image(null);
+            }
+
+            image.draw();
+            image.parent.draw();
+            image.resultImage.draw();
+        }
+    }, image.parent);
+
+    return anim;
+}
+
+function calcDeltaObject(image, categoryRect, offsetY) {
+    var RESULT_HEIGHT = 20,
+        x0 = image.x(),
+        y0 = image.y(),
+        width0 = image.width(),
+        height0 = image.height(),
+        slices = 20,
+        deltaX = 0,
+        deltaY = 0,
+        deltaWidth = (image.attrs.orgWidth - width0) / slices,
+        deltaHeight = (image.attrs.orgHeight - height0) / slices;
+    if (categoryRect) {
+        slices = 50,
+        deltaX = (categoryRect.x() + 5 - x0) / slices;
+        deltaY = (categoryRect.y() + 5 + offsetY - y0) / slices;
+        deltaWidth = (CATEGORY_THUMB_NAIL_SIZE_X - width0) / slices;
+        deltaHeight = (CATEGORY_THUMB_NAIL_SIZE_Y - height0) / slices;
+    }
+
+    return { x: deltaX, y: deltaY, w: deltaWidth, h: deltaHeight, s: slices };
+}
+
+function checkComplete() {
+    var count = 0;
+    var total = 0;
+    for (var i = 0; i < ComputerScene.layer.children.length; i++) {
+        var item = ComputerScene.layer.children[i];
+        if (item instanceof Konva.Ccomponent) {
+            total++;
+            if (item.comp) {
+                count++;
+            }
+        }
+    }
+
+    if (count == total) {
+        window.setTimeout('Scene.stepComplete()', 3000);
+    }
+}
 
 function loadImage(config, layer, categoryLayer) {
     var box = new Konva.Ccomponent({
@@ -401,7 +441,18 @@ function loadImage(config, layer, categoryLayer) {
         if (!!detectedCategoryRect) {
             _categorizer(detectedCategoryRect, this, {});
         } else {
-            this._isAssigned = false;
+            if (this._isAssigned) {
+                this._isAssigned = false;
+                this.resultImage.image(null);
+                var anim = createAnimation(this, null, 0);
+                anim.start();
+                this.off('mouseover');
+                this.on('mouseover', function () {
+                    document.body.style.cursor = 'pointer';
+                    showWarning(arguments[0]);
+                    showTooltip(arguments[0], true);
+                });
+            }
         }
 
         layer.draw();
@@ -543,7 +594,6 @@ var detectIntersection = (function () {
     };
 })();
 
-
 var _categorizer;
 // Used for exposing Scene related API
 function Scene(config) {
@@ -623,13 +673,19 @@ Scene.prototype = {
 Scene.reset = function () {
     $('.tooltip.tooltip-top').remove();
     ComputerScene.layer.clear();
-    ComputerScene.layer.draw();
     for (var i = 0; i < ComputerScene.layer.children.length; i++) {
         var item = ComputerScene.layer.children[i];
         if (item instanceof Konva.Ccomponent) {
             item.comp = false;
+            item._isAssigned = false;
+            item._isAssignedCorrectly = false;
+            item.x(item.attrs.orgX);
+            item.y(item.attrs.orgY);
+            item.resultImage.image(null);
         }
     }
+
+    ComputerScene.layer.draw();
 };
 
 //window.ComputerScene = new Scene(configuration);
