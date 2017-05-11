@@ -1,6 +1,6 @@
-(function() {
+(function () {
     'use strict';
-    Konva.ConnectionPoint = function(config) {
+    Konva.ConnectionPoint = function (config) {
         this.___init(config);
         this._direction = config.direction;
         this._componentsLayer = config.componentsLayer;
@@ -24,7 +24,7 @@
 
     Konva.ConnectionPoint.prototype = {
         // constructor: Konva.ConnectionPoint,
-        ___init: function(config) {
+        ___init: function (config) {
             var defaultConfig = {
                 innerRadius: 2,
                 outerRadius: 4,
@@ -111,12 +111,12 @@
             }
         },
 
-        moveAction: function() {
+        moveAction: function () {
             this.___calculateMove(this._componentsLayer);
             this.___doMove(this._direction, this._inc);
         },
 
-        isDone: function() {
+        isDone: function () {
             return (Math.abs(this._tmpX - this._end[0]) <= 1) && (Math.abs(this._tmpY - this._end[1]) <= 1);
         }
 
@@ -127,11 +127,11 @@
 
 
 // Extend Image
-(function() {
+(function () {
     var RESULT_WIDTH = 20,
         RESULT_HEIGHT = 20;
 
-    Konva.Ccomponent = function(config) {
+    Konva.Ccomponent = function (config) {
         this.___init(config);
         this._isAssigned = false;
         this._isAssignedCorrectly = false;
@@ -143,7 +143,7 @@
     };
 
     Konva.Ccomponent.prototype = {
-        ___init: function(config) {
+        ___init: function (config) {
             Konva.Image.prototype.___init.call(this, config);
             this.resultImage = new Konva.Image({
                 x: config.x + 5,
@@ -153,17 +153,36 @@
             });
         },
 
-        draw: function() {
+        draw: function () {
             Konva.Image.prototype.draw.apply(this);
 
             var that = this;
 
             var imageObj = new Image();
-            imageObj.src = !this._isAssigned ? null : this._isAssignedCorrectly ? 'svg/success.svg' : 'svg/error.svg';
+            imageObj.src = !this._isAssigned ? null : this._isAssignedCorrectly ? 'image/scene/intrcourse/svg/success.svg' : 'image/scene/intrcourse/svg/error.svg';
             that.resultImage.image(imageObj);
 
             this.parent.draw();
-            that.resultImage.draw();
+            if (imageObj.src) {
+                that.resultImage.draw();
+                that.resultImage.on('mouseover', function () {
+                    document.body.style.cursor = 'pointer';
+                });
+
+                that.resultImage.on('mouseout', function () {
+                    document.body.style.cursor = 'default';
+                });
+
+                that.resultImage.on('click', function () {
+                    that.resultImage.image(null);
+                    that._isAssigned = false;
+                    that.attrs.x = that.attrs.orgX;
+                    that.attrs.y = that.attrs.orgY;
+                    that.attrs.width = that.attrs.orgWidth;
+                    that.attrs.height = that.attrs.orgHeight;
+                    that.draw();
+                });
+            }
         },
 
         componentPosition() {
@@ -177,13 +196,13 @@
     Konva.Util.extend(Konva.Ccomponent, Konva.Image);
 
     // extend component group
-    Konva.ComponentGroup = function(config) {
+    Konva.ComponentGroup = function (config) {
         this.___init(config);
         this._group = config.group;
     };
 
     Konva.ComponentGroup.prototype = {
-        ___init: function(config) {
+        ___init: function (config) {
             Konva.Rect.prototype.___init.call(this, config);
         }
     };

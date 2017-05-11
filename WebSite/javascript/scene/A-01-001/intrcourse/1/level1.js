@@ -12,8 +12,7 @@ var configuration = {
         en: "Keyboard",
         dt: "输入文字，数字，字母以及特殊字符， 命令",
         path: "image/scene/intrcourse/svg/keyboard.svg"
-    }
-    ],
+    }],
     "Output Device": [{
         cn: "显示器",
         en: "Monitor",
@@ -29,8 +28,7 @@ var configuration = {
         en: "Earphones",
         dt: "输出声音",
         path: "image/scene/intrcourse/svg/earphones.svg"
-    }
-    ],
+    }],
     "Storage": [{
         cn: "硬盘",
         en: "Harddrive",
@@ -51,8 +49,7 @@ var configuration = {
         en: "RAM",
         dt: "临时存储数据， 书包（根据需要存放数据）",
         path: "image/scene/intrcourse/svg/ram-memory.svg"
-    }
-    ],
+    }],
     "Computing": [{
         cn: "中央处理器",
         en: "CPU",
@@ -68,8 +65,7 @@ var configuration = {
         en: "Computer Tower",
         dt: "",
         path: "image/scene/intrcourse/svg/computer.svg"
-    }
-    ]
+    }]
 };
 
 function searchForGroup(key, config, predicate) {

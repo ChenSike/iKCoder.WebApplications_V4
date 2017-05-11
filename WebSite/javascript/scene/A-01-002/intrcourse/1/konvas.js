@@ -1786,7 +1786,9 @@
       if (a.length === 3) {
         _context.drawImage(a[0], a[1], a[2]);
       } else if (a.length === 5) {
-        _context.drawImage(a[0], a[1], a[2], a[3], a[4]);
+          if (a[0]) {
+              _context.drawImage(a[0], a[1], a[2], a[3], a[4]);
+          }
       } else if (a.length === 9) {
         _context.drawImage(
           a[0],
