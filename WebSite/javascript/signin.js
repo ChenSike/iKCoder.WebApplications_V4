@@ -22,7 +22,7 @@ function buildAgreementWindow() {
     tmpHtmlStrArr.push('            </div>');
     tmpHtmlStrArr.push('            <div class="modal-body">');
     tmpHtmlStrArr.push('                <div class="wrap-ifram-agreement" style="overflow-y: scroll;">');
-    tmpHtmlStrArr.push('                    <iframe src="agreement.html" id="iframe_Agreement" scrolling="no" frameborder="0" width="100%"></iframe>');
+    tmpHtmlStrArr.push('                    <iframe src="agreement.html?rnd=' + Date.now() + '" id="iframe_Agreement" scrolling="no" frameborder="0" width="100%"></iframe>');
     tmpHtmlStrArr.push('                </div>');
     tmpHtmlStrArr.push('            </div>');
     tmpHtmlStrArr.push('            <div class="modal-footer">');
@@ -136,7 +136,7 @@ function resetForgetPWDFields() {
 
 function initEvents() {
     $(".img-header-logo").on('click', function () {
-        window.location.href = "index.html?rnd="+Date.now();
+        window.location.href = "index.html?rnd=" + Date.now();
     });
     initSignInEvent();
     initSignUpEvent();
@@ -348,7 +348,7 @@ function doSignIn() {
                 //window.history.back(); 
                 var referrer = document.referrer.toLowerCase();
                 if (referrer.indexOf('sign.html')) {
-                    referrer = 'index.html';
+                    referrer = 'index.html?rnd=' + Date.now();
                 } else {
                     if (referrer.indexOf('rnd') > 0) {
                         referrer.replace('rnd=', 'rnd=0');

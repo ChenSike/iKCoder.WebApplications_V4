@@ -3,7 +3,7 @@
 function buildHeaderHTML(isIndexPage) {
     var tmpHtmlStrArr = [];
     tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header" style="background-color:transparent;">');
-    tmpHtmlStrArr.push('    <a class="navbar-brand" href="index.html">');
+    tmpHtmlStrArr.push('    <a class="navbar-brand" href="index.html?rnd=' + Date.now() + '">');
     tmpHtmlStrArr.push('        <img src="image/logo-new-white.png" width="150" height="50" class="d-inline-block align-top img-header-logo" alt="">');
     tmpHtmlStrArr.push('    </a>');
     tmpHtmlStrArr.push('    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">');

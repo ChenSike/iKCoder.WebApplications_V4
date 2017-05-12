@@ -49,10 +49,10 @@ function initFooter() {
 
 function initFooterEvent() {
     $("#linkBtn_Foot_About").on('click', function () {
-        window.location.href = "aboutus.html";
+        window.location.href = "aboutus.html?rnd=" + Date.now();
     });
 
     $("#linkBtn_Foot_OnlineCourse").on('click', function () {
-        window.location.href = "index.html";
+        window.location.href = "index.html?rnd=" + Date.now();
     });
 }

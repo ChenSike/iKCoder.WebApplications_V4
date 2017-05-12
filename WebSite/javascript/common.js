@@ -257,7 +257,7 @@ function _startCheckState() {
         data: '<root></root>',
         success: function (responseData, status) {
             if ($(responseData).find('err').length > 0) {
-                window.location.href = "signin.html";
+                window.location.href = "signin.html?rnd=" + Date.now();
                 $.removeCookie('logined_user_name');
                 $.removeCookie('logined_user_nickname');
                 return;
@@ -300,7 +300,7 @@ function _startCheckState() {
                                 withCredentials: true
                             },
                             error: function () {
-                                window.location.href = "signin.html";
+                                window.location.href = "signin.html?rnd=" + Date.now();
                                 $.removeCookie('logined_user_name');
                                 $.removeCookie('logined_user_nickname');
                             }
@@ -310,7 +310,7 @@ function _startCheckState() {
                 } else {
                     $.removeCookie('logined_user_name');
                     $.removeCookie('logined_user_nickname');
-                    window.location.href = "signin.html";
+                    window.location.href = "signin.html?rnd=" + Date.now();
                 }
             }
         },
@@ -319,7 +319,7 @@ function _startCheckState() {
             withCredentials: true
         },
         error: function () {
-            window.location.href = "signin.html";
+            window.location.href = "signin.html?rnd=" + Date.now();
             $.removeCookie('logined_user_name');
             $.removeCookie('logined_user_nickname');
         }

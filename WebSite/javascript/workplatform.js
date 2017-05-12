@@ -79,7 +79,7 @@ function initPage() {
 function initEvents() {
     $('#btn_Footer_Logo').on('click', function (e) {
         WorkScene.saveStatus();
-        window.location.href = "index.html";
+        window.location.href = "index.html?rnd=" + Date.now();
     });
 
     $('#btn_SiderBar_Expand').on('click', function () {
