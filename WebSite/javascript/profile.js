@@ -2696,7 +2696,7 @@ function drawTimeBarGraph(datas, canvasId) {
     var unit = (maxValue == 0 ? 0 : Math.floor((height - 30) / maxValue));
     var startX = 0;
     var startY = height - 15;
-    var linearGradient, barHeight, barX, tmpX, tmpY, lineRTX, lineRTY, tmpDate, tmpMonth;
+    var linearGradient, barHeight, barX, tmpX, tmpY, lineRTX, lineRTY, tmpDate, tmpMonth, tmpTextWidth;
     for (var i = 0; i < datas.length; i++) {
         if (datas[i].time > 0) {
             //draw bar
@@ -2718,7 +2718,9 @@ function drawTimeBarGraph(datas, canvasId) {
             context.lineTo(lineRTX, startY);
             context.stroke();
             //draw time label
-            tmpX = barX + 4;
+            //tmpX = barX + 4;
+            tmpTextWidth = testTextWidth(datas[i].time, '10px', 'bold', '微软雅黑', '');
+            tmpX = startX + (barWidth + barSpace - tmpTextWidth) / 2;
             tmpY = lineRTY - 2;
             context.font = "normal normal bold 10px \"微软雅黑\"";
             context.fillStyle = "rgb(97,97,97)";
