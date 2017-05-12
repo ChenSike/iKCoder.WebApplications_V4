@@ -29,42 +29,48 @@ function _fullScreen() {
 }
 
 function _playScene() {
-    var flag = WorkScene.startGame();
-    if (flag) {
+    if (WorkScene.playableScene()) {
         if ($(this).hasClass('fa-play')) {
-            $(this).removeClass('fa-play');
-            $(this).addClass('fa-undo');
-            $(this).attr('title', '重新开始');
-            //} else if ($(this).hasClass('fa-stop')) {
-            //    $(this).removeClass('fa-stop');
-            //    $(this).addClass('fa-undo');
-            //    $(this).attr('title', '重新开始');
+            WorkScene.startGame();
+            resetPlayBtn('R');
         } else if ($(this).hasClass('fa-undo')) {
-            $(this).removeClass('fa-undo');
-            $(this).addClass('fa-play');
-            $(this).attr('title', '开始运行');
+            WorkScene.resetScene();
+            resetPlayBtn('P');
         }
     }
 };
 
 function _playSceneFullScreen() {
-    var flag = WorkScene.startGame();
-    if (flag) {
+    if (WorkScene.playableScene) {
         if ($(this).hasClass('fa-play-circle-o')) {
-            $(this).removeClass('fa-play-circle-o');
-            $(this).addClass('fa-undo');
-            $(this).attr('title', '重新开始');
-            //} else if ($(this).hasClass('fa-stop-circle-o')) {
-            //    $(this).removeClass('fa-stop-circle-o');
-            //    $(this).addClass('fa-undo');
-            //    $(this).attr('title', '重新开始');
+            WorkScene.startGame();
+            resetPlayBtn('R');
         } else if ($(this).hasClass('fa-undo')) {
-            $(this).removeClass('fa-undo');
-            $(this).addClass('fa-play-circle-o');
-            $(this).attr('title', '开始运行');
+            WorkScene.resetScene();
+            resetPlayBtn('P');
         }
     }
 };
+
+function resetPlayBtn(operation) {
+    var toolboxBtn = $('.workspace-tool-item.workspace-play-button');
+    var screenBtn = $('.run-scene-fullscreen-play-button');
+    if (operation == 'P') {
+        toolboxBtn.removeClass('fa-undo');
+        screenBtn.removeClass('fa-undo');
+        toolboxBtn.addClass('fa-play');
+        screenBtn.addClass('fa-play-circle-o');
+        toolboxBtn.attr('title', '开始运行');
+        screenBtn.attr('title', '开始运行');
+    } else {
+        toolboxBtn.removeClass('fa-play');
+        screenBtn.removeClass('fa-play-circle-o');
+        toolboxBtn.addClass('fa-undo');
+        screenBtn.addClass('fa-undo');
+        toolboxBtn.attr('title', '重新开始');
+        screenBtn.attr('title', '重新开始');
+    }
+}
 
 function _refereshScene() {
     WorkScene.reset(true);

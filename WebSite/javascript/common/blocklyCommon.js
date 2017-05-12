@@ -199,10 +199,6 @@ WorkScene.startGame_Fn = function () {
 };
 
 WorkScene.startGame = function () {
-    if (_workspaceCfg.toolbox == '') {
-        return false;
-    }
-
     if (typeof (_blocklyFn) != 'undefined' && _blocklyFn != null) {
         WorkScene.startGame_Fn();
     } else {
@@ -211,9 +207,15 @@ WorkScene.startGame = function () {
         eval(code);
         Scene.startGame();
     }
-
-    return true;
 };
+
+WorkScene.playableScene = function () {
+    if (_workspaceCfg.toolbox == '') {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 WorkScene.endGame = function () {
     Scene.endGame();
@@ -284,7 +286,11 @@ function CheckSceneObject() {
     }
 
     if (!Scene.reset) {
-        Scene.reset = function () { };
+        Scene.reset = function () {
+            Scene.Game.stop();
+            Scene.Game.getCurentStage().reset();
+            Scene.Game.start();
+        };
     }
 
     if (!Scene.pause) {

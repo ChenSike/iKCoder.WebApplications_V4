@@ -67,10 +67,10 @@ function initPage() {
     });
 
     initEvents();
-    var playBtn = $('.workspace-tool-item.fa.fa-play');
-    var shareBtn = $('.workspace-tool-item.fa.fa-share-alt');
-    var fullScreenBtn = $('.workspace-tool-item.fa.fa-arrows-alt');
-    var refereshBtn = $('.workspace-tool-item.fa.fa-repeat');
+    var playBtn = $('.workspace-tool-item.workspace-play-button.fa.fa-play');
+    var shareBtn = $('.workspace-tool-item.workspace-share-button.fa.fa-share-alt');
+    var fullScreenBtn = $('.workspace-tool-item.workspace-fullscreen-button.fa.fa-arrows-alt');
+    var refereshBtn = $('.workspace-tool-item.workspace-referesh-button.fa.fa-repeat');
     bindEventsToScene(playBtn, shareBtn, fullScreenBtn, refereshBtn);
     //siderBarExpand();
     adjustAfterSiderBarResize();
