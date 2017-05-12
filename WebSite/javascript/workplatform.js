@@ -347,6 +347,13 @@ function buildStageHTML(data) {
     var background = $('.head-stage-background');
     var parent = $('#Course_Stage_Container');
     $('.head-course-name').text(data.name);
+    var titleWidth = testTextWidthFromEl($('.head-course-name'));
+    if (titleWidth > $('#wrap_Head_Course_Name').width()) {
+        $('#wrap_Head_Course_Name').css('padding-top', '0px');
+    } else {
+        $('#wrap_Head_Course_Name').css('padding-top', '15px');
+    }
+
     var tmpWidth = itemWidth * (data.stage_count - 1);
     background.css('width', tmpWidth + '%');
     tmpWidth = 100 / (data.stage_count - 1) * (data.complete_count);

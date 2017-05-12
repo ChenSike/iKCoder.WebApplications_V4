@@ -128,9 +128,6 @@
 
 // Extend Image
 (function () {
-    var RESULT_WIDTH = 20,
-        RESULT_HEIGHT = 20;
-
     Konva.Ccomponent = function (config) {
         this.___init(config);
         this._isAssigned = false;

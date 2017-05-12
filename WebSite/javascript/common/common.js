@@ -141,33 +141,37 @@ function ConvertImgToBase64(url, callback, outputFormat) {
 //ConvertImgToBase64('http://bit.ly/18g0VNp', function (base64Img) {
 //    // Base64DataURL
 //});
-function testTextWidth(text, fontSize, fontWeight, fontFamily) {
-    var testDiv = document.getElementById("div_test_text_width");
-    if (!testDiv) {
-        testDiv = document.createElement("div");
-        testDiv.id = "div_test_text_width";
-        testDiv.style.position = "absolute";
-        testDiv.style.left = "-10000px";
-        testDiv.style.top = "-10000px";
-        testDiv.style.width = "auto";
-        document.body.appendChild(testDiv);
+function testTextWidth(text, fontSize, fontWeight, fontFamily, letterSpaceing) {
+    var testDiv = $("#div_test_text_width");
+    if (!testDiv || testDiv.length==0) {
+        $('body').append($('<div id="div_test_text_width" style="position:absolute;left:-10000px; top:-10000px;width:auto;"></div>'));
+        testDiv = $("#div_test_text_width");
     }
 
-    testDiv.style.fontFamily = fontFamily;
-    testDiv.style.fontSize = fontSize;
-    testDiv.style.fontWeight = fontWeight;
-    testDiv.innerHTML = text;
+    testDiv.css('font-size', fontSize);
+    testDiv.css('font-weight', fontWeight == '' ? 'normal' : fontWeight);
+    testDiv.css('font-family', fontFamily == '' ? '微软雅黑' : fontFamily);
+    testDiv.css('letter-spacing', letterSpaceing == '' ? 'normal' : letterSpaceing);
+    testDiv.text(text);
 
-    return testDiv.clientWidth;
+    return testDiv.width();
 };
 
-function testTextWidthFromEl(sourceTagId) {
+function testTextWidthFromElId(sourceTagId) {
     var sourceTag = document.getElementById(sourceTagId);
     if (!sourceTag) {
         return -1;
     }
 
     return testTextWidth(sourceTag.innerHTML, sourceTag.style.fontSize, sourceTag.style.fontWeight, sourceTag.style.fontFamily);
+};
+
+function testTextWidthFromEl(source) {
+    if (!source) {
+        return -1;
+    }
+
+    return testTextWidth(source.text(), source.css('font-size'), source.css('font-weight'), source.css('font-family'), source.css('letter-spacing'));
 };
 
 function randomInt(minVal, maxVal) {

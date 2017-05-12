@@ -1,6 +1,13 @@
 //(function () {
 'use strict';
 
+var CATEGORY_THUMB_NAIL_SIZE_X = 50;
+var CATEGORY_THUMB_NAIL_SIZE_Y = 50;
+var CATEGORY_PADDING_BOTTOM = 5;
+var RESULT_WIDTH = 20;
+var RESULT_HEIGHT = 20;
+var CATEGORY_ITEM_ROW = 4;
+
 var configuration = {
     "Input Device": [{
         cn: "鼠标",
@@ -95,12 +102,47 @@ function placeComponentGroups(config, layer, stage) {
         groups.push(group);
     }
 
-    var groupNum = groups.length,
-        groupHeight = 200,
-        groupSideMargin = 30,
-        horizontalMargin = 100,
-        groupWidth = ((stage.getWidth() - horizontalMargin) / groupNum) - groupSideMargin * 2;
+    var containerHeight = stage.getHeight();
+    var containerWidth = stage.getWidth();
+    var groupNum = groups.length;
+    //var groupHeight = 220;
+    //var groupWidth = ((stage.getWidth() - horizontalMargin) / groupNum) - groupSideMargin * 2;
+    //var groupSideMargin = 30;
+    //var horizontalMargin = 100;
+    var maxGSM = 30;
+    var maxHM = 60;
+    var groupWidth = stage.getWidth() * 4 / (5 * groupNum + 1);
+    var space = groupWidth / 4;
+    if (space > maxHM) {
+        space = maxHM;
+        groupWidth = (stage.getWidth() - space * (groupNum + 1)) / groupNum;
+    }
 
+    var groupSideMargin = space / 2;
+    var horizontalMargin = space;
+    var groupHeight = containerHeight / 3 - 10;
+
+    var titleText = '';
+    for (var group in config) {
+        var tmpTitleText = group + ('(' + groupNameMap[group] + ')');
+        if (tmpTitleText.length > titleText) {
+            titleText = tmpTitleText;
+        }
+    }
+
+    var fontSize = 18;
+    for (var i = 10; i < 99; i++) {
+        if (testTextWidth(titleText, i + 'px', '', 'Calibri') >= groupWidth / 2) {
+            fontSize = i;
+            break;
+        }
+    }
+
+    CATEGORY_THUMB_NAIL_SIZE_Y = groupHeight / CATEGORY_ITEM_ROW - CATEGORY_PADDING_BOTTOM;
+    CATEGORY_THUMB_NAIL_SIZE_X = CATEGORY_THUMB_NAIL_SIZE_Y;
+    if (CATEGORY_THUMB_NAIL_SIZE_Y < RESULT_HEIGHT) {
+        RESULT_WIDTH = RESULT_HEIGHT = CATEGORY_THUMB_NAIL_SIZE_Y;
+    }
 
     for (var i = 0; i < groupNum; i++) {
         var categoryConfig = {
@@ -110,20 +152,23 @@ function placeComponentGroups(config, layer, stage) {
             width: groupWidth,
             group: groups[i],
             x: horizontalMargin / 2 + (groupSideMargin * 2 + groupWidth) * i + groupSideMargin,
-            y: stage.getHeight() - groupHeight - 10
+            y: stage.getHeight() - groupHeight - 10,
+            title: groups[i] + ('(' + groupNameMap[groups[i]] + ')'),
+            fontSize: fontSize
         };
 
         loadCategory(categoryConfig, layer, stage);
     }
+
+    return groupHeight;
 }
 
-function placeComponents(config, layer, categoryLayer, stage) {
+function placeComponents(config, layer, categoryLayer, stage, groupHeight) {
     var ccomponents = [];
     for (var group in config) {
         ccomponents = Array.prototype.concat.apply(ccomponents, config[group]);
     }
 
-    var groupHeight = 220;
     var cellDimension = 180;
     var numberOfComponents = ccomponents.length || 0;
     var verticalMargin = 50;
@@ -205,11 +250,6 @@ function placeComponents(config, layer, categoryLayer, stage) {
     }
 }
 
-var CATEGORY_THUMB_NAIL_SIZE_X = 50,
-    CATEGORY_THUMB_NAIL_SIZE_Y = 50,
-    CATEGORY_PADDING_BOTTOM = 5;
-
-
 var categoryManager = (function () {
     var categoryToContainer = new Map();
 
@@ -243,7 +283,11 @@ var categoryManager = (function () {
     }
 
     function calculateOffsetY(i) {
-        return (CATEGORY_THUMB_NAIL_SIZE_Y + CATEGORY_PADDING_BOTTOM) * i;
+        return (CATEGORY_THUMB_NAIL_SIZE_Y + CATEGORY_PADDING_BOTTOM) * (i % CATEGORY_ITEM_ROW);
+    }
+
+    function calculateOffsetX(i) {
+        return (CATEGORY_THUMB_NAIL_SIZE_X + 5 + RESULT_WIDTH + 5) * Math.floor(i / CATEGORY_ITEM_ROW);
     }
 
     function CategoryContainer(categoryRect, children) {
@@ -276,12 +320,20 @@ var categoryManager = (function () {
         return this.children.length - 1 || 0;
     };
 
+    CategoryContainer.prototype.clear = function () {
+        var count = this.children.length;
+        for (var i = 0; i < count; i++) {
+            this.children.pop();
+        }
+    };
+
     CategoryContainer.prototype.categorize = function (image, categoryRect, options) {
         removeExistingFromCategories(image);
         if (categoryRect !== undefined) {
             image._isAssigned = categoryRect === undefined ? false : true;
             image._isAssignedCorrectly = isAssignedRight(categoryRect, image);
-            var anim = createAnimation(image, categoryRect, calculateOffsetY(this.add(image)));
+            var childCount = this.add(image);
+            var anim = createAnimation(image, categoryRect, calculateOffsetY(childCount), calculateOffsetX(childCount));
             anim.start();
             if (image._isAssigned && image._isAssignedCorrectly) {
                 image.draggable(false);
@@ -306,10 +358,9 @@ var categoryManager = (function () {
 
 })();
 
-function createAnimation(image, categoryRect, offsetY) {
+function createAnimation(image, categoryRect, offsetY, offsetX) {
     var i = 0;
-    var RESULT_HEIGHT = 20;
-    var deltaObj = calcDeltaObject(image, categoryRect, offsetY);
+    var deltaObj = calcDeltaObject(image, categoryRect, offsetY, offsetX);
     var anim = new Konva.Animation(function (frame) {
         if (i < deltaObj.s) {
             image.height(image.height() + deltaObj.h);
@@ -320,9 +371,9 @@ function createAnimation(image, categoryRect, offsetY) {
         } else {
             anim.stop();
             if (image._isAssigned) {
-                image.resultImage.x(image.x() + image.width() + 10);
+                image.resultImage.x(image.x() + image.width() + 5);
                 image.resultImage.y(image.y() + (image.height() - RESULT_HEIGHT) / 2);
-
+                checkComplete();
             } else {
                 image.resultImage.image(null);
             }
@@ -336,7 +387,7 @@ function createAnimation(image, categoryRect, offsetY) {
     return anim;
 }
 
-function calcDeltaObject(image, categoryRect, offsetY) {
+function calcDeltaObject(image, categoryRect, offsetY, offsetX) {
     var RESULT_HEIGHT = 20,
         x0 = image.x(),
         y0 = image.y(),
@@ -349,7 +400,7 @@ function calcDeltaObject(image, categoryRect, offsetY) {
         deltaHeight = (image.attrs.orgHeight - height0) / slices;
     if (categoryRect) {
         slices = 50,
-        deltaX = (categoryRect.x() + 5 - x0) / slices;
+        deltaX = (categoryRect.x() + 5 + offsetX - x0) / slices;
         deltaY = (categoryRect.y() + 5 + offsetY - y0) / slices;
         deltaWidth = (CATEGORY_THUMB_NAIL_SIZE_X - width0) / slices;
         deltaHeight = (CATEGORY_THUMB_NAIL_SIZE_Y - height0) / slices;
@@ -412,17 +463,6 @@ function loadImage(config, layer, categoryLayer) {
         showTooltip(arguments[0], true);
     });
 
-    box.on('click', function () {
-        //if (this._isAssigned && !this._isAssignedCorrectly) {
-        //    document.body.style.cursor = 'pointer';
-        //    this.attrs.x = this.attrs.orgX;
-        //    this.attrs.y = this.attrs.orgY;
-        //    this.attrs.width = this.attrs.orgWidth;
-        //    this.attrs.height = this.attrs.orgHeight;
-        //    this.draw();
-        //}
-    });
-
     box.on('mouseout', function () {
         document.body.style.cursor = 'default';
         showWarning(null);
@@ -443,8 +483,10 @@ function loadImage(config, layer, categoryLayer) {
         } else {
             if (this._isAssigned) {
                 this._isAssigned = false;
-                this.resultImage.image(null);
-                var anim = createAnimation(this, null, 0);
+                var imageObj = new Image();
+                imageObj.src = null;
+                this.resultImage.image(imageObj);
+                var anim = createAnimation(this, null, 0, 0);
                 anim.start();
                 this.off('mouseover');
                 this.on('mouseover', function () {
@@ -546,13 +588,14 @@ function loadCategory(config, layer) {
     var rect = new Konva.ComponentGroup(config);
     var groupText = new Konva.Text({
         x: rect.x(),
-        y: rect.y() - 20,
+        y: rect.y() - config.fontSize - 5,
         width: rect.width(),
-        text: config.group + ('(' + groupNameMap[config.group] + ')'),
-        fontSize: 18,
+        text: config.title,
+        fontSize: config.fontSize,
         fontFamily: 'Calibri',
         align: 'center'
     });
+
     layer.add(rect);
     layer.add(groupText);
 }
@@ -621,8 +664,8 @@ Scene.prototype = {
     },
 
     start: function () {
-        placeComponents(this.config, this.layer, this.categoryLayer, this.stage);
-        placeComponentGroups(this.config, this.categoryLayer, this.stage);
+        var groupHeight = placeComponentGroups(this.config, this.categoryLayer, this.stage);
+        placeComponents(this.config, this.layer, this.categoryLayer, this.stage, groupHeight);
 
         _categorizer = categoryManager(this.categoryLayer);
         this.stage.add(this.categoryLayer);
@@ -681,8 +724,20 @@ Scene.reset = function () {
             item._isAssignedCorrectly = false;
             item.x(item.attrs.orgX);
             item.y(item.attrs.orgY);
+            item.width(item.attrs.orgWidth);
+            item.height(item.attrs.orgHeight);
             item.resultImage.image(null);
+            item.draggable(true);
+            item.on('mouseover', function () {
+                document.body.style.cursor = 'pointer';
+                showWarning(arguments[0]);
+                showTooltip(arguments[0], true);
+            });
         }
+    }
+
+    for(var tmpItem of categoryToContainer) {
+        tmpItem[1].clear();
     }
 
     ComputerScene.layer.draw();
