@@ -7,6 +7,7 @@ function Game(id, params) {
         width: 400,
         height: 480,
         movePaths: [],
+		movePathsBuild: false,
         model: '1',
         rowCount: 15,
         colCount: 15,
@@ -379,7 +380,7 @@ function Game(id, params) {
                                     item.update();
                                 }
                             } else {
-                                if (!alreadyCheckComplete && Game.completeCheckFn) {
+                                if (!alreadyCheckComplete && _.movePathsBuild && Game.completeCheckFn) {
                                     Game.completeCheckFn(stage, item);
                                     alreadyCheckComplete = true;
                                 }
@@ -463,6 +464,7 @@ function Game(id, params) {
         for (var i = 0; i < pathItems.length; i++) {
             _.movePaths.push(pathItems[i]);
         }
+		_.movePathsBuild = true;
     }
 
     this.calcPaths = function () {
