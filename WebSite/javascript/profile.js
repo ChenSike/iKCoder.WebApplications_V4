@@ -2677,7 +2677,7 @@ function formatDate(date) {
 };
 
 function drawTimeBarGraph(datas, canvasId) {
-    var barWidth = 18;
+    var barWidth = 24;
     var barSpace = 14;
     var lineWidth = 1;
     var canvas = document.getElementById(canvasId);
@@ -2722,13 +2722,13 @@ function drawTimeBarGraph(datas, canvasId) {
             tmpTextWidth = testTextWidth(datas[i].time, '10px', 'bold', '微软雅黑', '');
             tmpX = startX + (barWidth + barSpace - tmpTextWidth) / 2;
             tmpY = lineRTY - 2;
-            context.font = "normal normal bold 10px \"微软雅黑\"";
+            context.font = "normal normal normal 10px \"微软雅黑\"";
             context.fillStyle = "rgb(97,97,97)";
             context.fillText(datas[i].time, tmpX, tmpY);
             //draw date label
             tmpX = startX + 2;
             tmpY = startY + 12;
-            context.font = "normal normal 600 10px \"微软雅黑\"";
+            context.font = "normal normal normal 10px \"微软雅黑\"";
             context.fillStyle = "rgb(97,97,97)";
             tmpDate = new Date(datas[i].date);
             tmpMonth = (tmpDate.getMonth() + 1 < 10 ? '0' + (tmpDate.getMonth() + 1) : tmpDate.getMonth() + 1);

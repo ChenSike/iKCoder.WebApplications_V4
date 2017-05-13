@@ -369,11 +369,9 @@ function loadImage(config, layer, categoryLayer) {
             }
 
             if (count == total) {
-                window.setTimeout('Scene.stepComplete()', 3000);
+                window.setTimeout('Scene.stepComplete()', 2000);
             }
         }
-
-        Scene.reset();
     });
 
     box.on('mouseover', function () {
@@ -473,13 +471,15 @@ function showTooltip(eventObj, show) {
         var wrap = $('#container_Static_Stage');
         var html = '<p style="font-family: 微软雅黑; font-size: 15px;"><strong <%style%>>' + target.cn + '</strong><span>(' + target.en + ')&nbsp;:&nbsp;' + target.dt + '</span></p>';
         updateTipsText(html.replace('<%style%>', 'style="color:rgb(2,117,216);"'));
-        $('#' + tmpId + ' .tooltip-inner').html(html.replace('<%style%>', ''));
+        var tipInner = $('#' + tmpId + ' .tooltip-inner');
+        tipInner.html(html.replace('<%style%>', ''));
         var offset = wrap.offset();
         var x = target.x() + offset.left + target.width() / 2 - tip.width() / 2;
         var y = target.y() + offset.top - tip.height() - 20;
         tip.css('left', x + 'px');
         tip.css('top', y + 'px');
         tip.css('opacity', '0.8');
+        //tipInner.css('margin-left', (tip.width() - tipInner.width()) / 2 + 'px');
         tip.show();
     }
 }

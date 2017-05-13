@@ -707,4 +707,5 @@ textarea {
     border: solid 1px rgb(0,0,0);
     border-radius: .5rem;
     background-color: rgb(154,154,154);
+    max-width: 100%;
 }
