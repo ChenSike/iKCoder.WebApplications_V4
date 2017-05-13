@@ -1094,8 +1094,8 @@ function initSettingsEvents() {
             }
         }
 
-        $("#title_Settings_Profile_User_City_Province").val(item.pt);
-        $("#title_Settings_Profile_User_City_City").val(item.ct);
+        $("#title_Settings_Profile_User_City_Province").text(item.pt);
+        $("#title_Settings_Profile_User_City_City").text(item.ct);
         var tmpHTMLArr = [];
         for (var i = 0; i < item.c.length; i++) {
             tmpHTMLArr.push('<option value="' + item.c[i] + '">' + item.c[i] + '</option>');

@@ -13,65 +13,65 @@ var configuration = {
         cn: "鼠标",
         en: "Mouse",
         dt: "左键，右键以及滚轮",
-        path: "image/scene/intrcourse/svg/mouse.svg"
+        path: "image/scene/intrcourse/svg/mouse.png"
     }, {
         cn: "键盘",
         en: "Keyboard",
         dt: "输入文字，数字，字母以及特殊字符， 命令",
-        path: "image/scene/intrcourse/svg/keyboard.svg"
+        path: "image/scene/intrcourse/svg/keyboard.png"
     }],
     "Output Device": [{
         cn: "显示器",
         en: "Monitor",
         dt: "显示图像，播放动画片以及游戏",
-        path: "image/scene/intrcourse/svg/monitor.svg"
+        path: "image/scene/intrcourse/svg/monitor.png"
     }, {
         cn: "打印机",
         en: "Printer",
         dt: "将文字,图片输出在纸张上",
-        path: "image/scene/intrcourse/svg/printer.svg"
+        path: "image/scene/intrcourse/svg/printer.png"
     }, {
         cn: "耳机",
         en: "Earphones",
         dt: "输出声音",
-        path: "image/scene/intrcourse/svg/earphones.svg"
+        path: "image/scene/intrcourse/svg/earphones.png"
     }],
     "Storage": [{
         cn: "硬盘",
         en: "Harddrive",
         dt: "存放数据，书柜",
-        path: "image/scene/intrcourse/svg/hard-drive.svg"
+        path: "image/scene/intrcourse/svg/hard-drive.png"
     }, {
         cn: "光盘",
         en: "CD",
         dt: "Compact Disc",
-        path: "image/scene/intrcourse/svg/cd.svg"
+        path: "image/scene/intrcourse/svg/cd.png"
     }, {
         cn: "USB闪存盘",
         en: "USB Flash Disk",
         dt: "使用USB接口的移动存储设备",
-        path: "image/scene/intrcourse/svg/pendrive.svg"
+        path: "image/scene/intrcourse/svg/pendrive.png"
     }, {
         cn: "内存",
         en: "RAM",
         dt: "临时存储数据， 书包（根据需要存放数据）",
-        path: "image/scene/intrcourse/svg/ram-memory.svg"
+        path: "image/scene/intrcourse/svg/ram-memory.png"
     }],
     "Computing": [{
         cn: "中央处理器",
         en: "CPU",
         dt: "运算中心，大脑",
-        path: "image/scene/intrcourse/svg/cpu.svg"
+        path: "image/scene/intrcourse/svg/cpu.png"
     }, {
         cn: "显卡",
         en: "Grahpics Card",
         dt: "显示适配器",
-        path: "image/scene/intrcourse/svg/graphics-card.svg"
+        path: "image/scene/intrcourse/svg/graphics-card.png"
     }, {
-        cn: "主机",
-        en: "Computer Tower",
+        cn: "主板",
+        en: "Mother Board",
         dt: "",
-        path: "image/scene/intrcourse/svg/computer.svg"
+        path: "image/scene/intrcourse/svg/mainboard.png"
     }]
 };
 
