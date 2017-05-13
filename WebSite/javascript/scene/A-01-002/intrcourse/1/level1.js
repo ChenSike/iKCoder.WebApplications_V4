@@ -271,17 +271,27 @@ var categoryManager = (function () {
 
     function removeExistingFromCategories(image, options) {
         //for (var [k, v] of categoryToContainer) {
-        var tmpCategoryRect = null;
+        if (typeof options.leave == 'undefined' || options.leave == null) {
+            options.leave = false;
+        }
+
+        var tmpCategoryContainer = null;
         for (var tempArr of categoryToContainer) {
             var v = tempArr[1];
             for (var i in v.children) {
                 if (v.children[i]._id === image._id) {
                     Array.prototype.splice.call(v.children, i, 1);
-                    tmpCategoryRect = v.categoryRect;
+                    if (options.leave) {
+                        tmpCategoryContainer = v;
+                    }
+
                     break;
+                    //return;
                 }
             }
         }
+
+        return tmpCategoryContainer;
     }
 
     function calculateOffsetY(i) {
@@ -330,9 +340,8 @@ var categoryManager = (function () {
     };
 
     CategoryContainer.prototype.categorize = function (image, categoryRect, options) {
-        removeExistingFromCategories(image, options);
-        options.leave = false;
-        if (categoryRect !== undefined && !options.leave) {
+        var tmpCategoryContainer = removeExistingFromCategories(image, options);
+        if (categoryRect !== undefined && !tmpCategoryContainer) {
             image._isAssigned = categoryRect === undefined ? false : true;
             image._isAssignedCorrectly = isAssignedRight(categoryRect, image);
             var childCount = this.add(image);
@@ -347,6 +356,12 @@ var categoryManager = (function () {
             image.on('mouseover', function () {
                 document.body.style.cursor = 'pointer';
             });
+        } else if (options.leave) {
+            var childCount = tmpCategoryContainer.children.length;
+            for (var i = 0; i < childCount; i++) {
+                var anim = createAnimation(tmpCategoryContainer.children[i], categoryRect, calculateOffsetY(i), calculateOffsetX(i));
+                anim.start();
+            }
         }
     };
 
