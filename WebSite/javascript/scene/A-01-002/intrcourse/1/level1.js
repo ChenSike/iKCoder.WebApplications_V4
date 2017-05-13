@@ -13,65 +13,65 @@ var configuration = {
         cn: "鼠标",
         en: "Mouse",
         dt: "左键，右键以及滚轮",
-        path: "image/scene/intrcourse/svg/mouse.svg"
+        path: "image/scene/intrcourse/svg/mouse.png"
     }, {
         cn: "键盘",
         en: "Keyboard",
         dt: "输入文字，数字，字母以及特殊字符， 命令",
-        path: "image/scene/intrcourse/svg/keyboard.svg"
+        path: "image/scene/intrcourse/svg/keyboard.png"
     }],
     "Output Device": [{
         cn: "显示器",
         en: "Monitor",
         dt: "显示图像，播放动画片以及游戏",
-        path: "image/scene/intrcourse/svg/monitor.svg"
+        path: "image/scene/intrcourse/svg/monitor.png"
     }, {
         cn: "打印机",
         en: "Printer",
         dt: "将文字,图片输出在纸张上",
-        path: "image/scene/intrcourse/svg/printer.svg"
+        path: "image/scene/intrcourse/svg/printer.png"
     }, {
         cn: "耳机",
         en: "Earphones",
         dt: "输出声音",
-        path: "image/scene/intrcourse/svg/earphones.svg"
+        path: "image/scene/intrcourse/svg/earphones.png"
     }],
     "Storage": [{
         cn: "硬盘",
         en: "Harddrive",
         dt: "存放数据，书柜",
-        path: "image/scene/intrcourse/svg/hard-drive.svg"
+        path: "image/scene/intrcourse/svg/hard-drive.png"
     }, {
         cn: "光盘",
         en: "CD",
         dt: "Compact Disc",
-        path: "image/scene/intrcourse/svg/cd.svg"
+        path: "image/scene/intrcourse/svg/cd.png"
     }, {
         cn: "USB闪存盘",
         en: "USB Flash Disk",
         dt: "使用USB接口的移动存储设备",
-        path: "image/scene/intrcourse/svg/pendrive.svg"
+        path: "image/scene/intrcourse/svg/pendrive.png"
     }, {
         cn: "内存",
         en: "RAM",
         dt: "临时存储数据， 书包（根据需要存放数据）",
-        path: "image/scene/intrcourse/svg/ram-memory.svg"
+        path: "image/scene/intrcourse/svg/ram-memory.png"
     }],
     "Computing": [{
         cn: "中央处理器",
         en: "CPU",
         dt: "运算中心，大脑",
-        path: "image/scene/intrcourse/svg/cpu.svg"
+        path: "image/scene/intrcourse/svg/cpu.png"
     }, {
         cn: "显卡",
         en: "Grahpics Card",
         dt: "显示适配器",
-        path: "image/scene/intrcourse/svg/graphics-card.svg"
+        path: "image/scene/intrcourse/svg/graphics-card.png"
     }, {
-        cn: "主机",
-        en: "Computer Tower",
+        cn: "主板",
+        en: "Mother Board",
         dt: "",
-        path: "image/scene/intrcourse/svg/computer.svg"
+        path: "image/scene/intrcourse/svg/mainboard.png"
     }]
 };
 
@@ -269,17 +269,29 @@ var categoryManager = (function () {
         return rect._group === group;
     }
 
-    function removeExistingFromCategories(image) {
+    function removeExistingFromCategories(image, options) {
         //for (var [k, v] of categoryToContainer) {
+        if (typeof options.leave == 'undefined' || options.leave == null) {
+            options.leave = false;
+        }
+
+        var tmpCategoryContainer = null;
         for (var tempArr of categoryToContainer) {
             var v = tempArr[1];
             for (var i in v.children) {
                 if (v.children[i]._id === image._id) {
                     Array.prototype.splice.call(v.children, i, 1);
-                    return;
+                    if (options.leave) {
+                        tmpCategoryContainer = v;
+                    }
+
+                    break;
+                    //return;
                 }
             }
         }
+
+        return tmpCategoryContainer;
     }
 
     function calculateOffsetY(i) {
@@ -328,8 +340,8 @@ var categoryManager = (function () {
     };
 
     CategoryContainer.prototype.categorize = function (image, categoryRect, options) {
-        removeExistingFromCategories(image);
-        if (categoryRect !== undefined) {
+        var tmpCategoryContainer = removeExistingFromCategories(image, options);
+        if (categoryRect !== undefined && !tmpCategoryContainer) {
             image._isAssigned = categoryRect === undefined ? false : true;
             image._isAssignedCorrectly = isAssignedRight(categoryRect, image);
             var childCount = this.add(image);
@@ -344,6 +356,12 @@ var categoryManager = (function () {
             image.on('mouseover', function () {
                 document.body.style.cursor = 'pointer';
             });
+        } else if (options.leave) {
+            var childCount = tmpCategoryContainer.children.length;
+            for (var i = 0; i < childCount; i++) {
+                var anim = createAnimation(tmpCategoryContainer.children[i], categoryRect, calculateOffsetY(i), calculateOffsetX(i));
+                anim.start();
+            }
         }
     };
 
@@ -469,15 +487,20 @@ function loadImage(config, layer, categoryLayer) {
         showTooltip(arguments[0], false);
     });
 
+    var leaveFromCategoryRect = null;
     box.on('dragstart', function () {
         showWarning(null);
         showTooltip(arguments[0], false);
-
+        leaveFromCategoryRect = detectIntersection(this, categoryLayer.children);
     });
 
     box.on('dragend', function () {
         // locate the hit category
         var detectedCategoryRect = detectIntersection(this, categoryLayer.children);
+        if (!!leaveFromCategoryRect) {
+            _categorizer(leaveFromCategoryRect, this, { leave: true });
+        }
+
         if (!!detectedCategoryRect) {
             _categorizer(detectedCategoryRect, this, {});
         } else {

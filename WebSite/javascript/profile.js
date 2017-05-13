@@ -38,7 +38,7 @@ function initPage_Do() {
         rebuildContent('settings');
         //rebuildContent('report');    
         getUnreadMsgCount();
-        window.setInterval(getUnreadMsgCount, 120000);
+        window.setInterval(getUnreadMsgCount, 5000);
     }
 }
 
@@ -1094,8 +1094,8 @@ function initSettingsEvents() {
             }
         }
 
-        $("#title_Settings_Profile_User_City_Province").val(item.pt);
-        $("#title_Settings_Profile_User_City_City").val(item.ct);
+        $("#title_Settings_Profile_User_City_Province").text(item.pt);
+        $("#title_Settings_Profile_User_City_City").text(item.ct);
         var tmpHTMLArr = [];
         for (var i = 0; i < item.c.length; i++) {
             tmpHTMLArr.push('<option value="' + item.c[i] + '">' + item.c[i] + '</option>');
@@ -2514,18 +2514,39 @@ function displayMessageByType(type) {
                 return;
             } else {
                 var tmpNodes = $(responseData).find('msg');
-                var data = [];
-                var tmpDatas = data;
-                if (type != '') {
-                    tmpDatas = [];
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].type == type) {
-                            tmpDatas.push(data[i]);
+                var tmpDatasObj = {};
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    var tmpNode = $(tmpNodes[i]);
+                    if (tmpNode.attr('type') != '1') {
+                        tmpDatasObj[tmpNode.attr('index')] = {
+                            id: tmpNode.attr('messageid'),
+                            top: tmpNode.attr('istop'),
+                            type: tmpNode.attr('messagetype'),
+                            content: tmpNode.attr('message'),
+                            time: tmpNode.attr('datetime'),
+                            answer: '',
+                            username: tmpNode.attr('username'),
+                            isread: tmpNode.attr('isread'),
+                            optid: tmpNode.attr('operationid')
                         }
                     }
                 }
 
-                rebuildMessageContents(tmpDatas);
+                var indexArr = [];
+                for (var key in tmpDatasObj) {
+                    indexArr.push(key);
+                }
+
+                indexArr.sort(function (a, b) {
+                    return a - b
+                });
+
+                var datas = [];
+                for (var i = 0; i < indexArr.length; i++) {
+                    datas.push(tmpDatasObj[indexArr[i]]);
+                }
+
+                rebuildMessageContents(datas);
                 hideLoadingMask()
             }
         },
@@ -2575,8 +2596,11 @@ function rebuildMessageContents(data) {
     for (var i = 0; i < data.length; i++) {
         var tHeader = '';
         var contentCss = '';
-        if (data[i].top == 1) {
-            tHeader = '<i class="fa fa-exclamation profile-message-top-symbol"></i>';
+        if (data[i].top == '1' || data[i].isread == '0') {
+            if (data[i].top == '1') {
+                tHeader = '<i class="fa fa-exclamation profile-message-top-symbol"></i>';
+            }
+
             contentCss = 'profile-message-top-content';
         }
 
@@ -2584,9 +2608,9 @@ function rebuildMessageContents(data) {
         tmpHTMLArr.push('                                   <th>' + tHeader + '</th>');
         tmpHTMLArr.push('                                   <td class="' + contentCss + '">' + data[i].content + '</td>');
         tmpHTMLArr.push('                                   <td class="profile-message-date-text">' + data[i].time + '</td>');
-        tmpHTMLArr.push('                                   <td class="profile-message-remove-button"><i class="fa fa-remove"></i></td>');
+        tmpHTMLArr.push('                                   <td class="profile-message-remove-button" data-msgid="' + data[i].id + '" data-optid="' + data[i].optid + '"><i class="fa fa-remove"></i></td>');
         tmpHTMLArr.push('                               </tr>');
-        if (data[i].type == 2 && data[i].answer != null) {
+        if (data[i].type == '2' && data[i].answer) {
             tmpHTMLArr.push('                               <tr>');
             tmpHTMLArr.push('                                   <th></th>');
             tmpHTMLArr.push('                                   <td class="profile-message-answer-text" style="padding-left:50px;">' + data[i].answer.content + '</td>');
@@ -2606,12 +2630,12 @@ function rebuildMessageContents(data) {
     tmpHTMLArr.push('</div>');
 
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
-    $('.message-remove-button').on('click', function (eventObj) {
+    $('.profile-message-remove-button').on('click', function (eventObj) {
         _registerRemoteServer();
         $.ajax({
             type: 'GET',
             async: true,
-            url: _getRequestURL(_gURLMapping.bus.removemsg),
+            url: _getRequestURL(_gURLMapping.bus.removemsg, { id: eventObj.target.attr('data-msgid'), operationid: eventObj.target.attr('data-optid') }), //ID=MESSAGEID OPERATIONID=OPERATONID
             data: '<root></root>',
             success: function (responseData, status) {
                 if ($(responseData).find('err').length > 0) {
@@ -2677,7 +2701,7 @@ function formatDate(date) {
 };
 
 function drawTimeBarGraph(datas, canvasId) {
-    var barWidth = 18;
+    var barWidth = 24;
     var barSpace = 14;
     var lineWidth = 1;
     var canvas = document.getElementById(canvasId);
@@ -2722,13 +2746,13 @@ function drawTimeBarGraph(datas, canvasId) {
             tmpTextWidth = testTextWidth(datas[i].time, '10px', 'bold', '微软雅黑', '');
             tmpX = startX + (barWidth + barSpace - tmpTextWidth) / 2;
             tmpY = lineRTY - 2;
-            context.font = "normal normal bold 10px \"微软雅黑\"";
+            context.font = "normal normal normal 10px \"微软雅黑\"";
             context.fillStyle = "rgb(97,97,97)";
             context.fillText(datas[i].time, tmpX, tmpY);
             //draw date label
             tmpX = startX + 2;
             tmpY = startY + 12;
-            context.font = "normal normal 600 10px \"微软雅黑\"";
+            context.font = "normal normal normal 10px \"微软雅黑\"";
             context.fillStyle = "rgb(97,97,97)";
             tmpDate = new Date(datas[i].date);
             tmpMonth = (tmpDate.getMonth() + 1 < 10 ? '0' + (tmpDate.getMonth() + 1) : tmpDate.getMonth() + 1);
