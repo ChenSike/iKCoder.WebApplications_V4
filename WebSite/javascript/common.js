@@ -3,8 +3,8 @@
 var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
-var _gHostName = 'http://119.23.233.224/ikcoderapi';
-//var _gHostName = 'http://192.168.199.142/ikcoderapi';
+//var _gHostName = 'http://119.23.233.224/ikcoderapi';
+var _gHostName = 'http://192.168.199.142/ikcoderapi';
 //var _gHostName = 'http://10.111.0.243/ikcoderapi';
 //var _gHostName = 'http://10.86.209.76/ikcoderapi';
 var _gURLMapping = {
@@ -39,9 +39,9 @@ var _gURLMapping = {
         getunreadmsgcount: '/Bus/Message/api_iKCoder_Workspace_Get_CountOfUnreadMessage.aspx',
         getmsgcontent: '/Bus/Message/api_iKCoder_Workspace_Get_MessageContent.aspx?id=',
         getallmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_AllMessageList.aspx',
-        getsysmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_SysMessageList',
+        getsysmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_SysMessageList.aspx',
         getqamsglist: '/Bus/Message/api_iKCoder_Workspace_Get_QAMessageList.aspx',
-        removemsg: '/Bus/Message/api_iKCoder_Workspace_Set_RemoveMessage.aspx?id=&operationid='//ID=MESSAGEID OPERATIONID=OPERATONID
+        removemsg: '/Bus/Message/api_iKCoder_Workspace_Set_RemoveMessage.aspx'
     }
 };
 var _gCitys = [

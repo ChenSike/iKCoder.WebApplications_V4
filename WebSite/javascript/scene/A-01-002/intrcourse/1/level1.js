@@ -269,14 +269,16 @@ var categoryManager = (function () {
         return rect._group === group;
     }
 
-    function removeExistingFromCategories(image) {
+    function removeExistingFromCategories(image, options) {
         //for (var [k, v] of categoryToContainer) {
+        var tmpCategoryRect = null;
         for (var tempArr of categoryToContainer) {
             var v = tempArr[1];
             for (var i in v.children) {
                 if (v.children[i]._id === image._id) {
                     Array.prototype.splice.call(v.children, i, 1);
-                    return;
+                    tmpCategoryRect = v.categoryRect;
+                    break;
                 }
             }
         }
@@ -328,8 +330,9 @@ var categoryManager = (function () {
     };
 
     CategoryContainer.prototype.categorize = function (image, categoryRect, options) {
-        removeExistingFromCategories(image);
-        if (categoryRect !== undefined) {
+        removeExistingFromCategories(image, options);
+        options.leave = false;
+        if (categoryRect !== undefined && !options.leave) {
             image._isAssigned = categoryRect === undefined ? false : true;
             image._isAssignedCorrectly = isAssignedRight(categoryRect, image);
             var childCount = this.add(image);
@@ -469,15 +472,20 @@ function loadImage(config, layer, categoryLayer) {
         showTooltip(arguments[0], false);
     });
 
+    var leaveFromCategoryRect = null;
     box.on('dragstart', function () {
         showWarning(null);
         showTooltip(arguments[0], false);
-
+        leaveFromCategoryRect = detectIntersection(this, categoryLayer.children);
     });
 
     box.on('dragend', function () {
         // locate the hit category
         var detectedCategoryRect = detectIntersection(this, categoryLayer.children);
+        if (!!leaveFromCategoryRect) {
+            _categorizer(leaveFromCategoryRect, this, { leave: true });
+        }
+
         if (!!detectedCategoryRect) {
             _categorizer(detectedCategoryRect, this, {});
         } else {
