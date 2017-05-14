@@ -34,8 +34,8 @@ var _preloadCount = 1;
 function initPage_Do() {
     _preloadCount--;
     if (_preloadCount == 0) {
-        //rebuildContent('overview');
-        rebuildContent('settings');
+        rebuildContent('overview');
+        //rebuildContent('settings');
         //rebuildContent('report');    
         getUnreadMsgCount();
         window.setInterval(getUnreadMsgCount, 5000);
