@@ -1094,8 +1094,18 @@ function initSettingsEvents() {
             }
         }
 
-        $("#title_Settings_Profile_User_City_Province").text(item.pt);
-        $("#title_Settings_Profile_User_City_City").text(item.ct);
+        var tmpPt = '省';
+        if (item.pt && item.pt != '') {
+            tmpPt = item.pt;
+        }
+
+        var tmpCt = '市';
+        if (item.ct && item.ct != '') {
+            tmpCt = item.ct;
+        }
+
+        $("#title_Settings_Profile_User_City_Province").text(tmpPt);
+        $("#title_Settings_Profile_User_City_City").text(tmpCt);
         var tmpHTMLArr = [];
         for (var i = 0; i < item.c.length; i++) {
             tmpHTMLArr.push('<option value="' + item.c[i] + '">' + item.c[i] + '</option>');
