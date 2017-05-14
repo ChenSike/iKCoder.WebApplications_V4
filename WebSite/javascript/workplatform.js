@@ -210,8 +210,13 @@ function initEvents() {
     });
 
     $('#btn_Step_Restart').on('click', function (e) {
-        WorkScene.reset();
-        $('.wrap-workstatus-alert').hide();
+        if (_currentStep == _totalSteps) {
+            WorkScene.saveStatus();
+            window.location.href = "profile.html?rnd=" + Date.now();
+        } else {
+            WorkScene.reset();
+            $('.wrap-workstatus-alert').hide();
+        }
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
@@ -222,6 +227,54 @@ function initEvents() {
             url: _getRequestURL(_gURLMapping.bus.setfinishstep, { symbol: _currentStage }),
             data: '',
             success: function (response, status) {
+                if ($(response).find('err').length > 0) {
+                    _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Finish_CurrentStep');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: _nextStep, symbol: _currentStage }),
+                    data: '<root></root>',
+                    success: function (response, status) {
+                        if ($(response).find('err').length > 0) {
+                            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Set_CurrentStep');
+                            return;
+                        }
+
+                        if (_currentStep == _totalSteps) {
+                            $.ajax({
+                                type: 'GET',
+                                async: true,
+                                url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
+                                data: '',
+                                success: function (response, status) {
+                                    var tmpParam = '&scene=';
+                                    if (_currentStep == _totalSteps) {
+                                        tmpParam += _nextStage;
+                                    } else {
+                                        tmpParam += _currentStage;
+                                    }
+
+                                    window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
+                                },
+                                dataType: 'xml',
+                                xhrFields: {
+                                    withCredentials: true
+                                },
+                                error: function () {
+                                }
+                            });
+                        }
+                    },
+                    dataType: 'xml',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    error: function () {
+                    }
+                });
             },
             dataType: 'xml',
             xhrFields: {
@@ -230,32 +283,6 @@ function initEvents() {
             error: function () {
             }
         });
-
-        if (_currentStep == _totalSteps) {
-            $.ajax({
-                type: 'GET',
-                async: true,
-                url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
-                data: '',
-                success: function (response, status) {
-                },
-                dataType: 'xml',
-                xhrFields: {
-                    withCredentials: true
-                },
-                error: function () {
-                }
-            });
-        }
-
-        var tmpParam = '&scene=';
-        if (_currentStep == _totalSteps) {
-            tmpParam += _nextStage;
-        } else {
-            tmpParam += _currentStage;
-        }
-
-        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
     });
 
     $('#btn_Step_FindError').on('click', function (e) {
@@ -367,7 +394,6 @@ function buildStageHTML(data) {
 
     updateTipsText(data.note);
 
-    $('#btn_Step_GoNext').text((data.stage_count == data.complete_count ? '挑战下一课' : '挑战下一步'));
     $('div.head-stage-label .complete-item').on('click', function () {
         gotoSpecialStep($(arguments[0].target).attr('data-target'));
     })
@@ -455,12 +481,12 @@ function initData(response) {
     for (var i = 0; i < wordsItems.length; i++) {
         var tmpObj = {};
         tmpObj.word = $(wordsItems[i]).attr('value');
-        tmpObj.star = !$(wordsItems[i]).attr('value') ? '0' : $(wordsItems[i]).attr('value');
+        tmpObj.star = parseInt(!$(wordsItems[i]).attr('star') ? '0' : $(wordsItems[i]).attr('star'));
         tmpObj.note = $(wordsItems[i]).attr('note');
         var tmpItems = $(wordsItems[i]).find('soundmark').find('item');
         tmpObj.soundmark = [];
         for (var j = 0; j < tmpItems.length; j++) {
-            tmpObj.soundmark.push([$(tmpItems[j]).attr('value'), _getRequestURL(_gURLMapping.data.getbinresource, { symbol: $(tmpItems[j]).attr('sound') })]);
+            tmpObj.soundmark.push([$(tmpItems[j]).attr('value'), _getRequestURL(_gURLMapping.data.getbinresource, { symbol: $(tmpItems[j]).attr('sound') + '.mp3' })]);
         }
 
         tmpItems = $(wordsItems[i]).find('paraphrase').find('item');
@@ -617,40 +643,40 @@ function buildWordListHTML() {
     var htmlStringArr = [];
     htmlStringArr.push('<div class="row">');
     for (var i = 0; i < data.length; i++) {
-        htmlStringArr.push('<div class="col-xs-12 workspace-word-list-item">');
+        htmlStringArr.push('<div class="col-12 workspace-word-list-item">');
         htmlStringArr.push('    <div class="container padding-bottom20" style="padding: 0px;">');
         htmlStringArr.push('        <div class="row">');
-        htmlStringArr.push('            <div class="col-xs-12 word-word">');
+        htmlStringArr.push('            <div class="col-12 word-word">');
         htmlStringArr.push(data[i].word);
         htmlStringArr.push('            </div>');
         htmlStringArr.push('        </div>');
         htmlStringArr.push('        <div class="row word-soundmark">');
         for (var j = 0; j < data[i].soundmark.length; j++) {
-            htmlStringArr.push('            <div class="col-xs-6" style="padding-right: 0px;">');
+            htmlStringArr.push('            <div class="col-6" style="padding-right: 0px;">');
             htmlStringArr.push(data[i].soundmark[j][0]);
-            htmlStringArr.push('                <i class="glyphicon glyphicon-volume-up play-soundmark-button" aria-hidden="true" data-target="' + data[i].soundmark[j][1] + '"></i>');
+            htmlStringArr.push('                <i class="fa fa-volume-up play-soundmark-button" aria-hidden="true" data-target="' + data[i].soundmark[j][1] + '"></i>');
             htmlStringArr.push('            </div>');
         }
 
         htmlStringArr.push('        </div>');
         htmlStringArr.push('        <div class="row word-soundmark">');
-        htmlStringArr.push('            <div class="col-xs-4" style="color: rgb(254,186,0);">');
+        htmlStringArr.push('            <div class="col-4" style="color: rgb(254,186,0);">');
         for (var j = 0; j < 5; j++) {
             if (j < data[i].star - 1) {
-                htmlStringArr.push('<i class="glyphicon glyphicon-star" aria-hidden="true"></i>');
+                htmlStringArr.push('<i class="fa fa-star" aria-hidden="true"></i>');
             } else {
-                htmlStringArr.push('<i class="glyphicon glyphicon-star-empty" aria-hidden="true"></i>');
+                htmlStringArr.push('<i class="fa fa-star-o" aria-hidden="true"></i>');
             }
         }
 
         htmlStringArr.push('            </div>');
-        htmlStringArr.push('            <div class="col-xs-7">');
+        htmlStringArr.push('            <div class="col-7">');
         htmlStringArr.push(data[i].note);
         htmlStringArr.push('            </div>');
         htmlStringArr.push('        </div>');
         htmlStringArr.push('        <div class="row word-paraphrase">');
         for (var j = 0; j < data[i].paraphrase.length; j++) {
-            htmlStringArr.push('            <div class="col-xs-12">');
+            htmlStringArr.push('            <div class="col-12">');
             htmlStringArr.push(data[i].paraphrase[j]);
             htmlStringArr.push('            </div>');
         }
@@ -658,14 +684,14 @@ function buildWordListHTML() {
         if (data[i].variant) {
             htmlStringArr.push('        </div>');
             htmlStringArr.push('        <div class="row">');
-            htmlStringArr.push('            <div class="col-xs-12">');
+            htmlStringArr.push('            <div class="col-12">');
             htmlStringArr.push('变形');
             htmlStringArr.push('            </div>');
             for (var key in data[i].variant) {
-                htmlStringArr.push('            <div class="col-xs-3 word-variant-header">');
+                htmlStringArr.push('            <div class="col-3 word-variant-header">');
                 htmlStringArr.push(key + ': ');
                 htmlStringArr.push('            </div>');
-                htmlStringArr.push('            <div class="col-xs-9 word-variant-content">');
+                htmlStringArr.push('            <div class="col-9 word-variant-content">');
                 htmlStringArr.push(data[i].variant[key]);
                 htmlStringArr.push('            </div>');
             }
@@ -788,31 +814,13 @@ function gotoSpecialStep(step) {
 }
 
 function showCompleteAlert() {
-    _registerRemoteServer();
-    $.ajax({
-        type: 'POST',
-        async: true,
-        url: _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: _nextStep, symbol: _currentStage }),
-        data: '<root></root>',
-        success: function (response, status) {
-            if ($(response).find('err').length > 0) {
-                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
-                return;
-            }
-
-            $('.wrap-workstatus-alert').show();
-            $('.wrap-complete-alert').show();
-            $('.wrap-faild-alert').hide();
-            $('#title_StepComplete').html(_messages.success);
-            WorkScene.saveStatus();
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-        }
-    });
+    $('.wrap-workstatus-alert').show();
+    $('.wrap-complete-alert').show();
+    $('.wrap-faild-alert').hide();
+    $('#title_StepComplete').html(_messages.success);
+    $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '挑战下一课' : '挑战下一步'));
+    $('#btn_Step_Restart').text((_currentStep == _totalSteps ? '返回个人中心' : '重新开始'));
+    WorkScene.saveStatus();
 };
 
 function showFaildAlert() {
