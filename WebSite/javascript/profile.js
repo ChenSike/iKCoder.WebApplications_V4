@@ -480,7 +480,7 @@ function buildOverviewCourse(datas, containerHeight) {
         tmpHTMLArr.push('                       <div class="row no-margin">');
         tmpHTMLArr.push('                           <div class="col-12 no-padding d-flex justify-content-center">');
         tmpHTMLArr.push('                               <div style="width:' + progWidth + 'px; height:' + progHeight + 'px; background-color:rgb(216,216,216);">');
-        tmpHTMLArr.push('                                   <div style="height:' + progHeight + 'px; background-color:rgb(73,175,79); width:' + (datas[i].complete / datas[i].total * 100) + '%;"></div>');
+        tmpHTMLArr.push('                                   <div style="height:' + progHeight + 'px; background-color:rgb(73,175,79); width:' + (datas[i].complete / (datas[i].total == 0 ? 1 : datas[i].total) * 100) + '%;"></div>');
         tmpHTMLArr.push('                               </div>');
         tmpHTMLArr.push('                           </div>');
         tmpHTMLArr.push('                       </div>');
@@ -1749,12 +1749,12 @@ function rebuildReportContents(data) {
     buildReportAchievePanel(data.achieve);
     buildReportAbilityPanel(data.ability);
     buildReportTimePanel(data.time);
-    buildReportPotentialPanel(data.potential);
+    //buildReportPotentialPanel(data.potential);
     buildReportWorksPanel(data.works);
     buildReportAttentionPanel(data.user);
     drawAbilityGraph(data.ability.type);
     drawTimeGraph(data.time);
-    drawPotentialGraph(data.potential);
+    //drawPotentialGraph(data.potential);
     adjustAttentionImg();
     _loadIMG(data.user.header, function () {
         $('.report-overview-header').attr('src', data.user.header);
@@ -1799,26 +1799,26 @@ function buildReportOverviewPanel(data) {
     tmpHTMLArr.push('                                        </div>');
     tmpHTMLArr.push('                                    </div>');
     tmpHTMLArr.push('                                    <div class="row no-margin">');
-    tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
-    tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.work + '</p>');
+    //tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
+    //tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.work + '</p>');
+    //tmpHTMLArr.push('                                        </div>');
+    //tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
+    //tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.friend + '</p>');
+    //tmpHTMLArr.push('                                        </div>');
+    //tmpHTMLArr.push('                                    </div>');
+    //tmpHTMLArr.push('                                    <div class="row no-margin">');
+    //tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
+    //tmpHTMLArr.push('                                            <p class="text-size-10">作品</p>');
+    //tmpHTMLArr.push('                                        </div>');
+    tmpHTMLArr.push('                                        <div class="col-10 no-padding text-left">');
+    tmpHTMLArr.push('                                            <p class="text-size-10">已经完成的课程:</p>');
     tmpHTMLArr.push('                                        </div>');
-    tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
-    tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.course + '</p>');
+    tmpHTMLArr.push('                                        <div class="col-2 no-padding">');
+    tmpHTMLArr.push('                                            <p class="text-size-10 text-color-data text-center">' + data.course + '</p>');
     tmpHTMLArr.push('                                        </div>');
-    tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
-    tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.friend + '</p>');
-    tmpHTMLArr.push('                                        </div>');
-    tmpHTMLArr.push('                                    </div>');
-    tmpHTMLArr.push('                                    <div class="row no-margin">');
-    tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
-    tmpHTMLArr.push('                                            <p class="text-size-10">作品</p>');
-    tmpHTMLArr.push('                                        </div>');
-    tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
-    tmpHTMLArr.push('                                            <p class="text-size-10">课程</p>');
-    tmpHTMLArr.push('                                        </div>');
-    tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
-    tmpHTMLArr.push('                                            <p class="text-size-10">小伙伴</p>');
-    tmpHTMLArr.push('                                        </div>');
+    //tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
+    //tmpHTMLArr.push('                                            <p class="text-size-10">小伙伴</p>');
+    //tmpHTMLArr.push('                                        </div>');
     tmpHTMLArr.push('                                    </div>');
     tmpHTMLArr.push('                                </div>');
     tmpHTMLArr.push('                            </div>');
@@ -2690,12 +2690,12 @@ function formatDate(date) {
         date = new Date(date);
     }
 
-    if (date = 'Invalid Date') {
+    if (date == 'Invalid Date') {
         date = new Date();
     }
 
     var dateArr = [date.getFullYear().toString()];
-    var tmpVal = date.getMonth();
+    var tmpVal = date.getMonth() + 1;
     if (tmpVal < 10) {
         tmpVal = '0' + tmpVal;
     }
