@@ -7,6 +7,7 @@ var CATEGORY_PADDING_BOTTOM = 5;
 var RESULT_WIDTH = 20;
 var RESULT_HEIGHT = 20;
 var CATEGORY_ITEM_ROW = 4;
+var CATEGORY_TITLE_FOONTSIZE = 16;
 
 var configuration = {
     "Input Device": [{
@@ -109,8 +110,8 @@ function placeComponentGroups(config, layer, stage) {
     //var groupWidth = ((stage.getWidth() - horizontalMargin) / groupNum) - groupSideMargin * 2;
     //var groupSideMargin = 30;
     //var horizontalMargin = 100;
-    var maxGSM = 30;
-    var maxHM = 60;
+    var maxGSM = 0;
+    var maxHM = 0;
     var groupWidth = stage.getWidth() * 4 / (5 * groupNum + 1);
     var space = groupWidth / 4;
     if (space > maxHM) {
@@ -120,7 +121,7 @@ function placeComponentGroups(config, layer, stage) {
 
     var groupSideMargin = space / 2;
     var horizontalMargin = space;
-    var groupHeight = containerHeight / 3 - 10;
+    var groupHeight = containerHeight / 3;
 
     var titleText = '';
     for (var group in config) {
@@ -144,15 +145,18 @@ function placeComponentGroups(config, layer, stage) {
         RESULT_WIDTH = RESULT_HEIGHT = CATEGORY_THUMB_NAIL_SIZE_Y;
     }
 
+    groupHeight += fontSize + 10;
+    CATEGORY_TITLE_FOONTSIZE = fontSize;
     for (var i = 0; i < groupNum; i++) {
         var categoryConfig = {
-            stroke: 'gray',
+            stroke: '#80655f',
             strokeWidth: 1,
+            fill:'#e59683',
             height: groupHeight,
             width: groupWidth,
             group: groups[i],
             x: horizontalMargin / 2 + (groupSideMargin * 2 + groupWidth) * i + groupSideMargin,
-            y: stage.getHeight() - groupHeight - 10,
+            y: stage.getHeight() - groupHeight,
             title: groups[i] + ('(' + groupNameMap[groups[i]] + ')'),
             fontSize: fontSize
         };
@@ -245,9 +249,24 @@ function placeComponents(config, layer, categoryLayer, stage, groupHeight) {
         };
     };
 
+    var visited = {};
     for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
-        loadImage(calcCcomponentConfig(i, ccomponents[i]), layer, categoryLayer);
+        visited[i] = false;
     }
+    var tmpRandom = 0;
+    for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
+        tmpRandom = Math.round(Math.random() * 100) % ccomponents.length;
+        while (visited[tmpRandom]) {
+            tmpRandom = Math.round(Math.random() * 100) % ccomponents.length;
+        }
+
+        loadImage(calcCcomponentConfig(i, ccomponents[tmpRandom]), layer, categoryLayer);
+        visited[tmpRandom] = true;
+    }
+
+    //for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
+    //    loadImage(calcCcomponentConfig(i, ccomponents[i]), layer, categoryLayer);
+    //}
 }
 
 var categoryManager = (function () {
@@ -419,7 +438,7 @@ function calcDeltaObject(image, categoryRect, offsetY, offsetX) {
     if (categoryRect) {
         slices = 50,
         deltaX = (categoryRect.x() + 5 + offsetX - x0) / slices;
-        deltaY = (categoryRect.y() + 5 + offsetY - y0) / slices;
+        deltaY = (categoryRect.y() + 5 + offsetY - y0 + CATEGORY_TITLE_FOONTSIZE + 5) / slices;
         deltaWidth = (CATEGORY_THUMB_NAIL_SIZE_X - width0) / slices;
         deltaHeight = (CATEGORY_THUMB_NAIL_SIZE_Y - height0) / slices;
     }
@@ -611,7 +630,7 @@ function loadCategory(config, layer) {
     var rect = new Konva.ComponentGroup(config);
     var groupText = new Konva.Text({
         x: rect.x(),
-        y: rect.y() - config.fontSize - 5,
+        y: rect.y() + 5,
         width: rect.width(),
         text: config.title,
         fontSize: config.fontSize,

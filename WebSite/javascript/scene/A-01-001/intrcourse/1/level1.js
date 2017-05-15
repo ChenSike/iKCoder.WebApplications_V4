@@ -199,12 +199,12 @@ function placeComponents(config, layer, categoryLayer, stage) {
     var tmpRandom = 0;
     for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
         tmpRandom = Math.round(Math.random() * 100) % ccomponents.length;
-        while (visited[i]) {
+        while (visited[tmpRandom]) {
             tmpRandom = Math.round(Math.random() * 100) % ccomponents.length;
         }
 
-        loadImage(calcCcomponentConfig(i, ccomponents[i]), layer, categoryLayer);
-        visited[i] = true;
+        loadImage(calcCcomponentConfig(i, ccomponents[tmpRandom]), layer, categoryLayer);
+        visited[tmpRandom] = true;
     }
 
     //for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
