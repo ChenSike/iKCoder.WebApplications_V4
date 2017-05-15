@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 var _wordsData = [];
+var _knowledgeData = [];
 var _workspaceCfg = {};
 var _currentStage = '';
 var _nextStage = '';
@@ -38,6 +39,7 @@ function initPage() {
 
                         var data = initData(response);
                         _wordsData = data.course.words;
+                        _knowledgeData = data.course.kps;
                         _workspaceCfg = data.blockly;
                         buildStageHTML(data.course);
                         updateUserInfo(data.user);
@@ -250,14 +252,6 @@ function initEvents() {
                                 url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
                                 data: '',
                                 success: function (response, status) {
-                                    var tmpParam = '&scene=';
-                                    if (_currentStep == _totalSteps) {
-                                        tmpParam += _nextStage;
-                                    } else {
-                                        tmpParam += _currentStage;
-                                    }
-
-                                    window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
                                 },
                                 dataType: 'xml',
                                 xhrFields: {
@@ -267,6 +261,15 @@ function initEvents() {
                                 }
                             });
                         }
+
+                        var tmpParam = '&scene=';
+                        if (_currentStep == _totalSteps) {
+                            tmpParam += _nextStage;
+                        } else {
+                            tmpParam += _currentStage;
+                        }
+
+                        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
                     },
                     dataType: 'xml',
                     xhrFields: {
@@ -504,6 +507,12 @@ function initData(response) {
         words.push(tmpObj);
     }
 
+    var knowledge = [];
+    var kpsItems = $(response).find("kps").find('item');
+    for (var i = 0; i < kpsItems.length; i++) {
+        knowledge.push($(kpsItems[i]).text());
+    }
+
     _topTooltip = initTopTooltips($(response).find("tips").find('item'));
     var data = {
         user: {
@@ -518,7 +527,8 @@ function initData(response) {
             current_stage: _currentStep,
             complete_count: completeCount,
             note: _topTooltip,
-            words: words
+            words: words,
+            kps: knowledge
         },
         blockly: {
             toolbox: $(response).find("toolbox").html(),
@@ -593,6 +603,7 @@ function showWordPanel(e) {
         $('#panel_KnowledgeMode').hide("slow");
         wordPanel.show('slow');
         if (!_wordPanelInit) {
+            $('.word-panel-content.container').empty();
             $('.word-panel-content.container').append(buildWordListHTML());
             $('.play-soundmark-button').on('mouseover', function (e) {
                 playSoundMark(e);
@@ -605,34 +616,6 @@ function showWordPanel(e) {
         wordPanel.width(400);
         wordPanel.height(300);
         wordPanel.hide("slow");
-        $('.footer-tool-item').removeClass('selected');
-        $('#btn_Footer_CreateMode').addClass('selected');
-    }
-};
-
-function playSoundMark(eventObj) {
-    var soundSource = $(eventObj.target).attr('data-target');
-    $("#audio_Soundmark").attr('src', soundSource);
-    $("#audio_Soundmark")[0].play();
-};
-
-var _knowledgePanelInit = false;
-function showKnowledgePanel(e) {
-    var knowledgePanel = $('#panel_KnowledgeMode');
-    if (knowledgePanel.css('display') == 'none') {
-        $('#panel_CodeMode').hide("slow");
-        $('#panel_WordMode').hide("slow");
-        knowledgePanel.show('slow');
-        if (!_wordPanelInit) {
-            $('.word-panel-content.container').append('waiting for create.');
-        }
-
-        adjustCodePanelSize(knowledgePanel, _knowledgePanelInit);
-        adjustCodePanelPosition(knowledgePanel, e, _knowledgePanelInit);
-    } else {
-        knowledgePanel.width(400);
-        knowledgePanel.height(300);
-        knowledgePanel.hide("slow");
         $('.footer-tool-item').removeClass('selected');
         $('#btn_Footer_CreateMode').addClass('selected');
     }
@@ -701,6 +684,56 @@ function buildWordListHTML() {
         htmlStringArr.push('    </div>');
         htmlStringArr.push('</div>');
     }
+
+    htmlStringArr.push('</div>');
+    return htmlStringArr.join('');
+};
+
+function playSoundMark(eventObj) {
+    var soundSource = $(eventObj.target).attr('data-target');
+    $("#audio_Soundmark").attr('src', soundSource);
+    $("#audio_Soundmark")[0].play();
+};
+
+var _knowledgePanelInit = false;
+function showKnowledgePanel(e) {
+    var knowledgePanel = $('#panel_KnowledgeMode');
+    if (knowledgePanel.css('display') == 'none') {
+        $('#panel_CodeMode').hide("slow");
+        $('#panel_WordMode').hide("slow");
+        knowledgePanel.show('slow');
+        if (!_wordPanelInit) {
+            $('.knowledge-panel-content.container').empty();
+            $('.knowledge-panel-content.container').append(buildKnowledgeHTML());
+        }
+
+        adjustCodePanelSize(knowledgePanel, _knowledgePanelInit);
+        adjustCodePanelPosition(knowledgePanel, e, _knowledgePanelInit);
+    } else {
+        knowledgePanel.width(400);
+        knowledgePanel.height(300);
+        knowledgePanel.hide("slow");
+        $('.footer-tool-item').removeClass('selected');
+        $('#btn_Footer_CreateMode').addClass('selected');
+    }
+};
+
+function buildKnowledgeHTML() {
+    var htmlStringArr = [];
+    htmlStringArr.push('<div class="row">');
+    htmlStringArr.push('<div class="col-12 workspace-word-list-item">');
+    htmlStringArr.push('    <div class="container padding-bottom20" style="padding: 0px;">');
+    htmlStringArr.push('        <div class="row">');
+    htmlStringArr.push('            <div class="col-12 word-word" style="font-size:15px; font-weight:500;">');
+    htmlStringArr.push('                <ul>');
+    for (var i = 0; i < _knowledgeData.length; i++) {
+        htmlStringArr.push('                <li style="list-style: circle;">' + _knowledgeData[i] + '</li>');
+    }
+    htmlStringArr.push('                </ul>');
+    htmlStringArr.push('            </div>');
+    htmlStringArr.push('        </div>');
+    htmlStringArr.push('    </div>');
+    htmlStringArr.push('</div>');
 
     htmlStringArr.push('</div>');
     return htmlStringArr.join('');

@@ -192,9 +192,24 @@ function placeComponents(config, layer, categoryLayer, stage) {
         };
     };
 
+    var visited = {};
     for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
-        loadImage(calcCcomponentConfig(i, ccomponents[i]), layer, categoryLayer);
+        visited[i] = false;
     }
+    var tmpRandom = 0;
+    for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
+        tmpRandom = Math.round(Math.random() * 100) % ccomponents.length;
+        while (visited[i]) {
+            tmpRandom = Math.round(Math.random() * 100) % ccomponents.length;
+        }
+
+        loadImage(calcCcomponentConfig(i, ccomponents[i]), layer, categoryLayer);
+        visited[i] = true;
+    }
+
+    //for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
+    //    loadImage(calcCcomponentConfig(i, ccomponents[i]), layer, categoryLayer);
+    //}
 }
 
 var CATEGORY_THUMB_NAIL_SIZE_X = 50,

@@ -41,7 +41,7 @@ Scene._MOVEPATHS = [];
 Scene._APPLEPATHS = [];
 Scene.APPLEIMG = new Image();
 //Scene.APPLEIMG.src = "data:image/svg+xml;base64," + window.btoa(svg_xml);
-Scene.APPLEIMG.src = "images/scene/PACApple.svg";
+Scene.APPLEIMG.src = "image/scene/PACApple.svg";
 // Scene.Apple = [
 //     {x:2, y:7, count:3},
 //     {x:3, y:7, count:3},
@@ -49,7 +49,7 @@ Scene.APPLEIMG.src = "images/scene/PACApple.svg";
 // ];
 Scene.Apple =  {x:2, y:7, count:3};
 Scene.OrangeIMG = new Image();
-Scene.OrangeIMG.src = "images/scene/PACOrange.svg";
+Scene.OrangeIMG.src = "image/scene/PACOrange.svg";
 
 Scene.init = function (containerId, model, configs) {
     Scene._MODEL = model;

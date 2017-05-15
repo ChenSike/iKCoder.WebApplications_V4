@@ -2,6 +2,14 @@
     font-family: 微软雅黑;
 }
 
+.no-padding {
+    padding: 0px;
+}
+
+.no-margin {
+    margin: 0px;
+}
+
 button {
     cursor: pointer;
 }
@@ -223,7 +231,7 @@ header {
             color: #5BC0DE;
         }
 
-        
+
 div.custom-global-alert {
     position: absolute;
     top: 0px;
@@ -293,7 +301,7 @@ div.alert-mask-custom {
     }
 }
 
-.alert{
+.alert {
     position: absolute;
     top: 0px;
     width: 100%;

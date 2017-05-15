@@ -288,6 +288,7 @@ function formatOverviewData(response) {
         };
     }
 
+    data.experience.total = parseInt($(response).find('level').attr('total'));
     data.experience.level = level;
 
     var tmpNode = $(response).find('codetimes');
@@ -648,10 +649,10 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
         totalCourse += data.course[i].total;
     }
 
-    var totalExp = 0;
-    for (var i = 0; i < data.experience.distribution.length; i++) {
-        totalExp += data.experience.distribution[i].value;
-    }
+    var totalExp = data.experience.total;
+    //for (var i = 0; i < data.experience.distribution.length; i++) {
+    //    totalExp += data.experience.distribution[i].value;
+    //}
 
     var totalTime = 0;
     for (var i = 0; i < data.codetimes.times.length; i++) {

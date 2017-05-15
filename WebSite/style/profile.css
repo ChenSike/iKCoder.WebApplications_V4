@@ -397,14 +397,6 @@ div.alert-mask-custom {
     box-shadow: 0px 0px 15px rgb(46,88,136);
 }
 
-.no-padding {
-    padding: 0px;
-}
-
-.no-margin {
-    margin: 0px;
-}
-
 .text-size-10 {
     font-size: 12px;
 }

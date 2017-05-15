@@ -18,8 +18,8 @@ body {
     left: 0px;
     width: 80%;
     height: 30px;
-    margin-left: 10%;
-    margin-right: 10%;
+    /*margin-left: 10%;
+    margin-right: 10%;*/
     position: absolute;
     display: inline-block;
     background-image: url(../image/stageprogress.png);
@@ -28,8 +28,8 @@ body {
 .wrap-head-stage-steps {
     position: absolute;
     top: 0px;
-    margin-left: 10%;
-    margin-right: 10%;
+    /*margin-left: 10%;
+    margin-right: 10%;*/
     width: 100%;
 }
 
