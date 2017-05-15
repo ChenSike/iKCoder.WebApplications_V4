@@ -1,5 +1,7 @@
 ﻿'use strict';
 
+var _ajaxObj = null;
+
 function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
     $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
@@ -164,8 +166,13 @@ function rebuildContent(symbol) {
     if (contertWrap.hasClass('col-9')) {
         contertWrap.removeClass = 'col-9';
     }
+
     if (contertWrap.hasClass('col')) {
         contertWrap.removeClass = 'col';
+    }
+
+    if (_ajaxObj) {
+        _ajaxObj.abort();
     }
 
     var currentItem = null;
@@ -201,7 +208,7 @@ function rebuildContent(symbol) {
 function rebuildOverviewPanel(contentHeight) {
     var tmpHeight = calcOverviewItemheight(contentHeight);
     _registerRemoteServer();
-    $.ajax({
+    _ajaxObj = $.ajax({
         type: 'GET',
         async: true,
         url: _getRequestURL(_gURLMapping.bus.getcenterinfo),
@@ -841,7 +848,7 @@ function rebuildSettingsPanel(contentHeight) {
     ];
     var tmpHeight = calcSettingsItemheight(contentHeight);
     _registerRemoteServer();
-    $.ajax({
+    _ajaxObj = $.ajax({
         type: 'POST',
         async: true,
         url: _getRequestURL(_gURLMapping.account.util),
@@ -1615,7 +1622,7 @@ function rebuildReportPanel() {
     //{ n: 'school', p: '/root/usrbasic/school' }
     //];
     //_registerRemoteServer();
-    //$.ajax({
+    //_ajaxObj = $.ajax({
     //    type: 'POST',
     //    async: true,
     //    url: _getRequestURL(_gURLMapping.account.util),
@@ -2514,7 +2521,7 @@ function rebuildMessageTitles(contentHeight) {
 
 function displayMessageByType(type) {
     _registerRemoteServer();
-    $.ajax({
+    _ajaxObj = $.ajax({
         type: 'GET',
         async: true,
         url: _getRequestURL(type == '' ? _gURLMapping.bus.getallmsglist : type == '1' ? _gURLMapping.bus.getsysmsglist : _gURLMapping.bus.getqamsglist),
