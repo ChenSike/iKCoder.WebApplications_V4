@@ -5,9 +5,9 @@ function initPage() {
     $(window).resize(function () {
         adjustPositions();
     });
-    
+
     $('#btn_StartPlay').on('click', function () {
-        alert("start");
+        window.location.href = "qualitycourse.html?scene=p_3_1&rnd=" + Date.now();
     });
 };
 
