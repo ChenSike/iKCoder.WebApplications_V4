@@ -1108,7 +1108,7 @@ Scene.checkBlockly = function (code) {
 		*/
 		if (tarStr1 == ""){
 			Scene.ResetConfig();
-			alert("请确保If语句内有要执行的语句!");
+			Scene.stepFaild();
 		//}else if (tarStr3 == ""){
 		//		Scene.ResetConfig();
 			//	alert("请确保If语句内有要执行的语句!");
@@ -1131,9 +1131,8 @@ function patch(re,s){
 	re=eval("/"+re+"/ig");
 	var len = s.match(re).length;
 	if (len != 3){
-		alert("请使用3个If语句完成本节!");
 		Scene.ResetConfig();
-		
+		Scene.stepFaild();
 	}
 };
 
@@ -1141,7 +1140,7 @@ function checkString (searchString) {
 	var len = searchString.split("if").length-1;
 	if (len == 0) {
 		Scene.ResetConfig();
-		alert("请使用If语句完成本节!");
+		Scene.stepFaild();
 	}
 	//else if (len == 1 || len == 2){
 	//	Scene.ResetConfig();

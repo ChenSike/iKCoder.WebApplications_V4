@@ -46,9 +46,9 @@ Scene._UNKNOWN = new Image();
 Scene.ORANGEIMG = new Image();
 Scene.NPC = new Image();
 //Scene.APPLEIMG.src = "data:image/svg+xml;base64," + window.btoa(svg_xml);
-Scene.ORANGEIMG.src = "image/scene/PACOrange.svg";
-Scene._UNKNOWN.src = "image/scene/Question.svg";
-Scene.NPC.src = "image/scene/NPC.svg";
+Scene.ORANGEIMG.src = "images/scene/PACOrange.svg";
+Scene._UNKNOWN.src = "images/scene/Question.svg";
+Scene.NPC.src = "images/scene/NPC.svg";
 Scene.initValue = '';
 Scene.initValue2 = '';
 Scene.timer = '1';
@@ -1170,11 +1170,11 @@ Scene.checkBlockly = function (code) {
 	
 	if (ifx  == -1){
 		Scene.ResetConfig();
-		alert("请使用If语句完成本节!");
+		Scene.stepFaild();
 	}else {
 		if (tarStr1 == ""){
 			Scene.ResetConfig();
-			alert("请确保If语句内有要执行的语句!");
+			Scene.stepFaild();
 		}
 	/*
 		if (tarStr2 == ""){
@@ -1184,99 +1184,7 @@ Scene.checkBlockly = function (code) {
 		*/
 	}
 };
-/*
-Scene.initDrawImage = function () {
-	var game = Scene.Game;
-    
-    var stage, map, goods, beans, player, times, iswall;
-    stage = game.createStage({
-        update: function () {
-            var stage = this;
-            var items = stage.getItemsByType(2);
-            if (stage.status == 1) {
-                items.forEach(function (item) {
-                    var dx = item.x - player.x;
-                    var dy = item.y - player.y;
-                    if (dx * dx + dy * dy < 750 && item.status != 4) {
-                        if (item.status == 3) {
-                            item.status = 4;
-                            _SCORE += 10;
-                        } else {
-                            stage.status = 3;
-                            stage.timeout = 30;
-                        }
-                    }
-                });
-                if (JSON.stringify(beans.data).indexOf(0) < 0) {
-                    game.nextStage();
-                }
-            } else if (stage.status == 3) {
-                if (!stage.timeout) {
-                    Scene._LIFE--;
-                    if (Scene._LIFE) {
-                        stage.resetItems();
-                    } else {
-                        game.nextStage();
-                        return false;
-                    }
-                }
-            }
-        }
-    });
-    //map
-    var tmpX = 3;
-    var tempY = 3;
-	
-	removeImage = stage.createMap({
-        x: tmpX,
-        y: tempY,
-        data: Scene._DATA,
-        frames: 8,
-        draw: function (context) {
-            for (var j = 0; j < this.y_length; j++) {
-                for (var i = 0; i < this.x_length; i++) {
-                        var pos = this.coord2position(i, j);
-                        context.fillStyle = "#000000";
-                        if (Scene._IsWall.x == i && Scene._IsWall.y == j){
-							
-//                            context.drawImage(Scene.APPLEIMG, 0, 0, 15, 15, pos.x - game.stepUnit / 4, pos.y - game.stepUnit / 4, game.stepUnit / 2, game.stepUnit / 2);
-							context.fillRect(pos.x - game.stepUnit / 4, pos.y - game.stepUnit / 4, game.stepUnit / 2, game.stepUnit / 2);
-//								context.fillRect(142.75, 185.75, 21.5, 21.5);
-                        }
-                }
-            }
-        }
-    });
-	
-		reDrawImage = stage.createMap({
-        x: tmpX,
-        y: tempY,
-        data: Scene._DATA,
-        frames: 8,
-        draw: function (context) {
-            for (var j = 0; j < this.y_length; j++) {
-                for (var i = 0; i < this.x_length; i++) {
-                        var pos = this.coord2position(i, j);
-                        context.fillStyle = "#000000";
-                        if (Scene._IsWall.x == i && Scene._IsWall.y == j){
-							if (Scene.initValue == 1) {
-								context.drawImage(Scene.wallimg, 0, 0, 15, 15, pos.x - game.stepUnit / 4, pos.y - game.stepUnit / 4, game.stepUnit / 2, game.stepUnit / 2);
-							}else if (Scene.initValue == 0) {
-								context.drawImage(Scene.ORANGEIMG, 0, 0, 15, 15, pos.x - game.stepUnit / 4, pos.y - game.stepUnit / 4, game.stepUnit / 2, game.stepUnit / 2);
-							}
-//                            context.drawImage(Scene.wallimg , 0, 0, 15, 15, pos.x - game.stepUnit / 4, pos.y - game.stepUnit / 4, game.stepUnit / 2, game.stepUnit / 2);
-	//						context.fillRect(pos.x - game.stepUnit / 4, pos.y - game.stepUnit / 4, game.stepUnit / 2, game.stepUnit / 2);
-//								context.fillRect(142.75, 185.75, 21.5, 21.5);
-                        }
-                }
-            }
-        }
-    });
-	
-	removeImage.draw(game.gamecontext);
-	reDrawImage.draw(game.gamecontext);
-};
-*/
+
 function findStringPostion (searchString, searchedString, num) {
 	var x = searchString.indexOf(searchedString);
     for (var i = 0; i < num; i++) {
