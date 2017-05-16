@@ -1,0 +1,6 @@
+﻿<xml id="toolbox" style="display: none">
+  <block type="event_start"></block>
+  <block type="wolf_run"></block>
+  <block type="rabbit_run"></block>
+  <block type="play_music"></block>
+</xml>

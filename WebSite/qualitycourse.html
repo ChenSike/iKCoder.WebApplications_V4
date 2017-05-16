@@ -1,10 +1,11 @@
 ﻿<!DOCTYPE html>
-<html style="height:100%">
+<html class="cookies geolocation inlinesvg no-touchevents flexbox desktop landscape windows windows7 windows7_0 64bit chrome chrome58 chrome58_0 webkit en-us wf-yesevaone-n4-inactive wf-inactive" lang="en" style="height:100%">
 <head>
     <title></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         #mask_Page_Loading {
             display: flex !important;
@@ -315,6 +316,7 @@
     <link rel="stylesheet" href="style/common.css">
     <link rel="stylesheet" href="style/workplatform.css">
     <link rel="stylesheet" href="style/workspace.css">
+    <link rel="stylesheet" href="style/qualitycourse.css">
     <script src="javascript/common/jquery-3.2.1.min.js"></script>
     <script src="javascript/common/jquery-ui.min.js"></script>
     <script src="javascript/common/tether.min.js"></script>
@@ -332,15 +334,10 @@
     <script src="javascript/common.js"></script>
     <script src="javascript/common/scenecommon.js"></script>
     <script src="javascript/common/blocklycommon.js"></script>
-    <script src="javascript/workplatformtest.js"></script>
-    <!--<script src="javascripts/websit/workplatform_tank.js"></script>
-    <script src="javascripts/scene/tankwar/Blocks/blocks.js"></script>
-    <script src="javascripts/scene/tankwar/Engine/game_engine.js"></script>
-    <script src="javascripts/scene/tankwar/Scene/scene.js"></script>-->
-    <!--<script src="javascripts/websit/workplatform_pacman_l2.js"></script>-->
-    <script src="javascript/scene/B-01-001test/pacman/1/Blocks/blocks.js"></script>
-    <script src="javascript/scene/B-01-001test/pacman/1/Engine/game_engine.JS"></script>
-    <script src="javascript/scene/B-01-001test/pacman/1/Scene/scene.js"></script>
+    <script src="javascript/qualitycourse.js"></script>
+    <script src="javascript/qualitycourse/three.js"></script>
+    <script src="javascript/qualitycourse/TweenMax.min.js"></script>
+    <script src="javascript/qualitycourse/main.js"></script>
 </head>
 <body>
     <div id="mask_Page_Loading">
@@ -369,14 +366,14 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid" style="height:60px; background-color:rgb(41,49,67);">
-        <div class="row">
-            <div class="col-sm-2 text-center" style="padding-top:15px;">
+    <div class="container-fluid no-padding" style="height:60px; background-color:rgb(41,49,67);">
+        <div class="row no-margin">
+            <div class="col-3 no-padding text-center" id="wrap_Head_Course_Name" style="padding-top:15px;">
                 <span class="head-course-name"></span>
             </div>
-            <div class="col-sm-7">
-                <div class="container">
-                    <div class="row justify-content-center" style="padding-top:15px;">
+            <div class="col-6 no-padding">
+                <div class="container-fluid no-padding">
+                    <div class="row no-margin" style="padding-top:15px;">
                         <div class="col-12 text-center" id="Course_Stage_Container" style="height: 30px;">
                             <div class="head-stage-background">
                                 <div class="head-stage-space"></div>
@@ -387,13 +384,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-2 no-padding">
                 <div class="container">
                     <div class="row justify-content-end" style="padding-top:7px; padding-bottom:8px; text-align:center;text-align:-webkit-center;">
                         <div class="col-12 text-center">
-                            <img class="header-user-image" src="" width="45" height="45" />
-                            <span class="header-user-name-text" style="padding-left:20px;"></span>
-                            <img class="goto-profile-image-button" src="image/exit.svg" width="25" height="25" title="进入个人中心" />
                         </div>
                     </div>
                 </div>
@@ -428,16 +422,16 @@
                             <div class="container-fluid">
                                 <div class="row" style="height: 23px;">
                                     <div class="col-3">
-                                        <i class="workspace-tool-item fa fa-play" aria-hidden="true" title="运行"></i>
+                                        <i class="workspace-tool-item workspace-play-button fa fa-play" aria-hidden="true" title="运行"></i>
                                     </div>
                                     <div class="col-3">
-                                        <i class="workspace-tool-item fa fa-share-alt" aria-hidden="true" title="分享"></i>
+                                        <i class="workspace-tool-item workspace-share-button fa fa-share-alt" aria-hidden="true" title="分享"></i>
                                     </div>
                                     <div class="col-3">
-                                        <i class="workspace-tool-item fa fa-arrows-alt" aria-hidden="true" title="全屏"></i>
+                                        <i class="workspace-tool-item workspace-fullscreen-button fa fa-arrows-alt" aria-hidden="true" title="全屏"></i>
                                     </div>
                                     <div class="col-3">
-                                        <i class="workspace-tool-item fa fa-repeat" aria-hidden="true" title="重置"></i>
+                                        <i class="workspace-tool-item workspace-referesh-button fa fa-repeat" aria-hidden="true" title="重置"></i>
                                     </div>
                                 </div>
                             </div>
@@ -452,14 +446,6 @@
             <div class="col-12" style="padding:0px;">
                 <div class="blockly-workspace-wrap" id="wrap_WorkSpace">
                     <div id="content_WorkSpace"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid" id="wrap_Workspace_Static" style="padding:0px;">
-        <div class="row">
-            <div class="col-12">
-                <div class="wrap-static-canvas" id="container_Static_Stage">
                 </div>
             </div>
         </div>
@@ -510,6 +496,11 @@
                     <div class="row" style="margin:0px;">
                         <div class="col-12 siderbar-scene-container" style="padding:0px;">
                             <div id="game_container" style="text-align: center;">
+                                <div id="dist" style="display:none;">
+                                    <div class="label">坚持的距离</div>
+                                    <div id="distValue">000</div>
+                                </div>
+                                <div id="instructions" style="display:none;">点击鼠标左键让兔子跳跃</div>
                                 <i class="fa fa-play-circle-o run-scene-fullscreen-play-button" title="开始运行"></i>
                             </div>
                         </div>
@@ -518,12 +509,7 @@
                 <div class="container-fluid" id="wrap_Scene_Help_Content" style="padding-top:20px;">
                     <div class="row justify-content-center">
                         <div class="col-10">
-                            <p class="course-help-title">需要帮助吗? 请看看课程视频和帮助</p>
-                            <div class="course-help-container">
-                                <div class="course-help-hits">12</div>
-                                <img class="course-help-image" src="image/works/works_4.png">
-                                <div class="course-help-footer">CORPORATE, ONE-PAGE, TECHNOLOGY</div>
-                            </div>
+
                         </div>
                     </div>
                 </div>

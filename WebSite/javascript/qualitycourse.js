@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 var _wordsData = [];
+var _knowledgeData = [];
 var _workspaceCfg = {};
 var _currentStage = '';
 var _nextStage = '';
@@ -14,148 +15,31 @@ var _messages = {
 };
 
 function initPage() {
-    //_registerRemoteServer();
-    //$.ajax({
-    //    type: 'GET',
-    //    async: true,
-    //    url: _getRequestURL(_gURLMapping.account.signstatus),
-    //    data: '<root></root>',
-    //    success: function (data_1, status) {
-    //        if ($(data_1).find('err').length > 0) {
-    //            window.location.href = "signin.html";
-    //            return;
-    //        } else {
-                //$.ajax({
-                //    type: 'POST',
-                //    async: true,
-                //    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
-                //    data: '<root></root>',
-                //    success: function (response, status) {
-                //        if ($(response).find('err').length > 0) {
-                //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
-                //            return;
-                //        }
-
-                //        var data = initData(response);
-                //var data = {
-                //    "user": {
-                //        "id": "38",
-                //        "name": "Carl",
-                //        "img": "image/Addicon.png"
-                //    },
-                //    "course": {
-                //        "id": "b_01_001",
-                //        "name": "第一课：模式设别",
-                //        "stage_count": 4,
-                //        "current_stage": 1,
-                //        "complete_count": 2,
-                //        "note": [
-                //            {
-                //                "idx": "1",
-                //                "content": [
-                //                    { "text": "向正确的方向移动足够的步数，最后吃到橙色的豆子。", "btype": "" }
-                //                ]
-                //            }
-                //        ],
-                //        "words": []
-                //    },
-                //    "blockly": {
-                //        "toolbox": "<xml id=\"toolbox\" style=\"display: none\"><block type=\"event_start\"/><block type=\"move_onestep_up\"/><block type=\"move_onestep_down\"/><block type=\"move_onestep_left\"/><block type=\"move_onestep_right\"/></xml>",
-                //        "workspace": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>",
-                //        "lib": [
-                //            "javascript/scene/B-01-001test/pacman/1/Blocks/blocks.JS",
-                //            "javascript/scene/B-01-001test/pacman/1/Engine/game_engine.JS",
-                //            "javascript/scene/B-01-001test/pacman/1/Scene/scene.JS"
-                //        ]
-                //    }
-                //}
-                //_wordsData = data.course.words;
-                //_workspaceCfg = data.blockly;
-                //buildStageHTML(data.course);
-                //updateUserInfo(data.user);
-                //adjustWorkSpaceType(data);
-                //adjustAfterSiderBarResize();
-                //$("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
-                //LoadSceneLib(data.blockly);
-                //$('#mask_Page_Loading').hide();
-                //$('#mask_Page_Loading').css('visibility', 'hidden');
-                //    },
-                //    dataType: 'xml',
-                //    xhrFields: {
-                //        withCredentials: true
-                //    },
-                //    error: function () {
-                //    }
-                //});
-    //        }
-    //    },
-    //    dataType: 'xml',
-    //    xhrFields: {
-    //        withCredentials: true
-    //    },
-    //    error: function () {
-    //        window.location.href = "signin.html";
-    //    }
-    //});
+    var data = initData();
+    _wordsData = data.course.words;
+    _knowledgeData = data.course.kps;
+    _workspaceCfg = data.blockly;
+    buildStageHTML(data.course);
+    adjustAfterSiderBarResize();
+    $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
+    LoadSceneLib(data.blockly);
     $('#mask_Page_Loading').hide();
     $('#mask_Page_Loading').css('visibility', 'hidden');
 
     initEvents();
-    var playBtn = $('.workspace-tool-item.fa.fa-play');
-    var shareBtn = $('.workspace-tool-item.fa.fa-share-alt');
-    var fullScreenBtn = $('.workspace-tool-item.fa.fa-arrows-alt');
-    var refereshBtn = $('.workspace-tool-item.fa.fa-repeat');
+    var playBtn = $('.workspace-tool-item.workspace-play-button.fa.fa-play');
+    var shareBtn = $('.workspace-tool-item.workspace-share-button.fa.fa-share-alt');
+    var fullScreenBtn = $('.workspace-tool-item.workspace-fullscreen-button.fa.fa-arrows-alt');
+    var refereshBtn = $('.workspace-tool-item.workspace-referesh-button.fa.fa-repeat');
     bindEventsToScene(playBtn, shareBtn, fullScreenBtn, refereshBtn);
     //siderBarExpand();
     adjustAfterSiderBarResize();
-
-    var data = {
-        "user": {
-            "id": "38",
-            "name": "Carl",
-            "img": "image/Addicon.png"
-        },
-        "course": {
-            "id": "b_01_001",
-            "name": "第一课：模式设别",
-            "stage_count": 4,
-            "current_stage": 1,
-            "complete_count": 2,
-            "note": [
-                {
-                    "idx": "1",
-                    "content": [
-                        { "text": "向正确的方向移动足够的步数，最后吃到橙色的豆子。", "btype": "" }
-                    ]
-                }
-            ],
-            "words": []
-        },
-        "blockly": {
-            "toolbox": "<xml id=\"toolbox\" style=\"display: none\"><block type=\"event_start\"/><block type=\"move_onestep_up\"/><block type=\"move_onestep_down\"/><block type=\"move_onestep_left\"/><block type=\"move_onestep_right\"/></xml>",
-            "workspace": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>",
-            "lib": [
-                //"javascript/scene/B-01-001test/pacman/1/Blocks/blocks.JS",
-                //"javascript/scene/B-01-001test/pacman/1/Engine/game_engine.JS",
-                //"javascript/scene/B-01-001test/pacman/1/Scene/scene.JS"
-            ]
-        }
-    }
-    _wordsData = data.course.words;
-    _workspaceCfg = data.blockly;
-    buildStageHTML(data.course);
-    updateUserInfo(data.user);
-    adjustWorkSpaceType(data);
-    adjustAfterSiderBarResize();
-    $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
-    LoadSceneLib(data.blockly);
-
 };
 
 function initEvents() {
     $('#btn_Footer_Logo').on('click', function (e) {
         WorkScene.saveStatus();
-        window.location.href = "index.html";
+        window.location.href = "index.html?rnd=" + Date.now();
     });
 
     $('#btn_SiderBar_Expand').on('click', function () {
@@ -260,9 +144,11 @@ function initEvents() {
             var container = $('#game_container');
             $('.siderbar-scene-container').append(container);
             adjustAfterSiderBarResize();
-            container.find('canvas').height(height);
-            container.find('canvas').width(width);
+            //container.find('canvas').height(height);
+            //container.find('canvas').width(width);
+            handleWindowResize(width, height);
             container.css('padding-left', '0px');
+            container.width($('.siderbar-scene-container').width());
 
             var playButton = $('.run-scene-fullscreen-play-button');
             var fontSize = width * 30 / 100;
@@ -285,18 +171,72 @@ function initEvents() {
     });
 
     $('#btn_Step_Restart').on('click', function (e) {
-        WorkScene.reset();
-        $('.wrap-workstatus-alert').hide();
+        if (_currentStep == _totalSteps) {
+            WorkScene.saveStatus();
+            window.location.href = "profile.html?rnd=" + Date.now();
+        } else {
+            WorkScene.reset();
+            $('.wrap-workstatus-alert').hide();
+        }
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
         _registerRemoteServer();
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             async: true,
-            url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
-            data: '<root></root>',
+            url: _getRequestURL(_gURLMapping.bus.setfinishstep, { symbol: _currentStage }),
+            data: '',
             success: function (response, status) {
+                if ($(response).find('err').length > 0) {
+                    _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Finish_CurrentStep');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: _nextStep, symbol: _currentStage }),
+                    data: '<root></root>',
+                    success: function (response, status) {
+                        if ($(response).find('err').length > 0) {
+                            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Set_CurrentStep');
+                            return;
+                        }
+
+                        if (_currentStep == _totalSteps) {
+                            $.ajax({
+                                type: 'GET',
+                                async: true,
+                                url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
+                                data: '',
+                                success: function (response, status) {
+                                },
+                                dataType: 'xml',
+                                xhrFields: {
+                                    withCredentials: true
+                                },
+                                error: function () {
+                                }
+                            });
+                        }
+
+                        var tmpParam = '&scene=';
+                        if (_currentStep == _totalSteps) {
+                            tmpParam += _nextStage;
+                        } else {
+                            tmpParam += _currentStage;
+                        }
+
+                        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
+                    },
+                    dataType: 'xml',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    error: function () {
+                    }
+                });
             },
             dataType: 'xml',
             xhrFields: {
@@ -305,15 +245,6 @@ function initEvents() {
             error: function () {
             }
         });
-
-        var tmpParam = '&scene=';
-        if (_currentStep == _totalSteps) {
-            tmpParam += _nextStage;
-        } else {
-            tmpParam += _currentStage;
-        }
-
-        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
     });
 
     $('#btn_Step_FindError').on('click', function (e) {
@@ -405,6 +336,13 @@ function buildStageHTML(data) {
     var background = $('.head-stage-background');
     var parent = $('#Course_Stage_Container');
     $('.head-course-name').text(data.name);
+    var titleWidth = testTextWidthFromEl($('.head-course-name'));
+    if (titleWidth > $('#wrap_Head_Course_Name').width()) {
+        $('#wrap_Head_Course_Name').css('padding-top', '0px');
+    } else {
+        $('#wrap_Head_Course_Name').css('padding-top', '15px');
+    }
+
     var tmpWidth = itemWidth * (data.stage_count - 1);
     background.css('width', tmpWidth + '%');
     tmpWidth = 100 / (data.stage_count - 1) * (data.complete_count);
@@ -418,7 +356,6 @@ function buildStageHTML(data) {
 
     updateTipsText(data.note);
 
-    $('#btn_Step_GoNext').text((data.stage_count == data.complete_count ? '挑战下一课' : '挑战下一步'));
     $('div.head-stage-label .complete-item').on('click', function () {
         gotoSpecialStep($(arguments[0].target).attr('data-target'));
     })
@@ -429,6 +366,7 @@ function updateTipsText(data) {
     if (typeof (data) == 'string') {
         $('.course-stage-note').html(data);
     } else {
+        data = (data == null ? _topTooltip : data);
         var needEvent = false;
         for (var i = 0; i < data.length; i++) {
             var tmpStrArr = [];
@@ -483,103 +421,80 @@ function initTopTooltips(notesItems) {
     return note;
 }
 
-function initData(response) {
-    var userItem = $($(response).find("basic").find("usr")[0]);
-    var sceneItem = $($(response).find("sence")[0]);
-    _currentStage = sceneItem.attr('symbol');
-    _currentStep = sceneItem.attr('currentstage');
-    _totalSteps = sceneItem.attr('totalstage');
-    _nextStage = sceneItem.attr('next');
-    if (parseInt(_currentStep) < parseInt(_totalSteps)) {
-        _nextStep = parseInt(_currentStep) + 1;
-    }
-
-    var completeCount = _currentStep;
-    if (!isNaN(sceneItem.attr('finishstage')) && sceneItem.attr('finishstage') != '') {
-        completeCount = parseInt(sceneItem.attr('finishstage'));
-    }
-
+function initData() {
+    var scene = getQueryString();
+    var tmpArr = scene.split('_');
+    _currentStage = scene;
+    _currentStep = parseInt(tmpArr[2]);
+    _totalSteps = parseInt(tmpArr[1]);
+    _nextStage = scene;
+    _nextStep = (_currentStep < _totalSteps ? _currentStep + 1 : _totalSteps);
+    var completeCount = _currentStep - 1;
     var words = [];
-    var wordsItems = $(response).find("words").find('stage').find('word');
-    for (var i = 0; i < wordsItems.length; i++) {
-        var tmpObj = {};
-        tmpObj.word = $(wordsItems[i]).attr('value');
-        tmpObj.star = !$(wordsItems[i]).attr('value') ? '0' : $(wordsItems[i]).attr('value');
-        tmpObj.note = $(wordsItems[i]).attr('note');
-        var tmpItems = $(wordsItems[i]).find('soundmark').find('item');
-        tmpObj.soundmark = [];
-        for (var j = 0; j < tmpItems.length; j++) {
-            tmpObj.soundmark.push([$(tmpItems[j]).attr('value'), _getRequestURL(_gURLMapping.data.getbinresource, { symbol: $(tmpItems[j]).attr('sound') })]);
-        }
+    //var wordsItems = $(response).find("words").find('stage').find('word');
+    //for (var i = 0; i < wordsItems.length; i++) {
+    //    var tmpObj = {};
+    //    tmpObj.word = $(wordsItems[i]).attr('value');
+    //    tmpObj.star = parseInt(!$(wordsItems[i]).attr('star') ? '0' : $(wordsItems[i]).attr('star'));
+    //    tmpObj.note = $(wordsItems[i]).attr('note');
+    //    var tmpItems = $(wordsItems[i]).find('soundmark').find('item');
+    //    tmpObj.soundmark = [];
+    //    for (var j = 0; j < tmpItems.length; j++) {
+    //        tmpObj.soundmark.push([$(tmpItems[j]).attr('value'), _getRequestURL(_gURLMapping.data.getaudio, { operation: 'AllowedOperation', symbol: $(tmpItems[j]).attr('sound') })]);
+    //    }
 
-        tmpItems = $(wordsItems[i]).find('paraphrase').find('item');
-        tmpObj.paraphrase = [];
-        for (var j = 0; j < tmpItems.length; j++) {
-            tmpObj.paraphrase.push([$(tmpItems[j]).val()]);
-        }
+    //    tmpItems = $(wordsItems[i]).find('paraphrase').find('item');
+    //    tmpObj.paraphrase = [];
+    //    for (var j = 0; j < tmpItems.length; j++) {
+    //        tmpObj.paraphrase.push([$(tmpItems[j]).val()]);
+    //    }
 
-        tmpItems = $(wordsItems[i]).find('variant').find('item');
-        tmpObj.variant = {};
-        for (var j = 0; j < tmpItems.length; j++) {
-            tmpObj.variant[$(tmpItems[j]).attr('name')] = $(tmpItems[j]).attr('value');
-        }
+    //    tmpItems = $(wordsItems[i]).find('variant').find('item');
+    //    tmpObj.variant = {};
+    //    for (var j = 0; j < tmpItems.length; j++) {
+    //        tmpObj.variant[$(tmpItems[j]).attr('name')] = $(tmpItems[j]).attr('value');
+    //    }
 
-        words.push(tmpObj);
-    }
+    //    words.push(tmpObj);
+    //}
 
-    _topTooltip = initTopTooltips($(response).find("tips").find('item'));
+    var knowledge = [];
+    //var kpsItems = $(response).find("kps").find('item');
+    //for (var i = 0; i < kpsItems.length; i++) {
+    //    knowledge.push($(kpsItems[i]).text());
+    //}
+
+    //_topTooltip = initTopTooltips($(response).find("tips").find('item'));
+    _topTooltip = '';
     var data = {
-        user: {
-            id: userItem.attr('id'),
-            name: userItem.attr('nickname'),
-            img: _getRequestURL(userItem.attr('header'), {})
-        },
+        //user: {
+        //    id: $.cookie('logined_user_name'),
+        //    name: $.cookie('logined_user_nickname'),
+        //    img: _getRequestURL(_gURLMapping.account.getheader, {})
+        //},
         course: {
             id: _currentStage,
-            name: sceneItem.attr('name'),
+            name: '',
             stage_count: _totalSteps,
             current_stage: _currentStep,
             complete_count: completeCount,
             note: _topTooltip,
-            words: words
+            words: words,
+            kps: knowledge
         },
         blockly: {
-            toolbox: $(response).find("toolbox").html(),
-            workspace: $(response).find("workspacestatus").html(),
-            lib: []
+            toolbox: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/toolbox.xml')),
+            workspace: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/workspace.xml')),
+            lib: [
+                'javascript/qualitycourse/' + _currentStep + '/blocks.js',
+                'javascript/qualitycourse/' + _currentStep + '/scene.js'
+            ]
         }
     }
 
-    var addLibPath = function (node) {
-        var tmpAttr = node.attr('src');
-        if (tmpAttr && tmpAttr != '') {
-            data.blockly.lib.push('javascript/scene/' + tmpAttr);
-        }
-    }
-
-    addLibPath($($(response).find("toolbox")[0]));
-    var tmpPaths = $(response).find("game").find('script');
-    for (var i = 0; i < tmpPaths.length ; i++) {
-        addLibPath($(tmpPaths[i]));
-    }
-
-    if (_currentStage.toLowerCase() == "a_01_001" || _currentStage.toLowerCase() == "a_01_002") {
-        var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
-        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
-        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
-        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
-    }
-
-    _messages.success = $($(response).find("message").find('suc')[0]).attr('msg');
-    _messages.faild = $($(response).find("message").find('faild')[0]).attr('msg');
-
+    _messages.success = '恭喜你，你已经完成了第 ' + _currentStep + ' 步了.距离成为一个工程师已经不远了.';
+    _messages.faild = '非常抱歉，您的工作出现错误，请检查后继续运行.';
     return data;
-};
-
-function updateUserInfo(data) {
-    $('.header-user-image').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
-    $('.header-user-name-text').text(data.name);
-    $('.header-user-name-text').text(data.name);
 };
 
 function activeCreativeMode() {
@@ -616,6 +531,7 @@ function showWordPanel(e) {
         $('#panel_KnowledgeMode').hide("slow");
         wordPanel.show('slow');
         if (!_wordPanelInit) {
+            $('.word-panel-content.container').empty();
             $('.word-panel-content.container').append(buildWordListHTML());
             $('.play-soundmark-button').on('mouseover', function (e) {
                 playSoundMark(e);
@@ -633,6 +549,74 @@ function showWordPanel(e) {
     }
 };
 
+function buildWordListHTML() {
+    var data = _wordsData;
+    var htmlStringArr = [];
+    htmlStringArr.push('<div class="row">');
+    for (var i = 0; i < data.length; i++) {
+        htmlStringArr.push('<div class="col-12 workspace-word-list-item">');
+        htmlStringArr.push('    <div class="container padding-bottom20" style="padding: 0px;">');
+        htmlStringArr.push('        <div class="row">');
+        htmlStringArr.push('            <div class="col-12 word-word">');
+        htmlStringArr.push(data[i].word);
+        htmlStringArr.push('            </div>');
+        htmlStringArr.push('        </div>');
+        htmlStringArr.push('        <div class="row word-soundmark">');
+        for (var j = 0; j < data[i].soundmark.length; j++) {
+            htmlStringArr.push('            <div class="col-6" style="padding-right: 0px;">');
+            htmlStringArr.push(data[i].soundmark[j][0]);
+            htmlStringArr.push('                <i class="fa fa-volume-up play-soundmark-button" aria-hidden="true" data-target="' + data[i].soundmark[j][1] + '"></i>');
+            htmlStringArr.push('            </div>');
+        }
+
+        htmlStringArr.push('        </div>');
+        htmlStringArr.push('        <div class="row word-soundmark">');
+        htmlStringArr.push('            <div class="col-4" style="color: rgb(254,186,0);">');
+        for (var j = 0; j < 5; j++) {
+            if (j < data[i].star - 1) {
+                htmlStringArr.push('<i class="fa fa-star" aria-hidden="true"></i>');
+            } else {
+                htmlStringArr.push('<i class="fa fa-star-o" aria-hidden="true"></i>');
+            }
+        }
+
+        htmlStringArr.push('            </div>');
+        htmlStringArr.push('            <div class="col-7">');
+        htmlStringArr.push(data[i].note);
+        htmlStringArr.push('            </div>');
+        htmlStringArr.push('        </div>');
+        htmlStringArr.push('        <div class="row word-paraphrase">');
+        for (var j = 0; j < data[i].paraphrase.length; j++) {
+            htmlStringArr.push('            <div class="col-12">');
+            htmlStringArr.push(data[i].paraphrase[j]);
+            htmlStringArr.push('            </div>');
+        }
+
+        if (data[i].variant) {
+            htmlStringArr.push('        </div>');
+            htmlStringArr.push('        <div class="row">');
+            htmlStringArr.push('            <div class="col-12">');
+            htmlStringArr.push('变形');
+            htmlStringArr.push('            </div>');
+            for (var key in data[i].variant) {
+                htmlStringArr.push('            <div class="col-3 word-variant-header">');
+                htmlStringArr.push(key + ': ');
+                htmlStringArr.push('            </div>');
+                htmlStringArr.push('            <div class="col-9 word-variant-content">');
+                htmlStringArr.push(data[i].variant[key]);
+                htmlStringArr.push('            </div>');
+            }
+        }
+
+        htmlStringArr.push('        </div>');
+        htmlStringArr.push('    </div>');
+        htmlStringArr.push('</div>');
+    }
+
+    htmlStringArr.push('</div>');
+    return htmlStringArr.join('');
+};
+
 function playSoundMark(eventObj) {
     var soundSource = $(eventObj.target).attr('data-target');
     $("#audio_Soundmark").attr('src', soundSource);
@@ -647,7 +631,8 @@ function showKnowledgePanel(e) {
         $('#panel_WordMode').hide("slow");
         knowledgePanel.show('slow');
         if (!_wordPanelInit) {
-            $('.word-panel-content.container').append('waiting for create.');
+            $('.knowledge-panel-content.container').empty();
+            $('.knowledge-panel-content.container').append(buildKnowledgeHTML());
         }
 
         adjustCodePanelSize(knowledgePanel, _knowledgePanelInit);
@@ -661,69 +646,22 @@ function showKnowledgePanel(e) {
     }
 };
 
-function buildWordListHTML() {
-    var data = _wordsData;
+function buildKnowledgeHTML() {
     var htmlStringArr = [];
     htmlStringArr.push('<div class="row">');
-    for (var i = 0; i < data.length; i++) {
-        htmlStringArr.push('<div class="col-xs-12 workspace-word-list-item">');
-        htmlStringArr.push('    <div class="container padding-bottom20" style="padding: 0px;">');
-        htmlStringArr.push('        <div class="row">');
-        htmlStringArr.push('            <div class="col-xs-12 word-word">');
-        htmlStringArr.push(data[i].word);
-        htmlStringArr.push('            </div>');
-        htmlStringArr.push('        </div>');
-        htmlStringArr.push('        <div class="row word-soundmark">');
-        for (var j = 0; j < data[i].soundmark.length; j++) {
-            htmlStringArr.push('            <div class="col-xs-6" style="padding-right: 0px;">');
-            htmlStringArr.push(data[i].soundmark[j][0]);
-            htmlStringArr.push('                <i class="glyphicon glyphicon-volume-up play-soundmark-button" aria-hidden="true" data-target="' + data[i].soundmark[j][1] + '"></i>');
-            htmlStringArr.push('            </div>');
-        }
-
-        htmlStringArr.push('        </div>');
-        htmlStringArr.push('        <div class="row word-soundmark">');
-        htmlStringArr.push('            <div class="col-xs-4" style="color: rgb(254,186,0);">');
-        for (var j = 0; j < 5; j++) {
-            if (j < data[i].star - 1) {
-                htmlStringArr.push('<i class="glyphicon glyphicon-star" aria-hidden="true"></i>');
-            } else {
-                htmlStringArr.push('<i class="glyphicon glyphicon-star-empty" aria-hidden="true"></i>');
-            }
-        }
-
-        htmlStringArr.push('            </div>');
-        htmlStringArr.push('            <div class="col-xs-7">');
-        htmlStringArr.push(data[i].note);
-        htmlStringArr.push('            </div>');
-        htmlStringArr.push('        </div>');
-        htmlStringArr.push('        <div class="row word-paraphrase">');
-        for (var j = 0; j < data[i].paraphrase.length; j++) {
-            htmlStringArr.push('            <div class="col-xs-12">');
-            htmlStringArr.push(data[i].paraphrase[j]);
-            htmlStringArr.push('            </div>');
-        }
-
-        if (data[i].variant) {
-            htmlStringArr.push('        </div>');
-            htmlStringArr.push('        <div class="row">');
-            htmlStringArr.push('            <div class="col-xs-12">');
-            htmlStringArr.push('变形');
-            htmlStringArr.push('            </div>');
-            for (var key in data[i].variant) {
-                htmlStringArr.push('            <div class="col-xs-3 word-variant-header">');
-                htmlStringArr.push(key + ': ');
-                htmlStringArr.push('            </div>');
-                htmlStringArr.push('            <div class="col-xs-9 word-variant-content">');
-                htmlStringArr.push(data[i].variant[key]);
-                htmlStringArr.push('            </div>');
-            }
-        }
-
-        htmlStringArr.push('        </div>');
-        htmlStringArr.push('    </div>');
-        htmlStringArr.push('</div>');
+    htmlStringArr.push('<div class="col-12 workspace-word-list-item">');
+    htmlStringArr.push('    <div class="container padding-bottom20" style="padding: 0px;">');
+    htmlStringArr.push('        <div class="row">');
+    htmlStringArr.push('            <div class="col-12 word-word" style="font-size:15px; font-weight:500;">');
+    htmlStringArr.push('                <ul>');
+    for (var i = 0; i < _knowledgeData.length; i++) {
+        htmlStringArr.push('                <li style="list-style: circle;">' + _knowledgeData[i] + '</li>');
     }
+    htmlStringArr.push('                </ul>');
+    htmlStringArr.push('            </div>');
+    htmlStringArr.push('        </div>');
+    htmlStringArr.push('    </div>');
+    htmlStringArr.push('</div>');
 
     htmlStringArr.push('</div>');
     return htmlStringArr.join('');
@@ -837,31 +775,13 @@ function gotoSpecialStep(step) {
 }
 
 function showCompleteAlert() {
-    _registerRemoteServer();
-    $.ajax({
-        type: 'POST',
-        async: true,
-        url: _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: _nextStep, symbol: _currentStage }),
-        data: '<root></root>',
-        success: function (response, status) {
-            if ($(response).find('err').length > 0) {
-                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
-                return;
-            }
-
-            $('.wrap-workstatus-alert').show();
-            $('.wrap-complete-alert').show();
-            $('.wrap-faild-alert').hide();
-            $('#title_StepComplete').html(_messages.success);
-            WorkScene.saveStatus();
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-        }
-    });
+    $('.wrap-workstatus-alert').show();
+    $('.wrap-complete-alert').show();
+    $('.wrap-faild-alert').hide();
+    $('#title_StepComplete').html(_messages.success);
+    $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '挑战下一课' : '挑战下一步'));
+    $('#btn_Step_Restart').text((_currentStep == _totalSteps ? '返回个人中心' : '重新开始'));
+    WorkScene.saveStatus();
 };
 
 function showFaildAlert() {
@@ -871,52 +791,37 @@ function showFaildAlert() {
     $('#title_StepFaild').html(_messages.faild);
 };
 
-var _staticSelectFrameInterval = '';
-function showTooltip(eventObj) {
-    if (!eventObj) {
-        window.clearInterval(_staticSelectFrameInterval);
-        $('#tooltip_Component').hide();
-        $('.tooltip-warning-wrap').hide();
-        updateTipsText(_topTooltip);
-    } else {
-        var target = eventObj.currentTarget;
-        var wrap = $('#container_Static_Stage');
-        var tip = $('#tooltip_Component');
-        var tipFrame = $('.tooltip-warning-wrap');
-        var html = '<p style="font-family: 微软雅黑; font-size: 15px;"><strong <%style%>>' + target.cn + '</strong><span>(' + target.en + ')&nbsp;:&nbsp;' + target.dt + '</span></p>';
-        updateTipsText(html.replace('<%style%>', 'style="color:rgb(2,117,216);"'));
-        $('#tooltip_Component .tooltip-inner').html(html.replace('<%style%>', ''));
-        var offset = wrap.offset();
-        var x = target.x() + offset.left + target.width() / 2 - tip.width() / 2;
-        var y = target.y() + offset.top - tip.height() - 20;
-        tip.css('left', x + 'px');
-        tip.css('top', y + 'px');
-        tip.show();
+function showFullScreen() {
+    $('.run-scene-fullscreen').append($('#game_container'));
+    $('.run-scene-fullscreen').show("slow", function () {
+        setsizeWhenFullScreen();
+        addOperatorButton();
+    });
+};
 
-        tipFrame.width(target.width() + 20);
-        tipFrame.height(target.height() + 20);
-        tipFrame.css('left', (target.x() + offset.left - 10) + 'px');
-        tipFrame.css('top', (target.y() + offset.top - 10) + 'px');
-        tipFrame.show();
-        _staticSelectFrameInterval = window.setInterval("$('.tooltip-warning-wrap').toggleClass('hidden');", 300);
-    }
-}
+function setsizeWhenFullScreen() {
+    var container = $('#game_container');
+    var canvas = container.find('canvas');
+    $('.run-scene-fullscreen-close-button').attr('data-content', canvas.width() + ',' + canvas.height());
+    var tmpHeight = $('.run-scene-fullscreen').height();
+    var tmpWidth = $('.run-scene-fullscreen').width();
+    container.height(tmpHeight);
+    container.width(tmpWidth);
+    var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
+    var tmpRate = canvas.height() / canvas.width();
+    //canvas.height(tmpRate * tmpSize);
+    //canvas.width(tmpSize);
+    //container.css('padding-left', (tmpWidth - tmpSize) / 2 + 'px');
+    handleWindowResize(tmpWidth, tmpHeight);
+    var playButton = $('.run-scene-fullscreen-play-button');
+    var fontSize = tmpSize * 30 / 100;
+    playButton.css('font-size', fontSize + 'px');
+    playButton.css('left', 'calc(50% - ' + (playButton.width() / 2) + 'px');
+    playButton.css('top', ((tmpSize - fontSize) / 2) + 'px');
+};
 
-function adjustWorkSpaceType(data) {
-    var siderbar = $('.siderbar-wrap');
-    var blocklyWrap = $('#wrap_Workspace_Blockly');
-    var staticWrap = $('#wrap_Workspace_Static');
-    if (data.blockly.toolbox == '') {
-        siderbar.hide();
-        blocklyWrap.hide();
-        staticWrap.show();
-        staticWrap.height('calc(100% - ' + ($('footer').height() + staticWrap.offset().top) + 'px)');
-        siderBarCollapse();
-    } else {
-        siderbar.show();
-        blocklyWrap.show();
-        staticWrap.hide();
-    }
+function addOperatorButton() {
+
 };
 
 (function ($) {
