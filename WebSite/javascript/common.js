@@ -26,7 +26,8 @@ var _gURLMapping = {
         updateutil: '/Account/Profile/api_iKCoder_Profile_Set_Nodes.aspx'
     },
     data: {
-        getwordlist: '/data/get_checkcodenua.aspx'
+        getwordlist: '/data/get_checkcodenua.aspx',
+        getaudio: '/Data/api_iKCoder_Data_Get_Audio.aspx'
     },
     bus: {
         getworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Get_Workspace.aspx',
