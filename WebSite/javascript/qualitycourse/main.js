@@ -53,9 +53,9 @@ var hero;
 
 // Materials
 var blackMat = new THREE.MeshPhongMaterial({
-    //color: 0x100707,
+    color: 0x100707,
     //color: 0x0000ff,
-    color: 'rgb(233,139,58)',
+    //color: 'rgb(233,139,58)',
     shading: THREE.FlatShading,
 });
 
@@ -78,8 +78,8 @@ var pinkMat = new THREE.MeshPhongMaterial({
 });
 
 var lightBrownMat = new THREE.MeshPhongMaterial({
-    //color: 0xe07a57,
-    color: 0x00ff00,
+    color: 0xe07a57,
+    //color: 0x00ff00,
     shading: THREE.FlatShading,
 });
 
@@ -161,7 +161,7 @@ function handleWindowResize(width, height) {
 }
 
 function handleMouseDown(event) {
-    if (gameStatus == "play") {
+    if (gameStatus == "play" && hero.status=='running') {
         hero.jump();
     }
     //else if (gameStatus == "readyToReplay") {
@@ -675,7 +675,7 @@ Monster.prototype.run = function () {
     if (this.status == 'running') {
         this.runningCycle += delta * s * .7;
     }
-    
+
     this.runningCycle = this.runningCycle % (Math.PI * 2);
     var t = this.runningCycle;
 
@@ -1239,7 +1239,9 @@ function updateLevel() {
 
 function loop() {
     delta = clock.getDelta();
-    updateFloorRotation();
+    if (hero.status == "running") {
+        updateFloorRotation();
+    }
 
     if (gameStatus == "play") {
         if (hero.status == "running") {
@@ -1276,7 +1278,7 @@ function init(event) {
     createCarrot();
     createBonusParticles();
     createObstacle();
-    initUI();    
+    initUI();
     reinitGameParam();
     resetGame();
     loop();
@@ -1300,6 +1302,15 @@ function gameStart() {
     obstacle.mesh.visible = _params_HedgehogShow;
     hero.status = _params_HeroStatus;
     monster.status = _params_MonsterStatus;
+    if (hero.status != 'running' && monster.status == 'running') {
+        monsterAcceleration = 0.05;
+        monsterPos = .58;
+    } else {
+        monsterAcceleration = 0.004;
+        monsterPos = .56;
+    }
+
+    updateMonsterPosition();
     if (_params_MusicPlay) {
         audio.play();
     } else {

@@ -12,10 +12,8 @@ Scene.startGame = function () {
 }
 
 Scene.ResetConfig = function () {
-    var _params_GameStatus = "pause";
-    var _params_HeroStatus = "pause";
-    var _params_MonsterStatus = "pause";
-    var _params_MusicPlay = false;
+    reinitGameParam();
+    gamePause();
 }
 
 Scene.RabbitRun = function () {
