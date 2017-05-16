@@ -66,9 +66,9 @@ Scene._UNKNOWN = new Image();
 Scene.ORANGEIMG = new Image();
 Scene.NPC = new Image();
 //Scene.APPLEIMG.src = "data:image/svg+xml;base64," + window.btoa(svg_xml);
-Scene.ORANGEIMG.src = "image/scene/PACOrange.svg";
-Scene._UNKNOWN.src = "image/scene/Question.svg";
-Scene.NPC.src = "image/scene/NPC.svg";
+Scene.ORANGEIMG.src = "images/scene/PACOrange.svg";
+Scene._UNKNOWN.src = "images/scene/Question.svg";
+Scene.NPC.src = "images/scene/NPC.svg";
 Scene.initValue1 = '';
 Scene.initValue2 = '';
 Scene.initValue3 = '';
@@ -1240,11 +1240,11 @@ Scene.checkBlockly = function (code) {
 	
 	if (ifx  == -1){
 		Scene.ResetConfig();
-		alert("请使用If语句完成本节!");
+		Scene.stepFaild();
 	}else {
 		if (tarStr1 == ""){
 			Scene.ResetConfig();
-			alert("请确保If语句内有要执行的语句!");
+			Scene.stepFaild();
 		}
 	/*
 		if (tarStr2 == ""){

@@ -40,7 +40,7 @@ Scene._NPCSPEED = 0.5;
 Scene._MODEL = '1'; //0:static; 1: dynamic
 Scene._MOVEPATHS = [];
 Scene.ORANGEIMG = new Image();
-Scene.ORANGEIMG.src = "images/scene/PACOrange.svg";
+Scene.ORANGEIMG.src = "image/scene/PACOrange.svg";
 Scene._CALCMOVEPATH = [];
 
 Scene.init = function (containerId, model, configs) {
