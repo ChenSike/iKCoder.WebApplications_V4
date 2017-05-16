@@ -489,7 +489,7 @@ function initData(response) {
         var tmpItems = $(wordsItems[i]).find('soundmark').find('item');
         tmpObj.soundmark = [];
         for (var j = 0; j < tmpItems.length; j++) {
-            tmpObj.soundmark.push([$(tmpItems[j]).attr('value'), _getRequestURL(_gURLMapping.data.getbinresource, { symbol: $(tmpItems[j]).attr('sound') + '.mp3' })]);
+            tmpObj.soundmark.push([$(tmpItems[j]).attr('value'), _getRequestURL(_gURLMapping.data.getaudio, { operation: 'AllowedOperation', symbol: $(tmpItems[j]).attr('sound') })]);
         }
 
         tmpItems = $(wordsItems[i]).find('paraphrase').find('item');
