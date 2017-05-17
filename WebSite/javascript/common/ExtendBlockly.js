@@ -1089,3 +1089,59 @@ Blockly.Flyout.prototype.setBackgroundPathVertical_ = function (width, height) {
         this.svgBackgroundBorder_.setAttribute('d', 'M ' + (atRight ? 0 : this.width_) + ',0 l 0,' + height);
     }
 };
+
+Blockly.Flyout.prototype.placeNewBlock_ = function (originBlock) {
+    var targetWorkspace = this.targetWorkspace_;
+    var svgRootOld = originBlock.getSvgRoot();
+    if (!svgRootOld) {
+        throw 'originBlock is not rendered.';
+    }
+
+    if (targetWorkspace.isMutator) {
+        var xyOld = this.workspace_.getSvgXY((svgRootOld));
+    } else {
+        var xyOld = Blockly.utils.getInjectionDivXY_(svgRootOld);
+    }
+
+    var scrollX = this.workspace_.scrollX;
+    var scale = this.workspace_.scale;
+    xyOld.x += scrollX / scale - scrollX;
+    if (this.toolboxPosition_ == Blockly.TOOLBOX_AT_RIGHT) {
+        scrollX = targetWorkspace.getMetrics().viewWidth - this.width_;
+        scale = targetWorkspace.scale;
+        xyOld.x += scrollX / scale - scrollX;
+    }
+
+    var scrollY = this.workspace_.scrollY;
+    scale = this.workspace_.scale;
+    xyOld.y += scrollY / scale - scrollY;
+    if (this.toolboxPosition_ == Blockly.TOOLBOX_AT_BOTTOM) {
+        scrollY = targetWorkspace.getMetrics().viewHeight - this.height_;
+        scale = targetWorkspace.scale;
+        xyOld.y += scrollY / scale - scrollY;
+    }
+
+    var xml = Blockly.Xml.blockToDom(originBlock);
+    $(xml).attr('id', Blockly.utils.genUid());
+    var block = Blockly.Xml.domToBlock(xml, targetWorkspace);
+    var svgRootNew = block.getSvgRoot();
+    if (!svgRootNew) {
+        throw 'block is not rendered.';
+    }
+
+    if (targetWorkspace.isMutator) {
+        var xyNew = targetWorkspace.getSvgXY((svgRootNew));
+    } else {
+        var xyNew = Blockly.utils.getInjectionDivXY_(svgRootNew);
+    }
+
+    xyNew.x += targetWorkspace.scrollX / targetWorkspace.scale - targetWorkspace.scrollX;
+    xyNew.y += targetWorkspace.scrollY / targetWorkspace.scale - targetWorkspace.scrollY;
+    if (targetWorkspace.toolbox_ && !targetWorkspace.scrollbar) {
+        xyNew.x += targetWorkspace.toolbox_.getWidth() / targetWorkspace.scale;
+        xyNew.y += targetWorkspace.toolbox_.getHeight() / targetWorkspace.scale;
+    }
+
+    block.moveBy(xyOld.x - xyNew.x, xyOld.y - xyNew.y);
+    return block;
+};

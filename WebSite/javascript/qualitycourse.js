@@ -171,80 +171,12 @@ function initEvents() {
     });
 
     $('#btn_Step_Restart').on('click', function (e) {
-        if (_currentStep == _totalSteps) {
-            WorkScene.saveStatus();
-            window.location.href = "profile.html?rnd=" + Date.now();
-        } else {
-            WorkScene.reset();
-            $('.wrap-workstatus-alert').hide();
-        }
+        WorkScene.reset();
+        $('.wrap-workstatus-alert').hide();
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
-        _registerRemoteServer();
-        $.ajax({
-            type: 'GET',
-            async: true,
-            url: _getRequestURL(_gURLMapping.bus.setfinishstep, { symbol: _currentStage }),
-            data: '',
-            success: function (response, status) {
-                if ($(response).find('err').length > 0) {
-                    _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Finish_CurrentStep');
-                    return;
-                }
-
-                $.ajax({
-                    type: 'POST',
-                    async: true,
-                    url: _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: _nextStep, symbol: _currentStage }),
-                    data: '<root></root>',
-                    success: function (response, status) {
-                        if ($(response).find('err').length > 0) {
-                            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Set_CurrentStep');
-                            return;
-                        }
-
-                        if (_currentStep == _totalSteps) {
-                            $.ajax({
-                                type: 'GET',
-                                async: true,
-                                url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
-                                data: '',
-                                success: function (response, status) {
-                                },
-                                dataType: 'xml',
-                                xhrFields: {
-                                    withCredentials: true
-                                },
-                                error: function () {
-                                }
-                            });
-                        }
-
-                        var tmpParam = '&scene=';
-                        if (_currentStep == _totalSteps) {
-                            tmpParam += _nextStage;
-                        } else {
-                            tmpParam += _currentStage;
-                        }
-
-                        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
-                    },
-                    dataType: 'xml',
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    error: function () {
-                    }
-                });
-            },
-            dataType: 'xml',
-            xhrFields: {
-                withCredentials: true
-            },
-            error: function () {
-            }
-        });
+        window.location.href = 'qualitycourse.html?scene=p_3_' + _nextStep + '&rnd=' + Date.now() + tmpParam;
     });
 
     $('#btn_Step_FindError').on('click', function (e) {
@@ -774,14 +706,13 @@ function gotoSpecialStep(step) {
     });
 }
 
-function showCompleteAlert() {
+function showCompleteAlert(notSave) {
     $('.wrap-workstatus-alert').show();
     $('.wrap-complete-alert').show();
     $('.wrap-faild-alert').hide();
     $('#title_StepComplete').html(_messages.success);
-    $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '挑战下一课' : '挑战下一步'));
-    $('#btn_Step_Restart').text((_currentStep == _totalSteps ? '返回个人中心' : '重新开始'));
-    WorkScene.saveStatus();
+    $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '挑战下一步' : '挑战下一步'));
+    $('#btn_Step_Restart').text((_currentStep == _totalSteps ? '重新开始' : '重新开始'));
 };
 
 function showFaildAlert() {
