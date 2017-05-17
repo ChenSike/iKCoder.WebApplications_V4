@@ -139,6 +139,20 @@ Blockly.Block.prototype.eventIcon_ = "";
 
 Blockly.Block.prototype.categoryIcon_ = "";
 
+Blockly.Block.prototype.maxCount_ = Infinity;
+
+Blockly.Block.prototype.getMaxCount = function () {
+    return this.maxCount_;
+};
+
+Blockly.Block.prototype.setMaxCount = function (maxCount) {
+    if (isNaN(maxCount)) {
+        this.maxCount_ = Infinity;
+    } else {
+        this.maxCount_ = parseInt(maxCount);
+    }
+};
+
 Blockly.Block.prototype.getStroke = function () {
     return this.stroke_;
 };
@@ -281,6 +295,7 @@ Blockly.Xml.blockToDom = function (block, opt_noId) {
     element.setAttribute('stroke', block.getStroke());
     element.setAttribute('eventicon', block.getEventIcon());
     element.setAttribute('categoryicon', block.getCategoryIcon());
+    element.setAttribute('maxcount', block.getMaxCount());
     return element;
 };
 
@@ -301,6 +316,9 @@ Blockly.Xml.domToBlockHeadless_ = function (xmlBlock, workspace) {
     if (currentStroke) {
         block.setStroke(currentStroke);
     }
+
+    var currentMaxCount = xmlBlock.getAttribute('maxcount');
+    block.setMaxCount(currentMaxCount);
 
     var blockChild = null;
     for (var i = 0, xmlChild; xmlChild = xmlBlock.childNodes[i]; i++) {
@@ -906,6 +924,29 @@ Blockly.RenderedConnection.prototype.tighten_ = function () {
     }
 };
 
+Blockly.Workspace.prototype.remainingCapacity = function (block) {
+    if (typeof (block) == 'undefined') {
+        if (isNaN(this.options.maxBlocks)) {
+            return Infinity;
+        }
+        return this.options.maxBlocks - this.getAllBlocks().length;
+    } else {
+        if (isNaN(block.getMaxCount())) {
+            return Infinity;
+        }
+
+        var allBlocks = this.getAllBlocks();
+        var tempCount = 0;
+        for (var i = 0; i < allBlocks.length; i++) {
+            if (allBlocks[i].type == block.type) {
+                tempCount++;
+            }
+        }
+
+        return block.getMaxCount() - tempCount;
+    }
+};
+
 Blockly.WorkspaceSvg.prototype.preloadAudio_ = function () {
     try {
         for (var name in this.SOUNDS_) {
@@ -1144,4 +1185,19 @@ Blockly.Flyout.prototype.placeNewBlock_ = function (originBlock) {
 
     block.moveBy(xyOld.x - xyNew.x, xyOld.y - xyNew.y);
     return block;
+};
+
+Blockly.Flyout.prototype.filterForCapacity_ = function () {
+    var remainingCapacity = this.targetWorkspace_.remainingCapacity();
+    var blocks = this.workspace_.getTopBlocks(false);
+    for (var i = 0, block; block = blocks[i]; i++) {
+        if (this.permanentlyDisabled_.indexOf(block) == -1) {
+            var allBlocks = block.getDescendants();
+            block.setDisabled(allBlocks.length > remainingCapacity);
+            if (allBlocks.length <= remainingCapacity) {
+                var blockRemainingCapacity = this.targetWorkspace_.remainingCapacity(block);
+                block.setDisabled(blockRemainingCapacity <= 0);
+            }
+        }
+    }
 };

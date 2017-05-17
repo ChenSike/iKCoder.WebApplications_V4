@@ -418,8 +418,8 @@ function initData() {
             toolbox: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/toolbox.xml')),
             workspace: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/workspace.xml')),
             lib: [
-                //'javascript/qualitycourse/' + _currentStep + '/blocks.js',
-                //'javascript/qualitycourse/' + _currentStep + '/scene.js'
+                'javascript/qualitycourse/' + _currentStep + '/blocks.js',
+                'javascript/qualitycourse/' + _currentStep + '/scene.js'
             ]
         }
     }

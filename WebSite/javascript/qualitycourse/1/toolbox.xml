@@ -1,7 +1,7 @@
 ﻿<xml id="toolbox" style="display: none">
   <!--<block type="scene_setting"></block>-->
-  <block type="scene_object_wolf"></block>
-  <block type="scene_object_rabbit"></block>
-  <block type="scene_background"></block>
-  <block type="scene_music"></block>
+  <block type="scene_object_wolf" maxcount="1"></block>
+  <block type="scene_object_rabbit" maxcount="1"></block>
+  <block type="scene_background" maxcount="1"></block>
+  <block type="scene_music" maxcount="1"></block>
 </xml>

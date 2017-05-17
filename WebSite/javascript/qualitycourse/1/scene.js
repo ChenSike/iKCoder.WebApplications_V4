@@ -59,7 +59,7 @@ WorkScene.outputCode = function (eventObj) {
             setTimeout(showCompleteAlert, 3000);
         }
 
-        console.log(duplicateBlocks);
+        //console.log(duplicateBlocks);
     }
     catch (ex) {
 
