@@ -62,7 +62,7 @@
 }
 
 .blocklyTreeIcon.blocklyTreeIconNone {
-    background-image: url(../image/icon/blocklyicons.svg);
+    background-image: url(../image/blockly/blocklyicons.svg);
     background-repeat: no-repeat;
     /*width: 26px;
     height: 16px;*/
