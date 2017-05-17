@@ -175,6 +175,7 @@ WorkScene.outputCode = function () {
         var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
         content.text(code);
         content.data("autoRowsNumbers").updateLine(code.match(/\n/g).length + 1);
+        WorkScene.OutputCodeCallBack(code);
     }
     catch (ex) {
 
@@ -267,6 +268,10 @@ WorkScene.fullScreen = function () {
         showFullScreen();
     }
 };
+
+WorkScene.OutputCodeCallBack = function () {
+
+}
 
 function CheckSceneObject() {
     if (typeof Scene == "undefined" || Scene == null) {

@@ -1,6 +1,7 @@
 ﻿<xml id="toolbox" style="display: none">
-  <block type="event_start"></block>
-  <block type="wolf_run"></block>
-  <block type="rabbit_run"></block>
-  <block type="play_music"></block>
+  <!--<block type="scene_setting"></block>-->
+  <block type="scene_object_wolf"></block>
+  <block type="scene_object_rabbit"></block>
+  <block type="scene_background"></block>
+  <block type="scene_music"></block>
 </xml>

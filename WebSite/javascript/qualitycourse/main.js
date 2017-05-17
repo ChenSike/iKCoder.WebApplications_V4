@@ -1,11 +1,12 @@
 ﻿//THREEJS RELATED VARIABLES 
 
 var _params_GameStatus = "pause";
-var _params_HeroStatus = "pause";
-var _params_MonsterStatus = "pause";
+var _params_HeroStatus = "hidden";
+var _params_MonsterStatus = "hidden";
 var _params_MusicPlay = false;
 var _params_CarrotShow = false;
 var _params_HedgehogShow = false;
+var _params_BsackgroundShow = false;
 
 var scene,
   camera, fieldOfView, aspectRatio, nearPlane, farPlane,
@@ -161,7 +162,7 @@ function handleWindowResize(width, height) {
 }
 
 function handleMouseDown(event) {
-    if (gameStatus == "play" && hero.status=='running') {
+    if (gameStatus == "play" && hero.status == 'running') {
         hero.jump();
     }
     //else if (gameStatus == "readyToReplay") {
@@ -210,7 +211,6 @@ function createFloor() {
     floor.add(floorShadow);
     floor.add(floorGrass);
     scene.add(floor);
-
 }
 
 Hero = function () {
@@ -409,73 +409,49 @@ function removeParticle(p) {
 }
 
 Hero.prototype.run = function () {
-    this.status = "running";
-
-    var s = Math.min(speed, maxSpeed);
-
-    this.runningCycle += delta * s * .7;
-    this.runningCycle = this.runningCycle % (Math.PI * 2);
-    var t = this.runningCycle;
-
-    var amp = 4;
-    var disp = .2;
-
-    // BODY
-
-    this.body.position.y = 6 + Math.sin(t - Math.PI / 2) * amp;
-    this.body.rotation.x = .2 + Math.sin(t - Math.PI / 2) * amp * .1;
-
-    this.torso.rotation.x = Math.sin(t - Math.PI / 2) * amp * .1;
-    this.torso.position.y = 7 + Math.sin(t - Math.PI / 2) * amp * .5;
-
-    // MOUTH
-    this.mouth.rotation.x = Math.PI / 16 + Math.cos(t) * amp * .05;
-
-    // HEAD
-    this.head.position.z = 2 + Math.sin(t - Math.PI / 2) * amp * .5;
-    this.head.position.y = 8 + Math.cos(t - Math.PI / 2) * amp * .7;
-    this.head.rotation.x = -.2 + Math.sin(t + Math.PI) * amp * .1;
-
-    // EARS
-    this.earL.rotation.x = Math.cos(-Math.PI / 2 + t) * (amp * .2);
-    this.earR.rotation.x = Math.cos(-Math.PI / 2 + .2 + t) * (amp * .3);
-
-    // EYES
-    this.eyeR.scale.y = this.eyeL.scale.y = .7 + Math.abs(Math.cos(-Math.PI / 4 + t * .5)) * .6;
-
-    // TAIL
-    this.tail.rotation.x = Math.cos(Math.PI / 2 + t) * amp * .3;
-
-    // FRONT RIGHT PAW
-    this.pawFR.position.y = 1.5 + Math.sin(t) * amp;
-    this.pawFR.rotation.x = Math.cos(t) * Math.PI / 4;
-
-
-    this.pawFR.position.z = 6 - Math.cos(t) * amp * 2;
-
-    // FRONT LEFT PAW
-
-    this.pawFL.position.y = 1.5 + Math.sin(disp + t) * amp;
-    this.pawFL.rotation.x = Math.cos(t) * Math.PI / 4;
-
-
-    this.pawFL.position.z = 6 - Math.cos(disp + t) * amp * 2;
-
-    // BACK RIGHT PAW
-    this.pawBR.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
-    this.pawBR.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
-
-
-    this.pawBR.position.z = -Math.cos(Math.PI + t) * amp;
-
-    // BACK LEFT PAW
-    this.pawBL.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
-    this.pawBL.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
-
-
-    this.pawBL.position.z = -Math.cos(Math.PI + t) * amp;
-
-
+    if (gameStatus == "play" && hero.status != "pause" && hero.status != "hidden") {
+        this.status = "running";
+        var s = Math.min(speed, maxSpeed);
+        this.runningCycle += delta * s * .7;
+        this.runningCycle = this.runningCycle % (Math.PI * 2);
+        var t = this.runningCycle;
+        var amp = 4;
+        var disp = .2;
+        // BODY
+        this.body.position.y = 6 + Math.sin(t - Math.PI / 2) * amp;
+        this.body.rotation.x = .2 + Math.sin(t - Math.PI / 2) * amp * .1;
+        this.torso.rotation.x = Math.sin(t - Math.PI / 2) * amp * .1;
+        this.torso.position.y = 7 + Math.sin(t - Math.PI / 2) * amp * .5;
+        // MOUTH
+        this.mouth.rotation.x = Math.PI / 16 + Math.cos(t) * amp * .05;
+        // HEAD
+        this.head.position.z = 2 + Math.sin(t - Math.PI / 2) * amp * .5;
+        this.head.position.y = 8 + Math.cos(t - Math.PI / 2) * amp * .7;
+        this.head.rotation.x = -.2 + Math.sin(t + Math.PI) * amp * .1;
+        // EARS
+        this.earL.rotation.x = Math.cos(-Math.PI / 2 + t) * (amp * .2);
+        this.earR.rotation.x = Math.cos(-Math.PI / 2 + .2 + t) * (amp * .3);
+        // EYES
+        this.eyeR.scale.y = this.eyeL.scale.y = .7 + Math.abs(Math.cos(-Math.PI / 4 + t * .5)) * .6;
+        // TAIL
+        this.tail.rotation.x = Math.cos(Math.PI / 2 + t) * amp * .3;
+        // FRONT RIGHT PAW
+        this.pawFR.position.y = 1.5 + Math.sin(t) * amp;
+        this.pawFR.rotation.x = Math.cos(t) * Math.PI / 4;
+        this.pawFR.position.z = 6 - Math.cos(t) * amp * 2;
+        // FRONT LEFT PAW
+        this.pawFL.position.y = 1.5 + Math.sin(disp + t) * amp;
+        this.pawFL.rotation.x = Math.cos(t) * Math.PI / 4;
+        this.pawFL.position.z = 6 - Math.cos(disp + t) * amp * 2;
+        // BACK RIGHT PAW
+        this.pawBR.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
+        this.pawBR.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
+        this.pawBR.position.z = -Math.cos(Math.PI + t) * amp;
+        // BACK LEFT PAW
+        this.pawBL.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
+        this.pawBL.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
+        this.pawBL.position.z = -Math.cos(Math.PI + t) * amp;
+    }
 }
 
 Hero.prototype.jump = function () {
@@ -846,6 +822,14 @@ Monster.prototype.sit = function () {
 
 }
 
+Monster.prototype.pause = function () {
+    var angle = Math.PI * monsterPos;
+    monster.mesh.position.y = -floorRadius + Math.sin(angle) * (floorRadius + 12);
+    monster.mesh.position.x = Math.cos(angle) * (floorRadius + 15);
+    monster.mesh.rotation.z = -Math.PI / 2 + angle;
+    this.sit();
+}
+
 Carrot = function () {
     this.angle = 0;
     this.mesh = new THREE.Group();
@@ -1020,17 +1004,21 @@ function createMonster() {
 }
 
 function updateMonsterPosition() {
-    monster.run();
-    monsterPosTarget -= delta * monsterAcceleration;
-    monsterPos += (monsterPosTarget - monsterPos) * delta;
-    if (monsterPos < .56) {
-        gameOver();
-    }
+    monster.status = _params_MonsterStatus;
+    monster.mesh.visible = (monster.status == 'hidden' ? false : true);
+    if (monster.status == "running") {
+        monster.run();
+        monsterPosTarget -= delta * monsterAcceleration;
+        monsterPos += (monsterPosTarget - monsterPos) * delta;
+        if (monsterPos < .56) {
+            gameOver();
+        }
 
-    var angle = Math.PI * monsterPos;
-    monster.mesh.position.y = -floorRadius + Math.sin(angle) * (floorRadius + 12);
-    monster.mesh.position.x = Math.cos(angle) * (floorRadius + 15);
-    monster.mesh.rotation.z = -Math.PI / 2 + angle;
+        var angle = Math.PI * monsterPos;
+        monster.mesh.position.y = -floorRadius + Math.sin(angle) * (floorRadius + 12);
+        monster.mesh.position.x = Math.cos(angle) * (floorRadius + 15);
+        monster.mesh.rotation.z = -Math.PI / 2 + angle;
+    }
 }
 
 function gameOver() {
@@ -1148,9 +1136,12 @@ function updateObstaclePosition() {
 }
 
 function updateFloorRotation() {
-    floorRotation += delta * .03 * speed;
-    floorRotation = floorRotation % (Math.PI * 2);
-    floor.rotation.z = floorRotation;
+    floor.visible = _params_BsackgroundShow;
+    if (hero.status == "running") {
+        floorRotation += delta * .03 * speed;
+        floorRotation = floorRotation % (Math.PI * 2);
+        floor.rotation.z = floorRotation;
+    }
 }
 
 function createObstacle() {
@@ -1238,28 +1229,25 @@ function updateLevel() {
 }
 
 function loop() {
+    hero.status = _params_HeroStatus;
+    hero.mesh.visible = (hero.status == 'hidden' ? false : true);
+    monster.status = _params_MonsterStatus;
+    monster.mesh.visible = (monster.status == 'hidden' ? false : true);
     delta = clock.getDelta();
-    if (hero.status == "running") {
-        updateFloorRotation();
-    }
-
-    if (gameStatus == "play") {
-        if (hero.status == "running") {
-            hero.run();
-        }
-
-        updateDistance();
-        if (monster.status == "running") {
-            updateMonsterPosition();
-        }
-
-        updateCarrotPosition();
-        updateObstaclePosition();
-        checkCollision();
-    }
-
+    updateFloorRotation();
+    hero.run();
+    updateDistance();
+    updateMonsterPosition();
+    updateCarrotPosition();
+    updateObstaclePosition();
+    checkCollision();
     render();
     requestAnimationFrame(loop);
+    if (_params_MusicPlay) {
+        audio.play();
+    } else {
+        audio.pause();
+    }
 }
 
 function render() {
@@ -1302,7 +1290,7 @@ function gameStart() {
     obstacle.mesh.visible = _params_HedgehogShow;
     hero.status = _params_HeroStatus;
     monster.status = _params_MonsterStatus;
-    if (hero.status != 'running' && monster.status == 'running') {
+    if (hero.status == 'pause' && monster.status == 'running') {
         monsterAcceleration = 0.05;
         monsterPos = .58;
     } else {
@@ -1310,12 +1298,7 @@ function gameStart() {
         monsterPos = .56;
     }
 
-    updateMonsterPosition();
-    if (_params_MusicPlay) {
-        audio.play();
-    } else {
-        audio.pause();
-    }
+    updateMonsterPosition();    
 }
 
 function reinitGameParam() {
@@ -1335,14 +1318,18 @@ function reinitGameParam() {
     //hero.status = "pause";
     //monster.status = "pause";
     _params_GameStatus = "pause";
-    _params_HeroStatus = "pause";
-    _params_MonsterStatus = "pause";
+    _params_HeroStatus = "hidden";
+    _params_MonsterStatus = "hidden";
     _params_MusicPlay = false;
     _params_CarrotShow = false;
     _params_HedgehogShow = false;
-    hero.nod();
+    _params_BsackgroundShow = false;    
     audio.pause();
-    updateLevel();
+
+    monster.pause();
+    TweenMax.to(this, 1, { speed: 0 });
+    TweenMax.to(camera.position, 3, { z: cameraPosGameOver, y: 60, x: -30 });
+    clearInterval(levelInterval);
 }
 
 function resetGame() {
@@ -1351,7 +1338,6 @@ function resetGame() {
     hero.mesh.position.y = 0;
     hero.mesh.position.z = 0;
     hero.mesh.position.x = 0;
-
     monsterPos = .56;
     monsterPosTarget = .65;
     speed = initSpeed;
@@ -1359,9 +1345,12 @@ function resetGame() {
     distance = 0;
     carrot.mesh.visible = _params_CarrotShow;
     obstacle.mesh.visible = _params_HedgehogShow;
+    floor.visible = _params_BsackgroundShow;
     gameStatus = 'pause';
     hero.status = _params_HeroStatus;
+    hero.mesh.visible = (hero.status == 'hidden' ? false : true);
     monster.status = _params_MonsterStatus;
+    monster.mesh.visible = (monster.status == 'hidden' ? false : true);
     hero.nod();
     if (_params_MusicPlay) {
         audio.play();
