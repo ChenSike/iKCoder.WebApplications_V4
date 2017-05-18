@@ -1,0 +1,4 @@
+﻿<xml id="toolbox" style="display: none">
+  <block type="scene_object_wolf_setting_item"></block>
+  <block type="scene_object_rabbit_setting_item"></block>
+</xml>

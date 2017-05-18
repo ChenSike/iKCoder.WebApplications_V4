@@ -68,6 +68,10 @@ WorkScene.outputCode = function (eventObj) {
 
 var Scene = {};
 
+Scene.init = function () {
+    gameInit();
+}
+
 Scene.reset = function () {
     reinitGameParam();
     gamePause();

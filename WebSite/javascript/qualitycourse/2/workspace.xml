@@ -1,0 +1,4 @@
+﻿<xml id="workspace" style="display: none">
+  <block type="scene_object_wolf_setting" x="50" y="100"></block>
+  <block type="scene_object_rabbit_setting" x="50" y="300"></block>
+</xml>

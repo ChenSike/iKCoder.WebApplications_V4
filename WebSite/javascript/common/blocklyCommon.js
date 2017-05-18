@@ -269,7 +269,7 @@ WorkScene.fullScreen = function () {
     }
 };
 
-WorkScene.OutputCodeCallBack = function () {
+WorkScene.OutputCodeCallBack = function (code) {
 
 }
 
