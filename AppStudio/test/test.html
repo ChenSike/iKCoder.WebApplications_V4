@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="three.js"></script>
+    <script src="TweenMax.min.js"></script>
+    <script src="objects.js"></script>
+    <script src="main.js"></script>
+</head>
+<body style="height:100%;">
+    <div style="width:100%;height:10%;background-color:cornflowerblue;">
+        <table>
+            <tr>
+                <td><button type="button" id="btn_wolf">狼</button></td>
+                <td><button type="button" id="btn_rabbit">兔子</button></td>
+                <td><button type="button" id="btn_dragon">龙</button></td>
+                <td><button type="button" id="btn_lion">狮子</button></td>
+                <td><button type="button" id="btn_cat">猫</button></td>
+                <td><button type="button" id="btn_bird">鸟</button></td>
+                <td><button type="button" id="btn_carrot">胡萝卜</button></td>
+                <td><button type="button" id="btn_hedgehog">刺猬</button></td>
+                <td><button type="button" id="btn_mouse">老鼠</button></td>
+            </tr>
+        </table>
+    </div>
+    <div id="game_container" style="width:100%;height:100%;background-color:darkgray;">
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //var canvas = $('canvas');
+            //var container = canvas.parent();
+            //canvas.attr('width', container.width());
+            //canvas.attr('height', container.height());
+            $('button').on('click', function (eventObj) {
+                changeModule(eventObj);
+            });
+
+            initGame();
+        });
+
+        var moduleType = 'wolf';
+        var roleModule = null;
+        function changeModule(eventObj) {
+            moduleType = eventObj.target.id.split('_')[1];
+            createRole();
+        }
+
+        function createRole() {
+            if (roleModule) {
+                scene.remove(roleModule.mesh);
+            }
+
+            var newRoleModule = null;
+            switch (moduleType) {
+                case 'cat':
+                    newRoleModule = new Cat();
+                    break;
+                case 'lion':
+                    newRoleModule = new Lion();
+                    break;
+                case 'dragon':
+                    newRoleModule = new Dragon();
+                    break;
+                case 'bird':
+                    newRoleModule = new Bird();
+                    break;
+                case 'mouse':
+                    newRoleModule = new Mouse();
+                    break;
+                case 'rabbit':
+                    newRoleModule = new Hero();
+                    break;
+                case 'wolf':
+                    newRoleModule = new Monster();
+                    break;
+                case 'carrot':
+                    newRoleModule = new Carrot();
+                    break;
+                case 'hedgehog':
+                    newRoleModule = new Hedgehog();
+                    break;
+            }
+
+            scene.add(newRoleModule.mesh);
+            roleModule = null;
+            roleModule = newRoleModule;
+        }
+
+        function initGame() {
+            initScreenAnd3D();
+            createLights();
+            createRole();
+            initUI();
+            loop();
+        }
+
+        function loop() {
+            roleModule.status = "pause";
+            roleModule.mesh.visible = true;
+            delta = clock.getDelta();
+            render();
+            requestAnimationFrame(loop);
+        }
+    </script>
+</body>
+</html>
