@@ -3,9 +3,9 @@
 var _params_GameStatus = "pause";
 var _params_HeroStatus = "hidden";
 var _params_MonsterStatus = "hidden";
+var _params_ObstacleStatus = "hidden";
+var _params_PropStatus = "hidden";
 var _params_MusicPlay = false;
-var _params_CarrotShow = false;
-var _params_HedgehogShow = false;
 var _params_BsackgroundShow = false;
 
 var scene,
@@ -40,7 +40,7 @@ var fieldGameOver, fieldDistance;
 //SCREEN & MOUSE VARIABLES
 var HEIGHT, WIDTH, windowHalfX, windowHalfY, mousePos = { x: 0, y: 0 };
 //3D OBJECTS VARIABLES
-var hero;
+var hero, monster, prop, obstacle;
 // Materials
 var blackMat = new THREE.MeshPhongMaterial({
     color: '#100707',
@@ -311,162 +311,6 @@ function createFloor() {
     scene.add(floor);
 }
 
-Hero = function () {
-    this.status = "running";
-    this.runningCycle = 0;
-    this.mesh = new THREE.Group();
-    this.body = new THREE.Group();
-    this.mesh.add(this.body);
-    var torsoGeom = new THREE.CubeGeometry(heroDefault.torso.w, heroDefault.torso.h, heroDefault.torso.d, 1);
-    this.torso = new THREE.Mesh(torsoGeom, heroDefault.torso.c);
-    this.torso.position.z = 0;
-    this.torso.position.y = 7;
-    this.torso.castShadow = true;
-    this.body.add(this.torso);
-
-    var pantsGeom = new THREE.CubeGeometry(heroDefault.pants.w, heroDefault.pants.h, heroDefault.pants.d, 1);
-    this.pants = new THREE.Mesh(pantsGeom, heroDefault.pants.c);
-    this.pants.position.z = -3;
-    this.pants.position.y = 0;
-    this.pants.castShadow = true;
-    this.torso.add(this.pants);
-
-    var tailGeom = new THREE.CubeGeometry(heroDefault.tail.w, heroDefault.tail.h, heroDefault.tail.d, 1);
-    tailGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, -2));
-    this.tail = new THREE.Mesh(tailGeom, heroDefault.tail.c);
-    this.tail.position.z = -4;
-    this.tail.position.y = 5;
-    this.tail.castShadow = true;
-    this.torso.add(this.tail);
-
-    this.torso.rotation.x = -Math.PI / 8;
-
-    var headGeom = new THREE.CubeGeometry(heroDefault.head.w, heroDefault.head.h, heroDefault.head.d, 1);
-
-    headGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 7.5));
-    this.head = new THREE.Mesh(headGeom, heroDefault.head.c);
-    this.head.position.z = 2;
-    this.head.position.y = 11;
-    this.head.castShadow = true;
-    this.body.add(this.head);
-
-    var cheekGeom = new THREE.CubeGeometry(heroDefault.cheek.w, heroDefault.cheek.h, heroDefault.cheek.d, 1);
-    this.cheekR = new THREE.Mesh(cheekGeom, heroDefault.cheek.c);
-    this.cheekR.position.x = -5;
-    this.cheekR.position.z = 7;
-    this.cheekR.position.y = -2.5;
-    this.cheekR.castShadow = true;
-    this.head.add(this.cheekR);
-
-    this.cheekL = this.cheekR.clone();
-    this.cheekL.position.x = -this.cheekR.position.x;
-    this.head.add(this.cheekL);
-
-
-    var noseGeom = new THREE.CubeGeometry(heroDefault.nose.w, heroDefault.nose.h, heroDefault.nose.d, 1);
-    this.nose = new THREE.Mesh(noseGeom, heroDefault.nose.c);
-    this.nose.position.z = 13.5;
-    this.nose.position.y = 2.6;
-    this.nose.castShadow = true;
-    this.head.add(this.nose);
-
-    var mouthGeom = new THREE.CubeGeometry(heroDefault.mouth.w, heroDefault.mouth.h, heroDefault.mouth.d, 1);
-    mouthGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 3));
-    mouthGeom.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 12));
-    this.mouth = new THREE.Mesh(mouthGeom, heroDefault.mouth.c);
-    this.mouth.position.z = 8;
-    this.mouth.position.y = -4;
-    this.mouth.castShadow = true;
-    this.head.add(this.mouth);
-
-
-    var pawFGeom = new THREE.CubeGeometry(heroDefault.pawF.w, heroDefault.pawF.h, heroDefault.pawF.d, 1);
-    this.pawFR = new THREE.Mesh(pawFGeom, heroDefault.pawF.c);
-    this.pawFR.position.x = -2;
-    this.pawFR.position.z = 6;
-    this.pawFR.position.y = 1.5;
-    this.pawFR.castShadow = true;
-    this.body.add(this.pawFR);
-
-    this.pawFL = this.pawFR.clone();
-    this.pawFL.position.x = -this.pawFR.position.x;
-    this.pawFL.castShadow = true;
-    this.body.add(this.pawFL);
-
-    var pawBGeom = new THREE.CubeGeometry(heroDefault.pawB.w, heroDefault.pawB.h, heroDefault.pawB.d, 1);
-    this.pawBL = new THREE.Mesh(pawBGeom, heroDefault.pawB.c);
-    this.pawBL.position.y = 1.5;
-    this.pawBL.position.z = 0;
-    this.pawBL.position.x = 5;
-    this.pawBL.castShadow = true;
-    this.body.add(this.pawBL);
-
-    this.pawBR = this.pawBL.clone();
-    this.pawBR.position.x = -this.pawBL.position.x;
-    this.pawBR.castShadow = true;
-    this.body.add(this.pawBR);
-
-    var earGeom = new THREE.CubeGeometry(heroDefault.ear.w, heroDefault.ear.h, heroDefault.ear.d, 1);
-    //var earGeom = new THREE.CubeGeometry(20, 88, 2, 1);
-    earGeom.vertices[6].x += 2;
-    earGeom.vertices[6].z += .5;
-
-    earGeom.vertices[7].x += 2;
-    earGeom.vertices[7].z -= .5;
-
-    earGeom.vertices[2].x -= 2;
-    earGeom.vertices[2].z -= .5;
-
-    earGeom.vertices[3].x -= 2;
-    earGeom.vertices[3].z += .5;
-    earGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 9, 0));
-
-    this.earL = new THREE.Mesh(earGeom, heroDefault.ear.c);
-    this.earL.position.x = 2;
-    this.earL.position.z = 2.5;
-    this.earL.position.y = 5;
-    this.earL.rotation.z = -Math.PI / 12;
-    this.earL.castShadow = true;
-    this.head.add(this.earL);
-
-    this.earR = this.earL.clone();
-    this.earR.position.x = -this.earL.position.x;
-    this.earR.rotation.z = -this.earL.rotation.z;
-    this.earR.castShadow = true;
-    this.head.add(this.earR);
-
-    var eyeGeom = new THREE.CubeGeometry(heroDefault.eye.w, heroDefault.eye.h, heroDefault.eye.d);
-
-    this.eyeL = new THREE.Mesh(eyeGeom, heroDefault.eye.c);
-    this.eyeL.position.x = 5;
-    this.eyeL.position.z = 5.5;
-    this.eyeL.position.y = 2.9;
-    this.eyeL.castShadow = true;
-    this.head.add(this.eyeL);
-
-    var irisGeom = new THREE.CubeGeometry(heroDefault.iris.w, heroDefault.iris.h, heroDefault.iris.d);
-
-    this.iris = new THREE.Mesh(irisGeom, heroDefault.iris.c);
-    this.iris.position.x = 1.2;
-    this.iris.position.y = 1;
-    this.iris.position.z = 1;
-    this.eyeL.add(this.iris);
-
-    this.eyeR = this.eyeL.clone();
-    this.eyeR.children[0].position.x = -this.iris.position.x;
-
-
-    this.eyeR.position.x = -this.eyeL.position.x;
-    this.head.add(this.eyeR);
-
-    this.body.traverse(function (object) {
-        if (object instanceof THREE.Mesh) {
-            object.castShadow = true;
-            object.receiveShadow = true;
-        }
-    });
-}
-
 BonusParticles = function () {
     this.mesh = new THREE.Group();
     var bigParticleGeom = new THREE.CubeGeometry(10, 10, 10, 1);
@@ -504,592 +348,96 @@ function removeParticle(p) {
     p.visible = false;
 }
 
-Hero.prototype.run = function () {
-    if (gameStatus == "play" && hero.status != "pause" && hero.status != "hidden") {
-        this.status = "running";
-        var s = Math.min(speed, maxSpeed);
-        this.runningCycle += delta * s * .7;
-        this.runningCycle = this.runningCycle % (Math.PI * 2);
-        var t = this.runningCycle;
-        var amp = 4;
-        var disp = .2;
-        // BODY
-        this.body.position.y = 6 + Math.sin(t - Math.PI / 2) * amp;
-        this.body.rotation.x = .2 + Math.sin(t - Math.PI / 2) * amp * .1;
-        this.torso.rotation.x = Math.sin(t - Math.PI / 2) * amp * .1;
-        this.torso.position.y = 7 + Math.sin(t - Math.PI / 2) * amp * .5;
-        // MOUTH
-        this.mouth.rotation.x = Math.PI / 16 + Math.cos(t) * amp * .05;
-        // HEAD
-        this.head.position.z = 2 + Math.sin(t - Math.PI / 2) * amp * .5;
-        this.head.position.y = 8 + Math.cos(t - Math.PI / 2) * amp * .7;
-        this.head.rotation.x = -.2 + Math.sin(t + Math.PI) * amp * .1;
-        // EARS
-        this.earL.rotation.x = Math.cos(-Math.PI / 2 + t) * (amp * .2);
-        this.earR.rotation.x = Math.cos(-Math.PI / 2 + .2 + t) * (amp * .3);
-        // EYES
-        this.eyeR.scale.y = this.eyeL.scale.y = .7 + Math.abs(Math.cos(-Math.PI / 4 + t * .5)) * .6;
-        // TAIL
-        this.tail.rotation.x = Math.cos(Math.PI / 2 + t) * amp * .3;
-        // FRONT RIGHT PAW
-        this.pawFR.position.y = 1.5 + Math.sin(t) * amp;
-        this.pawFR.rotation.x = Math.cos(t) * Math.PI / 4;
-        this.pawFR.position.z = 6 - Math.cos(t) * amp * 2;
-        // FRONT LEFT PAW
-        this.pawFL.position.y = 1.5 + Math.sin(disp + t) * amp;
-        this.pawFL.rotation.x = Math.cos(t) * Math.PI / 4;
-        this.pawFL.position.z = 6 - Math.cos(disp + t) * amp * 2;
-        // BACK RIGHT PAW
-        this.pawBR.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
-        this.pawBR.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
-        this.pawBR.position.z = -Math.cos(Math.PI + t) * amp;
-        // BACK LEFT PAW
-        this.pawBL.position.y = 1.5 + Math.sin(Math.PI + t) * amp;
-        this.pawBL.rotation.x = Math.cos(t + Math.PI * 1.5) * Math.PI / 3;
-        this.pawBL.position.z = -Math.cos(Math.PI + t) * amp;
-    }
-}
-
-Hero.prototype.jump = function () {
-    if (this.status == "jumping") return;
-    this.status = "jumping";
-    var _this = this;
-    var totalSpeed = 10 / speed;
-    var jumpHeight = 45;
-
-    TweenMax.to(this.earL.rotation, totalSpeed, { x: "+=.3", ease: Back.easeOut });
-    TweenMax.to(this.earR.rotation, totalSpeed, { x: "-=.3", ease: Back.easeOut });
-
-    TweenMax.to(this.pawFL.rotation, totalSpeed, { x: "+=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawFR.rotation, totalSpeed, { x: "-=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawBL.rotation, totalSpeed, { x: "+=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawBR.rotation, totalSpeed, { x: "-=.7", ease: Back.easeOut });
-
-    TweenMax.to(this.tail.rotation, totalSpeed, { x: "+=1", ease: Back.easeOut });
-
-    TweenMax.to(this.mouth.rotation, totalSpeed, { x: .5, ease: Back.easeOut });
-
-    TweenMax.to(this.mesh.position, totalSpeed / 2, { y: jumpHeight, ease: Power2.easeOut });
-    TweenMax.to(this.mesh.position, totalSpeed / 2, {
-        y: 0, ease: Power4.easeIn, delay: totalSpeed / 2, onComplete: function () {
-            //t = 0;
-            _this.status = "running";
+var _HeroModule = 'rabbit';
+var _MonsterModule = 'wolf';
+var _ObstacleModule = 'hedgehog';
+var _PropModule = 'carrot';
+var RoleModules = ['cat', 'lion', 'dragon', 'bird', 'mouse', 'rabbit', 'wolf', 'carrot', 'hedgehog'];
+function setHeroModule(module) {
+    _HeroModule = '';
+    for (var i = 0; i < RoleModules.length; i++) {
+        if (module == RoleModules[i]) {
+            _HeroModule = module;
+            break;
         }
-    });
-
-}
-
-Monster = function () {
-    this.status = "running";
-    this.runningCycle = 0;
-
-    this.mesh = new THREE.Group();
-    this.body = new THREE.Group();
-
-    var torsoGeom = new THREE.CubeGeometry(monsterDefault.torso.w, monsterDefault.torso.h, monsterDefault.torso.d, 1);
-    this.torso = new THREE.Mesh(torsoGeom, monsterDefault.torso.c);
-
-    var headGeom = new THREE.CubeGeometry(monsterDefault.head.w, monsterDefault.head.h, monsterDefault.head.d, 1);
-    headGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 20));
-    this.head = new THREE.Mesh(headGeom, monsterDefault.head.c);
-    this.head.position.z = 12;
-    this.head.position.y = 2;
-
-    var mouthGeom = new THREE.CubeGeometry(monsterDefault.mouth.w, monsterDefault.mouth.h, monsterDefault.mouth.d, 1);
-    mouthGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, -2, 10));
-    this.mouth = new THREE.Mesh(mouthGeom, monsterDefault.mouth.c);
-    this.mouth.position.y = -8;
-    this.mouth.rotation.x = .4;
-    this.mouth.position.z = 4;
-
-    this.heroHolder = new THREE.Group();
-    this.heroHolder.position.z = 20;
-    this.mouth.add(this.heroHolder);
-
-    var toothGeom = new THREE.CubeGeometry(monsterDefault.tooth.w, monsterDefault.tooth.h, monsterDefault.tooth.d);
-
-    toothGeom.vertices[1].x -= 1;
-    toothGeom.vertices[4].x += 1;
-    toothGeom.vertices[5].x += 1;
-    toothGeom.vertices[0].x -= 1;
-
-    for (var i = 0; i < 3; i++) {
-        var toothf = new THREE.Mesh(toothGeom, monsterDefault.tooth.c);
-        toothf.position.x = -2.8 + i * 2.5;
-        toothf.position.y = 1;
-        toothf.position.z = 19;
-
-        var toothl = new THREE.Mesh(toothGeom, monsterDefault.tooth.c);
-        toothl.rotation.y = Math.PI / 2;
-        toothl.position.z = 12 + i * 2.5;
-        toothl.position.y = 1;
-        toothl.position.x = 4;
-
-        var toothr = toothl.clone();
-        toothl.position.x = -4;
-
-        this.mouth.add(toothf);
-        this.mouth.add(toothl);
-        this.mouth.add(toothr);
     }
 
-    var tongueGeometry = new THREE.CubeGeometry(monsterDefault.tongue.w, monsterDefault.tongue.h, monsterDefault.tongue.d);
-    tongueGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 7));
-
-    this.tongue = new THREE.Mesh(tongueGeometry, monsterDefault.tongue.c);
-    this.tongue.position.z = 2;
-    this.tongue.rotation.x = -.2;
-    this.mouth.add(this.tongue);
-
-    var noseGeom = new THREE.CubeGeometry(monsterDefault.nose.w, monsterDefault.nose.h, monsterDefault.nose.d);
-    this.nose = new THREE.Mesh(noseGeom, monsterDefault.nose.c);
-    this.nose.position.z = 39.5;
-    this.nose.position.y = 9;
-    this.head.add(this.nose);
-
-    this.head.add(this.mouth);
-
-    var eyeGeom = new THREE.CubeGeometry(monsterDefault.eye.w, monsterDefault.eye.h, monsterDefault.eye.d);
-
-    this.eyeL = new THREE.Mesh(eyeGeom, monsterDefault.eye.c);
-    this.eyeL.position.x = 10;
-    this.eyeL.position.z = 5;
-    this.eyeL.position.y = 5;
-    this.eyeL.castShadow = true;
-    this.head.add(this.eyeL);
-
-    var irisGeom = new THREE.CubeGeometry(monsterDefault.iris.w, monsterDefault.iris.h, monsterDefault.iris.d);
-
-    this.iris = new THREE.Mesh(irisGeom, monsterDefault.iris.c);
-    this.iris.position.x = 1.2;
-    this.iris.position.y = -1;
-    this.iris.position.z = 1;
-    this.eyeL.add(this.iris);
-
-    this.eyeR = this.eyeL.clone();
-    this.eyeR.children[0].position.x = -this.iris.position.x;
-    this.eyeR.position.x = -this.eyeL.position.x;
-    this.head.add(this.eyeR);
-
-
-    var earGeom = new THREE.CubeGeometry(monsterDefault.ear.w, monsterDefault.ear.h, monsterDefault.ear.d, 1);
-    earGeom.vertices[1].x -= 4;
-    earGeom.vertices[4].x += 4;
-    earGeom.vertices[5].x += 4;
-    earGeom.vertices[5].z -= 2;
-    earGeom.vertices[0].x -= 4;
-    earGeom.vertices[0].z -= 2;
-
-
-    earGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 3, 0));
-
-    this.earL = new THREE.Mesh(earGeom, monsterDefault.ear.c);
-    this.earL.position.x = 6;
-    this.earL.position.z = 1;
-    this.earL.position.y = 10;
-    this.earL.castShadow = true;
-    this.head.add(this.earL);
-
-    this.earR = this.earL.clone();
-    this.earR.position.x = -this.earL.position.x;
-    this.earR.rotation.z = -this.earL.rotation.z;
-    this.head.add(this.earR);
-
-    var eyeGeom = new THREE.CubeGeometry(monsterDefault.eye.w, monsterDefault.eye.h + 1, monsterDefault.eye.d + 1);
-
-    var tailGeom = new THREE.CylinderGeometry(monsterDefault.tail.rt, monsterDefault.tail.rb, monsterDefault.tail.h, monsterDefault.tail.rs, 1);
-    tailGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 10, 0));
-    tailGeom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
-    tailGeom.applyMatrix(new THREE.Matrix4().makeRotationZ(Math.PI / 4));
-
-    this.tail = new THREE.Mesh(tailGeom, monsterDefault.tail.c);
-    this.tail.position.z = -10;
-    this.tail.position.y = 4;
-    this.torso.add(this.tail);
-
-
-    var pawGeom = new THREE.CylinderGeometry(monsterDefault.paw.rt, monsterDefault.paw.rb, monsterDefault.paw.h);
-    pawGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, -5, 0));
-    this.pawFL = new THREE.Mesh(pawGeom, monsterDefault.paw.c);
-    this.pawFL.position.y = -7.5;
-    this.pawFL.position.z = 8.5;
-    this.pawFL.position.x = 5.5;
-    this.torso.add(this.pawFL);
-
-    this.pawFR = this.pawFL.clone();
-    this.pawFR.position.x = -this.pawFL.position.x;
-    this.torso.add(this.pawFR);
-
-    this.pawBR = this.pawFR.clone();
-    this.pawBR.position.z = -this.pawFL.position.z;
-    this.torso.add(this.pawBR);
-
-    this.pawBL = this.pawBR.clone();
-    this.pawBL.position.x = this.pawFL.position.x;
-    this.torso.add(this.pawBL);
-
-    this.mesh.add(this.body);
-    this.torso.add(this.head);
-    this.body.add(this.torso);
-
-    this.torso.castShadow = true;
-    this.head.castShadow = true;
-    this.pawFL.castShadow = true;
-    this.pawFR.castShadow = true;
-    this.pawBL.castShadow = true;
-    this.pawBR.castShadow = true;
-
-    this.body.rotation.y = Math.PI / 2;
+    _HeroModule = (_HeroModule == '' ? 'rabbit' : _HeroModule);
 }
 
-Monster.prototype.run = function () {
-    var s = Math.min(speed, maxSpeed);
-    if (this.status == 'running') {
-        this.runningCycle += delta * s * .7;
+function setMonsterModule(module) {
+    _MonsterModule = '';
+    for (var i = 0; i < RoleModules.length; i++) {
+        if (module == RoleModules[i]) {
+            _MonsterModule = module;
+            break;
+        }
     }
 
-    this.runningCycle = this.runningCycle % (Math.PI * 2);
-    var t = this.runningCycle;
-
-    this.pawFR.rotation.x = Math.sin(t) * Math.PI / 4;
-    this.pawFR.position.y = -5.5 - Math.sin(t);
-    this.pawFR.position.z = 7.5 + Math.cos(t);
-
-    this.pawFL.rotation.x = Math.sin(t + .4) * Math.PI / 4;
-    this.pawFL.position.y = -5.5 - Math.sin(t + .4);
-    this.pawFL.position.z = 7.5 + Math.cos(t + .4);
-
-    this.pawBL.rotation.x = Math.sin(t + 2) * Math.PI / 4;
-    this.pawBL.position.y = -5.5 - Math.sin(t + 3.8);
-    this.pawBL.position.z = -7.5 + Math.cos(t + 3.8);
-
-    this.pawBR.rotation.x = Math.sin(t + 2.4) * Math.PI / 4;
-    this.pawBR.position.y = -5.5 - Math.sin(t + 3.4);
-    this.pawBR.position.z = -7.5 + Math.cos(t + 3.4);
-
-    this.torso.rotation.x = Math.sin(t) * Math.PI / 8;
-    this.torso.position.y = 3 - Math.sin(t + Math.PI / 2) * 3;
-
-    //this.head.position.y = 5-Math.sin(t+Math.PI/2)*2;
-    this.head.rotation.x = -.1 + Math.sin(-t - 1) * .4;
-    this.mouth.rotation.x = .2 + Math.sin(t + Math.PI + .3) * .4;
-
-    this.tail.rotation.x = .2 + Math.sin(t - Math.PI / 2);
-
-    this.eyeR.scale.y = .5 + Math.sin(t + Math.PI) * .5;
+    _MonsterModule = (_MonsterModule == '' ? 'wolf' : _MonsterModule);
 }
 
-Hero.prototype.nod = function () {
-    var _this = this;
-    var sp = .5 + Math.random();
-
-    // HEAD
-    var tHeadRotY = -Math.PI / 6 + Math.random() * Math.PI / 3;
-    TweenMax.to(this.head.rotation, sp, { y: tHeadRotY, ease: Power4.easeInOut, onComplete: function () { _this.nod() } });
-
-    // EARS
-    var tEarLRotX = Math.PI / 4 + Math.random() * Math.PI / 6;
-    var tEarRRotX = Math.PI / 4 + Math.random() * Math.PI / 6;
-
-    TweenMax.to(this.earL.rotation, sp, { x: tEarLRotX, ease: Power4.easeInOut });
-    TweenMax.to(this.earR.rotation, sp, { x: tEarRRotX, ease: Power4.easeInOut });
-
-
-    // PAWS BACK LEFT
-
-    var tPawBLRot = Math.random() * Math.PI / 2;
-    var tPawBLY = -4 + Math.random() * 8;
-
-    TweenMax.to(this.pawBL.rotation, sp / 2, { x: tPawBLRot, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-    TweenMax.to(this.pawBL.position, sp / 2, { y: tPawBLY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-
-
-    // PAWS BACK RIGHT
-
-    var tPawBRRot = Math.random() * Math.PI / 2;
-    var tPawBRY = -4 + Math.random() * 8;
-    TweenMax.to(this.pawBR.rotation, sp / 2, { x: tPawBRRot, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-    TweenMax.to(this.pawBR.position, sp / 2, { y: tPawBRY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-
-    // PAWS FRONT LEFT
-
-    var tPawFLRot = Math.random() * Math.PI / 2;
-    var tPawFLY = -4 + Math.random() * 8;
-
-    TweenMax.to(this.pawFL.rotation, sp / 2, { x: tPawFLRot, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-
-    TweenMax.to(this.pawFL.position, sp / 2, { y: tPawFLY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-
-    // PAWS FRONT RIGHT
-
-    var tPawFRRot = Math.random() * Math.PI / 2;
-    var tPawFRY = -4 + Math.random() * 8;
-
-    TweenMax.to(this.pawFR.rotation, sp / 2, { x: tPawFRRot, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-
-    TweenMax.to(this.pawFR.position, sp / 2, { y: tPawFRY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-
-    // MOUTH
-    var tMouthRot = Math.random() * Math.PI / 8;
-    TweenMax.to(this.mouth.rotation, sp, { x: tMouthRot, ease: Power1.easeInOut });
-    // IRIS
-    var tIrisY = -1 + Math.random() * 2;
-    var tIrisZ = -1 + Math.random() * 2;
-    var iris1 = this.iris;
-    var iris2 = this.eyeR.children[0];
-    TweenMax.to([iris1.position, iris2.position], sp, { y: tIrisY, z: tIrisZ, ease: Power1.easeInOut });
-
-    //EYES
-    if (Math.random() > .2) TweenMax.to([this.eyeR.scale, this.eyeL.scale], sp / 8, { y: 0, ease: Power1.easeInOut, yoyo: true, repeat: 1 });
-
-}
-
-Hero.prototype.hang = function () {
-    var _this = this;
-    var sp = 1;
-    var ease = Power4.easeOut;
-
-    TweenMax.killTweensOf(this.eyeL.scale);
-    TweenMax.killTweensOf(this.eyeR.scale);
-
-    this.body.rotation.x = 0;
-    this.torso.rotation.x = 0;
-    this.body.position.y = 0;
-    this.torso.position.y = 7;
-
-    TweenMax.to(this.mesh.rotation, sp, { y: 0, ease: ease });
-    TweenMax.to(this.mesh.position, sp, { y: -7, z: 6, ease: ease });
-    TweenMax.to(this.head.rotation, sp, { x: Math.PI / 6, ease: ease, onComplete: function () { _this.nod(); } });
-
-    TweenMax.to(this.earL.rotation, sp, { x: Math.PI / 3, ease: ease });
-    TweenMax.to(this.earR.rotation, sp, { x: Math.PI / 3, ease: ease });
-
-    TweenMax.to(this.pawFL.position, sp, { y: -1, z: 3, ease: ease });
-    TweenMax.to(this.pawFR.position, sp, { y: -1, z: 3, ease: ease });
-    TweenMax.to(this.pawBL.position, sp, { y: -2, z: -3, ease: ease });
-    TweenMax.to(this.pawBR.position, sp, { y: -2, z: -3, ease: ease });
-
-    TweenMax.to(this.eyeL.scale, sp, { y: 1, ease: ease });
-    TweenMax.to(this.eyeR.scale, sp, { y: 1, ease: ease });
-}
-
-Monster.prototype.nod = function () {
-    var _this = this;
-    var sp = 1 + Math.random() * 2;
-
-    // HEAD
-    var tHeadRotY = -Math.PI / 3 + Math.random() * .5;
-    var tHeadRotX = Math.PI / 3 - .2 + Math.random() * .4;
-    TweenMax.to(this.head.rotation, sp, { x: tHeadRotX, y: tHeadRotY, ease: Power4.easeInOut, onComplete: function () { _this.nod() } });
-
-    // TAIL
-
-    var tTailRotY = -Math.PI / 4;
-    TweenMax.to(this.tail.rotation, sp / 8, { y: tTailRotY, ease: Power1.easeInOut, yoyo: true, repeat: 8 });
-
-    // EYES
-
-    TweenMax.to([this.eyeR.scale, this.eyeL.scale], sp / 20, { y: 0, ease: Power1.easeInOut, yoyo: true, repeat: 1 });
-}
-
-Monster.prototype.sit = function () {
-    var sp = 1.2;
-    var ease = Power4.easeOut;
-    var _this = this;
-    TweenMax.to(this.torso.rotation, sp, { x: -1.3, ease: ease });
-    TweenMax.to(this.torso.position, sp, {
-        y: -5, ease: ease, onComplete: function () {
-            _this.nod();
-            gameStatus = "readyToReplay";
+function setObstacleModule(module) {
+    _ObstacleModule = '';
+    for (var i = 0; i < RoleModules.length; i++) {
+        if (module == RoleModules[i]) {
+            _ObstacleModule = module;
+            break;
         }
-    });
-
-    TweenMax.to(this.head.rotation, sp, { x: Math.PI / 3, y: -Math.PI / 3, ease: ease });
-    TweenMax.to(this.tail.rotation, sp, { x: 2, y: Math.PI / 4, ease: ease });
-    TweenMax.to(this.pawBL.rotation, sp, { x: -.1, ease: ease });
-    TweenMax.to(this.pawBR.rotation, sp, { x: -.1, ease: ease });
-    TweenMax.to(this.pawFL.rotation, sp, { x: 1, ease: ease });
-    TweenMax.to(this.pawFR.rotation, sp, { x: 1, ease: ease });
-    TweenMax.to(this.mouth.rotation, sp, { x: .3, ease: ease });
-    TweenMax.to(this.eyeL.scale, sp, { y: 1, ease: ease });
-    TweenMax.to(this.eyeR.scale, sp, { y: 1, ease: ease });
-
-    //TweenMax.to(this.body.rotation, sp, {y:Math.PI/4});
-
-}
-
-Monster.prototype.pause = function () {
-    this.resetOrgPosition();
-    this.sit();
-};
-
-Monster.prototype.resetOrgPosition = function () {
-    var angle = Math.PI * monsterPos;
-    monster.mesh.position.y = -floorRadius + Math.sin(angle) * (floorRadius + 12);
-    monster.mesh.position.x = Math.cos(angle) * (floorRadius + 15);
-    monster.mesh.rotation.z = -Math.PI / 2 + angle;
-};
-
-Carrot = function () {
-    this.angle = 0;
-    this.mesh = new THREE.Group();
-
-    var bodyGeom = new THREE.CylinderGeometry(propDefault.body.rt, propDefault.body.rb, propDefault.body.h, propDefault.body.rs, propDefault.body.hs);
-    bodyGeom.vertices[8].y += 2;
-    bodyGeom.vertices[9].y -= 3;
-
-    this.body = new THREE.Mesh(bodyGeom, propDefault.body.c);
-
-    var leafGeom = new THREE.CubeGeometry(propDefault.leaf.w, propDefault.leaf.h, propDefault.leaf.d, 1);
-    leafGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 5, 0));
-    leafGeom.vertices[2].x -= 1;
-    leafGeom.vertices[3].x -= 1;
-    leafGeom.vertices[6].x += 1;
-    leafGeom.vertices[7].x += 1;
-
-    this.leaf1 = new THREE.Mesh(leafGeom, propDefault.leaf.c);
-    this.leaf1.position.y = 7;
-    this.leaf1.rotation.z = .3;
-    this.leaf1.rotation.x = .2;
-
-    this.leaf2 = this.leaf1.clone();
-    this.leaf2.scale.set(1, 1.3, 1);
-    this.leaf2.position.y = 7;
-    this.leaf2.rotation.z = -.3;
-    this.leaf2.rotation.x = -.2;
-
-    this.mesh.add(this.body);
-    this.mesh.add(this.leaf1);
-    this.mesh.add(this.leaf2);
-
-    this.body.traverse(function (object) {
-        if (object instanceof THREE.Mesh) {
-            object.castShadow = true;
-            object.receiveShadow = true;
-        }
-    });
-}
-
-Hedgehog = function () {
-    this.angle = 0;
-    this.status = "ready";
-    this.mesh = new THREE.Group();
-    var bodyGeom = new THREE.CubeGeometry(obstacleDefault.body.w, obstacleDefault.body.h, obstacleDefault.body.d, 1);
-    this.body = new THREE.Mesh(bodyGeom, obstacleDefault.body.c);
-
-    var headGeom = new THREE.CubeGeometry(obstacleDefault.head.w, obstacleDefault.head.h, obstacleDefault.head.d, 1);
-    this.head = new THREE.Mesh(headGeom, obstacleDefault.head.c);
-    this.head.position.z = 6;
-    this.head.position.y = -.5;
-
-    var noseGeom = new THREE.CubeGeometry(obstacleDefault.nose.w, obstacleDefault.nose.h, obstacleDefault.nose.d, 1);
-    this.nose = new THREE.Mesh(noseGeom, obstacleDefault.nose.c);
-    this.nose.position.z = 4;
-    this.nose.position.y = 2;
-
-    var eyeGeom = new THREE.CubeGeometry(obstacleDefault.eye.w, obstacleDefault.eye.h, obstacleDefault.eye.d);
-
-    this.eyeL = new THREE.Mesh(eyeGeom, obstacleDefault.eye.c);
-    this.eyeL.position.x = 2.2;
-    this.eyeL.position.z = -.5;
-    this.eyeL.position.y = .8;
-    this.eyeL.castShadow = true;
-    this.head.add(this.eyeL);
-
-    var irisGeom = new THREE.CubeGeometry(obstacleDefault.iris.w, obstacleDefault.iris.h, obstacleDefault.iris.d);
-
-    this.iris = new THREE.Mesh(irisGeom, obstacleDefault.iris.c);
-    this.iris.position.x = .5;
-    this.iris.position.y = .8;
-    this.iris.position.z = .8;
-    this.eyeL.add(this.iris);
-
-    this.eyeR = this.eyeL.clone();
-    this.eyeR.children[0].position.x = -this.iris.position.x;
-    this.eyeR.position.x = -this.eyeL.position.x;
-
-    var spikeGeom = new THREE.CubeGeometry(obstacleDefault.spike.w, obstacleDefault.spike.h, obstacleDefault.spike.d, 1);
-    spikeGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 1, 0));
-
-    for (var i = 0; i < 9; i++) {
-        var row = (i % 3);
-        var col = Math.floor(i / 3);
-        var sb = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
-        sb.rotation.x = -Math.PI / 2 + (Math.PI / 12 * row) - .5 + Math.random();
-        sb.position.z = -3;
-        sb.position.y = -2 + row * 2;
-        sb.position.x = -2 + col * 2;
-        this.body.add(sb);
-        var st = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
-        st.position.y = 3;
-        st.position.x = -2 + row * 2;
-        st.position.z = -2 + col * 2;
-        st.rotation.z = Math.PI / 6 - (Math.PI / 6 * row) - .5 + Math.random();
-        this.body.add(st);
-
-        var sr = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
-        sr.position.x = 3;
-        sr.position.y = -2 + row * 2;
-        sr.position.z = -2 + col * 2;
-        sr.rotation.z = -Math.PI / 2 + (Math.PI / 12 * row) - .5 + Math.random();
-        this.body.add(sr);
-
-        var sl = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
-        sl.position.x = -3;
-        sl.position.y = -2 + row * 2;
-        sl.position.z = -2 + col * 2;
-        sl.rotation.z = Math.PI / 2 - (Math.PI / 12 * row) - .5 + Math.random();;
-        this.body.add(sl);
     }
 
-    this.head.add(this.eyeR);
-    var earGeom = new THREE.CubeGeometry(obstacleDefault.ear.w, obstacleDefault.ear.h, obstacleDefault.ear.d, 1);
-    this.earL = new THREE.Mesh(earGeom, obstacleDefault.ear.c);
-    this.earL.position.x = 2.5;
-    this.earL.position.z = -2.5;
-    this.earL.position.y = 2.5;
-    this.earL.rotation.z = -Math.PI / 12;
-    this.earL.castShadow = true;
-    this.head.add(this.earL);
-
-    this.earR = this.earL.clone();
-    this.earR.position.x = -this.earL.position.x;
-    this.earR.rotation.z = -this.earL.rotation.z;
-    this.earR.castShadow = true;
-    this.head.add(this.earR);
-
-    var mouthGeom = new THREE.CubeGeometry(obstacleDefault.mouth.w, obstacleDefault.mouth.h, obstacleDefault.mouth.d, 1);
-    this.mouth = new THREE.Mesh(mouthGeom, obstacleDefault.mouth.c);
-    this.mouth.position.z = 3.5;
-    this.mouth.position.y = -1.5;
-    this.head.add(this.mouth);
-
-
-    this.mesh.add(this.body);
-    this.body.add(this.head);
-    this.head.add(this.nose);
-
-    this.mesh.traverse(function (object) {
-        if (object instanceof THREE.Mesh) {
-            object.castShadow = true;
-            object.receiveShadow = true;
-        }
-    });
+    _ObstacleModule = (_ObstacleModule == '' ? 'hedgehog' : _ObstacleModule);
 }
 
-Hedgehog.prototype.nod = function () {
-    var _this = this;
-    var speed = .1 + Math.random() * .5;
-    var angle = -Math.PI / 4 + Math.random() * Math.PI / 2;
-    TweenMax.to(this.head.rotation, speed, {
-        y: angle, onComplete: function () {
-            _this.nod();
+function setPropModule(module) {
+    _PropModule = '';
+    for (var i = 0; i < RoleModules.length; i++) {
+        if (module == RoleModules[i]) {
+            _PropModule = module;
+            break;
         }
-    });
+    }
+
+    _PropModule = (_PropModule == '' ? 'carrot' : _PropModule);
+}
+
+function createRoleObject(module) {
+    var roleObj = null;
+    switch (module) {
+        case 'cat':
+            roleObj = new Cat();
+            break;
+        case 'lion':
+            roleObj = new Lion();
+            break;
+        case 'dragon':
+            roleObj = new Dragon();
+            break;
+        case 'bird':
+            roleObj = new Bird();
+            break;
+        case 'mouse':
+            roleObj = new Mouse();
+            break;
+        case 'rabbit':
+            roleObj = new Hero();
+            break;
+        case 'wolf':
+            roleObj = new Monster();
+            break;
+        case 'carrot':
+            roleObj = new Carrot();
+            break;
+        case 'hedgehog':
+            roleObj = new Hedgehog();
+            break;
+    }
+
+    return roleObj;
 }
 
 function createHero() {
-    hero = new Hero();
+    hero = createRoleObject(_HeroModule);
     hero.mesh.rotation.y = Math.PI / 2;
     scene.add(hero.mesh);
     hero.nod();
@@ -1097,7 +445,7 @@ function createHero() {
 
 function reCreateHero() {
     scene.remove(hero.mesh);
-    var newHero = new Hero();
+    var newHero = createRoleObject(_HeroModule);
     newHero.mesh.rotation.y = Math.PI / 2;
     scene.add(newHero.mesh);
     hero = null;
@@ -1106,7 +454,7 @@ function reCreateHero() {
 }
 
 function createMonster() {
-    monster = new Monster();
+    monster = createRoleObject(_MonsterModule);
     monster.mesh.position.z = 20;
     //monster.mesh.scale.set(1.2,1.2,1.2);
     scene.add(monster.mesh);
@@ -1115,7 +463,7 @@ function createMonster() {
 
 function reCreateMonster() {
     scene.remove(monster.mesh);
-    var newMonster = new Monster();
+    var newMonster = createRoleObject(_MonsterModule);
     newMonster.mesh.position.z = 20;
     //monster.mesh.scale.set(1.2,1.2,1.2);
     newMonster.resetOrgPosition();
@@ -1151,8 +499,8 @@ function gameOver() {
     monster.heroHolder.add(hero.mesh);
     TweenMax.to(this, 1, { speed: 0 });
     TweenMax.to(camera.position, 3, { z: cameraPosGameOver, y: 60, x: -30 });
-    carrot.mesh.visible = false;
-    obstacle.mesh.visible = false;
+    //prop.mesh.visible = false;
+    //obstacle.mesh.visible = false;
     clearInterval(levelInterval);
 }
 
@@ -1231,30 +579,46 @@ function createFirs() {
     }
 }
 
-function createCarrot() {
-    carrot = new Carrot();
-    scene.add(carrot.mesh);
+function createProp() {
+    prop = createRoleObject(_PropModule);
+    scene.add(prop.mesh);
 }
 
-function updateCarrotPosition() {
-    carrot.mesh.rotation.y += delta * 6;
-    carrot.mesh.rotation.z = Math.PI / 2 - (floorRotation + carrot.angle);
-    carrot.mesh.position.y = -floorRadius + Math.sin(floorRotation + carrot.angle) * (floorRadius + 50);
-    carrot.mesh.position.x = Math.cos(floorRotation + carrot.angle) * (floorRadius + 50);
+function reCreateProp() {
+    if (prop && prop.mesh) {
+        scene.remove(prop.mesh);
+        var newProp = createRoleObject(_PropModule);
+        scene.add(newProp.mesh);
+        prop = null;
+        prop = newProp;
+    }
+}
+
+function updatePropPosition() {
+    prop.status = _params_PropStatus;
+    if (prop.status == 'show') {
+        prop.mesh.rotation.y += delta * 6;
+        prop.mesh.rotation.z = Math.PI / 2 - (floorRotation + prop.angle);
+        prop.mesh.position.y = -floorRadius + Math.sin(floorRotation + prop.angle) * (floorRadius + 50);
+        prop.mesh.position.x = Math.cos(floorRotation + prop.angle) * (floorRadius + 50);
+    }
 }
 
 function updateObstaclePosition() {
     if (obstacle.status == "flying") return;
 
-    // TODO fix this,
-    if (floorRotation + obstacle.angle > 2.5) {
-        obstacle.angle = -floorRotation + Math.random() * .3;
-        obstacle.body.rotation.y = Math.random() * Math.PI * 2;
-    }
+    obstacle.status = _params_ObstacleStatus;
+    if (obstacle.status == 'rerady') {
+        // TODO fix this,
+        if (floorRotation + obstacle.angle > 2.5) {
+            obstacle.angle = -floorRotation + Math.random() * .3;
+            obstacle.body.rotation.y = Math.random() * Math.PI * 2;
+        }
 
-    obstacle.mesh.rotation.z = floorRotation + obstacle.angle - Math.PI / 2;
-    obstacle.mesh.position.y = -floorRadius + Math.sin(floorRotation + obstacle.angle) * (floorRadius + 3);
-    obstacle.mesh.position.x = Math.cos(floorRotation + obstacle.angle) * (floorRadius + 3);
+        obstacle.mesh.rotation.z = floorRotation + obstacle.angle - Math.PI / 2;
+        obstacle.mesh.position.y = -floorRadius + Math.sin(floorRotation + obstacle.angle) * (floorRadius + 3);
+        obstacle.mesh.position.x = Math.cos(floorRotation + obstacle.angle) * (floorRadius + 3);
+    }
 }
 
 function updateFloorRotation() {
@@ -1267,12 +631,26 @@ function updateFloorRotation() {
 }
 
 function createObstacle() {
-    obstacle = new Hedgehog();
+    obstacle = createRoleObject(_ObstacleModule);
     obstacle.body.rotation.y = -Math.PI / 2;
     obstacle.mesh.scale.set(1.1, 1.1, 1.1);
     obstacle.mesh.position.y = floorRadius + 4;
     obstacle.nod();
     scene.add(obstacle.mesh);
+}
+
+function reCreateObstacle() {
+    if (obstacle && obstacle.mesh) {
+        scene.remove(obstacle.mesh);
+        var newObstacle = createRoleObject(_ObstacleModule);
+        obstacle.body.rotation.y = -Math.PI / 2;
+        obstacle.mesh.scale.set(1.1, 1.1, 1.1);
+        obstacle.mesh.position.y = floorRadius + 4;
+        obstacle.nod();
+        scene.add(newObstacle.mesh);
+        obstacle = null;
+        obstacle = newObstacle;
+    }
 }
 
 function createBonusParticles() {
@@ -1282,7 +660,7 @@ function createBonusParticles() {
 }
 
 function checkCollision() {
-    var db = hero.mesh.position.clone().sub(carrot.mesh.position.clone());
+    var db = hero.mesh.position.clone().sub(prop.mesh.position.clone());
     var dm = hero.mesh.position.clone().sub(obstacle.mesh.position.clone());
 
     if (db.length() < collisionBonus) {
@@ -1295,11 +673,11 @@ function checkCollision() {
 }
 
 function getBonus() {
-    if (carrot.mesh.visible) {
-        bonusParticles.mesh.position.copy(carrot.mesh.position);
+    if (prop.mesh.visible) {
+        bonusParticles.mesh.position.copy(prop.mesh.position);
         bonusParticles.mesh.visible = true;
         bonusParticles.explose();
-        carrot.angle += Math.PI / 2;
+        prop.angle += Math.PI / 2;
         //speed*=.95;
         monsterPosTarget += .025;
     }
@@ -1359,7 +737,7 @@ function loop() {
     hero.run();
     updateDistance();
     updateMonsterPosition();
-    updateCarrotPosition();
+    updatePropPosition();
     updateObstaclePosition();
     checkCollision();
     render();
@@ -1386,7 +764,7 @@ function gameInit(event) {
     createHero();
     createMonster();
     createFirs();
-    createCarrot();
+    createProp();
     createBonusParticles();
     createObstacle();
     initUI();
@@ -1403,7 +781,7 @@ function gameInit(event) {
 function gamePause() {
     monsterPos = .58;
     updateMonsterPosition();
-    carrot.mesh.visible = false;
+    prop.mesh.visible = false;
     obstacle.mesh.visible = false;
     gameStatus = "pause";
     hero.status = "pause";
@@ -1413,8 +791,8 @@ function gamePause() {
 
 function gameStart() {
     gameStatus = "play";
-    carrot.mesh.visible = _params_CarrotShow;
-    obstacle.mesh.visible = _params_HedgehogShow;
+    prop.mesh.visible = (_params_PropStatus == 'hidden' ? false : true);
+    obstacle.mesh.visible = (_params_ObstacleStatus == 'hidden' ? false : true);
     hero.status = _params_HeroStatus;
     monster.status = _params_MonsterStatus;
     if (hero.status == 'pause' && monster.status == 'running') {
@@ -1447,9 +825,9 @@ function reinitGameParam() {
     _params_GameStatus = "pause";
     _params_HeroStatus = "hidden";
     _params_MonsterStatus = "hidden";
+    _params_ObstacleStatus = "hidden";
+    _params_PropStatus = "hidden";
     _params_MusicPlay = false;
-    _params_CarrotShow = false;
-    _params_HedgehogShow = false;
     _params_BsackgroundShow = false;
     audio.pause();
 
@@ -1470,8 +848,8 @@ function resetGame() {
     speed = initSpeed;
     level = 0;
     distance = 0;
-    carrot.mesh.visible = _params_CarrotShow;
-    obstacle.mesh.visible = _params_HedgehogShow;
+    prop.mesh.visible = (_params_PropStatus == 'hidden' ? false : true);
+    obstacle.mesh.visible = (_params_ObstacleStatus == 'hidden' ? false : true);
     floor.visible = _params_BsackgroundShow;
     gameStatus = 'pause';
     hero.status = _params_HeroStatus;

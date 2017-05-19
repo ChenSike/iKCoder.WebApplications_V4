@@ -155,13 +155,18 @@ WorkScene.discard = function () {
 };
 
 WorkScene.renderContent = function () {
-    var content = document.getElementById('txt_Code_Content');
-    var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
-    content.textContent = code;
-    if (typeof prettyPrintOne == 'function') {
-        code = content.innerHTML;
-        code = prettyPrintOne(code, 'js');
-        content.innerHTML = code;
+    try {
+        var content = document.getElementById('txt_Code_Content');
+        var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
+        content.textContent = code;
+        if (typeof prettyPrintOne == 'function') {
+            code = content.innerHTML;
+            code = prettyPrintOne(code, 'js');
+            content.innerHTML = code;
+        }
+    }
+    catch(ex){
+
     }
 };
 

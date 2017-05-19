@@ -176,7 +176,7 @@ function initEvents() {
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
-        window.location.href = 'qualitycourse.html?scene=p_3_' + _nextStep + '&rnd=' + Date.now() + tmpParam;
+        window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now() + tmpParam;
     });
 
     $('#btn_Step_FindError').on('click', function (e) {
