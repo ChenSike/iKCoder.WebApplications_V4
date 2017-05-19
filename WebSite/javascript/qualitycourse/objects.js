@@ -1,27 +1,22 @@
 ﻿/*Cat*/
 Cat = function () {
     this.threeGroup = new THREE.Group();
-
     var yellowMat = new THREE.MeshLambertMaterial({
         color: 0xfdd276,
         shading: THREE.FlatShading
     });
-
     var pinkMat = new THREE.MeshLambertMaterial({
         color: 0xe0877e,//0xe0a79f, 
         shading: THREE.FlatShading
     });
-
     var redMat = new THREE.MeshLambertMaterial({
         color: 0x630d15,
         shading: THREE.FlatShading
     });
-
     var whiteMat = new THREE.MeshLambertMaterial({
         color: 0xffffff,
         shading: THREE.FlatShading
     });
-
     var blackMat = new THREE.MeshLambertMaterial({
         color: 0x111111,
         shading: THREE.FlatShading
@@ -30,7 +25,6 @@ Cat = function () {
         color: 0x2e2019,//0x4b342a, 
         shading: THREE.FlatShading
     });
-
     var lightBrownMat = new THREE.MeshLambertMaterial({
         color: 0x664f4a,
         shading: THREE.FlatShading
@@ -51,7 +45,7 @@ Cat = function () {
     // body
 
     this.body = new THREE.Group();
-
+    this.mesh = this.body;
     // torso
 
     var torsoGeom = new THREE.CylinderGeometry(0, 26, this.bodyHeight, 3, 1);
@@ -489,6 +483,8 @@ Cat = function () {
             object.receiveShadow = true;
         }
     });
+
+    this.mesh = this.threeGroup;
 }
 
 Cat.prototype.updateTail = function (t) {
@@ -686,8 +682,14 @@ Cat.prototype.pause = function () {
 }
 
 Cat.prototype.resetOrgPosition = function () {
-
-}
+    var angle = Math.PI * monsterPos;
+    //monster.mesh.position.y = -floorRadius + Math.sin(angle) * (floorRadius + 12);
+    //monster.mesh.position.x = Math.cos(angle) * (floorRadius + 15);
+    //monster.mesh.rotation.z = -Math.PI / 2 + angle;
+    monster.mesh.position.x = -60;
+    monster.mesh.rotation.y = Math.PI / 2;
+    monster.mesh.rotation.z = 0.33;
+};
 
 /*Lion*/
 Lion = function () {
@@ -756,9 +758,11 @@ Lion = function () {
 
     for (var i = 0; i < this.bodyVertices.length; i++) {
         var tv = this.body.geometry.vertices[this.bodyVertices[i]];
-        tv.z = 70;
-        //tv.x = 0;
-        this.bodyInitPositions.push({ x: tv.x, y: tv.y, z: tv.z });
+        if (typeof tv != 'undefined' && tv) {
+            tv.z = 70;
+            //tv.x = 0;
+            this.bodyInitPositions.push({ x: tv.x, y: tv.y, z: tv.z });
+        }
     }
 
     // knee
@@ -999,6 +1003,8 @@ Lion = function () {
             object.receiveShadow = true;
         }
     });
+
+    this.mesh = this.threegroup;
 }
 
 Lion.prototype.updateBody = function (speed) {
@@ -1176,7 +1182,12 @@ Lion.prototype.pause = function () {
 }
 
 Lion.prototype.resetOrgPosition = function () {
-
+    this.mesh.scale.setX(0.3);
+    this.mesh.scale.setY(0.3);
+    this.mesh.scale.setZ(0.3);
+    this.mesh.rotation.y = Math.PI / 2;
+    this.mesh.position.y = 50;
+    this.mesh.position.x = -50;
 }
 
 /*Dragon*/
@@ -1445,6 +1456,7 @@ Dragon = function () {
             object.receiveShadow = true;
         }
     });
+    this.mesh = this.threegroup;
 }
 
 Dragon.prototype.update = function () {
@@ -1817,7 +1829,12 @@ Dragon.prototype.pause = function () {
 }
 
 Dragon.prototype.resetOrgPosition = function () {
-
+    this.mesh.position.y = 100
+    this.mesh.rotation.y = Math.PI / 2
+    this.mesh.position.x = -50
+    this.mesh.scale.setY(0.6);
+    this.mesh.scale.setX(0.6);
+    this.mesh.scale.setZ(0.6);
 }
 
 function makeCube(mat, w, h, d, posX, posY, posZ, rotX, rotY, rotZ) {
@@ -1834,7 +1851,6 @@ function makeCube(mat, w, h, d, posX, posY, posZ, rotX, rotY, rotZ) {
 
 /*Bird*/
 Bird = function () {
-
     this.rSegments = 4;
     this.hSegments = 3;
     this.cylRay = 120;
@@ -1984,7 +2000,7 @@ Bird = function () {
             object.receiveShadow = true;
         }
     });
-
+    this.mesh = this.threegroup;
 }
 
 Bird.prototype.look = function (hAngle, vAngle) {
@@ -2098,6 +2114,12 @@ Bird.prototype.pause = function () {
 }
 
 Bird.prototype.resetOrgPosition = function () {
+    this.mesh.position.y = 0
+    this.mesh.rotation.y = Math.PI / 2
+    this.mesh.position.x = -70
+    this.mesh.scale.setY(0.4);
+    this.mesh.scale.setX(0.4);
+    this.mesh.scale.setZ(0.4);
 
 }
 
@@ -2140,39 +2162,39 @@ Mouse = function () {
     this.eyeR.children[0].position.x = -this.iris.position.x;
     this.eyeR.position.x = -this.eyeL.position.x;
 
-    var spikeGeom = new THREE.CubeGeometry(obstacleDefault.spike.w, obstacleDefault.spike.h, obstacleDefault.spike.d, 1);
-    spikeGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 1, 0));
+    //var spikeGeom = new THREE.CubeGeometry(obstacleDefault.spike.w, obstacleDefault.spike.h, obstacleDefault.spike.d, 1);
+    //spikeGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 1, 0));
 
-    for (var i = 0; i < 9; i++) {
-        var row = (i % 3);
-        var col = Math.floor(i / 3);
-        var sb = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
-        sb.rotation.x = -Math.PI / 2 + (Math.PI / 12 * row) - .5 + Math.random();
-        sb.position.z = -3;
-        sb.position.y = -2 + row * 2;
-        sb.position.x = -2 + col * 2;
-        this.body.add(sb);
-        var st = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
-        st.position.y = 3;
-        st.position.x = -2 + row * 2;
-        st.position.z = -2 + col * 2;
-        st.rotation.z = Math.PI / 6 - (Math.PI / 6 * row) - .5 + Math.random();
-        this.body.add(st);
+    //for (var i = 0; i < 9; i++) {
+    //    var row = (i % 3);
+    //    var col = Math.floor(i / 3);
+    //    var sb = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
+    //    sb.rotation.x = -Math.PI / 2 + (Math.PI / 12 * row) - .5 + Math.random();
+    //    sb.position.z = -3;
+    //    sb.position.y = -2 + row * 2;
+    //    sb.position.x = -2 + col * 2;
+    //    this.body.add(sb);
+    //    var st = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
+    //    st.position.y = 3;
+    //    st.position.x = -2 + row * 2;
+    //    st.position.z = -2 + col * 2;
+    //    st.rotation.z = Math.PI / 6 - (Math.PI / 6 * row) - .5 + Math.random();
+    //    this.body.add(st);
 
-        var sr = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
-        sr.position.x = 3;
-        sr.position.y = -2 + row * 2;
-        sr.position.z = -2 + col * 2;
-        sr.rotation.z = -Math.PI / 2 + (Math.PI / 12 * row) - .5 + Math.random();
-        this.body.add(sr);
+    //    var sr = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
+    //    sr.position.x = 3;
+    //    sr.position.y = -2 + row * 2;
+    //    sr.position.z = -2 + col * 2;
+    //    sr.rotation.z = -Math.PI / 2 + (Math.PI / 12 * row) - .5 + Math.random();
+    //    this.body.add(sr);
 
-        var sl = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
-        sl.position.x = -3;
-        sl.position.y = -2 + row * 2;
-        sl.position.z = -2 + col * 2;
-        sl.rotation.z = Math.PI / 2 - (Math.PI / 12 * row) - .5 + Math.random();;
-        this.body.add(sl);
-    }
+    //    var sl = new THREE.Mesh(spikeGeom, obstacleDefault.spike.c);
+    //    sl.position.x = -3;
+    //    sl.position.y = -2 + row * 2;
+    //    sl.position.z = -2 + col * 2;
+    //    sl.rotation.z = Math.PI / 2 - (Math.PI / 12 * row) - .5 + Math.random();;
+    //    this.body.add(sl);
+    //}
 
     this.head.add(this.eyeR);
     var earGeom = new THREE.CubeGeometry(obstacleDefault.ear.w, obstacleDefault.ear.h, obstacleDefault.ear.d, 1);
@@ -2241,7 +2263,12 @@ Mouse.prototype.pause = function () {
 }
 
 Mouse.prototype.resetOrgPosition = function () {
-
+    this.mesh.position.y = 0
+    this.mesh.rotation.y = Math.PI / 2
+    this.mesh.position.x = -70
+    this.mesh.scale.setY(2.4);
+    this.mesh.scale.setX(2.4);
+    this.mesh.scale.setZ(2.4);
 }
 
 /*Rabbit*/

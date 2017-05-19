@@ -734,7 +734,7 @@ textarea {
     transform: rotate(45deg);
     -webkit-animation: loading-center-absolute 1.5s infinite;
     animation: loading-center-absolute 1.5s infinite;
-    animation-iteration-count:5;
+    animation-iteration-count: 5;
 }
 
 .object {
@@ -747,25 +747,29 @@ textarea {
 #object_one {
     -webkit-animation: object_one 1.5s infinite;
     animation: object_one 1.5s infinite;
-    animation-iteration-count:5;
+    animation-iteration-count: 5;
+    background-color: rgb(234,85,60);
 }
 
 #object_two {
     -webkit-animation: object_two 1.5s infinite;
     animation: object_two 1.5s infinite;
-    animation-iteration-count:5;
+    animation-iteration-count: 5;
+    background-color: rgb(243,151,0);
 }
 
 #object_three {
     -webkit-animation: object_three 1.5s infinite;
     animation: object_three 1.5s infinite;
-    animation-iteration-count:5;
+    animation-iteration-count: 5;
+    background-color: rgb(47,168,225);
 }
 
 #object_four {
     -webkit-animation: object_four 1.5s infinite;
     animation: object_four 1.5s infinite;
-    animation-iteration-count:5;
+    animation-iteration-count: 5;
+    background-color: rgb(255,241,0);
 }
 
 
