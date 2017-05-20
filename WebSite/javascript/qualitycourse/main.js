@@ -1,5 +1,5 @@
-﻿//THREEJS RELATED VARIABLES 
-
+﻿'use strict';
+//THREEJS RELATED VARIABLES 
 var _params_GameStatus = "pause";
 var _params_HeroStatus = "hidden";
 var _params_MonsterStatus = "hidden";
@@ -41,6 +41,7 @@ var fieldGameOver, fieldDistance;
 var HEIGHT, WIDTH, windowHalfX, windowHalfY, mousePos = { x: 0, y: 0 };
 //3D OBJECTS VARIABLES
 var hero, monster, prop, obstacle;
+var globalLight, floorShadow, floor, bonusParticles;
 // Materials
 var blackMat = new THREE.MeshPhongMaterial({
     color: '#100707',
@@ -297,7 +298,7 @@ function createFloor() {
     //floorShadow.rotation.x = -Math.PI / 2;
     floorShadow.receiveShadow = true;
 
-    floorGrass = new THREE.Mesh(new THREE.SphereGeometry(floorRadius - .5, 50, 50), new THREE.MeshBasicMaterial({
+    var floorGrass = new THREE.Mesh(new THREE.SphereGeometry(floorRadius - .5, 50, 50), new THREE.MeshBasicMaterial({
         color: 0x7abf8e
     }));
     //floor.rotation.x = -Math.PI / 2;
@@ -311,7 +312,7 @@ function createFloor() {
     scene.add(floor);
 }
 
-BonusParticles = function () {
+var BonusParticles = function () {
     this.mesh = new THREE.Group();
     var bigParticleGeom = new THREE.CubeGeometry(10, 10, 10, 1);
     var smallParticleGeom = new THREE.CubeGeometry(5, 5, 5, 1);
@@ -548,7 +549,7 @@ function replay() {
 
 }
 
-Fir = function () {
+var Fir = function () {
     var height = 200;
     var truncGeom = new THREE.CylinderGeometry(2, 2, height, 6, 1);
     truncGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, height / 2, 0));
@@ -832,7 +833,7 @@ function reinitGameParam() {
     audio.pause();
 
     monster.pause();
-    TweenMax.to(this, 1, { speed: 0 });
+    TweenMax.to(window, 1, { speed: 0 });
     TweenMax.to(camera.position, 3, { z: cameraPosGameOver, y: 60, x: -30 });
     clearInterval(levelInterval);
 }
@@ -872,13 +873,13 @@ function initUI() {
     //fieldGameOver = document.getElementById("gameoverInstructions");
 }
 
-Tree = function () {
+var Tree = function () {
     this.mesh = new THREE.Object3D();
     this.trunc = new Trunc();
     this.mesh.add(this.trunc.mesh);
 }
 
-Trunc = function () {
+var Trunc = function () {
     var truncHeight = 50 + Math.random() * 150;
     var topRadius = 1 + Math.random() * 5;
     var bottomRadius = 5 + Math.random() * 5;
