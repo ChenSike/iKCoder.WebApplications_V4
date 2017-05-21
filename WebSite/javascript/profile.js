@@ -361,7 +361,8 @@ function calcOverviewItemheight(contentHeight) {
     }
 
     bigHeight = Math.floor((contentHeight - minHeight) / 3);
-    return { s: minHeight, l: bigHeight, e: contentHeight - minHeight - bigHeight * 3 + bigHeight };
+    //return { s: minHeight, l: bigHeight, e: contentHeight - minHeight - bigHeight * 3 + bigHeight };
+    return { s: 150, l: 350, e: 350 };
 };
 
 function buildOverviewHonor(datas, height) {
