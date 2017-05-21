@@ -40,7 +40,7 @@ function initPage_Do() {
         //rebuildContent('settings');
         //rebuildContent('report');    
         getUnreadMsgCount();
-        window.setInterval(getUnreadMsgCount, 5000);
+        window.setTimeout(getUnreadMsgCount, 10000);
     }
 }
 
@@ -110,6 +110,7 @@ function getUnreadMsgCount() {
                 count = (isNaN(count) ? '0' : count > 99 ? '99+' : count);
                 $('.left-bar-message-count').text(count);
                 $('.left-bar-message-count').css('background-color', (count == 0 ? 'rgb(185,185,185)' : 'rgb(236,64,122)'));
+                window.setTimeout(getUnreadMsgCount, 10000);
             }
         },
         dataType: 'xml',
