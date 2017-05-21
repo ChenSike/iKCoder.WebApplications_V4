@@ -1,35 +1,283 @@
-﻿/*Cat*/
-Cat = function () {
-    this.threeGroup = new THREE.Group();
-    var yellowMat = new THREE.MeshLambertMaterial({
-        color: 0xfdd276,
-        shading: THREE.FlatShading
-    });
-    var pinkMat = new THREE.MeshLambertMaterial({
-        color: 0xe0877e,//0xe0a79f, 
-        shading: THREE.FlatShading
-    });
-    var redMat = new THREE.MeshLambertMaterial({
-        color: 0x630d15,
-        shading: THREE.FlatShading
-    });
-    var whiteMat = new THREE.MeshLambertMaterial({
-        color: 0xffffff,
-        shading: THREE.FlatShading
-    });
-    var blackMat = new THREE.MeshLambertMaterial({
-        color: 0x111111,
-        shading: THREE.FlatShading
-    });
-    var brownMat = new THREE.MeshLambertMaterial({
-        color: 0x2e2019,//0x4b342a, 
-        shading: THREE.FlatShading
-    });
-    var lightBrownMat = new THREE.MeshLambertMaterial({
-        color: 0x664f4a,
-        shading: THREE.FlatShading
-    });
+﻿'use strict';
+// Materials
+var blackMat = new THREE.MeshPhongMaterial({
+    color: '#100707',
+    shading: THREE.FlatShading
+});
 
+var brownMat = new THREE.MeshPhongMaterial({
+    color: '#b44b39',
+    //shininess: 0,
+    shading: THREE.FlatShading
+});
+
+var greenMat = new THREE.MeshPhongMaterial({
+    color: '#7abf8e',
+    //shininess: 0,
+    shading: THREE.FlatShading
+});
+
+var pinkMat = new THREE.MeshPhongMaterial({
+    color: '#dc5f45',
+    //shininess: 0,
+    shading: THREE.FlatShading
+});
+
+var lightBrownMat = new THREE.MeshPhongMaterial({
+    color: '#e07a57',
+    shading: THREE.FlatShading
+});
+
+var whiteMat = new THREE.MeshPhongMaterial({
+    color: '#a49789',
+    shading: THREE.FlatShading
+});
+
+var skinMat = new THREE.MeshPhongMaterial({
+    color: '#ff9ea5',
+    shading: THREE.FlatShading
+});
+
+var greenMat_1 = new THREE.MeshLambertMaterial({
+    color: '#5da683',
+    shading: THREE.FlatShading
+});
+
+var lightGreenMat = new THREE.MeshLambertMaterial({
+    color: '#95c088',
+    shading: THREE.FlatShading
+});
+
+var yellowMat = new THREE.MeshLambertMaterial({
+    color: '#fdde8c',
+    shading: THREE.FlatShading
+});
+
+var redMat = new THREE.MeshLambertMaterial({
+    color: '#cb3e4c',
+    shading: THREE.FlatShading
+});
+
+var whiteMat_1 = new THREE.MeshLambertMaterial({
+    color: '#faf3d7',
+    shading: THREE.FlatShading
+});
+
+var brownMat_1 = new THREE.MeshLambertMaterial({
+    color: '#874a5c',
+    shading: THREE.FlatShading
+});
+
+var blackMat_1 = new THREE.MeshLambertMaterial({
+    color: '#403133',
+    shading: THREE.FlatShading
+});
+
+var pinkMat_1 = new THREE.MeshLambertMaterial({
+    color: '#d0838e',
+    shading: THREE.FlatShading
+});
+
+var tailMat = new THREE.LineBasicMaterial({
+    color: 0x5da683,
+    linewidth: 5
+});
+
+var yellowMat_lion = new THREE.MeshLambertMaterial({
+    color: '#fdd276',
+    shading: THREE.FlatShading
+});
+
+var redMat_lion = new THREE.MeshLambertMaterial({
+    color: '#ad3525',
+    shading: THREE.FlatShading
+});
+
+var pinkMat_lion = new THREE.MeshLambertMaterial({
+    color: '#e55d2b',
+    shading: THREE.FlatShading
+});
+
+var whiteMat_lion = new THREE.MeshLambertMaterial({
+    color: '#ffffff',
+    shading: THREE.FlatShading
+});
+
+var purpleMat_lion = new THREE.MeshLambertMaterial({
+    color: '#451954',
+    shading: THREE.FlatShading
+});
+
+var greyMat_lion = new THREE.MeshLambertMaterial({
+    color: '#653f4c',
+    shading: THREE.FlatShading
+});
+
+var blackMat_lion = new THREE.MeshLambertMaterial({
+    color: '#302925',
+    shading: THREE.FlatShading
+});
+
+var yellowMat_cat = new THREE.MeshLambertMaterial({
+    color: '#fdd276',
+    shading: THREE.FlatShading
+});
+
+var pinkMat_cat = new THREE.MeshLambertMaterial({
+    color: '#e0877e', 
+    shading: THREE.FlatShading
+});
+
+var redMat_cat = new THREE.MeshLambertMaterial({
+    color: '#630d15',
+    shading: THREE.FlatShading
+});
+
+var whiteMat_cat = new THREE.MeshLambertMaterial({
+    color: '#ffffff',
+    shading: THREE.FlatShading
+});
+
+var blackMat_cat = new THREE.MeshLambertMaterial({
+    color: '#111111',
+    shading: THREE.FlatShading
+});
+
+var brownMat_cat = new THREE.MeshLambertMaterial({
+    color: '#2e2019', 
+    shading: THREE.FlatShading
+});
+
+var lightBrownMat_cat = new THREE.MeshLambertMaterial({
+    color: '#664f4a',
+    shading: THREE.FlatShading
+});
+
+var yellowMat_bird = new THREE.MeshLambertMaterial({
+    color: '#ffde79',
+    shading: THREE.FlatShading
+});
+
+var whiteMat_bird = new THREE.MeshLambertMaterial({
+    color: '#ffffff',
+    shading: THREE.FlatShading
+});
+
+var blackMat_bird = new THREE.MeshLambertMaterial({
+    color: '#000000',
+    shading: THREE.FlatShading
+});
+
+var orangeMat_bird = new THREE.MeshLambertMaterial({
+    color: '#ff5535',
+    shading: THREE.FlatShading
+});
+
+
+var heroConst = {
+    torso: { c: brownMat, w: 7, h: 7, d: 10 },
+    pants: { c: whiteMat, w: 9, h: 9, d: 5 },
+    tail: { c: lightBrownMat, w: 3, h: 3, d: 3 },
+    head: { c: brownMat, w: 10, h: 10, d: 13 },
+    cheek: { c: pinkMat, w: 1, h: 4, d: 4 },
+    nose: { c: lightBrownMat, w: 6, h: 6, d: 3 },
+    mouth: { c: brownMat, w: 4, h: 2, d: 4 },
+    pawF: { c: lightBrownMat, w: 3, h: 3, d: 3 },
+    pawB: { c: lightBrownMat, w: 3, h: 3, d: 6 },
+    ear: { c: brownMat, w: 7, h: 18, d: 2 },
+    iris: { c: blackMat, w: 0.6, h: 2, d: 2 },
+    eye: { c: whiteMat, w: 2, h: 4, d: 4 }
+};
+
+var monsterConst = {
+    torso: { c: blackMat, w: 15, h: 15, d: 20 },
+    head: { c: blackMat, w: 20, h: 20, d: 40 },
+    mouth: { c: blackMat, w: 10, h: 4, d: 20 },
+    tooth: { c: whiteMat, w: 2, h: 2, d: 1 },
+    tongue: { c: pinkMat, w: 6, h: 1, d: 14 },
+    nose: { c: pinkMat, w: 4, h: 4, d: 4 },
+    eye: { c: whiteMat, w: 2, h: 3, d: 3 },
+    iris: { c: blackMat, w: 0.6, h: 1, d: 1 },
+    ear: { c: blackMat, w: 8, h: 6, d: 2 },
+    tail: { c: blackMat, w: 0, h: 20, d: 0, rt: 5, rb: 2, rs: 4, hs: 1 },
+    paw: { c: blackMat, w: 0, h: 10, d: 0, rt: 1.5, rb: 0, rs: 1, hs: 1 }
+}
+
+var obstacleConst = {
+    body: { c: blackMat, w: 6, h: 6, d: 6 },
+    head: { c: lightBrownMat, w: 5, h: 5, d: 7 },
+    nose: { c: blackMat, w: 1.5, h: 1.5, d: 1.5 },
+    eye: { c: whiteMat, w: 1, h: 3, d: 3 },
+    iris: { c: blackMat, w: 0.5, h: 1, d: 1 },
+    spike: { c: blackMat, w: 0.5, h: 2, d: 0.5 },
+    ear: { c: lightBrownMat, w: 2, h: 2, d: 0.5 },
+    mouth: { c: blackMat, w: 1, h: 1, d: 0.5 }
+}
+
+var propConst = {
+    body: { c: pinkMat, w: 0, h: 10, d: 0, rt: 5, rb: 3, rs: 4, hs: 1 },
+    leaf: { c: greenMat, w: 5, h: 10, d: 1 }
+}
+
+var heroDefault = {
+    torso: { c: brownMat, w: 7, h: 7, d: 10 },
+    pants: { c: whiteMat, w: 9, h: 9, d: 5 },
+    tail: { c: lightBrownMat, w: 3, h: 3, d: 3 },
+    head: { c: brownMat, w: 10, h: 10, d: 13 },
+    cheek: { c: pinkMat, w: 1, h: 4, d: 4 },
+    nose: { c: lightBrownMat, w: 6, h: 6, d: 3 },
+    mouth: { c: brownMat, w: 4, h: 2, d: 4 },
+    pawF: { c: lightBrownMat, w: 3, h: 3, d: 3 },
+    pawB: { c: lightBrownMat, w: 3, h: 3, d: 6 },
+    ear: { c: brownMat, w: 7, h: 18, d: 2 },
+    iris: { c: blackMat, w: 0.6, h: 2, d: 2 },
+    eye: { c: whiteMat, w: 2, h: 4, d: 4 }
+};
+
+var monsterDefault = {
+    torso: { c: blackMat, w: 15, h: 15, d: 20 },
+    head: { c: blackMat, w: 20, h: 20, d: 40 },
+    mouth: { c: blackMat, w: 10, h: 4, d: 20 },
+    tooth: { c: whiteMat, w: 2, h: 2, d: 1 },
+    tongue: { c: pinkMat, w: 6, h: 1, d: 14 },
+    nose: { c: pinkMat, w: 4, h: 4, d: 4 },
+    eye: { c: whiteMat, w: 2, h: 3, d: 3 },
+    iris: { c: blackMat, w: 0.6, h: 1, d: 1 },
+    ear: { c: blackMat, w: 8, h: 6, d: 2 },
+    tail: { c: blackMat, w: 0, h: 20, d: 0, rt: 5, rb: 2, rs: 4, hs: 1 },
+    paw: { c: blackMat, w: 0, h: 10, d: 0, rt: 1.5, rb: 0, rs: 1, hs: 1 }
+}
+
+var obstacleDefault = {
+    body: { c: blackMat, w: 6, h: 6, d: 6 },
+    head: { c: lightBrownMat, w: 5, h: 5, d: 7 },
+    nose: { c: blackMat, w: 1.5, h: 1.5, d: 1.5 },
+    eye: { c: whiteMat, w: 1, h: 3, d: 3 },
+    iris: { c: blackMat, w: 0.5, h: 1, d: 1 },
+    spike: { c: blackMat, w: 0.5, h: 2, d: 0.5 },
+    ear: { c: lightBrownMat, w: 2, h: 2, d: 0.5 },
+    mouth: { c: blackMat, w: 1, h: 1, d: 0.5 }
+}
+
+var mouseDefault = {
+    body: { c: blackMat, w: 6, h: 6, d: 10 },
+    head: { c: lightBrownMat, w: 5, h: 5, d: 7 },
+    nose: { c: blackMat, w: 1.5, h: 1.5, d: 1.5 },
+    eye: { c: whiteMat, w: 1, h: 3, d: 3 },
+    iris: { c: blackMat, w: 0.5, h: 1, d: 1 },
+    spike: { c: blackMat, w: 0.5, h: 2, d: 0.5 },
+    ear: { c: lightBrownMat, w: 2, h: 2, d: 0.5 },
+    mouth: { c: blackMat, w: 1, h: 1, d: 0.5 }
+}
+
+var propDefault = {
+    body: { c: pinkMat, w: 0, h: 10, d: 0, rt: 5, rb: 3, rs: 4, hs: 1 },
+    leaf: { c: greenMat, w: 5, h: 10, d: 1 }
+}
+
+/*Cat*/
+var Cat = function () {
+    this.threeGroup = new THREE.Group();
     this.handHeight = 10;
     this.bodyHeight = 80;
     this.armHeight = ((this.bodyHeight * 3 / 5) - this.handHeight) / 2;
@@ -43,13 +291,12 @@ Cat = function () {
 
 
     // body
-
     this.body = new THREE.Group();
     this.mesh = this.body;
     // torso
 
     var torsoGeom = new THREE.CylinderGeometry(0, 26, this.bodyHeight, 3, 1);
-    this.torso = new THREE.Mesh(torsoGeom, brownMat);
+    this.torso = new THREE.Mesh(torsoGeom, brownMat_cat);
     this.torso.geometry.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI / 3));
     this.torso.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, -this.bodyHeight / 2, 0));
 
@@ -58,21 +305,21 @@ Cat = function () {
     var chestGeom = new THREE.CylinderGeometry(6, 0, 17, 3);
     chestGeom.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI / 3));
     chestGeom.applyMatrix(new THREE.Matrix4().makeScale(1, 1, .3));
-    this.chest = new THREE.Mesh(chestGeom, whiteMat);
+    this.chest = new THREE.Mesh(chestGeom, whiteMat_cat);
     this.chest.position.set(0, -30, 1);
 
     // head
     this.head = new THREE.Group();
 
     var faceGeom = new THREE.BoxGeometry(30, this.faceHeight, 30);
-    this.face = new THREE.Mesh(faceGeom, brownMat);
+    this.face = new THREE.Mesh(faceGeom, brownMat_cat);
     this.face.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, this.faceHeight / 2, 0));
     this.face.geometry.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI / 4));
 
 
     // scarf
     var scarfGeom = new THREE.CylinderGeometry(10, 9, 9, 10, 1);
-    this.scarf1 = new THREE.Mesh(scarfGeom, redMat);
+    this.scarf1 = new THREE.Mesh(scarfGeom, redMat_cat);
     this.scarf1.material.side = THREE.DoubleSide;
     this.scarf1.position.y = -2;
     this.scarf1.position.z = 0;
@@ -85,7 +332,7 @@ Cat = function () {
     this.scarf2.rotation.z = -.2;
 
     var scarfGeom2 = new THREE.BoxGeometry(50, 2, 10);
-    this.scarf3 = new THREE.Mesh(scarfGeom2, redMat);
+    this.scarf3 = new THREE.Mesh(scarfGeom2, redMat_cat);
     this.scarf3.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(25, 0, 0));
     this.scarf3.position.set(3, -15, 2);
     this.scarf3.rotation.y = 1.2;
@@ -110,13 +357,12 @@ Cat = function () {
 
 
     this.body.add(this.torso);
-    this.body.position.y = this.bodyHeight;
-
-
+    //this.body.position.y = this.bodyHeight;
+    this.body.position.y = 65;
+    this.body.rotation.x = 1.1;
     // Whiskers
     var whiskerGeom = new THREE.BoxGeometry(16, .2, .2);
-
-    this.whisker1 = new THREE.Mesh(whiskerGeom, lightBrownMat);
+    this.whisker1 = new THREE.Mesh(whiskerGeom, lightBrownMat_cat);
     this.whisker1.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(-7, 0, 0));
     this.whisker1.position.set(-6, 8, 18);
     this.whisker1.rotation.z = Math.PI / 12;
@@ -155,8 +401,6 @@ Cat = function () {
     leftEarGeom.applyMatrix(new THREE.Matrix4().makeRotationY(-1));
     leftEarGeom.applyMatrix(new THREE.Matrix4().makeScale(1, 1, .7));
 
-
-
     var skewMatrixRightEar = new THREE.Matrix4().set(1, 0.0, 0.0, 0,
                                                         0, 1, 0, 0,
                                                         -0.5, 0.0, 1, 0,
@@ -168,12 +412,12 @@ Cat = function () {
                                                         0, 0.0, 1, 0,
                                                         0, 0, 0, 1);
 
-    this.rightEar = new THREE.Mesh(rightEarGeom, brownMat);
+    this.rightEar = new THREE.Mesh(rightEarGeom, brownMat_cat);
     this.rightEar.position.y = this.faceHeight;
     this.rightEar.position.x = -14;
     this.rightEar.position.z = -1.7;
 
-    this.leftEar = new THREE.Mesh(leftEarGeom, brownMat);
+    this.leftEar = new THREE.Mesh(leftEarGeom, brownMat_cat);
     this.leftEar.position.x = -this.rightEar.position.x;
     this.leftEar.position.z = this.rightEar.position.z;
     this.leftEar.position.y = this.rightEar.position.y;
@@ -181,7 +425,7 @@ Cat = function () {
 
     var rightEarInsideGeom = rightEarGeom.clone();
     rightEarInsideGeom.applyMatrix(new THREE.Matrix4().makeScale(.5, .5, .5));
-    this.rightEarInside = new THREE.Mesh(rightEarInsideGeom, pinkMat);
+    this.rightEarInside = new THREE.Mesh(rightEarInsideGeom, pinkMat_cat);
     this.rightEarInside.position.y = .5;
     this.rightEarInside.position.x = 1;
     this.rightEarInside.position.z = 2;
@@ -190,7 +434,7 @@ Cat = function () {
 
     var LeftEarInsideGeom = leftEarGeom.clone();
     LeftEarInsideGeom.applyMatrix(new THREE.Matrix4().makeScale(.5, .5, .5));
-    this.leftEarInside = new THREE.Mesh(LeftEarInsideGeom, pinkMat);
+    this.leftEarInside = new THREE.Mesh(LeftEarInsideGeom, pinkMat_cat);
     this.leftEarInside.position.y = .5;
     this.leftEarInside.position.x = -1;
     this.leftEarInside.position.z = 2;
@@ -199,7 +443,7 @@ Cat = function () {
 
     // Eyes
     var eyeGeom = new THREE.BoxGeometry(12, 12, 1);
-    this.rightEye = new THREE.Mesh(eyeGeom, whiteMat);
+    this.rightEye = new THREE.Mesh(eyeGeom, whiteMat_cat);
     this.rightEye.position.set(-12, 20, 10);
     this.rightEye.rotation.y = -Math.PI / 4;
 
@@ -209,7 +453,7 @@ Cat = function () {
 
     // Iris
     var irisGeom = new THREE.BoxGeometry(4, 4, 2);
-    this.rightIris = new THREE.Mesh(irisGeom, brownMat);
+    this.rightIris = new THREE.Mesh(irisGeom, brownMat_cat);
     this.rightIris.position.x = 2;
     this.rightIris.position.y = -2;
     this.rightIris.position.z = .5;
@@ -230,7 +474,7 @@ Cat = function () {
                                                     0, 0, 0, 1);
 
     noseGeom.applyMatrix(skewMatrixNose);
-    this.nose = new THREE.Mesh(noseGeom, pinkMat);
+    this.nose = new THREE.Mesh(noseGeom, pinkMat_cat);
     this.nose.position.z = 24;
     this.nose.position.y = 14.1;
 
@@ -238,20 +482,20 @@ Cat = function () {
     // cheeks
     var cheeksGeom = new THREE.CylinderGeometry(8, 8, 14, 4);
     cheeksGeom.applyMatrix(new THREE.Matrix4().makeScale(1, 1, 1.4));
-    this.cheeks = new THREE.Mesh(cheeksGeom, brownMat);
+    this.cheeks = new THREE.Mesh(cheeksGeom, brownMat_cat);
     this.cheeks.position.set(0, 7, 13);
 
     // mouth
     var mouthGeom = cheeksGeom.clone();//new THREE.BoxGeometry(4,2,4);
     mouthGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, -4, 0));
     mouthGeom.applyMatrix(new THREE.Matrix4().makeScale(.5, .2, .5));
-    this.mouth = new THREE.Mesh(mouthGeom, brownMat);
+    this.mouth = new THREE.Mesh(mouthGeom, brownMat_cat);
 
 
     // tongue
     var tongueGeom = mouthGeom.clone();
     tongueGeom.applyMatrix(new THREE.Matrix4().makeScale(.8, 1, .8));
-    this.tongue = new THREE.Mesh(tongueGeom, pinkMat);
+    this.tongue = new THREE.Mesh(tongueGeom, pinkMat_cat);
     this.tongue.position.set(0, .5, 0);
     this.mouth.add(this.tongue);
 
@@ -268,8 +512,10 @@ Cat = function () {
     this.head.add(this.cheeks);
     this.head.add(this.mouth);
 
-    this.head.position.y = this.bodyHeight - 15;
-    this.head.position.z = -5;
+    //this.head.position.y = this.bodyHeight - 15;
+    this.head.position.y = 55;
+    this.head.position.z = 10;
+    this.head.rotation.x = 0.2;
 
 
     // shoulders
@@ -278,6 +524,10 @@ Cat = function () {
 
     this.rightShoulder.position.set(-6, this.shouldersPosition.y, 0);
     this.leftShoulder.position.set(6, this.shouldersPosition.y, 0);
+    this.rightShoulder.position.z = -10;
+    this.rightShoulder.rotation.x = -0.1;
+    this.leftShoulder.position.z = -10;
+    this.leftShoulder.rotation.x = -0.3;
 
 
     // arms
@@ -285,12 +535,11 @@ Cat = function () {
     armGeom.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI / 4));
     armGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, -this.armHeight / 2, 0));
 
-    this.rightArm = new THREE.Mesh(armGeom, brownMat);
+    this.rightArm = new THREE.Mesh(armGeom, brownMat_cat);
     this.rightShoulder.add(this.rightArm);
 
     this.leftArm = this.rightArm.clone();
     this.leftShoulder.add(this.leftArm);
-
     // forearms
 
     var foreArmGeom = new THREE.CylinderGeometry(6, 7, this.armHeight, 4);
@@ -298,7 +547,7 @@ Cat = function () {
     foreArmGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, -this.armHeight / 2, 0));
 
 
-    this.rightForeArm = new THREE.Mesh(foreArmGeom, brownMat);
+    this.rightForeArm = new THREE.Mesh(foreArmGeom, brownMat_cat);
     this.rightForeArm.position.y = -this.armHeight;
     this.rightArm.add(this.rightForeArm);
 
@@ -307,7 +556,7 @@ Cat = function () {
 
     // foot = front foot
     var footGeom = new THREE.BoxGeometry(10, 10, 10);
-    this.rightFoot = new THREE.Mesh(footGeom, whiteMat);
+    this.rightFoot = new THREE.Mesh(footGeom, whiteMat_cat);
     this.rightFoot.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 0));
     this.rightFoot.position.set(0, -this.armHeight - 5, 0);
     this.rightForeArm.add(this.rightFoot);
@@ -316,7 +565,7 @@ Cat = function () {
 
     //footPad
     var footPadGeom = new THREE.BoxGeometry(8, 2, 8);
-    this.rightFootPad = new THREE.Mesh(footPadGeom, pinkMat);
+    this.rightFootPad = new THREE.Mesh(footPadGeom, pinkMat_cat);
     this.rightFootPad.position.y = -4.5;
     this.rightFoot.add(this.rightFootPad)
 
@@ -327,18 +576,22 @@ Cat = function () {
     var kneeGeom = new THREE.BoxGeometry(8, 30, 30);
     kneeGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 15, 0));
 
-    this.rightKnee = new THREE.Mesh(kneeGeom, brownMat);
+    this.rightKnee = new THREE.Mesh(kneeGeom, brownMat_cat);
     this.rightKnee.rotation.y = -Math.PI / 6;
-    this.rightKnee.position.x = -14;
-    this.rightKnee.position.z = -12;
+    this.rightKnee.rotation.x = 0.5;
+    this.rightKnee.position.x = -18;
+    this.rightKnee.position.y = 15;
+    this.rightKnee.position.z = -80;
 
     this.leftKnee = this.rightKnee.clone();
+    this.leftKnee.rotation.x = 0.7;
     this.leftKnee.rotation.y = -this.rightKnee.rotation.y;
     this.leftKnee.position.x = -this.rightKnee.position.x;
 
+
     // legs = back legs
     var legGeom = new THREE.BoxGeometry(12, 6, 4);
-    this.rightLeg = new THREE.Mesh(legGeom, whiteMat);
+    this.rightLeg = new THREE.Mesh(legGeom, whiteMat_cat);
     this.rightLeg.position.set(0, 3, 17);
     this.rightKnee.add(this.rightLeg);
 
@@ -348,8 +601,8 @@ Cat = function () {
     // tail
 
     this.tail = new THREE.Group();
-    this.tail.position.z = -36;
-    this.tail.position.y = 5;
+    this.tail.position.z = -75;
+    this.tail.position.y = 50;
 
     var p = this.tail;
     var currentY = 0;
@@ -365,12 +618,12 @@ Cat = function () {
 
 
     for (var i = 0; i < this.tailNSegs ; i++) {
-        var mat = (i < this.tailNSegs - 1) ? brownMat : whiteMat;
+        var mat = (i < this.tailNSegs - 1) ? brownMat_cat : whiteMat_cat;
         var tg = tailSegGeom.clone();
         var s = Math.pow(recScale, i);
         tg.applyMatrix(new THREE.Matrix4().makeScale(s, s, s));
         var t = new THREE.Mesh(tg, mat);
-        currentRot = (i == 0) ? -Math.PI / 2 : currentRot / (i * i * i);
+        var currentRot = (i == 0) ? -Math.PI / 2 : currentRot / (i * i * i);
         t.position.y = currentY;
         t.rotation.x = currentRot;
         p.add(t);
@@ -383,7 +636,7 @@ Cat = function () {
     // stripes Head
 
     var stripeGeom = new THREE.CylinderGeometry(2, 0, 15, 4);
-    var stripe0 = new THREE.Mesh(stripeGeom, lightBrownMat);
+    var stripe0 = new THREE.Mesh(stripeGeom, lightBrownMat_cat);
     stripe0.rotation.y = -Math.PI / 4;
     stripe0.position.x = -1.5;
     stripe0.position.y = 22;
@@ -396,7 +649,7 @@ Cat = function () {
 
 
     var stripeGeom2 = new THREE.BoxGeometry(8, 2, 10);
-    var stripe2 = new THREE.Mesh(stripeGeom2, lightBrownMat);
+    var stripe2 = new THREE.Mesh(stripeGeom2, lightBrownMat_cat);
     stripe2.rotation.y = Math.PI / 4;
     stripe2.position.x = 15.6;
     stripe2.position.y = 8;
@@ -414,7 +667,7 @@ Cat = function () {
 
 
     var stripeGeom3 = new THREE.BoxGeometry(1.6, 1, 10);
-    var stripe6 = new THREE.Mesh(stripeGeom3, lightBrownMat);
+    var stripe6 = new THREE.Mesh(stripeGeom3, lightBrownMat_cat);
     stripe6.position.x = -2.1;
     stripe6.position.z = 15;
     stripe6.position.y = 30;
@@ -485,6 +738,10 @@ Cat = function () {
     });
 
     this.mesh = this.threeGroup;
+    this.mesh.scale.setX(1 / 3);
+    this.mesh.scale.setY(1 / 3);
+    this.mesh.scale.setZ(1 / 3);
+    this.mesh.rotation.y = Math.PI / 2;
 }
 
 Cat.prototype.updateTail = function (t) {
@@ -692,48 +949,14 @@ Cat.prototype.resetOrgPosition = function () {
 };
 
 /*Lion*/
-Lion = function () {
+var Lion = function () {
     this.windTime = 0;
     this.bodyInitPositions = [];
     this.maneParts = [];
     this.threegroup = new THREE.Group();
-    this.yellowMat = new THREE.MeshLambertMaterial({
-        color: 0xfdd276,
-        shading: THREE.FlatShading
-    });
-    this.redMat = new THREE.MeshLambertMaterial({
-        color: 0xad3525,
-        shading: THREE.FlatShading
-    });
 
-    this.pinkMat = new THREE.MeshLambertMaterial({
-        color: 0xe55d2b,
-        shading: THREE.FlatShading
-    });
-
-    this.whiteMat = new THREE.MeshLambertMaterial({
-        color: 0xffffff,
-        shading: THREE.FlatShading
-    });
-
-    this.purpleMat = new THREE.MeshLambertMaterial({
-        color: 0x451954,
-        shading: THREE.FlatShading
-    });
-
-    this.greyMat = new THREE.MeshLambertMaterial({
-        color: 0x653f4c,
-        shading: THREE.FlatShading
-    });
-
-    this.blackMat = new THREE.MeshLambertMaterial({
-        color: 0x302925,
-        shading: THREE.FlatShading
-    });
-
-
-    var bodyGeom = new THREE.CylinderGeometry(30, 80, 140, 4);
-    var maneGeom = new THREE.BoxGeometry(40, 40, 15);
+    var bodyGeom = new THREE.CylinderGeometry(40, 80, 160, 4);
+    var maneGeom = new THREE.BoxGeometry(40, 40, 60);
     var faceGeom = new THREE.BoxGeometry(80, 80, 80);
     var spotGeom = new THREE.BoxGeometry(4, 4, 4);
     var mustacheGeom = new THREE.BoxGeometry(30, 2, 1);
@@ -751,61 +974,101 @@ Lion = function () {
     var footGeom = new THREE.BoxGeometry(40, 20, 20);
 
     // body
-    this.body = new THREE.Mesh(bodyGeom, this.yellowMat);
-    this.body.position.z = -60;
-    this.body.position.y = -30;
-    this.bodyVertices = [0, 1, 2, 3, 4, 10];
+    this.torso = new THREE.Mesh(bodyGeom, yellowMat_lion);
+    this.torso.position.z = -60;
+    this.torso.position.y = -30;
+    this.torso.rotation.x = Math.PI / 2
+    //this.bodyVertices = [0, 1, 2, 3, 4, 10];
 
-    for (var i = 0; i < this.bodyVertices.length; i++) {
-        var tv = this.body.geometry.vertices[this.bodyVertices[i]];
-        if (typeof tv != 'undefined' && tv) {
-            tv.z = 70;
-            //tv.x = 0;
-            this.bodyInitPositions.push({ x: tv.x, y: tv.y, z: tv.z });
-        }
-    }
+    //for (var i = 0; i < this.bodyVertices.length; i++) {
+    //    var tv = this.body.geometry.vertices[this.bodyVertices[i]];
+    //    if (typeof tv != 'undefined' && tv) {
+    //        tv.z = 70;
+    //        //tv.x = 0;
+    //        this.bodyInitPositions.push({ x: tv.x, y: tv.y, z: tv.z });
+    //    }
+    //}
+
+    this.tail = new THREE.Group();
+    this.tail.position.z = -140;
+    this.tail.position.y = 20;
+    var tailGeom = new THREE.Geometry();
+    tailGeom.vertices.push(
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, 60, -40),
+      new THREE.Vector3(0, 30, -80),
+      new THREE.Vector3(0, 90, -120)
+    );
+
+    this.tailLine = new THREE.Line(tailGeom, tailMat);
+    // pike
+    var pikeGeom = new THREE.CylinderGeometry(0, 15, 15, 4, 1);
+    pikeGeom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
+    this.tailPike = new THREE.Mesh(pikeGeom, greyMat_lion);
+    this.tailPike.position.z = -120;
+    this.tailPike.position.y = 90;
+    this.tailPike.rotation.x = .9;
+
+    this.tail.add(this.tailLine);
+    this.tail.add(this.tailPike);
+    this.body = new THREE.Group();
+    this.body.add(this.tail);
+    this.body.add(this.torso);
 
     // knee
-    this.leftKnee = new THREE.Mesh(kneeGeom, this.yellowMat);
+    this.leftKnee = new THREE.Mesh(kneeGeom, yellowMat_lion);
     this.leftKnee.position.x = 65;
-    this.leftKnee.position.z = -20;
+    this.leftKnee.position.z = -110;
     this.leftKnee.position.y = -110;
     this.leftKnee.rotation.z = -.3;
+    this.leftKnee.rotation.x = -.3;
 
-    this.rightKnee = new THREE.Mesh(kneeGeom, this.yellowMat);
+    this.rightKnee = new THREE.Mesh(kneeGeom, yellowMat_lion);
     this.rightKnee.position.x = -65;
-    this.rightKnee.position.z = -20;
+    this.rightKnee.position.z = -110;
     this.rightKnee.position.y = -110;
     this.rightKnee.rotation.z = .3;
+    this.rightKnee.rotation.x = -0.3;
+
 
     // feet
-    this.backLeftFoot = new THREE.Mesh(footGeom, this.yellowMat);
-    this.backLeftFoot.position.z = 30;
-    this.backLeftFoot.position.x = 75;
-    this.backLeftFoot.position.y = -90;
+    this.backLeftFoot = new THREE.Mesh(footGeom, yellowMat_lion);
+    this.backLeftFoot.position.x = -80;
+    this.backLeftFoot.position.y = -115;
+    this.backLeftFoot.position.z = -90;
 
-    this.backRightFoot = new THREE.Mesh(footGeom, this.yellowMat);
-    this.backRightFoot.position.z = 30;
-    this.backRightFoot.position.x = -75;
-    this.backRightFoot.position.y = -90;
+    this.backRightFoot = new THREE.Mesh(footGeom, yellowMat_lion);
+    this.backRightFoot.position.x = 80;
+    this.backRightFoot.position.y = -115;
+    this.backRightFoot.position.z = -90;
 
-    this.frontRightFoot = new THREE.Mesh(footGeom, this.yellowMat);
-    this.frontRightFoot.position.z = 40;
-    this.frontRightFoot.position.x = -22;
+    this.backLeftPaw = new THREE.Group();
+    this.backLeftPaw.add(this.leftKnee);
+    this.backLeftPaw.add(this.backLeftFoot);
+    this.backRightPaw = new THREE.Group();
+    this.backRightPaw.add(this.rightKnee);
+    this.backRightPaw.add(this.backRightFoot);
+
+
+    var frontFootGeom = new THREE.BoxGeometry(20, 80, 20);
+    this.frontRightFoot = new THREE.Mesh(frontFootGeom, yellowMat_lion);
+    this.frontRightFoot.position.x = -60;
     this.frontRightFoot.position.y = -90;
+    this.frontRightFoot.position.z = -10;
+    this.frontRightFoot.rotation.x = -0.3;
 
-    this.frontLeftFoot = new THREE.Mesh(footGeom, this.yellowMat);
-    this.frontLeftFoot.position.z = 40;
-    this.frontLeftFoot.position.x = 22;
+    this.frontLeftFoot = new THREE.Mesh(frontFootGeom, yellowMat_lion);
+    this.frontLeftFoot.position.x = 60;
     this.frontLeftFoot.position.y = -90;
+    this.frontLeftFoot.position.z = -10;
+    this.frontLeftFoot.rotation.x = -0.3;
 
     // mane
-
     this.mane = new THREE.Group();
 
     for (var j = 0; j < 4; j++) {
         for (var k = 0; k < 4; k++) {
-            var manePart = new THREE.Mesh(maneGeom, this.redMat);
+            var manePart = new THREE.Mesh(maneGeom, redMat_lion);
             manePart.position.x = (j * 40) - 60;
             manePart.position.y = (k * 40) - 60;
 
@@ -834,18 +1097,19 @@ Lion = function () {
     }
 
     this.mane.position.y = -10;
-    this.mane.position.z = 80;
+    this.mane.position.z = 60;
+    //this.mane.position.x = -20;
     //this.mane.rotation.z = Math.PI/4;
 
     // face
-    this.face = new THREE.Mesh(faceGeom, this.yellowMat);
+    this.face = new THREE.Mesh(faceGeom, yellowMat_lion);
     this.face.position.z = 135;
 
     // Mustaches
 
     this.mustaches = [];
 
-    this.mustache1 = new THREE.Mesh(mustacheGeom, this.greyMat);
+    this.mustache1 = new THREE.Mesh(mustacheGeom, greyMat_lion);
     this.mustache1.position.x = 30;
     this.mustache1.position.y = -5;
     this.mustache1.position.z = 175;
@@ -858,11 +1122,11 @@ Lion = function () {
     this.mustache4 = this.mustache1.clone();
     this.mustache4.rotation.z = Math.PI;
     this.mustache4.position.x = -30;
-    this.mustache5 = new THREE.Mesh(mustacheGeom, this.blackMat);
+    this.mustache5 = new THREE.Mesh(mustacheGeom, blackMat_lion);
     this.mustache5 = this.mustache2.clone();
     this.mustache5.rotation.z = Math.PI;
     this.mustache5.position.x = -35;
-    this.mustache6 = new THREE.Mesh(mustacheGeom, this.blackMat);
+    this.mustache6 = new THREE.Mesh(mustacheGeom, blackMat_lion);
     this.mustache6 = this.mustache3.clone();
     this.mustache6.rotation.z = Math.PI;
     this.mustache6.position.x = -30;
@@ -875,7 +1139,7 @@ Lion = function () {
     this.mustaches.push(this.mustache6);
 
     // spots
-    this.spot1 = new THREE.Mesh(spotGeom, this.redMat);
+    this.spot1 = new THREE.Mesh(spotGeom, redMat_lion);
     this.spot1.position.x = 39;
     this.spot1.position.z = 150;
 
@@ -901,58 +1165,58 @@ Lion = function () {
     this.spot8.position.x = -39;
 
     // eyes
-    this.leftEye = new THREE.Mesh(eyeGeom, this.whiteMat);
+    this.leftEye = new THREE.Mesh(eyeGeom, whiteMat_lion);
     this.leftEye.position.x = 40;
     this.leftEye.position.z = 120;
     this.leftEye.position.y = 25;
 
-    this.rightEye = new THREE.Mesh(eyeGeom, this.whiteMat);
+    this.rightEye = new THREE.Mesh(eyeGeom, whiteMat_lion);
     this.rightEye.position.x = -40;
     this.rightEye.position.z = 120;
     this.rightEye.position.y = 25;
 
     // iris
-    this.leftIris = new THREE.Mesh(irisGeom, this.purpleMat);
+    this.leftIris = new THREE.Mesh(irisGeom, purpleMat_lion);
     this.leftIris.position.x = 42;
     this.leftIris.position.z = 120;
     this.leftIris.position.y = 25;
 
-    this.rightIris = new THREE.Mesh(irisGeom, this.purpleMat);
+    this.rightIris = new THREE.Mesh(irisGeom, purpleMat_lion);
     this.rightIris.position.x = -42;
     this.rightIris.position.z = 120;
     this.rightIris.position.y = 25;
 
     // mouth
-    this.mouth = new THREE.Mesh(mouthGeom, this.blackMat);
+    this.mouth = new THREE.Mesh(mouthGeom, blackMat_lion);
     this.mouth.position.z = 171;
     this.mouth.position.y = -30;
     this.mouth.scale.set(.5, .5, 1);
 
     // smile
-    this.smile = new THREE.Mesh(smileGeom, this.greyMat);
+    this.smile = new THREE.Mesh(smileGeom, greyMat_lion);
     this.smile.position.z = 173;
     this.smile.position.y = -15;
     this.smile.rotation.z = -Math.PI;
 
     // lips
-    this.lips = new THREE.Mesh(lipsGeom, this.yellowMat);
+    this.lips = new THREE.Mesh(lipsGeom, yellowMat_lion);
     this.lips.position.z = 165;
     this.lips.position.y = -45;
 
 
     // ear
-    this.rightEar = new THREE.Mesh(earGeom, this.yellowMat);
+    this.rightEar = new THREE.Mesh(earGeom, yellowMat_lion);
     this.rightEar.position.x = -50;
     this.rightEar.position.y = 50;
     this.rightEar.position.z = 105;
 
-    this.leftEar = new THREE.Mesh(earGeom, this.yellowMat);
+    this.leftEar = new THREE.Mesh(earGeom, yellowMat_lion);
     this.leftEar.position.x = 50;
     this.leftEar.position.y = 50;
     this.leftEar.position.z = 105;
 
     // nose
-    this.nose = new THREE.Mesh(noseGeom, this.greyMat);
+    this.nose = new THREE.Mesh(noseGeom, greyMat_lion);
     this.nose.position.z = 170;
     this.nose.position.y = 25;
 
@@ -984,16 +1248,14 @@ Lion = function () {
     this.head.add(this.mustache4);
     this.head.add(this.mustache5);
     this.head.add(this.mustache6);
-
-
     this.head.position.y = 60;
 
     this.threegroup.add(this.body);
     this.threegroup.add(this.head);
     this.threegroup.add(this.leftKnee);
     this.threegroup.add(this.rightKnee);
-    this.threegroup.add(this.backLeftFoot);
-    this.threegroup.add(this.backRightFoot);
+    this.threegroup.add(this.backRightPaw);
+    this.threegroup.add(this.backLeftPaw);
     this.threegroup.add(this.frontRightFoot);
     this.threegroup.add(this.frontLeftFoot);
 
@@ -1005,6 +1267,10 @@ Lion = function () {
     });
 
     this.mesh = this.threegroup;
+    this.mesh.scale.setX(1 / 4);
+    this.mesh.scale.setY(1 / 4);
+    this.mesh.scale.setZ(1 / 4);
+    this.mesh.rotation.y = Math.PI/2;
 }
 
 Lion.prototype.updateBody = function (speed) {
@@ -1191,7 +1457,7 @@ Lion.prototype.resetOrgPosition = function () {
 }
 
 /*Dragon*/
-Dragon = function () {
+var Dragon = function () {
     this.tailAmplitude = 3;
     this.tailAngle = 0;
     this.tailSpeed = .07;
@@ -1201,50 +1467,10 @@ Dragon = function () {
     this.wingSpeed = 0.1
     this.isSneezing = false;
 
-    this.threegroup = new THREE.Group(); // this is a sort of container that will hold all the meshes and will be added to the scene;
-
-    // Materials
-    var greenMat = new THREE.MeshLambertMaterial({
-        color: 0x5da683,
-        shading: THREE.FlatShading
-    });
-    var lightGreenMat = new THREE.MeshLambertMaterial({
-        color: 0x95c088,
-        shading: THREE.FlatShading
-    });
-
-    var yellowMat = new THREE.MeshLambertMaterial({
-        color: 0xfdde8c,
-        shading: THREE.FlatShading
-    });
-
-    var redMat = new THREE.MeshLambertMaterial({
-        color: 0xcb3e4c,
-        shading: THREE.FlatShading
-    });
-
-    var whiteMat = new THREE.MeshLambertMaterial({
-        color: 0xfaf3d7,
-        shading: THREE.FlatShading
-    });
-
-    var brownMat = new THREE.MeshLambertMaterial({
-        color: 0x874a5c,
-        shading: THREE.FlatShading
-    });
-
-    var blackMat = new THREE.MeshLambertMaterial({
-        color: 0x403133,
-        shading: THREE.FlatShading
-    });
-    var pinkMat = new THREE.MeshLambertMaterial({
-        color: 0xd0838e,
-        shading: THREE.FlatShading
-    });
-
+    this.mesh = new THREE.Group(); // this is a sort of container that will hold all the meshes and will be added to the scene;
     // body
     this.body = new THREE.Group();
-    this.belly = makeCube(greenMat, 30, 30, 40, 0, 0, 0, 0, 0, Math.PI / 4);
+    this.belly = makeCube(greenMat_1, 30, 30, 40, 0, 0, 0, 0, 0, Math.PI / 4);
 
     // Wings
     this.wingL = makeCube(yellowMat, 5, 30, 20, 15, 15, 0, -Math.PI / 4, 0, -Math.PI / 4);
@@ -1255,7 +1481,7 @@ Dragon = function () {
 
     // pike body
     var pikeBodyGeom = new THREE.CylinderGeometry(0, 10, 10, 4, 1);
-    this.pikeBody1 = new THREE.Mesh(pikeBodyGeom, greenMat);
+    this.pikeBody1 = new THREE.Mesh(pikeBodyGeom, greenMat_1);
     this.pikeBody1.scale.set(.2, 1, 1);
     this.pikeBody1.position.z = 10;
     this.pikeBody1.position.y = 26;
@@ -1269,11 +1495,6 @@ Dragon = function () {
     this.tail = new THREE.Group();
     this.tail.position.z = -20;
     this.tail.position.y = 10;
-
-    var tailMat = new THREE.LineBasicMaterial({
-        color: 0x5da683,
-        linewidth: 5
-    });
 
     var tailGeom = new THREE.Geometry();
     tailGeom.vertices.push(
@@ -1309,7 +1530,6 @@ Dragon = function () {
 
     // head face
     this.face = makeCube(greenMat, 60, 50, 80, 0, 25, 40, 0, 0, 0);
-
 
     // head horn
     var hornGeom = new THREE.CylinderGeometry(0, 6, 10, 4, 1);
@@ -1348,7 +1568,7 @@ Dragon = function () {
 
     // head smile
     var smileGeom = new THREE.TorusGeometry(6, 2, 2, 10, Math.PI);
-    this.smile = new THREE.Mesh(smileGeom, blackMat);
+    this.smile = new THREE.Mesh(smileGeom, blackMat_1);
     this.smile.position.z = 82;
     this.smile.position.y = 5;
     this.smile.rotation.z = -Math.PI;
@@ -1403,7 +1623,7 @@ Dragon = function () {
     this.irisR.position.x = -this.irisL.position.x;
 
     // head nose
-    this.noseL = makeCube(blackMat, 5, 5, 8, 5, 40, 77, 0, 0, 0);
+    this.noseL = makeCube(blackMat_1, 5, 5, 8, 5, 40, 77, 0, 0, 0);
     this.noseR = this.noseL.clone();
     this.noseR.position.x = -this.noseL.position.x;
 
@@ -1434,7 +1654,7 @@ Dragon = function () {
     this.head.add(this.spot8);
     */
     // legs
-    this.legFL = makeCube(greenMat, 20, 10, 20, 20, -30, 15, 0, 0, 0);
+    this.legFL = makeCube(greenMat_1, 20, 10, 20, 20, -30, 15, 0, 0, 0);
     this.legFR = this.legFL.clone();
     this.legFR.position.x = -30;
     this.legBL = this.legFL.clone();
@@ -1442,21 +1662,25 @@ Dragon = function () {
     this.legBR = this.legBL.clone();
     this.legBR.position.x = -30;
 
-    this.threegroup.add(this.body);
-    this.threegroup.add(this.head);
-    this.threegroup.add(this.legFL);
-    this.threegroup.add(this.legFR);
-    this.threegroup.add(this.legBL);
-    this.threegroup.add(this.legBR);
+    this.mesh.add(this.body);
+    this.mesh.add(this.head);
+    this.mesh.add(this.legFL);
+    this.mesh.add(this.legFR);
+    this.mesh.add(this.legBL);
+    this.mesh.add(this.legBR);
     //this.threegroup.add(this.pike);
 
-    this.threegroup.traverse(function (object) {
+    this.mesh.traverse(function (object) {
         if (object instanceof THREE.Mesh) {
             object.castShadow = true;
             object.receiveShadow = true;
         }
     });
-    this.mesh = this.threegroup;
+
+    this.mesh.scale.setX(1 / 3);
+    this.mesh.scale.setY(1 / 3);
+    this.mesh.scale.setZ(1 / 3);
+    this.mesh.rotation.y = Math.PI / 2;
 }
 
 Dragon.prototype.update = function () {
@@ -1850,7 +2074,7 @@ function makeCube(mat, w, h, d, posX, posY, posZ, rotX, rotY, rotZ) {
 }
 
 /*Bird*/
-Bird = function () {
+var Bird = function () {
     this.rSegments = 4;
     this.hSegments = 3;
     this.cylRay = 120;
@@ -1866,38 +2090,19 @@ Bird = function () {
     this.intervalRunning = false;
 
     this.threegroup = new THREE.Group();
-
-    // materials
-    this.yellowMat = new THREE.MeshLambertMaterial({
-        color: 0xffde79,
-        shading: THREE.FlatShading
-    });
-    this.whiteMat = new THREE.MeshLambertMaterial({
-        color: 0xffffff,
-        shading: THREE.FlatShading
-    });
-    this.blackMat = new THREE.MeshLambertMaterial({
-        color: 0x000000,
-        shading: THREE.FlatShading
-    });
-    this.orangeMat = new THREE.MeshLambertMaterial({
-        color: 0xff5535,
-        shading: THREE.FlatShading
-    });
-
     //WINGS
 
     this.wingLeftGroup = new THREE.Group();
     this.wingRightGroup = new THREE.Group();
 
     var wingGeom = new THREE.BoxGeometry(60, 60, 5);
-    var wingLeft = new THREE.Mesh(wingGeom, this.yellowMat);
+    var wingLeft = new THREE.Mesh(wingGeom, yellowMat_bird);
     this.wingLeftGroup.add(wingLeft);
     this.wingLeftGroup.position.x = 70;
     this.wingLeftGroup.position.z = 0;
     this.wingLeftGroup.rotation.y = Math.PI / 2;
     wingLeft.rotation.x = -Math.PI / 4;
-    var wingRight = new THREE.Mesh(wingGeom, this.yellowMat);
+    var wingRight = new THREE.Mesh(wingGeom, yellowMat_bird);
     this.wingRightGroup.add(wingRight);
     this.wingRightGroup.position.x = -70;
     this.wingRightGroup.position.z = 0;
@@ -1907,7 +2112,7 @@ Bird = function () {
     //BODY
 
     var bodyGeom = new THREE.CylinderGeometry(40, 70, 200, this.rSegments, this.hSegments);
-    this.bodyBird = new THREE.Mesh(bodyGeom, this.yellowMat);
+    this.bodyBird = new THREE.Mesh(bodyGeom, yellowMat_bird);
     this.bodyBird.position.y = 70;
 
     this.bodyVerticesLength = (this.rSegments + 1) * (this.hSegments);
@@ -1927,26 +2132,26 @@ Bird = function () {
     var eyeGeom = new THREE.BoxGeometry(60, 60, 10);
     var irisGeom = new THREE.BoxGeometry(10, 10, 10);
 
-    this.leftEye = new THREE.Mesh(eyeGeom, this.whiteMat);
+    this.leftEye = new THREE.Mesh(eyeGeom, whiteMat_bird);
     this.leftEye.position.x = -30;
     this.leftEye.position.y = 120;
     this.leftEye.position.z = 35;
     this.leftEye.rotation.y = -Math.PI / 4;
 
-    this.leftIris = new THREE.Mesh(irisGeom, this.blackMat);
+    this.leftIris = new THREE.Mesh(irisGeom, blackMat_bird);
     this.leftIris.position.x = -30;
     this.leftIris.position.y = 120;
     this.leftIris.position.z = 40;
     this.leftIris.rotation.y = -Math.PI / 4;
 
 
-    this.rightEye = new THREE.Mesh(eyeGeom, this.whiteMat);
+    this.rightEye = new THREE.Mesh(eyeGeom, whiteMat_bird);
     this.rightEye.position.x = 30;
     this.rightEye.position.y = 120;
     this.rightEye.position.z = 35;
     this.rightEye.rotation.y = Math.PI / 4;
 
-    this.rightIris = new THREE.Mesh(irisGeom, this.blackMat);
+    this.rightIris = new THREE.Mesh(irisGeom, blackMat_bird);
     this.rightIris.position.x = 30;
     this.rightIris.position.y = 120;
     this.rightIris.position.z = 40;
@@ -1955,7 +2160,7 @@ Bird = function () {
     // BEAK
 
     var beakGeom = new THREE.CylinderGeometry(0, 20, 20, 4, 1);
-    this.beak = new THREE.Mesh(beakGeom, this.orangeMat);
+    this.beak = new THREE.Mesh(beakGeom, orangeMat_bird);
     this.beak.position.z = 65;
     this.beak.position.y = 70;
     this.beak.rotation.x = Math.PI / 2;
@@ -1969,20 +2174,20 @@ Bird = function () {
     //FEATHERS
 
     var featherGeom = new THREE.BoxGeometry(10, 20, 5);
-    this.feather1 = new THREE.Mesh(featherGeom, this.yellowMat);
+    this.feather1 = new THREE.Mesh(featherGeom, yellowMat_bird);
     this.feather1.position.z = 55;
     this.feather1.position.y = 185;
     this.feather1.rotation.x = Math.PI / 4;
     this.feather1.scale.set(1.5, 1.5, 1);
 
-    this.feather2 = new THREE.Mesh(featherGeom, this.yellowMat);
+    this.feather2 = new THREE.Mesh(featherGeom, yellowMat_bird);
     this.feather2.position.z = 50;
     this.feather2.position.y = 180;
     this.feather2.position.x = 20;
     this.feather2.rotation.x = Math.PI / 4;
     this.feather2.rotation.z = -Math.PI / 8;
 
-    this.feather3 = new THREE.Mesh(featherGeom, this.yellowMat);
+    this.feather3 = new THREE.Mesh(featherGeom, yellowMat_bird);
     this.feather3.position.z = 50;
     this.feather3.position.y = 180;
     this.feather3.position.x = -20;
@@ -2001,6 +2206,10 @@ Bird = function () {
         }
     });
     this.mesh = this.threegroup;
+    this.mesh.scale.setX(1 / 6);
+    this.mesh.scale.setY(1 / 6);
+    this.mesh.scale.setZ(1 / 6);
+    this.mesh.rotation.y = Math.PI / 2;
 }
 
 Bird.prototype.look = function (hAngle, vAngle) {
@@ -2124,35 +2333,35 @@ Bird.prototype.resetOrgPosition = function () {
 }
 
 /*Mouse*/
-Mouse = function () {
+var Mouse = function () {
     this.angle = 0;
     this.status = "ready";
     this.mesh = new THREE.Group();
-    var bodyGeom = new THREE.CubeGeometry(obstacleDefault.body.w, obstacleDefault.body.h, obstacleDefault.body.d, 1);
-    this.body = new THREE.Mesh(bodyGeom, obstacleDefault.body.c);
+    var bodyGeom = new THREE.CubeGeometry(mouseDefault.body.w, mouseDefault.body.h, mouseDefault.body.d, 1);
+    this.body = new THREE.Mesh(bodyGeom, mouseDefault.body.c);
 
-    var headGeom = new THREE.CubeGeometry(obstacleDefault.head.w, obstacleDefault.head.h, obstacleDefault.head.d, 1);
-    this.head = new THREE.Mesh(headGeom, obstacleDefault.head.c);
-    this.head.position.z = 6;
+    var headGeom = new THREE.CubeGeometry(mouseDefault.head.w, mouseDefault.head.h, mouseDefault.head.d, 1);
+    this.head = new THREE.Mesh(headGeom, mouseDefault.head.c);
+    this.head.position.z = 8;
     this.head.position.y = -.5;
 
-    var noseGeom = new THREE.CubeGeometry(obstacleDefault.nose.w, obstacleDefault.nose.h, obstacleDefault.nose.d, 1);
-    this.nose = new THREE.Mesh(noseGeom, obstacleDefault.nose.c);
+    var noseGeom = new THREE.CubeGeometry(mouseDefault.nose.w, mouseDefault.nose.h, mouseDefault.nose.d, 1);
+    this.nose = new THREE.Mesh(noseGeom, mouseDefault.nose.c);
     this.nose.position.z = 4;
     this.nose.position.y = 2;
 
-    var eyeGeom = new THREE.CubeGeometry(obstacleDefault.eye.w, obstacleDefault.eye.h, obstacleDefault.eye.d);
+    var eyeGeom = new THREE.CubeGeometry(mouseDefault.eye.w, mouseDefault.eye.h, mouseDefault.eye.d);
 
-    this.eyeL = new THREE.Mesh(eyeGeom, obstacleDefault.eye.c);
+    this.eyeL = new THREE.Mesh(eyeGeom, mouseDefault.eye.c);
     this.eyeL.position.x = 2.2;
     this.eyeL.position.z = -.5;
     this.eyeL.position.y = .8;
     this.eyeL.castShadow = true;
     this.head.add(this.eyeL);
 
-    var irisGeom = new THREE.CubeGeometry(obstacleDefault.iris.w, obstacleDefault.iris.h, obstacleDefault.iris.d);
+    var irisGeom = new THREE.CubeGeometry(mouseDefault.iris.w, mouseDefault.iris.h, mouseDefault.iris.d);
 
-    this.iris = new THREE.Mesh(irisGeom, obstacleDefault.iris.c);
+    this.iris = new THREE.Mesh(irisGeom, mouseDefault.iris.c);
     this.iris.position.x = .5;
     this.iris.position.y = .8;
     this.iris.position.z = .8;
@@ -2197,8 +2406,8 @@ Mouse = function () {
     //}
 
     this.head.add(this.eyeR);
-    var earGeom = new THREE.CubeGeometry(obstacleDefault.ear.w, obstacleDefault.ear.h, obstacleDefault.ear.d, 1);
-    this.earL = new THREE.Mesh(earGeom, obstacleDefault.ear.c);
+    var earGeom = new THREE.CubeGeometry(mouseDefault.ear.w, mouseDefault.ear.h, mouseDefault.ear.d, 1);
+    this.earL = new THREE.Mesh(earGeom, mouseDefault.ear.c);
     this.earL.position.x = 2.5;
     this.earL.position.z = -2.5;
     this.earL.position.y = 2.5;
@@ -2212,16 +2421,27 @@ Mouse = function () {
     this.earR.castShadow = true;
     this.head.add(this.earR);
 
-    var mouthGeom = new THREE.CubeGeometry(obstacleDefault.mouth.w, obstacleDefault.mouth.h, obstacleDefault.mouth.d, 1);
-    this.mouth = new THREE.Mesh(mouthGeom, obstacleDefault.mouth.c);
+    var mouthGeom = new THREE.CubeGeometry(mouseDefault.mouth.w, mouseDefault.mouth.h, mouseDefault.mouth.d, 1);
+    this.mouth = new THREE.Mesh(mouthGeom, mouseDefault.mouth.c);
     this.mouth.position.z = 3.5;
     this.mouth.position.y = -1.5;
     this.head.add(this.mouth);
 
+    var tailGeom = new THREE.CylinderGeometry(0, 1, 10, 4, 1);
+    tailGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 10, 0));
+    tailGeom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
+    tailGeom.applyMatrix(new THREE.Matrix4().makeRotationZ(Math.PI / 4));
+
+    this.tail = new THREE.Mesh(tailGeom, monsterDefault.tail.c);
+    this.tail.position.z = -2;
+    this.tail.position.y = -1;
+    this.tail.rotation.x = 0.9;
+    this.body.add(this.tail);
 
     this.mesh.add(this.body);
     this.body.add(this.head);
     this.head.add(this.nose);
+
 
     this.mesh.traverse(function (object) {
         if (object instanceof THREE.Mesh) {
@@ -2229,6 +2449,7 @@ Mouse = function () {
             object.receiveShadow = true;
         }
     });
+    this.mesh.rotation.y = Math.PI / 2;
 }
 
 Mouse.prototype.run = function () {
@@ -2272,7 +2493,7 @@ Mouse.prototype.resetOrgPosition = function () {
 }
 
 /*Rabbit*/
-Hero = function () {
+var Hero = function () {
     this.status = "running";
     this.runningCycle = 0;
     this.mesh = new THREE.Group();
@@ -2611,7 +2832,7 @@ Hero.prototype.resetOrgPosition = function () {
 }
 
 /*Wolf*/
-Monster = function () {
+var Monster = function () {
     this.status = "running";
     this.runningCycle = 0;
 
@@ -2864,7 +3085,7 @@ Monster.prototype.sit = function () {
 
 }
 
-Monster.prototype.pause = function () {    
+Monster.prototype.pause = function () {
     var _params_MonsterStatus = "pause";
     this.resetOrgPosition();
     this.sit();
@@ -2878,7 +3099,7 @@ Monster.prototype.resetOrgPosition = function () {
 };
 
 /*Carrot*/
-Carrot = function () {
+var Carrot = function () {
     this.status = 'show';
     this.angle = 0;
     this.mesh = new THREE.Group();
@@ -2948,7 +3169,7 @@ Carrot.prototype.resetOrgPosition = function () {
 }
 
 /*Hedgehog*/
-Hedgehog = function () {
+var Hedgehog = function () {
     this.angle = 0;
     this.status = "ready";
     this.mesh = new THREE.Group();

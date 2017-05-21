@@ -1,4 +1,5 @@
-﻿//THREEJS RELATED VARIABLES 
+﻿'use strict';
+//THREEJS RELATED VARIABLES 
 
 var _params_GameStatus = "pause";
 var _params_HeroStatus = "hidden";
@@ -41,44 +42,7 @@ var fieldGameOver, fieldDistance;
 var HEIGHT, WIDTH, windowHalfX, windowHalfY, mousePos = { x: 0, y: 0 };
 //3D OBJECTS VARIABLES
 var hero, monster, prop, obstacle;
-// Materials
-var blackMat = new THREE.MeshPhongMaterial({
-    color: '#100707',
-    shading: THREE.FlatShading
-});
-
-var brownMat = new THREE.MeshPhongMaterial({
-    color: '#b44b39',
-    //shininess: 0,
-    shading: THREE.FlatShading
-});
-
-var greenMat = new THREE.MeshPhongMaterial({
-    color: '#7abf8e',
-    //shininess: 0,
-    shading: THREE.FlatShading
-});
-
-var pinkMat = new THREE.MeshPhongMaterial({
-    color: '#dc5f45',
-    //shininess: 0,
-    shading: THREE.FlatShading
-});
-
-var lightBrownMat = new THREE.MeshPhongMaterial({
-    color: '#e07a57',
-    shading: THREE.FlatShading
-});
-
-var whiteMat = new THREE.MeshPhongMaterial({
-    color: '#a49789',
-    shading: THREE.FlatShading
-});
-
-var skinMat = new THREE.MeshPhongMaterial({
-    color: '#ff9ea5',
-    shading: THREE.FlatShading
-});
+var globalLight;
 
 function paramsEquals(constObj, defaultObj) {
     var tmpC, tmpD;
@@ -99,96 +63,6 @@ function paramsEquals(constObj, defaultObj) {
     }
 
     return true;
-}
-
-var heroConst = {
-    torso: { c: brownMat, w: 7, h: 7, d: 10 },
-    pants: { c: whiteMat, w: 9, h: 9, d: 5 },
-    tail: { c: lightBrownMat, w: 3, h: 3, d: 3 },
-    head: { c: brownMat, w: 10, h: 10, d: 13 },
-    cheek: { c: pinkMat, w: 1, h: 4, d: 4 },
-    nose: { c: lightBrownMat, w: 6, h: 6, d: 3 },
-    mouth: { c: brownMat, w: 4, h: 2, d: 4 },
-    pawF: { c: lightBrownMat, w: 3, h: 3, d: 3 },
-    pawB: { c: lightBrownMat, w: 3, h: 3, d: 6 },
-    ear: { c: brownMat, w: 7, h: 18, d: 2 },
-    iris: { c: blackMat, w: 0.6, h: 2, d: 2 },
-    eye: { c: whiteMat, w: 2, h: 4, d: 4 }
-};
-
-var monsterConst = {
-    torso: { c: blackMat, w: 15, h: 15, d: 20 },
-    head: { c: blackMat, w: 20, h: 20, d: 40 },
-    mouth: { c: blackMat, w: 10, h: 4, d: 20 },
-    tooth: { c: whiteMat, w: 2, h: 2, d: 1 },
-    tongue: { c: pinkMat, w: 6, h: 1, d: 14 },
-    nose: { c: pinkMat, w: 4, h: 4, d: 4 },
-    eye: { c: whiteMat, w: 2, h: 3, d: 3 },
-    iris: { c: blackMat, w: 0.6, h: 1, d: 1 },
-    ear: { c: blackMat, w: 8, h: 6, d: 2 },
-    tail: { c: blackMat, w: 0, h: 20, d: 0, rt: 5, rb: 2, rs: 4, hs: 1 },
-    paw: { c: blackMat, w: 0, h: 10, d: 0, rt: 1.5, rb: 0, rs: 1, hs: 1 }
-}
-
-var obstacleConst = {
-    body: { c: blackMat, w: 6, h: 6, d: 6 },
-    head: { c: lightBrownMat, w: 5, h: 5, d: 7 },
-    nose: { c: blackMat, w: 1.5, h: 1.5, d: 1.5 },
-    eye: { c: whiteMat, w: 1, h: 3, d: 3 },
-    iris: { c: blackMat, w: 0.5, h: 1, d: 1 },
-    spike: { c: blackMat, w: 0.5, h: 2, d: 0.5 },
-    ear: { c: lightBrownMat, w: 2, h: 2, d: 0.5 },
-    mouth: { c: blackMat, w: 1, h: 1, d: 0.5 }
-}
-
-var propConst = {
-    body: { c: pinkMat, w: 0, h: 10, d: 0, rt: 5, rb: 3, rs: 4, hs: 1 },
-    leaf: { c: greenMat, w: 5, h: 10, d: 1 }
-}
-
-var heroDefault = {
-    torso: { c: brownMat, w: 7, h: 7, d: 10 },
-    pants: { c: whiteMat, w: 9, h: 9, d: 5 },
-    tail: { c: lightBrownMat, w: 3, h: 3, d: 3 },
-    head: { c: brownMat, w: 10, h: 10, d: 13 },
-    cheek: { c: pinkMat, w: 1, h: 4, d: 4 },
-    nose: { c: lightBrownMat, w: 6, h: 6, d: 3 },
-    mouth: { c: brownMat, w: 4, h: 2, d: 4 },
-    pawF: { c: lightBrownMat, w: 3, h: 3, d: 3 },
-    pawB: { c: lightBrownMat, w: 3, h: 3, d: 6 },
-    ear: { c: brownMat, w: 7, h: 18, d: 2 },
-    iris: { c: blackMat, w: 0.6, h: 2, d: 2 },
-    eye: { c: whiteMat, w: 2, h: 4, d: 4 }
-};
-
-var monsterDefault = {
-    torso: { c: blackMat, w: 15, h: 15, d: 20 },
-    head: { c: blackMat, w: 20, h: 20, d: 40 },
-    mouth: { c: blackMat, w: 10, h: 4, d: 20 },
-    tooth: { c: whiteMat, w: 2, h: 2, d: 1 },
-    tongue: { c: pinkMat, w: 6, h: 1, d: 14 },
-    nose: { c: pinkMat, w: 4, h: 4, d: 4 },
-    eye: { c: whiteMat, w: 2, h: 3, d: 3 },
-    iris: { c: blackMat, w: 0.6, h: 1, d: 1 },
-    ear: { c: blackMat, w: 8, h: 6, d: 2 },
-    tail: { c: blackMat, w: 0, h: 20, d: 0, rt: 5, rb: 2, rs: 4, hs: 1 },
-    paw: { c: blackMat, w: 0, h: 10, d: 0, rt: 1.5, rb: 0, rs: 1, hs: 1 }
-}
-
-var obstacleDefault = {
-    body: { c: blackMat, w: 6, h: 6, d: 6 },
-    head: { c: lightBrownMat, w: 5, h: 5, d: 7 },
-    nose: { c: blackMat, w: 1.5, h: 1.5, d: 1.5 },
-    eye: { c: whiteMat, w: 1, h: 3, d: 3 },
-    iris: { c: blackMat, w: 0.5, h: 1, d: 1 },
-    spike: { c: blackMat, w: 0.5, h: 2, d: 0.5 },
-    ear: { c: lightBrownMat, w: 2, h: 2, d: 0.5 },
-    mouth: { c: blackMat, w: 1, h: 1, d: 0.5 }
-}
-
-var propDefault = {
-    body: { c: pinkMat, w: 0, h: 10, d: 0, rt: 5, rb: 3, rs: 4, hs: 1 },
-    leaf: { c: greenMat, w: 5, h: 10, d: 1 }
 }
 // OTHER VARIABLES
 var PI = Math.PI;
@@ -311,7 +185,7 @@ function createFloor() {
     scene.add(floor);
 }
 
-BonusParticles = function () {
+var BonusParticles = function () {
     this.mesh = new THREE.Group();
     var bigParticleGeom = new THREE.CubeGeometry(10, 10, 10, 1);
     var smallParticleGeom = new THREE.CubeGeometry(5, 5, 5, 1);
@@ -548,7 +422,7 @@ function replay() {
 
 }
 
-Fir = function () {
+var Fir = function () {
     var height = 200;
     var truncGeom = new THREE.CylinderGeometry(2, 2, height, 6, 1);
     truncGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, height / 2, 0));
@@ -872,13 +746,13 @@ function initUI() {
     //fieldGameOver = document.getElementById("gameoverInstructions");
 }
 
-Tree = function () {
+var Tree = function () {
     this.mesh = new THREE.Object3D();
     this.trunc = new Trunc();
     this.mesh.add(this.trunc.mesh);
 }
 
-Trunc = function () {
+var Trunc = function () {
     var truncHeight = 50 + Math.random() * 150;
     var topRadius = 1 + Math.random() * 5;
     var bottomRadius = 5 + Math.random() * 5;
