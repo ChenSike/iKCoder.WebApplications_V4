@@ -241,7 +241,7 @@ WorkScene.reset = function (force) {
     }
 };
 
-WorkScene.saveStatus = function () {
+WorkScene.saveStatus = function (flag) {
     if (_workspaceCfg.toolbox == '') {
         return;
     }
@@ -257,6 +257,10 @@ WorkScene.saveStatus = function () {
             if ($(response).find('err').length > 0) {
                 _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepWorspaceStatus');
                 return;
+            } else {
+                if (typeof flag == 'boolean' && flag) {
+                    window.setTimeout('WorkScene.saveStatus(true);', 60000);
+                }
             }
         },
         dataType: 'xml',

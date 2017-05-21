@@ -873,3 +873,49 @@ textarea {
         -webkit-transform: translate(0,0) rotate(-180deg);
     }
 }
+
+.workplatform-msg-alert-wrap {
+    position: absolute;
+    z-index: 20000;
+    display:none;
+}
+
+.workplatform-msg-alert-container {
+    background-color: rgb(255,255,255);
+    border: solid 1px rgb(193,192,194);
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    z-index: 20;
+}
+
+.workplatform-msg-alert-logo-wrap {
+    background-color: rgb(193,192,194);
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+}
+
+.workplatform-msg-alert-logo-continer {
+    background-color: rgb(247,213,166);
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    position: relative;
+    top: 1px;
+    left: 1px;
+    z-index: 30;
+}
+
+.workplatform-msg-alert-logo {
+    position: relative;
+    margin-top: -1px;
+    margin-left: -1px;
+}

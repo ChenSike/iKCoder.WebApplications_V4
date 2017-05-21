@@ -576,6 +576,40 @@
             </div>
         </div>
     </div>
+    <div class="workplatform-msg-alert-wrap" id="wrap_WorkPlatform_Msg">
+        <div class="workplatform-msg-alert-container" id="container_WorkPlatform_Msg">
+            <div class="container-fluid">
+                <div class="row justify-content-end">
+                    <div class="col-1">
+                        <i class="fa fa-close" id="btn_WorkPlatform_Msg_Close" style="cursor:pointer;" title="Close"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p id="title_WorkPlatform_Msg" style="text-align:center; font-family:微软雅黑;"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p id="content_WorkPlatform_Msg" style="text-align:center; font-family:微软雅黑; font-size:16px;">
+                            
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-success" id="btn_Close_WorkPlatform_Msg">我知道了</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="workplatform-msg-alert-logo-wrap" id="wrap_WorkPlatform_Msg_Logo">
+        </div>
+        <div class="workplatform-msg-alert-logo-continer" id="container_WorkPlatform_Msg_Logo">
+            <canvas class="workplatform-msg-alert-logo" id="logo_WorkPlatform_Msg" />
+        </div>
+        <canvas id="logo_WorkPlatform_Msg_Copy" style="display: none; width: 100px; height: 100px;" />
+    </div>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();

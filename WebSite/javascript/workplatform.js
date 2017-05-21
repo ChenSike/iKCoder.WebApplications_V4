@@ -49,6 +49,7 @@ function initPage() {
                         LoadSceneLib(data.blockly);
                         $('#mask_Page_Loading').hide();
                         $('#mask_Page_Loading').css('visibility', 'hidden');
+                        window.setTimeout('WorkScene.saveStatus(true);', 60000);
                     },
                     dataType: 'xml',
                     xhrFields: {
@@ -290,6 +291,19 @@ function initEvents() {
 
     $('#btn_Step_FindError').on('click', function (e) {
         $('.wrap-workstatus-alert').hide();
+    });
+
+    $('#btn_Close_WorkPlatform_Msg').on('click', function (e) {
+        $('#wrap_WorkPlatform_Msg').hide();
+        $('#title_WorkPlatform_Msg').text('');
+        $('#content_WorkPlatform_Msg').text('');
+    });
+
+    $('#btn_WorkPlatform_Msg_Close').on('click', function (e) {
+        $('#wrap_WorkPlatform_Msg').hide();
+        $('#title_WorkPlatform_Msg').text('');
+        $('#content_WorkPlatform_Msg').text('');
+
     });
 
     $(window).resize(function () {
@@ -1040,3 +1054,99 @@ function getQueryString() {
         }
     }
 };
+
+function showCourseMsg(titleText, contentText) {
+    $('#title_WorkPlatform_Msg').text(titleText);
+    $('#content_WorkPlatform_Msg').text(contentText);
+    $('#wrap_WorkPlatform_Msg').show();
+    adjustCourseMsgSize(titleText);
+    drawMsgAlertLogo();
+    var container = $('#container_WorkPlatform_Msg');
+    var title = $('#title_WorkPlatform_Msg');
+    var content = $('#content_WorkPlatform_Msg');
+    var button = $('#btn_Close_WorkPlatform_Msg');
+    var trBtn = $('#btn_WorkPlatform_Msg_Close');
+    var tmpHeight = container.height() - (trBtn.parent().parent().height() + title.parent().parent().height() + button.parent().parent().height() + 30);
+    content.height(tmpHeight);
+}
+
+function adjustCourseMsgSize(titleText) {
+    var bodyWidth = $('body').width();
+    var bodyHeight = $('body').height();
+    var ratioRateH = bodyWidth / 1920;
+    var ratioRateV = bodyHeight / 1080;
+    var wrap = $('#wrap_WorkPlatform_Msg');
+    var orgWrapWidth = 525;
+    var orgWrapHeight = 315;
+    wrap.width(orgWrapWidth * ratioRateH);
+    wrap.height(orgWrapHeight * ratioRateV);
+    var container = $('#container_WorkPlatform_Msg');
+    var orgContainerWidth = 485;
+    var orgContainerHeight = 270;
+    container.width(orgContainerWidth * ratioRateH);
+    container.height(orgContainerHeight * ratioRateV);
+    wrap.css('top', (bodyHeight - wrap.height()) / 2 + 'px');
+    wrap.css('left', ((bodyWidth - wrap.width()) / 2 - (wrap.width() - container.width())) + 'px');
+    var logoContainer = $('#container_WorkPlatform_Msg_Logo');
+    var orgLogoContainerSize = 120;
+    logoContainer.width(orgLogoContainerSize * (ratioRateV > ratioRateH ? ratioRateH : ratioRateV));
+    logoContainer.height(orgLogoContainerSize * (ratioRateV > ratioRateH ? ratioRateH : ratioRateV));
+    var logoWrap = $('#wrap_WorkPlatform_Msg_Logo');
+    logoWrap.width(logoContainer.width() + 2);
+    logoWrap.height(logoContainer.width() + 2);
+    var logo = $('#logo_WorkPlatform_Msg');
+    var orgLogoWidth = 63;
+    var orgLogoHeight = 58;
+    var logoWidth = orgLogoWidth * ratioRateH;
+    var logoHeight = orgLogoHeight * ratioRateV;
+    var shadowX = 3 * ratioRateH;
+    var shadowY = 6 * ratioRateV;
+    logo.width(logoWidth + shadowX);
+    logo.height(logoHeight + shadowY);
+    logo.css('top', (logoContainer.height() - logo.height()) / 2 + 'px');
+    logo.css('left', (logoContainer.width() - logo.width()) / 2 + 'px');
+    logo.attr('width', logo.width());
+    logo.attr('height', logo.height());
+    var logoCopy = $('#logo_WorkPlatform_Msg_Copy');
+    logoCopy.width(logoWidth);
+    logoCopy.height(logoHeight);
+    logoCopy.attr('width', logoWidth);
+    logoCopy.attr('height', logoHeight);
+    var title = $('#title_WorkPlatform_Msg');
+    var titlePadding = 75 * ratioRateH;
+    title.css('padding', '0px ' + titlePadding + 'px');
+    var titleWidth = container.width() - 30 - titlePadding * 2;
+    var fontSize = 10;
+    while (testTextWidth(titleText, fontSize, '', '', '') < titleWidth && fontSize < 30) {
+        fontSize++;
+    }
+
+    title.css('font-size', fontSize + 'px');
+}
+
+function drawMsgAlertLogo() {
+    var tmpImg = new Image();
+    tmpImg.src = "image/logotop.png";
+    tmpImg.onload = function () {
+        var logo = $('#logo_WorkPlatform_Msg');
+        var logoCopy = $('#logo_WorkPlatform_Msg_Copy');
+        var copyCtx = logoCopy[0].getContext('2d');
+        var logoCtx = logo[0].getContext('2d');
+        copyCtx.drawImage(tmpImg, 0, 0, tmpImg.width, tmpImg.height, 0, 0, logoCopy.width(), logoCopy.height());
+        var copyImg = new Image();
+        copyImg.src = logoCopy[0].toDataURL("image/png");
+        copyImg.onload = function () {
+            logoCtx.shadowBlur = 3;
+            logoCtx.shadowOffsetX = 3 * $('body').width() / 1920;
+            logoCtx.shadowOffsetY = 5 * $('body').height() / 1080;
+            logoCtx.shadowColor = "rgb(213,169,114)";
+            var ptrn = logoCtx.createPattern(copyImg, 'no-repeat');
+            logoCtx.fillStyle = ptrn;
+            logoCtx.fillRect(0, 0, logo.width(), logo.height());
+        }
+    }
+
+    tmpImg.onerror = function () {
+        tmpImg.src = "image/logotop.png?rnd=" + Date.now();
+    }
+}
