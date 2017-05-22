@@ -311,7 +311,6 @@ function _startCheckState() {
                                 $.removeCookie('logined_user_nickname');
                             }
                         });
-
                     }
                 } else {
                     $.removeCookie('logined_user_name');
