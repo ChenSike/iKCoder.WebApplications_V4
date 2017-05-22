@@ -100,8 +100,12 @@ function initNavBarEvent() {
 function updateUserInfor() {
     removeUserInfoItem();
     //if ($.cookie('logined_user_name') && $.cookie('logined_user_nickname') && $.cookie('logined_user_name') != "" && $.cookie('logined_user_nickname') != "") {
-    if ($.cookie('logined_user_name') && $.cookie('logined_user_nickname') && $.cookie('logined_user_name') != "") {
-        var nickName = $.cookie('logined_user_nickname');
+    if ($.cookie('logined_user_name') && $.cookie('logined_user_name') != "") {
+        var nickName = '';
+        if (typeof ($.cookie('logined_user_nickname')) != 'undefined') {
+            nickName = $.cookie('logined_user_nickname');
+        }
+
         if (nickName == '') {
             nickName = $.cookie('logined_user_name');
         }
