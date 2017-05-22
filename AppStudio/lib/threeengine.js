@@ -10,7 +10,7 @@ Engine.scene;
 Engine.camera;
 Engine.renderer;
 Engine.clock;
-Engine.Lights = {};
+Engine.lights = {};
 Engine.modules = {};
 Engine.audios = {};
 Engine.status = 1;
@@ -122,22 +122,26 @@ PathControls：路径控件，相机可以沿着预定义的路径移动。可�
 */
 
 Engine.events = {
-    'mousedown': handleMouseDown,
-    'touchend': handleMouseDown,
+    'mousedown': Engine.handleMouseDown,
+    'touchend': Engine.handleMouseDown,
 };
 
 Engine.initScreenAnd3D = function (containerId) {
-    container = $('#' + containerId);
-    var width = container.width();
-    var height = container.height();
+    Engine.container = $('#' + containerId);
+    var width = Engine.container.width();
+    var height = Engine.container.height();
     Engine.scene = new THREE.Scene();
-    Engine.scene.fog = Engine.createFog();
+    if (Engine.params.fog) {
+        Engine.scene.fog = Engine.createFog();
+    }
+
     Engine.initCamera(width, height);
     Engine.initRenderer(width, height);
-    container.appendChild(Engine.renderer.domElement);
+    Engine.container.append($(Engine.renderer.domElement));
     Engine.initEvent();
     Engine.clock = new THREE.Clock();
     Engine.initLights();
+    Engine.DrawGrid();
     //renderer.render(scene, camera);
 };
 
@@ -185,6 +189,7 @@ Engine.initRenderer = function (width, height) {
     Engine.renderer.setSize(width, height);
     Engine.renderer.setClearColor(Engine.params.renderer.clearColor, Engine.params.renderer.clearAlpha);
     Engine.renderer.shadowMap.enabled = Engine.params.renderer.enableShadowMap;
+    Engine.shadowMapEnabled = Engine.params.renderer.enableShadowMap;
     if (Engine.params.renderer.shadowMapType) {
         Engine.renderer.shadowMap.type = Engine.params.renderer.shadowMapType;
     }
@@ -192,7 +197,7 @@ Engine.initRenderer = function (width, height) {
 
 Engine.initEvent = function () {
     for (var key in Engine.events) {
-        container.on(key, function (eventObj) {
+        Engine.container.on(key, function (eventObj) {
             Engine.events[key](eventObj);
         });
     }
@@ -221,10 +226,10 @@ Engine.initLights = function () {
                 Engine.lights[key] = new THREE.AmbientLight(tmpItem.color, tmpItem.intensity);
                 break;
             case 'point':
-                Engine.lights[key] = new THREE.PointLight(tmpItem.color, tmpItem.intensity, tmpIten.distance);
+                Engine.lights[key] = new THREE.PointLight(tmpItem.color, tmpItem.intensity, tmpItem.distance);
                 break;
             case 'spot':
-                Engine.lights[key] = new THREE.SpotLight(tmpItem.color, tmpItem.intensity, tmpIten.distance, tmpIten.angle, tmpIten.exponent);
+                Engine.lights[key] = new THREE.SpotLight(tmpItem.color, tmpItem.intensity, tmpItem.distance, tmpItem.angle, tmpItem.exponent);
                 break;
             case 'directional':
                 Engine.lights[key] = new THREE.AmbientLight(tmpItem.color, tmpItem.intensity);
@@ -274,7 +279,7 @@ Engine.clearIntervals = function () {
 };
 
 Engine.loop = function () {
-    Enging.delta = Enging.clock.getDelta();
+    Engine.delta = Engine.clock.getDelta();
     var currModule = null;
     for (var key in Engine.modules) {
         currModule = Engine.modules[key];
@@ -287,12 +292,12 @@ Engine.loop = function () {
         }
     }
 
-    if (Enging.checkCollision) {
-        Enging.checkCollision(Engine.modules);
+    if (Engine.checkCollision) {
+        Engine.checkCollision(Engine.modules);
     }
 
-    Enging.renderer.render(Enging.scene, Enging.camera);
-    Engine.loopID = requestAnimationFrame(Engine.loop);
+    Engine.renderer.render(Engine.scene, Engine.camera);
+    //Engine.loopID = requestAnimationFrame(Engine.loop);
 };
 
 Engine.clearScene = function () {
@@ -351,6 +356,7 @@ Engine.startScene = function () {
     Engine.initModules();
     Engine.initAudios();
     Engine.initIntervals();
+    var currModule;
     for (var key in Engine.modules) {
         currModule = Engine.modules[key];
         if (currModule && currModule.visible) {
@@ -379,6 +385,28 @@ Engine.sceneOver = function () {
         Engine.params.overFn();
     }
 };
+
+Engine.DrawGrid = function () {
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(-500, 0, 0));
+    geometry.vertices.push(new THREE.Vector3(500, 0, 0));
+    var color = 0x000000;
+    for (var i = 0; i <= 100; i++) {
+        if (i == 50) {
+            color = 0xff0000;
+        } else {
+            color = 0x000000;
+        }
+
+        var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: color, opacity: 0.2 }));
+        line.position.z = (i * 10) - 500;
+        Engine.scene.add(line);
+        var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: color, opacity: 0.2 }));
+        line.position.x = (i * 10) - 500;
+        line.rotation.y = Math.PI / 2;
+        Engine.scene.add(line);
+    }
+}
 
 var Module = function () {
     this.status = Engine._statusRun;
