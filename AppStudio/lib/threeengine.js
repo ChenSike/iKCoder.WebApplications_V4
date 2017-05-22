@@ -177,10 +177,22 @@ Engine.initCamera = function (width, height) {
       Engine.params.camera.near,
       Engine.params.camera.far
     );
-    Engine.camera.position.x = Engine.params.camera.px;
-    Engine.camera.position.z = Engine.params.camera.py;
-    Engine.camera.position.y = Engine.params.camera.pz;
-    Engine.camera.lookAt(new THREE.Vector3(Engine.params.camera.vector.x, Engine.params.camera.vector.y, Engine.params.camera.vector.z));
+
+    if (Engine.params.camera.px) {
+        Engine.camera.position.x = Engine.params.camera.px;
+    }
+
+    if (Engine.params.camera.py) {
+        Engine.camera.position.y = Engine.params.camera.py;
+    }
+
+    if (Engine.params.camera.pz) {
+        Engine.camera.position.z = Engine.params.camera.pz;
+    }
+
+    if (Engine.params.camera.vector) {
+        Engine.camera.lookAt(new THREE.Vector3(Engine.params.camera.vector.x, Engine.params.camera.vector.y, Engine.params.camera.vector.z));
+    }
 };
 
 Engine.initRenderer = function (width, height) {
@@ -240,9 +252,6 @@ Engine.initLights = function () {
         }
 
         Engine.scene.add(Engine.lights[key]);
-        if (typeof (tmpItem.adjustFn) == 'object' && tmpItem.adjustFn) {
-            tmpItem.adjustFn(Engine.lights[key]);
-        }
     }
 };
 
@@ -361,6 +370,13 @@ Engine.startScene = function () {
         currModule = Engine.modules[key];
         if (currModule && currModule.visible) {
             currModule.preparingToRestart();
+        }
+    }
+
+    Engine.renderer.render(Engine.scene, Engine.camera);
+    for (var key in Engine.params.lights) {
+        if (typeof (Engine.params.lights[key].adjustFn) == 'function' && Engine.params.lights[key].adjustFn) {
+            Engine.params.lights[key].adjustFn(Engine.lights[key]);
         }
     }
 

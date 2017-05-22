@@ -12,7 +12,7 @@ Floor.prototype = Object.assign(Object.create(Module.prototype), {
 
 Floor.prototype.init = function () {
     this.plane = new THREE.Mesh(new THREE.BoxGeometry(200, 1, 200), new THREE.MeshPhongMaterial({ color: '#ffffff', shading: THREE.GouraudShading }));
-    this.plane.receiveShadow = true;
+    this.plane.geometry.receiveShadow = true;
     this.mesh.add(this.plane);
     var wallB = new Wall(200, 20, 5);
     wallB.mesh.position.z = 97.5;
@@ -75,7 +75,7 @@ PACMan.prototype.init = function () {
     //thetaStart：指定从y轴什么地方开始绘制。取值范围：0-PI。默认为0. 
     //thetaLength：指定从thetaStart开始画多少。PI是整个球。0.5*PI只会画上半球。
 
-    this.mesh = new THREE.Mesh(new THREE.SphereGeometry(20, 20, 20), new THREE.MeshPhongMaterial({ color: '#FFD700', shading: THREE.GouraudShading }));
+    this.mesh = new THREE.Mesh(new THREE.SphereGeometry(20, 50, 50), new THREE.MeshPhongMaterial({ color: '#FFD700', shading: THREE.FlatShading }));
     this.mesh.geometry.verticesNeedUpdate = true;
     this.mesh.geometry.normalsNeedUpdate = true;
     this.mesh.geometry.castShadow = true;
