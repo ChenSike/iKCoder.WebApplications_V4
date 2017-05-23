@@ -108,14 +108,7 @@ Engine.params = {
     modules: {},
     backgroundAudio: [],
     audios: {},
-    intervals: {},
-    grid: {
-        type: 'xz',
-        line: 'rgb(0,0,0)',
-        base: 'rgb(255,0,0)',
-        step: 10,
-        scope: 500
-    }
+    intervals: {}
 };
 
 /*
@@ -128,13 +121,10 @@ OrbitControls：轨道控件，用于特定场景，模拟轨道中的卫星，�
 PathControls：路径控件，相机可以沿着预定义的路径移动。可以四处观看，但不能改变自身的位置。
 */
 
-Engine.initParams = function (params) {
-    for (var key in Engine.params) {
-        if (typeof (params[key]) != 'undefined') {
-            Engine.params[key] = params[key];
-        }
-    }
-}
+Engine.events = {
+    'mousedown': Engine.handleMouseDown,
+    'touchend': Engine.handleMouseDown,
+};
 
 Engine.initScreenAnd3D = function (containerId) {
     Engine.container = $('#' + containerId);
@@ -239,11 +229,6 @@ Engine.handleMouseDown = function (eventObj) {
     //}
 };
 
-Engine.events = {
-    'mousedown': Engine.handleMouseDown,
-    'touchend': Engine.handleMouseDown,
-};
-
 Engine.initLights = function () {
     for (var key in Engine.params.lights) {
         var tmpItem = Engine.params.lights[key];
@@ -271,11 +256,8 @@ Engine.initLights = function () {
 
 Engine.initModules = function () {
     for (var key in Engine.params.modules) {
-        var moduleObj = new Engine.params.modules[key];
-        moduleObj.id = Engine.genUid();
-        //Engine.modules[moduleObj.type + '_' + moduleObj.id] = moduleObj;
-        Engine.modules[moduleObj.type] = moduleObj;
-        Engine.scene.add(moduleObj.mesh);
+        Engine.modules[key] = new Engine.params.modules[key];
+        Engine.scene.add(Engine.modules[key].mesh);
     }
 };
 
@@ -309,7 +291,7 @@ Engine.loop = function () {
     var currModule = null;
     for (var key in Engine.modules) {
         currModule = Engine.modules[key];
-        if (currModule && currModule.status == Engine._statusRun && currModule.visable) {
+        if (currModule && currModule.status == Engine._statusRun && currModule.visible) {
             if (Engine.status == Engine._statusRun) {
                 currModule.updatePosition();
             }
@@ -402,49 +384,24 @@ Engine.sceneOver = function () {
 };
 
 Engine.DrawGrid = function () {
-    var params = Engine.params.grid;
-    if (params) {
-        var type = (typeof params.type == 'string' ? params.type : '');
-        var scope = (typeof params.scope == 'number' ? params.scope : 500);
-        var step = (typeof params.step == 'number' ? params.step : 10);
-        var lColor = (typeof params.line == 'string' ? params.line : '#000000');
-        var bColor = (typeof params.base == 'string' ? params.base : '#FF0000');
-        var geometry = new THREE.Geometry();
-        var lpH = '';
-        var lpV = '';
-        var lr = '';
-        if (type = 'xy') {
-            geometry.vertices.push(new THREE.Vector3(-scope, 0, 0));
-            geometry.vertices.push(new THREE.Vector3(scope, 0, 0));
-            lpH = 'y';
-            lpV = 'x';
-            lr = 'z';
-        } else if (type = 'yz') {
-            geometry.vertices.push(new THREE.Vector3(0, -scope, 0));
-            geometry.vertices.push(new THREE.Vector3(0, scope, 0));
-            lpH = 'z';
-            lpV = 'y';
-            lr = 'x';
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(-500, 0, 0));
+    geometry.vertices.push(new THREE.Vector3(500, 0, 0));
+    var color = 0x000000;
+    for (var i = 0; i <= 100; i++) {
+        if (i == 50) {
+            color = 0xff0000;
         } else {
-            geometry.vertices.push(new THREE.Vector3(-scope, 0, 0));
-            geometry.vertices.push(new THREE.Vector3(scope, 0, 0));
-            lpH = 'z';
-            lpV = 'x';
-            lr = 'y';
+            color = 0x000000;
         }
 
-        var loopCount = scope / step * 2;
-        var currColor = '';
-        for (var i = 0; i <= loopCount; i++) {
-            currColor = (i == loopCount / 2 ? bColor : lColor);
-            var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
-            line.position[lpH] = (i * step) - 500;
-            Engine.scene.add(line);
-            var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5}));
-            line.position[lpV] = (i * step) - 500;
-            line.rotation[lr] = Math.PI / 2;
-            Engine.scene.add(line);
-        }
+        var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: color, opacity: 0.2 }));
+        line.position.z = (i * 10) - 500;
+        Engine.scene.add(line);
+        var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: color, opacity: 0.2 }));
+        line.position.x = (i * 10) - 500;
+        line.rotation.y = Math.PI / 2;
+        Engine.scene.add(line);
     }
 };
 
@@ -454,8 +411,6 @@ Engine.adjustLight = function () {
             Engine.params.lights[key].adjustFn(Engine.lights[key]);
         }
     }
-
-    Engine.render();
 };
 
 Engine.prepareForStart = function () {
@@ -481,18 +436,6 @@ Engine.prepareForStart = function () {
 Engine.render = function () {
     Engine.renderer.render(Engine.scene, Engine.camera);
 };
-
-Engine.genUid = function () {
-    var length = 20;
-    var soupLength = Engine.genUid.soup_.length;
-    var id = [];
-    for (var i = 0; i < length; i++) {
-        id[i] = Engine.genUid.soup_.charAt(Math.random() * soupLength);
-    }
-    return id.join('');
-};
-
-Engine.genUid.soup_ = '!#$%()*+,-./:;=?@[]^_`{|}~' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 var Module = function () {
     this.status = Engine._statusRun;
