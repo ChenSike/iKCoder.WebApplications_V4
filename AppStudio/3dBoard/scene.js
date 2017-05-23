@@ -56,3 +56,13 @@ function initEnvironment(containerId) {
     Engine.prepareForStart();
     Engine.startScene();
 }
+
+function getBrush(){
+    for (var key in Engine.modules) {
+        if (Engion.modules[key].type == 'brush') {
+            return Engion.modules[key];
+        }
+    }
+
+    return null;
+}
