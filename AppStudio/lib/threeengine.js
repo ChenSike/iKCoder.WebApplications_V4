@@ -409,41 +409,44 @@ Engine.DrawGrid = function () {
         var step = (typeof params.step == 'number' ? params.step : 10);
         var lColor = (typeof params.line == 'string' ? params.line : '#000000');
         var bColor = (typeof params.base == 'string' ? params.base : '#FF0000');
-        var geometry = new THREE.Geometry();
+        var geometryH = new THREE.Geometry();
+        var geometryV = new THREE.Geometry();
         var lpH = '';
         var lpV = '';
         var lr = '';
-        if (type = 'xy') {
-            geometry.vertices.push(new THREE.Vector3(-scope, 0, 0));
-            geometry.vertices.push(new THREE.Vector3(scope, 0, 0));
+        if (type == 'xy') {
+            geometryH.vertices.push(new THREE.Vector3(-scope, 0, 0));
+            geometryH.vertices.push(new THREE.Vector3(scope, 0, 0));
+            geometryV.vertices.push(new THREE.Vector3(0, -scope, 0));
+            geometryV.vertices.push(new THREE.Vector3(0, scope, 0));
             lpH = 'y';
             lpV = 'x';
-            lr = 'z';
-        } else if (type = 'yz') {
-            geometry.vertices.push(new THREE.Vector3(0, -scope, 0));
-            geometry.vertices.push(new THREE.Vector3(0, scope, 0));
+        } else if (type == 'yz') {
+            geometryH.vertices.push(new THREE.Vector3(0, -scope, 0));
+            geometryH.vertices.push(new THREE.Vector3(0, scope, 0));
+            geometryV.vertices.push(new THREE.Vector3(0, 0, -scope));
+            geometryV.vertices.push(new THREE.Vector3(0, 0, scope));
             lpH = 'z';
             lpV = 'y';
-            lr = 'x';
         } else {
-            geometry.vertices.push(new THREE.Vector3(-scope, 0, 0));
-            geometry.vertices.push(new THREE.Vector3(scope, 0, 0));
+            geometryH.vertices.push(new THREE.Vector3(-scope, 0, 0));
+            geometryH.vertices.push(new THREE.Vector3(scope, 0, 0));
+            geometryV.vertices.push(new THREE.Vector3(0, 0, -scope));
+            geometryV.vertices.push(new THREE.Vector3(0, 0, scope));
             lpH = 'z';
             lpV = 'x';
-            lr = 'y';
         }
 
         var loopCount = scope / step * 2;
         var currColor = '';
         for (var i = 0; i <= loopCount; i++) {
             currColor = (i == loopCount / 2 ? bColor : lColor);
-            var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
-            line.position[lpH] = (i * step) - 500;
-            Engine.scene.add(line);
-            var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5}));
-            line.position[lpV] = (i * step) - 500;
-            line.rotation[lr] = Math.PI / 2;
-            Engine.scene.add(line);
+            var hLine = new THREE.Line(geometryH, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
+            hLine.position[lpH] = (i * step) - 500;
+            Engine.scene.add(hLine);
+            var vLine = new THREE.Line(geometryV, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
+            vLine.position[lpV] = (i * step) - 500;
+            Engine.scene.add(vLine);
         }
     }
 };

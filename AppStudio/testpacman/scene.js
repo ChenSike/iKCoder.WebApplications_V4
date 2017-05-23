@@ -9,8 +9,8 @@ function initEnvironment(containerId) {
             near: 1,
             far: 2000,
             px: 0,
-            py: 200,
-            pz: 200,
+            py: 300,
+            pz: 300,
             vector: { x: 0, y: 0, z: 0 }
         },
         renderer: {
@@ -28,30 +28,24 @@ function initEnvironment(containerId) {
         },
         lights: {
             globalLight: { type: 'ambient', color: '#ffffff', intensity: 0.2, adjustFn: null },
-            //shadowLight: { type: 'directional', color: '#ffffff', intensity: 1, adjustFn: adjustShadowLight }
             pointLight: { type: 'point', color: '#ffffff', intensity: 0.8, distance: 0, adjustFn: adjustPointLight }
-            //spotLight: { type: 'spot', color: '#ffffff', intensity: 1, angle: Math.PI / 4, exponent: 0, distance: 0, adjustFn: adjustSpotLight }
         },
         modules: [
             Floor
         ],
-        backgroundAudio: ['../resource/sounds/sound_1.mp3']
+        backgroundAudio: ['../resource/sounds/sound_1.mp3'],
+        grid: {
+            type: 'xz',
+            line: '#000000',
+            base: '#FF0000',
+            step: 10,
+            scope: 500
+        }
     };
 
     Engine.initScreenAnd3D(containerId);
-    Engine.startScene();
-}
-
-function adjustShadowLight(shadowLight) {
-    //shadowLight.position.set(-30, 40, 20);
-    //shadowLight.castShadow = true;
-    //shadowLight.shadow.camera.left = -400;
-    //shadowLight.shadow.camera.right = 400;
-    //shadowLight.shadow.camera.top = 400;
-    //shadowLight.shadow.camera.bottom = -400;
-    //shadowLight.shadow.camera.near = 1;
-    //shadowLight.shadow.camera.far = 2000;
-    //shadowLight.shadow.mapSize.width = shadowLight.shadow.mapSize.height = 2048;
+    Engine.prepareForStart();
+    //Engine.startScene();
 }
 
 function adjustPointLight(pointLight) {
@@ -59,11 +53,4 @@ function adjustPointLight(pointLight) {
     pointLight.position.y = 200;
     pointLight.position.z = 200;
     //pointLight.position.set(20, 30, 50);
-}
-
-function adjustSpotLight(spotLight) {
-    spotLight.castShadow = true;
-    spotLight.position.y = 200;
-    spotLight.position.z = 200;
-    spotLight.position.x = 0;
 }
