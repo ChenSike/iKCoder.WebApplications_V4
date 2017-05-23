@@ -59,8 +59,8 @@ function initEnvironment(containerId) {
 
 function getBrush(){
     for (var key in Engine.modules) {
-        if (Engion.modules[key].type == 'brush') {
-            return Engion.modules[key];
+        if (Engine.modules[key].type == 'brush') {
+            return Engine.modules[key];
         }
     }
 
