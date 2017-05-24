@@ -3,6 +3,7 @@
 var _itemSize = 35;
 var _colCount = 10;
 var _rowCount = 10;
+var _veerMap = { r: 0, u: 1, l: 2, d: 3 };
 function Floor() {
     Module.call(this);
     this.unique = true;
@@ -78,9 +79,13 @@ function PACMan() {
     this.type = 'pacman';
     this.unique = true;
     this.posDelta = 0;
-    this.posFrame = 10;
+    this.veerDelta = 0;
+    this.posFrame = 15;
     this.posCount = 5;
     this.maxMouth = Math.PI / 2;
+    /*1:up, 0:right, 3: down, 2:left*/
+    this.orientation = 0;
+    this.coord = { x: 0, y: 0, px: 0, py: 0 };
     this.init();
 };
 
@@ -220,6 +225,39 @@ PACMan.prototype.updatePose = function () {
     loop();
 };
 
+PACMan.prototype.turnTo = function (orientation) {
+    orientation = _veerMap[orientation];
+    if (orientation != this.orientation) {
+        var _self = this;
+        var route = Math.PI / 2 * ((orientation == 0 ? 4 : orientation) - this.orientation) / 10;
+        var loop = function () {
+            _self.mesh.rotation.y = _self.mesh.rotation.y + route;
+            _self.veerDelta++;
+            Engine.render();
+            if (_self.veerDelta == 10) {
+                this.orientation = orientation;
+                _self.veerDelta = 0;
+            } else {
+                window.setTimeout(loop, 20);
+            }
+        }
+
+        loop();
+    }
+};
+
+PACMan.prototype.turnLeft = function () {
+    var orientation = this.orientation + 1;
+    orientation = (orientation == 4 ? 0 : orientation);
+    this.turnTo(orientation);
+};
+
+PACMan.prototype.turnRight = function () {
+    var orientation = this.orientation - 1;
+    orientation = (orientation == -1 ? 3 : orientation);
+    this.turnTo(orientation);
+};
+
 function Bean() {
     Module.call(this);
     this.type = 'bean';
@@ -247,5 +285,50 @@ Bean.prototype.init = function () {
     this.torso.geometry.castShadow = true;
     this.body.add(this.torso);
     this.mesh.add(this.body);
-    this.mesh.position.y = 100;
+    this.mesh.position.y = 10;
+};
+
+function Goods() {
+    Module.call(this);
+    this.type = 'goods';
+    this.init();
+};
+
+Goods.prototype = Object.assign(Object.create(Module.prototype), {
+    constructor: Goods
+});
+
+Goods.prototype.init = function () {
+    /*
+    //SphereGeometry 三维球体
+    //radius：半径，默认50. 
+    //widthSegments：指定竖直方向上的分段数。默认是8，最小是3. 
+    //heightSegments：指定水平方向上的分段数。默认是6，最小是2. 
+    //phiStart：指定从x轴什么地方开始绘制。取值范围是：0-2*PI。默认是0。 
+    //phiLength：指定从phiStart开始画多少。2*PI是整个球。 
+    //thetaStart：指定从y轴什么地方开始绘制。取值范围：0-PI。默认为0. 
+    //thetaLength：指定从thetaStart开始画多少。PI是整个球。0.5*PI只会画上半球。    
+    */
+    this.mesh = new THREE.Mesh(new THREE.SphereGeometry(10, 20, 20, 0, Math.PI * 2, 0, Math.PI), new THREE.MeshPhongMaterial({ color: '#FFA500', shading: THREE.FlatShading }));
+    this.mesh.geometry.verticesNeedUpdate = true;
+    this.mesh.geometry.normalsNeedUpdate = true;
+    this.mesh.geometry.castShadow = true;
+    this.mesh.position.y = 15;
+};
+
+function Wall() {
+    Module.call(this);
+    this.type = 'wall';
+    this.unique = false;
+    this.init();
+};
+
+Wall.prototype = Object.assign(Object.create(Module.prototype), {
+    constructor: Wall
+});
+
+Wall.prototype.init = function () {
+    var wallGeometry = new THREE.CylinderGeometry(_itemSize / 3, _itemSize / 3, 30, 50, 5);
+    this.mesh = new THREE.Mesh(wallGeometry, new THREE.MeshPhongMaterial({ color: '#8B4513', shading: THREE.FlatShading }));
+    this.mesh.position.y = 15;
 };

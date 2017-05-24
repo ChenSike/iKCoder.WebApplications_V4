@@ -494,10 +494,15 @@ Engine.addModuleObject = function (moduleObj, x, y, z) {
     Engine.modules[moduleKey] = moduleObj;
     Engine.scene.add(moduleObj.mesh);
     moduleObj.updatePose();
-    moduleObj.mesh.position.x = x;
-    moduleObj.mesh.position.y = y;
-    moduleObj.mesh.position.z = z;
+    moduleObj.mesh.position.x = (x== null ? moduleObj.mesh.position.x : x);
+    moduleObj.mesh.position.y = (y == null ? moduleObj.mesh.position.y : y);
+    moduleObj.mesh.position.z = (z == null ? moduleObj.mesh.position.z : z);
+    return moduleKey;
 };
+
+Engine.removeModuleObject = function (key) {
+    Engine.scene.remove(Engine.modules[key].mesh);
+}
 
 Engine.genUid = function () {
     var length = 20;
