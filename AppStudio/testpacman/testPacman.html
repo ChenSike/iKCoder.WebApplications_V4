@@ -18,7 +18,9 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            initEnvironment('game_container');
+            Scene.initGlobalParams();
+            Scene.initEnvironment('game_container');
+            Scene.initMap();
         });
     </script>
 </body>

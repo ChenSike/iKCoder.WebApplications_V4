@@ -18,6 +18,8 @@ Engine.delta = 0;
 Engine.loopID = null;
 Engine.intervals = {};
 Engine.backgroundAudio = null;
+Engine.PI = Math.PI;
+Engine.hPI = Math.PI / 2;
 Engine.params = {
     /*
         color: 烟雾的颜色
@@ -273,9 +275,10 @@ Engine.initModules = function () {
     for (var key in Engine.params.modules) {
         var moduleObj = new Engine.params.modules[key];
         moduleObj.id = Engine.genUid();
-        //Engine.modules[moduleObj.type + '_' + moduleObj.id] = moduleObj;
-        Engine.modules[moduleObj.type] = moduleObj;
+        var moduleKey = (moduleObj.unique ? moduleObj.type : moduleObj.type + '_' + moduleObj.id)
+        Engine.modules[moduleKey] = moduleObj;
         Engine.scene.add(moduleObj.mesh);
+        moduleObj.updatePose();
     }
 };
 
@@ -314,7 +317,7 @@ Engine.loop = function () {
                 currModule.updatePosition();
             }
 
-            currModule.updatePose();
+            //currModule.updatePose();
         }
     }
 
@@ -485,6 +488,17 @@ Engine.render = function () {
     Engine.renderer.render(Engine.scene, Engine.camera);
 };
 
+Engine.addModuleObject = function (moduleObj, x, y, z) {
+    moduleObj.id = Engine.genUid();
+    var moduleKey = (moduleObj.unique ? moduleObj.type : moduleObj.type + '_' + moduleObj.id)
+    Engine.modules[moduleKey] = moduleObj;
+    Engine.scene.add(moduleObj.mesh);
+    moduleObj.updatePose();
+    moduleObj.mesh.position.x = x;
+    moduleObj.mesh.position.y = y;
+    moduleObj.mesh.position.z = z;
+};
+
 Engine.genUid = function () {
     var length = 20;
     var soupLength = Engine.genUid.soup_.length;
@@ -500,6 +514,7 @@ Engine.genUid.soup_ = '!#$%()*+,-./:;=?@[]^_`{|}~' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ
 var Module = function () {
     this.status = Engine._statusRun;
     this.visable = true;
+    this.unique = false;
     this.mesh = new THREE.Group();
     this.body = new THREE.Group();
     this.head = new THREE.Group();
