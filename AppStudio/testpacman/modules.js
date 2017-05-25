@@ -239,7 +239,7 @@ PACMan.prototype.updatePose = function () {
         window.setTimeout(loop, posFrame);
     }
 
-    loop();
+    //loop();
 };
 
 PACMan.prototype.turnTo = function (orientation) {
@@ -547,27 +547,28 @@ Goods.prototype.init = function () {
     this.mesh.position.y = 15;
 };
 
-Goods.prototype.updatePose = function () {
-    var _self = this;
+Goods.loopDelta = 0;
+Goods.updatePose = function (goods) {
     var posFrame = 1000 / 10;
-    var scale = 10;
     var newSize = 12;
-    var loopDelta = 0;
     var loop = function () {
         var tmpVal = loopDelta % 10;
         if (tmpVal > 5) {
             tmpVal = 10 - tmpVal;
         }
-
-        _self.mesh.scale.setX(1 + 0.05 * tmpVal);
-        _self.mesh.scale.setY(1 + 0.05 * tmpVal);
-        _self.mesh.scale.setZ(1 + 0.05 * tmpVal);
-        loopDelta++;
+        tmpVal = 1 + 0.05 * tmpVal;
+        for (var i = 0; i < goods.length; i++) {
+            goods[i].mesh.scale.set(tmpVal, tmpVal, tmpVal);
+        }
+        //_self.mesh.scale.setX(1 + 0.05 * tmpVal);
+        //_self.mesh.scale.setY(1 + 0.05 * tmpVal);
+        //_self.mesh.scale.setZ(1 + 0.05 * tmpVal);
+        Goods.loopDelta++;
         Engine.render();
         window.setTimeout(loop, posFrame);
     }
 
-    loop();
+    //loop();
 };
 
 Goods.prototype.collideAction = function (sourceModule) {
