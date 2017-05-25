@@ -312,7 +312,7 @@ Engine.loop = function () {
     var currModule = null;
     for (var key in Engine.modules) {
         currModule = Engine.modules[key];
-        if (currModule && currModule.status == Engine._statusRun && currModule.visable) {
+        if (currModule && currModule.status == Engine._statusRun && currModule.visible) {
             if (Engine.status == Engine._statusRun) {
                 currModule.updatePosition();
             }
@@ -328,6 +328,16 @@ Engine.loop = function () {
     Engine.renderer.render(Engine.scene, Engine.camera);
     Engine.loopID = requestAnimationFrame(Engine.loop);
 };
+
+Engine.rersetScene = function (rebuild) {
+    if (typeof rebuild == 'boolean' && rebuild) {
+
+    } else {
+        for (var key in Engine.modules) {
+            Engine.modules[key].mesh.visible = true;
+        }
+    }
+}
 
 Engine.clearScene = function () {
     for (var key in Engine.modules) {
@@ -345,9 +355,8 @@ Engine.restartScene = function () {
     Engine.clearScene();
     Engine.initModules();
     for (var key in Engine.modules) {
-        currModule = Engine.modules[key];
-        if (currModule && currModule.visible) {
-            currModule.preparingToRestart();
+        if (Engine.modules[key] && Engine.modules[key].visible) {
+            Engine.modules[key].preparingToRestart();
         }
     }
 
@@ -382,6 +391,11 @@ Engine.continueScene = function () {
 
 Engine.startScene = function () {
     Engine.status = Engine._statusRun;
+    for (var key in Engine.modules) {
+        Engine.modules[key].status = Engine._statusRun;
+        Engine.modules[key].prepareForRun();
+    }
+
     Engine.loop();
     if (Engine.backgroundAudio) {
         Engine.backgroundAudio.load();
@@ -445,10 +459,10 @@ Engine.DrawGrid = function () {
         for (var i = 0; i <= loopCount; i++) {
             currColor = (i == loopCount / 2 ? bColor : lColor);
             var hLine = new THREE.Line(geometryH, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
-            hLine.position[lpH] = (i * step) - 500;
+            hLine.position[lpH] = (i * step) - params.scope;
             Engine.scene.add(hLine);
             var vLine = new THREE.Line(geometryV, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
-            vLine.position[lpV] = (i * step) - 500;
+            vLine.position[lpV] = (i * step) - params.scope;
             Engine.scene.add(vLine);
         }
     }
@@ -490,11 +504,12 @@ Engine.render = function () {
 
 Engine.addModuleObject = function (moduleObj, x, y, z) {
     moduleObj.id = Engine.genUid();
-    var moduleKey = (moduleObj.unique ? moduleObj.type : moduleObj.type + '_' + moduleObj.id)
+    var moduleKey = (moduleObj.unique ? moduleObj.type : moduleObj.type + '_' + moduleObj.id);
+    moduleObj.symbol = moduleKey;
     Engine.modules[moduleKey] = moduleObj;
     Engine.scene.add(moduleObj.mesh);
     moduleObj.updatePose();
-    moduleObj.mesh.position.x = (x== null ? moduleObj.mesh.position.x : x);
+    moduleObj.mesh.position.x = (x == null ? moduleObj.mesh.position.x : x);
     moduleObj.mesh.position.y = (y == null ? moduleObj.mesh.position.y : y);
     moduleObj.mesh.position.z = (z == null ? moduleObj.mesh.position.z : z);
     return moduleKey;
@@ -502,6 +517,10 @@ Engine.addModuleObject = function (moduleObj, x, y, z) {
 
 Engine.removeModuleObject = function (key) {
     Engine.scene.remove(Engine.modules[key].mesh);
+};
+
+Engine.getModuleObject = function (key) {
+    return Engine.modules[key];
 }
 
 Engine.genUid = function () {
@@ -518,8 +537,11 @@ Engine.genUid.soup_ = '!#$%()*+,-./:;=?@[]^_`{|}~' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
 var Module = function () {
     this.status = Engine._statusRun;
-    this.visable = true;
+    this.visible = true;
     this.unique = false;
+    this.speed = 1;
+    this.id = '';
+    this.symbol = '';
     this.mesh = new THREE.Group();
     this.body = new THREE.Group();
     this.head = new THREE.Group();
@@ -548,3 +570,15 @@ Module.prototype.continue = function () {
 Module.prototype.over = function () {
 
 };
+
+Module.prototype.prepareForRun = function () {
+
+};
+
+Module.prototype.collideAction = function (sourceModule) {
+
+};
+
+Module.prototype.reset = function () {
+
+}

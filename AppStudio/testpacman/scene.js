@@ -70,8 +70,8 @@ Scene.initEnvironment = function (containerId) {
             type: 'xz',
             line: '#000000',
             base: '#FF0000',
-            step: 20,
-            scope: 500
+            step: 35,
+            scope: 700
         }
     };
 
@@ -79,6 +79,13 @@ Scene.initEnvironment = function (containerId) {
     Engine.prepareForStart();
     Scene.initMap();
     Scene.initPlayer(5, 5);
+    var monsterParams = [
+        { x: 3, y: 3, c: null },
+        { x: 3, y: 11, c: null },
+        { x: 11, y: 3, c: null },
+        { x: 11, y: 11, c: null }
+    ];
+    Scene.initMonster(monsterParams);
 };
 
 Scene.initMap = function () {
@@ -99,7 +106,7 @@ Scene.initMap = function () {
                 tmpKey = Engine.addModuleObject(new Goods(), tmpX, null, tmpZ);
             }
 
-            rowData.push({ t: Scene.defaultDATA[i][j], s: tmpKey });
+            rowData.push({ t: Scene.defaultDATA[i][j], s: tmpKey, v: true });
         }
 
         Scene.mapDATA.push(rowData);
@@ -107,15 +114,27 @@ Scene.initMap = function () {
 };
 
 Scene.initPlayer = function (x, y) {
-    var tmpX = x * _itemSize - _colCount * _itemSize / 2 + _itemSize / 2;
-    var tmpZ = y * _itemSize - _rowCount * _itemSize / 2 + _itemSize / 2;
-    var tmpKey = Engine.addModuleObject(new PACMan(), tmpX, null, tmpZ);
-    Scene.getPlayer.coord = { x: x, y: y, px: tmpX, py: tmpZ };
+    var player = new PACMan('study', Scene.mapDATA);
+    Engine.addModuleObject(player, x, null, y);
+    player.setPosition(x, y);
     if (Scene.mapDATA[y][x].t == 0 || Scene.mapDATA[y][x].t == 2) {
-        Engine.removeModuleObject(Scene.mapDATA[y][x].s);
+        Engine.getModuleObject(Scene.mapDATA[y][x].s).mesh.visible = false;
     }
 
-    Scene.mapDATA[y][x] = { t: '', s: tmpKey };
+    Scene.mapDATA[y][x].v = false;
+};
+
+Scene.initMonster = function (params) {
+    for (var i = 0; i < params.length; i++) {
+        var monster = new Monster('study', Scene.mapDATA);
+        Engine.addModuleObject(monster, params[i].x, null, params[i].y);
+        monster.setPosition(params[i].x, params[i].y);
+        if (Scene.mapDATA[params[i].y][params[i].x].t == 0 || Scene.mapDATA[params[i].y][params[i].x].t == 2) {
+            Engine.getModuleObject(Scene.mapDATA[params[i].y][params[i].x].s).mesh.visible = false;
+        }
+
+        Scene.mapDATA[params[i].y][params[i].x].v = false;
+    }
 };
 
 Scene.initGlobalParams = function (defaultData) {
@@ -127,26 +146,61 @@ Scene.initGlobalParams = function (defaultData) {
     _rowCount = Scene.defaultDATA.length;
 };
 
-Scene.coordToPosition = function (x, y) {
-    var tmpX = x * _itemSize - _colCount * _itemSize / 2 + _itemSize / 2;
-    var tmpY = y * _itemSize - _rowCount * _itemSize / 2 + _itemSize / 2;
-    return { px: tmpX, py: tmpY };
+Scene.initModuelPath = function (moduleType) {
+    Engine.modules[moduleType].initMovePath();
 };
 
-Scene.positionToCoord = function (px, py) {
-    var tmpX = (px - _itemSize / 2 + _colCount * _itemSize / 2) / _itemSize;
-    var tmpY = (py - _itemSize / 2 + _rowCount * _itemSize / 2) / _itemSize;
-    return { x: tmpX, y: tmpY };
+Scene.addModuelPath = function (moduleType, type, value) {
+    Engine.modules[moduleType].addMovePath(type, value);
 };
-
-Scene.checkCollide = function (px, py) {
-
-}
 
 Scene.getPlayer = function () {
     return Engine.modules['pacman'];
 };
 
-Scene.start = function (containerId) {
-    //Engine.startScene();
+Scene.getMonsters = function () {
+    var monstres = [];
+    for (var key in Engine.modules) {
+        if (Engine.modules[key].type == 'monster') {
+            monstres.push(Engine.modules[key]);
+        }
+    }
+
+    return monstres;
+};
+
+Scene.start = function () {
+    Engine.startScene();
+};
+
+Scene.reset = function () {
+    Engine.rersetScene();
+    Scene.resetMap();
+    Scene.getPlayer().reset();
+    var x = Scene.getPlayer().defaultCoord.x;
+    var y = Scene.getPlayer().defaultCoord.y;
+    if (Scene.mapDATA[y][x].t == 0 || Scene.mapDATA[y][x].t == 2) {
+        Engine.getModuleObject(Scene.mapDATA[y][x].s).mesh.visible = false;
+    }
+
+    Scene.mapDATA[y][x].v = false;
+    var monstres = Scene.getMonsters();
+    for (var i = 0; i < monstres.length; i++) {
+        monstres[i].reset();
+        var x = monstres[i].defaultCoord.x;
+        var y = monstres[i].defaultCoord.y;
+        if (Scene.mapDATA[y][x].t == 0 || Scene.mapDATA[y][x].t == 2) {
+            Engine.getModuleObject(Scene.mapDATA[y][x].s).mesh.visible = false;
+        }
+
+        Scene.mapDATA[y][x].v = false;
+    }
+};
+
+Scene.resetMap = function () {
+    for (var i = 0; i < Scene.mapDATA.length; i++) {
+        for (var j = 0; j < Scene.mapDATA[i].length; j++) {
+            Scene.mapDATA[i][j].v = true;
+        }
+    }
 };
