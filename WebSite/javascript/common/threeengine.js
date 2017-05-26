@@ -118,7 +118,7 @@ Engine.params = {
         step: 10,
         scope: 500
     },
-    sizes: { w: null, h: null },
+    sizes: { orgw: 2000, orgh: 2000, cw: null, ch: null, nw: null, nh: null },
     containerId: '',
 };
 
@@ -162,23 +162,25 @@ Engine.initScreenAnd3D = function (containerId, params) {
     Engine.clock = new THREE.Clock();
     Engine.initLights();
     Engine.DrawGrid();
-    Engine.calcWorldScale(true);
 };
 
 Engine.calcWorldScale = function (needRescale) {
     var containerWidth = Engine.container.width();
     var containerHeight = Engine.container.height();
-    var width = Engine.params.sizes.w;
-    var height = Engine.params.sizes.h;
-    if (width != containerWidth || height != containerHeight) {
-        var hRate = containerHeight / height;
-        var wRate = containerWidth / width;
-        var scale = (wRate < hRate ? hRate : wRate);
-        Engine.renderer.setSize(containerWidth, containerHeight);
-        if (typeof needRescale != 'undefined' && needRescale == true) {
-            Engine.scene.scale.set(scale, scale, scale);
-        }
-    }
+    Engine.params.sizes.cw = containerWidth;
+    Engine.params.sizes.ch = containerHeight;
+    var orgWidth = Engine.params.sizes.w;
+    var orgHeight = Engine.params.sizes.h;
+    var hRate = containerHeight / orgHeight;
+    var wRate = containerWidth / orgWidth;
+    var scale = (wRate > hRate ? hRate : wRate);
+    Engine.params.sizes.nw = orgWidth * scale;
+    Engine.params.sizes.nh = orgHeight * scale;
+    Engine.renderer.setSize(Engine.params.sizes.nw, Engine.params.sizes.nh);
+    Engine.camera.position.x = Engine.params.camera.px * scale;
+    Engine.camera.position.y = Engine.params.camera.py * scale;
+    Engine.camera.position.z = Engine.params.camera.pz * scale;
+    Engine.scene.scale.set(scale, scale, scale);
 }
 
 Engine.createFog = function () {
@@ -234,7 +236,8 @@ Engine.initCamera = function (width, height) {
 Engine.initRenderer = function (width, height) {
     Engine.renderer = new THREE.WebGLRenderer({ alpha: Engine.params.renderer.alpha, antialias: Engine.params.renderer.antialias });
     Engine.renderer.setPixelRatio(window.devicePixelRatio);
-    Engine.renderer.setSize(Engine.container.width(), Engine.container.height());
+    //Engine.renderer.setSize(Engine.container.width(), Engine.container.height());
+    Engine.calcWorldScale(true);
     Engine.renderer.setClearColor(Engine.params.renderer.clearColor, Engine.params.renderer.clearAlpha);
     Engine.renderer.shadowMap.enabled = Engine.params.renderer.enableShadowMap;
     Engine.shadowMapEnabled = Engine.params.renderer.enableShadowMap;

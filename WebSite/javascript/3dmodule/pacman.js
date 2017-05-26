@@ -69,6 +69,7 @@ Floor.prototype.createFence = function (w, h, d, c, sw, sd, type) {
     fenceShape.lineTo((isLeft ? -sw / 2 : sw / 2), (isTop ? sd / 2 : -sd / 2));
     fenceShape.lineTo((isLeft ? -sw / 2 : sw / 2), 0);
     var fence = new THREE.Mesh(new THREE.ExtrudeGeometry(fenceShape, options), new THREE.MeshPhongMaterial({ color: c, shading: THREE.GouraudShading }));
+    fence.geometry.receiveShadow = true;
     fence.rotation.x = -Math.PI / 2;
     fence.position.z = (isTop ? -5 : 5);
     fence.position.x = (isLeft ? -5 : 5);
@@ -213,7 +214,7 @@ PACMan.prototype.init = function () {
 
     this.mesh.add(this.body);
     this.mesh.add(this.head);
-    this.mesh.position.y = 20;
+    this.mesh.position.y = 30;
 };
 
 PACMan.prototype.setPosition = function (x, y) {
@@ -401,6 +402,7 @@ PACMan.prototype.setActionForCollideWall = function (fn) {
 };
 
 PACMan.prototype.actionForCollideWall = function () {
+    return false;
 };
 
 PACMan.prototype.setActionForCollideMonster = function (fn) {
@@ -408,6 +410,7 @@ PACMan.prototype.setActionForCollideMonster = function (fn) {
 };
 
 PACMan.prototype.actionForCollideMoonster = function () {
+    return false;
 };
 
 PACMan.prototype.setActionForCollideBean = function (fn) {
@@ -415,6 +418,7 @@ PACMan.prototype.setActionForCollideBean = function (fn) {
 };
 
 PACMan.prototype.actionForCollideBean = function () {
+    return false;
 };
 
 PACMan.prototype.setActionForCollideGoods = function (fn) {
@@ -422,6 +426,15 @@ PACMan.prototype.setActionForCollideGoods = function (fn) {
 };
 
 PACMan.prototype.actionForCollideGoods = function () {
+    return false;
+};
+
+PACMan.prototype.setActionForCollideProp = function (fn) {
+    this.actionForCollideProp = fn
+};
+
+PACMan.prototype.actionForCollideProp = function () {
+    return false;
 };
 
 PACMan.prototype.checkCollide = function () {
@@ -442,35 +455,40 @@ PACMan.prototype.checkCollide = function () {
     if (onPoint) {
         tmpItem = this.mapData[nextCoordY][nextCoordX];
         if (tmpItem.t == 1) {
-            this.actionForCollideWall();
-            return Engine.modules[tmpItem.s].collideAction(this);
+            if (!this.actionForCollideWall()) {
+                return Engine.modules[tmpItem.s].collideAction(this);
+            }
+        } else if (tmpItem.t == 0) {
+            if (this.actionForCollideBean() == true) {
+                return true;
+            }
+        } else if (tmpItem.t == 2) {
+            if (this.actionForCollideGoods() == true) {
+                return true;
+            }
         }
     } else {
         nextCoordX = (this.orientation == 0 ? Math.ceil(nextCoordX) : this.orientation == 2 ? Math.floor(nextCoordX) : nextCoordX);
         nextCoordY = (this.orientation == 1 ? Math.floor(nextCoordY) : this.orientation == 3 ? Math.ceil(nextCoordY) : nextCoordY);
         var tmpItem = this.mapData[nextCoordY][nextCoordX];
         if (tmpItem.t % 2 == 0 && tmpItem.v) {
-            if (tmpItem.t == 0) {
-                this.actionForCollideBean();
-            } else if (tmpItem.t == 2) {
-                this.actionForCollideGoods();
-            }
-
             return Engine.modules[tmpItem.s].collideAction(this);
         }
     }
 
     for (var key in Engine.modules) {
         if (Engine.modules[key].type == 'monster') {
-            this.actionForCollideGoods();
-            if (Engine.modules[tmpItem.s].collideAction(this)) {
+            if (this.actionForCollideMoonster()) {
                 return true;
             }
+
+            return Engine.modules[tmpItem.s].collideAction(this);
         } else if (Engine.modules[key].type.indexOf('prop_') == 0) {
-            this.actionForCollideProp();
-            if (Engine.modules[tmpItem.s].collideAction(this)) {
+            if (this.actionForCollideProp()) {
                 return true;
             }
+
+            return Engine.modules[tmpItem.s].collideAction(this);
         }
     }
 
@@ -601,9 +619,9 @@ Wall.prototype = Object.assign(Object.create(Module.prototype), {
 });
 
 Wall.prototype.init = function () {
-    var wallGeometry = new THREE.CylinderGeometry(_itemSize * 4 / 9, _itemSize * 4 / 9, 30, 50, 5);
+    var wallGeometry = new THREE.CylinderGeometry(_itemSize * 4 / 9, _itemSize * 4 / 9, 50, 50, 5);
     this.mesh = new THREE.Mesh(wallGeometry, new THREE.MeshPhongMaterial({ color: '#8B4513', shading: THREE.FlatShading }));
-    this.mesh.position.y = _itemSize * 2 / 9;
+    this.mesh.position.y = 25;
 };
 
 Wall.prototype.collideAction = function (sourceModule) {

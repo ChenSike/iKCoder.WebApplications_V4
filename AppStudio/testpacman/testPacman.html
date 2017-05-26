@@ -10,7 +10,7 @@
     <script src="../lib/three.min.js"></script>
     <script src="../lib/TweenMax.min.js"></script>
     <script src="../lib/threeengine.js"></script>
-    <script src="modules.js"></script>
+    <script src="pacman.js"></script>
     <script src="scene.js"></script>
 </head>
 <body style="height:100%;">
@@ -18,7 +18,11 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            Scene.initGlobalParams();
+            var container = $('#game_container');
+            var parent = container.parent();
+            var tmpSize = (parent.width() > parent.height() ? parent.height() : parent.width());
+            container.width(tmpSize);
+            container.height(tmpSize);
             Scene.initEnvironment('game_container');
         });
     </script>

@@ -34,8 +34,8 @@ Scene.initEnvironment = function (containerId) {
             near: 1,
             far: 2000,
             px: 0,
-            py: _itemSize * _rowCount / 3,
-            pz: _itemSize * _rowCount / 3,
+            py: _itemSize * _rowCount  * 0.9,
+            pz: _itemSize * _rowCount * 1.2,
             vector: { x: 0, y: 0, z: 0 }
         },
         renderer: {
@@ -60,8 +60,8 @@ Scene.initEnvironment = function (containerId) {
                 distance: 0,
                 adjustFn: function (pointLight) {
                     pointLight.position.x = 0;
-                    pointLight.position.y = _itemSize * _rowCount / 2;
-                    pointLight.position.z = _itemSize * _rowCount / 2;
+                    pointLight.position.y = 720;
+                    pointLight.position.z = 720;
                 }
             }
         },

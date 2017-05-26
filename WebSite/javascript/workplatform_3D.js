@@ -221,7 +221,8 @@ function initEvents() {
             WorkScene.saveStatus();
             window.location.href = "profile.html?rnd=" + Date.now();
         } else {
-            WorkScene.reset();
+            WorkScene.reset(true);
+            resetPlayBtn('P');
             $('.wrap-workstatus-alert').hide();
         }
     });

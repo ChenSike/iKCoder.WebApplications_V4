@@ -17,8 +17,8 @@ Floor.prototype = Object.assign(Object.create(Module.prototype), {
 });
 
 Floor.prototype.init = function () {
-    var width = 1000;
-    var depth = 1000;
+    var width = 1500;
+    var depth = 1500;
     var height = _itemSize;
     var placeWidth = _itemSize * _colCount;
     var placeDepth = _itemSize * _rowCount;
@@ -69,6 +69,7 @@ Floor.prototype.createFence = function (w, h, d, c, sw, sd, type) {
     fenceShape.lineTo((isLeft ? -sw / 2 : sw / 2), (isTop ? sd / 2 : -sd / 2));
     fenceShape.lineTo((isLeft ? -sw / 2 : sw / 2), 0);
     var fence = new THREE.Mesh(new THREE.ExtrudeGeometry(fenceShape, options), new THREE.MeshPhongMaterial({ color: c, shading: THREE.GouraudShading }));
+    fence.geometry.receiveShadow = true;
     fence.rotation.x = -Math.PI / 2;
     fence.position.z = (isTop ? -5 : 5);
     fence.position.x = (isLeft ? -5 : 5);
@@ -213,7 +214,7 @@ PACMan.prototype.init = function () {
 
     this.mesh.add(this.body);
     this.mesh.add(this.head);
-    this.mesh.position.y = 20;
+    this.mesh.position.y = 30;
 };
 
 PACMan.prototype.setPosition = function (x, y) {
@@ -244,7 +245,7 @@ PACMan.prototype.updatePose = function () {
         window.setTimeout(loop, posFrame);
     }
 
-    //loop();
+    loop();
 };
 
 PACMan.prototype.turnTo = function (orientation) {
@@ -391,6 +392,8 @@ PACMan.prototype.updatePositionStudy = function () {
             }
 
         }
+    } else {
+        this.pathCompleteFn();
     }
 };
 
@@ -399,6 +402,7 @@ PACMan.prototype.setActionForCollideWall = function (fn) {
 };
 
 PACMan.prototype.actionForCollideWall = function () {
+    return false;
 };
 
 PACMan.prototype.setActionForCollideMonster = function (fn) {
@@ -406,6 +410,7 @@ PACMan.prototype.setActionForCollideMonster = function (fn) {
 };
 
 PACMan.prototype.actionForCollideMoonster = function () {
+    return false;
 };
 
 PACMan.prototype.setActionForCollideBean = function (fn) {
@@ -413,6 +418,7 @@ PACMan.prototype.setActionForCollideBean = function (fn) {
 };
 
 PACMan.prototype.actionForCollideBean = function () {
+    return false;
 };
 
 PACMan.prototype.setActionForCollideGoods = function (fn) {
@@ -420,6 +426,15 @@ PACMan.prototype.setActionForCollideGoods = function (fn) {
 };
 
 PACMan.prototype.actionForCollideGoods = function () {
+    return false;
+};
+
+PACMan.prototype.setActionForCollideProp = function (fn) {
+    this.actionForCollideProp = fn
+};
+
+PACMan.prototype.actionForCollideProp = function () {
+    return false;
 };
 
 PACMan.prototype.checkCollide = function () {
@@ -440,35 +455,40 @@ PACMan.prototype.checkCollide = function () {
     if (onPoint) {
         tmpItem = this.mapData[nextCoordY][nextCoordX];
         if (tmpItem.t == 1) {
-            this.actionForCollideWall();
-            return Engine.modules[tmpItem.s].collideAction(this);
+            if (!this.actionForCollideWall()) {
+                return Engine.modules[tmpItem.s].collideAction(this);
+            }
+        } else if (tmpItem.t == 0) {
+            if (this.actionForCollideBean() == true) {
+                return true;
+            }
+        } else if (tmpItem.t == 2) {
+            if (this.actionForCollideGoods() == true) {
+                return true;
+            }
         }
     } else {
         nextCoordX = (this.orientation == 0 ? Math.ceil(nextCoordX) : this.orientation == 2 ? Math.floor(nextCoordX) : nextCoordX);
-        nextCoordY = (this.orientation == 1 ? Math.ceil(nextCoordY) : this.orientation == 3 ? Math.floor(nextCoordY) : nextCoordY);
+        nextCoordY = (this.orientation == 1 ? Math.floor(nextCoordY) : this.orientation == 3 ? Math.ceil(nextCoordY) : nextCoordY);
         var tmpItem = this.mapData[nextCoordY][nextCoordX];
         if (tmpItem.t % 2 == 0 && tmpItem.v) {
-            if (tmpItem.t == 0) {
-                this.actionForCollideBean();
-            } else if (tmpItem.t == 2) {
-                this.actionForCollideGoods();
-            }
-
             return Engine.modules[tmpItem.s].collideAction(this);
         }
     }
 
     for (var key in Engine.modules) {
         if (Engine.modules[key].type == 'monster') {
-            this.actionForCollideGoods();
-            if (Engine.modules[tmpItem.s].collideAction(this)) {
+            if (this.actionForCollideMoonster()) {
                 return true;
             }
+
+            return Engine.modules[tmpItem.s].collideAction(this);
         } else if (Engine.modules[key].type.indexOf('prop_') == 0) {
-            this.actionForCollideProp();
-            if (Engine.modules[tmpItem.s].collideAction(this)) {
+            if (this.actionForCollideProp()) {
                 return true;
             }
+
+            return Engine.modules[tmpItem.s].collideAction(this);
         }
     }
 
@@ -510,13 +530,15 @@ Bean.prototype.init = function () {
     this.torso.geometry.castShadow = true;
     this.body.add(this.torso);
     this.mesh.add(this.body);
-    this.mesh.position.y = 10;
+    this.mesh.position.y = 20;
 };
 
 Bean.prototype.collideAction = function (sourceModule) {
     var targetCoord = ModuleUtil.positionToCoord(this.mesh.position.x, this.mesh.position.z);
     var sourceCoord = ModuleUtil.positionToCoord(sourceModule.mesh.position.x, sourceModule.mesh.position.z);
-    if ((targetCoord.y == sourceModule.coord.y && Math.abs(targetCoord.x - sourceCoord.x) <= 0.25) || (targetCoord.x == sourceModule.coord.x && Math.abs(coord.y - sourceCoord.y) <= 0.25)) {
+    var nearX = (targetCoord.y == sourceModule.coord.y && Math.abs(targetCoord.x - sourceCoord.x) <= 0.25);
+    var nearY = (targetCoord.x == sourceModule.coord.x && Math.abs(targetCoord.y - sourceCoord.y) <= 0.25);
+    if (nearX || nearY) {
         Engine.getModuleObject(this.symbol).mesh.visible = false;
         //sourceModule.mapData[targetCoord.y][targetCoord.x].s = '';
     }
@@ -552,28 +574,27 @@ Goods.prototype.init = function () {
     this.mesh.position.y = 15;
 };
 
-Goods.loopDelta = 0;
-Goods.updatePose = function (goods) {
+Goods.prototype.updatePose = function () {
+    var _self = this;
     var posFrame = 1000 / 10;
+    var scale = 10;
     var newSize = 12;
+    var loopDelta = 0;
     var loop = function () {
         var tmpVal = loopDelta % 10;
         if (tmpVal > 5) {
             tmpVal = 10 - tmpVal;
         }
-        tmpVal = 1 + 0.05 * tmpVal;
-        for (var i = 0; i < goods.length; i++) {
-            goods[i].mesh.scale.set(tmpVal, tmpVal, tmpVal);
-        }
-        //_self.mesh.scale.setX(1 + 0.05 * tmpVal);
-        //_self.mesh.scale.setY(1 + 0.05 * tmpVal);
-        //_self.mesh.scale.setZ(1 + 0.05 * tmpVal);
-        Goods.loopDelta++;
+
+        _self.mesh.scale.setX(1 + 0.05 * tmpVal);
+        _self.mesh.scale.setY(1 + 0.05 * tmpVal);
+        _self.mesh.scale.setZ(1 + 0.05 * tmpVal);
+        loopDelta++;
         Engine.render();
         window.setTimeout(loop, posFrame);
     }
 
-    //loop();
+    loop();
 };
 
 Goods.prototype.collideAction = function (sourceModule) {
@@ -598,9 +619,9 @@ Wall.prototype = Object.assign(Object.create(Module.prototype), {
 });
 
 Wall.prototype.init = function () {
-    var wallGeometry = new THREE.CylinderGeometry(_itemSize * 4 / 9, _itemSize * 4 / 9, 30, 50, 5);
+    var wallGeometry = new THREE.CylinderGeometry(_itemSize * 4 / 9, _itemSize * 4 / 9, 50, 50, 5);
     this.mesh = new THREE.Mesh(wallGeometry, new THREE.MeshPhongMaterial({ color: '#8B4513', shading: THREE.FlatShading }));
-    this.mesh.position.y = _itemSize * 2 / 9;
+    this.mesh.position.y = 25;
 };
 
 Wall.prototype.collideAction = function (sourceModule) {

@@ -22,8 +22,11 @@ Scene.defaultDATA = [
 
 Scene.mapDATA = [];
 
+Scene.targetPos = { x: 3, y: 3 };
+
 Scene.initEnvironment = function (containerId) {
-    Engine.params = {
+    Scene.initGlobalParams();
+    var params = {
         fog: null,
         camera: {
             fov: 45,
@@ -31,8 +34,8 @@ Scene.initEnvironment = function (containerId) {
             near: 1,
             far: 2000,
             px: 0,
-            py: _itemSize * _rowCount - 50,
-            pz: _itemSize * _rowCount + 50,
+            py: _itemSize * _rowCount  * 0.9,
+            pz: _itemSize * _rowCount * 1.2,
             vector: { x: 0, y: 0, z: 0 }
         },
         renderer: {
@@ -57,8 +60,8 @@ Scene.initEnvironment = function (containerId) {
                 distance: 0,
                 adjustFn: function (pointLight) {
                     pointLight.position.x = 0;
-                    pointLight.position.y = 200;
-                    pointLight.position.z = 200;
+                    pointLight.position.y = 720;
+                    pointLight.position.z = 720;
                 }
             }
         },
@@ -66,16 +69,18 @@ Scene.initEnvironment = function (containerId) {
             Floor
         ],
         //backgroundAudio: ['../resource/sounds/sound_1.mp3'],
-        grid: {
-            type: 'xz',
-            line: '#000000',
-            base: '#FF0000',
-            step: 35,
-            scope: 700
-        }
+        //grid: {
+        //    type: 'xz',
+        //    line: '#000000',
+        //    base: '#FF0000',
+        //    step: 35,
+        //    scope: 700
+        //}
+        grid: null,
+        sizes: { w: 1440, h: 1440 }
     };
 
-    Engine.initScreenAnd3D(containerId);
+    Engine.initScreenAnd3D(containerId, params);
     Engine.prepareForStart();
     Scene.initMap();
     Scene.initPlayer(5, 5);
@@ -85,14 +90,13 @@ Scene.initEnvironment = function (containerId) {
         { x: 11, y: 3, c: null },
         { x: 11, y: 11, c: null }
     ];
-    //Scene.initMonster(monsterParams);
+    Scene.initMonster(monsterParams);
 };
 
 Scene.initMap = function () {
     var tmpX, tmpZ, tmpKey;
     var halfWidth = _colCount * _itemSize / 2;
     var halfHeight = _rowCount * _itemSize / 2;
-    var goods = [];
     for (var i = 0; i < Scene.defaultDATA.length; i++) {
         tmpZ = i * _itemSize - halfWidth + _itemSize / 2;
         var rowData = [];
@@ -104,9 +108,7 @@ Scene.initMap = function () {
             } else if (Scene.defaultDATA[i][j] == 1) {
                 tmpKey = Engine.addModuleObject(new Wall(), tmpX, null, tmpZ);
             } else if (Scene.defaultDATA[i][j] == 2) {
-                var newGoods = new Goods();
-                tmpKey = Engine.addModuleObject(newGoods, tmpX, null, tmpZ);
-                goods.push(newGoods);
+                tmpKey = Engine.addModuleObject(new Goods(), tmpX, null, tmpZ);
             }
 
             rowData.push({ t: Scene.defaultDATA[i][j], s: tmpKey, v: true });
@@ -114,8 +116,6 @@ Scene.initMap = function () {
 
         Scene.mapDATA.push(rowData);
     }
-
-    Goods.updatePose(goods);
 };
 
 Scene.initPlayer = function (x, y) {
@@ -127,6 +127,13 @@ Scene.initPlayer = function (x, y) {
     }
 
     Scene.mapDATA[y][x].v = false;
+    player.setPathCompleteFn(function () {
+        if (Scene.targetPos.x == player.coord.x && Scene.targetPos.y == player.coord.y) {
+            Scene.stepComplete();
+        } else {
+            Scene.stepFaild();
+        }
+    });
 };
 
 Scene.initMonster = function (params) {
@@ -142,11 +149,7 @@ Scene.initMonster = function (params) {
     }
 };
 
-Scene.initGlobalParams = function (defaultData) {
-    if (typeof mapData != 'undefined') {
-        Scene.defaultDATA = defaultData;
-    }
-
+Scene.initGlobalParams = function () {
     _colCount = Scene.defaultDATA[0].length;
     _rowCount = Scene.defaultDATA.length;
 };
@@ -175,7 +178,7 @@ Scene.getMonsters = function () {
 };
 
 Scene.start = function () {
-    //Engine.startScene();
+    Engine.startScene();
 };
 
 Scene.reset = function () {
@@ -208,4 +211,17 @@ Scene.resetMap = function () {
             Scene.mapDATA[i][j].v = true;
         }
     }
+};
+
+Scene.resetSize = function () {
+    Engine.calcWorldScale();
+};
+
+Scene.move = function (orientation, steps) {
+    Scene.addModuelPath('pacman', 'tt', orientation.toLowerCase());
+    Scene.addModuelPath('pacman', 'm', steps);
+};
+
+Scene.startGame = function () {
+    Scene.start();
 };
