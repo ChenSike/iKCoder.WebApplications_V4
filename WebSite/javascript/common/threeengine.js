@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 var Engine = {};
+Engine.looped = false;
 Engine._statusOver = -1;
 Engine._statusPause = 0;
 Engine._statusRun = 1;
@@ -336,6 +337,7 @@ Engine.clearIntervals = function () {
 };
 
 Engine.loop = function () {
+    Engine.looped = true;
     Engine.delta = Engine.clock.getDelta();
     var currModule = null;
     for (var key in Engine.modules) {
@@ -345,7 +347,9 @@ Engine.loop = function () {
                 currModule.updatePosition();
             }
 
-            //currModule.updatePose();
+            if (currModule.unique) {
+                //currModule.updatePose();
+            }
         }
     }
 
@@ -363,6 +367,7 @@ Engine.rersetScene = function (rebuild) {
     } else {
         if (Engine.loopID) {
             cancelAnimationFrame(Engine.loopID);
+            Engine.looped = false;
         }
 
         Engine.status = Engine._statusRun;
@@ -383,6 +388,7 @@ Engine.clearScene = function () {
 Engine.restartScene = function () {
     if (Engine.loopID) {
         cancelAnimationFrame(Engine.loopID);
+        Engine.looped = false;
     }
 
     Engine.status = Engine._statusRun;
@@ -576,6 +582,7 @@ var Module = function () {
     this.speed = 1;
     this.id = '';
     this.symbol = '';
+    this.completeFired = false;
     this.mesh = new THREE.Group();
     this.body = new THREE.Group();
     this.head = new THREE.Group();

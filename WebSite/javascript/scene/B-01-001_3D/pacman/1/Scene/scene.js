@@ -97,6 +97,7 @@ Scene.initMap = function () {
     var tmpX, tmpZ, tmpKey;
     var halfWidth = _colCount * _itemSize / 2;
     var halfHeight = _rowCount * _itemSize / 2;
+    var goods = [];
     for (var i = 0; i < Scene.defaultDATA.length; i++) {
         tmpZ = i * _itemSize - halfWidth + _itemSize / 2;
         var rowData = [];
@@ -108,7 +109,9 @@ Scene.initMap = function () {
             } else if (Scene.defaultDATA[i][j] == 1) {
                 tmpKey = Engine.addModuleObject(new Wall(), tmpX, null, tmpZ);
             } else if (Scene.defaultDATA[i][j] == 2) {
-                tmpKey = Engine.addModuleObject(new Goods(), tmpX, null, tmpZ);
+                var newGoods = new Goods();
+                goods.push(newGoods);
+                tmpKey = Engine.addModuleObject(newGoods, tmpX, null, tmpZ);
             }
 
             rowData.push({ t: Scene.defaultDATA[i][j], s: tmpKey, v: true });
@@ -116,6 +119,8 @@ Scene.initMap = function () {
 
         Scene.mapDATA.push(rowData);
     }
+
+    Goods.updatePose(goods);
 };
 
 Scene.initPlayer = function (x, y) {
@@ -137,8 +142,10 @@ Scene.initPlayer = function (x, y) {
 };
 
 Scene.initMonster = function (params) {
+    var monsters = [];
     for (var i = 0; i < params.length; i++) {
         var monster = new Monster('study', Scene.mapDATA);
+        monsters.push(monster);
         Engine.addModuleObject(monster, params[i].x, null, params[i].y);
         monster.setPosition(params[i].x, params[i].y);
         if (Scene.mapDATA[params[i].y][params[i].x].t == 0 || Scene.mapDATA[params[i].y][params[i].x].t == 2) {
@@ -147,6 +154,8 @@ Scene.initMonster = function (params) {
 
         Scene.mapDATA[params[i].y][params[i].x].v = false;
     }
+
+    Monster.updatePose(monsters);
 };
 
 Scene.initGlobalParams = function () {
@@ -175,6 +184,17 @@ Scene.getMonsters = function () {
     }
 
     return monstres;
+};
+
+Scene.getGoods = function () {
+    var goods = [];
+    for (var key in Engine.modules) {
+        if (Engine.modules[key].type == 'goods') {
+            goods.push(Engine.modules[key]);
+        }
+    }
+
+    return goods;
 };
 
 Scene.start = function () {
