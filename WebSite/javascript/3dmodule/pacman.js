@@ -17,8 +17,8 @@ Floor.prototype = Object.assign(Object.create(Module.prototype), {
 });
 
 Floor.prototype.init = function () {
-    var width = 1000;
-    var depth = 1000;
+    var width = 1500;
+    var depth = 1500;
     var height = _itemSize;
     var placeWidth = _itemSize * _colCount;
     var placeDepth = _itemSize * _rowCount;
@@ -391,6 +391,8 @@ PACMan.prototype.updatePositionStudy = function () {
             }
 
         }
+    } else {
+        this.pathCompleteFn();
     }
 };
 
@@ -445,7 +447,7 @@ PACMan.prototype.checkCollide = function () {
         }
     } else {
         nextCoordX = (this.orientation == 0 ? Math.ceil(nextCoordX) : this.orientation == 2 ? Math.floor(nextCoordX) : nextCoordX);
-        nextCoordY = (this.orientation == 1 ? Math.ceil(nextCoordY) : this.orientation == 3 ? Math.floor(nextCoordY) : nextCoordY);
+        nextCoordY = (this.orientation == 1 ? Math.floor(nextCoordY) : this.orientation == 3 ? Math.ceil(nextCoordY) : nextCoordY);
         var tmpItem = this.mapData[nextCoordY][nextCoordX];
         if (tmpItem.t % 2 == 0 && tmpItem.v) {
             if (tmpItem.t == 0) {
@@ -510,13 +512,15 @@ Bean.prototype.init = function () {
     this.torso.geometry.castShadow = true;
     this.body.add(this.torso);
     this.mesh.add(this.body);
-    this.mesh.position.y = 10;
+    this.mesh.position.y = 20;
 };
 
 Bean.prototype.collideAction = function (sourceModule) {
     var targetCoord = ModuleUtil.positionToCoord(this.mesh.position.x, this.mesh.position.z);
     var sourceCoord = ModuleUtil.positionToCoord(sourceModule.mesh.position.x, sourceModule.mesh.position.z);
-    if ((targetCoord.y == sourceModule.coord.y && Math.abs(targetCoord.x - sourceCoord.x) <= 0.25) || (targetCoord.x == sourceModule.coord.x && Math.abs(coord.y - sourceCoord.y) <= 0.25)) {
+    var nearX = (targetCoord.y == sourceModule.coord.y && Math.abs(targetCoord.x - sourceCoord.x) <= 0.25);
+    var nearY = (targetCoord.x == sourceModule.coord.x && Math.abs(targetCoord.y - sourceCoord.y) <= 0.25);
+    if (nearX || nearY) {
         Engine.getModuleObject(this.symbol).mesh.visible = false;
         //sourceModule.mapData[targetCoord.y][targetCoord.x].s = '';
     }

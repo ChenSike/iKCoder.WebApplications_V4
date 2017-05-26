@@ -507,6 +507,7 @@ textarea {
 .run-scene-fullscreen {
     width: 100%;
     height: 100%;
+    background-color: rgb(41,49,67);
     z-index: 9999;
     display: none;
     position: absolute;
@@ -531,7 +532,7 @@ textarea {
     width: 30%;
     height: 30%;
     position: absolute;
-    top: 23%;
+    top: 35%;
     left: 35%;
     cursor: pointer;
 }
@@ -577,7 +578,7 @@ textarea {
 }
 
 .wrap-workspace-toolbox {
-    width: 260px;
+    width: 100px;
     background-image: url(../image/blockly/blocklyicons.svg);
     background-repeat: no-repeat;
     background-position: 0px 0px;
@@ -877,7 +878,7 @@ textarea {
 .workplatform-msg-alert-wrap {
     position: absolute;
     z-index: 20000;
-    display:none;
+    display: none;
 }
 
 .workplatform-msg-alert-container {

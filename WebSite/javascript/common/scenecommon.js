@@ -25,7 +25,7 @@ function _shareScene() {
 };
 
 function _fullScreen() {
-    WorkScene.fullScreen();
+    WorkScene.fullScreen();    
 }
 
 function _playScene() {

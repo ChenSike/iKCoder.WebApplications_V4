@@ -18,6 +18,8 @@ Engine.delta = 0;
 Engine.loopID = null;
 Engine.intervals = {};
 Engine.backgroundAudio = null;
+Engine.PI = Math.PI;
+Engine.hPI = Math.PI / 2;
 Engine.params = {
     /*
         color: 烟雾的颜色
@@ -108,7 +110,16 @@ Engine.params = {
     modules: {},
     backgroundAudio: [],
     audios: {},
-    intervals: {}
+    intervals: {},
+    grid: {
+        type: 'xz',
+        line: 'rgb(0,0,0)',
+        base: 'rgb(255,0,0)',
+        step: 10,
+        scope: 500
+    },
+    sizes: { w: null, h: null },
+    containerId: '',
 };
 
 /*
@@ -121,15 +132,24 @@ OrbitControls：轨道控件，用于特定场景，模拟轨道中的卫星，�
 PathControls：路径控件，相机可以沿着预定义的路径移动。可以四处观看，但不能改变自身的位置。
 */
 
-Engine.events = {
-    'mousedown': Engine.handleMouseDown,
-    'touchend': Engine.handleMouseDown,
-};
+Engine.initParams = function (params) {
+    for (var key in Engine.params) {
+        if (typeof (params[key]) != 'undefined') {
+            Engine.params[key] = params[key];
+        }
+    }
+}
 
-Engine.initScreenAnd3D = function (containerId) {
+Engine.initScreenAnd3D = function (containerId, params) {
+    Engine.initParams(params);
     Engine.container = $('#' + containerId);
-    var width = Engine.container.width();
-    var height = Engine.container.height();
+    var containerWidth = Engine.container.width();
+    var containerHeight = Engine.container.height();
+    var width = (Engine.params.sizes.w ? Engine.params.sizes.w : containerWidth);
+    var height = (Engine.params.sizes.h ? Engine.params.sizes.h : containerHeight);
+    Engine.params.sizes.w = width;
+    Engine.params.sizes.h = height;
+    Engine.params.containerId = containerId;
     Engine.scene = new THREE.Scene();
     if (Engine.params.fog) {
         Engine.scene.fog = Engine.createFog();
@@ -142,7 +162,24 @@ Engine.initScreenAnd3D = function (containerId) {
     Engine.clock = new THREE.Clock();
     Engine.initLights();
     Engine.DrawGrid();
+    Engine.calcWorldScale(true);
 };
+
+Engine.calcWorldScale = function (needRescale) {
+    var containerWidth = Engine.container.width();
+    var containerHeight = Engine.container.height();
+    var width = Engine.params.sizes.w;
+    var height = Engine.params.sizes.h;
+    if (width != containerWidth || height != containerHeight) {
+        var hRate = containerHeight / height;
+        var wRate = containerWidth / width;
+        var scale = (wRate < hRate ? hRate : wRate);
+        Engine.renderer.setSize(containerWidth, containerHeight);
+        if (typeof needRescale != 'undefined' && needRescale == true) {
+            Engine.scene.scale.set(scale, scale, scale);
+        }
+    }
+}
 
 Engine.createFog = function () {
     var color = Engine.params.fog.color;
@@ -197,7 +234,7 @@ Engine.initCamera = function (width, height) {
 Engine.initRenderer = function (width, height) {
     Engine.renderer = new THREE.WebGLRenderer({ alpha: Engine.params.renderer.alpha, antialias: Engine.params.renderer.antialias });
     Engine.renderer.setPixelRatio(window.devicePixelRatio);
-    Engine.renderer.setSize(width, height);
+    Engine.renderer.setSize(Engine.container.width(), Engine.container.height());
     Engine.renderer.setClearColor(Engine.params.renderer.clearColor, Engine.params.renderer.clearAlpha);
     Engine.renderer.shadowMap.enabled = Engine.params.renderer.enableShadowMap;
     Engine.shadowMapEnabled = Engine.params.renderer.enableShadowMap;
@@ -229,6 +266,11 @@ Engine.handleMouseDown = function (eventObj) {
     //}
 };
 
+Engine.events = {
+    'mousedown': Engine.handleMouseDown,
+    'touchend': Engine.handleMouseDown,
+};
+
 Engine.initLights = function () {
     for (var key in Engine.params.lights) {
         var tmpItem = Engine.params.lights[key];
@@ -256,8 +298,12 @@ Engine.initLights = function () {
 
 Engine.initModules = function () {
     for (var key in Engine.params.modules) {
-        Engine.modules[key] = new Engine.params.modules[key];
-        Engine.scene.add(Engine.modules[key].mesh);
+        var moduleObj = new Engine.params.modules[key];
+        moduleObj.id = Engine.genUid();
+        var moduleKey = (moduleObj.unique ? moduleObj.type : moduleObj.type + '_' + moduleObj.id)
+        Engine.modules[moduleKey] = moduleObj;
+        Engine.scene.add(moduleObj.mesh);
+        moduleObj.updatePose();
     }
 };
 
@@ -296,7 +342,7 @@ Engine.loop = function () {
                 currModule.updatePosition();
             }
 
-            currModule.updatePose();
+            //currModule.updatePose();
         }
     }
 
@@ -307,6 +353,22 @@ Engine.loop = function () {
     Engine.renderer.render(Engine.scene, Engine.camera);
     Engine.loopID = requestAnimationFrame(Engine.loop);
 };
+
+Engine.rersetScene = function (rebuild) {
+    if (typeof rebuild == 'boolean' && rebuild) {
+
+    } else {
+        if (Engine.loopID) {
+            cancelAnimationFrame(Engine.loopID);
+        }
+
+        Engine.status = Engine._statusRun;
+        for (var key in Engine.modules) {
+            Engine.modules[key].mesh.visible = true;
+            Engine.modules[key].preparingToRestart();
+        }
+    }
+}
 
 Engine.clearScene = function () {
     for (var key in Engine.modules) {
@@ -324,9 +386,8 @@ Engine.restartScene = function () {
     Engine.clearScene();
     Engine.initModules();
     for (var key in Engine.modules) {
-        currModule = Engine.modules[key];
-        if (currModule && currModule.visible) {
-            currModule.preparingToRestart();
+        if (Engine.modules[key] && Engine.modules[key].visible) {
+            Engine.modules[key].preparingToRestart();
         }
     }
 
@@ -361,6 +422,11 @@ Engine.continueScene = function () {
 
 Engine.startScene = function () {
     Engine.status = Engine._statusRun;
+    for (var key in Engine.modules) {
+        Engine.modules[key].status = Engine._statusRun;
+        Engine.modules[key].prepareForRun();
+    }
+
     Engine.loop();
     if (Engine.backgroundAudio) {
         Engine.backgroundAudio.load();
@@ -384,24 +450,52 @@ Engine.sceneOver = function () {
 };
 
 Engine.DrawGrid = function () {
-    var geometry = new THREE.Geometry();
-    geometry.vertices.push(new THREE.Vector3(-500, 0, 0));
-    geometry.vertices.push(new THREE.Vector3(500, 0, 0));
-    var color = 0x000000;
-    for (var i = 0; i <= 100; i++) {
-        if (i == 50) {
-            color = 0xff0000;
+    var params = Engine.params.grid;
+    if (params) {
+        var type = (typeof params.type == 'string' ? params.type : '');
+        var scope = (typeof params.scope == 'number' ? params.scope : 500);
+        var step = (typeof params.step == 'number' ? params.step : 10);
+        var lColor = (typeof params.line == 'string' ? params.line : '#000000');
+        var bColor = (typeof params.base == 'string' ? params.base : '#FF0000');
+        var geometryH = new THREE.Geometry();
+        var geometryV = new THREE.Geometry();
+        var lpH = '';
+        var lpV = '';
+        var lr = '';
+        if (type == 'xy') {
+            geometryH.vertices.push(new THREE.Vector3(-scope, 0, 0));
+            geometryH.vertices.push(new THREE.Vector3(scope, 0, 0));
+            geometryV.vertices.push(new THREE.Vector3(0, -scope, 0));
+            geometryV.vertices.push(new THREE.Vector3(0, scope, 0));
+            lpH = 'y';
+            lpV = 'x';
+        } else if (type == 'yz') {
+            geometryH.vertices.push(new THREE.Vector3(0, -scope, 0));
+            geometryH.vertices.push(new THREE.Vector3(0, scope, 0));
+            geometryV.vertices.push(new THREE.Vector3(0, 0, -scope));
+            geometryV.vertices.push(new THREE.Vector3(0, 0, scope));
+            lpH = 'z';
+            lpV = 'y';
         } else {
-            color = 0x000000;
+            geometryH.vertices.push(new THREE.Vector3(-scope, 0, 0));
+            geometryH.vertices.push(new THREE.Vector3(scope, 0, 0));
+            geometryV.vertices.push(new THREE.Vector3(0, 0, -scope));
+            geometryV.vertices.push(new THREE.Vector3(0, 0, scope));
+            lpH = 'z';
+            lpV = 'x';
         }
 
-        var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: color, opacity: 0.2 }));
-        line.position.z = (i * 10) - 500;
-        Engine.scene.add(line);
-        var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: color, opacity: 0.2 }));
-        line.position.x = (i * 10) - 500;
-        line.rotation.y = Math.PI / 2;
-        Engine.scene.add(line);
+        var loopCount = scope / step * 2;
+        var currColor = '';
+        for (var i = 0; i <= loopCount; i++) {
+            currColor = (i == loopCount / 2 ? bColor : lColor);
+            var hLine = new THREE.Line(geometryH, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
+            hLine.position[lpH] = (i * step) - params.scope;
+            Engine.scene.add(hLine);
+            var vLine = new THREE.Line(geometryV, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
+            vLine.position[lpV] = (i * step) - params.scope;
+            Engine.scene.add(vLine);
+        }
     }
 };
 
@@ -411,6 +505,8 @@ Engine.adjustLight = function () {
             Engine.params.lights[key].adjustFn(Engine.lights[key]);
         }
     }
+
+    Engine.render();
 };
 
 Engine.prepareForStart = function () {
@@ -437,9 +533,46 @@ Engine.render = function () {
     Engine.renderer.render(Engine.scene, Engine.camera);
 };
 
+Engine.addModuleObject = function (moduleObj, x, y, z) {
+    moduleObj.id = Engine.genUid();
+    var moduleKey = (moduleObj.unique ? moduleObj.type : moduleObj.type + '_' + moduleObj.id);
+    moduleObj.symbol = moduleKey;
+    Engine.modules[moduleKey] = moduleObj;
+    Engine.scene.add(moduleObj.mesh);
+    moduleObj.updatePose();
+    moduleObj.mesh.position.x = (x == null ? moduleObj.mesh.position.x : x);
+    moduleObj.mesh.position.y = (y == null ? moduleObj.mesh.position.y : y);
+    moduleObj.mesh.position.z = (z == null ? moduleObj.mesh.position.z : z);
+    return moduleKey;
+};
+
+Engine.removeModuleObject = function (key) {
+    Engine.scene.remove(Engine.modules[key].mesh);
+};
+
+Engine.getModuleObject = function (key) {
+    return Engine.modules[key];
+}
+
+Engine.genUid = function () {
+    var length = 20;
+    var soupLength = Engine.genUid.soup_.length;
+    var id = [];
+    for (var i = 0; i < length; i++) {
+        id[i] = Engine.genUid.soup_.charAt(Math.random() * soupLength);
+    }
+    return id.join('');
+};
+
+Engine.genUid.soup_ = '!#$%()*+,-./:;=?@[]^_`{|}~' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
 var Module = function () {
     this.status = Engine._statusRun;
-    this.visable = true;
+    this.visible = true;
+    this.unique = false;
+    this.speed = 1;
+    this.id = '';
+    this.symbol = '';
     this.mesh = new THREE.Group();
     this.body = new THREE.Group();
     this.head = new THREE.Group();
@@ -468,3 +601,15 @@ Module.prototype.continue = function () {
 Module.prototype.over = function () {
 
 };
+
+Module.prototype.prepareForRun = function () {
+
+};
+
+Module.prototype.collideAction = function (sourceModule) {
+
+};
+
+Module.prototype.reset = function () {
+
+}

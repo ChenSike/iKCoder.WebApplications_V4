@@ -116,7 +116,8 @@ WorkScene.init = function () {
     Blockly.svgResize(WorkScene.workspace);
     window.setTimeout(WorkScene.importPrettify, 1);
     CheckSceneObject();
-    Scene.init('game_container', '0', { RowCol: { row: 9, col: 9 } });
+    //Scene.init('game_container', '0', { RowCol: { row: 9, col: 9 } });
+    Scene.initEnvironment('game_container');
 };
 
 WorkScene.init_Static = function () {
@@ -234,8 +235,9 @@ WorkScene.reset = function (force) {
             var defaultXml = (!_workspaceCfg.workspace ? '<xml></xml>' : _workspaceCfg.workspace);
             //defaultXml = XMLToString(LoadXMLFile(_workspaceCfg.workspace));
             WorkScene.loadBlocks(defaultXml);
-            WorkScene.startGame();
         }
+
+        Scene.reset();
     } else {
         Scene.reset();
     }
