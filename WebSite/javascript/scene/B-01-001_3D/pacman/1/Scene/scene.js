@@ -34,7 +34,7 @@ Scene.initEnvironment = function (containerId) {
             near: 1,
             far: 2000,
             px: 0,
-            py: _itemSize * _rowCount  * 0.9,
+            py: _itemSize * _rowCount * 0.9,
             pz: _itemSize * _rowCount * 1.2,
             vector: { x: 0, y: 0, z: 0 }
         },
@@ -234,7 +234,12 @@ Scene.resetMap = function () {
 };
 
 Scene.resetSize = function () {
-    Engine.calcWorldScale();
+    try {
+        Engine.calcWorldScale();
+    }
+    catch (ex) {
+
+    }
 };
 
 Scene.move = function (orientation, steps) {
