@@ -85,13 +85,14 @@ Scene.initEnvironment = function (containerId) {
         { x: 11, y: 3, c: null },
         { x: 11, y: 11, c: null }
     ];
-    Scene.initMonster(monsterParams);
+    //Scene.initMonster(monsterParams);
 };
 
 Scene.initMap = function () {
     var tmpX, tmpZ, tmpKey;
     var halfWidth = _colCount * _itemSize / 2;
     var halfHeight = _rowCount * _itemSize / 2;
+    var goods = [];
     for (var i = 0; i < Scene.defaultDATA.length; i++) {
         tmpZ = i * _itemSize - halfWidth + _itemSize / 2;
         var rowData = [];
@@ -103,7 +104,9 @@ Scene.initMap = function () {
             } else if (Scene.defaultDATA[i][j] == 1) {
                 tmpKey = Engine.addModuleObject(new Wall(), tmpX, null, tmpZ);
             } else if (Scene.defaultDATA[i][j] == 2) {
-                tmpKey = Engine.addModuleObject(new Goods(), tmpX, null, tmpZ);
+                var newGoods = new Goods();
+                tmpKey = Engine.addModuleObject(newGoods, tmpX, null, tmpZ);
+                goods.push(newGoods);
             }
 
             rowData.push({ t: Scene.defaultDATA[i][j], s: tmpKey, v: true });
@@ -111,6 +114,8 @@ Scene.initMap = function () {
 
         Scene.mapDATA.push(rowData);
     }
+
+    Goods.updatePose(goods);
 };
 
 Scene.initPlayer = function (x, y) {
@@ -170,7 +175,7 @@ Scene.getMonsters = function () {
 };
 
 Scene.start = function () {
-    Engine.startScene();
+    //Engine.startScene();
 };
 
 Scene.reset = function () {
