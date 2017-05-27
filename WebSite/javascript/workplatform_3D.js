@@ -261,6 +261,8 @@ function initEvents() {
             if (Scene.resetSize) {
                 Scene.resetSize();
             }
+
+            playButton.css('top', ((container.find('canvas').height() - fontSize) / 2) + 'px');
         });
     });
 
@@ -885,6 +887,8 @@ function adjustAfterSiderBarResize() {
     $('#game_container').height(wrap.height() - helpWrap.height() - 30);
     if (Scene.resetSize) {
         Scene.resetSize();
+        var fontSize = parseInt($('.run-scene-fullscreen-play-button').css('font-size'));
+        $('.run-scene-fullscreen-play-button').css('top', (($('#game_container').find('canvas').height() - fontSize) / 2) + 'px');
     }
 };
 
