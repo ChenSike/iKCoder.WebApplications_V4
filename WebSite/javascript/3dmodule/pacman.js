@@ -358,7 +358,14 @@ PACMan.prototype.prepareForRun = function () {
 PACMan.prototype.updatePosition = function () {
     if (this.moveType == 'study') {
         this.updatePositionStudy();
-        return;
+    } else {
+        if (!this.checkCollide()) {
+            if (this.orientation == 0 || this.orientation == 2) {
+                this.mesh.position.x += _itemSize / 40 * this.speed * _moveMap[this.orientation];
+            } else {
+                this.mesh.position.z += _itemSize / 40 * this.speed * _moveMap[this.orientation];
+            }
+        }
     }
 };
 
@@ -393,7 +400,6 @@ PACMan.prototype.updatePositionStudy = function () {
                     }
                 }
             }
-
         }
     } else {
         if (!this.completeFired) {
