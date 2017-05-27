@@ -743,10 +743,14 @@ function loop() {
     checkCollision();
     render();
     requestAnimationFrame(loop);
-    if (_params_MusicPlay) {
-        audio.play();
-    } else {
-        audio.pause();
+    try {
+        if (_params_MusicPlay) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    } catch (ex) {
+
     }
 }
 
