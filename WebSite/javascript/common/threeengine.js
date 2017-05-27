@@ -622,4 +622,8 @@ Module.prototype.collideAction = function (sourceModule) {
 
 Module.prototype.reset = function () {
 
-}
+};
+
+Module.prototype.addMovePath = function () {
+
+};
