@@ -390,7 +390,16 @@ PACMan.prototype.updatePositionStudy = function () {
             if (coord.x == targetObj.x && coord.y == targetObj.y) {
                 this.coord.x = coord.x;
                 this.coord.y = coord.y;
-                this.movePathTarget.shift();
+                if (this._stopWhenConplete) {
+                    if (!this.completeFired) {
+                        this.pathCompleteFn();
+                        this.completeFired = true;
+                    }
+
+                    this.movePathTarget.shift();
+                } else {
+                    this.movePathTarget.shift();
+                }                
             } else {
                 if (!this.checkCollide()) {
                     if (this.orientation == 0 || this.orientation == 2) {
