@@ -1,8 +1,9 @@
 ﻿'use strict';
 
 function buildHeaderHTML(isIndexPage) {
+    var tmpString = (_getSearchValue('needcheckstate') == '1' ? '&needcheckstate=1' : '');
     var tmpHtmlStrArr = [];
-    tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header" style="background-color:transparent;">');
+    tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header" style="background-color:transparent;z-index: 15000;">');
     tmpHtmlStrArr.push('    <a class="navbar-brand" href="index.html?rnd=' + Date.now() + '">');
     tmpHtmlStrArr.push('        <img src="image/logo-new-white.png" width="150" height="50" class="d-inline-block align-top img-header-logo" alt="">');
     tmpHtmlStrArr.push('    </a>');
@@ -100,73 +101,64 @@ function initNavBarEvent() {
 function updateUserInfor() {
     removeUserInfoItem();
     //if ($.cookie('logined_user_name') && $.cookie('logined_user_nickname') && $.cookie('logined_user_name') != "" && $.cookie('logined_user_nickname') != "") {
-    if ($.cookie('logined_user_name') && $.cookie('logined_user_name') != "") {
-        var nickName = '';
-        if (typeof ($.cookie('logined_user_nickname')) != 'undefined') {
-            nickName = $.cookie('logined_user_nickname');
+    if ($.cookie('logined_user_nickname') && $.cookie('logined_user_nickname') != "") {
+        var nickName = $.cookie('logined_user_nickname');
+        $('#ul_NavBar_Container').append(
+            $(
+                '<li class="nav-item dropdown" id="nav_UserInfo_Item">' +
+                '   <a href="#" class="nav-link dropdown-toggle" id="dd_Nav_UserInfo_Item"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                '       <img class="rounded-circle" id="img_Page_Header_Navbar" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" width="24" height="24"/>' +
+                '       <span class="text-header-userinfo">' + nickName + '</span>' +
+                '       <b class="caret"></b>' +
+                '   </a>' +
+                '   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">' +
+                '       <a href="workplatform.html?scene=b_01_001" class="dropdown-item" id="linkBtn_TestWorkPlatform" style="font-weight:100;">测试-进入工作台</a>' +
+                '       <a href="#" class="dropdown-item" id="linkBtn_UserInfo" style="font-weight:100;">个人中心</a>' +
+                '       <a href="#" class="dropdown-item" id="linkBtn_SignOut" style="font-weight:100;">退出登录</a>' +
+                '   </div>' +
+                '</li>'
+            )
+        );
+
+        if (!$('#form_NavBar_Sign').hasClass('hidden')) {
+            $('#form_NavBar_Sign').addClass('hidden');
         }
 
-        if (nickName == '') {
-            nickName = $.cookie('logined_user_name');
-        }
+        $("#linkBtn_UserInfo").on('click', function () {
+            window.location.href = "profile.html?rnd=" + Date.now();
+        });
 
-        if (nickName != '') {
-            $('#ul_NavBar_Container').append(
-                $(
-                    '<li class="nav-item dropdown" id="nav_UserInfo_Item">' +
-                    '   <a href="#" class="nav-link dropdown-toggle" id="dd_Nav_UserInfo_Item"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                    '       <img class="rounded-circle" id="img_Page_Header_Navbar" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" width="24" height="24"/>' +
-                    '       <span class="text-header-userinfo">' + nickName + '</span>' +
-                    '       <b class="caret"></b>' +
-                    '   </a>' +
-                    '   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">' +
-                    '       <a href="workplatform.html?scene=b_01_001" class="dropdown-item" id="linkBtn_TestWorkPlatform" style="font-weight:100;">测试-进入工作台</a>' +
-                    '       <a href="#" class="dropdown-item" id="linkBtn_UserInfo" style="font-weight:100;">个人中心</a>' +
-                    '       <a href="#" class="dropdown-item" id="linkBtn_SignOut" style="font-weight:100;">退出登录</a>' +
-                    '   </div>' +
-                    '</li>'
-                )
-            );
-
-            if (!$('#form_NavBar_Sign').hasClass('hidden')) {
-                $('#form_NavBar_Sign').addClass('hidden');
-            }
-
-            $("#linkBtn_UserInfo").on('click', function () {
-                window.location.href = "profile.html?rnd=" + Date.now();
-            });
-
-            $("#linkBtn_SignOut").on('click', function () {
-                _registerRemoteServer();
-                $.ajax({
-                    type: 'GET',
-                    async: true,
-                    url: _getRequestURL(_gURLMapping.account.logout),
-                    data: '<root></root>',
-                    success: function (data_2, status) {
-                        if ($(data_2).find('err').length > 0) {
-                            _showGlobalMessage($(data_2).find('err').attr('msg'), 'danger', 'alert_Logout_Error');
-                        }
-
-                        removeUserInfoItem();
-                        $.removeCookie('logined_user_name');
-                        $.removeCookie('logined_user_nickname');
-                        window.location.href = 'index.html?rnd=' + Date.now();
-                    },
-                    dataType: 'xml',
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    error: function () {
-                        removeUserInfoItem();
-                        $.removeCookie('logined_user_name');
-                        $.removeCookie('logined_user_nickname');
+        $("#linkBtn_SignOut").on('click', function () {
+            _registerRemoteServer();
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: _getRequestURL(_gURLMapping.account.logout),
+                data: '<root></root>',
+                success: function (data_2, status) {
+                    if ($(data_2).find('err').length > 0) {
+                        _showGlobalMessage($(data_2).find('err').attr('msg'), 'danger', 'alert_Logout_Error');
                     }
-                });
-            });
 
-            _startCheckState();
-        }
+                    removeUserInfoItem();
+                    $.removeCookie('logined_user_name');
+                    $.removeCookie('logined_user_nickname');
+                    //_needCheckState = false;
+                    window.location.href = 'index.html?rnd=' + Date.now();
+                },
+                dataType: 'xml',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+                    removeUserInfoItem();
+                    $.removeCookie('logined_user_name');
+                    $.removeCookie('logined_user_nickname');
+                }
+            });
+        });
+
+        _startCheckState();
     }
 };
 

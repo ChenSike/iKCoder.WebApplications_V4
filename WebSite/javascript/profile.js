@@ -7,7 +7,7 @@ function initPage() {
     $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
     $('#sideBar_Page_Left').height($('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height());
     loadHeaderImg();
-    //loadSiderbarData();
+    loadSiderbarData();
     //getUnreadMsgCount();
     initEvents();
     $('#wrap_Category_Title').show();
@@ -46,14 +46,22 @@ function initPage_Do() {
 
 function loadSiderbarData() {
     var mapping = [
-        { n: 'name', p: '/root/usrbasic/usr_nickname' }
+        { n: 'name', path: '/root/usrbasic/usr_nickname', html: '#txt_NickName_Profile_Title' },
+        { n: 'title', path: '/root/usrbasic/usr_title', html: '#txt_Title_Profile_Title' },
     ];
+
+    var postData = '<root><select>';
+    for (var i = 0; i < mapping.length; i++) {
+        postData += '<items value="' + mapping[i].path + '"></items>';
+    }
+
+    postData += '</select></root>';
     _registerRemoteServer();
     $.ajax({
         type: 'GET',
         async: true,
         url: _getRequestURL(_gURLMapping.bus.getcenterinfo),
-        data: '<root></root>',
+        data: postData,
         success: function (responseData, status) {
             if ($(responseData).find('err').length > 0) {
                 _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetBasicInfo_Error');
@@ -65,15 +73,13 @@ function loadSiderbarData() {
                     var tmpNode = $(tmpNodes[i]);
                     if (tmpNode.attr('xpath')) {
                         for (var j = 0; j < mapping.length; j++) {
-                            if (mapping[j].p == tmpNode.attr('xpath')) {
-                                data[mapping[j].n] = tmpNode.attr('value');
+                            if (mapping[j].path == tmpNode.attr('xpath')) {
+                                //data[mapping[j].n] = tmpNode.attr('value');
+                                $(mapping[j].html).text(tmpNode.attr('value'));
                             }
                         }
                     }
                 }
-
-                $('#txt_NickName_Profile_Title').text(data.name);
-                $('#txt_Title_Profile_Title').text(data.title);
             }
         },
         dataType: 'xml',
@@ -81,7 +87,7 @@ function loadSiderbarData() {
             withCredentials: true
         },
         error: function () {
-            _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetBasicInfo_Error');
+            _showGlobalMessage('无法获取用户信息，请联系技术支持！', 'danger', 'alert_GetBasicInfo_Error');
         }
     });
 };
@@ -110,7 +116,7 @@ function getUnreadMsgCount() {
                 count = (isNaN(count) ? '0' : count > 99 ? '99+' : count);
                 $('.left-bar-message-count').text(count);
                 $('.left-bar-message-count').css('background-color', (count == 0 ? 'rgb(185,185,185)' : 'rgb(236,64,122)'));
-                window.setTimeout(getUnreadMsgCount, 10000);
+                window.setTimeout(getUnreadMsgCount, 15000);
             }
         },
         dataType: 'xml',
@@ -283,6 +289,14 @@ function formatOverviewData(response) {
         var tmpObj = $(tmpNodes[i]);
         var tmpItem = distributionMap[tmpObj.attr('id')];
         data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
+    }
+
+    if (data.experience.distribution.length == 0) {
+        for (var i = 0; i < distributionMap.length; i++) {
+            var tmpObj = $(tmpNodes[i]);
+            var tmpItem = distributionMap[tmpObj.attr('id')];
+            data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
+        }
     }
 
     tmpNodes = $(response).find('level').find('item');
@@ -788,7 +802,7 @@ function drawExpDistributionGraph(canvasId, datas) {
 
         context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
         context.fillStyle = "rgb(71,71,71)";
-        context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 6);
+        context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 9);
     }
 };
 
@@ -1615,60 +1629,30 @@ function rebuildSettingsTitles(tmpHeight) {
 
 /*Report panel*/
 function rebuildReportPanel() {
-    //var mapping = [
-    //{ n: 'name', p: '/root/usrbasic/usr_nickname' },
-    //{ n: 'gender', p: '/root/usrbasic/sex' },
-    //{ n: 'birthday', p: '/root/usrbasic/birthday' },
-    //{ n: 'province', p: '/root/usrbasic/state' },
-    //{ n: 'city', p: '/root/usrbasic/city' },
-    //{ n: 'school', p: '/root/usrbasic/school' }
-    //];
     //_registerRemoteServer();
-    //_ajaxObj = $.ajax({
-    //    type: 'POST',
-    //    async: true,
-    //    url: _getRequestURL(_gURLMapping.account.util),
-    //    data: '<root>' +
-    //            '<select>' +
-    //            '<items value="/root/usrbasic/usr_nickname"></items>' +
-    //            '<items value="/root/usrbasic/sex"></items>' +
-    //            '<items value="/root/usrbasic/birthday"></items>' +
-    //            '<items value="/root/usrbasic/state"></items>' +
-    //            '<items value="/root/usrbasic/city"></items>' +
-    //            '<items value="/root/usrbasic/school"></items>' +
-    //            '</select>' +
-    //            '</root>',
-    //    success: function (responseData, status) {
-    //        if ($(responseData).find('err').length > 0) {
-    //            _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
-    //            return;
-    //        } else {
-    //            var tmpNodes = $(responseData).find('msg');
-    //            var data = { profile: {} };
-    //            for (var i = 0; i < tmpNodes.length; i++) {
-    //                var tmpNode = $(tmpNodes[i]);
-    //                if (tmpNode.attr('xpath')) {
-    //                    for (var j = 0; j < mapping.length; j++) {
-    //                        if (mapping[j].p == tmpNode.attr('xpath')) {
-    //                            data.profile[mapping[j].n] = tmpNode.attr('value');
-    //                        }
-    //                    }
-    //                }
-    //            }
-
-    //            rebuildSettingsTitles(tmpHeight);
-    //            rebuildSettingsContents(data, tmpHeight);
-    //            hideLoadingMask()
-    //        }
-    //    },
-    //    dataType: 'xml',
-    //    xhrFields: {
-    //        withCredentials: true
-    //    },
-    //    error: function () {
-    //        _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
-    //    }
-    //});
+    _ajaxObj = $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.bus.gethtmlreport),
+        data: '<root></root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetReport_Error');
+                return;
+            } else {
+                var tmpNodes = $(responseData).find('msg');
+                var data = {};
+                hideLoadingMask()
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取报告，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
+        }
+    });
     var data = {
         user: {
             header: _getRequestURL(_gURLMapping.account.getheader, {}),
@@ -1676,9 +1660,7 @@ function rebuildReportPanel() {
             title: '高级工程师',
             exp: 55,
             over: 88,
-            work: 20,
             course: 18,
-            friend: 30,
             date: '2017-5-1',
             qr: 'image/qr_wechat.png'
         },
@@ -1728,14 +1710,6 @@ function rebuildReportPanel() {
             { name: '技术', value: 55 },
             { name: '工程', value: 20 },
             { name: '语言', value: 10 }
-        ],
-        works: [
-            { id: '1', title: 'test 1', img: 'image/course_simple.png', content: 'content 1', hits: 1 },
-            { id: '2', title: 'test 2', img: 'image/course_simple.png', content: 'content 2', hits: 2 },
-            { id: '3', title: 'test 3', img: 'image/course_simple.png', content: 'content 3', hits: 3 },
-            { id: '4', title: 'test 4', img: 'image/course_simple.png', content: 'content 4', hits: 4 },
-            { id: '5', title: 'test 5', img: 'image/course_simple.png', content: 'content 5', hits: 5 },
-            { id: '6', title: 'test 6', img: 'image/course_simple.png', content: 'content 6', hits: 6 }
         ]
     }
 

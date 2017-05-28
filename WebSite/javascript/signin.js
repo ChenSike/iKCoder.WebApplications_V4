@@ -336,16 +336,22 @@ function doSignIn() {
                 return;
             }
 
-            $.cookie('logined_user_name', $($(data).find('msg')[0]).attr('logined_user_name'));
+            var userName = $($(data).find('msg')[0]).attr('logined_user_name');
             var nickname = $($(data).find('msg')[0]).attr('logined_user_nickname');
             if (typeof nickname != 'string' || nickname == '') {
                 nickname = $($(data).find('msg')[0]).attr('logined_nickname');
             }
+
+            if (typeof nickname != 'string' || nickname == '') {
+                nickname = userName;
+            }
+
+            $.cookie('logined_user_name', userName);
             $.cookie('logined_user_nickname', nickname);
+            var needcheckstate = '&needcheckstate=1';
             if (window.history.length == 0) {
-                window.location.href = "index.html?rnd=" + Date.now();
+                window.location.href = "index.html?rnd=" + Date.now() + needcheckstate;
             } else {
-                //window.history.back(); 
                 var referrer = document.referrer.toLowerCase();
                 if (referrer.indexOf('sign.html')) {
                     referrer = 'index.html?rnd=' + Date.now();
@@ -361,7 +367,7 @@ function doSignIn() {
                     }
                 }
 
-                window.location.href = referrer;
+                window.location.href = referrer + needcheckstate;
             }
         },
         dataType: 'xml',
@@ -444,13 +450,39 @@ function doSignUp() {
                             $('#wrap_SignIn_Panel').show(1, resetSignInFields);
                             _refereshCheckCode('img_SignIn_CheckCode');
                         } else {
-                            $.cookie('logined_user_name', $($(data).find('msg')[0]).attr('logined_user_name'));
+                            var userName = $($(data).find('msg')[0]).attr('logined_user_name');
                             var nickname = $($(data).find('msg')[0]).attr('logined_user_nickname');
                             if (typeof nickname != 'string' || nickname == '') {
                                 nickname = $($(data).find('msg')[0]).attr('logined_nickname');
                             }
+
+                            if (typeof nickname != 'string' || nickname == '') {
+                                nickname = userName;
+                            }
+
+                            $.cookie('logined_user_name', userName);
                             $.cookie('logined_user_nickname', nickname);
-                            window.location.href = "index.html?rnd=" + Date.now();
+                            var needcheckstate = '&needcheckstate=1';
+                            if (window.history.length == 0) {
+                                window.location.href = "index.html?rnd=" + Date.now() + needcheckstate;
+                            } else {
+                                var referrer = document.referrer.toLowerCase();
+                                if (referrer.indexOf('sign.html')) {
+                                    referrer = 'index.html?rnd=' + Date.now();
+                                } else {
+                                    if (referrer.indexOf('rnd') > 0) {
+                                        referrer.replace('rnd=', 'rnd=0');
+                                    } else {
+                                        if (referrer.indexOf('?') < 0) {
+                                            referrer += '?';
+                                        }
+
+                                        referrer += 'rnd=' + Date.now();
+                                    }
+                                }
+
+                                window.location.href = referrer + needcheckstate;
+                            }
                         }
                     },
                     dataType: 'xml',

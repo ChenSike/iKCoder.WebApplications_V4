@@ -4,7 +4,7 @@ var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
 var _gHostName = 'http://119.23.233.224/ikcoderapi';
-//var _gHostName = 'http://192.168.199.142/ikcoderapi';
+//var _gHostName = 'http://10.111.0.81/ikcoderapi';
 //var _gHostName = 'http://10.111.0.243/ikcoderapi';
 //var _gHostName = 'http://10.86.209.76/ikcoderapi';
 var _gURLMapping = {
@@ -42,7 +42,8 @@ var _gURLMapping = {
         getallmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_AllMessageList.aspx',
         getsysmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_SysMessageList.aspx',
         getqamsglist: '/Bus/Message/api_iKCoder_Workspace_Get_QAMessageList.aspx',
-        removemsg: '/Bus/Message/api_iKCoder_Workspace_Set_RemoveMessage.aspx'
+        removemsg: '/Bus/Message/api_iKCoder_Workspace_Set_RemoveMessage.aspx',
+        gethtmlreport: '/Bus/Report/api_iKCoder_Report_Get_HtmlReport.aspx'
     },
     tmp: {
         storesave: '/bus/store/api_iKCoder_Store_Save.aspx?symbol=XXX&type=XXXX&timeout=120&istextreq=1', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
@@ -254,6 +255,7 @@ function _getOffsetPosition(target, topParentClass) {
     return offsetPos;
 };
 
+//var _needCheckState = (_getSearchValue('needcheckstate') == '1' ? true : false);
 function _startCheckState() {
     _registerRemoteServer();
     $.ajax({
@@ -312,6 +314,8 @@ function _startCheckState() {
                             }
                         });
                     }
+
+                    window.setTimeout(_startCheckState, 30000);
                 } else {
                     $.removeCookie('logined_user_name');
                     $.removeCookie('logined_user_nickname');
@@ -328,9 +332,7 @@ function _startCheckState() {
             $.removeCookie('logined_user_name');
             $.removeCookie('logined_user_nickname');
         }
-    });
-
-    window.setTimeout(_startCheckState, 30000);
+    });    
 };
 
 function _refereshCheckCode(checkCodeId) {
@@ -440,6 +442,7 @@ function _showGlobalMessage(msg, type, id) {
         $('body').append($('<div class="alert-mask-custom"></div>'));
     }
     $('.alert-mask-custom').show();
+    $('.alert-mask-custom').height($('body')[0].scrollHeight);
     $('body').append($('<div class="alert alert-' + type + '  alert-dismissable custom-global-alert" id="' + id + '"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + msg + '</div>'));
     $('#' + id).bind('close.bs.alert', function () {
         $('.alert-mask-custom').hide();
