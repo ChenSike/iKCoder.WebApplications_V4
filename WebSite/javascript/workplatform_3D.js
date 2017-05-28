@@ -468,6 +468,7 @@ function buildStageHTML(data) {
     var tmpWidth = itemWidth * (data.stage_count - 1);
     background.css('width', tmpWidth + '%');
     tmpWidth = 100 / (data.stage_count - 1) * (data.complete_count);
+    tmpWidth = (tmpWidth > 100 ? 100 : tmpWidth);
     $('.head-stage-space').css('width', tmpWidth + '%');
     var tmpLeft = (parent.width() - background.width()) / 2;
     background.css('left', tmpLeft + 'px');

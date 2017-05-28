@@ -40,7 +40,7 @@ function initPage_Do() {
         //rebuildContent('settings');
         //rebuildContent('report');    
         getUnreadMsgCount();
-        window.setTimeout(getUnreadMsgCount, 60000);
+        window.setTimeout(getUnreadMsgCount, 15000);
     }
 }
 
