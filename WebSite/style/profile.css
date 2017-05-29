@@ -559,3 +559,11 @@
 .profile-message-remove-button {
     cursor: pointer;
 }
+
+.course-list-overview{
+    display:none;
+}
+
+.lesson-title-course-overview{
+    font-size:12px;
+}
