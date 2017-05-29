@@ -8,9 +8,9 @@ Scene.defaultDATA = [
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -21,7 +21,7 @@ Scene.defaultDATA = [
 
 Scene.mapDATA = [];
 
-Scene.targetPos = { x: 5, y: 7 };
+Scene.targetPos = { x: 6, y: 5 };
 
 Scene.initEnvironment = function (containerId) {
     Scene.initGlobalParams();
@@ -82,7 +82,7 @@ Scene.initEnvironment = function (containerId) {
     Engine.initScreenAnd3D(containerId, params);
     Engine.prepareForStart();
     Scene.initMap();
-    Scene.initPlayer(7, 7);
+    Scene.initPlayer(4, 7);
 };
 
 Scene.initMap = function () {
