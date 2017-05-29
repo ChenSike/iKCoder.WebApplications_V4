@@ -629,17 +629,7 @@ function buildCourseListContent(target) {
             lessonArr = unitArr[i];
             for (var j = 0; j < lessonArr.length; j++) {
                 icon = (lessonArr[j].finish == '0' ? 'arrow-circle-o-right' : 'check-circle-o');
-                /*
-                                symbol: tmpObj.attr('symbol'),
-                title: tmpObj.attr('title'),
-                finish: tmpObj.attr('finish'),
-                enable: tmpObj.attr('enable'),
-                unit: tmpObj.attr('unit')
-
-*/
-                //tmpHTMLStrArr.push('<div>');
-                tmpHTMLStrArr.push('<i class="fa fa-' + icon + ' lesson-title-course-overview" aria-hidden="true">' + lessonArr[j].title + '</i>');
-                //tmpHTMLStrArr.push('</div>');
+                tmpHTMLStrArr.push('<i class="fa fa-' + icon + ' lesson-title-course-overview ' + (lessonArr[j].finish == '0' ? '' : 'finished') + '" aria-hidden="true"><span style="padding-left:5px;">' + lessonArr[j].title + '</span></i>');
             }
 
             tmpHTMLStrArr.push('    </div>');
