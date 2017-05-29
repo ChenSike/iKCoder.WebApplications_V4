@@ -399,7 +399,7 @@ PACMan.prototype.updatePositionStudy = function () {
                     this.movePathTarget.shift();
                 } else {
                     this.movePathTarget.shift();
-                }                
+                }
             } else {
                 if (!this.checkCollide()) {
                     if (this.orientation == 0 || this.orientation == 2) {
@@ -450,6 +450,14 @@ PACMan.prototype.actionForCollideGoods = function () {
     return false;
 };
 
+PACMan.prototype.setActionForCollideCountGoods = function (fn) {
+    this.actionForCollideCountGoods = fn
+};
+
+PACMan.prototype.actionForCollideCountGoods = function () {
+    return false;
+};
+
 PACMan.prototype.setActionForCollideProp = function (fn) {
     this.actionForCollideProp = fn
 };
@@ -485,6 +493,10 @@ PACMan.prototype.checkCollide = function () {
             }
         } else if (tmpItem.t == 2) {
             if (this.actionForCollideGoods() == true) {
+                return true;
+            }
+        } else if (tmpItem.t == 4) {
+            if (this.actionForCollideCountGoods() == true) {
                 return true;
             }
         }
@@ -598,7 +610,8 @@ Goods.prototype.init = function () {
 
 Goods.prototype.collideAction = function (sourceModule) {
     var coord = ModuleUtil.positionToCoord(this.mesh.position.x, this.mesh.position.z);
-    if ((coord.y == sourceModule.coord.y && Math.abs(coord.x - sourceModule.coord.x) <= 0.25) || (coord.x == sourceModule.coord.x && Math.abs(coord.y - sourceModule.coord.y) <= 0.25)) {
+    var sourceCoord = ModuleUtil.positionToCoord(sourceModule.coord.px, sourceModule.coord.px);
+    if ((coord.y == sourceModule.coord.y && Math.abs(coord.x - sourceCoord.x) <= 0.25) || (coord.x == sourceModule.coord.x && Math.abs(coord.y - sourceCoord.y) <= 0.25)) {
         Engine.getModuleObject(this.symbol).mesh.visible = false;
         //sourceModule.mapData[coord.y][coord.x].s = '';
     }
@@ -805,7 +818,53 @@ Monster.prototype.reset = function () {
     this.movePath = [];
     this.movePathTarget = [];
     this.mesh.visible = true;
-}
+};
+
+function CountGoods(count) {
+    Module.call(this);
+    this.type = 'countgoods';
+    this.count = count;
+    this.text = count.toString();
+    this.textColor = '#B22222';
+    this.unique = true;
+    this.init();
+};
+
+CountGoods.prototype = Object.assign(Object.create(Module.prototype), {
+    constructor: CountGoods
+});
+
+CountGoods.prototype.init = function () {
+    this.mesh = new THREE.Group();
+    this.textMeshs.position.y = 40;
+    this.textMeshs.position.x = -13;
+    this.createText();
+    this.body = new THREE.Mesh(new THREE.SphereGeometry(20, 20, 20, 0, Math.PI * 2, 0, Math.PI), new THREE.MeshPhongMaterial({ color: '#B22222', shading: THREE.FlatShading }));
+    this.body.geometry.verticesNeedUpdate = true;
+    this.body.geometry.normalsNeedUpdate = true;
+    this.body.geometry.castShadow = true;
+    this.mesh.add(this.body);
+    this.mesh.add(this.textMeshs);
+    this.mesh.position.y = 15;
+};
+
+CountGoods.prototype.collideAction = function (sourceModule) {
+    var coord = ModuleUtil.positionToCoord(this.mesh.position.x, this.mesh.position.z);
+    var sourceCoord = ModuleUtil.positionToCoord(sourceModule.coord.px, sourceModule.coord.px);
+    if ((coord.y == sourceModule.coord.y && Math.abs(coord.x - sourceCoord.x) <= 1 / 35) || (coord.x == sourceModule.coord.x && Math.abs(coord.y - sourceCoord.y) <= 1 / 35)) {
+        if (this.count > 0) {
+            this.count--;
+            this.text = this.count.toString();
+            this.createText();
+        } else {
+            Engine.getModuleObject(this.symbol).mesh.visible = false;
+        }
+    }
+
+    return false;
+};
+
+
 
 var ModuleUtil = {};
 
@@ -825,7 +884,6 @@ Monster._loopDelta = 1;
 Monster._posFrame = 15;
 Monster._posCount = 5;
 Monster.updatePose = function (monsters) {
-    var _self = this;
     var posFrame = Math.ceil(1000 / Monster._posFrame);
     var tStep = 3 / Monster._posCount;
     var loop = function () {
@@ -852,3 +910,34 @@ Monster.updatePose = function (monsters) {
     Monster._loopDelta = 1;
     loop();
 };
+
+CountGoods.updatePose = function (countGoods) {
+    var posFrame = 1000 / 10;
+    var scale = 10;
+    var newSize = 12;
+    var loopDelta = 0;
+    var loop = function () {
+        var tmpVal = loopDelta % 10;
+        if (tmpVal > 5) {
+            tmpVal = 10 - tmpVal;
+        }
+
+        tmpVal = 1 + 0.05 * tmpVal;
+        for (var i = 0; i < countGoods.length; i++) {
+            countGoods[i].mesh.scale.set(tmpVal, tmpVal, tmpVal);
+            if (countGoods[i].countTexts) {
+                countGoods[i].countTexts.scale.set(tmpVal, tmpVal, tmpVal);
+            }
+        }
+
+        loopDelta++;
+        if (!Engine.looped) {
+            Engine.render();
+        }
+
+        window.setTimeout(loop, posFrame);
+    }
+
+    loop();
+};
+
