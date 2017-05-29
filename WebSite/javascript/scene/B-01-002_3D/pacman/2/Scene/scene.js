@@ -10,18 +10,18 @@ Scene.defaultDATA = [
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
 Scene.mapDATA = [];
 
-Scene.targetPos = { x: 5, y: 7 };
+Scene.targetPos = { x: 7, y: 11 };
 
 Scene.initEnvironment = function (containerId) {
     Scene.initGlobalParams();
@@ -82,7 +82,7 @@ Scene.initEnvironment = function (containerId) {
     Engine.initScreenAnd3D(containerId, params);
     Engine.prepareForStart();
     Scene.initMap();
-    Scene.initPlayer(7, 7);
+    Scene.initPlayer(7, 2);
 };
 
 Scene.initMap = function () {
@@ -196,9 +196,12 @@ Scene.resetSize = function () {
     }
 };
 
-Scene.move = function (orientation, steps) {
-    Scene.addModuelPath('pacman', 'tt', orientation.toLowerCase());
+Scene.move = function (steps) {
     Scene.addModuelPath('pacman', 'm', steps);
+};
+
+Scene.TurnRight = function () {
+	Scene.addModuelPath('pacman', 'tr');
 };
 
 Scene.startGame = function () {

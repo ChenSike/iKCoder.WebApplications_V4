@@ -80,4 +80,3 @@ Blockly.Blocks['move_onestep_right'] = {
 Blockly.JavaScript['move_onestep_right'] = function (block) {
     return 'Scene.move("R", 1);\n';
 };
-
