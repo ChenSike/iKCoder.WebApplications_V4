@@ -92,6 +92,7 @@ function PACMan(moveType, mapData) {
     this.defaultCoord = { x: 0, y: 0 };
     this.coord = { x: 0, y: 0, px: 0, py: 0 };
     /*game: keep moving; study: move by commond*/
+    this._stopWhenComplete = true;
     this.moveType = 'study';
     this.movePath = [];
     this.movePathTarget = [];
@@ -390,7 +391,7 @@ PACMan.prototype.updatePositionStudy = function () {
             if (coord.x == targetObj.x && coord.y == targetObj.y) {
                 this.coord.x = coord.x;
                 this.coord.y = coord.y;
-                if (this._stopWhenConplete) {
+                if (this._stopWhenComplete) {
                     if (!this.completeFired) {
                         this.pathCompleteFn();
                         this.completeFired = true;
