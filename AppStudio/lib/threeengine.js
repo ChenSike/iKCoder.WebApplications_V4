@@ -361,7 +361,7 @@ Engine.loop = function () {
     Engine.loopID = requestAnimationFrame(Engine.loop);
 };
 
-Engine.rersetScene = function (rebuild) {
+Engine.resetScene = function (rebuild) {
     if (typeof rebuild == 'boolean' && rebuild) {
 
     } else {
