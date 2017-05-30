@@ -88,7 +88,7 @@ Scene.start = function () {
 };
 
 Scene.reset = function () {
-    Engine.rersetScene();
+    Engine.resetScene();
 };
 
 Scene.resetMap = function () {

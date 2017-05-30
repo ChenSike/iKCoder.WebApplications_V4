@@ -333,4 +333,8 @@ Brush.prototype.startDraw = function () {
         ty: this.mesh.position.y - this.basePoint.y,
         type: 'move'
     }
-}
+};
+
+Brush.prototype.preparingToRestart = function () {
+    this.reset();
+};

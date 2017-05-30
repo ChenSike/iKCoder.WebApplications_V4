@@ -361,7 +361,7 @@ Engine.loop = function () {
     Engine.loopID = requestAnimationFrame(Engine.loop);
 };
 
-Engine.rersetScene = function (rebuild) {
+Engine.resetScene = function (rebuild) {
     if (typeof rebuild == 'boolean' && rebuild) {
 
     } else {
@@ -375,6 +375,8 @@ Engine.rersetScene = function (rebuild) {
             Engine.modules[key].mesh.visible = true;
             Engine.modules[key].preparingToRestart();
         }
+
+        Engine.render();
     }
 }
 
