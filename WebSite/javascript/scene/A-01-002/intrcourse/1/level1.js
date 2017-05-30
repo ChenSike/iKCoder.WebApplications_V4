@@ -666,32 +666,54 @@ function loadCategory(config, layer) {
         fill: '#ffffff'
     });
 
-    var box = new Konva.Ccomponent({
-        x: subRect.x() + 15,
-        y: subRect.y() + 15,
-        width: config.fontSize,
-        height: config.fontSize,
-        draggable: false,
-        en: '',
-        cn: '',
-        dt: '',
-        id: '',
-        comp: false
-    });
+    //var box = new Konva.Ccomponent({
+    //    x: subRect.x() + 15,
+    //    y: subRect.y() + 15,
+    //    width: config.fontSize,
+    //    height: config.fontSize,
+    //    draggable: false,
+    //    en: '',
+    //    cn: '',
+    //    dt: '',
+    //    id: '',
+    //    comp: false
+    //});
+    //var imageObj = new Image();
+    //imageObj.src = config.subRect.icon;
+    //imageObj.onload = function () {
+    //    box.image(imageObj);
+    //    layer.draw();
+    //};
+
+    //imageObj.onerror = function () {
+    //    imageObj.src = config.subRect.icon + '?rnd=' + Date.now();
+    //};
+
     var imageObj = new Image();
-    imageObj.src = config.subRect.icon;
     imageObj.onload = function () {
-        box.image(imageObj);
-        layer.draw();
+        var image = new Konva.Image({
+            x: subRect.x() + 15,
+            y: subRect.y() + 8,
+            image: imageObj,
+            width: config.fontSize + 15,
+            height: config.fontSize + 15,
+            cropWidth: 1792,
+            cropHeight: 1792
+        });
+
+        layer.add(image);
+        image.parent.draw();
     };
 
     imageObj.onerror = function () {
         imageObj.src = config.subRect.icon + '?rnd=' + Date.now();
     };
 
+    imageObj.src = config.subRect.icon;
+
     layer.add(rect);
     layer.add(subRect);
-    layer.add(box);
+    //layer.add(box);
     layer.add(groupText);
 }
 
