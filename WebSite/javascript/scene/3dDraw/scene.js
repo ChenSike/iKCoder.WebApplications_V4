@@ -108,4 +108,9 @@ Scene.move = function (orientation, steps) {
 
 Scene.startGame = function () {
     Scene.start();
+    Scene.Brush.moveTo(5, 5);
+    Scene.Brush.lineTo(10, 10);
+    Scene.Brush.lineTo(10, 5);
+    Scene.Brush.lineTo(5, 10);
+    Scene.Brush.startDraw();
 };
