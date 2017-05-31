@@ -565,10 +565,16 @@
 }
 
 .lesson-title-course-overview {
-    font-size: 15px;
+    font-size: 14px;
     padding-right: 20px;
+    font-weight: bold;
+    cursor:pointer;
 }
 
-    .lesson-title-course-overview finished {
+    .lesson-title-course-overview.finished {
         color: rgb(114,174,75);
+    }
+
+     .lesson-title-course-overview.disabled {
+        color: rgb(185, 185, 185);
     }

@@ -577,14 +577,15 @@ function buildOverviewCourse(datas, containerHeight) {
         $('.overview-list-arrow.course').hide();
     }
 
-    $('.overview-course-item-wrap').on('mouseenter', function (eventObj) {
+    $('.overview-course-item-wrap').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
-        displayCourseListContent(target);
-        buildCourseListContent(target);
-    });
-
-    $('.overview-course-item-wrap').on('mouseleave', function () {
-        displayCourseListContent(false);
+        var tipWrap = $('#list_Overview_Course');
+        if (tipWrap.css('display') == 'block' && tipWrap.attr('data-target') == target.attr('data-target')) {
+            displayCourseListContent(false);
+        } else {
+            displayCourseListContent(target);
+            buildCourseListContent(target);
+        }
     });
 };
 
@@ -610,6 +611,7 @@ function displayCourseListContent(target) {
             tipWrap.css('left', x + 'px');
             tipWrap.css('top', y + 'px');
             tipWrap.css('opacity', '0.9');
+            tipWrap.attr('data-target', target.attr('data-target'));
         }
 
         CreateNewStyleRule('.tooltip.tooltip-bottom .tooltip-inner::before', 'left:' + (target.offset().left - offset.left + target.width() / 2) + 'px;');
@@ -622,14 +624,16 @@ function buildCourseListContent(target) {
     if (_courseListOverview[symbol]) {
         var tmpHTMLStrArr = [];
         var unitArr = _courseListOverview[symbol];
-        var lessonArr, icon;
+        var lessonArr, icon, state, disabled;
         for (var i = 0; i < unitArr.length; i++) {
             tmpHTMLStrArr.push('<div class="row justify-content-start" style="padding: 15px;">');
             tmpHTMLStrArr.push('    <div class="col  text-left">');
             lessonArr = unitArr[i];
             for (var j = 0; j < lessonArr.length; j++) {
                 icon = (lessonArr[j].finish == '0' ? 'arrow-circle-o-right' : 'check-circle-o');
-                tmpHTMLStrArr.push('<i class="fa fa-' + icon + ' lesson-title-course-overview ' + (lessonArr[j].finish == '0' ? '' : 'finished') + '" aria-hidden="true"><span style="padding-left:5px;">' + lessonArr[j].title + '</span></i>');
+                state = (lessonArr[j].finish == '0' ? '' : 'finished');
+                disabled = (lessonArr[j].enable == '0' ? ' disabled' : '');
+                tmpHTMLStrArr.push('<i class="fa fa-' + icon + ' lesson-title-course-overview ' + state + disabled + '" aria-hidden="true" data-target="' + lessonArr[j].symbol + '"><span style="padding-left:5px;">' + lessonArr[j].title + '</span></i>');
             }
 
             tmpHTMLStrArr.push('    </div>');
@@ -638,6 +642,9 @@ function buildCourseListContent(target) {
 
         $('#content_List_Overview_Course').empty();
         $('#content_List_Overview_Course').append(tmpHTMLStrArr.join(''));
+        $('.lesson-title-course-overview').on('click', function (eventObj) {
+            window.location.href = "workplatform.html?scene=" + $(eventObj.currentTarget).attr('data-target') + '&rnd=' + Date.now();
+        });
     }
 };
 
