@@ -25,7 +25,8 @@ WorkScene.outputCode = function () {
 var Scene = {};
 
 Scene.init = function () {
-    gameInit();
+    Engine.initScreenAnd3D('game_container', {});
+    Engine.prepareForRun();
 }
 
 Scene.reset = function () {
@@ -33,8 +34,8 @@ Scene.reset = function () {
     gamePause();
 }
 
-Scene.startGame = function () {
-    gameStart();
+Scene.start = function () {
+    Engine.start();
 }
 
 Scene.ResetConfig = function () {

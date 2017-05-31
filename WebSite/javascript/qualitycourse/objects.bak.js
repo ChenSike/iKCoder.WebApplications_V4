@@ -1,38 +1,177 @@
 ﻿'use strict';
 // Materials
+var blackMat = new THREE.MeshPhongMaterial({
+    color: '#100707',
+    shading: THREE.FlatShading
+});
 
-var BonusParticles = function () {
-    this.mesh = new THREE.Group();
-    var bigParticleGeom = new THREE.CubeGeometry(10, 10, 10, 1);
-    var smallParticleGeom = new THREE.CubeGeometry(5, 5, 5, 1);
-    this.parts = [];
-    for (var i = 0; i < 10; i++) {
-        var partPink = new THREE.Mesh(bigParticleGeom, pinkMat);
-        var partGreen = new THREE.Mesh(smallParticleGeom, greenMat);
-        partGreen.scale.set(.5, .5, .5);
-        this.parts.push(partPink);
-        this.parts.push(partGreen);
-        this.mesh.add(partPink);
-        this.mesh.add(partGreen);
-    }
-}
+var brownMat = new THREE.MeshPhongMaterial({
+    color: '#b44b39',
+    //shininess: 0,
+    shading: THREE.FlatShading
+});
 
-BonusParticles.prototype.explose = function () {
-    var _this = this;
-    var explosionSpeed = .5;
-    for (var i = 0; i < this.parts.length; i++) {
-        var tx = -50 + Math.random() * 100;
-        var ty = -50 + Math.random() * 100;
-        var tz = -50 + Math.random() * 100;
-        var p = this.parts[i];
-        p.position.set(0, 0, 0);
-        p.scale.set(1, 1, 1);
-        p.visible = true;
-        var s = explosionSpeed + Math.random() * .5;
-        TweenMax.to(p.position, s, { x: tx, y: ty, z: tz, ease: Power4.easeOut });
-        TweenMax.to(p.scale, s, { x: .01, y: .01, z: .01, ease: Power4.easeOut, onComplete: removeParticle, onCompleteParams: [p] });
-    }
-}
+var greenMat = new THREE.MeshPhongMaterial({
+    color: '#7abf8e',
+    //shininess: 0,
+    shading: THREE.FlatShading
+});
+
+var pinkMat = new THREE.MeshPhongMaterial({
+    color: '#dc5f45',
+    //shininess: 0,
+    shading: THREE.FlatShading
+});
+
+var lightBrownMat = new THREE.MeshPhongMaterial({
+    color: '#e07a57',
+    shading: THREE.FlatShading
+});
+
+var whiteMat = new THREE.MeshPhongMaterial({
+    color: '#a49789',
+    shading: THREE.FlatShading
+});
+
+var skinMat = new THREE.MeshPhongMaterial({
+    color: '#ff9ea5',
+    shading: THREE.FlatShading
+});
+
+var greenMat_1 = new THREE.MeshLambertMaterial({
+    color: '#5da683',
+    shading: THREE.FlatShading
+});
+
+var lightGreenMat = new THREE.MeshLambertMaterial({
+    color: '#95c088',
+    shading: THREE.FlatShading
+});
+
+var yellowMat = new THREE.MeshLambertMaterial({
+    color: '#fdde8c',
+    shading: THREE.FlatShading
+});
+
+var redMat = new THREE.MeshLambertMaterial({
+    color: '#cb3e4c',
+    shading: THREE.FlatShading
+});
+
+var whiteMat_1 = new THREE.MeshLambertMaterial({
+    color: '#faf3d7',
+    shading: THREE.FlatShading
+});
+
+var brownMat_1 = new THREE.MeshLambertMaterial({
+    color: '#874a5c',
+    shading: THREE.FlatShading
+});
+
+var blackMat_1 = new THREE.MeshLambertMaterial({
+    color: '#403133',
+    shading: THREE.FlatShading
+});
+
+var pinkMat_1 = new THREE.MeshLambertMaterial({
+    color: '#d0838e',
+    shading: THREE.FlatShading
+});
+
+var tailMat = new THREE.LineBasicMaterial({
+    color: 0x5da683,
+    linewidth: 5
+});
+
+var yellowMat_lion = new THREE.MeshLambertMaterial({
+    color: '#fdd276',
+    shading: THREE.FlatShading
+});
+
+var redMat_lion = new THREE.MeshLambertMaterial({
+    color: '#ad3525',
+    shading: THREE.FlatShading
+});
+
+var pinkMat_lion = new THREE.MeshLambertMaterial({
+    color: '#e55d2b',
+    shading: THREE.FlatShading
+});
+
+var whiteMat_lion = new THREE.MeshLambertMaterial({
+    color: '#ffffff',
+    shading: THREE.FlatShading
+});
+
+var purpleMat_lion = new THREE.MeshLambertMaterial({
+    color: '#451954',
+    shading: THREE.FlatShading
+});
+
+var greyMat_lion = new THREE.MeshLambertMaterial({
+    color: '#653f4c',
+    shading: THREE.FlatShading
+});
+
+var blackMat_lion = new THREE.MeshLambertMaterial({
+    color: '#302925',
+    shading: THREE.FlatShading
+});
+
+var yellowMat_cat = new THREE.MeshLambertMaterial({
+    color: '#fdd276',
+    shading: THREE.FlatShading
+});
+
+var pinkMat_cat = new THREE.MeshLambertMaterial({
+    color: '#e0877e', 
+    shading: THREE.FlatShading
+});
+
+var redMat_cat = new THREE.MeshLambertMaterial({
+    color: '#630d15',
+    shading: THREE.FlatShading
+});
+
+var whiteMat_cat = new THREE.MeshLambertMaterial({
+    color: '#ffffff',
+    shading: THREE.FlatShading
+});
+
+var blackMat_cat = new THREE.MeshLambertMaterial({
+    color: '#111111',
+    shading: THREE.FlatShading
+});
+
+var brownMat_cat = new THREE.MeshLambertMaterial({
+    color: '#2e2019', 
+    shading: THREE.FlatShading
+});
+
+var lightBrownMat_cat = new THREE.MeshLambertMaterial({
+    color: '#664f4a',
+    shading: THREE.FlatShading
+});
+
+var yellowMat_bird = new THREE.MeshLambertMaterial({
+    color: '#ffde79',
+    shading: THREE.FlatShading
+});
+
+var whiteMat_bird = new THREE.MeshLambertMaterial({
+    color: '#ffffff',
+    shading: THREE.FlatShading
+});
+
+var blackMat_bird = new THREE.MeshLambertMaterial({
+    color: '#000000',
+    shading: THREE.FlatShading
+});
+
+var orangeMat_bird = new THREE.MeshLambertMaterial({
+    color: '#ff5535',
+    shading: THREE.FlatShading
+});
 
 var heroConst = {
     torso: { c: brownMat, w: 7, h: 7, d: 10 },
@@ -3167,75 +3306,4 @@ Hedgehog.prototype.pause = function () {
 
 Hedgehog.prototype.resetOrgPosition = function () {
 
-}
-
-var Tree = function () {
-    this.mesh = new THREE.Object3D();
-    this.trunc = new Trunc();
-    this.mesh.add(this.trunc.mesh);
-}
-
-var Trunc = function () {
-    var truncHeight = 50 + Math.random() * 150;
-    var topRadius = 1 + Math.random() * 5;
-    var bottomRadius = 5 + Math.random() * 5;
-    var mats = [blackMat, brownMat, pinkMat, whiteMat, greenMat, lightBrownMat, pinkMat];
-    var matTrunc = blackMat;//mats[Math.floor(Math.random()*mats.length)];
-    var nhSegments = 3;//Math.ceil(2 + Math.random()*6);
-    var nvSegments = 3;//Math.ceil(2 + Math.random()*6);
-    var geom = new THREE.CylinderGeometry(topRadius, bottomRadius, truncHeight, nhSegments, nvSegments);
-    geom.applyMatrix(new THREE.Matrix4().makeTranslation(0, truncHeight / 2, 0));
-
-    this.mesh = new THREE.Mesh(geom, matTrunc);
-
-    for (var i = 0; i < geom.vertices.length; i++) {
-        var noise = Math.random();
-        var v = geom.vertices[i];
-        v.x += -noise + Math.random() * noise * 2;
-        v.y += -noise + Math.random() * noise * 2;
-        v.z += -noise + Math.random() * noise * 2;
-
-        geom.computeVertexNormals();
-
-        // FRUITS
-
-        if (Math.random() > .7) {
-            var size = Math.random() * 3;
-            var fruitGeometry = new THREE.CubeGeometry(size, size, size, 1);
-            var matFruit = mats[Math.floor(Math.random() * mats.length)];
-            var fruit = new THREE.Mesh(fruitGeometry, matFruit);
-            fruit.position.x = v.x;
-            fruit.position.y = v.y + 3;
-            fruit.position.z = v.z;
-            fruit.rotation.x = Math.random() * Math.PI;
-            fruit.rotation.y = Math.random() * Math.PI;
-
-            this.mesh.add(fruit);
-        }
-
-        // BRANCHES
-
-        if (Math.random() > .5 && v.y > 10 && v.y < truncHeight - 10) {
-            var h = 3 + Math.random() * 5;
-            var thickness = .2 + Math.random();
-
-            var branchGeometry = new THREE.CylinderGeometry(thickness / 2, thickness, h, 3, 1);
-            branchGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, h / 2, 0));
-            var branch = new THREE.Mesh(branchGeometry, matTrunc);
-            branch.position.x = v.x;
-            branch.position.y = v.y;
-            branch.position.z = v.z;
-
-            var vec = new THREE.Vector3(v.x, 2, v.z);
-            var axis = new THREE.Vector3(0, 1, 0);
-            branch.quaternion.setFromUnitVectors(axis, vec.clone().normalize());
-
-
-            this.mesh.add(branch);
-        }
-
-    }
-
-
-    this.mesh.castShadow = true;
 }
