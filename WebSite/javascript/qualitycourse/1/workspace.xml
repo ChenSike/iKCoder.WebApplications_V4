@@ -28,7 +28,7 @@
                         <next>
                           <block type="scene_setting_music">
                             <value name="scene_role_item">
-                              <block type="scene_music"/>
+                              <!--<block type="scene_music"/>-->
                             </value>
                           </block>
                         </next>
