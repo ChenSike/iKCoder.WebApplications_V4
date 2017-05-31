@@ -11,7 +11,7 @@ Scene.defaultDATA = [
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -109,6 +109,8 @@ Scene.initMap = function () {
                 tmpKey = Engine.addModuleObject(new Wall(), tmpX, null, tmpZ);
             } else if (Scene.defaultDATA[i][j] == 2) {
                 tmpKey = Engine.addModuleObject(new Goods(), tmpX, null, tmpZ);
+            } else if (Scene.defaultDATA[i][j] == 4) {
+                tmpKey = Engine.addModuleObject(new CountGoods(5), tmpX, null, tmpZ);
             }
 
             rowData.push({ t: Scene.defaultDATA[i][j], s: tmpKey, v: true });
@@ -182,7 +184,7 @@ Scene.start = function () {
 };
 
 Scene.reset = function () {
-    Engine.rersetScene();
+    Engine.resetScene();
     Scene.resetMap();
     Scene.getPlayer().reset();
     var x = Scene.getPlayer().defaultCoord.x;

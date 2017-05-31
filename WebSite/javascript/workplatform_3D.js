@@ -15,119 +15,119 @@ var _messages = {
 };
 
 function initPage() {
-    //_registerRemoteServer();
-    //$.ajax({
-    //    type: 'GET',
-    //    async: true,
-    //    url: _getRequestURL(_gURLMapping.account.signstatus),
-    //    data: '<root></root>',
-    //    success: function (data_1, status) {
-    //        if ($(data_1).find('err').length > 0) {
-    //            window.location.href = "signin.html?rnd=" + Date.now();
-    //            return;
-    //        } else {
-    //            $.ajax({
-    //                type: 'POST',
-    //                async: true,
-    //                url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
-    //                data: '<root></root>',
-    //                success: function (response, status) {
-    //                    if ($(response).find('err').length > 0) {
-    //                        _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
-    //                        return;
-    //                    }
+    _registerRemoteServer();
+    $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.signstatus),
+        data: '<root></root>',
+        success: function (data_1, status) {
+            if ($(data_1).find('err').length > 0) {
+                window.location.href = "signin.html?rnd=" + Date.now();
+                return;
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
+                    data: '<root></root>',
+                    success: function (response, status) {
+                        if ($(response).find('err').length > 0) {
+                            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
+                            return;
+                        }
 
-    //                    var data = initData(response);
-    //                    _wordsData = data.course.words;
-    //                    _knowledgeData = data.course.kps;
-    //                    _workspaceCfg = data.blockly;
-    //                    buildStageHTML(data.course);
-    //                    updateUserInfo(data.user);
-    //                    adjustWorkSpaceType(data);
-    //                    adjustAfterSiderBarResize();
-    //                    $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
-    //                    LoadSceneLib(data.blockly);
-    //                    $('#mask_Page_Loading').hide();
-    //                    $('#mask_Page_Loading').css('visibility', 'hidden');
-    //                    window.setTimeout('WorkScene.saveStatus(true);', 60000);
-    //                },
-    //                dataType: 'xml',
-    //                xhrFields: {
-    //                    withCredentials: true
-    //                },
-    //                error: function () {
-    //                }
-    //            });
-    //        }
-    //    },
-    //    dataType: 'xml',
-    //    xhrFields: {
-    //        withCredentials: true
-    //    },
-    //    error: function () {
-    //        window.location.href = "signin.html?rnd=" + Date.now();
-    //    }
-    //});
-    var dataXML = Blockly.Xml.textToDom('<root>'+
-        '   <basic>'+
-        '		<usr id="42" nickname=""/>'+
-        '	</basic>'+
-        '	<sence name="初级第一课：模式设别" symbol="b_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="b_01_002"/>'+
-        '	<tips>'+
-        '		<item index="1">'+
-        '			<content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>'+
-        '		</item>'+
-        '	</tips>'+
-        '	<toolbox src="B-01-001/pacman/1/Blocks/blocks.JS">'+
-        '		<xml id="toolbox" style="display: none">'+
-        '			<block type="event_start"/>'+
-        '			<block type="move_onestep_up"/>'+
-        '			<block type="move_onestep_down"/>'+
-        '			<block type="move_onestep_left"/>'+
-        '			<block type="move_onestep_right"/>'+
-        '		</xml>'+
-        '	</toolbox>'+
-        '	<workspacestatus>'+
-        '		<xml xmlns="http://www.w3.org/1999/xhtml"/>'+
-        '	</workspacestatus>'+
-        '	<game>'+
-        '		<script src="B-01-001/pacman/1/Engine/game_engine.JS"/>'+
-        '		<script src="B-01-001/pacman/1/Scene/scene.JS"/>'+
-        '	</game>'+
-        '	<message>'+
-        '		<faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>'+
-        '		<suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>'+
-        '	</message>'+
-        '	<words>'+
-        '		<stage value="1">'+
-        '			<word value="move" note="儿童英语/CET4/计算机英语" star="4">'+
-        '				<soundmark>'+
-        '					<item type="us" value="美 [kəm"pjutɚ]" sound="sound_word_computer_us"/>'+
-        '					<item type="uk" value="英 [kəm"pjuːtə]" sound="sound_word_computer_uk"/>'+
-        '				</soundmark>'+
-        '				<paraphrase>'+
-        '					<item>v.移动</item>'+
-        '				</paraphrase>'+
-        '				<variant>'+
-        '				<item name="复数" value="computers"/>'+
-        '				</variant>'+
-        '			</word>'+
-        '		</stage>'+
-        '	</words>'+
-        '</root>');
-    var data = initData(dataXML);
-    _wordsData = data.course.words;
-    _knowledgeData = data.course.kps;
-    _workspaceCfg = data.blockly;
-    buildStageHTML(data.course);
-    updateUserInfo(data.user);
-    adjustWorkSpaceType(data);
-    adjustAfterSiderBarResize();
-    $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
-    LoadSceneLib(data.blockly);
-    $('#mask_Page_Loading').hide();
-    $('#mask_Page_Loading').css('visibility', 'hidden');
-    window.setTimeout('WorkScene.saveStatus(true);', 60000);
+                        var data = initData(response);
+                        _wordsData = data.course.words;
+                        _knowledgeData = data.course.kps;
+                        _workspaceCfg = data.blockly;
+                        buildStageHTML(data.course);
+                        updateUserInfo(data.user);
+                        adjustWorkSpaceType(data);
+                        adjustAfterSiderBarResize();
+                        $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
+                        LoadSceneLib(data.blockly);
+                        $('#mask_Page_Loading').hide();
+                        $('#mask_Page_Loading').css('visibility', 'hidden');
+                        window.setTimeout('WorkScene.saveStatus(true);', 60000);
+                    },
+                    dataType: 'xml',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    error: function () {
+                    }
+                });
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            window.location.href = "signin.html?rnd=" + Date.now();
+        }
+    });
+    //var dataXML = Blockly.Xml.textToDom('<root>'+
+    //    '   <basic>'+
+    //    '		<usr id="42" nickname=""/>'+
+    //    '	</basic>'+
+    //    '	<sence name="初级第一课：模式设别" symbol="b_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="b_01_002"/>'+
+    //    '	<tips>'+
+    //    '		<item index="1">'+
+    //    '			<content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>'+
+    //    '		</item>'+
+    //    '	</tips>'+
+    //    '	<toolbox src="B-01-001/pacman/1/Blocks/blocks.JS">'+
+    //    '		<xml id="toolbox" style="display: none">'+
+    //    '			<block type="event_start"/>'+
+    //    '			<block type="move_onestep_up"/>'+
+    //    '			<block type="move_onestep_down"/>'+
+    //    '			<block type="move_onestep_left"/>'+
+    //    '			<block type="move_onestep_right"/>'+
+    //    '		</xml>'+
+    //    '	</toolbox>'+
+    //    '	<workspacestatus>'+
+    //    '		<xml xmlns="http://www.w3.org/1999/xhtml"/>'+
+    //    '	</workspacestatus>'+
+    //    '	<game>'+
+    //    '		<script src="B-01-001/pacman/1/Engine/game_engine.JS"/>'+
+    //    '		<script src="B-01-001/pacman/1/Scene/scene.JS"/>'+
+    //    '	</game>'+
+    //    '	<message>'+
+    //    '		<faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>'+
+    //    '		<suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>'+
+    //    '	</message>'+
+    //    '	<words>'+
+    //    '		<stage value="1">'+
+    //    '			<word value="move" note="儿童英语/CET4/计算机英语" star="4">'+
+    //    '				<soundmark>'+
+    //    '					<item type="us" value="美 [kəm"pjutɚ]" sound="sound_word_computer_us"/>'+
+    //    '					<item type="uk" value="英 [kəm"pjuːtə]" sound="sound_word_computer_uk"/>'+
+    //    '				</soundmark>'+
+    //    '				<paraphrase>'+
+    //    '					<item>v.移动</item>'+
+    //    '				</paraphrase>'+
+    //    '				<variant>'+
+    //    '				<item name="复数" value="computers"/>'+
+    //    '				</variant>'+
+    //    '			</word>'+
+    //    '		</stage>'+
+    //    '	</words>'+
+    //    '</root>');
+    //var data = initData(dataXML);
+    //_wordsData = data.course.words;
+    //_knowledgeData = data.course.kps;
+    //_workspaceCfg = data.blockly;
+    //buildStageHTML(data.course);
+    //updateUserInfo(data.user);
+    //adjustWorkSpaceType(data);
+    //adjustAfterSiderBarResize();
+    //$("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
+    //LoadSceneLib(data.blockly);
+    //$('#mask_Page_Loading').hide();
+    //$('#mask_Page_Loading').css('visibility', 'hidden');
+    //window.setTimeout('WorkScene.saveStatus(true);', 60000);
 
     initEvents();
     var playBtn = $('.workspace-tool-item.workspace-play-button.fa.fa-play');
@@ -619,12 +619,26 @@ function initData(response) {
         }
     }
 
+    //var addLibPath = function (node) {
+    //    var tmpAttr = node.attr('src');
+    //    if (tmpAttr && tmpAttr != '') {
+    //        data.blockly.lib.push('javascript/scene/' + tmpAttr);
+    //    }
+    //}
+
     var addLibPath = function (node) {
         var tmpAttr = node.attr('src');
         if (tmpAttr && tmpAttr != '') {
-            data.blockly.lib.push('javascript/scene/' + tmpAttr);
+            if (tmpAttr.indexOf('Engine\\game_engine.JS') > 0) {
+                data.blockly.lib.push('javascript/3dmodule/pacman.js');
+            } else {
+                var tmpArr = tmpAttr.split('\\');
+                tmpArr[0] = tmpArr[0] + '_3d';
+                data.blockly.lib.push('javascript/scene/' + tmpArr.join('\\'));
+            }
         }
     }
+
 
     //addLibPath($($(response).find("toolbox")[0]));
     //var tmpPaths = $(response).find("game").find('script');
@@ -886,11 +900,6 @@ function adjustAfterSiderBarResize() {
     var helpWrap = $('#wrap_Scene_Help_Content');
     wrap = $('.siderbar-content');
     $('#game_container').height(wrap.height() - helpWrap.height() - 30);
-    if (Scene.resetSize) {
-        Scene.resetSize();
-        var fontSize = parseInt($('.run-scene-fullscreen-play-button').css('font-size'));
-        $('.run-scene-fullscreen-play-button').css('top', (($('#game_container').find('canvas').height() - fontSize) / 2) + 'px');
-    }
 };
 
 function onWindowResize() {

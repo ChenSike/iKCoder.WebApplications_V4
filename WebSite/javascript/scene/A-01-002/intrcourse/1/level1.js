@@ -7,7 +7,7 @@ var CATEGORY_PADDING_BOTTOM = 5;
 var RESULT_WIDTH = 20;
 var RESULT_HEIGHT = 20;
 var CATEGORY_ITEM_ROW = 4;
-var CATEGORY_TITLE_FOONTSIZE = 16;
+var CATEGORY_TITLE_FONTSIZE = 16;
 
 var configuration = {
     "Input Device": [{
@@ -77,10 +77,10 @@ var configuration = {
 };
 
 var groupNameMap = {
-    'Input Device': '输入设备',
-    'Output Device': '输出设备',
-    'Storage': '存储设备',
-    'Computing': '运算设备'
+    'Input Device': { name: '输入设备', color: 'rgb(29,185,124)', icon: 'image/scene/intrcourse/svg/input.svg' },
+    'Output Device': { name: '输出设备', color: 'rgb(52,151,216)', icon: 'image/scene/intrcourse/svg/output.svg' },
+    'Storage': { name: '存储设备', color: 'rgb(234,85,60)', icon: 'image/scene/intrcourse/svg/database.svg' },
+    'Computing': { name: '运算设备', color: 'rgb(255,153,0)', icon: 'image/scene/intrcourse/svg/calculator.svg' },
 }
 
 function searchForGroup(key, config, predicate) {
@@ -125,7 +125,7 @@ function placeComponentGroups(config, layer, stage) {
 
     var titleText = '';
     for (var group in config) {
-        var tmpTitleText = group + ('(' + groupNameMap[group] + ')');
+        var tmpTitleText = group + ('(' + groupNameMap[group].name + ')');
         if (tmpTitleText.length > titleText) {
             titleText = tmpTitleText;
         }
@@ -145,20 +145,35 @@ function placeComponentGroups(config, layer, stage) {
         RESULT_WIDTH = RESULT_HEIGHT = CATEGORY_THUMB_NAIL_SIZE_Y;
     }
 
-    groupHeight += fontSize + 10;
-    CATEGORY_TITLE_FOONTSIZE = fontSize;
+    groupHeight += fontSize + 10 + 30;
+    CATEGORY_TITLE_FONTSIZE = fontSize;
     for (var i = 0; i < groupNum; i++) {
         var categoryConfig = {
             stroke: '#80655f',
             strokeWidth: 1,
-            fill:'#e59683',
+            //fill:'#e59683',
+            fill: '#ffffff',
             height: groupHeight,
             width: groupWidth,
             group: groups[i],
             x: horizontalMargin / 2 + (groupSideMargin * 2 + groupWidth) * i + groupSideMargin,
             y: stage.getHeight() - groupHeight,
-            title: groups[i] + ('(' + groupNameMap[groups[i]] + ')'),
-            fontSize: fontSize
+            title: '',
+            fontSize: fontSize,
+            subRect: {
+                stroke: '#ffffff',
+                strokeWidth: 0,
+                //fill:'#e59683',
+                fill: groupNameMap[groups[i]].color,
+                height: fontSize + 30,
+                width: groupWidth,
+                group: groups[i],
+                x: horizontalMargin / 2 + (groupSideMargin * 2 + groupWidth) * i + groupSideMargin,
+                y: stage.getHeight() - groupHeight,
+                title: groups[i] + ('(' + groupNameMap[groups[i]].name + ')'),
+                icon: groupNameMap[groups[i]].icon,
+                fontSize: fontSize,
+            }
         };
 
         loadCategory(categoryConfig, layer, stage);
@@ -314,7 +329,7 @@ var categoryManager = (function () {
     }
 
     function calculateOffsetY(i) {
-        return (CATEGORY_THUMB_NAIL_SIZE_Y + CATEGORY_PADDING_BOTTOM) * (i % CATEGORY_ITEM_ROW);
+        return (CATEGORY_THUMB_NAIL_SIZE_Y + CATEGORY_PADDING_BOTTOM) * (i % (CATEGORY_ITEM_ROW));
     }
 
     function calculateOffsetX(i) {
@@ -438,7 +453,7 @@ function calcDeltaObject(image, categoryRect, offsetY, offsetX) {
     if (categoryRect) {
         slices = 50,
         deltaX = (categoryRect.x() + 5 + offsetX - x0) / slices;
-        deltaY = (categoryRect.y() + 5 + offsetY - y0 + CATEGORY_TITLE_FOONTSIZE + 5) / slices;
+        deltaY = (categoryRect.y() + 5 + offsetY - y0 + CATEGORY_TITLE_FONTSIZE + 5 + 30) / slices;
         deltaWidth = (CATEGORY_THUMB_NAIL_SIZE_X - width0) / slices;
         deltaHeight = (CATEGORY_THUMB_NAIL_SIZE_Y - height0) / slices;
     }
@@ -628,17 +643,77 @@ function showTooltip(eventObj, show) {
 
 function loadCategory(config, layer) {
     var rect = new Konva.ComponentGroup(config);
+    //var groupText = new Konva.Text({
+    //    x: rect.x(),
+    //    y: rect.y() + 5,
+    //    width: rect.width(),
+    //    text: config.title,
+    //    fontSize: config.fontSize,
+    //    fontFamily: 'Calibri',
+    //    align: 'center'
+    //});
+
+    var subRect = new Konva.ComponentGroup(config.subRect);
+    var subRectIcon = new Konva.ComponentGroup(config.subRect);
     var groupText = new Konva.Text({
-        x: rect.x(),
-        y: rect.y() + 5,
+        x: subRect.x(),
+        y: subRect.y() + 15,
         width: rect.width(),
-        text: config.title,
+        text: config.subRect.title,
         fontSize: config.fontSize,
         fontFamily: 'Calibri',
-        align: 'center'
+        align: 'center',
+        fill: '#ffffff'
     });
 
+    //var box = new Konva.Ccomponent({
+    //    x: subRect.x() + 15,
+    //    y: subRect.y() + 15,
+    //    width: config.fontSize,
+    //    height: config.fontSize,
+    //    draggable: false,
+    //    en: '',
+    //    cn: '',
+    //    dt: '',
+    //    id: '',
+    //    comp: false
+    //});
+    //var imageObj = new Image();
+    //imageObj.src = config.subRect.icon;
+    //imageObj.onload = function () {
+    //    box.image(imageObj);
+    //    layer.draw();
+    //};
+
+    //imageObj.onerror = function () {
+    //    imageObj.src = config.subRect.icon + '?rnd=' + Date.now();
+    //};
+
+    var imageObj = new Image();
+    imageObj.onload = function () {
+        var image = new Konva.Image({
+            x: subRect.x() + 15,
+            y: subRect.y() + 8,
+            image: imageObj,
+            width: config.fontSize + 15,
+            height: config.fontSize + 15,
+            cropWidth: 1792,
+            cropHeight: 1792
+        });
+
+        layer.add(image);
+        image.parent.draw();
+    };
+
+    imageObj.onerror = function () {
+        imageObj.src = config.subRect.icon + '?rnd=' + Date.now();
+    };
+
+    imageObj.src = config.subRect.icon;
+
     layer.add(rect);
+    layer.add(subRect);
+    //layer.add(box);
     layer.add(groupText);
 }
 

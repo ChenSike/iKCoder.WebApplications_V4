@@ -10,7 +10,7 @@ Scene.defaultDATA = [
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -90,6 +90,7 @@ Scene.initMap = function () {
     var halfWidth = _colCount * _itemSize / 2;
     var halfHeight = _rowCount * _itemSize / 2;
     var goods = [];
+    var countGoods = [];
     for (var i = 0; i < Scene.defaultDATA.length; i++) {
         tmpZ = i * _itemSize - halfWidth + _itemSize / 2;
         var rowData = [];
@@ -104,6 +105,10 @@ Scene.initMap = function () {
                 var newGoods = new Goods();
                 goods.push(newGoods);
                 tmpKey = Engine.addModuleObject(newGoods, tmpX, null, tmpZ);
+            } else if (Scene.defaultDATA[i][j] == 4) {
+                var newCountGoods = new CountGoods(5);
+                countGoods.push(newCountGoods);
+                tmpKey = Engine.addModuleObject(newCountGoods, tmpX, null, tmpZ);
             }
 
             rowData.push({ t: Scene.defaultDATA[i][j], s: tmpKey, v: true });
@@ -113,6 +118,7 @@ Scene.initMap = function () {
     }
 
     Goods.updatePose(goods);
+    CountGoods.updatePose(countGoods);
 };
 
 Scene.initPlayer = function (x, y) {
@@ -166,7 +172,7 @@ Scene.start = function () {
 };
 
 Scene.reset = function () {
-    Engine.rersetScene();
+    Engine.resetScene();
     Scene.resetMap();
     Scene.getPlayer().reset();
     var x = Scene.getPlayer().defaultCoord.x;

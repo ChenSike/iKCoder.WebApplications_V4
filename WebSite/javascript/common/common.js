@@ -90,6 +90,10 @@ function CreateNewStyleSheet() {
     }
 };
 
+function CreateNewStyleRule(key, rule) {
+    document.styleSheets[document.styleSheets.length - 1].addRule(key, rule);
+}
+
 function GetKeyframesRuleInfo(keyframesName) {
     var currRule = null;
     var currRules = null;

@@ -17,8 +17,8 @@ Floor.prototype = Object.assign(Object.create(Module.prototype), {
 });
 
 Floor.prototype.init = function () {
-    var width = 1500;
-    var depth = 1500;
+    var width = 2000;
+    var depth = 2000;
     var height = _itemSize;
     var placeWidth = _itemSize * _colCount;
     var placeDepth = _itemSize * _rowCount;
@@ -241,7 +241,10 @@ PACMan.prototype.updatePose = function () {
         _self.head.rotation.z = maxMouth * tmpVal / disNumber;
         _self.body.rotation.z = -maxMouth * tmpVal / disNumber;
         _self.posDelta = (_self.posDelta == modNumber ? 0 : _self.posDelta + 1);
-        Engine.render();
+        if (!Engine.looped) {
+            Engine.render();
+        }
+
         window.setTimeout(loop, posFrame);
     }
 
@@ -355,7 +358,14 @@ PACMan.prototype.prepareForRun = function () {
 PACMan.prototype.updatePosition = function () {
     if (this.moveType == 'study') {
         this.updatePositionStudy();
-        return;
+    } else {
+        if (!this.checkCollide()) {
+            if (this.orientation == 0 || this.orientation == 2) {
+                this.mesh.position.x += _itemSize / 40 * this.speed * _moveMap[this.orientation];
+            } else {
+                this.mesh.position.z += _itemSize / 40 * this.speed * _moveMap[this.orientation];
+            }
+        }
     }
 };
 
@@ -380,7 +390,16 @@ PACMan.prototype.updatePositionStudy = function () {
             if (coord.x == targetObj.x && coord.y == targetObj.y) {
                 this.coord.x = coord.x;
                 this.coord.y = coord.y;
-                this.movePathTarget.shift();
+                if (this._stopWhenConplete) {
+                    if (!this.completeFired) {
+                        this.pathCompleteFn();
+                        this.completeFired = true;
+                    }
+
+                    this.movePathTarget.shift();
+                } else {
+                    this.movePathTarget.shift();
+                }                
             } else {
                 if (!this.checkCollide()) {
                     if (this.orientation == 0 || this.orientation == 2) {
@@ -390,10 +409,12 @@ PACMan.prototype.updatePositionStudy = function () {
                     }
                 }
             }
-
         }
     } else {
-        this.pathCompleteFn();
+        if (!this.completeFired) {
+            this.pathCompleteFn();
+            this.completeFired = true;
+        }
     }
 };
 
@@ -500,6 +521,7 @@ PACMan.prototype.reset = function () {
     this.turnTo(0);
     this.movePath = [];
     this.movePathTarget = [];
+    this.completeFired = false;
     this.mesh.visible = true;
 }
 
@@ -574,29 +596,6 @@ Goods.prototype.init = function () {
     this.mesh.position.y = 15;
 };
 
-Goods.prototype.updatePose = function () {
-    var _self = this;
-    var posFrame = 1000 / 10;
-    var scale = 10;
-    var newSize = 12;
-    var loopDelta = 0;
-    var loop = function () {
-        var tmpVal = loopDelta % 10;
-        if (tmpVal > 5) {
-            tmpVal = 10 - tmpVal;
-        }
-
-        _self.mesh.scale.setX(1 + 0.05 * tmpVal);
-        _self.mesh.scale.setY(1 + 0.05 * tmpVal);
-        _self.mesh.scale.setZ(1 + 0.05 * tmpVal);
-        loopDelta++;
-        Engine.render();
-        window.setTimeout(loop, posFrame);
-    }
-
-    loop();
-};
-
 Goods.prototype.collideAction = function (sourceModule) {
     var coord = ModuleUtil.positionToCoord(this.mesh.position.x, this.mesh.position.z);
     if ((coord.y == sourceModule.coord.y && Math.abs(coord.x - sourceModule.coord.x) <= 0.25) || (coord.x == sourceModule.coord.x && Math.abs(coord.y - sourceModule.coord.y) <= 0.25)) {
@@ -605,6 +604,33 @@ Goods.prototype.collideAction = function (sourceModule) {
     }
 
     return false;
+};
+
+Goods._loopDelta = 0;
+Goods.updatePose = function (goods) {
+    var posFrame = 1000 / 10;
+    var scale = 10;
+    var newSize = 12;
+    var loop = function () {
+        var tmpVal = Goods._loopDelta % 10;
+        if (tmpVal > 5) {
+            tmpVal = 10 - tmpVal;
+        }
+
+        tmpVal = 1 + 0.05 * tmpVal;
+        for (var i = 0; i < goods.length; i++) {
+            goods[i].mesh.scale.set(tmpVal, tmpVal, tmpVal);
+        }
+
+        Goods._loopDelta++;
+        if (!Engine.looped) {
+            Engine.render();
+        }
+
+        window.setTimeout(loop, posFrame);
+    }
+
+    loop();
 };
 
 function Wall() {
@@ -634,10 +660,7 @@ function Monster(moveType, mapData, color) {
     this.unique = false;
     this.color = (color ? color : Math.random() * 0xffffff);
     this.speed = 1;
-    this.posDelta = 0;
     this.veerDelta = 0;
-    this.posFrame = 15;
-    this.posCount = 5;
     this.mapData = mapData;
     /*1:up, 0:right, 3: down, 2:left*/
     this.orientation = 0;
@@ -773,30 +796,6 @@ Monster.prototype.setPosition = function (x, y) {
     this.defaultCoord = { x: x, y: y };
 }
 
-Monster.prototype.updatePose = function () {
-    var _self = this;
-    var posFrame = Math.ceil(1000 / this.posFrame);
-    var posCount = this.posCount;
-    var tStep = 3 / posCount;
-    var loop = function () {
-        var tmpVal = (_self.posDelta > posCount ? -1 : 1);
-        _self.foot_1.position.x += tStep * tmpVal;
-        _self.foot_1.position.z += tStep * tmpVal;
-        _self.foot_2.position.x -= tStep * tmpVal;
-        _self.foot_2.position.z += tStep * tmpVal;
-        _self.foot_3.position.x -= tStep * tmpVal;
-        _self.foot_3.position.z -= tStep * tmpVal;
-        _self.foot_4.position.x += tStep * tmpVal;
-        _self.foot_4.position.z -= tStep * tmpVal;
-        _self.posDelta = (_self.posDelta == posCount * 2 ? 1 : _self.posDelta + 1);
-        Engine.render();
-        window.setTimeout(loop, posFrame);
-    }
-
-    this.posDelta = 1;
-    loop();
-};
-
 Monster.prototype.collideAction = function (sourceModule) {
     return true;
 };
@@ -806,7 +805,80 @@ Monster.prototype.reset = function () {
     this.movePath = [];
     this.movePathTarget = [];
     this.mesh.visible = true;
-}
+};
+
+function CountGoods(count) {
+    Module.call(this);
+    this.type = 'countgoods';
+    this.count = count;
+    this.unique = true;
+    this.init();
+};
+
+CountGoods.prototype = Object.assign(Object.create(Module.prototype), {
+    constructor: CountGoods
+});
+
+CountGoods.prototype.init = function () {
+    this.mesh = new THREE.Group();
+    this.countText = null;
+    var _self = this;
+    var loadText = function (font) {
+        var geometry = new THREE.TextGeometry(_self.count.toString(), { font: font, size: 30, height: 5 });
+        var material = new THREE.MeshPhongMaterial({ color: '#B22222', specular: '#B22222', shininess: 0 });
+        _self.countText = new THREE.Mesh(geometry, material);
+        _self.countText.position.y = 40;
+        _self.countText.position.x = -13;
+        _self.mesh.add(_self.countText);
+    }
+    Engine.createText(loadText);
+    this.body = new THREE.Mesh(new THREE.SphereGeometry(20, 20, 20, 0, Math.PI * 2, 0, Math.PI), new THREE.MeshPhongMaterial({ color: '#B22222', shading: THREE.FlatShading }));
+    this.body.geometry.verticesNeedUpdate = true;
+    this.body.geometry.normalsNeedUpdate = true;
+    this.body.geometry.castShadow = true;
+    this.mesh.add(this.body);
+    this.mesh.position.y = 15;
+};
+
+CountGoods.prototype.updatePose = function () {
+    var _self = this;
+    var posFrame = 1000 / 10;
+    var scale = 10;
+    var newSize = 12;
+    var loopDelta = 0;
+    var loop = function () {
+        var tmpVal = loopDelta % 10;
+        if (tmpVal > 5) {
+            tmpVal = 10 - tmpVal;
+        }
+
+        _self.mesh.scale.setX(1 + 0.05 * tmpVal);
+        _self.mesh.scale.setY(1 + 0.05 * tmpVal);
+        _self.mesh.scale.setZ(1 + 0.05 * tmpVal);
+        loopDelta++;
+        if (_self.countText) {
+            _self.countText.scale.set(1 + 0.05 * tmpVal, 1 + 0.05 * tmpVal, 1 + 0.05 * tmpVal);
+        }
+
+        Engine.render();
+        window.setTimeout(loop, posFrame);
+    }
+
+    loop();
+};
+
+CountGoods.prototype.collideAction = function (sourceModule) {
+    var coord = ModuleUtil.positionToCoord(this.mesh.position.x, this.mesh.position.z);
+    if ((coord.y == sourceModule.coord.y && Math.abs(coord.x - sourceModule.coord.x) <= 0.25) || (coord.x == sourceModule.coord.x && Math.abs(coord.y - sourceModule.coord.y) <= 0.25)) {
+        if (this.count > 0) {
+            this.count--;
+        } else {
+            Engine.getModuleObject(this.symbol).mesh.visible = false;
+        }
+    }
+
+    return false;
+};
 
 var ModuleUtil = {};
 
@@ -820,4 +892,36 @@ ModuleUtil.positionToCoord = function (px, py) {
     var tmpX = (px - _itemSize / 2 + _colCount * _itemSize / 2) / _itemSize;
     var tmpY = (py - _itemSize / 2 + _rowCount * _itemSize / 2) / _itemSize;
     return { x: tmpX, y: tmpY };
+};
+
+Monster._loopDelta = 1;
+Monster._posFrame = 15;
+Monster._posCount = 5;
+Monster.updatePose = function (monsters) {
+    var _self = this;
+    var posFrame = Math.ceil(1000 / Monster._posFrame);
+    var tStep = 3 / Monster._posCount;
+    var loop = function () {
+        var tmpVal = tStep * (Monster._loopDelta > Monster._posCount ? -1 : 1);
+        for (var i = 0; i < monsters.length; i++) {
+            monsters[i].foot_1.position.x += tmpVal;
+            monsters[i].foot_1.position.z += tmpVal;
+            monsters[i].foot_2.position.x -= tmpVal;
+            monsters[i].foot_2.position.z += tmpVal;
+            monsters[i].foot_3.position.x -= tmpVal;
+            monsters[i].foot_3.position.z -= tmpVal;
+            monsters[i].foot_4.position.x += tmpVal;
+            monsters[i].foot_4.position.z -= tmpVal;
+        }
+
+        if (!Engine.looped) {
+            Engine.render();
+        }
+
+        Monster._loopDelta = (Monster._loopDelta == Monster._posCount * 2 ? 1 : Monster._loopDelta + 1);
+        window.setTimeout(loop, Monster._posFrame);
+    }
+
+    Monster._loopDelta = 1;
+    loop();
 };

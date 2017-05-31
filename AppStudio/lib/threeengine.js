@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 var Engine = {};
+Engine.looped = false;
 Engine._statusOver = -1;
 Engine._statusPause = 0;
 Engine._statusRun = 1;
@@ -336,6 +337,7 @@ Engine.clearIntervals = function () {
 };
 
 Engine.loop = function () {
+    Engine.looped = true;
     Engine.delta = Engine.clock.getDelta();
     var currModule = null;
     for (var key in Engine.modules) {
@@ -345,7 +347,9 @@ Engine.loop = function () {
                 currModule.updatePosition();
             }
 
-            //currModule.updatePose();
+            if (currModule.unique) {
+                //currModule.updatePose();
+            }
         }
     }
 
@@ -357,12 +361,13 @@ Engine.loop = function () {
     Engine.loopID = requestAnimationFrame(Engine.loop);
 };
 
-Engine.rersetScene = function (rebuild) {
+Engine.resetScene = function (rebuild) {
     if (typeof rebuild == 'boolean' && rebuild) {
 
     } else {
         if (Engine.loopID) {
             cancelAnimationFrame(Engine.loopID);
+            Engine.looped = false;
         }
 
         Engine.status = Engine._statusRun;
@@ -383,6 +388,7 @@ Engine.clearScene = function () {
 Engine.restartScene = function () {
     if (Engine.loopID) {
         cancelAnimationFrame(Engine.loopID);
+        Engine.looped = false;
     }
 
     Engine.status = Engine._statusRun;
@@ -569,6 +575,11 @@ Engine.genUid = function () {
 
 Engine.genUid.soup_ = '!#$%()*+,-./:;=?@[]^_`{|}~' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
+Engine.createText = function ( callback) {
+    var loader = new THREE.FontLoader();
+    loader.load('../font/helvetiker_regular.typeface.json', callback);
+}
+
 var Module = function () {
     this.status = Engine._statusRun;
     this.visible = true;
@@ -576,6 +587,7 @@ var Module = function () {
     this.speed = 1;
     this.id = '';
     this.symbol = '';
+    this.completeFired = false;
     this.mesh = new THREE.Group();
     this.body = new THREE.Group();
     this.head = new THREE.Group();
@@ -615,4 +627,8 @@ Module.prototype.collideAction = function (sourceModule) {
 
 Module.prototype.reset = function () {
 
-}
+};
+
+Module.prototype.addMovePath = function () {
+
+};

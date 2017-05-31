@@ -254,7 +254,6 @@ function _getOffsetPosition(target, topParentClass) {
 
     return offsetPos;
 };
-
 //var _needCheckState = (_getSearchValue('needcheckstate') == '1' ? true : false);
 function _startCheckState() {
     _registerRemoteServer();
@@ -449,6 +448,31 @@ function _showGlobalMessage(msg, type, id) {
         $('body').remove('#' + id);
     });
 };
+/*
+    //Chrome
+    //"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+    //Safari
+    //"Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2"
+    //IE
+    //"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.30729; .NET CLR 3.5.30729; rv:11.0) like Gecko"
+*/
+function _isSafari() {
+    var userAgent = window.navigator.userAgent.toLowerCase();
+    if (userAgent.indexOf('safari/') > 0) {
+        return true;
+    }
+
+    return false;
+}
+
+function _isIE() {
+    var userAgent = window.navigator.userAgent.toLowerCase();
+    if (userAgent.indexOf('trident/') > 0) {
+        return true;
+    }
+
+    return false;
+}
 
 (function initCID() {
     if (_gCID == null) {

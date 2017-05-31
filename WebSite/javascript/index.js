@@ -2,7 +2,7 @@
 
 function initPageEvents() {
     $('#btn_Fast_FreeSignUp').on('click', function () {
-        window.location.href = 'signin.html?opt=signup&number=' + $('#txt_Fast_FreeSignUp').val().trim()+'?rnd=' + Date.now();;
+        window.location.href = 'signin.html?opt=signup&number=' + $('#txt_Fast_FreeSignUp').val().trim() + '?rnd=' + Date.now();;
     });
 
     $('#btn_Fast_HelpVideo').on('click', function () {
@@ -24,7 +24,7 @@ function initPageEvents() {
     $('.feature-item').on('mouseleave', function () {
         $('.wrap_section_1_tip').fadeOut();
     });
-}
+};
 
 function initPage() {
     initPageEvents();
@@ -36,4 +36,13 @@ function initPage() {
     _loadIMG('image/tips/language.png');
     _loadIMG('image/tips/share.png');
     _loadIMG('image/tips/intelaccess.png');
+    adjustElPosition();
+};
+
+function adjustElPosition() {
+    if (_isSafari()) {
+        $('#wrap_FreeSignUp').css('top', ($('header').height() + ($('#wrap_FreeSignUp').parent().height() - $('header').height()) / 2) + 'px')
+    } else if (_isIE()) {
+
+    }
 }

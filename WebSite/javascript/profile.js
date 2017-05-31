@@ -40,7 +40,6 @@ function initPage_Do() {
         //rebuildContent('settings');
         //rebuildContent('report');    
         getUnreadMsgCount();
-        window.setTimeout(getUnreadMsgCount, 15000);
     }
 }
 
@@ -241,6 +240,7 @@ function rebuildOverviewPanel(contentHeight) {
     });
 };
 
+var _courseListOverview = null;
 function formatOverviewData(response) {
     var data = {
         honor: [],
@@ -263,6 +263,7 @@ function formatOverviewData(response) {
         { color: 'rgb(228,88,76)', symbol: 'D' },
         { color: 'rgb(228,88,76)', symbol: 'E' }
     ];
+    _courseListOverview = {};
     for (var i = 0; i < tmpNodes.length; i++) {
         var tmpObj = $(tmpNodes[i]);
         var newItemObj = {};
@@ -274,6 +275,40 @@ function formatOverviewData(response) {
         newItemObj.color = courseMap[i].color;
         newItemObj.symbol = courseMap[i].symbol;
         data.course.push(newItemObj);
+        var lessonNodes = $(tmpNodes[i]).find('symbollst').find('lesson');
+        var tmpLessonArr = [];
+        for (var j = 0; j < lessonNodes.length; j++) {
+            tmpObj = $(lessonNodes[j]);
+            tmpLessonArr.push({
+                symbol: tmpObj.attr('symbol'),
+                title: tmpObj.attr('title'),
+                finish: tmpObj.attr('finish'),
+                enable: tmpObj.attr('enable'),
+                unit: tmpObj.attr('unit')
+            });
+        }
+
+        var tmpUnitStr = '';
+        for (var j = 0; j < tmpLessonArr.length; j++) {
+            if (tmpUnitStr.indexOf(tmpLessonArr[j].unit) < 0) {
+                tmpUnitStr += tmpLessonArr[j].unit + '|';
+            }
+        }
+
+        var tmpUnitArr = tmpUnitStr.split('|');
+        _courseListOverview[newItemObj.id] = [];
+        for (var j = 0; j < tmpUnitArr.length; j++) {
+            if (tmpUnitArr[j] && tmpUnitArr[j] != '') {
+                var tmpUnitLessonArr = [];
+                for (var k = 0; k < tmpLessonArr.length; k++) {
+                    if (tmpLessonArr[k].unit == tmpUnitArr[j]) {
+                        tmpUnitLessonArr.push(tmpLessonArr[k]);
+                    }
+                }
+
+                _courseListOverview[newItemObj.id].push(tmpUnitLessonArr);
+            }
+        }
     }
 
     tmpNodes = $(response).find('distributio').find('item');
@@ -292,10 +327,8 @@ function formatOverviewData(response) {
     }
 
     if (data.experience.distribution.length == 0) {
-        for (var i = 0; i < distributionMap.length; i++) {
-            var tmpObj = $(tmpNodes[i]);
-            var tmpItem = distributionMap[tmpObj.attr('id')];
-            data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
+        for (var key in distributionMap) {
+            data.experience.distribution.push({ id: key, name: distributionMap[key].name, color: distributionMap[key].color, value: 0 });
         }
     }
 
@@ -485,7 +518,7 @@ function buildOverviewCourse(datas, containerHeight) {
     for (var i = 0; i < itemCount; i++) {
         tmpHTMLArr.push('<div class="text-center" style="display: inline-block; height:100%; padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;">');
         tmpHTMLArr.push('    <div class="d-flex align-items-center" style="height:100%;">');
-        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="width:' + (width - 2) + 'px; height:' + height + 'px">');
+        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;" data-target="' + datas[i].id + '">');
         tmpHTMLArr.push('            <div class="row" style="margin:0px;">');
         tmpHTMLArr.push('                <div class="col-12" style="padding:0px;">');
         tmpHTMLArr.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="height:' + imgHeight + 'px;" />');
@@ -542,6 +575,69 @@ function buildOverviewCourse(datas, containerHeight) {
     $('#arrow_Overview_Course_Right').on('click', funData, listMoveNext);
     if ($('#wrap_Overview_Course_Items').width() > $('#container_Overview_Course_Items').width()) {
         $('.overview-list-arrow.course').hide();
+    }
+
+    $('.overview-course-item-wrap').on('mouseenter', function (eventObj) {
+        var target = $(eventObj.currentTarget);
+        displayCourseListContent(target);
+        buildCourseListContent(target);
+    });
+
+    $('.overview-course-item-wrap').on('mouseleave', function () {
+        displayCourseListContent(false);
+    });
+};
+
+function displayCourseListContent(target) {
+    var tipWrap = $('#list_Overview_Course');
+    if (target === false) {
+        tipWrap.hide();
+    } else {
+        var wrapContainer = $('#wrap_Overview_Course_Items');
+        var width = wrapContainer.width();
+        var height = Math.floor(wrapContainer.height() * 2 / 3);
+        var offset = wrapContainer.offset();
+        if (width != tipWrap.width() || height != tipWrap.height()) {
+            var tipArrow = $('#list_Overview_Course .tooltip-arrow')
+            var tipInner = $('#list_Overview_Course .tooltip-inner');
+            tipWrap.width(width);
+            tipWrap.height(height);
+            tipInner.width(width);
+            tipInner.height(height);
+            var x = offset.left;
+            var y = offset.top + wrapContainer.height() - 20;
+            tipInner.css('max-width', 'none');
+            tipWrap.css('left', x + 'px');
+            tipWrap.css('top', y + 'px');
+            tipWrap.css('opacity', '0.9');
+        }
+
+        CreateNewStyleRule('.tooltip.tooltip-bottom .tooltip-inner::before', 'left:' + (target.offset().left - offset.left + target.width() / 2) + 'px;');
+        tipWrap.show();
+    }
+};
+
+function buildCourseListContent(target) {
+    var symbol = target.attr('data-target');
+    if (_courseListOverview[symbol]) {
+        var tmpHTMLStrArr = [];
+        var unitArr = _courseListOverview[symbol];
+        var lessonArr, icon;
+        for (var i = 0; i < unitArr.length; i++) {
+            tmpHTMLStrArr.push('<div class="row justify-content-start" style="padding: 15px;">');
+            tmpHTMLStrArr.push('    <div class="col  text-left">');
+            lessonArr = unitArr[i];
+            for (var j = 0; j < lessonArr.length; j++) {
+                icon = (lessonArr[j].finish == '0' ? 'arrow-circle-o-right' : 'check-circle-o');
+                tmpHTMLStrArr.push('<i class="fa fa-' + icon + ' lesson-title-course-overview ' + (lessonArr[j].finish == '0' ? '' : 'finished') + '" aria-hidden="true"><span style="padding-left:5px;">' + lessonArr[j].title + '</span></i>');
+            }
+
+            tmpHTMLStrArr.push('    </div>');
+            tmpHTMLStrArr.push('</div>');
+        }
+
+        $('#content_List_Overview_Course').empty();
+        $('#content_List_Overview_Course').append(tmpHTMLStrArr.join(''));
     }
 };
 
@@ -1287,8 +1383,8 @@ function updateProfile() {
                 var tmpNodes = $(data).find('msg');
                 for (var i = 0; i < tmpNodes.length; i++) {
                     if (!$(tmpNodes[i]).attr('type') || $(tmpNodes[i]).attr('type') != '1') {
-                        $('body').append($('<div class="alert alert-success" role="alert"  data-dismiss="alert"><strong>' + $(tmpNodes[i]).attr('msg') + '</strong></div>'));
-
+                        //$('body').append($('<div class="alert alert-success" role="alert"  data-dismiss="alert"><strong>' + $(tmpNodes[i]).attr('msg') + '</strong></div>'));
+                        _showGlobalMessage($(tmpNodes[i]).attr('msg'), 'success', 'alert_ForgetPWD_Success');
                     }
                 }
 
@@ -1734,7 +1830,7 @@ function rebuildReportContents(data) {
     buildReportAbilityPanel(data.ability);
     buildReportTimePanel(data.time);
     //buildReportPotentialPanel(data.potential);
-    buildReportWorksPanel(data.works);
+    //buildReportWorksPanel(data.works);
     buildReportAttentionPanel(data.user);
     drawAbilityGraph(data.ability.type);
     drawTimeGraph(data.time);

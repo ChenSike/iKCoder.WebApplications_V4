@@ -361,7 +361,7 @@ Engine.loop = function () {
     Engine.loopID = requestAnimationFrame(Engine.loop);
 };
 
-Engine.rersetScene = function (rebuild) {
+Engine.resetScene = function (rebuild) {
     if (typeof rebuild == 'boolean' && rebuild) {
 
     } else {
@@ -375,6 +375,8 @@ Engine.rersetScene = function (rebuild) {
             Engine.modules[key].mesh.visible = true;
             Engine.modules[key].preparingToRestart();
         }
+
+        Engine.render();
     }
 }
 
@@ -575,6 +577,11 @@ Engine.genUid = function () {
 
 Engine.genUid.soup_ = '!#$%()*+,-./:;=?@[]^_`{|}~' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
+Engine.createText = function (callback) {
+    var loader = new THREE.FontLoader();
+    loader.load('fonts/helvetiker_regular.typeface.json', callback);
+}
+
 var Module = function () {
     this.status = Engine._statusRun;
     this.visible = true;
@@ -583,9 +590,13 @@ var Module = function () {
     this.id = '';
     this.symbol = '';
     this.completeFired = false;
+    this.text = '';
     this.mesh = new THREE.Group();
     this.body = new THREE.Group();
     this.head = new THREE.Group();
+    this.textMeshs = new THREE.Group();
+    this.textMesh = null;
+    this.textColor='#000000';
 };
 
 Module.prototype.updatePosition = function () {
@@ -626,4 +637,20 @@ Module.prototype.reset = function () {
 
 Module.prototype.addMovePath = function () {
 
+};
+
+Module.prototype.createText = function () {
+    var _self = this;
+    var loadText = function (font) {
+        if (_self.textMesh) {
+            _self.textMeshs.remove(_self.textMesh);
+        }
+
+        var geometry = new THREE.TextGeometry(_self.text, { font: font, size: 30, height: 5 });
+        var material = new THREE.MeshPhongMaterial({ color: _self.textColor, specular: _self.textColor, shininess: 0 });
+        _self.textMesh = new THREE.Mesh(geometry, material);
+        _self.textMeshs.add(_self.textMesh);
+    };
+
+    Engine.createText(loadText);
 };
