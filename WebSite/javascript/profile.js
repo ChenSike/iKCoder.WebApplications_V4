@@ -1,6 +1,13 @@
 ﻿'use strict';
 
 var _ajaxObj = null;
+var _distributionMap = {
+    S: { name: '科学', color: 'rgb(36,90,186)' },
+    T: { name: '技术', color: 'rgb(236,15,33)' },
+    E: { name: '工程', color: 'rgb(165,165,165)' },
+    M: { name: '数学', color: 'rgb(255,191,0)' },
+    L: { name: '语言', color: 'rgb(71,143,208)' }
+};
 
 function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
@@ -46,7 +53,7 @@ function initPage_Do() {
 function loadSiderbarData() {
     var mapping = [
         { n: 'name', path: '/root/usrbasic/usr_nickname', html: '#txt_NickName_Profile_Title' },
-        { n: 'title', path: '/root/usrbasic/usr_title', html: '#txt_Title_Profile_Title' },
+        { n: 'title', path: '/root/usrbasic/usr_title', html: '#txt_Title_Profile_Title' }
     ];
 
     var postData = '<root><select>';
@@ -57,9 +64,9 @@ function loadSiderbarData() {
     postData += '</select></root>';
     _registerRemoteServer();
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         async: true,
-        url: _getRequestURL(_gURLMapping.bus.getcenterinfo),
+        url: _getRequestURL(_gURLMapping.account.util),
         data: postData,
         success: function (responseData, status) {
             if ($(responseData).find('err').length > 0) {
@@ -73,8 +80,12 @@ function loadSiderbarData() {
                     if (tmpNode.attr('xpath')) {
                         for (var j = 0; j < mapping.length; j++) {
                             if (mapping[j].path == tmpNode.attr('xpath')) {
-                                //data[mapping[j].n] = tmpNode.attr('value');
-                                $(mapping[j].html).text(tmpNode.attr('value'));
+                                var tmpValue = tmpNode.attr('value');
+                                if (mapping[j].n == 'name') {
+                                    tmpValue = (tmpValue == '' ? $.cookie('logined_user_nickname') : tmpValue)
+                                }
+
+                                $(mapping[j].html).text(tmpValue);
                             }
                         }
                     }
@@ -312,23 +323,15 @@ function formatOverviewData(response) {
     }
 
     tmpNodes = $(response).find('distributio').find('item');
-    var distributionMap = {
-        S: { name: '科学', color: 'rgb(36,90,186)' },
-        T: { name: '技术', color: 'rgb(236,15,33)' },
-        E: { name: '工程', color: 'rgb(165,165,165)' },
-        M: { name: '数学', color: 'rgb(255,191,0)' },
-        L: { name: '语言', color: 'rgb(71,143,208)' }
-    };
-
     for (var i = 0; i < tmpNodes.length; i++) {
         var tmpObj = $(tmpNodes[i]);
-        var tmpItem = distributionMap[tmpObj.attr('id')];
+        var tmpItem = _distributionMap[tmpObj.attr('id')];
         data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
     }
 
     if (data.experience.distribution.length == 0) {
-        for (var key in distributionMap) {
-            data.experience.distribution.push({ id: key, name: distributionMap[key].name, color: distributionMap[key].color, value: 0 });
+        for (var key in _distributionMap) {
+            data.experience.distribution.push({ id: key, name: _distributionMap[key].name, color: _distributionMap[key].color, value: 0 });
         }
     }
 
@@ -1744,7 +1747,9 @@ function rebuildReportPanel() {
                 return;
             } else {
                 var tmpNodes = $(responseData).find('msg');
-                var data = {};
+                var data = formatReportData(responseData);
+                rebuildReportTitles();
+                rebuildReportContents(data);
                 hideLoadingMask()
             }
         },
@@ -1756,69 +1761,150 @@ function rebuildReportPanel() {
             _showGlobalMessage('无法获取报告，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
         }
     });
-    var data = {
-        user: {
-            header: _getRequestURL(_gURLMapping.account.getheader, {}),
-            name: 'Terry',
-            title: '高级工程师',
-            exp: 55,
-            over: 88,
-            course: 18,
-            date: '2017-5-1',
-            qr: 'image/qr_wechat.png'
-        },
-        achieve: [
-            { id: 1, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' },
-            { id: 2, title: '分享小达人', content: '分享了18个已完成作品， 这些作品已被565人次浏览；' },
-            { id: 3, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' }
-        ],
-        ability: {
-            type: [
-                { name: '科学', value: 700 },
-                { name: '技术', value: 400 },
-                { name: '工程', value: 550 },
-                { name: '数学', value: 700 },
-                { name: '语言', value: 450 }
-            ],
-            course: 25,
-            time: 125,
-            items: [
-                '计算机原理',
-                '空间概念和有序移动',
-                '基础数据结构',
-                '键盘及鼠标控制',
-                '数学输入与输出',
-                '条件循环',
-                '条件判断语句',
-                '音乐播放原理',
-                '基本绘图指令'
-            ]
-        },
-        time: {
-            over: 95,
-            times: [
-                { date: '20070-01-01', time: 2 },
-                { date: '20070-01-02', time: 6 },
-                { date: '20070-01-03', time: 3 }
-            ],
-            course: [
-                { id: '1', rate: 85, name: '初级课程' },
-                { id: '２', rate: 45, name: '中级课程' },
-                { id: '３', rate: 15, name: '高级课程' }
-            ]
-        },
-        potential: [
-            { name: '科学', value: 100 },
-            { name: '数学', value: 80 },
-            { name: '技术', value: 55 },
-            { name: '工程', value: 20 },
-            { name: '语言', value: 10 }
-        ]
+    //var data = {
+    //    user: {
+    //        header: _getRequestURL(_gURLMapping.account.getheader, {}),
+    //        name: 'Terry',
+    //        title: '高级工程师',
+    //        exp: 55,
+    //        over: 88,
+    //        course: 18,
+    //        date: '2017-5-1',
+    //        qr: 'image/qr_wechat.png'
+    //    },
+    //    achieve: [
+    //        { id: 1, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' },
+    //        { id: 2, title: '分享小达人', content: '分享了18个已完成作品， 这些作品已被565人次浏览；' },
+    //        { id: 3, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' }
+    //    ],
+    //    ability: {
+    //        type: [
+    //            { name: '科学', value: 700 },
+    //            { name: '技术', value: 400 },
+    //            { name: '工程', value: 550 },
+    //            { name: '数学', value: 700 },
+    //            { name: '语言', value: 450 }
+    //        ],
+    //        course: 25,
+    //        time: 125,
+    //        items: [
+    //            '计算机原理',
+    //            '空间概念和有序移动',
+    //            '基础数据结构',
+    //            '键盘及鼠标控制',
+    //            '数学输入与输出',
+    //            '条件循环',
+    //            '条件判断语句',
+    //            '音乐播放原理',
+    //            '基本绘图指令'
+    //        ]
+    //    },
+    //    time: {
+    //        over: 95,
+    //        times: [
+    //            { date: '20070-01-01', time: 2 },
+    //            { date: '20070-01-02', time: 6 },
+    //            { date: '20070-01-03', time: 3 }
+    //        ],
+    //        course: [
+    //            { id: '1', rate: 85, name: '初级课程' },
+    //            { id: '２', rate: 45, name: '中级课程' },
+    //            { id: '３', rate: 15, name: '高级课程' }
+    //        ]
+    //    },
+    //    potential: [
+    //        { name: '科学', value: 100 },
+    //        { name: '数学', value: 80 },
+    //        { name: '技术', value: 55 },
+    //        { name: '工程', value: 20 },
+    //        { name: '语言', value: 10 }
+    //    ]
+    //}
+
+    //rebuildReportTitles();
+    //rebuildReportContents(data);
+    //hideLoadingMask();
+};
+
+function formatReportData(response) {
+    var tmpNode = $($(response).find('overview')[0]);
+    var basicData = {
+        header: _getRequestURL(_gURLMapping.account.getheader, {}),
+        name: tmpNode.attr('usr_nickname') == '' ? $.cookie('logined_user_nickname') : tmpNode.attr('usr_nickname'),
+        title: tmpNode.attr('usr_title'),
+        exp: parseInt(tmpNode.attr('exprate')),
+        over: parseInt(tmpNode.attr('overrate')),
+        course: parseInt(tmpNode.attr('finish')),
+        date: $($(response).find('report')[0]).attr('date'),
+        qr: 'image/qr_wechat.png'
+    };
+
+    var tmpNodes = $(response).find('honor').find('item');
+    var honorData = [];
+    for (var i = 0; i < tmpNodes.length; i++) {
+        tmpNode = $(tmpNodes[i]);
+        honorData.push({
+            id: i + 1,
+            title: tmpNode.attr('name'),
+            content: typeof tmpNode.attr('content') == 'undefined' ? '' : tmpNode.attr('content')
+        });
     }
 
-    rebuildReportTitles();
-    rebuildReportContents(data);
-    hideLoadingMask();
+    tmpNode = $($(response).find('ability')[0]);
+    var abilityData = {
+        type: [],
+        items: [],
+        course: isNaN(tmpNode.attr('course')) ? 0 : parseInt(tmpNode.attr('course')),
+        time: isNaN(tmpNode.attr('time')) ? 0 : parseInt(tmpNode.attr('time')),
+    };
+
+    tmpNode = $($(response).find('ability').find('steml')[0]);
+    for (var key in _distributionMap) {
+        abilityData.type.push({
+            name: _distributionMap[key].name,
+            value: tmpNode.attr(key.toLowerCase())
+        });
+    }
+
+    tmpNodes = $(response).find('ability').find('finishedcourse').find('item');
+    for (var i = 0; i < tmpNodes.length; i++) {
+        abilityData.items.push($(tmpNodes[i]).attr('title'));
+    }
+
+    tmpNode = $($(response).find('level')[0]);
+    var timeData = {
+        over: isNaN(tmpNode.attr('over')) ? 0 : parseInt(tmpNode.attr('over')),
+        total: isNaN(tmpNode.attr('total')) ? 0 : parseInt(tmpNode.attr('total')),
+        times: [],
+        course: []
+    };
+
+    tmpNodes = $(response).find('level').find('item');
+    for (var i = 0; i < tmpNodes.length; i++) {
+        timeData.course.push({
+            id: $(tmpNodes[i]).attr('id'),
+            rate: $(tmpNodes[i]).attr('value') == '' ? 0 : parseInt($(tmpNodes[i]).attr('value')),
+            name: typeof $(tmpNodes[i]).attr('name') == 'undefined' ? $(tmpNodes[i]).attr('id') : $(tmpNodes[i]).attr('name')
+        });
+    }
+
+    tmpNodes = $(response).find('codetimes').find('item');
+    for (var i = 0; i < tmpNodes.length; i++) {
+        timeData.times.push({
+            id: $(tmpNodes[i]).attr('id'),
+            rate: parseInt($(tmpNodes[i]).attr('value')),
+            name: $(tmpNodes[i]).attr('name')
+        });
+    }
+
+    var data = {
+        user: basicData,
+        achieve: honorData,
+        ability: abilityData,
+        time: timeData
+    };
+
+    return data;
 };
 
 function rebuildReportTitles() {
@@ -2076,12 +2162,7 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('        <div class="col-12" style="padding-left:30px;">');
     tmpHTMLArr.push('            <p class="text-size-10">');
     tmpHTMLArr.push('               到今天为止，您的孩子已经累计学习编程 ');
-    var total = 0;
-    for (var i = 0; i < data.times.length; i++) {
-        total += data.times[i].time;
-    }
-
-    tmpHTMLArr.push('               <span class="text-size-16 text-color-data">' + total + '</span>');
+    tmpHTMLArr.push('               <span class="text-size-16 text-color-data">' + data.total + '</span>');
     tmpHTMLArr.push('                小时，超过 ');
     tmpHTMLArr.push('               <span class="text-size-16 text-color-data">' + data.over + '%</span> 的小伙伴。');
     tmpHTMLArr.push('            </p>');
@@ -2340,7 +2421,11 @@ function drawAbilityGraph(datas) {
     var tmpVertex = [];
     for (var i = 0; i < datas.length; i++) {
         var tmpIdx = Math.floor(datas[i].value / 20);
-        tmpVertex.push(vertex[tmpIdx - 1][i]);
+        if (tmpIdx > 0) {
+            tmpVertex.push(vertex[tmpIdx - 1][i]);
+        } else {
+            tmpVertex.push(vertex[0][i]);
+        }
     }
 
     context.strokeStyle = 'rgb(64,112,196)';
