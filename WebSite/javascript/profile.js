@@ -1955,7 +1955,7 @@ function buildReportOverviewPanel(data) {
     tmpHTMLArr.push('            <div class="container-fluid">');
     tmpHTMLArr.push('                <div class="row">');
     tmpHTMLArr.push('                    <div class="col-12">');
-    tmpHTMLArr.push('                        <div class="d-flex align-items-center" id="report_overview_userinfor" style="position: relative; left: 269px; width: 380px;">');
+    tmpHTMLArr.push('                        <div class="d-flex align-items-center" id="report_overview_userinfor" style="position: relative; left: 269px; width: 420px;">');
     tmpHTMLArr.push('                            <div class="text-size-13 text-right">');
     tmpHTMLArr.push('                                超越<span class="text-size-21 text-color-data">' + data.over + '%</span>的全国学员');
     tmpHTMLArr.push('                            </div>');
@@ -2531,19 +2531,22 @@ function drawTimeCompleteRate(datas) {
         //context.moveTo(width/2, 0);
         //context.lineTo(width / 2, height);
         //context.stroke();
-        var tmpX = centerX;
-        if (datas[i].rate < 10) {
-            tmpX = centerX - rateFontSize * 0.5;
-        } else {
-            tmpX = centerX - rateFontSize * 1;
-        }
+        var tmpTextWidth = testTextWidth(datas[i].rate + '%', rateFontSize + 'px', 'bold', '微软雅黑', '');
+        var tmpX = centerX - tmpTextWidth / 2;
+        //if (datas[i].rate < 10) {
+        //    tmpX = centerX - rateFontSize * 0.5;
+        //} else {
+        //    tmpX = centerX - rateFontSize * 1;
+        //}
 
         var tmpY = centerY + rateFontSize / 2;
         context.font = "normal normal bolder " + rateFontSize + "px \"微软雅黑\"";
         context.fillStyle = "rgb(105,105,105)";
         context.fillText(datas[i].rate + '%', tmpX, tmpY);
 
-        tmpX = centerX - textFontSize * 1.5;
+        tmpTextWidth = testTextWidth(datas[i].name, textFontSize + 'px', 'bold', '微软雅黑', '');
+        //tmpX = centerX - textFontSize * 1.5;
+        tmpX = centerX - tmpTextWidth/2;
         tmpY = radius * 2 + lineWidth + textFontSize + 10; //(height - radius * 2 - lineWidth);
         context.font = "normal normal bold " + textFontSize + "px \"微软雅黑\"";
         context.fillStyle = "rgb(61,61,61)";
