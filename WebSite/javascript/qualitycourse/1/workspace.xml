@@ -3,32 +3,26 @@
     <statement name="scene_resource">
       <block type="scene_setting_hero">
         <value name="scene_role_item">
-          <block type="scene_object_rabbit"/>
         </value>
         <next>
           <block type="scene_setting_monster">
             <value name="scene_role_item">
-              <block type="scene_object_wolf"/>
             </value>
             <next>
               <block type="scene_setting_obstacle">
                 <value name="scene_role_item">
-                  <block type="scene_object_hedgehog"/>
                 </value>
                 <next>
                   <block type="scene_setting_prop">
                     <value name="scene_role_item">
-                      <block type="scene_object_carrot"/>
                     </value>
                     <next>
                       <block type="scene_setting_background">
                         <value name="scene_role_item">
-                          <block type="scene_background"/>
                         </value>
                         <next>
                           <block type="scene_setting_music">
                             <value name="scene_role_item">
-                              <!--<block type="scene_music"/>-->
                             </value>
                           </block>
                         </next>

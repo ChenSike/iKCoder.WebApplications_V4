@@ -1,26 +1,29 @@
 ﻿'use strict';
 
-var Engine = {};
-Engine.looped = false;
-Engine._statusOver = -1;
-Engine._statusPause = 0;
-Engine._statusRun = 1;
-Engine._statusSick = 2;
-Engine._statusPower = 3;
-Engine.scene;
-Engine.camera;
-Engine.renderer;
-Engine.clock;
-Engine.lights = {};
-Engine.modules = {};
-Engine.audios = {};
-Engine.status = 1;
-Engine.delta = 0;
-Engine.loopID = null;
-Engine.intervals = {};
-Engine.backgroundAudio = null;
-Engine.PI = Math.PI;
-Engine.hPI = Math.PI / 2;
+var Engine = {
+    looped: false,
+    _statusOver: -1,
+    _statusPause: 0,
+    _statusRun: 1,
+    _statusSick: 2,
+    _statusPower: 3,
+    scene: null,
+    camera: null,
+    renderer: null,
+    clock: null,
+    lights: {},
+    modules: {},
+    audios: {},
+    status: 1,
+    delta: 0,
+    loopID: null,
+    intervals: {},
+    backgroundAudio: null,
+    PI: Math.PI,
+    halfPI: Math.PI / 2,
+    round: Math.PI * 2
+};
+
 Engine.params = {
     /*
         color: 烟雾的颜色
@@ -596,7 +599,7 @@ var Module = function () {
     this.head = new THREE.Group();
     this.textMeshs = new THREE.Group();
     this.textMesh = null;
-    this.textColor='#000000';
+    this.textColor = '#000000';
 };
 
 Module.prototype.updatePosition = function () {

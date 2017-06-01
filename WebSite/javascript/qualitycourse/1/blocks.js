@@ -14,7 +14,7 @@ Blockly.Blocks['scene_setting'] = {
 }
 
 Blockly.JavaScript['scene_setting'] = function (block) {
-    var code = 'Scene.initSceneEnvironment();\n';
+    var code = '';// 'Scene.initSceneEnvironment();\n';
     code += Blockly.JavaScript.statementToCode(block, 'scene_resource');
     code += '';
     return code;
@@ -36,7 +36,11 @@ Blockly.Blocks['scene_setting_hero'] = {
 
 Blockly.JavaScript['scene_setting_hero'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = 'Scene.SetHeroModule("' + value_name + '");\n';
+    var code = '';
+    if (value_name != "") {
+        code = 'Scene.SetRoleModule("' + value_name + '", "player");\n';
+    }
+
     return code;
 };
 
@@ -56,7 +60,11 @@ Blockly.Blocks['scene_setting_monster'] = {
 
 Blockly.JavaScript['scene_setting_monster'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = 'Scene.SetMonsterModule("' + value_name + '");\n';
+    var code = '';
+    if (value_name != "") {
+        code = 'Scene.SetRoleModule("' + value_name + '", "monster");\n';
+    }
+
     return code;
 };
 
@@ -76,7 +84,11 @@ Blockly.Blocks['scene_setting_obstacle'] = {
 
 Blockly.JavaScript['scene_setting_obstacle'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = 'Scene.SetObstacleModule("' + value_name + '");\n';
+    var code = '';
+    if (value_name != "") {
+        code = 'Scene.SetRoleModule("' + value_name + '", "obstacle");\n';
+    }
+
     return code;
 };
 
@@ -96,7 +108,11 @@ Blockly.Blocks['scene_setting_prop'] = {
 
 Blockly.JavaScript['scene_setting_prop'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = 'Scene.SetPropModule("' + value_name + '");\n';
+    var code = '';
+    if (value_name != "") {
+        code = 'Scene.SetRoleModule("' + value_name + '", "prop");\n';
+    }
+
     return code;
 };
 
@@ -116,7 +132,11 @@ Blockly.Blocks['scene_setting_background'] = {
 
 Blockly.JavaScript['scene_setting_background'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = 'Scene.SetBackground("' + value_name + '");\n';
+    var code = '';
+    if (value_name != "") {
+        code = 'Scene.SetRoleModule("' + value_name + '", "floor");\n';
+    }
+
     return code;
 };
 
@@ -136,7 +156,11 @@ Blockly.Blocks['scene_setting_music'] = {
 
 Blockly.JavaScript['scene_setting_music'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = 'Scene.SetMusic("' + value_name + '");\n';
+    var code = '';
+    if (value_name != "") {
+        code = 'Scene.SetMusic("' + value_name + '");\n';
+    }
+
     return code;
 };
 
@@ -176,96 +200,6 @@ Blockly.JavaScript['scene_object_wolf'] = function (block) {
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.Blocks['scene_object_cat'] = {
-    init: function () {
-        this.appendDummyInput()
-            .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField("猫");
-        this.setInputsInline(true);
-        this.setOutput(true, 'scene_role_object');
-        this.setColour(330);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['scene_object_cat'] = function (block) {
-    var code = 'cat';
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.Blocks['scene_object_lion'] = {
-    init: function () {
-        this.appendDummyInput()
-            .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField("狮子");
-        this.setInputsInline(true);
-        this.setOutput(true, 'scene_role_object');
-        this.setColour(330);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['scene_object_lion'] = function (block) {
-    var code = 'lion';
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.Blocks['scene_object_dragon'] = {
-    init: function () {
-        this.appendDummyInput()
-            .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField("龙");
-        this.setInputsInline(true);
-        this.setOutput(true, 'scene_role_object');
-        this.setColour(330);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['scene_object_dragon'] = function (block) {
-    var code = 'dragon';
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.Blocks['scene_object_bird'] = {
-    init: function () {
-        this.appendDummyInput()
-            .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField("鸡");
-        this.setInputsInline(true);
-        this.setOutput(true, 'scene_role_object');
-        this.setColour(330);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['scene_object_bird'] = function (block) {
-    var code = 'bird';
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.Blocks['scene_object_mouse'] = {
-    init: function () {
-        this.appendDummyInput()
-            .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField("老鼠");
-        this.setInputsInline(true);
-        this.setOutput(true, 'scene_role_object');
-        this.setColour(330);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['scene_object_mouse'] = function (block) {
-    var code = 'mouse';
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
 Blockly.Blocks['scene_object_carrot'] = {
     init: function () {
         this.appendDummyInput()
@@ -302,11 +236,11 @@ Blockly.JavaScript['scene_object_hedgehog'] = function (block) {
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.Blocks['scene_music'] = {
+Blockly.Blocks['scene_music_1'] = {
     init: function () {
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField("背景音乐");
+            .appendField("背景音乐 1");
         this.setInputsInline(true);
         this.setOutput(true, 'scene_music_obj');
         this.setColour(330);
@@ -315,16 +249,34 @@ Blockly.Blocks['scene_music'] = {
     }
 };
 
-Blockly.JavaScript['scene_music'] = function (block) {
-    var code = 'music';
+Blockly.JavaScript['scene_music_1'] = function (block) {
+    var code = 'media/sound_1.mp3';
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.Blocks['scene_background'] = {
+Blockly.Blocks['scene_music_2'] = {
     init: function () {
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField("背景图");
+            .appendField("背景音乐 2");
+        this.setInputsInline(true);
+        this.setOutput(true, 'scene_music_obj');
+        this.setColour(330);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+Blockly.JavaScript['scene_music_2'] = function (block) {
+    var code = 'media/sound_2.mp3';
+    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.Blocks['scene_background_grass'] = {
+    init: function () {
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_CENTRE)
+            .appendField("背景 草原");
         this.setInputsInline(true);
         this.setOutput(true, 'scene_background_obj');
         this.setColour(330);
@@ -333,7 +285,25 @@ Blockly.Blocks['scene_background'] = {
     }
 };
 
-Blockly.JavaScript['scene_background'] = function (block) {
-    var code = 'background';
+Blockly.JavaScript['scene_background_grass'] = function (block) {
+    var code = 'grass';
+    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.Blocks['scene_background_forest'] = {
+    init: function () {
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_CENTRE)
+            .appendField("背景 森林");
+        this.setInputsInline(true);
+        this.setOutput(true, 'scene_background_obj');
+        this.setColour(330);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+Blockly.JavaScript['scene_background_forest'] = function (block) {
+    var code = 'forest';
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

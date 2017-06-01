@@ -14,13 +14,16 @@ var Engine = {
         monster: null,
         obstacle: null,
         prop: null,
-        bonus: null
+        bonus: null,
+        floor:null
     },
-    _statusOver: -1,
-    _statusPause: 0,
-    _statusRun: 1,
-    _statusJump: 2,
-    _statusPrepare: 3,
+    roles: ['h', 'm', 'o', 'p'],
+    _stateOver: -1,
+    _statePause: 0,
+    _stateRun: 1,
+    _stateJump: 2,
+    _statePrepare: 3,
+    _stateSit: 4,
     _animationId: '',
     _delta: 0,
     _distance: 0,
@@ -84,11 +87,13 @@ Engine.params = {
     audio: 'media/sound_1.mp3',
     floorRadius: 200,
     treeCount: 100,
+    playerJumpHeight: 45,
     modules: {
-        player: 'rabbit',
-        monster: 'wolf',
-        obstacle: 'hedgehog',
-        prop: 'carrot'
+        //player: 'rabbit',
+        //monster: 'wolf',
+        //obstacle: 'hedgehog',
+        //prop: 'carrot',
+        //floor: 'floor'
     }
 };
 
@@ -206,7 +211,7 @@ Engine.updateDistance = function () {
     //Engine._distance += Engine._delta * Engine.modules['player'].speed;
 };
 
-Engine.createRoleObject = function (moduleType) {
+Engine.createRoleObject = function (moduleType, role) {
     var roleObj = null;
     switch (moduleType) {
         case 'cat':
@@ -239,38 +244,57 @@ Engine.createRoleObject = function (moduleType) {
         case 'bonus':
             roleObj = new BonusParticles();
             break;
-        case 'floor':
-            roleObj = new Floor();
+        case 'grass':
+        case 'forest':
+            roleObj = new Floor(moduleType == 'forest' ? true : false);
             break;
     }
 
+    switch (role) {
+        case 'player':
+            role = 'h';
+            break;
+        case 'monster':
+            role = 'm';
+            break;
+        case 'obstacle':
+            role = 'o';
+            break;
+        case 'prop':
+            role = 'p';
+            break;
+        default:
+            role = '';
+            break;
+    }
+
+    roleObj.setRole(role);
     return roleObj;
 }
 
 Engine.initModules = function () {
-    Engine.modules['background'] = Engine.createRoleObject('floor');
-    Engine.scene.add(Engine.modules['background'].mesh);
-    //for (var key in Engin.params.modules) {
-    //    Engine.modules[key] = Engine.createRoleObject(Engin.params.modules[key]);
-    //    Engine.scene.add(Engine.modules[key].mesh);
-    //    Engine.modules[key].preparingForRun();
-    //}
+    for (var key in Engine.params.modules) {
+        Engine.modules[key] = Engine.createRoleObject(Engine.params.modules[key], key);
+        Engine.scene.add(Engine.modules[key].mesh);
+        Engine.modules[key].prepareForRun();
+    }
 
-    //Engine.modules['bonus'] = Engine.createRoleObject('bonus');
-    //Engine.scene.add(Engine.modules['bonus'].mesh);
+    Engine.modules['bonus'] = Engine.createRoleObject('bonus', '');
+    Engine.scene.add(Engine.modules['bonus'].mesh);
 };
 
 Engine.prepareForRun = function () {
-    Engine.state = Engine._statusPrepare;
+    Engine.state = Engine._statePrepare;
     for (var key in Engine.modules) {
         Engine.scene.remove(Engine.modules[key]);
         Engine.modules[key] = null;
     }
 
     Engine.initModules();
+    //Engine.DrawGrid();
     Engine.render();
     TweenMax.to(window, 1, { speed: 0 });
-    TweenMax.to(Engine.camera.position, 3, { z: Engine.params.camera.oz, y: Engine.params.camera.oy, x: Engine.params.camera.ox });
+    TweenMax.to(Engine.camera.position, 3, { z: Engine.params.camera.oz, y: Engine.params.camera.oy, x: 0 });//Engine.params.camera.ox });
 
     if (Engine._animationId != '') {
         cancelAnimationFrame(Engine._animationId);
@@ -282,19 +306,58 @@ Engine.prepareForRun = function () {
 };
 
 Engine.pause = function () {
-    Engine.state = Engine._statusPause;
+    Engine.state = Engine._statePause;
     for (var key in Engine.modules) {
-        Engine.modules[key].state = Engine._statusPause;
+        Engine.modules[key].state = Engine._statePause;
     }
 
     Engine.audio.pause();
 };
 
+Engine.addModules = function (moduleType, role) {
+    for (var key in Engine.params.modules) {
+        if (role == key) {
+            Engine.modules[role] = Engine.createRoleObject(moduleType, role);
+            Engine.modules[role].setRole(role);
+            Engine.scene.add(Engine.modules[role].mesh);
+            Engine.modules[role].prepareForRun();
+        }
+    }
+
+    Engine.render();
+};
+
+Engine.changeRoleModule = function (moduleType, role) {
+    for (var key in Engine.modules) {
+        if (role == key) {
+            if (Engine.modules[role]) {
+                Engine.scene.remove(Engine.modules[role].mesh);
+            }
+
+            Engine.modules[role] = Engine.createRoleObject(moduleType, role);
+            Engine.modules[role].setRole(role);
+            Engine.scene.add(Engine.modules[role].mesh);
+            Engine.modules[role].prepareForRun();
+        }
+    }
+
+    Engine.render();
+};
+
+Engine.setAudio = function (audioPath) {
+    if (audioPath === false) {
+        Engine.audio.pause();
+    } else {
+        Engine.audio = new Audio(audioPath);
+        Engine.audio.play();
+    }
+}
+
 Engine.start = function () {
-    Engine.state = "run";
+    Engine.state = Engine._stateRun;
     for (var key in Engine.modules) {
         if (Engine.modules[key]) {
-            Engine.modules[key].state = 'run';
+            Engine.modules[key].state = Engine._stateRun;
         }
     }
 
@@ -303,17 +366,19 @@ Engine.start = function () {
 
 Engine.reset = function () {
     Engine.prepareForRun();
-    Engine.audio.play();
+    Engine.audio.pause();
 };
 
 Engine.over = function () {
     Engine.state = "over";
-    for (var key in Engin.modules) {
-        Engin.modules[key].over();
+    for (var key in Engine.modules) {
+        if (Engine.modules[key]) {
+            Engine.modules[key].over();
+        }
     }
 
     TweenMax.to(this, 1, { speed: 0 });
-    TweenMax.to(camera.position, 3, { z: Engine.params.camera.oz, y: Engine.params.camera.oy, x: Engine.params.camera.ox });
+    TweenMax.to(Engine.camera.position, 3, { z: Engine.params.camera.oz, y: Engine.params.camera.oy, x: 0 });//Engine.params.camera.ox });
 };
 
 Engine.handleWindowResize = function (width, height) {
@@ -341,43 +406,60 @@ Engine.getPlayer = function () {
     return Engine.modules['player'];
 }
 
+Engine.DrawGrid = function () {
+    var scope = 1000;
+    var step = 10;
+    var lColor = '#000000';
+    var bColor = '#FF0000';
+    var geometryH = new THREE.Geometry();
+    var geometryV = new THREE.Geometry();
+    var geometryD = new THREE.Geometry();
+    var lpH = '';
+    var lpV = '';
+    var lpD = '';
+    var lr = '';
+    geometryH.vertices.push(new THREE.Vector3(-scope, 0, 0));
+    geometryH.vertices.push(new THREE.Vector3(scope, 0, 0));
+    geometryV.vertices.push(new THREE.Vector3(0, -scope, 0));
+    geometryV.vertices.push(new THREE.Vector3(0, scope, 0));
+    geometryD.vertices.push(new THREE.Vector3(0, 0, scope));
+    geometryD.vertices.push(new THREE.Vector3(0, 0, -scope));
+
+    var loopCount = scope / step * 2;
+    var currColor = '';
+    for (var i = 0; i <= loopCount; i++) {
+        currColor = (i == loopCount / 2 ? bColor : lColor);
+        var hLine = new THREE.Line(geometryH, new THREE.LineBasicMaterial({ color: currColor, opacity: 1 }));
+        hLine.position.z = (i * step) - scope;
+        var vLine = new THREE.Line(geometryV, new THREE.LineBasicMaterial({ color: currColor, opacity: 1 }));
+        vLine.position.x = (i * step) - scope;
+        var dLine = new THREE.Line(geometryD, new THREE.LineBasicMaterial({ color: currColor, opacity: 1 }));
+        dLine.position.x = (i * step) - scope;
+        Engine.scene.add(hLine);
+        Engine.scene.add(vLine);
+        Engine.scene.add(dLine);
+    }
+};
+
 var Module = function () {
-    this.state = Engine._statusRun;
+    this.state = Engine._statePrepare;
     this.visible = true;
     this.speed = 1;
     this.id = '';
+    this.role = '';
     this.symbol = '';
+    // 'prepare'/'run'/'jump'/'over'/;
+    this.poseType = Engine._statePrepare;
     this.completeFired = false;
     this.mesh = new THREE.Group();
     this.body = new THREE.Group();
     this.head = new THREE.Group();
 };
 
-Module.prototype.updatePosition = function () {
+Module._monsterPosTarget = Engine.params.speed.monster.tpos;
+Module._monsterPos = Engine.params.speed.monster.pos;
 
-};
-
-Module.prototype.updatePose = function () {
-
-};
-
-Module.prototype.preparingForRun = function () {
-
-};
-
-Module.prototype.pause = function () {
-
-};
-
-Module.prototype.continue = function () {
-
-};
-
-Module.prototype.reset = function () {
-
-};
-
-Module.prototype.over = function () {
+Module.prototype.prepareForRun = function () {
 
 };
 
@@ -403,4 +485,92 @@ Module.prototype.hang = function () {
 
 Module.prototype.nod = function () {
 
+};
+
+Module.prototype.prepareForRole = function (role) {
+
+};
+
+Module.prototype.pause = function () {
+
+};
+
+Module.prototype.continue = function () {
+
+};
+
+Module.prototype.reset = function () {
+
+};
+
+Module.prototype.over = function () {
+
+};
+
+Module.prototype.setRole = function (role) {
+    this.role = role;
+    if (this.role == 'h') {
+        this.speed = Engine.params.speed.player.min;
+    }
+};
+
+Module.prototype.updatePosition_Monster = function () {
+    Module._monsterPosTarget -= Engine._delta * Engine.params.speed.monster.acceleration;
+    Module._monsterPos += (Module._monsterPosTarget - Module._monsterPos) * Engine._delta;
+    if (Module._monsterPos < .56) {
+        Engine.over();
+    }
+
+    var angle = Math.PI * Module._monsterPos;
+    this.mesh.position.y = -Engine.params.floorRadius + Math.sin(angle) * (Engine.params.floorRadius + 12);
+    this.mesh.position.x = Math.cos(angle) * (Engine.params.floorRadius + 15);
+    this.mesh.rotation.z = -Math.PI / 2 + angle;
+};
+
+Module.prototype.updatePosition = function () {
+    if (this.role == 'm') {
+        this.updatePosition_Monster();
+    }
+};
+
+Module.prototype.updatePose = function () {
+    if (this.state == Engine._stateRun) {
+        if (this.poseType != Engine._stateRun) {
+            this.nod();
+            this.poseType == Engine._stateRun;
+        }
+
+        if (this.role == 'h' || this.role == 'm') {
+            this.run();
+        }
+    } else if (this.state == Engine._stateJump) {
+        if (this.poseType != Engine._stateJump) {
+            this.nod();
+            this.jump();
+            this.poseType == Engine._stateJump;
+        }
+    } else if (this.state == Engine._stateOver) {
+        if (this.poseType != Engine._stateOver) {
+            this.nod();
+            if (this.role == 'm') {
+                this.sit();
+            } else if (this.role == 'h') {
+                this.hang();
+            } else {
+                this.pause();
+            }
+
+            this.poseType == Engine._stateOver;
+        }
+    } else if (this.state == Engine._statePrepare) {
+        if (this.poseType != Engine._statePrepare) {
+            this.nod();
+            this.poseType == Engine._statePrepare;
+        }
+    } else if (this.state == Engine._statePause) {
+        if (this.poseType != Engine._statePause) {
+            this.nod();
+            this.poseType == Engine._statePause;
+        }
+    }
 };

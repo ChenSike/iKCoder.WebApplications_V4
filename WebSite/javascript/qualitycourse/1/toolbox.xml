@@ -2,13 +2,10 @@
   <!--<block type="scene_setting"></block>-->
   <block type="scene_object_wolf" maxcount="1"></block>
   <block type="scene_object_rabbit" maxcount="1"></block>
-  <block type="scene_object_cat" maxcount="1"></block>
-  <block type="scene_object_lion" maxcount="1"></block>
-  <block type="scene_object_dragon" maxcount="1"></block>
-  <block type="scene_object_bird" maxcount="1"></block>
-  <block type="scene_object_mouse" maxcount="1"></block>
   <block type="scene_object_carrot" maxcount="1"></block>
   <block type="scene_object_hedgehog" maxcount="1"></block>
-  <block type="scene_background" maxcount="1"></block>
-  <block type="scene_music" maxcount="1"></block>
+  <block type="scene_background_grass" maxcount="1"></block>
+  <block type="scene_background_forest" maxcount="1"></block>
+  <block type="scene_music_1" maxcount="1"></block>
+  <block type="scene_music_2" maxcount="1"></block>
 </xml>
