@@ -15,9 +15,8 @@ var Engine = {
         obstacle: null,
         prop: null,
         bonus: null,
-        floor:null
+        floor: null
     },
-    roles: ['h', 'm', 'o', 'p'],
     _stateOver: -1,
     _statePause: 0,
     _stateRun: 1,
@@ -82,7 +81,7 @@ Engine.params = {
     },
     speed: {
         player: { min: 6, max: 48, freq: 3000, step: 2 },
-        monster: { pos: 0.58, tpos: 0.65, acceleration: 0.004 }
+        monster: { pos: 0.58, tpos: 0.65, acceleration: 0.004, pursue: true }
     },
     audio: 'media/sound_1.mp3',
     floorRadius: 200,
@@ -252,16 +251,16 @@ Engine.createRoleObject = function (moduleType, role) {
 
     switch (role) {
         case 'player':
-            role = 'h';
+            role = 'player';
             break;
         case 'monster':
-            role = 'm';
+            role = 'monster';
             break;
         case 'obstacle':
-            role = 'o';
+            role = 'obstacle';
             break;
         case 'prop':
-            role = 'p';
+            role = 'prop';
             break;
         default:
             role = '';
@@ -286,7 +285,10 @@ Engine.initModules = function () {
 Engine.prepareForRun = function () {
     Engine.state = Engine._statePrepare;
     for (var key in Engine.modules) {
-        Engine.scene.remove(Engine.modules[key]);
+        if (Engine.modules[key]) {
+            Engine.scene.remove(Engine.modules[key].mesh);
+        }
+
         Engine.modules[key] = null;
     }
 
@@ -334,10 +336,12 @@ Engine.changeRoleModule = function (moduleType, role) {
                 Engine.scene.remove(Engine.modules[role].mesh);
             }
 
-            Engine.modules[role] = Engine.createRoleObject(moduleType, role);
-            Engine.modules[role].setRole(role);
-            Engine.scene.add(Engine.modules[role].mesh);
-            Engine.modules[role].prepareForRun();
+            if (moduleType != '') {
+                Engine.modules[role] = Engine.createRoleObject(moduleType, role);
+                Engine.modules[role].setRole(role);
+                Engine.scene.add(Engine.modules[role].mesh);
+                Engine.modules[role].prepareForRun();
+            }
         }
     }
 
@@ -451,13 +455,12 @@ var Module = function () {
     // 'prepare'/'run'/'jump'/'over'/;
     this.poseType = Engine._statePrepare;
     this.completeFired = false;
+    this.monsterPosTarget = Engine.params.speed.monster.tpos;
+    this.monsterPos = Engine.params.speed.monster.pos;
     this.mesh = new THREE.Group();
     this.body = new THREE.Group();
     this.head = new THREE.Group();
 };
-
-Module._monsterPosTarget = Engine.params.speed.monster.tpos;
-Module._monsterPos = Engine.params.speed.monster.pos;
 
 Module.prototype.prepareForRun = function () {
 
@@ -509,26 +512,31 @@ Module.prototype.over = function () {
 
 Module.prototype.setRole = function (role) {
     this.role = role;
-    if (this.role == 'h') {
+    if (this.role == 'player') {
         this.speed = Engine.params.speed.player.min;
     }
+
+    this.prepareForRole(role);
+    Module._prepareForRole(role, this);
 };
 
 Module.prototype.updatePosition_Monster = function () {
-    Module._monsterPosTarget -= Engine._delta * Engine.params.speed.monster.acceleration;
-    Module._monsterPos += (Module._monsterPosTarget - Module._monsterPos) * Engine._delta;
-    if (Module._monsterPos < .56) {
-        Engine.over();
+    if (Engine.params.speed.monster.pursue) {
+        this.monsterPosTarget -= Engine._delta * Engine.params.speed.monster.acceleration;
+        this.monsterPos += (this.monsterPosTarget - this.monsterPos) * Engine._delta;
+        if (this.monsterPos < .56) {
+            Engine.over();
+        }
     }
 
-    var angle = Math.PI * Module._monsterPos;
+    var angle = Math.PI * this.monsterPos;
     this.mesh.position.y = -Engine.params.floorRadius + Math.sin(angle) * (Engine.params.floorRadius + 12);
     this.mesh.position.x = Math.cos(angle) * (Engine.params.floorRadius + 15);
     this.mesh.rotation.z = -Math.PI / 2 + angle;
 };
 
 Module.prototype.updatePosition = function () {
-    if (this.role == 'm') {
+    if (this.role == 'monster') {
         this.updatePosition_Monster();
     }
 };
@@ -540,7 +548,7 @@ Module.prototype.updatePose = function () {
             this.poseType == Engine._stateRun;
         }
 
-        if (this.role == 'h' || this.role == 'm') {
+        if (this.role == 'player' || this.role == 'monster') {
             this.run();
         }
     } else if (this.state == Engine._stateJump) {
@@ -552,9 +560,9 @@ Module.prototype.updatePose = function () {
     } else if (this.state == Engine._stateOver) {
         if (this.poseType != Engine._stateOver) {
             this.nod();
-            if (this.role == 'm') {
+            if (this.role == 'monster') {
                 this.sit();
-            } else if (this.role == 'h') {
+            } else if (this.role == 'player') {
                 this.hang();
             } else {
                 this.pause();
@@ -574,3 +582,12 @@ Module.prototype.updatePose = function () {
         }
     }
 };
+
+Module._prepareForRole = function (role, module) {
+    if (role == 'monster') {
+        var angle = Math.PI * Engine.params.speed.monster.pos;
+        module.mesh.position.y = -Engine.params.floorRadius + Math.sin(angle) * (Engine.params.floorRadius + 12);
+        module.mesh.position.x = Math.cos(angle) * (Engine.params.floorRadius + 15);
+        module.mesh.rotation.z = -Math.PI / 2 + angle;
+    }
+}

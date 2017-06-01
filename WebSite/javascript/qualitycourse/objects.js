@@ -3,7 +3,7 @@
 function Floor(isForest) {
     Module.call(this);
     this.state = Engine._stateRun;
-    this.isForest = isForest ? isForest : true;
+    this.isForest = isForest;
     this.type = 'floor';
     this.rotation = 0;
     this.init();
@@ -483,11 +483,11 @@ Rabbit.prototype.sit = function () {
 };
 
 Rabbit.prototype.prepareForRole = function (role) {
-    if (role == 'm') {
+    if (role == 'monster') {
         this.mesh.scale.set(2, 2, 2);
-    } else if (role == 'o') {
+    } else if (role == 'obstacle') {
         this.mesh.scale.set(0.5, 0.5, 0.5);
-    } else if (role == 'p') {
+    } else if (role == 'prop') {
         this.mesh.scale.set(0.6, 0.6, 0.6);
     }
 }
@@ -785,12 +785,15 @@ Wolf.prototype.sit = function () {
 };
 
 Wolf.prototype.prepareForRole = function (role) {
-    if (role == 'h') {
+    if (role == 'player') {
         this.mesh.scale.set(0.5, 0.5, 0.5);
-    } else if (role == 'o') {
+        this.mesh.position.y=10;
+    } else if (role == 'obstacle') {
         this.mesh.scale.set(0.3, 0.3, 0.3);
-    } else if (role == 'p') {
+    } else if (role == 'prop') {
         this.mesh.scale.set(0.4, 0.4, 0.4);
+    } else if (role == 'monster') {
+        this.body.rotation.x = -20 * Math.PI / 180;
     }
 };
 

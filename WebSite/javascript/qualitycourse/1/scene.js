@@ -1,22 +1,6 @@
 ﻿'use strict';
 
 WorkScene.OutputCodeCallBack = function (code) {
-    //var code = '';
-    try {
-        //var topBlocks = WorkScene.workspace.topBlocks_;
-        //for (var i = 0; i < topBlocks.length; i++) {
-        //    if (topBlocks[i].type == 'scene_setting') {
-        //        var content = $('#txt_Code_Content');
-        //        code = Blockly.JavaScript['scene_setting'](topBlocks[i]);
-        //        content.text(code);
-        //        content.data("autoRowsNumbers").updateLine(code.match(/\n/g).length + 1);
-        //        break;
-        //    }
-        //}
-    }
-    catch (ex) {
-    }
-
     if (typeof Scene != 'undefined' && Scene) {
         eval(code);
     }
@@ -25,7 +9,12 @@ WorkScene.OutputCodeCallBack = function (code) {
 var Scene = {};
 
 Scene.init = function () {
-    Engine.initScreenAnd3D('game_container', {});
+    Engine.initScreenAnd3D('game_container', {
+        speed: {
+            player: { min: 6, max: 48, freq: 3000, step: 2 },
+            monster: { pos: 0.59, tpos: 0.65, acceleration: 0.004, pursue: false }
+        },
+    });
     Engine.prepareForRun();
 }
 
@@ -43,7 +32,7 @@ Scene.SetMusic = function (music) {
 };
 
 Scene.SetRoleModule = function (moduleType, role) {
-    if (moduleType == '' || role == '') {
+    if (role == '') {
         return;
     }
 

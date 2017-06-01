@@ -16,7 +16,7 @@ Blockly.Blocks['scene_setting'] = {
 Blockly.JavaScript['scene_setting'] = function (block) {
     var code = '';// 'Scene.initSceneEnvironment();\n';
     code += Blockly.JavaScript.statementToCode(block, 'scene_resource');
-    code += '';
+    code += 'Scene.start();';
     return code;
 };
 
@@ -36,11 +36,7 @@ Blockly.Blocks['scene_setting_hero'] = {
 
 Blockly.JavaScript['scene_setting_hero'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = '';
-    if (value_name != "") {
-        code = 'Scene.SetRoleModule("' + value_name + '", "player");\n';
-    }
-
+    var code = 'Scene.SetRoleModule("' + value_name + '", "player");\n';
     return code;
 };
 
@@ -60,11 +56,7 @@ Blockly.Blocks['scene_setting_monster'] = {
 
 Blockly.JavaScript['scene_setting_monster'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = '';
-    if (value_name != "") {
-        code = 'Scene.SetRoleModule("' + value_name + '", "monster");\n';
-    }
-
+    var code = 'Scene.SetRoleModule("' + value_name + '", "monster");\n';
     return code;
 };
 
@@ -84,11 +76,7 @@ Blockly.Blocks['scene_setting_obstacle'] = {
 
 Blockly.JavaScript['scene_setting_obstacle'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = '';
-    if (value_name != "") {
-        code = 'Scene.SetRoleModule("' + value_name + '", "obstacle");\n';
-    }
-
+    var code = 'Scene.SetRoleModule("' + value_name + '", "obstacle");\n';
     return code;
 };
 
@@ -108,11 +96,7 @@ Blockly.Blocks['scene_setting_prop'] = {
 
 Blockly.JavaScript['scene_setting_prop'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = '';
-    if (value_name != "") {
-        code = 'Scene.SetRoleModule("' + value_name + '", "prop");\n';
-    }
-
+    var code = 'Scene.SetRoleModule("' + value_name + '", "prop");\n';
     return code;
 };
 
@@ -132,11 +116,7 @@ Blockly.Blocks['scene_setting_background'] = {
 
 Blockly.JavaScript['scene_setting_background'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = '';
-    if (value_name != "") {
-        code = 'Scene.SetRoleModule("' + value_name + '", "floor");\n';
-    }
-
+    var code = 'Scene.SetRoleModule("' + value_name + '", "floor");\n';
     return code;
 };
 
