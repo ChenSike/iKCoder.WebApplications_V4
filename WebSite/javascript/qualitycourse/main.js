@@ -23,6 +23,7 @@ var Engine = {
     _stateJump: 2,
     _statePrepare: 3,
     _stateSit: 4,
+    _stateFly: 5,
     _animationId: '',
     _delta: 0,
     _distance: 0,
@@ -189,7 +190,17 @@ Engine.initLights = function () {
 };
 
 Engine.render = function () {
-    Engine.renderer.render(Engine.scene, Engine.camera);
+    var flag = false;
+    for (var key in Engine.modules) {
+        if (Engine.modules[key]) {
+            flag = true;
+            break;
+        }
+    }
+
+    if (flag) {
+        Engine.renderer.render(Engine.scene, Engine.camera);
+    }
 };
 
 Engine.loop = function () {
@@ -358,6 +369,13 @@ Engine.setAudio = function (audioPath) {
 }
 
 Engine.start = function () {
+    if (Engine._animationId && Engine._animationId != '') {
+        cancelAnimationFrame(Engine._animationId);
+        Engine._animationId = '';
+    }
+
+    Engine._delta = 0;
+
     Engine.state = Engine._stateRun;
     for (var key in Engine.modules) {
         if (Engine.modules[key]) {
@@ -385,16 +403,10 @@ Engine.over = function () {
     TweenMax.to(Engine.camera.position, 3, { z: Engine.params.camera.oz, y: Engine.params.camera.oy, x: 0 });//Engine.params.camera.ox });
 };
 
-Engine.handleWindowResize = function (width, height) {
-    //HEIGHT = height;
-    //WIDTH = width;
-    ////HEIGHT = window.innerHeight;
-    ////WIDTH = window.innerWidth;
-    //windowHalfX = WIDTH / 2;
-    //windowHalfY = HEIGHT / 2;
-    //renderer.setSize(WIDTH, HEIGHT);
-    //camera.aspect = WIDTH / HEIGHT;
-    //camera.updateProjectionMatrix();
+Engine.handleWindowResize = function () {
+    Engine.renderer.setSize(this.container.width(), this.container.height());
+    Engine.camera.aspect = this.container.width() / this.container.height();
+    Engine.camera.updateProjectionMatrix();
 };
 
 Engine.handleMouseDown = function (event) {
@@ -451,6 +463,7 @@ var Module = function () {
     this.speed = 1;
     this.id = '';
     this.role = '';
+    this.angle = 0;
     this.symbol = '';
     // 'prepare'/'run'/'jump'/'over'/;
     this.poseType = Engine._statePrepare;
@@ -529,16 +542,45 @@ Module.prototype.updatePosition_Monster = function () {
         }
     }
 
-    var angle = Math.PI * this.monsterPos;
-    this.mesh.position.y = -Engine.params.floorRadius + Math.sin(angle) * (Engine.params.floorRadius + 12);
-    this.mesh.position.x = Math.cos(angle) * (Engine.params.floorRadius + 15);
-    this.mesh.rotation.z = -Math.PI / 2 + angle;
+    this.angle = Math.PI * this.monsterPos;
+    this.mesh.position.y = -Engine.params.floorRadius + Math.sin(this.angle) * (Engine.params.floorRadius + 12);
+    this.mesh.position.x = Math.cos(this.angle) * (Engine.params.floorRadius + 15);
+    this.mesh.rotation.z = -Math.PI / 2 + this.angle;
 };
+
+Module.prototype.updatePosition_Obstacle = function () {
+    if (this.state == Engine._stateFly) {
+        return;
+    }
+
+    var floorRotation = (Engine.modules.floor ? Engine.modules.floor.rotation : 0);
+    if (floorRotation + this.angle > 2.5) {
+        this.angle = -floorRotation + Math.random() * .3;
+        this.body.rotation.y = Math.random() * Math.PI * 2;
+    }
+
+    this.mesh.rotation.z = floorRotation + this.angle - Math.PI / 2;
+    this.mesh.position.y = -Engine.params.floorRadius + Math.sin(floorRotation + this.angle) * (Engine.params.floorRadius + 3);
+    this.mesh.position.x = Math.cos(floorRotation + this.angle) * (Engine.params.floorRadius + 3);
+}
+
+Module.prototype.updatePosition_Prop = function () {
+    var floorRotation = (Engine.modules.floor ? Engine.modules.floor.rotation : 0);
+    this.mesh.rotation.y += Engine._delta * 6;
+    this.mesh.rotation.z = Math.PI / 2 - (floorRotation + this.angle);
+    this.mesh.position.y = -Engine.params.floorRadius + Math.sin(floorRotation + this.angle) * (Engine.params.floorRadius + 50);
+    this.mesh.position.x = Math.cos(floorRotation + this.angle) * (Engine.params.floorRadius + 50);
+}
 
 Module.prototype.updatePosition = function () {
     if (this.role == 'monster') {
         this.updatePosition_Monster();
+    } else if (this.role == 'obstacle') {
+        this.updatePosition_Obstacle();
+    } else if (this.role == 'prop') {
+        this.updatePosition_Prop();
     }
+
 };
 
 Module.prototype.updatePose = function () {

@@ -406,8 +406,10 @@ Rabbit.prototype.nod = function () {
     var tmpPositionZ = -1 + Math.random() * 2;
     TweenMax.to([this.irisL.position, this.irisR.position], random, { y: tmpPositionY, z: tmpPositionZ, ease: Power1.easeInOut });
     //EYES
-    if (Math.random() > 0.2) {
-        TweenMax.to([this.eyeR.scale, this.eyeL.scale], random / 8, { y: 0, ease: Power1.easeInOut, yoyo: true, repeat: 1 });
+    if (this.role == 'player' || this.role == 'monster') {
+        if (Math.random() > 0.2) {
+            TweenMax.to([this.eyeR.scale, this.eyeL.scale], random / 8, { y: 0, ease: Power1.easeInOut, yoyo: true, repeat: 1 });
+        }
     }
 };
 
@@ -487,10 +489,12 @@ Rabbit.prototype.prepareForRole = function (role) {
         this.mesh.scale.set(2, 2, 2);
     } else if (role == 'obstacle') {
         this.mesh.scale.set(0.5, 0.5, 0.5);
+        this.mesh.rotation.y = -Math.PI / 2;
     } else if (role == 'prop') {
         this.mesh.scale.set(0.6, 0.6, 0.6);
+        this.mesh.rotation.y = 0;
     }
-}
+};
 
 function Wolf(role) {
     Module.call(this);
@@ -692,8 +696,10 @@ Wolf.prototype.run = function () {
     //TAIL
     this.tail.rotation.x = 0.2 + Math.sin(tmpCycle - Math.PI / 2);
     //EYE
-    this.eyeR.scale.y = 0.5 + Math.sin(tmpCycle + Math.PI) * 0.5;
-    this.eyeL.scale.y = 0.5 + Math.sin(tmpCycle + Math.PI) * 0.5;
+    if (this.role == 'player' || this.role == 'monster') {
+        this.eyeR.scale.y = 0.5 + Math.sin(tmpCycle + Math.PI) * 0.5;
+        this.eyeL.scale.y = 0.5 + Math.sin(tmpCycle + Math.PI) * 0.5;
+    }
 };
 
 Wolf.prototype.nod = function () {
@@ -707,7 +713,9 @@ Wolf.prototype.nod = function () {
     rotationY = -Math.PI / 4;
     TweenMax.to(this.tail.rotation, random / 8, { y: rotationY, ease: Power1.easeInOut, yoyo: true, repeat: 8 });
     // EYES
-    TweenMax.to([this.eyeR.scale, this.eyeL.scale], random / 20, { y: 0, ease: Power1.easeInOut, yoyo: true, repeat: 1 });
+    if (this.role == 'player' || this.role == 'monster') {
+        TweenMax.to([this.eyeR.scale, this.eyeL.scale], random / 20, { y: 0, ease: Power1.easeInOut, yoyo: true, repeat: 1 });
+    }
 };
 
 Wolf.prototype.jump = function () {
@@ -758,8 +766,10 @@ Wolf.prototype.hang = function () {
     TweenMax.to(this.pawFR.position, speed, { y: -1, z: 3, ease: ease });
     TweenMax.to(this.pawBL.position, speed, { y: -2, z: -3, ease: ease });
     TweenMax.to(this.pawBR.position, speed, { y: -2, z: -3, ease: ease });
-    TweenMax.to(this.eyeL.scale, speed, { y: 1, ease: ease });
-    TweenMax.to(this.eyeR.scale, speed, { y: 1, ease: ease });
+    if (this.role == 'player' || this.role == 'monster') {
+        TweenMax.to(this.eyeL.scale, speed, { y: 1, ease: ease });
+        TweenMax.to(this.eyeR.scale, speed, { y: 1, ease: ease });
+    }
 };
 
 Wolf.prototype.sit = function () {
@@ -787,17 +797,21 @@ Wolf.prototype.sit = function () {
 Wolf.prototype.prepareForRole = function (role) {
     if (role == 'player') {
         this.mesh.scale.set(0.5, 0.5, 0.5);
-        this.mesh.position.y=10;
+        this.mesh.position.y = 10;
     } else if (role == 'obstacle') {
+        this.irisL.visible = false;
+        this.irisR.visible = false;
         this.mesh.scale.set(0.3, 0.3, 0.3);
+        this.mesh.rotation.y = -Math.PI / 2;
     } else if (role == 'prop') {
         this.mesh.scale.set(0.4, 0.4, 0.4);
+        this.mesh.rotation.y = 0.2;
     } else if (role == 'monster') {
         this.body.rotation.x = -20 * Math.PI / 180;
     }
 };
 
-function Carrot() {
+function Carrot(role) {
     Module.call(this);
     this.state = Engine._statePrepare;
     this.type = 'carrot';
@@ -854,8 +868,19 @@ Carrot.prototype.init = function () {
 };
 
 Carrot.prototype.run = function () {
-
-};
+    if (this.state == Engine._stateRun) {
+        var speed = Math.min(this.speed, Engine.params.speed.player.max);
+        this.runningCycle += Engine._delta * speed * 0.7;
+        this.runningCycle = this.runningCycle % (Math.PI * 2);
+        var tmpCycle = this.runningCycle;
+        var amp = 4;
+        var disp = 0.2;
+        this.leaf1.rotation.x = Math.cos(-Math.PI / 2 + tmpCycle) * (amp * 0.2);
+        this.leaf2.rotation.x = Math.cos(-Math.PI / 2 + 0.2 + tmpCycle) * (amp * 0.3);
+        this.mesh.position.y = 6 + Math.sin(tmpCycle - Math.PI / 2) * amp;
+        this.mesh.rotation.z = 0.2 + Math.sin(tmpCycle - Math.PI / 2) * amp * .1;
+    };
+}
 
 Carrot.prototype.nod = function () {
 
@@ -873,13 +898,30 @@ Carrot.prototype.sit = function () {
 
 };
 
-function Hedgehog() {
+Carrot.prototype.prepareForRole = function (role) {
+    if (role == 'player') {
+        this.mesh.scale.set(1.5, 1.5, 1.5);
+        this.mesh.rotation.y = Math.PI / 2;
+        //this.mesh.position.y = 10;
+    } else if (role == 'obstacle') {
+        //this.mesh.scale.set(1.5, 1.5, 1.5);
+    } else if (role == 'prop') {
+        //this.mesh.scale.set(0.4, 0.4, 0.4);
+    } else if (role == 'monster') {
+        this.mesh.scale.set(3, 3, 3);
+        this.mesh.rotation.y = Math.PI / 2;
+        this.body.rotation.x = -20 * Math.PI / 180;
+    }
+};
+
+function Hedgehog(role) {
     Module.call(this);
     this.state = Engine._statePrepare;
     this.type = 'hedgehog';
     this.role = role;
     this.poseType = Engine._statePrepare;
     this.runningCycle = 0;
+    this.angle = 0;
     this.params = {
         body: { c: blackMat_100707, w: 6, h: 6, d: 6 },
         head: { c: lightBrownMat_e07a57, w: 5, h: 5, d: 7 },
@@ -998,15 +1040,24 @@ Hedgehog.prototype.init = function () {
             object.receiveShadow = true;
         }
     });
-}
+};
 
 Hedgehog.prototype.run = function () {
-
-}
+    if (this.state == Engine._stateRun) {
+        var speed = Math.min(this.speed, Engine.params.speed.player.max);
+        this.runningCycle += Engine._delta * speed * 0.7;
+        this.runningCycle = this.runningCycle % (Math.PI * 2);
+        var tmpCycle = this.runningCycle;
+        var amp = 4;
+        var disp = 0.2;
+        this.mesh.position.y = 6 + Math.sin(tmpCycle - Math.PI / 2) * amp;
+        this.mesh.rotation.z = 0.2 + Math.sin(tmpCycle - Math.PI / 2) * amp * .1;
+    };
+};
 
 Hedgehog.prototype.jump = function () {
 
-}
+};
 
 Hedgehog.prototype.nod = function () {
     var _this = this;
@@ -1017,12 +1068,30 @@ Hedgehog.prototype.nod = function () {
             _this.nod();
         }
     });
-}
+};
 
 Hedgehog.prototype.hang = function () {
 
-}
+};
 
 Hedgehog.prototype.sit = function () {
 
-}
+};
+
+Hedgehog.prototype.prepareForRole = function (role) {
+    if (role == 'player') {
+        this.mesh.scale.set(2, 2, 2);
+        this.mesh.rotation.y = Math.PI / 2;
+        //this.mesh.position.y = 10;
+    } else if (role == 'obstacle') {
+        this.body.rotation.y = -Math.PI / 2;
+        this.mesh.scale.set(1.1, 1.1, 1.1);
+        this.mesh.position.y = 4;
+    } else if (role == 'prop') {
+        //this.mesh.scale.set(0.4, 0.4, 0.4);
+    } else if (role == 'monster') {
+        this.mesh.scale.set(3.5, 3.5, 3.5);
+        this.mesh.rotation.y = Math.PI / 2;
+        this.body.rotation.x = -20 * Math.PI / 180;
+    }
+};

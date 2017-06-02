@@ -18,7 +18,7 @@ Scene.init = function () {
     Engine.prepareForRun();
 }
 
-Scene.start = function () {
+Scene.start = function () {    
     Engine.start();
 }
 
@@ -37,4 +37,8 @@ Scene.SetRoleModule = function (moduleType, role) {
     }
 
     Engine.changeRoleModule(moduleType, role);
+}
+
+Scene.resetSize = function () {
+    Engine.handleWindowResize();
 }

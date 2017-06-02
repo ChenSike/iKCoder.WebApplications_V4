@@ -38,7 +38,7 @@ function initPage() {
 
 function initEvents() {
     $('#btn_Footer_Logo').on('click', function (e) {
-        WorkScene.saveStatus();
+        //WorkScene.saveStatus();
         window.location.href = "index.html?rnd=" + Date.now();
     });
 
@@ -46,10 +46,10 @@ function initEvents() {
         siderBarExpand();
     });
 
-    $('.goto-profile-image-button').on('click', function () {
-        WorkScene.saveStatus();
-        window.location.href = "profile.html?rnd=" + Date.now();
-    });
+    //$('.goto-profile-image-button').on('click', function () {
+    //    //WorkScene.saveStatus();
+    //    window.location.href = "profile.html?rnd=" + Date.now();
+    //});
 
     $(document).mouseup(function () {
         $(document).unbind("mousemove");
@@ -144,17 +144,20 @@ function initEvents() {
             var container = $('#game_container');
             $('.siderbar-scene-container').append(container);
             adjustAfterSiderBarResize();
-            //container.find('canvas').height(height);
-            //container.find('canvas').width(width);
-            handleWindowResize(width, height);
-            container.css('padding-left', '0px');
+            container.find('canvas').height(height);
+            container.find('canvas').width(width);
+            container.css('margin-left', '0px');
             container.width($('.siderbar-scene-container').width());
-
             var playButton = $('.run-scene-fullscreen-play-button');
             var fontSize = width * 30 / 100;
             playButton.css('font-size', fontSize + 'px');
             playButton.css('left', 'calc(50% - ' + (fontSize / 2) + 'px');
-            playButton.css('top', ((width - fontSize) / 2) + 'px');
+            playButton.css('top', ((height - fontSize) / 2) + 'px');
+            if (Scene.resetSize) {
+                Scene.resetSize();
+            }
+
+            playButton.css('top', ((container.find('canvas').height() - fontSize) / 2) + 'px');
         });
     });
 
@@ -171,8 +174,14 @@ function initEvents() {
     });
 
     $('#btn_Step_Restart').on('click', function (e) {
-        WorkScene.reset();
-        $('.wrap-workstatus-alert').hide();
+        if (_currentStep == _totalSteps) {
+            //WorkScene.saveStatus();
+            window.location.href = "profile.html?rnd=" + Date.now();
+        } else {
+            WorkScene.reset(true);
+            resetPlayBtn('P');
+            $('.wrap-workstatus-alert').hide();
+        }
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
@@ -188,7 +197,7 @@ function initEvents() {
     });
 
     $(window).on('beforeunload', function () {
-        WorkScene.saveStatus();
+        //WorkScene.saveStatus();
     });
 };
 
@@ -278,6 +287,7 @@ function buildStageHTML(data) {
     var tmpWidth = itemWidth * (data.stage_count - 1);
     background.css('width', tmpWidth + '%');
     tmpWidth = 100 / (data.stage_count - 1) * (data.complete_count);
+    tmpWidth = (tmpWidth > 100 ? 100 : tmpWidth);
     $('.head-stage-space').css('width', tmpWidth + '%');
     var tmpLeft = (parent.width() - background.width()) / 2;
     background.css('left', tmpLeft + 'px');
@@ -655,16 +665,18 @@ function adjustAfterSiderBarResize() {
     var tmpWidth = $('#wrap_Workspace_Toolbar').parent().width()
     if ($('.siderbar-wrap').hasClass('expanded')) {
         wrap.css('margin-left', '0px');
-        tmpWidth = tmpWidth - $('.siderbar-wrap').width() + 15;
+        tmpWidth = tmpWidth - $('.siderbar-wrap').width();
     } else {
         tmpWidth = tmpWidth - 15;
     }
 
     wrap.animate({ width: tmpWidth + 'px' });
-
-    var helpWrap = $('#wrap_Scene_Help_Content');
     wrap = $('.siderbar-content');
-    $('#game_container').height(wrap.height() - helpWrap.height() - 30);
+    var container = $('#game_container');
+    container.height(wrap.height());
+    container.width(wrap.width());
+    //container.find('canvas').height(wrap.height());
+    //container.find('canvas').width(wrap.width());
 };
 
 function onWindowResize() {
@@ -727,6 +739,9 @@ function showFullScreen() {
     $('.run-scene-fullscreen').show("slow", function () {
         setsizeWhenFullScreen();
         addOperatorButton();
+        if (Scene.resetSize) {
+            Scene.resetSize();
+        }
     });
 };
 
@@ -738,12 +753,14 @@ function setsizeWhenFullScreen() {
     var tmpWidth = $('.run-scene-fullscreen').width();
     container.height(tmpHeight);
     container.width(tmpWidth);
+    container.find('canvas').height(tmpHeight);
+    container.find('canvas').width(tmpWidth);
     var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
     var tmpRate = canvas.height() / canvas.width();
-    //canvas.height(tmpRate * tmpSize);
-    //canvas.width(tmpSize);
-    //container.css('padding-left', (tmpWidth - tmpSize) / 2 + 'px');
-    //handleWindowResize(tmpWidth, tmpHeight);
+    if (Scene.resetSize) {
+        Scene.resetSize();
+    }
+
     var playButton = $('.run-scene-fullscreen-play-button');
     var fontSize = tmpSize * 30 / 100;
     playButton.css('font-size', fontSize + 'px');
