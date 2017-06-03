@@ -15,7 +15,7 @@ Scene.defaultDATA = [
 	[1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
 	[1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+	[1, 0, 0, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
 	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
@@ -86,33 +86,39 @@ Scene.initEnvironment = function (containerId) {
 };
 
 Scene.initMap = function () {
-    var tmpX, tmpZ, tmpKey;
-    var halfWidth = _colCount * _itemSize / 2;
-    var halfHeight = _rowCount * _itemSize / 2;
-    var goods = [];
-    for (var i = 0; i < Scene.defaultDATA.length; i++) {
-        tmpZ = i * _itemSize - halfWidth + _itemSize / 2;
-        var rowData = [];
-        for (var j = 0; j < Scene.defaultDATA[i].length; j++) {
-            tmpX = j * _itemSize - halfHeight + _itemSize / 2;
-            tmpKey = '';
-            if (Scene.defaultDATA[i][j] == 0) {
-                tmpKey = Engine.addModuleObject(new Bean(), tmpX, null, tmpZ);
-            } else if (Scene.defaultDATA[i][j] == 1) {
-                tmpKey = Engine.addModuleObject(new Wall(), tmpX, null, tmpZ);
-            } else if (Scene.defaultDATA[i][j] == 2) {
-                var newGoods = new Goods();
-                goods.push(newGoods);
-                tmpKey = Engine.addModuleObject(newGoods, tmpX, null, tmpZ);
-            }
+	var tmpX, tmpZ, tmpKey;
+	var halfWidth = _colCount * _itemSize / 2;
+	var halfHeight = _rowCount * _itemSize / 2;
+	var goods = [];
+	var countGoods = [];
+	for (var i = 0; i < Scene.defaultDATA.length; i++) {
+		tmpZ = i * _itemSize - halfWidth + _itemSize / 2;
+		var rowData = [];
+		for (var j = 0; j < Scene.defaultDATA[i].length; j++) {
+			tmpX = j * _itemSize - halfHeight + _itemSize / 2;
+			tmpKey = '';
+			if (Scene.defaultDATA[i][j] == 0) {
+				tmpKey = Engine.addModuleObject(new Bean(), tmpX, null, tmpZ);
+			} else if (Scene.defaultDATA[i][j] == 1) {
+				tmpKey = Engine.addModuleObject(new Wall(), tmpX, null, tmpZ);
+			} else if (Scene.defaultDATA[i][j] == 2) {
+				var newGoods = new Goods();
+				goods.push(newGoods);
+				tmpKey = Engine.addModuleObject(newGoods, tmpX, null, tmpZ);
+			} else if (Scene.defaultDATA[i][j] == 4) {
+				var newCountGoods = new CountGoods(5);
+				countGoods.push(newCountGoods);
+				tmpKey = Engine.addModuleObject(newCountGoods, tmpX, null, tmpZ);
+			}
 
-            rowData.push({ t: Scene.defaultDATA[i][j], s: tmpKey, v: true });
-        }
+			rowData.push({ t: Scene.defaultDATA[i][j], s: tmpKey, v: true });
+		}
 
-        Scene.mapDATA.push(rowData);
-    }
+		Scene.mapDATA.push(rowData);
+	}
 
-    Goods.updatePose(goods);
+	Goods.updatePose(goods);
+	CountGoods.updatePose(countGoods);
 };
 
 Scene.initPlayer = function (x, y) {
@@ -166,7 +172,7 @@ Scene.start = function () {
 };
 
 Scene.reset = function () {
-    Engine.rersetScene();
+    Engine.resetScene();
     Scene.resetMap();
     Scene.getPlayer().reset();
     var x = Scene.getPlayer().defaultCoord.x;
@@ -209,5 +215,10 @@ Scene.TurnRight = function () {
 };
 
 Scene.TurnRight = function () {
+	Scene.addModuelPath('pacman', 'tr');
+};
+
+Scene.EatBigGoods = function () {
+	//Scene.push({ count: -1 });
 	Scene.addModuelPath('pacman', 'tr');
 };

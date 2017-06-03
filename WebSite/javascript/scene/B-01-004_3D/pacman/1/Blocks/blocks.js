@@ -94,7 +94,7 @@ Blockly.Blocks['turn_right'] = {
 };
 
 Blockly.JavaScript['turn_right'] = function (block) {
-    return 'Scene.TurnRight("R",0);\n';
+    return 'Scene.TurnRight();\n';
 };
 
 Blockly.Blocks['turn_left'] = {
@@ -110,7 +110,7 @@ Blockly.Blocks['turn_left'] = {
 };
 
 Blockly.JavaScript['turn_left'] = function (block) {
-    return 'Scene.TurnLeft();\n';
+    return 'Scene.TurnLeft();';
 };
 
 Blockly.Blocks['move_forward'] = {
@@ -176,7 +176,7 @@ Blockly.JavaScript['if_condition'] = function (a) {
     //do 
 		//e = Blockly.JavaScript.valueToCode(a, "IF" + b, Blockly.JavaScript.ORDER_NONE) || "false", 
 		d = Blockly.JavaScript.statementToCode(a, "DO" + b), 
-		c += (0 < b ? " else " : "") + "if (" + "Scene.isWall()" + ") {\n" + d + "}";
+			c += (0 < b ? " else " : "") + "if (Scene.isWall()) {\nScene.setFunctionWhenWall('" + d + "')}";
 		//++b;
 	//while (a.getInput("IF" + b));
   //  a.getInput("ELSE") && (d = Blockly.JavaScript.statementToCode(a, "ELSE"), c += " else {\n" + d + "}");

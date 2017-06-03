@@ -99,10 +99,10 @@ Blockly.JavaScript['forloop'] = function(block) {
   return code;
 };
 
-Blockly.Blocks['eatapple'] = {
+Blockly.Blocks['eatbiggoods'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("吃苹果")
+            .appendField("吃大豆子")
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
         this.setColour(150);
@@ -111,6 +111,6 @@ Blockly.Blocks['eatapple'] = {
     }
 };
 
-Blockly.JavaScript['eatapple'] = function (block) {
-    return 'Scene.EatApple();\n';
+Blockly.JavaScript['eatbiggoods'] = function (block) {
+	return 'Scene.EatBigGoods();\n';
 };

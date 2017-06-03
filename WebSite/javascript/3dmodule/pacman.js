@@ -279,10 +279,14 @@ PACMan.prototype.turnTo = function (orientation) {
     }
 };
 
-PACMan.prototype.turnLeft = function () {
-    var orientation = this.orientation + 1;
-    orientation = (orientation == 4 ? 0 : orientation);
-    this.turnTo(orientation);
+PACMan.prototype.turnLeft = function (currentOri) {
+	if (currentOri) {
+		var orientation = currentOri + 1;
+	} else {
+		var orientation = this.orientation + 1;
+	}
+		orientation = (orientation == 4 ? 0 : orientation);
+		this.turnTo(orientation);
 };
 
 PACMan.prototype.turnRight = function () {
@@ -402,13 +406,22 @@ PACMan.prototype.updatePositionStudy = function () {
                     this.movePathTarget.shift();
                 }
             } else {
-                if (!this.checkCollide()) {
-                    if (this.orientation == 0 || this.orientation == 2) {
-                        this.mesh.position.x += _itemSize / 40 * this.speed * _moveMap[this.orientation];
-                    } else {
-                        this.mesh.position.z += _itemSize / 40 * this.speed * _moveMap[this.orientation];
-                    }
-                }
+				if (!this.checkCollide()) {
+					if (this.orientation == 0 || this.orientation == 2) {
+						this.mesh.position.x += _itemSize / 40 * this.speed * _moveMap[this.orientation];
+					} else {
+						this.mesh.position.z += _itemSize / 40 * this.speed * _moveMap[this.orientation];
+					}
+				} else {
+					if (this.mapData[coord.y][coord.x].t==2 && this._stopWhenComplete) {
+						if (!this.completeFired) {
+							this.pathCompleteFn();
+							this.completeFired = true;
+						}
+
+						this.movePathTarget = [];
+					}
+				}
             }
         }
     } else {
@@ -475,31 +488,38 @@ PACMan.prototype.checkCollide = function () {
     var onPoint = false;
     if (parseInt(coord.x) == coord.x && parseInt(coord.y) == coord.y) {
         onPoint = true;
-        if (this.orientation == 0 || this.orientation == 2) {
+		if (this.orientation == 0 || this.orientation == 2) {
             nextCoordX += _moveMap[this.orientation];
         } else {
             nextCoordY += _moveMap[this.orientation];
         }
     }
 
-    if (onPoint) {
+	if (onPoint) {
+		tmpItem = this.mapData[coord.y][coord.x];
+		if (tmpItem.t == 2) {
+			if (this.actionForCollideGoods() == true) {
+				return true;
+			}
+		}
+
         tmpItem = this.mapData[nextCoordY][nextCoordX];
         if (tmpItem.t == 1) {
-            if (!this.actionForCollideWall()) {
+            if (!this.actionForCollideWall(this)) {
                 return Engine.modules[tmpItem.s].collideAction(this);
             }
-        } else if (tmpItem.t == 0) {
-            if (this.actionForCollideBean() == true) {
-                return true;
-            }
-        } else if (tmpItem.t == 2) {
-            if (this.actionForCollideGoods() == true) {
-                return true;
-            }
-        } else if (tmpItem.t == 4) {
-            if (this.actionForCollideCountGoods() == true) {
-                return true;
-            }
+        //} else if (tmpItem.t == 0) {
+        //    if (this.actionForCollideBean() == true) {
+        //        return true;
+        //    }
+        //} else if (tmpItem.t == 2) {
+        //    if (this.actionForCollideGoods() == true) {
+        //        return true;
+        //    }
+        //} else if (tmpItem.t == 4) {
+        //    if (this.actionForCollideCountGoods() == true) {
+        //        return true;
+        //    }
         }
     } else {
         nextCoordX = (this.orientation == 0 ? Math.ceil(nextCoordX) : this.orientation == 2 ? Math.floor(nextCoordX) : nextCoordX);

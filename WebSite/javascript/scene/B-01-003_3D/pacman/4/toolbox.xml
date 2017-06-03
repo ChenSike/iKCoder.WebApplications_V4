@@ -3,6 +3,6 @@
   <block type="turn_left"></block>
   <block type="turn_right"></block>
   <block type="move_forward"></block>
-  <!--block type="eatapple"></block-->
+  <block type="eatbiggoods"></block>
   <block type="forloop"></block>
 </xml>

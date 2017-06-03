@@ -167,7 +167,7 @@ Scene.start = function () {
 };
 
 Scene.reset = function () {
-    Engine.rersetScene();
+    Engine.resetScene();
     Scene.resetMap();
     Scene.getPlayer().reset();
     var x = Scene.getPlayer().defaultCoord.x;
