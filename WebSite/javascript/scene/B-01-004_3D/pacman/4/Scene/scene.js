@@ -4,18 +4,18 @@ var Scene = {};
 
 Scene.defaultDATA = [
 	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-	[1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-	[1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1],
+	[1, 0, 0, 0, 0, 0, 1, 2, 0, 0, 1, 0, 0, 1],
+	[1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1],
+	[1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+	[1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1],
+	[1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+	[1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+	[1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+	[1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
@@ -82,7 +82,7 @@ Scene.initEnvironment = function (containerId) {
 	Engine.initScreenAnd3D(containerId, params);
 	Engine.prepareForStart();
 	Scene.initMap();
-	Scene.initPlayer(1, 9);
+	Scene.initPlayer(1, 12);
 };
 
 Scene.initMap = function () {
@@ -289,10 +289,10 @@ Scene.startGame = function () {
 };
 
 
-Scene.setFunctionWhenWall = function (logicStr) {
+Scene.setFunctionWhenWall = function (logicStr) {	
 	var arr = logicStr.split(';');
 	var newCode = '';
-	for (var i = 0; i < arr.length; i++) {
+	for (var i = 0; i < arr.length; i++) {	
 		if (arr[i].indexOf('Scene.TurnLeft') >= 0) {
 			newCode += Scene.TurnLeft(true);
 		} else if (arr[i].indexOf('Scene.TurnRight') >= 0) {
@@ -306,5 +306,5 @@ Scene.setFunctionWhenWall = function (logicStr) {
 	};
 
 	Engine.getModuleObject('pacman').setActionForCollideWallSeq(tmpFn);
-	Engine.getModuleObject('pacman').setActionForCollideGoods(function () { return true; });
+	Engine.getModuleObject('pacman').setActionForCollideGoods(function () { return true;});
 };

@@ -180,7 +180,7 @@ Blockly.JavaScript['if_condition'] = function (a) {
 		//++b;
 	//while (a.getInput("IF" + b));
   //  a.getInput("ELSE") && (d = Blockly.JavaScript.statementToCode(a, "ELSE"), c += " else {\n" + d + "}");
-    return c + "\n"
+    return c + ";\n"
 };
 
 

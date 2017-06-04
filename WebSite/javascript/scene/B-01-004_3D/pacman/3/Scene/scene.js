@@ -4,24 +4,24 @@ var Scene = {};
 
 Scene.defaultDATA = [
 	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+	[1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 1],
+	[1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+	[1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
 	[1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-	[1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
 Scene.mapDATA = [];
 Scene._CALCMOVEPATH = [];
-Scene.targetPos = { x: 7, y: 4 };
+Scene.targetPos = { x: 1, y: 1 };
 
 Scene.initEnvironment = function (containerId) {
 	Scene.initGlobalParams();
@@ -82,7 +82,7 @@ Scene.initEnvironment = function (containerId) {
 	Engine.initScreenAnd3D(containerId, params);
 	Engine.prepareForStart();
 	Scene.initMap();
-	Scene.initPlayer(1, 9);
+	Scene.initPlayer(1, 12);
 };
 
 Scene.initMap = function () {

@@ -7,8 +7,8 @@ Scene.defaultDATA = [
 	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 1],
 	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
 	[1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
 	[1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1],
@@ -21,7 +21,7 @@ Scene.defaultDATA = [
 
 Scene.mapDATA = [];
 Scene._CALCMOVEPATH = [];
-Scene.targetPos = { x: 7, y: 4 };
+Scene.targetPos = { x: 11, y: 5 };
 
 Scene.initEnvironment = function (containerId) {
 	Scene.initGlobalParams();
@@ -287,7 +287,6 @@ Scene.isWall = function () {
 Scene.startGame = function () {
 	Scene.start();
 };
-
 
 Scene.setFunctionWhenWall = function (logicStr) {
 	var arr = logicStr.split(';');

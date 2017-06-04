@@ -95,7 +95,9 @@ function PACMan(moveType, mapData) {
     this._stopWhenComplete = true;
     this.moveType = 'study';
     this.movePath = [];
-    this.movePathTarget = [];
+	this.movePathTarget = [];
+	this.actionForCollideGoodsSeq = [];
+	this.actionForCollideWallSeq = [];
     this.init();
 };
 
@@ -280,17 +282,20 @@ PACMan.prototype.turnTo = function (orientation) {
 };
 
 PACMan.prototype.turnLeft = function (currentOri) {
-	if (currentOri) {
-		var orientation = currentOri + 1;
-	} else {
 		var orientation = this.orientation + 1;
-	}
+	if (currentOri) {
+		 orientation = currentOri + 1;
+	} 
 		orientation = (orientation == 4 ? 0 : orientation);
 		this.turnTo(orientation);
 };
 
-PACMan.prototype.turnRight = function () {
-    var orientation = this.orientation - 1;
+PACMan.prototype.turnRight = function (currentOri) {
+	var orientation = this.orientation - 1;
+	if (currentOri) {
+		orientation = currentOri - 1;
+	}
+
     orientation = (orientation == -1 ? 3 : orientation);
     this.turnTo(orientation);
 };
@@ -432,11 +437,25 @@ PACMan.prototype.updatePositionStudy = function () {
     }
 };
 
+
+PACMan.prototype.setActionForCollideWallSeq = function (fn) {
+	this.actionForCollideWallSeq.push(fn);
+}
+
+
 PACMan.prototype.setActionForCollideWall = function (fn) {
-    this.actionForCollideWall = fn;
+	this.actionForCollideWall = fn;
+	this.actionForCollideWallSeq = [];
 };
 
 PACMan.prototype.actionForCollideWall = function () {
+	if (this.actionForCollideWallSeq.length > 0) {
+		if (this.mesh.rotation.y % (Math.PI / 2) == 0) {
+		this.actionForCollideWallSeq[0]();
+		this.actionForCollideWallSeq.shift();
+		}
+	}
+
     return false;
 };
 
@@ -456,8 +475,13 @@ PACMan.prototype.actionForCollideBean = function () {
     return false;
 };
 
+PACMan.prototype.setActionForCollideGoodsSeq = function (fn) {
+	this.actionForCollideGoodsSeq.push(fn);
+}
+
 PACMan.prototype.setActionForCollideGoods = function (fn) {
-    this.actionForCollideGoods = fn
+	this.actionForCollideGoods = fn;
+	this.actionForCollideGoodsSeq = [];
 };
 
 PACMan.prototype.actionForCollideGoods = function () {
@@ -553,7 +577,9 @@ PACMan.prototype.reset = function () {
     this.setPosition(this.defaultCoord.x, this.defaultCoord.y);
     this.turnTo(0);
     this.movePath = [];
-    this.movePathTarget = [];
+	this.movePathTarget = [];
+	this.actionForCollideGoodsSeq = [];
+	this.actionForCollideWallSeq = [];
     this.completeFired = false;
     this.mesh.visible = true;
 }
