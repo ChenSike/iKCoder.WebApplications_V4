@@ -17,6 +17,14 @@ var Engine = {
         bonus: null,
         floor: null
     },
+    moduleLib: {
+        wolf: null,
+        rabbit: null,
+        hedgehog: null,
+        carrot: null,
+        grass: null,
+        forest: null
+    },
     _stateOver: -1,
     _statePause: 0,
     _stateRun: 1,
@@ -86,15 +94,16 @@ Engine.params = {
     },
     audio: 'media/sound_1.mp3',
     floorRadius: 200,
-    treeCount: 100,
+    treeCount: 50,
     playerJumpHeight: 45,
-    modules: {
-        //player: 'rabbit',
-        //monster: 'wolf',
-        //obstacle: 'hedgehog',
-        //prop: 'carrot',
-        //floor: 'floor'
-    }
+    modules: [
+        'rabbit',
+        'wolf',
+        'hedgehog',
+        'carrot',
+        'grass',
+        'forest'
+    ]
 };
 
 Engine.initParams = function (params) {
@@ -212,6 +221,10 @@ Engine.loop = function () {
         }
     }
 
+    if (Engine.checkCollision) {
+        Engine.checkCollision(Engine.modules);
+    }
+
     Engine.updateDistance();
     Engine.render();
     Engine._animationId = requestAnimationFrame(Engine.loop);
@@ -283,10 +296,11 @@ Engine.createRoleObject = function (moduleType, role) {
 }
 
 Engine.initModules = function () {
-    for (var key in Engine.params.modules) {
-        Engine.modules[key] = Engine.createRoleObject(Engine.params.modules[key], key);
-        Engine.scene.add(Engine.modules[key].mesh);
-        Engine.modules[key].prepareForRun();
+    for (var i = 0; i < Engine.params.modules.length; i++) {
+        Engine.moduleLib[Engine.params.modules[i]] = Engine.createRoleObject(Engine.params.modules[i], '');
+        Engine.moduleLib[Engine.params.modules[i]].mesh.visible = false;
+        Engine.scene.add(Engine.moduleLib[Engine.params.modules[i]].mesh);
+        Engine.moduleLib[Engine.params.modules[i]].prepareForRun();
     }
 
     Engine.modules['bonus'] = Engine.createRoleObject('bonus', '');
@@ -340,7 +354,7 @@ Engine.addModules = function (moduleType, role) {
     Engine.render();
 };
 
-Engine.changeRoleModule = function (moduleType, role) {
+Engine.changeRoleModule_create = function (moduleType, role) {
     for (var key in Engine.modules) {
         if (role == key) {
             if (Engine.modules[role]) {
@@ -359,11 +373,40 @@ Engine.changeRoleModule = function (moduleType, role) {
     Engine.render();
 };
 
+Engine.changeRoleModule = function (moduleType, role) {
+    for (var key in Engine.modules) {
+        if (role == key) {
+            if (Engine.modules[role]) {
+                Engine.modules[role].mesh.visible = false;
+            }
+
+            if (moduleType != '') {
+                Engine.modules[role] = Engine.moduleLib[moduleType];
+                Engine.modules[role].mesh.visible = true;
+                Engine.modules[role].setRole(role);
+                Engine.modules[role].prepareForRun();
+            } else {
+                if (Engine.modules[role]) {
+                    Engine.modules[role].mesh.visible = false;
+                    Engine.modules[role].setRole('');
+                }
+            }
+        }
+    }
+
+    Engine.render();
+};
+
 Engine.setAudio = function (audioPath) {
     if (audioPath === false) {
-        Engine.audio.pause();
+        if (Engine.audio) {
+            Engine.audio.pause();
+        }
     } else {
-        Engine.audio = new Audio(audioPath);
+        if (Engine.audio.src.indexOf(audioPath) < 0) {
+            Engine.audio = new Audio(audioPath);
+        }
+
         Engine.audio.play();
     }
 }
@@ -404,9 +447,11 @@ Engine.over = function () {
 };
 
 Engine.handleWindowResize = function () {
-    Engine.renderer.setSize(this.container.width(), this.container.height());
-    Engine.camera.aspect = this.container.width() / this.container.height();
-    Engine.camera.updateProjectionMatrix();
+    if (Engine.renderer) {
+        Engine.renderer.setSize(this.container.width(), this.container.height());
+        Engine.camera.aspect = this.container.width() / this.container.height();
+        Engine.camera.updateProjectionMatrix();
+    }
 };
 
 Engine.handleMouseDown = function (event) {
@@ -574,7 +619,9 @@ Module.prototype.updatePosition_Prop = function () {
 
 Module.prototype.updatePosition = function () {
     if (this.role == 'monster') {
-        this.updatePosition_Monster();
+        if (this.positionType != 'player') {
+            this.updatePosition_Monster();
+        }
     } else if (this.role == 'obstacle') {
         this.updatePosition_Obstacle();
     } else if (this.role == 'prop') {

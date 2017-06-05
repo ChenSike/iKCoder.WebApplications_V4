@@ -493,6 +493,11 @@ Rabbit.prototype.prepareForRole = function (role) {
     } else if (role == 'prop') {
         this.mesh.scale.set(0.6, 0.6, 0.6);
         this.mesh.rotation.y = 0;
+    } else if (role == 'player') {
+        this.mesh.scale.set(1, 1, 1);
+        this.mesh.position.y = 10;
+        this.mesh.position.x = 0;
+        this.mesh.position.z = 0;
     }
 };
 
@@ -501,6 +506,7 @@ function Wolf(role) {
     this.state = Engine._statePrepare;
     this.type = 'wolf';
     this.role = role;
+    this.positionType = '';
     this.poseType = Engine._statePrepare;
     this.runningCycle = 0;
     this.params = {
@@ -669,7 +675,6 @@ Wolf.prototype.run = function () {
         var speed = Math.min(this.speed, Engine.params.speed.player.max);
         this.runningCycle += Engine._delta * speed * 0.7;
         this.runningCycle = this.runningCycle % (Math.PI * 2);
-
     }
 
     var tmpCycle = this.runningCycle;
@@ -798,6 +803,8 @@ Wolf.prototype.prepareForRole = function (role) {
     if (role == 'player') {
         this.mesh.scale.set(0.5, 0.5, 0.5);
         this.mesh.position.y = 10;
+        this.mesh.position.x = 0;
+        this.mesh.position.z = 0;
     } else if (role == 'obstacle') {
         this.irisL.visible = false;
         this.irisR.visible = false;
@@ -807,6 +814,7 @@ Wolf.prototype.prepareForRole = function (role) {
         this.mesh.scale.set(0.4, 0.4, 0.4);
         this.mesh.rotation.y = 0.2;
     } else if (role == 'monster') {
+        this.mesh.scale.set(1, 1, 1);
         this.body.rotation.x = -20 * Math.PI / 180;
     }
 };

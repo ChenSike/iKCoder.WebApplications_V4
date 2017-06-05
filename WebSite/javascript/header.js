@@ -1,7 +1,13 @@
 ﻿'use strict';
 
 function buildHeaderHTML(isIndexPage) {
-    var tmpString = (_getSearchValue('needcheckstate') == '1' ? '&needcheckstate=1' : '');
+    var tmpString = '';
+    if (_getSearchValue('needcheckstate') == '1') {
+        if ($.cookie('logined_user_nickname')) {
+            tmpString = '&needcheckstate=1';
+        }
+    }
+
     var tmpHtmlStrArr = [];
     tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header" style="background-color:transparent;z-index: 15000;">');
     tmpHtmlStrArr.push('    <a class="navbar-brand" href="index.html?rnd=' + Date.now() + '">');

@@ -260,8 +260,8 @@ Engine.initEvent = function () {
 
 Engine.handleContainerResize = function (width, height) {
     renderer.setSize(width, height);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+    Engine.camera.aspect = width / height;
+    Engine.camera.updateProjectionMatrix();
 };
 
 Engine.handleMouseDown = function (eventObj) {

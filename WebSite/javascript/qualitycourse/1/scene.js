@@ -16,16 +16,27 @@ Scene.init = function () {
         },
     });
     Engine.prepareForRun();
-}
+};
 
-Scene.start = function () {    
+Scene.start = function () {
     Engine.start();
-}
+    for (var key in Engine.modules) {
+        if (!Engine.modules[key]) {
+            return;
+        }
+    }
+
+    if (!Engine.audio || Engine.audio.paused) {
+        return;
+    }
+
+    Scene.stepComplete();
+};
 
 Scene.reset = function () {
     Engine.reset();
     Engine.start();
-}
+};
 
 Scene.SetMusic = function (music) {
     Engine.setAudio(music == '' ? false : music);
@@ -37,8 +48,8 @@ Scene.SetRoleModule = function (moduleType, role) {
     }
 
     Engine.changeRoleModule(moduleType, role);
-}
+};
 
 Scene.resetSize = function () {
     Engine.handleWindowResize();
-}
+};

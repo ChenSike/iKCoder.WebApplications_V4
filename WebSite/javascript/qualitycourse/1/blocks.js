@@ -136,11 +136,7 @@ Blockly.Blocks['scene_setting_music'] = {
 
 Blockly.JavaScript['scene_setting_music'] = function (block) {
     var value_name = Blockly.JavaScript.valueToCode(block, 'scene_role_item', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = '';
-    if (value_name != "") {
-        code = 'Scene.SetMusic("' + value_name + '");\n';
-    }
-
+    var code =  'Scene.SetMusic("' + value_name + '");\n';
     return code;
 };
 
