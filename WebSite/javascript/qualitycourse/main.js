@@ -96,6 +96,8 @@ Engine.params = {
     floorRadius: 200,
     treeCount: 50,
     playerJumpHeight: 45,
+    collisionBonus: 20,
+    collisionObstacle: 10,
     modules: [
         'rabbit',
         'wolf',
@@ -222,28 +224,36 @@ Engine.loop = function () {
         }
     }
 
-    if (Engine.checkCollision) {
-        Engine.checkCollision(Engine.modules);
-    }
-
+    Engine.checkCollision(Engine.modules);
     Engine.updateDistance();
     Engine.render();
     Engine._animationId = requestAnimationFrame(Engine.loop);
 };
 
 Engine.checkCollision = function () {
-    var db = Engine.modules.player.mesh.position.clone().sub(prop.mesh.position.clone());
-    var dm = hero.mesh.position.clone().sub(obstacle.mesh.position.clone());
-
-    if (db.length() < collisionBonus) {
-        getBonus();
+    for (var key in Engine.modules) {
+        if (!Engine.modules[key]) {
+            return;
+        }
     }
 
-    if (dm.length() < collisionObstacle && obstacle.status != "flying") {
-        getMalus();
+    var db = Engine.modules.player.mesh.position.clone().sub(Engine.modules.prop.mesh.position.clone());
+    var dm = Engine.modules.player.mesh.position.clone().sub(Engine.modules.obstacle.mesh.position.clone());
+    if (db.length() < Engine.params.collisionBonus) {
+        if (Engine.modules.prop.mesh.visible) {
+            Engine.modules.bonus.mesh.position.copy(Engine.modules.prop.mesh.position);
+            Engine.modules.bonus.explose();
+            Engine.modules.prop.angle += Math.PI / 2;
+            Engine.modules.monster.monsterPosTarget += .025;
+        }
+    }
+
+    if (dm.length() < Engine.params.collisionObstacle && Engine.modules.obstacle.status != Engine._stateFly) {
+        if (Engine.modules.obstacle.mesh.visible) {
+            Engine.modules.obstacle.fly();
+        }
     }
 }
-
 
 Engine.updateDistance = function () {
     //Engine._distance += Engine._delta * Engine.modules['player'].speed;
@@ -599,7 +609,14 @@ Module.prototype.reset = function () {
 };
 
 Module.prototype.over = function () {
-
+    this.state = Engine._stateOver;
+    if (this.role == 'monster') {
+        if (this.mouth) {
+            this.mouth.add(Engine.modules.player.mesh);
+        } else {
+            this.mesh.add(Engine.modules.player.mesh);
+        }
+    }
 };
 
 Module.prototype.setRole = function (role) {
@@ -613,7 +630,7 @@ Module.prototype.setRole = function (role) {
 };
 
 Module.prototype.updatePosition_Monster = function () {
-    if (Engine.params.speed.monster.pursue) {
+    if (Engine.params.speed.monster.pursue && Engine.state == Engine._stateRun) {
         this.monsterPosTarget -= Engine._delta * Engine.params.speed.monster.acceleration;
         this.monsterPos += (this.monsterPosTarget - this.monsterPos) * Engine._delta;
         if (this.monsterPos < .56) {
@@ -712,4 +729,36 @@ Module._prepareForRole = function (role, module) {
         module.mesh.position.x = Math.cos(angle) * (Engine.params.floorRadius + 15);
         module.mesh.rotation.z = -Math.PI / 2 + angle;
     }
+};
+
+Module.prototype.fly = function () {
+    this.status = Engine._stateFly;
+    var tx = (Math.random() > 0.5) ? -20 - Math.random() * 10 : 20 + Math.random() * 5;
+    var _that = this;
+    TweenMax.to(this.mesh.position, 4, { x: tx, y: Math.random() * 50, z: 350, ease: Power4.easeOut });
+    TweenMax.to(this.mesh.rotation, 4, {
+        x: Math.PI * 3, z: Math.PI * 3, y: Math.PI * 6, ease: Power4.easeOut, onComplete: function () {
+            var floorRotation = (Engine.modules.floor ? Engine.modules.floor.rotation : 0);
+            _that.status = "ready";
+            _that.body.rotation.y = Math.random() * Math.PI * 2;
+            _that.angle = -floorRotation - Math.random() * .4;
+            _that.angle = this.angle % (Math.PI * 2);
+            _that.mesh.rotation.x = 0;
+            _that.mesh.rotation.y = 0;
+            _that.mesh.rotation.z = 0;
+            _that.mesh.position.z = 0;
+        }
+    });
+
+    Engine.modules.monster.monsterPosTarget -= 0.04;
+    var tmpAlpha = Engine.params.renderer.clearColor;
+    TweenMax.from(this,
+        0.5,
+        {
+            tmpAlpha: 0.5,
+            onUpdate: function () {
+                Engine.params.renderer.clearColor = tmpAlpha;
+                Engine.renderer.setClearColor(Engine.params.renderer.clearColor, Engine.params.renderer.clearAlpha);
+            }
+        })
 }

@@ -141,8 +141,9 @@ BonusParticles.prototype.init = function () {
 };
 
 BonusParticles.prototype.explose = function () {
+    this.mesh.visible = true;
     var _this = this;
-    var explosionSpeed = .5;
+    var explosionSpeed = 0.5;
     for (var i = 0; i < this.parts.length; i++) {
         var tx = -50 + Math.random() * 100;
         var ty = -50 + Math.random() * 100;
@@ -151,9 +152,9 @@ BonusParticles.prototype.explose = function () {
         p.position.set(0, 0, 0);
         p.scale.set(1, 1, 1);
         p.visible = true;
-        var s = explosionSpeed + Math.random() * .5;
+        var s = explosionSpeed + Math.random() * 0.5;
         TweenMax.to(p.position, s, { x: tx, y: ty, z: tz, ease: Power4.easeOut });
-        TweenMax.to(p.scale, s, { x: .01, y: .01, z: .01, ease: Power4.easeOut, onComplete: removeParticle, onCompleteParams: [p] });
+        TweenMax.to(p.scale, s, { x: 0.01, y: 0.01, z: 0.01, ease: Power4.easeOut, onComplete: function (p) { p.visible = false; }, onCompleteParams: [p] });
     }
 };
 
@@ -779,13 +780,14 @@ Wolf.prototype.hang = function () {
 
 Wolf.prototype.sit = function () {
     var tmpConst = 1.2;
+    this.state = Engine._stateSit;
     var ease = Power4.easeOut;
     var _this = this;
     TweenMax.to(this.torso.rotation, tmpConst, { x: -1.3, ease: ease });
     TweenMax.to(this.torso.position, tmpConst, {
         y: -5, ease: ease, onComplete: function () {
             _this.nod();
-            gameStatus = "readyToReplay";
+            Engine.state = Engine._statePrepare;
         }
     });
     TweenMax.to(this.head.rotation, tmpConst, { x: Math.PI / 3, y: -Math.PI / 3, ease: ease });
