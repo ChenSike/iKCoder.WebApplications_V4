@@ -1,4 +1,3 @@
 ﻿<xml id="toolbox" style="display: none">
-  <block type="set_wolf_shape"></block>
-  <block type="set_rabbit_shape"></block>
+  <block type="scene_setting_complete" maxcount="1"></block>  
 </xml>

@@ -495,7 +495,7 @@ Rabbit.prototype.prepareForRole = function (role) {
         this.mesh.rotation.y = 0;
     } else if (role == 'player') {
         this.mesh.scale.set(1, 1, 1);
-        this.mesh.position.y = 10;
+        this.mesh.position.y = 0;
         this.mesh.position.x = 0;
         this.mesh.position.z = 0;
     }

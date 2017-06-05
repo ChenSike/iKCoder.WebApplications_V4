@@ -18,23 +18,23 @@ Blockly.Blocks['set_wolf_shape'] = {
         this.appendDummyInput()
             .appendField("主体颜色")
             .appendField(new Blockly.FieldColour('#0f0707'), "wolf_color");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
         this.setTooltip('');
         this.setColour(210);
         this.setHelpUrl('http://www.example.com/');
+        this.setDeletable(false);
     }
 };
 
 Blockly.JavaScript['set_wolf_shape'] = function (block) {
-    //var dropdown_part_name = block.getFieldValue('part_name');
-    //var number_part_width = block.getFieldValue('part_width');
-    //var number_part_height = block.getFieldValue('part_height');
-    //var number_part_depth = block.getFieldValue('part_depth');
-    //var colour_part_color = block.getFieldValue('part_color');
-    //var code = 'Scene.SetMonsterProperty("' + dropdown_part_name + '", ' + number_part_width + ', ' + number_part_height + ', ' + number_part_depth + ', "' + colour_part_color + '");\n';
-    var code = '';
+    var head = block.getFieldValue('wolf_head');
+    var body = block.getFieldValue('wolf_body');
+    var ear = block.getFieldValue('wolf_ear');
+    var color = block.getFieldValue('wolf_color');
+    var code = 'Scene.setWolfShape("' + head + '","' + body + '","' + ear + '","' + color + '");\n';
     return code;
 };
-
 
 Blockly.Blocks['set_rabbit_shape'] = {
     init: function () {
@@ -52,23 +52,54 @@ Blockly.Blocks['set_rabbit_shape'] = {
         this.appendDummyInput()
             .appendField("主体颜色")
             .appendField(new Blockly.FieldColour('#dc5f45'), "rabbit_color");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
         this.setTooltip('');
         this.setColour(330);
         this.setHelpUrl('http://www.example.com/');
+        this.setDeletable(false);
     }
 };
 
 Blockly.JavaScript['set_rabbit_shape'] = function (block) {
-    //var dropdown_part_name = block.getFieldValue('part_name');
-    //var number_part_width = block.getFieldValue('part_width');
-    //var number_part_height = block.getFieldValue('part_height');
-    //var number_part_depth = block.getFieldValue('part_depth');
-    //var colour_part_color = block.getFieldValue('part_color');
-    //var code = 'Scene.SetMonsterProperty("' + dropdown_part_name + '", ' + number_part_width + ', ' + number_part_height + ', ' + number_part_depth + ', "' + colour_part_color + '");\n';
-    var code = '';
+    var head = block.getFieldValue('rabbit_head');
+    var body = block.getFieldValue('rabbit_body');
+    var ear = block.getFieldValue('rabbit_ear');
+    var color = block.getFieldValue('rabbit_color');
+    var code = 'Scene.setRabbitShape("' + head + '","' + body + '","' + ear + '","' + color + '");\n';
     return code;
 };
 
+Blockly.Blocks['scene_setting'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("设置场景内主要角色的外观");
+        this.appendStatementInput("scene_roles_setting").setCheck(null);
+        this.setInputsInline(true);
+        this.setColour(20);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+        this.setDeletable(false);
+    }
+};
 
+Blockly.JavaScript['scene_setting'] = function (block) {
+    var code = Blockly.JavaScript.statementToCode(block, 'scene_roles_setting');
+    return code;
+};
 
+Blockly.Blocks['scene_setting_complete'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("设置完毕");
+        this.setPreviousStatement(true, null);
+        this.setTooltip('');
+        this.setColour(240);
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
 
+Blockly.JavaScript['scene_setting_complete'] = function (block) {
+    var code = 'Scene.settingComplete();';
+    return code;
+};

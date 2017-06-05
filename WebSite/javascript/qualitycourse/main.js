@@ -103,7 +103,8 @@ Engine.params = {
         'carrot',
         'grass',
         'forest'
-    ]
+    ],
+    control: { device: 'm', key: 0 }
 };
 
 Engine.initParams = function (params) {
@@ -229,6 +230,20 @@ Engine.loop = function () {
     Engine.render();
     Engine._animationId = requestAnimationFrame(Engine.loop);
 };
+
+Engine.checkCollision = function () {
+    var db = Engine.modules.player.mesh.position.clone().sub(prop.mesh.position.clone());
+    var dm = hero.mesh.position.clone().sub(obstacle.mesh.position.clone());
+
+    if (db.length() < collisionBonus) {
+        getBonus();
+    }
+
+    if (dm.length() < collisionObstacle && obstacle.status != "flying") {
+        getMalus();
+    }
+}
+
 
 Engine.updateDistance = function () {
     //Engine._distance += Engine._delta * Engine.modules['player'].speed;
@@ -446,6 +461,18 @@ Engine.over = function () {
     TweenMax.to(Engine.camera.position, 3, { z: Engine.params.camera.oz, y: Engine.params.camera.oy, x: 0 });//Engine.params.camera.ox });
 };
 
+Engine.setControl = function (device, eventKeyCode) {
+    Engine.container.unbind();
+    Engine.params.control = { device: 'm', key: 0 };
+    if (device == 'm') {
+        Engine.container.on('mousedown', Engine.handleMouseDown);
+        Engine.params.control = { device: 'm', key: eventKeyCode };
+    } else {
+        Engine.container.on('keydown', Engine.handleKeyDown);
+        Engine.params.control = { device: 'k', key: eventKeyCode };
+    }
+}
+
 Engine.handleWindowResize = function () {
     if (Engine.renderer) {
         Engine.renderer.setSize(this.container.width(), this.container.height());
@@ -454,13 +481,20 @@ Engine.handleWindowResize = function () {
     }
 };
 
-Engine.handleMouseDown = function (event) {
-    //if (gameStatus == "play" && hero.status == 'running') {
-    //    hero.jump();
-    //}
-    ////else if (gameStatus == "readyToReplay") {
-    ////    replay();
-    ////}
+Engine.handleMouseDown = function (eventObj) {
+    if (eventObj.button == Engine.params.control.key) {
+        if (Engine.state == Engine._stateRun) {
+            Engine.modules['player'].jump();
+        }
+    }
+};
+
+Engine.handleKeyDown = function (eventObj) {
+    if (eventObj.which == Engine.params.control.key) {
+        if (Engine.state == Engine._stateRun) {
+            Engine.modules['player'].jump();
+        }
+    }
 };
 
 Engine.getPlayer = function () {
@@ -627,7 +661,6 @@ Module.prototype.updatePosition = function () {
     } else if (this.role == 'prop') {
         this.updatePosition_Prop();
     }
-
 };
 
 Module.prototype.updatePose = function () {

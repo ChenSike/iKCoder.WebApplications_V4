@@ -8,7 +8,8 @@ var _nextStage = '';
 var _currentStep = '';
 var _nextStep = '';
 var _totalSteps = '';
-var _topTooltip = []
+var _topTooltip = [];
+var _dataForSave = '';
 var _messages = {
     success: '',
     faild: ''
@@ -185,7 +186,27 @@ function initEvents() {
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
-        window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
+        _registerRemoteServer();
+        $.ajax({
+            type: 'POST',
+            async: true,
+            url: _getRequestURL(_gURLMapping.tmp.storesave, { symbol: 'qc01_3_' + _currentStep, type: 'modulesetting', timeout: 120, istextreq: 0 }),
+            data: _dataForSave,
+            success: function (response, status) {
+                if ($(response).find('err').length > 0) {
+                    _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
+                    return;
+                }
+
+                window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
+            },
+            dataType: 'xml',
+            xhrFields: {
+                withCredentials: true
+            },
+            error: function () {
+            }
+        });
     });
 
     $('#btn_Step_FindError').on('click', function (e) {

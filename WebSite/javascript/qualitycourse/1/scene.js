@@ -30,12 +30,23 @@ Scene.start = function () {
         return;
     }
 
+    _dataForSave = [];
+    _dataForSave.push('<data>');
+    for (var key in Engine.modules) {
+        if (key != 'bonus') {
+            _dataForSave.push('<item role="' + key + '" module="' + (Engine.modules[key] ? Engine.modules[key].type : '') + '"></item>');
+        }
+    }
+
+    _dataForSave.push('<music path="' + Engine.audio.src + '"></music>');
+    _dataForSave.push('</data>');
     Scene.stepComplete();
 };
 
 Scene.reset = function () {
     Engine.reset();
     Engine.start();
+    _dataForSave = '';
 };
 
 Scene.SetMusic = function (music) {

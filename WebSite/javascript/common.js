@@ -46,8 +46,8 @@ var _gURLMapping = {
         gethtmlreport: '/Bus/Report/api_iKCoder_Report_Get_HtmlReport.aspx'
     },
     tmp: {
-        storesave: '/bus/store/api_iKCoder_Store_Save.aspx?symbol=XXX&type=XXXX&timeout=120&istextreq=1', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
-        storeload: '/bus/store/api_iKCoder_Store_Load.aspx?symbol=XXX&type=XXXX'
+        storesave: '/bus/store/api_iKCoder_Store_Save.aspx', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
+        storeload: '/bus/store/api_iKCoder_Store_Load.aspx'   //?symbol=XXX&type=XXXX'
     }
 };
 var _gCitys = [
