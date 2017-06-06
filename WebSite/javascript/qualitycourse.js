@@ -449,8 +449,8 @@ function initData() {
             toolbox: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/toolbox.xml')),
             workspace: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/workspace.xml')),
             lib: [
-                //'javascript/qualitycourse/' + _currentStep + '/blocks.js',
-                //'javascript/qualitycourse/' + _currentStep + '/scene.js'
+                'javascript/qualitycourse/' + _currentStep + '/blocks.js',
+                'javascript/qualitycourse/' + _currentStep + '/scene.js'
             ]
         }
     }
@@ -698,7 +698,7 @@ function adjustAfterSiderBarResize() {
     container.width(wrap.width());
     container.find('canvas').height(wrap.height());
     container.find('canvas').width(wrap.width());
-    if (Scene.resetSize) {
+    if (typeof Scene != 'undefined' && Scene.resetSize) {
         Scene.resetSize();
     }
 };
