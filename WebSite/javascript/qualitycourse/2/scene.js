@@ -14,7 +14,7 @@ Scene.init = function () {
     $.ajax({
         type: 'POST',
         async: true,
-        url: _getRequestURL(_gURLMapping.tmp.storeload, { symbol: 'qc01_3_' + (_currentStep - 1), type: 'modulesetting'}),
+        url: _getRequestURL(_gURLMapping.tmp.storeload, { symbol: 'qc01_3_' + (_currentStep - 1), type: 'modulesetting' }),
         data: '',
         success: function (response, status) {
             if ($(response).find('err').length > 0) {
@@ -72,7 +72,19 @@ Scene.resetSize = function () {
 };
 
 Scene.settingComplete = function () {
-    _dataForSave;
+    var rabbitNode = $($(_dataForSave).find('item[module="rabbit"]')[0]);
+    var rabbitModule = Engine.moduleLib['rabbit'];
+    rabbitNode.attr('head', rabbitModule.head.scale.x);
+    rabbitNode.attr('body', rabbitModule.torso.scale.x);
+    rabbitNode.attr('ear', rabbitModule.earL.scale.x);
+    rabbitNode.attr('color', '#' + rabbitModule.head.material.color.getHexString());
+    var wolfNode = $($(_dataForSave).find('item[module="wolf"]')[0]);
+    var wolfModule = Engine.moduleLib['wolf'];
+    wolfNode.attr('head', wolfModule.head.scale.x);
+    wolfNode.attr('body', wolfModule.torso.scale.x);
+    wolfNode.attr('ear', wolfModule.earL.scale.x);
+    wolfNode.attr('color', '#' + wolfModule.head.material.color.getHexString());
+    _dataForSave = XMLToString(_dataForSave);
     showCompleteAlert();
 };
 

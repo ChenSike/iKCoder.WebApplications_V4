@@ -98,14 +98,14 @@ Engine.params = {
     playerJumpHeight: 45,
     collisionBonus: 20,
     collisionObstacle: 10,
-    modules: [
-        'rabbit',
-        'wolf',
-        'hedgehog',
-        'carrot',
-        'grass',
-        'forest'
-    ],
+    modules: {
+        rabbit: { head: 1, body: 1, ear: 1, color: '#b44b39', role: 'player' },
+        wolf: { head: 1, body: 1, ear: 1, color: '#100707', role: 'monster' },
+        hedgehog: { role: 'obstacle' },
+        carrot: { role: 'prop' },
+        grass: { role: '' },
+        forest: { role: 'floor' }
+    },
     control: { device: 'm', key: 0 }
 };
 
@@ -126,6 +126,7 @@ Engine.initScreenAnd3D = function (containerId, params) {
     Engine.initLights();
     Engine.audio = new Audio(Engine.params.audio);
     Engine.clock = new THREE.Clock();
+    Engine.setControl(Engine.params.control.device, Engine.params.control.key);
 };
 
 Engine.initScene = function () {
@@ -160,8 +161,6 @@ Engine.initRender = function () {
     Engine.renderer.setSize(Engine.container.width(), Engine.container.height());
     Engine.renderer.shadowMap.enabled = true;
     Engine.container.append(Engine.renderer.domElement);
-    //container.addEventListener('mousedown', handleMouseDown, false);
-    //container.addEventListener("touchend", handleMouseDown, false);
 };
 
 Engine.initLights = function () {
@@ -321,11 +320,11 @@ Engine.createRoleObject = function (moduleType, role) {
 }
 
 Engine.initModules = function () {
-    for (var i = 0; i < Engine.params.modules.length; i++) {
-        Engine.moduleLib[Engine.params.modules[i]] = Engine.createRoleObject(Engine.params.modules[i], '');
-        Engine.moduleLib[Engine.params.modules[i]].mesh.visible = false;
-        Engine.scene.add(Engine.moduleLib[Engine.params.modules[i]].mesh);
-        Engine.moduleLib[Engine.params.modules[i]].prepareForRun();
+    for (var key in Engine.params.modules) {
+        Engine.moduleLib[key] = Engine.createRoleObject(key, Engine.params.modules[key].role);
+        Engine.moduleLib[key].mesh.visible = false;
+        Engine.scene.add(Engine.moduleLib[key].mesh);
+        Engine.moduleLib[key].prepareForRun();
     }
 
     Engine.modules['bonus'] = Engine.createRoleObject('bonus', '');
@@ -368,7 +367,7 @@ Engine.pause = function () {
 
 Engine.addModules = function (moduleType, role) {
     for (var key in Engine.params.modules) {
-        if (role == key) {
+        if (moduleType == key) {
             Engine.modules[role] = Engine.createRoleObject(moduleType, role);
             Engine.modules[role].setRole(role);
             Engine.scene.add(Engine.modules[role].mesh);
@@ -474,12 +473,14 @@ Engine.over = function () {
 Engine.setControl = function (device, eventKeyCode) {
     Engine.container.unbind();
     Engine.params.control = { device: 'm', key: 0 };
-    if (device == 'm') {
-        Engine.container.on('mousedown', Engine.handleMouseDown);
-        Engine.params.control = { device: 'm', key: eventKeyCode };
-    } else {
-        Engine.container.on('keydown', Engine.handleKeyDown);
-        Engine.params.control = { device: 'k', key: eventKeyCode };
+    if (Engine.params.speed.monster.pursue) {
+        if (device == 'm') {
+            Engine.container.on('mousedown', Engine.handleMouseDown);
+            Engine.params.control = { device: 'm', key: eventKeyCode };
+        } else {
+            Engine.container.on('keydown', Engine.handleKeyDown);
+            Engine.params.control = { device: 'k', key: eventKeyCode };
+        }
     }
 }
 

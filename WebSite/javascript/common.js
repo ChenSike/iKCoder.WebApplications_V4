@@ -6,7 +6,7 @@ var _gLabelMap = {};
 var _gHostName = 'http://119.23.233.224/ikcoderapi';
 //var _gHostName = 'http://10.111.0.81/ikcoderapi';
 //var _gHostName = 'http://10.111.0.243/ikcoderapi';
-//var _gHostName = 'http://10.86.209.76/ikcoderapi';
+//var _gHostName = 'http://10.86.215.83/ikcoderapi';
 var _gURLMapping = {
     server: {
         reg: '/Sys/api_iKCoder_Sys_Set_RegDomain.aspx'
