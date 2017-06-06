@@ -125,6 +125,8 @@ Brush.prototype.lineTo = function (x, y) {
     );
     this.patterns.push(line);
     Engine.scene.add(line.mesh);
+    this.patterns[0].resetBodyVertices(1, 0);
+    this.patterns[0].draw();
     //this.drawSequence.push({
     //    tx: x * Engine.params.grid.step,
     //    ty: y * Engine.params.grid.step,
@@ -393,14 +395,39 @@ Line.prototype.init = function () {
     var lineGeometry = new THREE.Geometry();
     lineGeometry.vertices.push(new THREE.Vector3(this.params.sx, this.params.sy, 0));
     lineGeometry.vertices.push(new THREE.Vector3(this.params.tx, this.params.ty, 0));
-    var lineMate = new THREE.LineBasicMaterial({ color: this.params.c });
+    var lineMate = new THREE.LineBasicMaterial({ color: this.params.c, transparent: true, opacity: 0 });
     this.mesh = new THREE.Line(lineGeometry, lineMate, THREE.LineSegments);
-    var cubeGeometry = new THREE.CubeGeometry(10, this.getLengthOfLine(), 1);//this.params.w
-    var cubeMaterial = new THREE.MeshBasicMaterial({ color: '#00ff00', shading: THREE.FlatShading });//this.params.c
+    //var cubeGeometry = new THREE.CubeGeometry(this.params.w, 1, 1);
+    var cubeGeometry = new THREE.CubeGeometry(10, 1, 1);
+    var cubeMaterial = new THREE.MeshBasicMaterial({ color: this.params.c, shading: THREE.FlatShading });
     this.body = new THREE.Mesh(cubeGeometry, cubeMaterial);
     this.mesh.add(this.body);
 };
 
 Line.prototype.getLengthOfLine = function () {
     return Math.sqrt(Math.pow(this.params.tx - this.params.sx, 2) + Math.pow(this.params.ty - this.params.sy, 2));
+};
+
+Line.prototype.resetBodyVertices = function (y1, y2) {
+    this.body.geometry.vertices[0].y = y1;
+    this.body.geometry.vertices[1].y = y1;
+    this.body.geometry.vertices[2].y = y2;
+    this.body.geometry.vertices[3].y = y2;
+    this.body.geometry.vertices[4].y = y1;
+    this.body.geometry.vertices[5].y = y1;
+    this.body.geometry.vertices[6].y = y2;
+    this.body.geometry.vertices[7].y = y2;
+    this.body.geometry.verticesNeedUpdate = true;
+};
+
+Line.prototype.draw = function () {
+    var lineLength = this.getLengthOfLine();
+    var updateArr = [
+        this.body.geometry.vertices[0],
+        this.body.geometry.vertices[1],
+        this.body.geometry.vertices[4],
+        this.body.geometry.vertices[5]
+    ];
+    var _that = this;
+    TweenMax.to(updateArr, 1, { y: lineLength, ease: Linear.easeNone, onUpdate: function () { _that.body.geometry.verticesNeedUpdate = true; } });
 };
