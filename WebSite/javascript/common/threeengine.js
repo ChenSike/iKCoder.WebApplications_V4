@@ -435,6 +435,11 @@ Engine.continueScene = function () {
 };
 
 Engine.startScene = function () {
+    if (Engine.loopID) {
+        cancelAnimationFrame(Engine.loopID);
+        Engine.looped = false;
+    }
+
     Engine.status = Engine._statusRun;
     for (var key in Engine.modules) {
         Engine.modules[key].status = Engine._statusRun;

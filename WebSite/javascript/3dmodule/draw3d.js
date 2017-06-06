@@ -13,7 +13,7 @@ function Brush() {
     this.target = { sx: 0, sy: 0, tx: 0, ty: 0, type: '', callback: null };
     this.drawSequence = [{}];
     this.drawStartPoint = {};
-    this.drawEquation = function () { return { x: 0, y: 0 };};
+    this.drawEquation = function () { return { x: 0, y: 0 }; };
     this.lineWidth = 1;
     this.completeFired = false;
     this.drawstart = false;
@@ -115,11 +115,21 @@ Brush.prototype.moveTo = function (x, y) {
 };
 
 Brush.prototype.lineTo = function (x, y) {
-    this.drawSequence.push({
-        tx: x * Engine.params.grid.step,
-        ty: y * Engine.params.grid.step,
-        type: 'line'
-    });
+    var line = new Line(
+        this.mesh.position.x - this.basePoint.x,
+        this.mesh.position.y - this.basePoint.y,
+        x * Engine.params.grid.step,
+        y * Engine.params.grid.step,
+        '#' + this.neck.material.color.getHexString(),
+        this.lineWidth
+    );
+    this.patterns.push(line);
+    Engine.scene.add(line.mesh);
+    //this.drawSequence.push({
+    //    tx: x * Engine.params.grid.step,
+    //    ty: y * Engine.params.grid.step,
+    //    type: 'line'
+    //});
     //this.target = {
     //    sx: this.mesh.position.x - this.basePoint.x,
     //    sy: this.mesh.position.y - this.basePoint.y,
@@ -205,7 +215,7 @@ Brush.prototype.updatePosition = function () {
         if (cx == this.drawSequence[0].tx && cy == this.drawSequence[0].ty) {
             if (this.drawSequence.length > 1) {
                 this.drawStartPoint = { x: cx, y: cy };
-                this.drawEquation = this.getLineEquation(cx, cy, this.drawSequence[1].tx, this.drawSequence[1].ty);
+                this.drawEquation = Brush.getLineEquation(cx, cy, this.drawSequence[1].tx, this.drawSequence[1].ty);
                 isFirstTime = true;
                 this.drawSequence.shift();
             } else {
@@ -258,7 +268,7 @@ Brush.prototype.updatePosition = function () {
     }
 };
 
-Brush.prototype.getLineEquation = function (sx, sy, tx, ty) {
+Brush.getLineEquation = function (sx, sy, tx, ty) {
     var tmpA = (tx - sx == 0 ? 0 : (ty - sy) / (tx - sx));
     var tmpB = ty - tmpA * tx;
     var that = this;
@@ -337,4 +347,60 @@ Brush.prototype.startDraw = function () {
 
 Brush.prototype.preparingToRestart = function () {
     this.reset();
+};
+
+function Line(sx, sy, tx, ty, color, width) {
+    Module.call(this);
+    this.type = 'line';
+    this.status = Engine._statusRun;
+    this.visible = true;
+    this.unique = false;
+    this.speed = 1;
+    this.lineWidth = 1;
+    this.completeFired = false;
+    this.params = {
+        sx: sx,
+        sy: sy,
+        tx: tx,
+        ty: ty,
+        a: 0,
+        c: color,
+        w: width,
+        e: Brush.getLineEquation(sx, sy, tx, ty)
+    };
+
+    this.init();
+};
+
+Line.prototype = Object.assign(Object.create(Module.prototype), {
+    constructor: Line
+});
+
+Line.prototype.init = function () {
+    /*
+     LineBasicMaterial( parameters )
+     Parameters  定义材质外观，包含多个属性来定义材质 : 
+     color : 线条的颜色, 默认白色
+     linewidth : 线条的宽度, 默认1, 无法设置, 要设置线宽，只能使用three3DExtras.tubeLine
+     linecap : 线条两端的外观, 默认是圆角端点
+     linejoin : 两个线条的连接点处的外观, 默认是'round', 圆角。
+     vertexColors : 线条材质是否使用顶点颜色, boolean值是, 线条各部分的颜色会根据顶点的颜色来进行插值
+     fog : 定义材质的颜色是否受全局雾效的影响
+     depthTest : false
+     depthWrite : false
+     transparent : true
+    */
+    var lineGeometry = new THREE.Geometry();
+    lineGeometry.vertices.push(new THREE.Vector3(this.params.sx, this.params.sy, 0));
+    lineGeometry.vertices.push(new THREE.Vector3(this.params.tx, this.params.ty, 0));
+    var lineMate = new THREE.LineBasicMaterial({ color: this.params.c });
+    this.mesh = new THREE.Line(lineGeometry, lineMate, THREE.LineSegments);
+    var cubeGeometry = new THREE.CubeGeometry(10, this.getLengthOfLine(), 1);//this.params.w
+    var cubeMaterial = new THREE.MeshBasicMaterial({ color: '#00ff00', shading: THREE.FlatShading });//this.params.c
+    this.body = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    this.mesh.add(this.body);
+};
+
+Line.prototype.getLengthOfLine = function () {
+    return Math.sqrt(Math.pow(this.params.tx - this.params.sx, 2) + Math.pow(this.params.ty - this.params.sy, 2));
 };
