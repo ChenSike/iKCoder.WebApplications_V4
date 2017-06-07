@@ -108,11 +108,11 @@ Scene.move = function (orientation, steps) {
 
 Scene.startGame = function () {
     Scene.start();
-    //Scene.Brush.moveTo(5, 5);
-    //Scene.Brush.lineTo(10, 10);
-    //Scene.Brush.setColor('#00ff00');
-    //Scene.Brush.lineTo(10, 5);
-    //Scene.Brush.setLineWidth(10);
+    Scene.Brush.moveTo(5, 5);
+    Scene.Brush.lineTo(10, 10);
+    Scene.Brush.setColor('#00ff00');
+    Scene.Brush.lineTo(10, 5);
+    Scene.Brush.setLineWidth(10);
     Scene.Brush.lineTo(5, 10);
     Scene.Brush.lineRotate(60, true);
     Scene.Brush.startDraw();
