@@ -31,7 +31,7 @@ Floor.prototype.init = function () {
     this.mesh.add(this.fenceBR);
     this.mesh.add(this.fenceBL);
 
-    this.plane = new THREE.Mesh(new THREE.BoxGeometry(placeWidth, 1, placeDepth), new THREE.MeshPhongMaterial({ color: '#ffffff', shading: THREE.GouraudShading }));
+    this.plane = new THREE.Mesh(new THREE.BoxGeometry(placeWidth, 1, placeDepth), new THREE.MeshPhongMaterial({ color: '#ffffff', shading:  THREE.FlatShading }));
     this.plane.geometry.receiveShadow = true;
     this.plane.position.y = -5;
     this.mesh.add(this.plane);
@@ -68,7 +68,7 @@ Floor.prototype.createFence = function (w, h, d, c, sw, sd, type) {
     fenceShape.lineTo(0, (isTop ? sd / 2 : -sd / 2));
     fenceShape.lineTo((isLeft ? -sw / 2 : sw / 2), (isTop ? sd / 2 : -sd / 2));
     fenceShape.lineTo((isLeft ? -sw / 2 : sw / 2), 0);
-    var fence = new THREE.Mesh(new THREE.ExtrudeGeometry(fenceShape, options), new THREE.MeshPhongMaterial({ color: c, shading: THREE.GouraudShading }));
+    var fence = new THREE.Mesh(new THREE.ExtrudeGeometry(fenceShape, options), new THREE.MeshPhongMaterial({ color: c, shading:  THREE.FlatShading }));
     fence.geometry.receiveShadow = true;
     fence.rotation.x = -Math.PI / 2;
     fence.position.z = (isTop ? -5 : 5);
@@ -180,7 +180,7 @@ PACMan.prototype.init = function () {
     eyebrowShape.lineTo(-(10 - sqrt005), -sqrt005);
     eyebrowShape.quadraticCurveTo(-10, -sqrt005, -10, 0);
     var eyebrowGeometry = new THREE.ExtrudeGeometry(eyebrowShape, options);
-    var eyebrowMaterial = new THREE.MeshPhongMaterial({ color: '#000000', shading: THREE.GouraudShading })
+    var eyebrowMaterial = new THREE.MeshPhongMaterial({ color: '#000000', shading:  THREE.FlatShading })
     this.eyebrowL = new THREE.Mesh(eyebrowGeometry, eyebrowMaterial);
     this.eyebrowL.position.y = 4;
     this.eyebrowL.position.x = -10;
@@ -806,7 +806,7 @@ Monster.prototype.init = function () {
     eyebrowShape.lineTo(-(10 - sqrt005), -sqrt005);
     eyebrowShape.quadraticCurveTo(-10, -sqrt005, -10, 0);
     var eyebrowGeometry = new THREE.ExtrudeGeometry(eyebrowShape, options);
-    var eyebrowMaterial = new THREE.MeshPhongMaterial({ color: '#000000', shading: THREE.GouraudShading });
+    var eyebrowMaterial = new THREE.MeshPhongMaterial({ color: '#000000', shading:  THREE.FlatShading });
     this.eyebrowL = new THREE.Mesh(eyebrowGeometry, eyebrowMaterial);
     this.eyebrowL.position.y = 4;
     this.eyebrowL.position.x = -12;

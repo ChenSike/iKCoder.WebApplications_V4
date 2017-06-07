@@ -96,7 +96,7 @@ Scene.setRoleModuleShape = function (moduleType, head, body, ear, color) {
     Engine.moduleLib[moduleType].torso.scale.set(body, body, body);
     Engine.moduleLib[moduleType].earL.scale.set(ear, ear, ear);
     Engine.moduleLib[moduleType].earR.scale.set(ear, ear, ear);
-    var newMaterial = new THREE.MeshPhongMaterial({ color: color, shading: THREE.GouraudShading });
+    var newMaterial = new THREE.MeshPhongMaterial({ color: color, shading:  THREE.FlatShading });
     Engine.moduleLib[moduleType].head.material.setValues(newMaterial);
     Engine.moduleLib[moduleType].torso.material.setValues(newMaterial);
     Engine.moduleLib[moduleType].earL.material.setValues(newMaterial);

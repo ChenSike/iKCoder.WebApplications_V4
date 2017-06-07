@@ -16,7 +16,9 @@ function Brush() {
     this.drawEquation = function () { return { x: 0, y: 0 }; };
     this.lineWidth = 1;
     this.completeFired = false;
-    this.drawstart = false;
+    this.drawStart = false;
+    this.drawing = false;
+    this.defaultMaterial = new THREE.MeshPhongMaterial({ color: '#ff0000', shading: THREE.FlatShading });
     this.init();
 };
 
@@ -58,8 +60,8 @@ Brush.prototype.init = function () {
     triangleShape.lineTo(-halfWidth, tmpY);
     triangleShape.lineTo(halfWidth, tmpY);
     triangleShape.lineTo(width, 0);
-    this.torso = new THREE.Mesh(new THREE.ExtrudeGeometry(triangleShape, options), new THREE.MeshPhongMaterial({ color: '#ffff00', shading: THREE.GouraudShading }));
-    this.neck = new THREE.Mesh(new THREE.CylinderGeometry(9, 3, 20, 20, 5), new THREE.MeshPhongMaterial({ color: '#ff0000', shading: THREE.GouraudShading }));
+    this.torso = new THREE.Mesh(new THREE.ExtrudeGeometry(triangleShape, options), new THREE.MeshPhongMaterial({ color: '#ffff00', shading: THREE.FlatShading }));
+    this.neck = new THREE.Mesh(new THREE.CylinderGeometry(9, 3, 20, 20, 5), this.defaultMaterial);
     this.neck.position.z = -16; Engine.render();
     this.neck.rotation.x = Math.PI / 2
     this.body.add(this.torso);
@@ -73,13 +75,27 @@ Brush.prototype.init = function () {
     this.mesh.position.z = this.basePoint.z;
 };
 
-Brush.prototype.setColor = function (color) {
-    this.neck.material.setValues(new THREE.MeshPhongMaterial({ color: color, shading: THREE.GouraudShading }));
-    Engine.render();
+Brush.prototype.setColor = function (color, atOnce) {
+    if (typeof atOnce == 'boolean' && atOnce) {
+        this.neck.material.setValues(new THREE.MeshPhongMaterial({ color: color, shading: THREE.FlatShading }));
+        Engine.render();
+    } else {
+        this.drawSequence.push({
+            c: color,
+            type: 'sc'
+        });
+    }
 };
 
-Brush.prototype.setLineWidth = function (width) {
-    this.lineWidth = (width < 1 ? 1 : width);
+Brush.prototype.setLineWidth = function (width, atOnce) {
+    if (typeof atOnce == 'boolean' && atOnce) {
+        this.lineWidth = (width < 1 ? 1 : width);
+    } else {
+        this.drawSequence.push({
+            w: width,
+            type: 'slw'
+        });
+    }
 };
 
 Brush.prototype.clearPatterns = function (callback) {
@@ -102,172 +118,251 @@ Brush.prototype.moveTo = function (x, y) {
     this.drawSequence.push({
         tx: x * Engine.params.grid.step,
         ty: y * Engine.params.grid.step,
-        type: 'move'
+        type: 'mt'
     });
-    //this.target = {
-    //    sx: this.mesh.position.x - this.basePoint.x,
-    //    sy: this.mesh.position.y - this.basePoint.y,
-    //    tx: x * Engine.params.grid.step,
-    //    ty: y * Engine.params.grid.step,
-    //    type: 'move',
-    //    callback: callback
-    //};
 };
 
 Brush.prototype.lineTo = function (x, y) {
-    var line = new Line(
-        this.mesh.position.x - this.basePoint.x,
-        this.mesh.position.y - this.basePoint.y,
-        x * Engine.params.grid.step,
-        y * Engine.params.grid.step,
-        '#' + this.neck.material.color.getHexString(),
-        this.lineWidth
-    );
-    this.patterns.push(line);
-    Engine.scene.add(line.mesh);
-    this.patterns[0].resetBodyVertices(1, 0);
-    this.patterns[0].draw();
-    //this.drawSequence.push({
-    //    tx: x * Engine.params.grid.step,
-    //    ty: y * Engine.params.grid.step,
-    //    type: 'line'
-    //});
-    //this.target = {
-    //    sx: this.mesh.position.x - this.basePoint.x,
-    //    sy: this.mesh.position.y - this.basePoint.y,
-    //    tx: x * Engine.params.grid.step,
-    //    ty: y * Engine.params.grid.step,
-    //    type: 'line',
-    //    equation: null,
-    //    callback: callback
-    //};
-    //this.target.equation = this.getLineEquation(this.target.sx, this.target.sy, this.target.tx, this.target.ty);
+    this.drawSequence.push({
+        tx: x * Engine.params.grid.step,
+        ty: y * Engine.params.grid.step,
+        type: 'lt'
+    });
 };
 
-Brush.prototype.updatePosition_bak = function () {
-    var currPosX = this.mesh.position.x - this.basePoint.x;
-    var currPosY = this.mesh.position.y - this.basePoint.y;
-    if (currPosX == this.target.tx && currPosY == this.target.ty) {
-        if (this.target.callback) {
-            this.target.callback(this.target.tx / Engine.params.grid.step, this.target.ty / Engine.params.grid.step);
-        }
-
-        return;
-    } else {
-        if (this.target.type == 'line' || this.target.type == 'move') {
-            var tmpPos = {};
-            var isFirstTime = false;
-            if (this.target.equation) {
-                tmpPos = this.target.equation(currPosX, currPosY, this.target.tx, this.target.ty);
-            } else {
-                tmpPos = { x: this.target.tx, y: this.target.ty };
-            }
-
-            if (this.mesh.position.x - this.basePoint.x == this.target.sx && this.mesh.position.y - this.basePoint.y == this.target.sy) {
-                isFirstTime = true;
-            }
-
-            this.mesh.position.x = tmpPos.x + this.basePoint.x;
-            this.mesh.position.y = tmpPos.y + this.basePoint.y;
-            if (this.target.type == 'line') {
-                /*
-                // LineBasicMaterial( parameters )
-                // Parameters  定义材质外观，包含多个属性来定义材质 : 
-                // color : 线条的颜色, 默认白色
-                // linewidth : 线条的宽度, 默认1, 无法设置, 要设置线宽，只能使用three3DExtras.tubeLine
-                // linecap : 线条两端的外观, 默认是圆角端点
-                // linejoin : 两个线条的连接点处的外观, 默认是'round', 圆角。
-                // vertexColors : 线条材质是否使用顶点颜色, boolean值是, 线条各部分的颜色会根据顶点的颜色来进行插值
-                // fog : 定义材质的颜色是否受全局雾效的影响
-                // depthTest : false
-                // depthWrite : false
-                // transparent : true
-                */
-                /*
-                //var tmpGeometry = new THREE.TubeGeometry();
-                //tmpGeometry.vertices.push(new THREE.Vector3(this.target.sx, this.target.sy, 0));
-                //tmpGeometry.vertices.push(new THREE.Vector3(tmpPos.x, tmpPos.y, 0));
-                //var color = '#' + this.neck.material.color.getHexString();
-                //var lineMate = new THREE.LineBasicMaterial({ color: color, linewidth: this.lineWidth });
-                //var line = new THREE.Line(tmpGeometry, lineMate);
-                */
-                if (!isFirstTime) {
-                    this.popPatterns();
-                }
-                var color = '#' + this.neck.material.color.getHexString();
-                var line = new three3DExtras.tubeLine([this.target.sx, this.target.sy, 0], [tmpPos.x, tmpPos.y, 0], this.lineWidth, color);
-                var lineMesh = line.getObject3D();
-                this.patterns.push(lineMesh);
-                Engine.scene.add(lineMesh);
-            }
-        } else if (true) {
-        }
-    }
+Brush.prototype.lineRotate = function (angle, clockwise) {
+    this.drawSequence.push({
+        a: angle * Math.PI / 180 * (clockwise ? 1 : -1),
+        type: 'lr'
+    });
 };
 
+/*
+action type:
+mt: move to
+lt: line to
+slw: set lien width
+sc: set color
+lr: line rotate
+*/
 Brush.prototype.updatePosition = function () {
-    if (this.drawstart == false) {
+    if (!this.drawStart || this.drawing) {
         return;
     }
 
-    if (this.drawSequence.length > 0) {
-        var isFirstTime = false;
-        var cx = this.mesh.position.x - this.basePoint.x;
-        var cy = this.mesh.position.y - this.basePoint.y;
-        if (cx == this.drawSequence[0].tx && cy == this.drawSequence[0].ty) {
-            if (this.drawSequence.length > 1) {
-                this.drawStartPoint = { x: cx, y: cy };
-                this.drawEquation = Brush.getLineEquation(cx, cy, this.drawSequence[1].tx, this.drawSequence[1].ty);
-                isFirstTime = true;
-                this.drawSequence.shift();
-            } else {
-                if (!this.completeFired) {
-                    this.drawCompleteFn();
-                    this.completeFired = true;
-                }
+    var tmpItem = this.drawSequence[0];
+    var targetObj = this.createTargetObj(tmpItem);
+    var _that = this;
+    if (this.checkActionComplete(targetObj)) {
+        this.drawSequence.shift();
+        if (this.drawSequence.length == 0) {
+            if (!this.completeFired) {
+                this.drawCompleteFn();
+                this.drawStart = false;
+                this.completeFired = true;
             }
-        }
-
-        var tmpPos = this.drawEquation(cx, cy, this.drawSequence[0].tx, this.drawSequence[0].ty);
-        this.mesh.position.x = tmpPos.x + this.basePoint.x;
-        this.mesh.position.y = tmpPos.y + this.basePoint.y;
-        if (this.drawSequence[0].type == 'line') {
-            /*
-            // LineBasicMaterial( parameters )
-            // Parameters  定义材质外观，包含多个属性来定义材质 : 
-            // color : 线条的颜色, 默认白色
-            // linewidth : 线条的宽度, 默认1, 无法设置, 要设置线宽，只能使用three3DExtras.tubeLine
-            // linecap : 线条两端的外观, 默认是圆角端点
-            // linejoin : 两个线条的连接点处的外观, 默认是'round', 圆角。
-            // vertexColors : 线条材质是否使用顶点颜色, boolean值是, 线条各部分的颜色会根据顶点的颜色来进行插值
-            // fog : 定义材质的颜色是否受全局雾效的影响
-            // depthTest : false
-            // depthWrite : false
-            // transparent : true
-            */
-            /*
-            //var tmpGeometry = new THREE.TubeGeometry();
-            //tmpGeometry.vertices.push(new THREE.Vector3(this.target.sx, this.target.sy, 0));
-            //tmpGeometry.vertices.push(new THREE.Vector3(tmpPos.x, tmpPos.y, 0));
-            //var color = '#' + this.neck.material.color.getHexString();
-            //var lineMate = new THREE.LineBasicMaterial({ color: color, linewidth: this.lineWidth });
-            //var line = new THREE.Line(tmpGeometry, lineMate);
-            */
-            if (!isFirstTime) {
-                this.popPatterns();
-            }
-            var color = '#' + this.neck.material.color.getHexString();
-            var line = new three3DExtras.tubeLine([this.drawStartPoint.x, this.drawStartPoint.y, 0], [tmpPos.x, tmpPos.y, 0], this.lineWidth, color);
-            var lineMesh = line.getObject3D();
-            this.patterns.push(lineMesh);
-            Engine.scene.add(lineMesh);
         }
     } else {
-        if (!this.completeFired) {
-            this.drawCompleteFn();
-            this.completeFired = true;
+        switch (tmpItem.type) {
+            case 'mt':
+                if (!this.drawing) {
+                    this.drawing = true;
+                    TweenMax.to(
+                        this.mesh.position,
+                        3,
+                        {
+                            x: targetObj.tx + _that.basePoint.x,
+                            y: targetObj.ty + _that.basePoint.y,
+                            ease: Linear.easeNone,
+                            onComplete: function () {
+                                _that.drawing = false;
+                            }
+                        }
+                    );
+                }
+                break;
+            case 'lt':
+                if (!this.drawing) {
+                    this.drawing = true;
+                    var line = new Line(this, targetObj.sx, targetObj.sy, targetObj.tx, targetObj.ty, targetObj.c, targetObj.w);
+                    this.patterns.push(line);
+                    Engine.scene.add(line.mesh);
+                    line.resetBodyVertices(1, 0);
+                    line.draw(true);
+                }
+                break;
+            case 'lr':
+                if (this.patterns.length > 0 && !this.drawing) {
+                    var _line = this.patterns[this.patterns.length - 1];
+                    var targetAngle = _line.mesh.rotation.z + targetObj.a
+                    this.drawing = true;
+                    this.mesh.visible = false;
+                    TweenMax.to(
+                        _line.mesh.rotation,
+                        3,
+                        {
+                            z: targetAngle,
+                            ease: Linear.easeNone,
+                            onUpdate: function () {
+                                _that.mesh.position.x = _line.body.geometry.vertices[0].x + _that.basePoint.x;
+                            },
+                            onInit: function () {
+                                _line.mesh.add(_that.mesh);
+                                _that.mesh.position.x = _line.body.geometry.vertices[0].x + _that.basePoint.x;
+                                _that.mesh.position.y = _that.basePoint.y;
+                                _that.mesh.visible = true;
+                            },
+                            onComplete: function () {
+                                _that.mesh.visible = false;
+                                Engine.scene.add(_that.mesh);
+                                var tmpVal = Math.sqrt(Math.pow(_line.mesh.geometry.vertices[1].x, 2) + Math.pow(_line.mesh.geometry.vertices[1].y, 2));
+                                _that.mesh.position.x = tmpVal * Math.cos(_line.mesh.rotation.z) + _that.basePoint.x;
+                                _that.mesh.position.y = tmpVal * Math.sin(_line.mesh.rotation.z) + _that.basePoint.y;
+                                _that.mesh.visible = true;
+                                _that.drawing = false;
+                            }
+                        }
+                    );
+                }
+
+                break;
+            case 'slw':
+                this.lineWidth = targetObj.w;
+                break;
+            case 'sc':
+                this.neck.material.setValues(new THREE.MeshPhongMaterial({ color: targetObj.c, shading: THREE.FlatShading }));
+                break;
         }
     }
+}
+
+Brush.prototype.createTargetObj = function (drawSeqItem) {
+    var targetObj = {
+        sx: null,
+        sy: null,
+        tx: null,
+        ty: null,
+        a: null,
+        c: null,
+        w: null,
+        type: drawSeqItem.type
+    };
+    switch (drawSeqItem.type) {
+        case 'mt':
+        case 'lt':
+            targetObj.sx = this.mesh.position.x - this.basePoint.x;
+            targetObj.sy = this.mesh.position.y - this.basePoint.y;
+            targetObj.tx = drawSeqItem.tx;
+            targetObj.ty = drawSeqItem.ty;
+            targetObj.c = '#' + this.neck.material.color.getHexString();
+            targetObj.w = this.lineWidth;
+            break;
+        case 'slw':
+            targetObj.w = drawSeqItem.w;
+            break;
+        case 'sc':
+            targetObj.c = drawSeqItem.c; //new THREE.MeshPhongMaterial({ color: drawSeqItem.c, shading:  THREE.FlatShading });
+            break;
+        case 'lr':
+            targetObj.a = drawSeqItem.a;
+            break;
+    }
+
+    return targetObj;
+};
+
+Brush.prototype.checkActionComplete = function (targetObj) {
+    var flag = false;
+    switch (targetObj.type) {
+        case 'mt':
+        case 'lt':
+            var currPosX = this.mesh.position.x - this.basePoint.x;
+            var currPosY = this.mesh.position.y - this.basePoint.y;
+            if (currPosX == targetObj.tx && currPosY == targetObj.ty) {
+                flag = true;
+            }
+
+            break;
+        case 'slw':
+            if (this.lineWidth == targetObj.w) {
+                flag = true;
+            }
+
+            break;
+        case 'sc':
+            if ('#' + this.neck.material.color.getHexString() == targetObj.c) {
+                flag = true;
+            }
+
+            break;
+        case 'lr':
+            if (this.patterns.length > 0) {
+                var line = this.patterns[this.patterns.length - 1];
+                if (line.mesh.rotation.z == targetObj.a + line.orgRotationZ) {
+                    flag = true;
+                }
+            }
+
+            break;
+    }
+
+    return flag;
+}
+
+Brush.prototype.reset = function () {
+    this.clearPatterns();
+    this.drawSequence = [{}];
+    this.completeFired = false;
+    this.drawStart = false;
+    this.neck.material.setValues(this.defaultMaterial);
+    this.lineWidth = 1;
+    this.mesh.position.x = this.basePoint.x;
+    this.mesh.position.y = this.basePoint.y;
+    this.mesh.position.z = this.basePoint.z;
+    this.target = { sx: 0, sy: 0, tx: 0, ty: 0, type: '', callback: null };
+};
+
+Brush.prototype.prepareBackground = function () {
+    this.buildBackground();
+    Engine.render();
+};
+
+Brush.prototype.buildBackground = function () {
+
+};
+
+Brush.prototype.setBuildBackgroundFn = function (fn) {
+    this.buildBackground = fn;
+};
+
+Brush.prototype.buildBackgroundLine = function (sx, sy, ex, ey, lineWidth, color) {
+    var step = Engine.params.grid.step;
+    var line = new Line(this, sx * step, sy * step, ex * step, ey * step, color, lineWidth);
+    this.background.push(line);
+    Engine.scene.add(line.mesh);
+    line.resetBodyVertices(1, 0, 0.4);
+    line.draw(false);
+};
+
+Brush.prototype.setDrawCompleteFn = function (fn) {
+    this.drawCompleteFn = fn;
+};
+
+Brush.prototype.drawCompleteFn = function () {
+
+};
+
+Brush.prototype.startDraw = function () {
+    this.drawStart = true;
+    this.drawSequence[0] = {
+        tx: this.mesh.position.x - this.basePoint.x,
+        ty: this.mesh.position.y - this.basePoint.y,
+        type: 'mt'
+    }
+};
+
+Brush.prototype.preparingToRestart = function () {
+    this.reset();
 };
 
 Brush.getLineEquation = function (sx, sy, tx, ty) {
@@ -299,60 +394,9 @@ Brush.getLineEquation = function (sx, sy, tx, ty) {
     };
 };
 
-Brush.prototype.reset = function () {
-    this.clearPatterns();
-    this.drawSequence = [{}];
-    this.completeFired = false;
-    this.drawstart = false;
-    this.mesh.position.x = this.basePoint.x;
-    this.mesh.position.y = this.basePoint.y;
-    this.mesh.position.z = this.basePoint.z;
-    this.target = { sx: 0, sy: 0, tx: 0, ty: 0, type: '', callback: null };
-};
-
-Brush.prototype.prepareBackground = function () {
-    this.buildBackground();
-    Engine.render();
-};
-
-Brush.prototype.buildBackground = function () {
-
-};
-
-Brush.prototype.setBuildBackgroundFn = function (fn) {
-    this.buildBackground = fn;
-};
-
-Brush.prototype.buildBackgroundLine = function (sx, sy, ex, ey, lineWidth, color) {
-    var line = new three3DExtras.tubeLine([sx * Engine.params.grid.step, sy * Engine.params.grid.step, 0], [ex * Engine.params.grid.step, ey * Engine.params.grid.step, 0], lineWidth, color);
-    var lineMesh = line.getObject3D();
-    this.background.push(lineMesh);
-    Engine.scene.add(lineMesh);
-};
-
-Brush.prototype.setDrawCompleteFn = function (fn) {
-    this.drawCompleteFn = fn;
-};
-
-Brush.prototype.drawCompleteFn = function () {
-
-};
-
-Brush.prototype.startDraw = function () {
-    this.drawstart = true;
-    this.drawSequence[0] = {
-        tx: this.mesh.position.x - this.basePoint.x,
-        ty: this.mesh.position.y - this.basePoint.y,
-        type: 'move'
-    }
-};
-
-Brush.prototype.preparingToRestart = function () {
-    this.reset();
-};
-
-function Line(sx, sy, tx, ty, color, width) {
+function Line(brush, sx, sy, tx, ty, color, width) {
     Module.call(this);
+    this.brush = brush;
     this.type = 'line';
     this.status = Engine._statusRun;
     this.visible = true;
@@ -397,37 +441,88 @@ Line.prototype.init = function () {
     lineGeometry.vertices.push(new THREE.Vector3(this.params.tx, this.params.ty, 0));
     var lineMate = new THREE.LineBasicMaterial({ color: this.params.c, transparent: true, opacity: 0 });
     this.mesh = new THREE.Line(lineGeometry, lineMate, THREE.LineSegments);
-    //var cubeGeometry = new THREE.CubeGeometry(this.params.w, 1, 1);
-    var cubeGeometry = new THREE.CubeGeometry(10, 1, 1);
+    var cubeGeometry = new THREE.CubeGeometry(1, this.params.w, 1);
     var cubeMaterial = new THREE.MeshBasicMaterial({ color: this.params.c, shading: THREE.FlatShading });
     this.body = new THREE.Mesh(cubeGeometry, cubeMaterial);
     this.mesh.add(this.body);
+    this.mesh.rotation.z = this.getLineAngle();
+    this.orgRotationZ = this.mesh.rotation.z;
+    this.mesh.position.x = this.params.sx;
+    this.mesh.position.y = this.params.sy;
 };
 
 Line.prototype.getLengthOfLine = function () {
     return Math.sqrt(Math.pow(this.params.tx - this.params.sx, 2) + Math.pow(this.params.ty - this.params.sy, 2));
 };
 
-Line.prototype.resetBodyVertices = function (y1, y2) {
-    this.body.geometry.vertices[0].y = y1;
-    this.body.geometry.vertices[1].y = y1;
-    this.body.geometry.vertices[2].y = y2;
-    this.body.geometry.vertices[3].y = y2;
-    this.body.geometry.vertices[4].y = y1;
-    this.body.geometry.vertices[5].y = y1;
-    this.body.geometry.vertices[6].y = y2;
-    this.body.geometry.vertices[7].y = y2;
+Line.prototype.getLineAngle = function () {
+    if (this.params.sx == 0 && this.params.tx == 0) {
+        if (this.params.sy > this.params.ty) {
+            return -Math.PI / 2;
+        } else {
+            return Math.PI / 2;
+        }
+    } else if (this.params.sy == 0 && this.params.ty == 0) {
+        if (this.params.sx > this.params.tx) {
+            return -Math.PI;
+        } else {
+            return 0;
+        }
+    } else {
+        return Math.atan((this.params.ty - this.params.sy) / (this.params.tx - this.params.sx));
+    }
+};
+
+Line.prototype.resetBodyVertices = function (x1, x2, z) {
+    this.body.geometry.vertices[0].x = x1;
+    this.body.geometry.vertices[1].x = x1;
+    this.body.geometry.vertices[2].x = x1;
+    this.body.geometry.vertices[3].x = x1;
+    this.body.geometry.vertices[4].x = x2;
+    this.body.geometry.vertices[5].x = x2;
+    this.body.geometry.vertices[6].x = x2;
+    this.body.geometry.vertices[7].x = x2;
+    if (typeof z == 'number') {
+        this.body.geometry.vertices[0].z = z;
+        this.body.geometry.vertices[2].z = z;
+        this.body.geometry.vertices[4].z = z;
+        this.body.geometry.vertices[6].z = z;
+    }
+
     this.body.geometry.verticesNeedUpdate = true;
 };
 
-Line.prototype.draw = function () {
+Line.prototype.draw = function (animation) {
     var lineLength = this.getLengthOfLine();
-    var updateArr = [
-        this.body.geometry.vertices[0],
-        this.body.geometry.vertices[1],
-        this.body.geometry.vertices[4],
-        this.body.geometry.vertices[5]
-    ];
-    var _that = this;
-    TweenMax.to(updateArr, 1, { y: lineLength, ease: Linear.easeNone, onUpdate: function () { _that.body.geometry.verticesNeedUpdate = true; } });
+    if (typeof animation == 'boolean' && animation) {
+        var updateArr = [
+            this.body.geometry.vertices[0],
+            this.body.geometry.vertices[1],
+            this.body.geometry.vertices[2],
+            this.body.geometry.vertices[3]
+        ];
+        var _that = this;
+        this.body.add(this.brush.mesh);
+        this.brush.mesh.position.x = 1 + this.brush.basePoint.x;
+        this.brush.mesh.position.y = 0 + this.brush.basePoint.y;
+        TweenMax.to(
+            updateArr,
+            3,
+            {
+                x: lineLength,
+                ease: Linear.easeNone,
+                onUpdate: function () {
+                    _that.body.geometry.verticesNeedUpdate = true;
+                    _that.brush.mesh.position.x = _that.body.geometry.vertices[0].x + _that.brush.basePoint.x;
+                },
+                onComplete: function () {
+                    Engine.scene.add(_that.brush.mesh);
+                    _that.brush.mesh.position.x = _that.mesh.geometry.vertices[1].x + _that.brush.basePoint.x;
+                    _that.brush.mesh.position.y = _that.mesh.geometry.vertices[1].y + _that.brush.basePoint.y;
+                    _that.brush.drawing = false;
+                }
+            });
+    } else {
+        this.resetBodyVertices(lineLength, 0);
+    }
 };
