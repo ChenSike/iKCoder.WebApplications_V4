@@ -898,7 +898,7 @@ function adjustAfterSiderBarResize() {
     wrap.animate({ width: tmpWidth + 'px' });
     var helpWrap = $('#wrap_Scene_Help_Content');
     wrap = $('.siderbar-content');
-    $('#game_container').height(wrap.height() - helpWrap.height() - 30);
+    $('#game_container').height(wrap.height() - 30);
 };
 
 function onWindowResize() {
