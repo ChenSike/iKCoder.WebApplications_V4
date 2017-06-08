@@ -83,6 +83,14 @@ Scene.initEnvironment = function (containerId) {
     Engine.prepareForStart();
     Scene.initMap();
     Scene.initPlayer(7, 7);
+    var monsterParams = [
+    { x: 3, y: 3, c: null },
+    { x: 3, y: 11, c: null },
+    { x: 11, y: 3, c: null },
+    { x: 11, y: 11, c: null }
+    ];
+    Scene.initMonster(monsterParams);
+
 };
 
 Scene.initMap = function () {
@@ -119,6 +127,23 @@ Scene.initMap = function () {
 
     Goods.updatePose(goods);
     CountGoods.updatePose(countGoods);
+};
+
+Scene.initMonster = function (params) {
+    var tmpArr = [];
+    for (var i = 0; i < params.length; i++) {
+        var monster = new Monster('study', Scene.mapDATA);
+        tmpArr.push(monster);
+        Engine.addModuleObject(monster, params[i].x, null, params[i].y);
+        monster.setPosition(params[i].x, params[i].y);
+        if (Scene.mapDATA[params[i].y][params[i].x].t == 0 || Scene.mapDATA[params[i].y][params[i].x].t == 2) {
+            Engine.getModuleObject(Scene.mapDATA[params[i].y][params[i].x].s).mesh.visible = false;
+        }
+
+        Scene.mapDATA[params[i].y][params[i].x].v = false;
+    }
+
+    Monster.updatePose(tmpArr);
 };
 
 Scene.initPlayer = function (x, y) {

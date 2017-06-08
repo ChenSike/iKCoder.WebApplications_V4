@@ -7,6 +7,7 @@ var Engine = {
     _statusRun: 1,
     _statusSick: 2,
     _statusPower: 3,
+    _statusPrepare: 4,
     scene: null,
     camera: null,
     renderer: null,
@@ -21,7 +22,8 @@ var Engine = {
     backgroundAudio: null,
     PI: Math.PI,
     halfPI: Math.PI / 2,
-    round: Math.PI * 2
+    round: Math.PI * 2,
+    status: 4
 };
 
 Engine.params = {
@@ -360,7 +362,7 @@ Engine.loop = function () {
         Engine.checkCollision(Engine.modules);
     }
 
-    Engine.renderer.render(Engine.scene, Engine.camera);
+    Engine.render();
     Engine.loopID = requestAnimationFrame(Engine.loop);
 };
 
@@ -373,13 +375,13 @@ Engine.resetScene = function (rebuild) {
             Engine.looped = false;
         }
 
-        Engine.status = Engine._statusRun;
+        Engine.status = Engine._statusPrepare;
         for (var key in Engine.modules) {
             Engine.modules[key].mesh.visible = true;
             Engine.modules[key].preparingToRestart();
         }
 
-        Engine.render();
+        Engine.loop();
     }
 }
 
@@ -396,7 +398,7 @@ Engine.restartScene = function () {
         Engine.looped = false;
     }
 
-    Engine.status = Engine._statusRun;
+    Engine.status = Engine._statusPrepare;
     Engine.clearScene();
     Engine.initModules();
     for (var key in Engine.modules) {
@@ -546,6 +548,18 @@ Engine.prepareForStart = function () {
         Engine.backgroundAudio.load();
         Engine.backgroundAudio.play();
     }
+
+    if (Engine.loopID) {
+        cancelAnimationFrame(Engine.loopID);
+        Engine.looped = false;
+    }
+
+    Engine.status = Engine._statusPrepare;
+    for (var key in Engine.modules) {
+        Engine.modules[key].status = Engine._statusPrepare;
+    }
+
+    Engine.loop();
 };
 
 Engine.render = function () {
