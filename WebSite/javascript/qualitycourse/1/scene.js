@@ -40,6 +40,7 @@ Scene.start = function () {
 
     _dataForSave.push('<music path="' + Engine.audio.src + '"></music>');
     _dataForSave.push('</data>');
+    _dataForSave = _dataForSave.join('');
     Scene.stepComplete();
 };
 
