@@ -638,8 +638,7 @@ function initData(response) {
             }
         }
     }
-
-
+    
     addLibPath($($(response).find("toolbox")[0]));
     var tmpPaths = $(response).find("game").find('script');
     for (var i = 0; i < tmpPaths.length ; i++) {

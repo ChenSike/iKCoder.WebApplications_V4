@@ -909,8 +909,6 @@ CountGoods.prototype.collideAction = function (sourceModule) {
     return false;
 };
 
-
-
 var ModuleUtil = {};
 
 ModuleUtil.coordToPosition = function (x, y) {

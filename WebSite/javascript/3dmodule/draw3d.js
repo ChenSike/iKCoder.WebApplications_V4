@@ -75,6 +75,22 @@ Brush.prototype.init = function () {
     this.mesh.position.z = this.basePoint.z;
 };
 
+Brush.prototype.clearPatterns = function (callback) {
+    for (var i = 0; i < this.patterns.length; i++) {
+        Engine.scene.remove(this.patterns[i]);
+    }
+
+    this.patterns = [];
+
+    if (callback) {
+        callback();
+    }
+};
+
+Brush.prototype.popPatterns = function () {
+    Engine.scene.remove(this.patterns.pop());
+};
+
 Brush.prototype.setColor = function (color, atOnce) {
     if (typeof atOnce == 'boolean' && atOnce) {
         this.neck.material.setValues(new THREE.MeshPhongMaterial({ color: color, shading: THREE.FlatShading }));
@@ -96,22 +112,6 @@ Brush.prototype.setLineWidth = function (width, atOnce) {
             type: 'slw'
         });
     }
-};
-
-Brush.prototype.clearPatterns = function (callback) {
-    for (var i = 0; i < this.patterns.length; i++) {
-        Engine.scene.remove(this.patterns[i]);
-    }
-
-    this.patterns = [];
-
-    if (callback) {
-        callback();
-    }
-};
-
-Brush.prototype.popPatterns = function () {
-    Engine.scene.remove(this.patterns.pop());
 };
 
 Brush.prototype.moveTo = function (x, y) {
