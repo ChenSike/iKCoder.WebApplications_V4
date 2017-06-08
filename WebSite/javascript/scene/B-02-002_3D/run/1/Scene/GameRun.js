@@ -74,8 +74,8 @@ function IKCoderSenceRun_Begin()
     IKCoderSenceRun_Resize(i_senceWidth, i_senceHeight);
 
     i_loader = new PIXI.AssetLoader([
-   "image/scene/run/WorldAssets-hd.json",
-   "image/scene/run/HudAssets-hd.json",
+   "image/scene/run/shine.fw.png",
+   "image/scene/run/candy.fw.png",
    "image/scene/run/PixiAssets-hd.json",
    "image/scene/run/iP4_BGtile.jpg",
    "image/scene/run/box.fw.png"
@@ -129,10 +129,10 @@ function IKCoderSenceRun_InitSenceSprites() {
     IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 880, i_background_default_height - 421);
     IKCoderSenceRun_AddcollisonNode("box_4", 800, i_background_default_height - 421, sprite_box_one.width, sprite_box_one.height,false);
     
-    var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('pickupShine.png', -1, -1, 1110, i_background_default_height - 121);
+    var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('image/scene/run/shine.fw.png', -1, -1, 1110, i_background_default_height - 121);
     sprite_pickup_sunshine.anchor.x = sprite_pickup_sunshine.anchor.y = 0.5;
     i_spritesObjectsPool["sprite_pickup_sunshine"] = sprite_pickup_sunshine;
-    var sprite_pickup_candy = IKCoderSenceRun_AddSprite('pickup_06.png', -1, -1, 1080, i_background_default_height - 141);
+    var sprite_pickup_candy = IKCoderSenceRun_AddSprite('image/scene/run/candy.fw.png', -1, -1, 1080, i_background_default_height - 141);
     i_spritesObjectsPool["sprite_pickup_candy"] = sprite_pickup_candy;
 
     IKCoderSenceRun_AddcollisonNode("candy", 1080, i_background_default_height - 141, sprite_pickup_candy.width, sprite_pickup_candy.height, true);
