@@ -90,12 +90,13 @@ function PACMan(moveType, mapData) {
     this.defaultCoord = { x: 0, y: 0 };
     this.coord = { x: 0, y: 0, px: 0, py: 0 };
     /*game: keep moving; study: move by commond*/
-    this._stopWhenComplete = true;
+    this._stopToComplete = false;
     this.moveType = 'study';
     this.movePath = [];
     this.movePathTarget = [];
     this.actionForCollideGoodsSeq = [];
     this.actionForCollideWallSeq = [];
+    this.doing = false;
     this.init();
 };
 
@@ -235,7 +236,7 @@ PACMan.prototype.updatePose = function () {
 PACMan.prototype.turnTo = function (orientation, clockwise) {
     this.mesh.rotation.y = Math.PI / 2 * this.orientation;
     orientation = (typeof orientation == 'number' ? orientation : _veerMap[orientation]);
-    if (orientation != this.orientation) {
+    if (orientation != this.orientation && !this.doing) {
         var _self = this;
         var route = 0;
         if (this.moveType == 'study') {
@@ -256,6 +257,7 @@ PACMan.prototype.turnTo = function (orientation, clockwise) {
 
             route = this.mesh.rotation.y + Math.PI / 2 * tmpVal;
             TweenMax.killTweensOf(this.mesh.rotation);
+            this.doing = true;
             TweenMax.to(
                 this.mesh.rotation,
                 1,
@@ -264,6 +266,7 @@ PACMan.prototype.turnTo = function (orientation, clockwise) {
                     ease: Linear.easeNone,
                     onComplete: function () {
                         _self.orientation = orientation;
+                        _self.doing = false;
                         //_self.mesh.rotation.y = Math.PI / 2 * orientation;
                     }
                 }
@@ -394,7 +397,7 @@ PACMan.prototype.updatePositionStudy = function () {
             if (coord.x == targetObj.x && coord.y == targetObj.y) {
                 this.coord.x = coord.x;
                 this.coord.y = coord.y;
-                if (this._stopWhenComplete) {
+                if (this._stopToComplete) {
                     if (!this.completeFired) {
                         this.pathCompleteFn();
                         this.completeFired = true;
@@ -412,7 +415,7 @@ PACMan.prototype.updatePositionStudy = function () {
                         this.mesh.position.z += _itemSize / 40 * this.speed * _moveMap[this.orientation];
                     }
                 } else {
-                    if (this.mapData[coord.y][coord.x].t == 2 && this._stopWhenComplete) {
+                    if (this.mapData[coord.y][coord.x].t == 2 && this._stopToComplete) {
                         if (!this.completeFired) {
                             this.pathCompleteFn();
                             this.completeFired = true;
