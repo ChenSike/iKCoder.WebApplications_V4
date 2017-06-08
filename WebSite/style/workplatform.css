@@ -156,7 +156,7 @@ footer {
     }
 
 .siderbar-wrap {
-    width: 425px;
+    width: 525px;
     height: calc(100% - 60px - 60px);
     height: -moz-calc(100% - 60px - 60px);
     height: -webkit-calc(100% - 60px - 60px);

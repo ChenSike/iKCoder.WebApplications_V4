@@ -633,7 +633,7 @@ function initData(response) {
                 data.blockly.lib.push('javascript/3dmodule/pacman.js');
             } else {
                 var tmpArr = tmpAttr.split('\\');
-                tmpArr[0] = tmpArr[0] + '_3d';
+                tmpArr[0] = tmpArr[0] + "_3D";
                 data.blockly.lib.push('javascript/scene/' + tmpArr.join('\\'));
             }
         }
@@ -991,22 +991,31 @@ function showFullScreen() {
 function setsizeWhenFullScreen() {
     var container = $('#game_container');
     var canvas = container.find('canvas');
+    var tmpRate = canvas.height() / canvas.width();
     $('.run-scene-fullscreen-close-button').attr('data-content', canvas.width() + ',' + canvas.height());
+
     var tmpHeight = $('.run-scene-fullscreen').height();
     var tmpWidth = $('.run-scene-fullscreen').width();
-    var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
-    container.height(tmpSize);
-    container.width(tmpSize);
-    var tmpRate = canvas.height() / canvas.width();
-    canvas.height(tmpRate * tmpSize);
-    canvas.width(tmpSize);
-    container.css('margin-left', (tmpWidth - tmpSize) / 2 + 'px');
+    var newWidth = tmpWidth;
+    var newHeight = tmpHeight;
+    //var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
+    if (tmpHeight / tmpWidth<tmpRate) {
+        newWidth = tmpHeight / tmpRate;
+    } else {
+        newHeight = tmpWidth * tmpRate;
+    }
+
+    container.height(newHeight);
+    container.width(newWidth);
+    canvas.height(newHeight);
+    canvas.width(newWidth);
+    container.css('margin-left', (tmpWidth - newWidth) / 2 + 'px');
 
     var playButton = $('.run-scene-fullscreen-play-button');
-    var fontSize = tmpSize * 30 / 100;
+    var fontSize = newHeight * 30 / 100;
     playButton.css('font-size', fontSize + 'px');
     playButton.css('left', 'calc(50% - ' + (playButton.width() / 2) + 'px');
-    playButton.css('top', ((tmpSize - fontSize) / 2) + 'px');
+    playButton.css('top', ((newHeight - fontSize) / 2) + 'px');
 };
 
 function addOperatorButton() {

@@ -7,7 +7,7 @@ function Game(id, params) {
         width: 400,
         height: 480,
         movePaths: [],
-		movePathsBuild: false,
+        movePathsBuild: false,
         model: '1',
         rowCount: 15,
         colCount: 15,
@@ -28,7 +28,6 @@ function Game(id, params) {
     var colUnit = Math.floor(_.width / _.colCount);
     _.stepUnit = Math.min(rowUnit, colUnit);
     var _context = $canvas.getContext('2d');
-	_.gamecontext = _context;
     var _stages = [];
     var _events = {};
     var _index = 0, _hander;
@@ -129,7 +128,7 @@ function Game(id, params) {
         return {
             x: Math.floor((x - this.x) / this.size),
             y: Math.floor((y - this.y) / this.size),
-			offset: Math.sqrt(fx * fx + fy * fy) < 2.12 ? 0 : Math.sqrt(fx * fx + fy * fy)
+            offset: Math.sqrt(fx * fx + fy * fy) < 2.12 ? 0 : Math.sqrt(fx * fx + fy * fy)
         };
     };
 
@@ -322,7 +321,7 @@ function Game(id, params) {
 
     this.start = function (fromInit) {
         var f = 0;
-		var alreadyCheckComplete = false;
+        var alreadyCheckComplete = false;
         if (_stages[_index].status == 1) {
             if (!fromInit) {
                 this.stop();
@@ -372,22 +371,16 @@ function Game(id, params) {
                             item.timeout--;
                         }
 
-                       if (item.type == 1) {
+                        if (item.type == 1) {
                             if (_.movePaths.length > 0) {
                                 item.orientation = _.movePaths[0].orientation;
-								if (Math.floor(Math.abs(item.x - _.movePaths[0].x)) <= 2 && Math.floor(Math.abs(item.y - _.movePaths[0].y)) <= 2) {
+                                if (Math.floor(Math.abs(item.x - _.movePaths[0].x)) <= 2 && Math.floor(Math.abs(item.y - _.movePaths[0].y)) <= 2) {
                                     _.movePaths.shift();
-                                }else if ((_.movePaths[0].x > _.width ||_.movePaths[0].y > _.height)) {
-									_.movePaths.shift();
-								}else{
+                                } else {
                                     item.update();
                                 }
-								//if ((Scene.initValue1 == 1 && (item.coord.x == Scene._IsWall1.x && item.coord.y == Scene._IsWall1.y)) || (Scene.initValue2 == 1 && (item.coord.x == Scene._IsWall2.x && item.coord.y == Scene._IsWall2.y))||(Scene.initValue3 == 1 && (item.coord.x == Scene._IsWall3.x && item.coord.y == Scene._IsWall3.y))||(Scene.initValue4 == 1 && (item.coord.x == Scene._IsWall4.x && item.coord.y == Scene._IsWall4.y))) {
-								//	Scene.stepFaild();
-								//	_.pause();
-								//}
                             } else {
-                                if (!alreadyCheckComplete &&  _.movePathsBuild && Game.completeCheckFn) {
+                                if (!alreadyCheckComplete && _.movePathsBuild && Game.completeCheckFn) {
                                     Game.completeCheckFn(stage, item);
                                     alreadyCheckComplete = true;
                                 }
@@ -471,6 +464,8 @@ function Game(id, params) {
         for (var i = 0; i < pathItems.length; i++) {
             _.movePaths.push(pathItems[i]);
         }
+
+        _.movePathsBuild = true;
     }
 
     this.calcPaths = function () {
@@ -528,9 +523,6 @@ function Game(id, params) {
         }
 
         _.movePaths = tmpMovePaths;
-		if (_.movePaths.length != 0){
-			_.movePathsBuild = true;
-		}
     }
 }
 
@@ -671,7 +663,7 @@ Maze.prototype.cellToCooder = function () {
         if (wall[0] == 1) {
             coord[tmpY][tmpX - 1] = 0;
             if (wall[1] == 1) {
-                coord[tmpY-1][tmpX - 1] = 0;
+                coord[tmpY - 1][tmpX - 1] = 0;
             }
 
             if (wall[3] == 1) {
