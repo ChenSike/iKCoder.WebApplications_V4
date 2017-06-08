@@ -68,6 +68,66 @@ function initPage() {
             window.location.href = "signin.html?rnd=" + Date.now();
         }
     });
+    //var dataXML = Blockly.Xml.textToDom('<root>'+
+    //    '   <basic>'+
+    //    '		<usr id="42" nickname=""/>'+
+    //    '	</basic>'+
+    //    '	<sence name="初级第一课：模式设别" symbol="b_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="b_01_002"/>'+
+    //    '	<tips>'+
+    //    '		<item index="1">'+
+    //    '			<content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>'+
+    //    '		</item>'+
+    //    '	</tips>'+
+    //    '	<toolbox src="B-01-001/pacman/1/Blocks/blocks.JS">'+
+    //    '		<xml id="toolbox" style="display: none">'+
+    //    '			<block type="event_start"/>'+
+    //    '			<block type="move_onestep_up"/>'+
+    //    '			<block type="move_onestep_down"/>'+
+    //    '			<block type="move_onestep_left"/>'+
+    //    '			<block type="move_onestep_right"/>'+
+    //    '		</xml>'+
+    //    '	</toolbox>'+
+    //    '	<workspacestatus>'+
+    //    '		<xml xmlns="http://www.w3.org/1999/xhtml"/>'+
+    //    '	</workspacestatus>'+
+    //    '	<game>'+
+    //    '		<script src="B-01-001/pacman/1/Engine/game_engine.JS"/>'+
+    //    '		<script src="B-01-001/pacman/1/Scene/scene.JS"/>'+
+    //    '	</game>'+
+    //    '	<message>'+
+    //    '		<faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>'+
+    //    '		<suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>'+
+    //    '	</message>'+
+    //    '	<words>'+
+    //    '		<stage value="1">'+
+    //    '			<word value="move" note="儿童英语/CET4/计算机英语" star="4">'+
+    //    '				<soundmark>'+
+    //    '					<item type="us" value="美 [kəm"pjutɚ]" sound="sound_word_computer_us"/>'+
+    //    '					<item type="uk" value="英 [kəm"pjuːtə]" sound="sound_word_computer_uk"/>'+
+    //    '				</soundmark>'+
+    //    '				<paraphrase>'+
+    //    '					<item>v.移动</item>'+
+    //    '				</paraphrase>'+
+    //    '				<variant>'+
+    //    '				<item name="复数" value="computers"/>'+
+    //    '				</variant>'+
+    //    '			</word>'+
+    //    '		</stage>'+
+    //    '	</words>'+
+    //    '</root>');
+    //var data = initData(dataXML);
+    //_wordsData = data.course.words;
+    //_knowledgeData = data.course.kps;
+    //_workspaceCfg = data.blockly;
+    //buildStageHTML(data.course);
+    //updateUserInfo(data.user);
+    //adjustWorkSpaceType(data);
+    //adjustAfterSiderBarResize();
+    //$("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
+    //LoadSceneLib(data.blockly);
+    //$('#mask_Page_Loading').hide();
+    //$('#mask_Page_Loading').css('visibility', 'hidden');
+    //window.setTimeout('WorkScene.saveStatus(true);', 60000);
 
     initEvents();
     var playBtn = $('.workspace-tool-item.workspace-play-button.fa.fa-play');
@@ -189,14 +249,20 @@ function initEvents() {
             adjustAfterSiderBarResize();
             container.find('canvas').height(height);
             container.find('canvas').width(width);
-            container.css('padding-left', '0px');
+            container.css('margin-left', '0px');
             container.width($('.siderbar-scene-container').width());
 
             var playButton = $('.run-scene-fullscreen-play-button');
             var fontSize = width * 30 / 100;
             playButton.css('font-size', fontSize + 'px');
             playButton.css('left', 'calc(50% - ' + (fontSize / 2) + 'px');
-            playButton.css('top', ((width - fontSize) / 2) + 'px');
+            playButton.css('top', ((height - fontSize) / 2) + 'px');
+
+            if (Scene.resetSize) {
+                Scene.resetSize();
+            }
+
+            playButton.css('top', ((container.find('canvas').height() - fontSize) / 2) + 'px');
         });
     });
 
@@ -217,7 +283,8 @@ function initEvents() {
             WorkScene.saveStatus();
             window.location.href = "profile.html?rnd=" + Date.now();
         } else {
-            WorkScene.reset();
+            WorkScene.reset(true);
+            resetPlayBtn('P');
             $('.wrap-workstatus-alert').hide();
         }
     });
@@ -552,18 +619,32 @@ function initData(response) {
         }
     }
 
+    //var addLibPath = function (node) {
+    //    var tmpAttr = node.attr('src');
+    //    if (tmpAttr && tmpAttr != '') {
+    //        data.blockly.lib.push('javascript/scene/' + tmpAttr);
+    //    }
+    //}
+
     var addLibPath = function (node) {
         var tmpAttr = node.attr('src');
         if (tmpAttr && tmpAttr != '') {
-            data.blockly.lib.push('javascript/scene/' + tmpAttr);
+            if (tmpAttr.indexOf('Engine\\game_engine.JS') > 0) {
+                data.blockly.lib.push('javascript/3dmodule/pacman.js');
+            } else {
+                var tmpArr = tmpAttr.split('\\');
+                tmpArr[0] = tmpArr[0] + '_3d';
+                data.blockly.lib.push('javascript/scene/' + tmpArr.join('\\'));
+            }
         }
     }
 
-    addLibPath($($(response).find("toolbox")[0]));
-    var tmpPaths = $(response).find("game").find('script');
-    for (var i = 0; i < tmpPaths.length ; i++) {
-        addLibPath($(tmpPaths[i]));
-    }
+
+    //addLibPath($($(response).find("toolbox")[0]));
+    //var tmpPaths = $(response).find("game").find('script');
+    //for (var i = 0; i < tmpPaths.length ; i++) {
+    //    addLibPath($(tmpPaths[i]));
+    //}
 
     if (_currentStage.toLowerCase() == "a_01_001" || _currentStage.toLowerCase() == "a_01_002") {
         var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
@@ -810,13 +891,12 @@ function adjustAfterSiderBarResize() {
     var tmpWidth = $('#wrap_Workspace_Toolbar').parent().width()
     if ($('.siderbar-wrap').hasClass('expanded')) {
         wrap.css('margin-left', '0px');
-        tmpWidth = tmpWidth - $('.siderbar-wrap').width() + 15;
+        tmpWidth = tmpWidth - $('.siderbar-wrap').width();
     } else {
         tmpWidth = tmpWidth - 15;
     }
 
     wrap.animate({ width: tmpWidth + 'px' });
-
     var helpWrap = $('#wrap_Scene_Help_Content');
     wrap = $('.siderbar-content');
     $('#game_container').height(wrap.height() - helpWrap.height() - 30);
@@ -902,6 +982,9 @@ function showFullScreen() {
     $('.run-scene-fullscreen').show("slow", function () {
         setsizeWhenFullScreen();
         addOperatorButton();
+        if (Scene.resetSize) {
+            Scene.resetSize();
+        }
     });
 };
 
@@ -911,13 +994,13 @@ function setsizeWhenFullScreen() {
     $('.run-scene-fullscreen-close-button').attr('data-content', canvas.width() + ',' + canvas.height());
     var tmpHeight = $('.run-scene-fullscreen').height();
     var tmpWidth = $('.run-scene-fullscreen').width();
-    container.height(tmpHeight);
-    container.width(tmpWidth);
     var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
+    container.height(tmpSize);
+    container.width(tmpSize);
     var tmpRate = canvas.height() / canvas.width();
     canvas.height(tmpRate * tmpSize);
     canvas.width(tmpSize);
-    //container.css('padding-left', (tmpWidth - tmpSize) / 2 + 'px');
+    container.css('margin-left', (tmpWidth - tmpSize) / 2 + 'px');
 
     var playButton = $('.run-scene-fullscreen-play-button');
     var fontSize = tmpSize * 30 / 100;

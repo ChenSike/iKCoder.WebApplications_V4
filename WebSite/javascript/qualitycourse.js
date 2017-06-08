@@ -8,7 +8,8 @@ var _nextStage = '';
 var _currentStep = '';
 var _nextStep = '';
 var _totalSteps = '';
-var _topTooltip = []
+var _topTooltip = [];
+var _dataForSave = '';
 var _messages = {
     success: '',
     faild: ''
@@ -176,16 +177,36 @@ function initEvents() {
     $('#btn_Step_Restart').on('click', function (e) {
         if (_currentStep == _totalSteps) {
             //WorkScene.saveStatus();
-            window.location.href = "profile.html?rnd=" + Date.now();
+            //window.location.href = "profile.html?rnd=" + Date.now();
         } else {
-            WorkScene.reset(true);
+            WorkScene.reset(false);
             resetPlayBtn('P');
             $('.wrap-workstatus-alert').hide();
         }
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
-        window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now() + tmpParam;
+        _registerRemoteServer();
+        $.ajax({
+            type: 'POST',
+            async: true,
+            url: _getRequestURL(_gURLMapping.tmp.storesave, { symbol: 'qc01_3_' + _currentStep, type: 'modulesetting', timeout: 120, istextreq: 0 }),
+            data: _dataForSave,
+            success: function (response, status) {
+                if ($(response).find('err').length > 0) {
+                    _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
+                    return;
+                }
+
+                window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
+            },
+            dataType: 'xml',
+            xhrFields: {
+                withCredentials: true
+            },
+            error: function () {
+            }
+        });
     });
 
     $('#btn_Step_FindError').on('click', function (e) {
@@ -299,7 +320,7 @@ function buildStageHTML(data) {
     updateTipsText(data.note);
 
     $('div.head-stage-label .complete-item').on('click', function () {
-        gotoSpecialStep($(arguments[0].target).attr('data-target'));
+        //gotoSpecialStep($(arguments[0].target).attr('data-target'));
     })
 };
 
@@ -428,8 +449,8 @@ function initData() {
             toolbox: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/toolbox.xml')),
             workspace: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/workspace.xml')),
             lib: [
-                //'javascript/qualitycourse/' + _currentStep + '/blocks.js',
-                //'javascript/qualitycourse/' + _currentStep + '/scene.js'
+                'javascript/qualitycourse/' + _currentStep + '/blocks.js',
+                'javascript/qualitycourse/' + _currentStep + '/scene.js'
             ]
         }
     }
@@ -675,8 +696,11 @@ function adjustAfterSiderBarResize() {
     var container = $('#game_container');
     container.height(wrap.height());
     container.width(wrap.width());
-    //container.find('canvas').height(wrap.height());
-    //container.find('canvas').width(wrap.width());
+    container.find('canvas').height(wrap.height());
+    container.find('canvas').width(wrap.width());
+    if (typeof Scene != 'undefined' && Scene.resetSize) {
+        Scene.resetSize();
+    }
 };
 
 function onWindowResize() {
@@ -695,27 +719,29 @@ function onWindowResize() {
 };
 
 function gotoSpecialStep(step) {
-    _registerRemoteServer();
-    $.ajax({
-        type: 'POST',
-        async: true,
-        url: _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: step, symbol: _currentStage }),
-        data: '<root></root>',
-        success: function (response, status) {
-            if ($(response).find('err').length > 0) {
-                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
-                return;
-            }
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'POST',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: step, symbol: _currentStage }),
+    //    data: '<root></root>',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
+    //            return;
+    //        }
 
-            window.location.href = 'workplatform.html?scene=' + _currentStage + '&rnd=' + Date.now();
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-        }
-    });
+    //        window.location.href = 'workplatform.html?scene=' + _currentStage + '&rnd=' + Date.now();
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    //window.location.href = 'qualitycourse.html?scene=p_3_' + step + '&rnd=' + Date.now();
+
 }
 
 function showCompleteAlert(notSave) {

@@ -260,8 +260,8 @@ Engine.initEvent = function () {
 
 Engine.handleContainerResize = function (width, height) {
     renderer.setSize(width, height);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+    Engine.camera.aspect = width / height;
+    Engine.camera.updateProjectionMatrix();
 };
 
 Engine.handleMouseDown = function (eventObj) {
@@ -435,6 +435,11 @@ Engine.continueScene = function () {
 };
 
 Engine.startScene = function () {
+    if (Engine.loopID) {
+        cancelAnimationFrame(Engine.loopID);
+        Engine.looped = false;
+    }
+
     Engine.status = Engine._statusRun;
     for (var key in Engine.modules) {
         Engine.modules[key].status = Engine._statusRun;

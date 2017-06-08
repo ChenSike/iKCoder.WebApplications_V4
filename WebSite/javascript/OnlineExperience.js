@@ -7,7 +7,7 @@ function initPage() {
     });
 
     $('#btn_StartPlay').on('click', function () {
-        window.location.href = "qualitycourse.html?scene=p_3_1&rnd=" + Date.now();
+        window.location.href = "qualitycourse.html?scene=qc01_3_1&rnd=" + Date.now();
     });
 };
 

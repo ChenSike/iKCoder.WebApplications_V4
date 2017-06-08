@@ -6,7 +6,7 @@ var _gLabelMap = {};
 var _gHostName = 'http://119.23.233.224/ikcoderapi';
 //var _gHostName = 'http://10.111.0.81/ikcoderapi';
 //var _gHostName = 'http://10.111.0.243/ikcoderapi';
-//var _gHostName = 'http://10.86.209.76/ikcoderapi';
+//var _gHostName = 'http://10.86.215.83/ikcoderapi';
 var _gURLMapping = {
     server: {
         reg: '/Sys/api_iKCoder_Sys_Set_RegDomain.aspx'
@@ -46,10 +46,11 @@ var _gURLMapping = {
         gethtmlreport: '/Bus/Report/api_iKCoder_Report_Get_HtmlReport.aspx'
     },
     tmp: {
-        storesave: '/bus/store/api_iKCoder_Store_Save.aspx?symbol=XXX&type=XXXX&timeout=120&istextreq=1', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
-        storeload: '/bus/store/api_iKCoder_Store_Load.aspx?symbol=XXX&type=XXXX'
+        storesave: '/bus/store/api_iKCoder_Store_Save.aspx', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
+        storeload: '/bus/store/api_iKCoder_Store_Load.aspx'   //?symbol=XXX&type=XXXX'
     }
 };
+
 var _gCitys = [
     { p: '北京', pt: '市', c: ['东城', '西城', '崇文', '宣武', '朝阳', '海淀', '丰台', '石景山'], ct: '区' },
     { p: '上海', pt: '市', c: ['宝山', '金山', '南市', '长宁', '静安', '青浦', '崇明', '卢湾', '松江', '奉贤', '浦东', '杨浦', '虹口', '普陀', '闸北', '黄浦', '闵行', '徐汇', '嘉定', '南汇'], ct: '区' },

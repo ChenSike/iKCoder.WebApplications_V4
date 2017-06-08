@@ -193,6 +193,7 @@ function rebuildContent(symbol) {
     }
 
     var currentItem = null;
+    $('#list_Overview_Course').hide();
     switch (symbol) {
         case 'overview':
             currentItem = $($('.left-bar-category-item')[0]);
@@ -588,6 +589,7 @@ function buildOverviewCourse(datas, containerHeight) {
         } else {
             displayCourseListContent(target);
             buildCourseListContent(target);
+            tipWrap.attr('data-target', target.attr('data-target'));
         }
     });
 };
@@ -627,7 +629,7 @@ function buildCourseListContent(target) {
     if (_courseListOverview[symbol]) {
         var tmpHTMLStrArr = [];
         var unitArr = _courseListOverview[symbol];
-        var lessonArr, icon, state, disabled;
+        var lessonArr, icon, state, disabled, courseSymbol;
         for (var i = 0; i < unitArr.length; i++) {
             tmpHTMLStrArr.push('<div class="row justify-content-start" style="padding: 15px;">');
             tmpHTMLStrArr.push('    <div class="col  text-left">');
@@ -636,7 +638,8 @@ function buildCourseListContent(target) {
                 icon = (lessonArr[j].finish == '0' ? 'arrow-circle-o-right' : 'check-circle-o');
                 state = (lessonArr[j].finish == '0' ? '' : 'finished');
                 disabled = (lessonArr[j].enable == '0' ? ' disabled' : '');
-                tmpHTMLStrArr.push('<i class="fa fa-' + icon + ' lesson-title-course-overview ' + state + disabled + '" aria-hidden="true" data-target="' + lessonArr[j].symbol + '"><span style="padding-left:5px;">' + lessonArr[j].title + '</span></i>');
+                courseSymbol = (lessonArr[j].enable == '0' ? '' : lessonArr[j].symbol);
+                tmpHTMLStrArr.push('<i class="fa fa-' + icon + ' lesson-title-course-overview ' + state + disabled + '" aria-hidden="true" data-target="' + courseSymbol + '"><span style="padding-left:5px;">' + lessonArr[j].title + '</span></i>');
             }
 
             tmpHTMLStrArr.push('    </div>');
@@ -646,7 +649,9 @@ function buildCourseListContent(target) {
         $('#content_List_Overview_Course').empty();
         $('#content_List_Overview_Course').append(tmpHTMLStrArr.join(''));
         $('.lesson-title-course-overview').on('click', function (eventObj) {
-            window.location.href = "workplatform.html?scene=" + $(eventObj.currentTarget).attr('data-target') + '&rnd=' + Date.now();
+            if ($(eventObj.currentTarget).attr('data-target') != '') {
+                window.location.href = "workplatform.html?scene=" + $(eventObj.currentTarget).attr('data-target') + '&rnd=' + Date.now();
+            }
         });
     }
 };
@@ -2169,15 +2174,12 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
-    tmpHTMLArr.push('        <div class="col-6 text-center text-size-13 text-color-smart">');
+    tmpHTMLArr.push('        <div class="col-12 text-center text-size-13 text-color-smart">');
     tmpHTMLArr.push('            本月学习时间及趋势');
     tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-6 text-center text-size-13 text-color-smart">');
-    tmpHTMLArr.push('            各级课程完成率');
-    tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
-    tmpHTMLArr.push('        <div class="col-6" style="height:210px; padding-left:30px;">');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
+    tmpHTMLArr.push('        <div class="col-12" style="height:210px; padding-left:30px;">');
     tmpHTMLArr.push('           <div class="container-fluid no-padding">');
     tmpHTMLArr.push('               <div class="row align-items-center">');
     tmpHTMLArr.push('                   <div class="col-1 no-padding">');
@@ -2198,7 +2200,14 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-6" style="padding-left:30px;">');
+    tmpHTMLArr.push('    </div>')
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
+    tmpHTMLArr.push('        <div class="col-12 text-center text-size-13 text-color-smart">');
+    tmpHTMLArr.push('            各级课程完成率');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    tmpHTMLArr.push('        <div class="col-12" style="height:210px; padding-left:30px;">');
     tmpHTMLArr.push('           <canvas id="canvas_Report_Time_Course"></canvas>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
@@ -2373,11 +2382,12 @@ function drawAbilityGraph(datas) {
         maxValue = (maxValue < datas[i].value ? datas[i].value : maxValue);
     }
 
+    maxValue = maxValue == 0 ? 200 : maxValue;
     maxValue = Math.ceil(maxValue / 100) * 100;
     var tmpSteps = maxValue / 20;
     var tmpRadius = radius / tmpSteps;
     var vertex = [];
-    for (var i = 1; i < 36; i++) {
+    for (var i = 1; i < tmpSteps; i++) {
         var tmpStyle = lightStyle;
         if (i % 5 == 0) {
             tmpStyle = boldStyle;
@@ -2386,7 +2396,7 @@ function drawAbilityGraph(datas) {
         vertex.push(drawPolygon(context, datas.length, centerX, centerY, tmpRadius * i, 0, false, null, tmpStyle));
     }
 
-    var tmpX, tmpY;
+    var tmpX, tmpY, tmpTextWidth;
     for (var i = 0; i < datas.length; i++) {
         tmpX = vertex[vertex.length - 1][i].x;
         tmpY = vertex[vertex.length - 1][i].y;
@@ -2434,10 +2444,33 @@ function drawAbilityGraph(datas) {
     context.fillStyle = "rgb(252,136,35)";
     context.beginPath();
     context.moveTo(tmpVertex[0].x, tmpVertex[0].y);
-    context.fillText(datas[0].value, tmpVertex[0].x, tmpVertex[0].y);
+    tmpTextWidth = testTextWidth(datas[0].value, valFontSize + 'px', '', '微软雅黑', '');
+    tmpX = tmpVertex[0].x - tmpTextWidth / 2;
+    tmpY = tmpVertex[0].y - 3;
+    context.fillText(datas[0].value, tmpX, tmpY);
     for (var i = 1; i < tmpVertex.length; i++) {
         context.lineTo(tmpVertex[i].x, tmpVertex[i].y);
-        context.fillText(datas[i].value, tmpVertex[i].x, tmpVertex[i].y);
+        tmpTextWidth = testTextWidth(datas[i].value, valFontSize + 'px', '', '微软雅黑', '');
+        switch (i) {
+            case 1:
+                tmpX = tmpVertex[i].x + 3;
+                tmpY = tmpVertex[i].y + 3;
+                break;
+            case 2:
+                tmpX = tmpVertex[i].x + 3;
+                tmpY = tmpVertex[i].y + valFontSize / 2;
+                break;
+            case 3:
+                tmpX = tmpVertex[i].x - tmpTextWidth - 3;
+                tmpY = tmpVertex[i].y + valFontSize / 2;
+                break;
+            case 4:
+                tmpX = tmpVertex[i].x - tmpTextWidth - 3;
+                tmpY = tmpVertex[i].y + 3;
+                break;
+        }
+
+        context.fillText(datas[i].value, tmpX, tmpY);
     }
     context.closePath();
     context.stroke();
@@ -2546,7 +2579,7 @@ function drawTimeCompleteRate(datas) {
 
         tmpTextWidth = testTextWidth(datas[i].name, textFontSize + 'px', 'bold', '微软雅黑', '');
         //tmpX = centerX - textFontSize * 1.5;
-        tmpX = centerX - tmpTextWidth/2;
+        tmpX = centerX - tmpTextWidth / 2;
         tmpY = radius * 2 + lineWidth + textFontSize + 10; //(height - radius * 2 - lineWidth);
         context.font = "normal normal bold " + textFontSize + "px \"微软雅黑\"";
         context.fillStyle = "rgb(61,61,61)";

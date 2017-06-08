@@ -1,82 +1,112 @@
 ﻿'use strict';
 
+WorkScene.OutputCodeCallBack = function (code) {
+    if (typeof Scene != 'undefined' && Scene) {
+        code = code.replace('Scene.settingComplete();', '');
+        eval(code);
+    }
+};
+
 var Scene = {};
-var currMonsterParams = $.extend(true, {}, monsterDefault);
-var currHeroParams = $.extend(true, {}, heroDefault);
 
 Scene.init = function () {
-    gameInit();
-    monsterPos = .59;
-    monster.pause();
-}
+    _registerRemoteServer();
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.tmp.storeload, { symbol: 'qc01_3_' + (_currentStep - 1), type: 'modulesetting' }),
+        data: '',
+        success: function (response, status) {
+            if ($(response).find('err').length > 0) {
+                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
+                return;
+            }
 
-Scene.PrepareStatus = function () {
-    _params_HeroStatus = "pause";
-    _params_MonsterStatus = "pause";
+            _dataForSave = response;
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+        }
+    });
+
+    Engine.initScreenAnd3D('game_container', {
+        speed: {
+            player: { min: 6, max: 48, freq: 3000, step: 2 },
+            monster: { pos: 0.59, tpos: 0.65, acceleration: 0.004, pursue: false }
+        },
+    });
+
+    Engine.prepareForRun();
+    Engine.setAudio(false);
+    Engine.changeRoleModule('rabbit', 'player');
+    Engine.changeRoleModule('wolf', 'monster');
+    Engine.modules['player'].mesh.rotation.y = Math.PI / 4;
+    Engine.modules['player'].mesh.position.y = 60;
+    Engine.modules['monster'].positionType = 'player';
+    Engine.modules['monster'].mesh.position.x = -10;
+    Engine.modules['monster'].mesh.position.z = 0;
+    Engine.start();
+};
+
+Scene.start = function () {
+    Engine.start();
 };
 
 Scene.reset = function () {
-    reinitGameParam();
-    gamePause();
+    Engine.reset();
+    Engine.changeRoleModule('rabbit', 'player');
+    Engine.changeRoleModule('wolf', 'monster');
+    Engine.modules['player'].mesh.rotation.y = Math.PI / 4;
+    Engine.modules['player'].mesh.position.y = 60;
+    Engine.modules['monster'].positionType = 'player';
+    Engine.modules['monster'].mesh.position.x = -10;
+    Engine.modules['monster'].mesh.position.z = 0;
+    Engine.start();
 };
 
-Scene.startGame = function () {
-    gameStart();
+Scene.resetSize = function () {
+    Engine.handleWindowResize();
 };
 
-Scene.ResetConfig = function () {
-    Scene.reset();
+Scene.settingComplete = function () {
+    var rabbitNode = $($(_dataForSave).find('item[module="rabbit"]')[0]);
+    var rabbitModule = Engine.moduleLib['rabbit'];
+    rabbitNode.attr('head', rabbitModule.head.scale.x);
+    rabbitNode.attr('body', rabbitModule.torso.scale.x);
+    rabbitNode.attr('ear', rabbitModule.earL.scale.x);
+    rabbitNode.attr('color', '#' + rabbitModule.head.material.color.getHexString());
+    var wolfNode = $($(_dataForSave).find('item[module="wolf"]')[0]);
+    var wolfModule = Engine.moduleLib['wolf'];
+    wolfNode.attr('head', wolfModule.head.scale.x);
+    wolfNode.attr('body', wolfModule.torso.scale.x);
+    wolfNode.attr('ear', wolfModule.earL.scale.x);
+    wolfNode.attr('color', '#' + wolfModule.head.material.color.getHexString());
+    _dataForSave = XMLToString(_dataForSave);
+    showCompleteAlert();
 };
 
-Scene.SetMonsterProperty = function (symbol, w, h, d, color) {
-    if (symbol == 'tail' || symbol == 'paw') {
-        monsterDefault[symbol].rt = w;
-        monsterDefault[symbol].rb = h;
-        monsterDefault[symbol].h = d;
-    } else {
-        monsterDefault[symbol].w = w;
-        monsterDefault[symbol].h = h;
-        monsterDefault[symbol].d = d;
-    }
+Scene.setRoleModuleShape = function (moduleType, head, body, ear, color) {
+    head = (head == 'max' ? 1.5 : head == 'middle' ? 1 : head == 'min' ? 0.5 : 1);
+    body = (body == 'max' ? 1.5 : body == 'middle' ? 1 : body == 'min' ? 0.5 : 1);
+    ear = (ear == 'max' ? 2 : ear == 'middle' ? 1 : ear == 'min' ? 0.5 : 1);
+    Engine.moduleLib[moduleType].head.scale.set(head, head, head);
+    Engine.moduleLib[moduleType].torso.scale.set(body, body, body);
+    Engine.moduleLib[moduleType].earL.scale.set(ear, ear, ear);
+    Engine.moduleLib[moduleType].earR.scale.set(ear, ear, ear);
+    var newMaterial = new THREE.MeshPhongMaterial({ color: color, shading:  THREE.FlatShading });
+    Engine.moduleLib[moduleType].head.material.setValues(newMaterial);
+    Engine.moduleLib[moduleType].torso.material.setValues(newMaterial);
+    Engine.moduleLib[moduleType].earL.material.setValues(newMaterial);
+    Engine.moduleLib[moduleType].earR.material.setValues(newMaterial);
+}
 
-    monsterDefault[symbol].c = new THREE.MeshPhongMaterial({
-        color: color,
-        shading: THREE.FlatShading,
-    });
+Scene.setRabbitShape = function (head, body, ear, color) {
+    Scene.setRoleModuleShape('rabbit', head, body, ear, color);
 };
 
-Scene.ReinitMonsterProperty = function (symbol, w, h, d, color) {
-};
-
-Scene.UpdateMonsterProperty = function (symbol, w, h, d, color) {
-    if (!paramsEquals(currMonsterParams, monsterDefault)) {
-        reCreateMonster();
-        monster.pause();
-        currMonsterParams = $.extend(true, {}, monsterDefault);
-    }
-};
-
-Scene.SetHeroProperty = function (symbol, w, h, d, color) {
-    heroDefault[symbol].w = w;
-    heroDefault[symbol].h = h;
-    heroDefault[symbol].d = d;
-    heroDefault[symbol].c = new THREE.MeshPhongMaterial({
-        color: color,
-        shading: THREE.FlatShading,
-    });
-};
-
-Scene.ReinitHeroProperty = function (symbol, w, h, d, color) {
-};
-
-Scene.UpdateHeroProperty = function (symbol, w, h, d, color) {
-    if (!paramsEquals(currHeroParams, heroDefault)) {
-        reCreateHero();
-        hero.pause();
-        currHeroParams = $.extend(true, {}, heroDefault);
-    }
-};
-
-WorkScene.OutputCodeCallBack = function (code) {
-    eval(code);
+Scene.setWolfShape = function (head, body, ear, color) {
+    Scene.setRoleModuleShape('wolf', head, body, ear, color);
 };

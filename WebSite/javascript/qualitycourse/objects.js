@@ -4,7 +4,7 @@ function Floor(isForest) {
     Module.call(this);
     this.state = Engine._stateRun;
     this.isForest = isForest;
-    this.type = 'floor';
+    this.type = (this.isForest ? 'forest' : 'grass');
     this.rotation = 0;
     this.init();
 };
@@ -141,8 +141,9 @@ BonusParticles.prototype.init = function () {
 };
 
 BonusParticles.prototype.explose = function () {
+    this.mesh.visible = true;
     var _this = this;
-    var explosionSpeed = .5;
+    var explosionSpeed = 0.5;
     for (var i = 0; i < this.parts.length; i++) {
         var tx = -50 + Math.random() * 100;
         var ty = -50 + Math.random() * 100;
@@ -151,9 +152,9 @@ BonusParticles.prototype.explose = function () {
         p.position.set(0, 0, 0);
         p.scale.set(1, 1, 1);
         p.visible = true;
-        var s = explosionSpeed + Math.random() * .5;
+        var s = explosionSpeed + Math.random() * 0.5;
         TweenMax.to(p.position, s, { x: tx, y: ty, z: tz, ease: Power4.easeOut });
-        TweenMax.to(p.scale, s, { x: .01, y: .01, z: .01, ease: Power4.easeOut, onComplete: removeParticle, onCompleteParams: [p] });
+        TweenMax.to(p.scale, s, { x: 0.01, y: 0.01, z: 0.01, ease: Power4.easeOut, onComplete: function (p) { p.visible = false; }, onCompleteParams: [p] });
     }
 };
 
@@ -164,17 +165,18 @@ function Rabbit(role) {
     this.role = role;
     this.poseType = Engine._statePrepare;
     this.runningCycle = 0;
+    var mainMaterial = new THREE.MeshPhongMaterial({ color: Engine.params.modules.rabbit.color, shading: THREE.FlatShading });
     this.params = {
-        torso: { c: brownMat_b44b39, w: 7, h: 7, d: 10 },
+        torso: { c: mainMaterial, w: 7, h: 7, d: 10 },
         pants: { c: whiteMat_a49789, w: 9, h: 9, d: 5 },
         tail: { c: lightBrownMat_e07a57, w: 3, h: 3, d: 3 },
-        head: { c: brownMat_b44b39, w: 10, h: 10, d: 13 },
+        head: { c: mainMaterial, w: 10, h: 10, d: 13 },
         cheek: { c: pinkMat_dc5f45, w: 1, h: 4, d: 4 },
         nose: { c: lightBrownMat_e07a57, w: 6, h: 6, d: 3 },
-        mouth: { c: brownMat_b44b39, w: 4, h: 2, d: 4 },
+        mouth: { c: mainMaterial, w: 4, h: 2, d: 4 },
         pawF: { c: lightBrownMat_e07a57, w: 3, h: 3, d: 3 },
         pawB: { c: lightBrownMat_e07a57, w: 3, h: 3, d: 6 },
-        ear: { c: brownMat_b44b39, w: 7, h: 18, d: 2 },
+        ear: { c: mainMaterial, w: 7, h: 18, d: 2 },
         iris: { c: blackMat_100707, w: 0.6, h: 2, d: 2 },
         eye: { c: whiteMat_a49789, w: 2, h: 4, d: 4 }
     };
@@ -493,6 +495,11 @@ Rabbit.prototype.prepareForRole = function (role) {
     } else if (role == 'prop') {
         this.mesh.scale.set(0.6, 0.6, 0.6);
         this.mesh.rotation.y = 0;
+    } else if (role == 'player') {
+        this.mesh.scale.set(1, 1, 1);
+        this.mesh.position.y = 0;
+        this.mesh.position.x = 0;
+        this.mesh.position.z = 0;
     }
 };
 
@@ -501,20 +508,22 @@ function Wolf(role) {
     this.state = Engine._statePrepare;
     this.type = 'wolf';
     this.role = role;
+    this.positionType = '';
     this.poseType = Engine._statePrepare;
     this.runningCycle = 0;
+    var mainMaterial = new THREE.MeshPhongMaterial({ color: Engine.params.modules.wolf.color, shading: THREE.FlatShading });
     this.params = {
-        torso: { c: blackMat_100707, w: 15, h: 15, d: 20 },
-        head: { c: blackMat_100707, w: 20, h: 20, d: 40 },
-        mouth: { c: blackMat_100707, w: 10, h: 4, d: 20 },
+        torso: { c: mainMaterial, w: 15, h: 15, d: 20 },
+        head: { c: mainMaterial, w: 20, h: 20, d: 40 },
+        mouth: { c: mainMaterial, w: 10, h: 4, d: 20 },
         tooth: { c: whiteMat_a49789, w: 2, h: 2, d: 1 },
         tongue: { c: pinkMat_dc5f45, w: 6, h: 1, d: 14 },
         nose: { c: pinkMat_dc5f45, w: 4, h: 4, d: 4 },
         eye: { c: whiteMat_a49789, w: 2, h: 3, d: 3 },
-        iris: { c: blackMat_100707, w: 0.6, h: 1, d: 1 },
-        ear: { c: blackMat_100707, w: 8, h: 6, d: 2 },
-        tail: { c: blackMat_100707, w: 0, h: 20, d: 0, rt: 5, rb: 2, rs: 4, hs: 1 },
-        paw: { c: blackMat_100707, w: 0, h: 10, d: 0, rt: 1.5, rb: 0, rs: 1, hs: 1 }
+        iris: { c: mainMaterial, w: 0.6, h: 1, d: 1 },
+        ear: { c: mainMaterial, w: 8, h: 6, d: 2 },
+        tail: { c: mainMaterial, w: 0, h: 20, d: 0, rt: 5, rb: 2, rs: 4, hs: 1 },
+        paw: { c: mainMaterial, w: 0, h: 10, d: 0, rt: 1.5, rb: 0, rs: 1, hs: 1 }
     };
 
     this.init();
@@ -669,7 +678,6 @@ Wolf.prototype.run = function () {
         var speed = Math.min(this.speed, Engine.params.speed.player.max);
         this.runningCycle += Engine._delta * speed * 0.7;
         this.runningCycle = this.runningCycle % (Math.PI * 2);
-
     }
 
     var tmpCycle = this.runningCycle;
@@ -741,7 +749,7 @@ Wolf.prototype.jump = function () {
     //MESH
     TweenMax.to(this.mesh.position, totalSpeed / 2, { y: jumpHeight, ease: Power2.easeOut });
     TweenMax.to(this.mesh.position, totalSpeed / 2, {
-        y: 0, ease: Power4.easeIn, delay: totalSpeed / 2, onComplete: function () {
+        y: 12, ease: Power4.easeIn, delay: totalSpeed / 2, onComplete: function () {
             _this.state = Engine._stateRun;
         }
     });
@@ -774,13 +782,14 @@ Wolf.prototype.hang = function () {
 
 Wolf.prototype.sit = function () {
     var tmpConst = 1.2;
+    this.state = Engine._stateSit;
     var ease = Power4.easeOut;
     var _this = this;
     TweenMax.to(this.torso.rotation, tmpConst, { x: -1.3, ease: ease });
     TweenMax.to(this.torso.position, tmpConst, {
         y: -5, ease: ease, onComplete: function () {
             _this.nod();
-            gameStatus = "readyToReplay";
+            Engine.state = Engine._statePrepare;
         }
     });
     TweenMax.to(this.head.rotation, tmpConst, { x: Math.PI / 3, y: -Math.PI / 3, ease: ease });
@@ -798,6 +807,8 @@ Wolf.prototype.prepareForRole = function (role) {
     if (role == 'player') {
         this.mesh.scale.set(0.5, 0.5, 0.5);
         this.mesh.position.y = 10;
+        this.mesh.position.x = 0;
+        this.mesh.position.z = 0;
     } else if (role == 'obstacle') {
         this.irisL.visible = false;
         this.irisR.visible = false;
@@ -807,6 +818,7 @@ Wolf.prototype.prepareForRole = function (role) {
         this.mesh.scale.set(0.4, 0.4, 0.4);
         this.mesh.rotation.y = 0.2;
     } else if (role == 'monster') {
+        this.mesh.scale.set(1, 1, 1);
         this.body.rotation.x = -20 * Math.PI / 180;
     }
 };

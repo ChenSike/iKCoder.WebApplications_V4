@@ -16,16 +16,39 @@ Scene.init = function () {
         },
     });
     Engine.prepareForRun();
-}
+};
 
-Scene.start = function () {    
+Scene.start = function () {
     Engine.start();
-}
+    for (var key in Engine.modules) {
+        if (!Engine.modules[key]) {
+            return;
+        }
+    }
+
+    if (!Engine.audio || Engine.audio.paused) {
+        return;
+    }
+
+    _dataForSave = [];
+    _dataForSave.push('<data>');
+    for (var key in Engine.modules) {
+        if (key != 'bonus') {
+            _dataForSave.push('<item role="' + key + '" module="' + (Engine.modules[key] ? Engine.modules[key].type : '') + '"></item>');
+        }
+    }
+
+    _dataForSave.push('<music path="' + Engine.audio.src + '"></music>');
+    _dataForSave.push('</data>');
+    _dataForSave = _dataForSave.join('');
+    Scene.stepComplete();
+};
 
 Scene.reset = function () {
     Engine.reset();
     Engine.start();
-}
+    _dataForSave = '';
+};
 
 Scene.SetMusic = function (music) {
     Engine.setAudio(music == '' ? false : music);
@@ -37,8 +60,8 @@ Scene.SetRoleModule = function (moduleType, role) {
     }
 
     Engine.changeRoleModule(moduleType, role);
-}
+};
 
 Scene.resetSize = function () {
     Engine.handleWindowResize();
-}
+};

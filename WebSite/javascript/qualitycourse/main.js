@@ -17,6 +17,14 @@ var Engine = {
         bonus: null,
         floor: null
     },
+    moduleLib: {
+        wolf: null,
+        rabbit: null,
+        hedgehog: null,
+        carrot: null,
+        grass: null,
+        forest: null
+    },
     _stateOver: -1,
     _statePause: 0,
     _stateRun: 1,
@@ -86,15 +94,19 @@ Engine.params = {
     },
     audio: 'media/sound_1.mp3',
     floorRadius: 200,
-    treeCount: 100,
+    treeCount: 50,
     playerJumpHeight: 45,
+    collisionBonus: 20,
+    collisionObstacle: 10,
     modules: {
-        //player: 'rabbit',
-        //monster: 'wolf',
-        //obstacle: 'hedgehog',
-        //prop: 'carrot',
-        //floor: 'floor'
-    }
+        rabbit: { head: 1, body: 1, ear: 1, color: '#b44b39', role: 'player' },
+        wolf: { head: 1, body: 1, ear: 1, color: '#100707', role: 'monster' },
+        hedgehog: { role: 'obstacle' },
+        carrot: { role: 'prop' },
+        grass: { role: '' },
+        forest: { role: 'floor' }
+    },
+    control: { device: 'm', key: 0 }
 };
 
 Engine.initParams = function (params) {
@@ -114,6 +126,7 @@ Engine.initScreenAnd3D = function (containerId, params) {
     Engine.initLights();
     Engine.audio = new Audio(Engine.params.audio);
     Engine.clock = new THREE.Clock();
+    Engine.setControl(Engine.params.control.device, Engine.params.control.key);
 };
 
 Engine.initScene = function () {
@@ -148,8 +161,6 @@ Engine.initRender = function () {
     Engine.renderer.setSize(Engine.container.width(), Engine.container.height());
     Engine.renderer.shadowMap.enabled = true;
     Engine.container.append(Engine.renderer.domElement);
-    //container.addEventListener('mousedown', handleMouseDown, false);
-    //container.addEventListener("touchend", handleMouseDown, false);
 };
 
 Engine.initLights = function () {
@@ -212,10 +223,36 @@ Engine.loop = function () {
         }
     }
 
+    Engine.checkCollision(Engine.modules);
     Engine.updateDistance();
     Engine.render();
     Engine._animationId = requestAnimationFrame(Engine.loop);
 };
+
+Engine.checkCollision = function () {
+    for (var key in Engine.modules) {
+        if (!Engine.modules[key]) {
+            return;
+        }
+    }
+
+    var db = Engine.modules.player.mesh.position.clone().sub(Engine.modules.prop.mesh.position.clone());
+    var dm = Engine.modules.player.mesh.position.clone().sub(Engine.modules.obstacle.mesh.position.clone());
+    if (db.length() < Engine.params.collisionBonus) {
+        if (Engine.modules.prop.mesh.visible) {
+            Engine.modules.bonus.mesh.position.copy(Engine.modules.prop.mesh.position);
+            Engine.modules.bonus.explose();
+            Engine.modules.prop.angle += Math.PI / 2;
+            Engine.modules.monster.monsterPosTarget += .025;
+        }
+    }
+
+    if (dm.length() < Engine.params.collisionObstacle && Engine.modules.obstacle.status != Engine._stateFly) {
+        if (Engine.modules.obstacle.mesh.visible) {
+            Engine.modules.obstacle.fly();
+        }
+    }
+}
 
 Engine.updateDistance = function () {
     //Engine._distance += Engine._delta * Engine.modules['player'].speed;
@@ -284,9 +321,10 @@ Engine.createRoleObject = function (moduleType, role) {
 
 Engine.initModules = function () {
     for (var key in Engine.params.modules) {
-        Engine.modules[key] = Engine.createRoleObject(Engine.params.modules[key], key);
-        Engine.scene.add(Engine.modules[key].mesh);
-        Engine.modules[key].prepareForRun();
+        Engine.moduleLib[key] = Engine.createRoleObject(key, Engine.params.modules[key].role);
+        Engine.moduleLib[key].mesh.visible = false;
+        Engine.scene.add(Engine.moduleLib[key].mesh);
+        Engine.moduleLib[key].prepareForRun();
     }
 
     Engine.modules['bonus'] = Engine.createRoleObject('bonus', '');
@@ -329,7 +367,7 @@ Engine.pause = function () {
 
 Engine.addModules = function (moduleType, role) {
     for (var key in Engine.params.modules) {
-        if (role == key) {
+        if (moduleType == key) {
             Engine.modules[role] = Engine.createRoleObject(moduleType, role);
             Engine.modules[role].setRole(role);
             Engine.scene.add(Engine.modules[role].mesh);
@@ -340,7 +378,7 @@ Engine.addModules = function (moduleType, role) {
     Engine.render();
 };
 
-Engine.changeRoleModule = function (moduleType, role) {
+Engine.changeRoleModule_create = function (moduleType, role) {
     for (var key in Engine.modules) {
         if (role == key) {
             if (Engine.modules[role]) {
@@ -359,11 +397,40 @@ Engine.changeRoleModule = function (moduleType, role) {
     Engine.render();
 };
 
+Engine.changeRoleModule = function (moduleType, role) {
+    for (var key in Engine.modules) {
+        if (role == key) {
+            if (Engine.modules[role]) {
+                Engine.modules[role].mesh.visible = false;
+            }
+
+            if (moduleType != '') {
+                Engine.modules[role] = Engine.moduleLib[moduleType];
+                Engine.modules[role].mesh.visible = true;
+                Engine.modules[role].setRole(role);
+                Engine.modules[role].prepareForRun();
+            } else {
+                if (Engine.modules[role]) {
+                    Engine.modules[role].mesh.visible = false;
+                    Engine.modules[role].setRole('');
+                }
+            }
+        }
+    }
+
+    Engine.render();
+};
+
 Engine.setAudio = function (audioPath) {
     if (audioPath === false) {
-        Engine.audio.pause();
+        if (Engine.audio) {
+            Engine.audio.pause();
+        }
     } else {
-        Engine.audio = new Audio(audioPath);
+        if (Engine.audio.src.indexOf(audioPath) < 0) {
+            Engine.audio = new Audio(audioPath);
+        }
+
         Engine.audio.play();
     }
 }
@@ -403,19 +470,42 @@ Engine.over = function () {
     TweenMax.to(Engine.camera.position, 3, { z: Engine.params.camera.oz, y: Engine.params.camera.oy, x: 0 });//Engine.params.camera.ox });
 };
 
+Engine.setControl = function (device, eventKeyCode) {
+    Engine.container.unbind();
+    Engine.params.control = { device: 'm', key: 0 };
+    if (Engine.params.speed.monster.pursue) {
+        if (device == 'm') {
+            Engine.container.on('mousedown', Engine.handleMouseDown);
+            Engine.params.control = { device: 'm', key: eventKeyCode };
+        } else {
+            Engine.container.on('keydown', Engine.handleKeyDown);
+            Engine.params.control = { device: 'k', key: eventKeyCode };
+        }
+    }
+}
+
 Engine.handleWindowResize = function () {
-    Engine.renderer.setSize(this.container.width(), this.container.height());
-    Engine.camera.aspect = this.container.width() / this.container.height();
-    Engine.camera.updateProjectionMatrix();
+    if (Engine.renderer) {
+        Engine.renderer.setSize(this.container.width(), this.container.height());
+        Engine.camera.aspect = this.container.width() / this.container.height();
+        Engine.camera.updateProjectionMatrix();
+    }
 };
 
-Engine.handleMouseDown = function (event) {
-    //if (gameStatus == "play" && hero.status == 'running') {
-    //    hero.jump();
-    //}
-    ////else if (gameStatus == "readyToReplay") {
-    ////    replay();
-    ////}
+Engine.handleMouseDown = function (eventObj) {
+    if (eventObj.button == Engine.params.control.key) {
+        if (Engine.state == Engine._stateRun) {
+            Engine.modules['player'].jump();
+        }
+    }
+};
+
+Engine.handleKeyDown = function (eventObj) {
+    if (eventObj.which == Engine.params.control.key) {
+        if (Engine.state == Engine._stateRun) {
+            Engine.modules['player'].jump();
+        }
+    }
 };
 
 Engine.getPlayer = function () {
@@ -520,7 +610,14 @@ Module.prototype.reset = function () {
 };
 
 Module.prototype.over = function () {
-
+    this.state = Engine._stateOver;
+    if (this.role == 'monster') {
+        if (this.mouth) {
+            this.mouth.add(Engine.modules.player.mesh);
+        } else {
+            this.mesh.add(Engine.modules.player.mesh);
+        }
+    }
 };
 
 Module.prototype.setRole = function (role) {
@@ -534,7 +631,7 @@ Module.prototype.setRole = function (role) {
 };
 
 Module.prototype.updatePosition_Monster = function () {
-    if (Engine.params.speed.monster.pursue) {
+    if (Engine.params.speed.monster.pursue && Engine.state == Engine._stateRun) {
         this.monsterPosTarget -= Engine._delta * Engine.params.speed.monster.acceleration;
         this.monsterPos += (this.monsterPosTarget - this.monsterPos) * Engine._delta;
         if (this.monsterPos < .56) {
@@ -574,13 +671,14 @@ Module.prototype.updatePosition_Prop = function () {
 
 Module.prototype.updatePosition = function () {
     if (this.role == 'monster') {
-        this.updatePosition_Monster();
+        if (this.positionType != 'player') {
+            this.updatePosition_Monster();
+        }
     } else if (this.role == 'obstacle') {
         this.updatePosition_Obstacle();
     } else if (this.role == 'prop') {
         this.updatePosition_Prop();
     }
-
 };
 
 Module.prototype.updatePose = function () {
@@ -632,4 +730,36 @@ Module._prepareForRole = function (role, module) {
         module.mesh.position.x = Math.cos(angle) * (Engine.params.floorRadius + 15);
         module.mesh.rotation.z = -Math.PI / 2 + angle;
     }
+};
+
+Module.prototype.fly = function () {
+    this.status = Engine._stateFly;
+    var tx = (Math.random() > 0.5) ? -20 - Math.random() * 10 : 20 + Math.random() * 5;
+    var _that = this;
+    TweenMax.to(this.mesh.position, 4, { x: tx, y: Math.random() * 50, z: 350, ease: Power4.easeOut });
+    TweenMax.to(this.mesh.rotation, 4, {
+        x: Math.PI * 3, z: Math.PI * 3, y: Math.PI * 6, ease: Power4.easeOut, onComplete: function () {
+            var floorRotation = (Engine.modules.floor ? Engine.modules.floor.rotation : 0);
+            _that.status = "ready";
+            _that.body.rotation.y = Math.random() * Math.PI * 2;
+            _that.angle = -floorRotation - Math.random() * .4;
+            _that.angle = this.angle % (Math.PI * 2);
+            _that.mesh.rotation.x = 0;
+            _that.mesh.rotation.y = 0;
+            _that.mesh.rotation.z = 0;
+            _that.mesh.position.z = 0;
+        }
+    });
+
+    Engine.modules.monster.monsterPosTarget -= 0.04;
+    var tmpAlpha = Engine.params.renderer.clearColor;
+    TweenMax.from(this,
+        0.5,
+        {
+            tmpAlpha: 0.5,
+            onUpdate: function () {
+                Engine.params.renderer.clearColor = tmpAlpha;
+                Engine.renderer.setClearColor(Engine.params.renderer.clearColor, Engine.params.renderer.clearAlpha);
+            }
+        })
 }
