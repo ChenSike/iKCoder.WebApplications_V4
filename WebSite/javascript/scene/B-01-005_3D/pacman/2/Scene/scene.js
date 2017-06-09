@@ -211,11 +211,13 @@ Scene.move = function (steps) {
 			case 0:
 			case 2:
 				curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x + (curOrientation == 0 ? 1 : -1) * steps;
+				curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
 				break;
 
 			case 1:
 			case 3:
-				curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x +(curOrientation == 1 ? 1 : -1) * steps;
+				curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
+				curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y +(curOrientation == 1 ? -1 : 1) * steps;
 				break;
 		}
 	}
