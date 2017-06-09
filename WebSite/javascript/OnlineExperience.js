@@ -9,7 +9,7 @@ function initPage() {
         adjustPositions();
     });
 
-    $('#btn_StartPlay').on('click', function () {
+    $('#btn_Start').on('click', function () {
         window.location.href = "qualitycourse.html?scene=qc01_3_1&rnd=" + Date.now();
     });
 
