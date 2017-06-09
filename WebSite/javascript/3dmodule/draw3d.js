@@ -77,7 +77,7 @@ Brush.prototype.init = function () {
 
 Brush.prototype.clearPatterns = function (callback) {
     for (var i = 0; i < this.patterns.length; i++) {
-        Engine.scene.remove(this.patterns[i]);
+        Engine.scene.remove(this.patterns[i].mesh);
     }
 
     this.patterns = [];
@@ -146,7 +146,7 @@ sc: set color
 lr: line rotate
 */
 Brush.prototype.updatePosition = function () {
-    if (!this.drawStart || this.drawing) {
+    if (!this.drawStart || this.drawing || this.drawSequence.length <= 0) {
         return;
     }
 
@@ -158,9 +158,10 @@ Brush.prototype.updatePosition = function () {
         if (this.drawSequence.length == 0) {
             if (!this.completeFired) {
                 this.drawCompleteFn();
-                this.drawStart = false;
                 this.completeFired = true;
             }
+
+            this.drawStart = false;
         }
     } else {
         switch (tmpItem.type) {
@@ -215,9 +216,9 @@ Brush.prototype.updatePosition = function () {
                             onComplete: function () {
                                 _that.mesh.visible = false;
                                 Engine.scene.add(_that.mesh);
-                                var tmpVal = Math.sqrt(Math.pow(_line.mesh.geometry.vertices[1].x, 2) + Math.pow(_line.mesh.geometry.vertices[1].y, 2));
-                                _that.mesh.position.x = tmpVal * Math.cos(_line.mesh.rotation.z) + _that.basePoint.x;
-                                _that.mesh.position.y = tmpVal * Math.sin(_line.mesh.rotation.z) + _that.basePoint.y;
+                                var tmpVal = Math.sqrt(Math.pow(_line.mesh.geometry.vertices[1].x - _line.mesh.geometry.vertices[0].x, 2) + Math.pow(_line.mesh.geometry.vertices[1].y - _line.mesh.geometry.vertices[0].y, 2));
+                                _that.mesh.position.x = tmpVal * Math.cos(_line.mesh.rotation.z) + _line.mesh.geometry.vertices[0].x + _that.basePoint.x;
+                                _that.mesh.position.y = tmpVal * Math.sin(_line.mesh.rotation.z) + _line.mesh.geometry.vertices[0].y + _that.basePoint.y;
                                 _that.mesh.visible = true;
                                 _that.drawing = false;
                             }
@@ -405,10 +406,10 @@ function Line(brush, sx, sy, tx, ty, color, width) {
     this.lineWidth = 1;
     this.completeFired = false;
     this.params = {
-        sx: sx,
-        sy: sy,
-        tx: tx,
-        ty: ty,
+        sx: Math.abs(sx) < 1e-10 ? 0 : sx,
+        sy: Math.abs(sy) < 1e-10 ? 0 : sy,
+        tx: Math.abs(tx) < 1e-10 ? 0 : tx,
+        ty: Math.abs(ty) < 1e-10 ? 0 : ty,
         a: 0,
         c: color,
         w: width,
@@ -493,6 +494,11 @@ Line.prototype.resetBodyVertices = function (x1, x2, z) {
 };
 
 Line.prototype.draw = function (animation) {
+    if (this.params.sx == this.params.tx && this.params.sy == this.params.ty) {
+        this.brush.drawing = false;
+        return;
+    }
+
     var lineLength = this.getLengthOfLine();
     if (typeof animation == 'boolean' && animation) {
         var updateArr = [
