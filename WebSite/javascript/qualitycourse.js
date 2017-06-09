@@ -186,27 +186,54 @@ function initEvents() {
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
-        _registerRemoteServer();
-        $.ajax({
-            type: 'POST',
-            async: true,
-            url: _getRequestURL(_gURLMapping.tmp.storesave, { symbol: 'qc01_3_' + _currentStep, type: 'modulesetting', timeout: 120, istextreq: 0 }),
-            data: _dataForSave,
-            success: function (response, status) {
-                if ($(response).find('err').length > 0) {
-                    _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
-                    return;
-                }
+        //_registerRemoteServer();
+        //$.ajax({
+        //    type: 'POST',
+        //    async: true,
+        //    url: _getRequestURL(_gURLMapping.tmp.storesave, { symbol: 'qc01_3_' + _currentStep, type: 'modulesetting', timeout: 120, istextreq: 0 }),
+        //    data: _dataForSave,
+        //    success: function (response, status) {
+        //        if ($(response).find('err').length > 0) {
+        //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
+        //            return;
+        //        }
 
-                window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
-            },
-            dataType: 'xml',
-            xhrFields: {
-                withCredentials: true
-            },
-            error: function () {
-            }
-        });
+        //        window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
+        //    },
+        //    dataType: 'xml',
+        //    xhrFields: {
+        //        withCredentials: true
+        //    },
+        //    error: function () {
+        //    }
+        //});
+        var symbol = getQueryString('scene').split('_')[0] + '_state_storage';
+        if (_currentStep == _totalSteps) {
+            _registerRemoteServer();
+            $.ajax({
+                type: 'POST',
+                async: true,
+                url: _getRequestURL(_gURLMapping.share.sharesave, {}),
+                data: '<root><sencesymbol>' + symbol + '</sencesymbol><config>' + _dataForSave + '</config></root>',
+                success: function (response, status) {
+                    if ($(response).find('err').length > 0) {
+                        _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_QualityCourse');
+                        return;
+                    }
+
+                    //window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
+                },
+                dataType: 'xml',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+                }
+            });
+            window.localStorage.removeItem(symbol);
+        } else {
+            window.localStorage.setItem(symbol, _dataForSave);
+        }
     });
 
     $('#btn_Step_FindError').on('click', function (e) {
@@ -385,7 +412,7 @@ function initTopTooltips(notesItems) {
 }
 
 function initData() {
-    var scene = getQueryString();
+    var scene = getQueryString('scene');
     var tmpArr = scene.split('_');
     _currentStage = scene;
     _currentStep = parseInt(tmpArr[2]);
@@ -430,11 +457,6 @@ function initData() {
     //_topTooltip = initTopTooltips($(response).find("tips").find('item'));
     _topTooltip = '';
     var data = {
-        //user: {
-        //    id: $.cookie('logined_user_name'),
-        //    name: $.cookie('logined_user_nickname'),
-        //    img: _getRequestURL(_gURLMapping.account.getheader, {})
-        //},
         course: {
             id: _currentStage,
             name: '',
@@ -749,7 +771,7 @@ function showCompleteAlert(notSave) {
     $('.wrap-complete-alert').show();
     $('.wrap-faild-alert').hide();
     $('#title_StepComplete').html(_messages.success);
-    $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '挑战下一步' : '挑战下一步'));
+    $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '挑战下一步' : '分享'));
     $('#btn_Step_Restart').text((_currentStep == _totalSteps ? '重新开始' : '重新开始'));
 };
 
@@ -913,13 +935,3 @@ function addOperatorButton() {
         });
     }
 })(jQuery);
-
-function getQueryString() {
-    var tempArr = window.location.search.substr(1).split('&');
-    for (var i = 0; i < tempArr.length; i++) {
-        var strArr = tempArr[i].split('=');
-        if (strArr[0] == 'scene') {
-            return strArr[1];
-        }
-    }
-};

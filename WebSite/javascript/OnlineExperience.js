@@ -1,6 +1,9 @@
 ﻿'use strict';
 
 function initPage() {
+    $('.wrap-vadio').hide();
+    $('.mask-vadio').hide();
+    $('.fa.fa-volume-up').hide();
     adjustPositions();
     $(window).resize(function () {
         adjustPositions();
@@ -9,39 +12,79 @@ function initPage() {
     $('#btn_StartPlay').on('click', function () {
         window.location.href = "qualitycourse.html?scene=qc01_3_1&rnd=" + Date.now();
     });
+
+    $('#btn_Volume').on('click', function (eventObj) {
+        if ($('#vadio_Content')[0].muted) {
+            $('.fa-stack.fa-lg').show();
+            $('.fa.fa-volume-up').hide();
+            $('#vadio_Content')[0].muted = false;
+        } else {
+            $('.fa-stack.fa-lg').hide();
+            $('.fa.fa-volume-up').show();
+            $('#vadio_Content')[0].muted = true;
+        }
+    });
+
+    $('#vadio_Content').on('loadstart', function () {
+        vadioProgress(0);
+    });
+
+    $('#vadio_Content').on('play', function () {
+        vadioProgress(100);
+    });
+
+    $('#vadio_Content').attr('src', 'media/vadiotest.mp4');
 };
 
+
 function adjustPositions() {
-    $('.wrap-background-body').css('width', '100%');
-    $('.wrap-background-body').css('height', '100%');
-    var bodyWidth = Math.max($('body').width(), $('html').width(), $('body')[0].scrollWidth);
-    var bodyHeight = Math.max($('body').height(), $('html').height(), $('body')[0].scrollHeight);
-    var background = $('.wrap-background-body img');
-    var tRate = 1;
-    if (bodyWidth > 1920 || bodyHeight > 1080) {
-        if (bodyWidth / 1920 > bodyHeight / 1080) {
-            tRate = bodyWidth / 1920;
-        } else {
-            tRate = bodyHeight / 1080;
-        }
+    var wrap = $('.wrap-background');
+    var img = $('.img-background');
+    var content = $('#wrap_Page_Content');
+    var bodyWidth = $('body').width();
+    var bodyHeight = $('body').height();
+    var aHeight = bodyHeight - $('nav').height();
+    var imgOrgW = 969;
+    var imgOrgH = 475;
+    var bodyOrgW = 1960;
+    var bodyOrgH = 1080;
+    var rate = 1;
+    var hRate = bodyHeight / bodyOrgH;
+    if (bodyHeight / bodyWidth > bodyOrgH / bodyOrgW) {
+        rate = bodyWidth / bodyOrgW;
+    } else {
+        rate = bodyHeight / bodyOrgH;
+    }
+    img.width(imgOrgW * rate);
+    img.height(imgOrgH * rate);
+    wrap.css('top', ((aHeight - img.height()) / 2) + 'px');
+    wrap.css('left', ((bodyWidth - img.width()) / 2) + 'px');
+    content.height(img.height());
+    content.width(img.width());
+    var fontSize = Math.floor(36 * rate);
+    $('#title_Content').css('font-size', fontSize + 'px');
+    fontSize = Math.ceil(14 * rate);
+    $('.text-content').css('font-size', fontSize < 12 ? '12px' : fontSize + 'px');
+    $('.text-content').css('margin-bottom', Math.floor(10 * rate) + 'px');
+
+    var wrapProg = $('.wrap-progress');
+    wrapProg.width(500 * rate);
+    wrapProg.css('top', (wrap.offset().top + img.height()) + 'px');
+    wrapProg.css('left', ((bodyWidth - wrapProg.width()) / 2) + 'px');
+    wrapProg.css('margin-top', 80 * rate + 'px');
+};
+
+function vadioProgress(value) {
+    var pbar = $('.progress-bar');
+    var tmpValue = (typeof (value) == 'number' ? value : parseInt(pbar.attr('aria-valuenow')));
+    pbar.width((100 - tmpValue) / 10 + '%');
+    pbar.attr('aria-valuenow', parseInt(pbar.width()));
+    if (tmpValue == 100) {
+        $('.wrap-vadio').show();
+        $('.mask-vadio').show();
+        $('#img_Background').hide();
+        $('#vadio_Content')[0].volume = 0.3;
     }
 
-    var imgWidth = 1920 * tRate;
-    var imgHeight = 1080 * tRate;
-    background.width(imgWidth);
-    background.height(imgHeight);
-    var tTop = (imgHeight - bodyHeight) / 2;
-    var tLeft = (imgWidth - bodyWidth) / 2;
-    var tRight = (tRate > 1 ? tLeft + bodyWidth : 1920);
-    var tBottom = (tRate > 1 ? tTop + bodyHeight : 1080);
-    background.css('clip', 'rect(' + tTop + 'px ' + imgWidth + 'px ' + imgHeight + 'px ' + tLeft + 'px)');
-    background.css('left', (-tLeft) + 'px');
-    background.css('top', (-tTop) + 'px');
-
-    $('.wrap-background-body').width(bodyWidth);
-    $('.wrap-background-body').height(Math.max($('body').height(), $('html').height(), $('body')[0].scrollHeight));
-
-    $('#wrap_Page_Content').css('margin-top', (280 / 1080 * bodyHeight) + 'px');
-    $('#wrap_Page_Content').css('margin-left', (330 / 1920 * bodyWidth) + 'px');
-
+    window.setTimeout('vadioProgress();', 10);
 }

@@ -22,3 +22,14 @@ function XMLToString(xmlDoc) {
         return (new XMLSerializer()).serializeToString(xmlDoc);
     }
 };
+
+function StringToXML(str) {
+    if (window.ActiveXObject) {
+        var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDom.loadXML(str);
+        return xmlDom;
+    } else {
+        return new DOMParser().parseFromString(str, "text/xml");
+    }
+
+}

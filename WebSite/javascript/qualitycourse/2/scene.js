@@ -10,28 +10,28 @@ WorkScene.OutputCodeCallBack = function (code) {
 var Scene = {};
 
 Scene.init = function () {
-    _registerRemoteServer();
-    $.ajax({
-        type: 'POST',
-        async: true,
-        url: _getRequestURL(_gURLMapping.tmp.storeload, { symbol: 'qc01_3_' + (_currentStep - 1), type: 'modulesetting' }),
-        data: '',
-        success: function (response, status) {
-            if ($(response).find('err').length > 0) {
-                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
-                return;
-            }
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'POST',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.tmp.storeload, { symbol: 'qc01_3_' + (_currentStep - 1), type: 'modulesetting' }),
+    //    data: '',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
+    //            return;
+    //        }
 
-            _dataForSave = response;
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-        }
-    });
-
+    //        _dataForSave = response;
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    _dataForSave = StringToXML(window.localStorage.getItem('qc01_state_storage'));
     Engine.initScreenAnd3D('game_container', {
         speed: {
             player: { min: 6, max: 48, freq: 3000, step: 2 },
@@ -96,7 +96,7 @@ Scene.setRoleModuleShape = function (moduleType, head, body, ear, color) {
     Engine.moduleLib[moduleType].torso.scale.set(body, body, body);
     Engine.moduleLib[moduleType].earL.scale.set(ear, ear, ear);
     Engine.moduleLib[moduleType].earR.scale.set(ear, ear, ear);
-    var newMaterial = new THREE.MeshPhongMaterial({ color: color, shading:  THREE.FlatShading });
+    var newMaterial = new THREE.MeshPhongMaterial({ color: color, shading: THREE.FlatShading });
     Engine.moduleLib[moduleType].head.material.setValues(newMaterial);
     Engine.moduleLib[moduleType].torso.material.setValues(newMaterial);
     Engine.moduleLib[moduleType].earL.material.setValues(newMaterial);

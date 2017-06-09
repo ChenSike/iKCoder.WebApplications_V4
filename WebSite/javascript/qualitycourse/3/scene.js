@@ -21,28 +21,30 @@ Scene.setControl = function (device, eventKey) {
 };
 
 Scene.init = function () {
-    _registerRemoteServer();
-    $.ajax({
-        type: 'POST',
-        async: true,
-        url: _getRequestURL(_gURLMapping.tmp.storeload, { symbol: 'qc01_3_' + (_currentStep - 1), type: 'modulesetting' }),
-        data: '',
-        success: function (response, status) {
-            if ($(response).find('err').length > 0) {
-                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
-                return;
-            }
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'POST',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.tmp.storeload, { symbol: 'qc01_3_' + (_currentStep - 1), type: 'modulesetting' }),
+    //    data: '',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
+    //            return;
+    //        }
 
-            _dataForSave = response;
-            Scene.prepareForRun();
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-        }
-    });
+    //        _dataForSave = response;
+    //        Scene.prepareForRun();
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    _dataForSave = StringToXML(window.localStorage.getItem('qc01_state_storage'));
+    Scene.prepareForRun();
 };
 
 Scene.prepareForRun = function (data) {
