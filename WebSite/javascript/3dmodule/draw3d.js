@@ -163,6 +163,7 @@ Brush.prototype.updatePosition = function () {
     var _that = this;
     if (this.checkActionComplete(targetObj)) {
         this.drawnSequence.push({ x: this.mesh.position.x - this.basePoint.x, y: this.mesh.position.y - this.basePoint.y });
+        this.drawSequence.shift();
         if (this.drawSequence.length == 0) {
             if (!this.completeFired) {
                 this.drawCompleteFn();
