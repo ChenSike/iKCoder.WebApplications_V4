@@ -175,7 +175,7 @@ function initEvents() {
     $(document).keydown(function () {
         if (arguments[0].keyCode == '27' && $('.run-scene-fullscreen').css('display') != 'none') {
             $('.run-scene-fullscreen').hide("slow", function () {
-                $('.siderbar-scene-container').append($('#game_container'));
+                $('.siderbar-content').append($('#game_container'));
             });
         }
     });
@@ -245,23 +245,16 @@ function initEvents() {
         var height = parseInt(value[1]);
         $('.run-scene-fullscreen').hide("slow", function () {
             var container = $('#game_container');
-            $('.siderbar-scene-container').append(container);
+            $('.siderbar-content').append(container);
             adjustAfterSiderBarResize();
             container.find('canvas').height(height);
             container.find('canvas').width(width);
             container.css('margin-left', '0px');
-            container.width($('.siderbar-scene-container').width());
-
             var playButton = $('.run-scene-fullscreen-play-button');
             var fontSize = width * 30 / 100;
             playButton.css('font-size', fontSize + 'px');
             playButton.css('left', 'calc(50% - ' + (fontSize / 2) + 'px');
             playButton.css('top', ((height - fontSize) / 2) + 'px');
-
-            if (Scene.resetSize) {
-                Scene.resetSize();
-            }
-
             playButton.css('top', ((container.find('canvas').height() - fontSize) / 2) + 'px');
         });
     });
@@ -638,7 +631,7 @@ function initData(response) {
             }
         }
     }
-    
+
     addLibPath($($(response).find("toolbox")[0]));
     var tmpPaths = $(response).find("game").find('script');
     for (var i = 0; i < tmpPaths.length ; i++) {
@@ -896,9 +889,13 @@ function adjustAfterSiderBarResize() {
     }
 
     wrap.animate({ width: tmpWidth + 'px' });
-    var helpWrap = $('#wrap_Scene_Help_Content');
     wrap = $('.siderbar-content');
     $('#game_container').height(wrap.height() - 30);
+
+    adjustCanvasSize();
+    if (typeof Scene == 'object' && Scene.resetSize) {
+        Scene.resetSize();
+    }
 };
 
 function onWindowResize() {
@@ -988,25 +985,49 @@ function showFullScreen() {
 };
 
 function setsizeWhenFullScreen() {
+    $('.run-scene-fullscreen-close-button').attr('data-content', $('#game_container canvas').width() + ',' + $('#game_container canvas').height());
+    adjustCanvasSize($('.run-scene-fullscreen'));
+};
+
+function adjustCanvasSize(containerWrap) {
+    var currentWrap = (typeof (containerWrap) == 'undefined' ? null : containerWrap);
     var container = $('#game_container');
     var canvas = container.find('canvas');
-    $('.run-scene-fullscreen-close-button').attr('data-content', canvas.width() + ',' + canvas.height());
-    var tmpHeight = $('.run-scene-fullscreen').height();
-    var tmpWidth = $('.run-scene-fullscreen').width();
-    var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
-    container.height(tmpSize);
-    container.width(tmpSize);
     var tmpRate = canvas.height() / canvas.width();
-    canvas.height(tmpRate * tmpSize);
-    canvas.width(tmpSize);
-    container.css('margin-left', (tmpWidth - tmpSize) / 2 + 'px');
+    var tmpHeight = container.height();
+    var tmpWidth = container.width();
+    if (currentWrap) {
+        tmpHeight = currentWrap.height();
+        tmpWidth = currentWrap.width();
+    }
 
+    var newWidth = tmpWidth;
+    var newHeight = tmpHeight;
+    //var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
+    if (tmpHeight / tmpWidth < tmpRate) {
+        newWidth = tmpHeight / tmpRate;
+    } else {
+        newHeight = tmpWidth * tmpRate;
+    }
+
+    if (currentWrap) {
+        container.height(newHeight);
+        container.width(newWidth);
+        container.css('margin-left', (tmpWidth - newWidth) / 2 + 'px');
+    } else {
+        container.css('width', '100%');
+        container.css('height', '100%');
+        container.css('margin-left', '0px');
+    }
+
+    canvas.height(newHeight);
+    canvas.width(newWidth);
     var playButton = $('.run-scene-fullscreen-play-button');
-    var fontSize = tmpSize * 30 / 100;
+    var fontSize = newHeight * 30 / 100;
     playButton.css('font-size', fontSize + 'px');
     playButton.css('left', 'calc(50% - ' + (playButton.width() / 2) + 'px');
-    playButton.css('top', ((tmpSize - fontSize) / 2) + 'px');
-};
+    playButton.css('top', ((newHeight - fontSize) / 2) + 'px');
+}
 
 function addOperatorButton() {
 

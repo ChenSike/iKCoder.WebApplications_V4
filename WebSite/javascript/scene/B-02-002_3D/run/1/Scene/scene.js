@@ -4,7 +4,7 @@ Scene.Game = null;
 
 Scene.init = function (containerId, model, configs) {
     this.container = document.getElementById(containerId);
-    if (this.container != null) {       
+    if (this.container != null) {
         var height = $(this.container).height();
         var width = $(this.container).width();
         var newSize = Scene.adjustSize(width, height);
@@ -20,8 +20,13 @@ Scene.adjustSize = function (width, height) {
     return { w: width, h: height };
 };
 
+Scene.resetSize = function () {
+    var container = $(this.container);
+    Scene.adjustSize(container.width(), container.height());
+};
+
 Scene.start = function () {
-   
+
 };
 
 Scene.reset = function () {
