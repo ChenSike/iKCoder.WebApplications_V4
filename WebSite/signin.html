@@ -43,7 +43,7 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-12">
-                                <form class="my-3">
+                                <form class="my-3" id="form_SignIn_Section" name="form_SignIn_Section" target="iframe_for_autocomplete" action="s.html" autocomplete="on">
                                     <div class="form-group">
                                         <label for="txt_SignIn_PhoneNumber">注册手机号</label>
                                         <input class="form-control form-control-sm" id="txt_SignIn_PhoneNumber" name="signin_phonenumber" type="text" placeholder="">
@@ -63,6 +63,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <button type="submit" id="btn_AutoComplete" style="display:none;"></button>
                                 </form>
                             </div>
                         </div>

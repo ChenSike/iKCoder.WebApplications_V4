@@ -888,6 +888,37 @@ CountGoods.prototype.collideAction = function (sourceModule) {
     return false;
 };
 
+function QuestionMark() {
+    Module.call(this);
+    this.type = 'questionmark';
+    this.text = '?';
+    this.textColor = '#B22222';
+    this.unique = true;
+    this.init();
+};
+
+QuestionMark.prototype = Object.assign(Object.create(Module.prototype), {
+    constructor: QuestionMark
+});
+
+QuestionMark.prototype.init = function () {
+    this.mesh = new THREE.Group();
+    this.textMeshs.position.y = 10;
+    this.textMeshs.position.x = -10;
+    this.createText();
+    this.mesh.add(this.textMeshs);
+    this.mesh.position.y = 15;
+};
+
+QuestionMark.prototype.collideAction = function (sourceModule) {
+
+};
+
+QuestionMark.prototype.updatePose = function () {
+    TweenMax.fromTo(this.mesh.rotation, 2, { y: 0, repeat: -1, overwrite: 2, yoyo: true }, { y: Math.PI * 2, repeat: -1, overwrite: 1, yoyo: true });
+}
+
+
 var ModuleUtil = {};
 
 ModuleUtil.coordToPosition = function (x, y) {

@@ -99,6 +99,12 @@ function showCurrentPanel() {
             changeWrap.hide(1);
             signInWrap.show(1, resetSignInFields);
             _refereshCheckCode('img_SignIn_CheckCode');
+            if ($('#chk_SignIn_Remember').is(':checked')) {
+                $('#form_SignIn_Section').attr('autocomplete', 'on');
+            } else {
+                $('#form_SignIn_Section').attr('autocomplete', 'off');
+            }
+
             break;
     }
 }
@@ -118,8 +124,8 @@ function resetSignUpFields() {
 };
 
 function resetSignInFields() {
-    $('#txt_SignIn_PhoneNumber').val('');
-    $('#txt_SignIn_Password').val('');
+    //$('#txt_SignIn_PhoneNumber').val('');
+    //$('#txt_SignIn_Password').val('');
     $('#txt_SignIn_CheckCode').val('');
     _refereshCheckCode('img_SignIn_CheckCode');
 };
@@ -378,6 +384,14 @@ function doSignIn() {
             _showGlobalMessage('无法登录, 请联系客服!', 'danger', 'alert_SignIn_CannotSignIn');
         }
     });
+
+    if ($('#chk_SignIn_Remember').is(':checked')) {
+        if ($('#iframe_for_autocomplete').length <= 0) {
+            $('body').append($('<iframe id="iframe_for_autocomplete" name="iframe_for_autocomplete" style="display:none;"></iframe>'));
+        }
+
+        $('#btn_AutoComplete').click();
+    }
 };
 
 function doSignUp() {
