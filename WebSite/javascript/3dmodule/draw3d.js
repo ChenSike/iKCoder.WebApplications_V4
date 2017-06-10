@@ -497,7 +497,11 @@ Line.prototype.getLineAngle = function () {
             return 0;
         }
     } else {
-        return Math.atan((this.params.ty - this.params.sy) / (this.params.tx - this.params.sx));
+        var radian = Math.atan((this.params.ty - this.params.sy) / (this.params.tx - this.params.sx));
+        if (this.params.tx - this.params.sx<0) {
+            radian += Math.PI;
+        }
+        return radian
     }
 };
 
