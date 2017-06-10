@@ -137,6 +137,14 @@ Brush.prototype.lineRotate = function (angle, clockwise) {
     });
 };
 
+Brush.prototype.lineLength = function (length) {
+    this.drawSequence.push({
+        l: length,
+        type: 'll'
+    });
+};
+
+
 /*
 action type:
 mt: move to
@@ -183,6 +191,7 @@ Brush.prototype.updatePosition = function () {
                 }
                 break;
             case 'lt':
+            case 'll':
                 if (!this.drawing) {
                     this.drawing = true;
                     var line = new Line(this, targetObj.sx, targetObj.sy, targetObj.tx, targetObj.ty, targetObj.c, targetObj.w);
@@ -191,6 +200,7 @@ Brush.prototype.updatePosition = function () {
                     line.resetBodyVertices(1, 0);
                     line.draw(true);
                 }
+
                 break;
             case 'lr':
                 if (this.patterns.length > 0 && !this.drawing) {
@@ -251,12 +261,19 @@ Brush.prototype.createTargetObj = function (drawSeqItem) {
     switch (drawSeqItem.type) {
         case 'mt':
         case 'lt':
-            targetObj.sx = this.mesh.position.x - this.basePoint.x;
-            targetObj.sy = this.mesh.position.y - this.basePoint.y;
-            targetObj.tx = drawSeqItem.tx;
-            targetObj.ty = drawSeqItem.ty;
+        case 'll':
             targetObj.c = '#' + this.neck.material.color.getHexString();
             targetObj.w = this.lineWidth;
+            targetObj.sx = this.mesh.position.x - this.basePoint.x;
+            targetObj.sy = this.mesh.position.y - this.basePoint.y;
+            targetObj.ty = targetObj.sy;
+            if (drawSeqItem.type == 'll') {
+                targetObj.tx = drawSeqItem.l * Engine.params.grid.step;
+            } else {
+                targetObj.tx = drawSeqItem.tx;
+                targetObj.ty = drawSeqItem.ty;
+            }
+
             break;
         case 'slw':
             targetObj.w = drawSeqItem.w;
@@ -277,6 +294,7 @@ Brush.prototype.checkActionComplete = function (targetObj) {
     switch (targetObj.type) {
         case 'mt':
         case 'lt':
+        case 'll':
             var currPosX = this.mesh.position.x - this.basePoint.x;
             var currPosY = this.mesh.position.y - this.basePoint.y;
             if (currPosX == targetObj.tx && currPosY == targetObj.ty) {
