@@ -12,6 +12,7 @@ function Brush() {
     this.background = [];
     this.target = { sx: 0, sy: 0, tx: 0, ty: 0, type: '', callback: null };
     this.drawSequence = [{}];
+    this.drawnSequence = [];
     this.drawStartPoint = {};
     this.drawEquation = function () { return { x: 0, y: 0 }; };
     this.lineWidth = 1;
@@ -161,7 +162,7 @@ Brush.prototype.updatePosition = function () {
     var targetObj = this.createTargetObj(tmpItem);
     var _that = this;
     if (this.checkActionComplete(targetObj)) {
-        this.drawSequence.shift();
+        this.drawnSequence.push({ x: this.mesh.position.x - this.basePoint.x, y: this.mesh.position.y - this.basePoint.y });
         if (this.drawSequence.length == 0) {
             if (!this.completeFired) {
                 this.drawCompleteFn();
@@ -195,7 +196,7 @@ Brush.prototype.updatePosition = function () {
                     this.drawing = true;
                     var line = new Line(this, targetObj.sx, targetObj.sy, targetObj.tx, targetObj.ty, targetObj.c, targetObj.w);
                     if (tmpItem.type == 'll') {
-                        if (this.patterns.length >0) {
+                        if (this.patterns.length > 0) {
                             var lastRadian = this.patterns[this.patterns.length - 1].mesh.rotation.z;
                             line.setRotation(lastRadian);
                         }
@@ -274,7 +275,7 @@ Brush.prototype.createTargetObj = function (drawSeqItem) {
             targetObj.sy = this.mesh.position.y - this.basePoint.y;
             targetObj.ty = targetObj.sy;
             if (drawSeqItem.type == 'll') {
-                targetObj.tx = drawSeqItem.l * Engine.params.grid.step;
+                targetObj.tx = this.drawnSequence[this.drawnSequence.length - 1].x + drawSeqItem.l * Engine.params.grid.step;
             } else {
                 targetObj.tx = drawSeqItem.tx;
                 targetObj.ty = drawSeqItem.ty;
@@ -337,6 +338,7 @@ Brush.prototype.checkActionComplete = function (targetObj) {
 Brush.prototype.reset = function () {
     this.clearPatterns();
     this.drawSequence = [{}];
+    this.drawnSequence = [];
     this.completeFired = false;
     this.drawStart = false;
     this.neck.material.setValues(this.defaultMaterial);
@@ -559,4 +561,5 @@ Line.prototype.draw = function (animation) {
 
 Line.prototype.setRotation = function (radian) {
     this.mesh.rotation.z = radian;
+    this.orgRotationZ = radian;
 }
