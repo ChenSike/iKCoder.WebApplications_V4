@@ -144,7 +144,6 @@ Brush.prototype.lineLength = function (length) {
     });
 };
 
-
 /*
 action type:
 mt: move to
@@ -195,6 +194,13 @@ Brush.prototype.updatePosition = function () {
                 if (!this.drawing) {
                     this.drawing = true;
                     var line = new Line(this, targetObj.sx, targetObj.sy, targetObj.tx, targetObj.ty, targetObj.c, targetObj.w);
+                    if (tmpItem.type == 'll') {
+                        if (this.patterns.length >0) {
+                            var lastRadian = this.patterns[this.patterns.length - 1].mesh.rotation.z;
+                            line.setRotation(lastRadian);
+                        }
+                    }
+
                     this.patterns.push(line);
                     Engine.scene.add(line.mesh);
                     line.resetBodyVertices(1, 0);
@@ -550,3 +556,7 @@ Line.prototype.draw = function (animation) {
         this.resetBodyVertices(lineLength, 0);
     }
 };
+
+Line.prototype.setRotation = function (radian) {
+    this.mesh.rotation.z = radian;
+}
