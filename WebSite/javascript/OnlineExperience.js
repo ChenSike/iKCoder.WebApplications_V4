@@ -33,7 +33,7 @@ function initPage() {
         vadioProgress(100);
     });
 
-    $('#vadio_Content').attr('src', 'media/vadiotest.mp4');
+    $('#vadio_Content').attr('src', 'media/qc01.mp4');
 };
 
 

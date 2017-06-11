@@ -54,7 +54,7 @@ Scene.initEnvironment = function (containerId) {
             line: '#000000',
             base: '#FF0000',
             step: 20,
-            scope: 500
+            scope: 1000
         }
     };
 
@@ -90,6 +90,7 @@ Scene.start = function () {
 };
 
 Scene.reset = function () {
+    Scene.Brush.reset();
     Engine.resetScene();
 };
 

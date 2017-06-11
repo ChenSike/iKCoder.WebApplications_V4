@@ -22,6 +22,7 @@ function Brush() {
     this.drawStart = false;
     this.drawing = false;
     this.defaultMaterial = new THREE.MeshPhongMaterial({ color: '#ff0000', shading: THREE.FlatShading });
+    this.track = [];
     this.init();
 };
 
@@ -147,6 +148,21 @@ Brush.prototype.lineLength = function (length) {
     });
 };
 
+Brush.prototype.groupPatterns = function (count) {
+    this.drawSequence.push({
+        amt: count,
+        type: 'gp'
+    });
+};
+
+Brush.prototype.patternGroupRotate = function (angle, clockwise) {
+    this.drawSequence.push({
+        a: angle * Math.PI / 180 * (clockwise ? 1 : -1),
+        type: 'pgr'
+    });
+};
+
+
 /*
 action type:
 mt: move to
@@ -253,6 +269,41 @@ Brush.prototype.updatePosition = function () {
             case 'sc':
                 this.neck.material.setValues(new THREE.MeshPhongMaterial({ color: targetObj.c, shading: THREE.FlatShading }));
                 break;
+            case 'pgr':
+                if (this.patterns.length > 0 && !this.drawing) {
+                    var _pGroup = this.patterns[this.patterns.length - 1];
+                    var _basePattern = _pGroup.getBasePattern();
+                    var targetAngle = _pGroup.mesh.rotation.z + targetObj.a
+                    this.drawing = true;
+                    this.mesh.visible = false;
+                    TweenMax.to(
+                        _pGroup.mesh.rotation,
+                        3,
+                        {
+                            z: targetAngle,
+                            ease: Linear.easeNone,
+                            onUpdate: function () {
+                                _that.mesh.position.x = _basePattern.body.geometry.vertices[0].x + _that.basePoint.x;
+                            },
+                            onInit: function () {
+                                _basePattern.mesh.add(_that.mesh);
+                                _that.mesh.position.x = _basePattern.body.geometry.vertices[0].x + _that.basePoint.x;
+                                _that.mesh.position.y = _that.basePoint.y;
+                                _that.mesh.visible = true;
+                            },
+                            onComplete: function () {
+                                _that.mesh.visible = false;
+                                Engine.scene.add(_that.mesh);
+                                var tmpVal = Math.sqrt(Math.pow(_basePattern.mesh.geometry.vertices[1].x - _basePattern.mesh.geometry.vertices[0].x, 2) + Math.pow(_basePattern.mesh.geometry.vertices[1].y - _basePattern.mesh.geometry.vertices[0].y, 2));
+                                _that.mesh.position.x = tmpVal * Math.cos(_pGroup.mesh.rotation.z) + _basePattern.mesh.geometry.vertices[0].x + _that.basePoint.x;
+                                _that.mesh.position.y = tmpVal * Math.sin(_pGroup.mesh.rotation.z) + _basePattern.mesh.geometry.vertices[0].y + _that.basePoint.y;
+                                _that.mesh.visible = true;
+                                _that.drawing = false;
+                            }
+                        }
+                    );
+                }
+                break;
         }
     }
 }
@@ -266,6 +317,7 @@ Brush.prototype.createTargetObj = function (drawSeqItem) {
         a: null,
         c: null,
         w: null,
+        amt: null,
         type: drawSeqItem.type
     };
     switch (drawSeqItem.type) {
@@ -294,6 +346,12 @@ Brush.prototype.createTargetObj = function (drawSeqItem) {
         case 'lr':
             targetObj.a = drawSeqItem.a;
             break;
+        case 'gp':
+            targetObj.amt = drawSeqItem.amt;
+            break;
+        case 'pgr':
+            targetObj.a = drawSeqItem.a;
+            break;
     }
 
     return targetObj;
@@ -309,6 +367,7 @@ Brush.prototype.checkActionComplete = function (targetObj) {
             var currPosY = this.mesh.position.y - this.basePoint.y;
             if (currPosX == targetObj.tx && currPosY == targetObj.ty) {
                 flag = true;
+                this.track.push({ x: currPosX / Engine.params.grid.step, y: currPosY / Engine.params.grid.step });
             }
 
             break;
@@ -328,6 +387,25 @@ Brush.prototype.checkActionComplete = function (targetObj) {
             if (this.patterns.length > 0) {
                 var line = this.patterns[this.patterns.length - 1];
                 if (line.mesh.rotation.z == targetObj.a + line.orgRotationZ) {
+                    this.track[this.track.length - 1].x = line.mesh.geometry.vertices[1].x;
+                    this.track[this.track.length - 1].y = line.mesh.geometry.vertices[1].y;
+                    flag = true;
+                }
+            }
+
+            break;
+        case 'gp':
+            var pGroup = new PatternGroup(this, targetObj.amt);
+            Engine.scene.add(pGroup.mesh);
+            flag = true;
+            break;
+        case 'pgr':
+            if (this.patterns.length > 0) {
+                var pGroup = this.patterns[this.patterns.length - 1];
+                var basePattern = pGroup.getBasePattern();
+                if (pGroup.mesh.rotation.z == targetObj.a + pGroup.orgRotationZ) {
+                    this.track[this.track.length - 1].x = basePattern.mesh.geometry.vertices[1].x;
+                    this.track[this.track.length - 1].y = basePattern.mesh.geometry.vertices[1].y;
                     flag = true;
                 }
             }
@@ -338,14 +416,18 @@ Brush.prototype.checkActionComplete = function (targetObj) {
     return flag;
 }
 
-Brush.prototype.reset = function () {
+Brush.prototype.reset = function (resetStyle) {
+    this.track = [];
     this.clearPatterns();
     this.drawSequence = [{}];
     this.drawnSequence = [];
     this.completeFired = false;
     this.drawStart = false;
-    this.neck.material.setValues(this.defaultMaterial);
-    this.lineWidth = 1;
+    if (typeof (resetStyle) == 'boolean' && resetStyle) {
+        this.neck.material.setValues(this.defaultMaterial);
+        this.lineWidth = 1;
+    }
+
     this.mesh.position.x = this.basePoint.x;
     this.mesh.position.y = this.basePoint.y;
     this.mesh.position.z = this.basePoint.z;
@@ -500,7 +582,7 @@ Line.prototype.getLineAngle = function () {
         }
     } else {
         var radian = Math.atan((this.params.ty - this.params.sy) / (this.params.tx - this.params.sx));
-        if (this.params.tx - this.params.sx<0) {
+        if (this.params.tx - this.params.sx < 0) {
             radian += Math.PI;
         }
         return radian
@@ -569,4 +651,56 @@ Line.prototype.draw = function (animation) {
 Line.prototype.setRotation = function (radian) {
     this.mesh.rotation.z = radian;
     this.orgRotationZ = radian;
+};
+
+function PatternGroup(brush, count, startIdx) {
+    Module.call(this);
+    this.brush = brush;
+    this.type = 'patterngroup';
+    this.status = Engine._statusRun;
+    this.visible = true;
+    this.unique = false;
+    this.speed = 1;
+    this.lineWidth = 1;
+    this.completeFired = false;
+    this.startIndex = (typeof startIdx == 'number' ? (startIdx > this.brush.patterns.length - 2) ? NaN : startIdx : NaN);
+    this.count = (this.brush.patterns.length < count ? this.brush.patterns.length : count);
+    if (!isNaN(this.startIndex)) {
+        if (this.startIndex + count > this.brush.patterns.length) {
+            this.count = this.brush.patterns.length - this.startIndex;
+        }
+    }
+
+    this.orgRotationZ = 0;
+    this.patterns = [];
+    this.init();
+};
+
+PatternGroup.prototype = Object.assign(Object.create(Module.prototype), {
+    constructor: PatternGroup
+});
+
+PatternGroup.prototype.init = function () {
+    var tmpTarget = [];
+    var tmpCount = this.brush.patterns.length - 1 - this.count;
+    for (var i = this.brush.patterns.length - 1; i > tmpCount; i--) {
+        tmpTarget.push(this.brush.patterns.pop());
+        this.brush.track.pop();
+    }
+
+    for (var i = this.count - 1; i >= 0; i--) {
+        this.patterns.push(tmpTarget[i]);
+        this.mesh.add(tmpTarget[i].mesh);
+    }
+
+    this.brush.patterns.push(this);
+};
+
+PatternGroup.prototype.setRotation = function (radian) {
+    this.mesh.rotation.z = radian;
+    this.orgRotationZ = radian;
+};
+
+PatternGroup.prototype.getBasePattern = function () {
+    return this.patterns[0];
 }
