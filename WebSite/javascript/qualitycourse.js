@@ -21,6 +21,7 @@ function initPage() {
     _knowledgeData = data.course.kps;
     _workspaceCfg = data.blockly;
     buildStageHTML(data.course);
+    $('.siderbar-wrap').width($('body').width() / 3);
     adjustAfterSiderBarResize();
     $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
     LoadSceneLib(data.blockly);
@@ -233,6 +234,7 @@ function initEvents() {
             window.localStorage.removeItem(symbol);
         } else {
             window.localStorage.setItem(symbol, _dataForSave);
+            window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
         }
     });
 
@@ -771,7 +773,7 @@ function showCompleteAlert(notSave) {
     $('.wrap-complete-alert').show();
     $('.wrap-faild-alert').hide();
     $('#title_StepComplete').html(_messages.success);
-    $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '挑战下一步' : '分享'));
+    $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '分享' : '挑战下一步'));
     $('#btn_Step_Restart').text((_currentStep == _totalSteps ? '重新开始' : '重新开始'));
 };
 

@@ -65,7 +65,7 @@ function adjustPositions() {
     $('#title_Content').css('font-size', fontSize + 'px');
     fontSize = Math.ceil(14 * rate);
     $('.text-content').css('font-size', fontSize < 12 ? '12px' : fontSize + 'px');
-    $('.text-content').css('margin-bottom', Math.floor(10 * rate) + 'px');
+    $('.text-content').css('margin-bottom', Math.floor(30 * rate) + 'px');
 
     var wrapProg = $('.wrap-progress');
     wrapProg.width(500 * rate);

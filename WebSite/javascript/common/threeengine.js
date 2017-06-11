@@ -171,22 +171,34 @@ Engine.initScreenAnd3D = function (containerId, params) {
 };
 
 Engine.calcWorldScale = function (needRescale) {
+    if (typeof _useFullContainer != 'boolean') {
+        _useFullContainer = false;
+    }
+
     var containerWidth = Engine.container.width();
     var containerHeight = Engine.container.height();
     Engine.params.sizes.cw = containerWidth;
     Engine.params.sizes.ch = containerHeight;
-    var orgWidth = Engine.params.sizes.w;
-    var orgHeight = Engine.params.sizes.h;
-    var hRate = containerHeight / orgHeight;
-    var wRate = containerWidth / orgWidth;
-    var scale = (wRate > hRate ? hRate : wRate);
-    Engine.params.sizes.nw = orgWidth * scale;
-    Engine.params.sizes.nh = orgHeight * scale;
-    Engine.renderer.setSize(Engine.params.sizes.nw, Engine.params.sizes.nh);
-    Engine.camera.position.x = Engine.params.camera.px * scale;
-    Engine.camera.position.y = Engine.params.camera.py * scale;
-    Engine.camera.position.z = Engine.params.camera.pz * scale;
-    Engine.scene.scale.set(scale, scale, scale);
+    if (!_useFullContainer) {
+        var orgWidth = Engine.params.sizes.w;
+        var orgHeight = Engine.params.sizes.h;
+        var hRate = containerHeight / orgHeight;
+        var wRate = containerWidth / orgWidth;
+        var scale = (wRate > hRate ? hRate : wRate);
+        Engine.params.sizes.nw = orgWidth * scale;
+        Engine.params.sizes.nh = orgHeight * scale;
+        Engine.renderer.setSize(Engine.params.sizes.nw, Engine.params.sizes.nh);
+        Engine.camera.position.x = Engine.params.camera.px * scale;
+        Engine.camera.position.y = Engine.params.camera.py * scale;
+        Engine.camera.position.z = Engine.params.camera.pz * scale;
+        Engine.scene.scale.set(scale, scale, scale);
+    } else {
+        Engine.params.sizes.nw = containerWidth;
+        Engine.params.sizes.nh = containerHeight;
+        Engine.camera.aspect = containerWidth / containerHeight;
+        Engine.camera.updateProjectionMatrix();
+        Engine.renderer.setSize(containerWidth, containerHeight);
+    }
 }
 
 Engine.createFog = function () {
@@ -476,7 +488,7 @@ Engine.DrawGrid = function () {
         var type = (typeof params.type == 'string' ? params.type : '');
         var scope = (typeof params.scope == 'number' ? params.scope : 500);
         var step = (typeof params.step == 'number' ? params.step : 10);
-        var lColor = (typeof params.line == 'string' ? params.line : '#000000');
+        var lColor = (typeof params.line == 'string' ? params.line : '#eeeeee');
         var bColor = (typeof params.base == 'string' ? params.base : '#FF0000');
         var geometryH = new THREE.Geometry();
         var geometryV = new THREE.Geometry();
@@ -507,13 +519,14 @@ Engine.DrawGrid = function () {
         }
 
         var loopCount = scope / step * 2;
-        var currColor = '';
+        var currColor = '', transparent = true;;
         for (var i = 0; i <= loopCount; i++) {
             currColor = (i == loopCount / 2 ? bColor : lColor);
-            var hLine = new THREE.Line(geometryH, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
+            transparent = (i == loopCount / 2 ? false : true);
+            var hLine = new THREE.Line(geometryH, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.3, transparent: transparent }));
             hLine.position[lpH] = (i * step) - params.scope;
             Engine.scene.add(hLine);
-            var vLine = new THREE.Line(geometryV, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.5 }));
+            var vLine = new THREE.Line(geometryV, new THREE.LineBasicMaterial({ color: currColor, opacity: 0.3, transparent: transparent }));
             vLine.position[lpV] = (i * step) - params.scope;
             Engine.scene.add(vLine);
         }

@@ -1,5 +1,7 @@
 ﻿'use strict';
 
+_useFullContainer = true;
+
 function Brush() {
     Module.call(this);
     this.type = 'brush';

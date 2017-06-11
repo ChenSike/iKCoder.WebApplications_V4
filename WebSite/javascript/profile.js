@@ -1400,6 +1400,9 @@ function updateProfile() {
                     if (!$(tmpNodes[i]).attr('type') || $(tmpNodes[i]).attr('type') != '1') {
                         //$('body').append($('<div class="alert alert-success" role="alert"  data-dismiss="alert"><strong>' + $(tmpNodes[i]).attr('msg') + '</strong></div>'));
                         _showGlobalMessage($(tmpNodes[i]).attr('msg'), 'success', 'alert_ForgetPWD_Success');
+                        $.cookie('logined_user_nickname', $('#txt_Settings_Profile_User_Name').val());
+                        $('#txt_NickName_Profile_Title').text($.cookie('logined_user_nickname'));
+                        updateUserInfor();
                     }
                 }
 

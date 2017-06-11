@@ -528,7 +528,7 @@ textarea {
 
 .run-scene-fullscreen-play-button {
     font-size: 130px;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.3);
     width: 30%;
     height: 30%;
     position: absolute;
@@ -538,7 +538,7 @@ textarea {
 }
 
     .run-scene-fullscreen-play-button:hover {
-        color: rgba(255,255,255,0.8);
+        color: rgba(255,255,255,0.9);
     }
 
 .knowledge-panel {

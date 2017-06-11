@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+var _useFullContainer = false;
 var _wordsData = [];
 var _knowledgeData = [];
 var _workspaceCfg = {};
@@ -135,7 +136,7 @@ function initPage() {
     var fullScreenBtn = $('.workspace-tool-item.workspace-fullscreen-button.fa.fa-arrows-alt');
     var refereshBtn = $('.workspace-tool-item.workspace-referesh-button.fa.fa-repeat');
     bindEventsToScene(playBtn, shareBtn, fullScreenBtn, refereshBtn);
-    //siderBarExpand();
+    $('.siderbar-wrap').width($('body').width() / 3);
     adjustAfterSiderBarResize();
 };
 
@@ -1003,18 +1004,25 @@ function adjustCanvasSize(containerWrap) {
 
     var newWidth = tmpWidth;
     var newHeight = tmpHeight;
-    //var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
-    if (tmpHeight / tmpWidth < tmpRate) {
-        newWidth = tmpHeight / tmpRate;
-    } else {
-        newHeight = tmpWidth * tmpRate;
-    }
+    if (!_useFullContainer) {
+        //var tmpSize = (tmpHeight > tmpWidth) ? tmpWidth : tmpHeight;
+        if (tmpHeight / tmpWidth < tmpRate) {
+            newWidth = tmpHeight / tmpRate;
+        } else {
+            newHeight = tmpWidth * tmpRate;
+        }
 
-    if (currentWrap) {
-        container.height(newHeight);
-        container.width(newWidth);
-        container.css('margin-left', (tmpWidth - newWidth) / 2 + 'px');
+        if (currentWrap) {
+            container.height(newHeight);
+            container.width(newWidth);
+            container.css('margin-left', (tmpWidth - newWidth) / 2 + 'px');
+        } else {
+            container.css('width', '100%');
+            container.css('height', '100%');
+            container.css('margin-left', '0px');
+        }
     } else {
+
         container.css('width', '100%');
         container.css('height', '100%');
         container.css('margin-left', '0px');
