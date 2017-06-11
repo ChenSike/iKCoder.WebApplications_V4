@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html style="height:100%">
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/xmloperator.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/common/three.min.js"></script>
+    <script src="javascript/common/TweenMax.min.js"></script>
+</head>
+<body style="height:100%;">
+    <div id="game_container" style="width:100%;height:100%;"></div>
+    <script type="text/javascript">
+        var _shareData = null;
+        $(document).ready(function () {
+            //_registerRemoteServer();
+            //$.ajax({
+            //    type: 'GET',
+            //    async: true,
+            //    url: _getRequestURL(_gURLMapping.share.shareload, {}),
+            //    data: '',
+            //    success: function (response, status) {
+            //        if ($(response).find('err').length > 0) {
+            //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_Load');
+            //            return;
+            //        }
+
+            //        _shareData = response;
+            //        var libItems = $(_shareData).find('data').find('lib').find('item');
+            //        var libs = [];
+            //        for (var i = 0; i < libItems.length; i++) {
+            //            libs.push($(libItems[i]).attr('src'));
+            //        }
+
+            //        LoadLib(libs);
+            //    },
+            //    dataType: 'xml',
+            //    xhrFields: {
+            //        withCredentials: true
+            //    },
+            //    error: function () {
+            //    }
+            //});
+            _shareData = StringToXML('<data><item role="player" module="wolf" head="1" body="1" ear="2" color="#0f0707"/><item role="monster" module="rabbit" head="1" body="1" ear="2" color="#dc5f45"/><item role="obstacle" module="carrot"/><item role="prop" module="hedgehog"/><item role="floor" module="grass"/><music path="http://ikcoder.ikcoder.com/iKCoderv4/media/sound_2.mp3"/><event xmlns="http://www.w3.org/1999/xhtml" device="m" key="2"></event><lib><item src="javascript/qualitycourse/qc01/main.js"/><item src="javascript/qualitycourse/qc01/Materials.js"/><item src="javascript/qualitycourse/qc01/objects.js"/><item src="javascript/qualitycourse/qc01/share.js"/></lib></data>');
+            var libItems = $(_shareData).find('data').find('lib').find('item');
+            var libs = [];
+            for (var i = 0; i < libItems.length; i++) {
+                libs.push($(libItems[i]).attr('src'));
+            }
+
+            LoadLib(libs);
+
+        });
+
+        function LoadLib(lib) {
+            if (lib.length > 0) {
+                $.getScript(lib[0], function () {
+                    lib.shift();
+                    LoadLib(lib);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

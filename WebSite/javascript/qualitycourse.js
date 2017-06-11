@@ -187,42 +187,31 @@ function initEvents() {
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
-        //_registerRemoteServer();
-        //$.ajax({
-        //    type: 'POST',
-        //    async: true,
-        //    url: _getRequestURL(_gURLMapping.tmp.storesave, { symbol: 'qc01_3_' + _currentStep, type: 'modulesetting', timeout: 120, istextreq: 0 }),
-        //    data: _dataForSave,
-        //    success: function (response, status) {
-        //        if ($(response).find('err').length > 0) {
-        //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_QualityCourse');
-        //            return;
-        //        }
-
-        //        window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
-        //    },
-        //    dataType: 'xml',
-        //    xhrFields: {
-        //        withCredentials: true
-        //    },
-        //    error: function () {
-        //    }
-        //});
         var symbol = getQueryString('scene').split('_')[0] + '_state_storage';
         if (_currentStep == _totalSteps) {
+            $(_dataForSave).find('data').append('<lib/>');
+            var libNode = $($(_dataForSave).find('data').find('lib')[0]);
+            var currSymbol = _currentStage.split('_')[0];
+            var libArr = [
+                '<item src="javascript/qualitycourse/' + currSymbol + '/main.js"/>',
+                '<item src="javascript/qualitycourse/' + currSymbol + '/Materials.js"/>',
+                '<item src="javascript/qualitycourse/' + currSymbol + '/objects.js"/>',
+                '<item src="javascript/qualitycourse/' + currSymbol + '/share.js"/>'
+            ];
+            libNode.append(libArr.join(''));
             _registerRemoteServer();
             $.ajax({
                 type: 'POST',
                 async: true,
                 url: _getRequestURL(_gURLMapping.share.sharesave, {}),
-                data: '<root><sencesymbol>' + symbol + '</sencesymbol><config>' + _dataForSave + '</config></root>',
+                data: '<root><sencesymbol>' + symbol + '</sencesymbol><config>' + XMLToString(_dataForSave) + '</config></root>',
                 success: function (response, status) {
                     if ($(response).find('err').length > 0) {
                         _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_QualityCourse');
                         return;
                     }
 
-                    //window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
+                    window.location.href = 'share.html?scene=qc01&rnd=' + Date.now();
                 },
                 dataType: 'xml',
                 xhrFields: {
@@ -232,6 +221,7 @@ function initEvents() {
                 }
             });
             window.localStorage.removeItem(symbol);
+            window.location.href = 'share.html?scene=qc01&rnd=' + Date.now();
         } else {
             window.localStorage.setItem(symbol, _dataForSave);
             window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
@@ -458,6 +448,7 @@ function initData() {
 
     //_topTooltip = initTopTooltips($(response).find("tips").find('item'));
     _topTooltip = '';
+    var currSymbol = _currentStage.split('_')[0];
     var data = {
         course: {
             id: _currentStage,
@@ -470,11 +461,14 @@ function initData() {
             kps: knowledge
         },
         blockly: {
-            toolbox: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/toolbox.xml')),
-            workspace: XMLToString(LoadXMLFile('javascript/qualitycourse/' + _currentStep + '/workspace.xml')),
+            toolbox: XMLToString(LoadXMLFile('javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/toolbox.xml')),
+            workspace: XMLToString(LoadXMLFile('javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/workspace.xml')),
             lib: [
-                'javascript/qualitycourse/' + _currentStep + '/blocks.js',
-                'javascript/qualitycourse/' + _currentStep + '/scene.js'
+                'javascript/qualitycourse/' + currSymbol + '/main.js',
+                'javascript/qualitycourse/' + currSymbol + '/Materials.js',
+                'javascript/qualitycourse/' + currSymbol + '/objects.js',
+                'javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/blocks.js',
+                'javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/scene.js'
             ]
         }
     }

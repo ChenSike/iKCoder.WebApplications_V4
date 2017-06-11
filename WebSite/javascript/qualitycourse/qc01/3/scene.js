@@ -120,3 +120,8 @@ Scene.bindModuleToRole = function () {
 Scene.resetSize = function () {
     Engine.handleWindowResize();
 };
+
+Scene.settingComplete = function () {
+    $(_dataForSave).find('data').append($('<event device="' + Engine.params.control.device + '" key="' + Engine.params.control.key + '"/>'));
+    showCompleteAlert();
+}

@@ -498,19 +498,23 @@ Engine.handleWindowResize = function () {
 
 Engine.handleMouseDown = function (eventObj) {
     if (eventObj.button == Engine.params.control.key) {
-        if (Engine.state == Engine._stateRun) {
-            Engine.modules['player'].jump();
-        }
+        Engine.eventHandler();
     }
 };
 
 Engine.handleKeyDown = function (eventObj) {
     if (eventObj.which == Engine.params.control.key) {
-        if (Engine.state == Engine._stateRun) {
-            Engine.modules['player'].jump();
-        }
+        Engine.eventHandler();
     }
 };
+
+Engine.eventHandler = function () {
+    if (Engine.state == Engine._stateRun) {
+        Engine.modules['player'].jump();
+    } else if (Engine.state == Engine._stateOver) {
+        Engine.overEventFn();
+    }
+}
 
 Engine.getPlayer = function () {
     return Engine.modules['player'];
@@ -557,6 +561,14 @@ Engine.overCallbackFn = function () {
 
 Engine.setOverCallbackFn = function (fn) {
     Engine.overCallbackFn = fn;
+};
+
+Engine.overEventFn = function () {
+
+};
+
+Engine.setOverEventFn = function (fn) {
+    Engine.overEventFn = fn;
 };
 
 var Module = function () {
