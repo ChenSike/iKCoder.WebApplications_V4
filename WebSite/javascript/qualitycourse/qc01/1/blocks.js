@@ -1,5 +1,5 @@
 ﻿'use strict';
-
+ 
 Blockly.Blocks['scene_setting'] = {
     init: function () {
         this.appendDummyInput()

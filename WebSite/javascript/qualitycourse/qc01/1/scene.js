@@ -34,11 +34,11 @@ Scene.start = function () {
     _dataForSave.push('<data>');
     for (var key in Engine.modules) {
         if (key != 'bonus') {
-            _dataForSave.push('<item role="' + key + '" module="' + (Engine.modules[key] ? Engine.modules[key].type : '') + '"></item>');
+            _dataForSave.push('<item role="' + key + '" module="' + (Engine.modules[key] ? Engine.modules[key].type : '') + '"/>');
         }
     }
 
-    _dataForSave.push('<music path="' + Engine.audio.src + '"></music>');
+    _dataForSave.push('<music path="' + Engine.audio.src + '"/>');
     _dataForSave.push('</data>');
     _dataForSave = _dataForSave.join('');
     Scene.stepComplete();

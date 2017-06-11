@@ -479,14 +479,8 @@
         <div class="siderbar-drag expanded"></div>
         <div class="sidebar-content-wrap">
             <div class="siderbar-content">
-                <div class="container-fluid">
-                    <div class="row" style="margin:0px;">
-                        <div class="col-12 siderbar-scene-container" style="padding:0px;">
-                            <div id="game_container" style="text-align: center;">
-                                <i class="fa fa-play-circle-o run-scene-fullscreen-play-button" title="开始运行"></i>
-                            </div>
-                        </div>
-                    </div>
+                <div id="game_container" style="text-align: center; padding:0px 10px;">
+                    <i class="fa fa-play-circle-o run-scene-fullscreen-play-button" title="开始运行"></i>
                 </div>
             </div>
         </div>
@@ -599,7 +593,7 @@
         $(document).ready(function () {
             _loadLabels();
             initPage();
-            //_startCheckState();
+            _startCheckState();
         });
     </script>
 </body>

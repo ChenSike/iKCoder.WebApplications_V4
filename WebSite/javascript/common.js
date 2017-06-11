@@ -276,7 +276,6 @@ function _startCheckState() {
                 if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') == '1') {
                     $.cookie("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), { path: '/', expires: 0.125 });
                     if (!$.cookie("logined_user_nickname") || $.cookie("logined_user_nickname") == '') {
-                        _registerRemoteServer();
                         $.ajax({
                             type: 'POST',
                             async: true,

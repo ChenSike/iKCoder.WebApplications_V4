@@ -29,7 +29,12 @@ function StringToXML(str) {
         xmlDom.loadXML(str);
         return xmlDom;
     } else {
-        return new DOMParser().parseFromString(str, "text/xml");
+        var retDoc = new DOMParser().parseFromString(str, "text/xml");
+        if (XMLToString(retDoc) != str) {
+            retDoc = null;
+        }
+
+        return retDoc;
     }
 
 }

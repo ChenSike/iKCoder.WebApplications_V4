@@ -1,5 +1,7 @@
 ﻿'use strict';
 
+_useFullContainer = true;
+
 function Brush() {
     Module.call(this);
     this.type = 'brush';
@@ -12,6 +14,7 @@ function Brush() {
     this.background = [];
     this.target = { sx: 0, sy: 0, tx: 0, ty: 0, type: '', callback: null };
     this.drawSequence = [{}];
+    this.drawnSequence = [];
     this.drawStartPoint = {};
     this.drawEquation = function () { return { x: 0, y: 0 }; };
     this.lineWidth = 1;
@@ -144,7 +147,6 @@ Brush.prototype.lineLength = function (length) {
     });
 };
 
-
 /*
 action type:
 mt: move to
@@ -162,6 +164,7 @@ Brush.prototype.updatePosition = function () {
     var targetObj = this.createTargetObj(tmpItem);
     var _that = this;
     if (this.checkActionComplete(targetObj)) {
+        this.drawnSequence.push({ x: this.mesh.position.x - this.basePoint.x, y: this.mesh.position.y - this.basePoint.y });
         this.drawSequence.shift();
         if (this.drawSequence.length == 0) {
             if (!this.completeFired) {
@@ -195,6 +198,13 @@ Brush.prototype.updatePosition = function () {
                 if (!this.drawing) {
                     this.drawing = true;
                     var line = new Line(this, targetObj.sx, targetObj.sy, targetObj.tx, targetObj.ty, targetObj.c, targetObj.w);
+                    if (tmpItem.type == 'll') {
+                        if (this.patterns.length > 0) {
+                            var lastRadian = this.patterns[this.patterns.length - 1].mesh.rotation.z;
+                            line.setRotation(lastRadian);
+                        }
+                    }
+
                     this.patterns.push(line);
                     Engine.scene.add(line.mesh);
                     line.resetBodyVertices(1, 0);
@@ -268,7 +278,7 @@ Brush.prototype.createTargetObj = function (drawSeqItem) {
             targetObj.sy = this.mesh.position.y - this.basePoint.y;
             targetObj.ty = targetObj.sy;
             if (drawSeqItem.type == 'll') {
-                targetObj.tx = drawSeqItem.l * Engine.params.grid.step;
+                targetObj.tx = this.drawnSequence[this.drawnSequence.length - 1].x + drawSeqItem.l * Engine.params.grid.step;
             } else {
                 targetObj.tx = drawSeqItem.tx;
                 targetObj.ty = drawSeqItem.ty;
@@ -331,6 +341,7 @@ Brush.prototype.checkActionComplete = function (targetObj) {
 Brush.prototype.reset = function () {
     this.clearPatterns();
     this.drawSequence = [{}];
+    this.drawnSequence = [];
     this.completeFired = false;
     this.drawStart = false;
     this.neck.material.setValues(this.defaultMaterial);
@@ -488,7 +499,11 @@ Line.prototype.getLineAngle = function () {
             return 0;
         }
     } else {
-        return Math.atan((this.params.ty - this.params.sy) / (this.params.tx - this.params.sx));
+        var radian = Math.atan((this.params.ty - this.params.sy) / (this.params.tx - this.params.sx));
+        if (this.params.tx - this.params.sx<0) {
+            radian += Math.PI;
+        }
+        return radian
     }
 };
 
@@ -550,3 +565,8 @@ Line.prototype.draw = function (animation) {
         this.resetBodyVertices(lineLength, 0);
     }
 };
+
+Line.prototype.setRotation = function (radian) {
+    this.mesh.rotation.z = radian;
+    this.orgRotationZ = radian;
+}

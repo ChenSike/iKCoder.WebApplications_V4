@@ -249,6 +249,8 @@ Engine.checkCollision = function () {
 
     if (dm.length() < Engine.params.collisionObstacle && Engine.modules.obstacle.status != Engine._stateFly) {
         if (Engine.modules.obstacle.mesh.visible) {
+            //Engine.modules.monster.monsterPosTarget -= 0.04;
+            Engine.modules.monster.monsterPosTarget -= 0.01;
             Engine.modules.obstacle.fly();
         }
     }
@@ -459,7 +461,7 @@ Engine.reset = function () {
 };
 
 Engine.over = function () {
-    Engine.state = "over";
+    Engine.state = Engine._stateOver;
     for (var key in Engine.modules) {
         if (Engine.modules[key]) {
             Engine.modules[key].over();
@@ -468,10 +470,12 @@ Engine.over = function () {
 
     TweenMax.to(this, 1, { speed: 0 });
     TweenMax.to(Engine.camera.position, 3, { z: Engine.params.camera.oz, y: Engine.params.camera.oy, x: 0 });//Engine.params.camera.ox });
+    Engine.overCallbackFn();
 };
 
 Engine.setControl = function (device, eventKeyCode) {
     Engine.container.unbind();
+    Engine.container.on("touchend", Engine.handleMouseDown);
     Engine.params.control = { device: 'm', key: 0 };
     if (Engine.params.speed.monster.pursue) {
         if (device == 'm') {
@@ -494,23 +498,27 @@ Engine.handleWindowResize = function () {
 
 Engine.handleMouseDown = function (eventObj) {
     if (eventObj.button == Engine.params.control.key) {
-        if (Engine.state == Engine._stateRun) {
-            Engine.modules['player'].jump();
-        }
+        Engine.eventHandler();
     }
 };
 
 Engine.handleKeyDown = function (eventObj) {
     if (eventObj.which == Engine.params.control.key) {
-        if (Engine.state == Engine._stateRun) {
-            Engine.modules['player'].jump();
-        }
+        Engine.eventHandler();
     }
 };
 
+Engine.eventHandler = function () {
+    if (Engine.state == Engine._stateRun) {
+        Engine.modules['player'].jump();
+    } else if (Engine.state == Engine._stateOver) {
+        Engine.overEventFn();
+    }
+}
+
 Engine.getPlayer = function () {
     return Engine.modules['player'];
-}
+};
 
 Engine.DrawGrid = function () {
     var scope = 1000;
@@ -545,6 +553,22 @@ Engine.DrawGrid = function () {
         Engine.scene.add(vLine);
         Engine.scene.add(dLine);
     }
+};
+
+Engine.overCallbackFn = function () {
+
+};
+
+Engine.setOverCallbackFn = function (fn) {
+    Engine.overCallbackFn = fn;
+};
+
+Engine.overEventFn = function () {
+
+};
+
+Engine.setOverEventFn = function (fn) {
+    Engine.overEventFn = fn;
 };
 
 var Module = function () {
@@ -751,7 +775,6 @@ Module.prototype.fly = function () {
         }
     });
 
-    Engine.modules.monster.monsterPosTarget -= 0.04;
     var tmpAlpha = Engine.params.renderer.clearColor;
     TweenMax.from(this,
         0.5,

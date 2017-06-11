@@ -62,9 +62,11 @@ Scene.initEnvironment = function (containerId) {
     Engine.prepareForStart();
     Scene.Brush = Scene.getBrush();
     Scene.Brush.setBuildBackgroundFn(function () {
-        Scene.Brush.buildBackgroundLine(0, 0, 0, 10, 5, '#000000');
-        Scene.Brush.buildBackgroundLine(0, 10, 10, 0, 5, '#000000');
-        Scene.Brush.buildBackgroundLine(10, 0, 0, 0, 5, '#000000');
+        Scene.Brush.buildBackgroundLine(0, 0, 10, 5, 5, '#000000');
+        Scene.Brush.buildBackgroundLine(0, 0, 10, -5, 5, '#000000');
+        Scene.Brush.buildBackgroundLine(0, 0, -10, -5, 5, '#000000');
+        Scene.Brush.buildBackgroundLine(0, 0, -10, 5, 5, '#000000');
+        //Scene.Brush.buildBackgroundLine(-10, -5,0, 0,  5, '#000000');
     });
     Scene.Brush.prepareBackground();
 };
