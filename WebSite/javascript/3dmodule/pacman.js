@@ -892,8 +892,8 @@ function QuestionMark() {
     Module.call(this);
     this.type = 'questionmark';
     this.text = '?';
-    this.textColor = '#B22222';
-    this.unique = true;
+	this.textColor = '#F00';
+	this.unique = false;
     this.init();
 };
 
@@ -903,7 +903,7 @@ QuestionMark.prototype = Object.assign(Object.create(Module.prototype), {
 
 QuestionMark.prototype.init = function () {
     this.mesh = new THREE.Group();
-    this.textMeshs.position.y = 10;
+    this.textMeshs.position.y = 40;
     this.textMeshs.position.x = -10;
     this.createText();
     this.mesh.add(this.textMeshs);
