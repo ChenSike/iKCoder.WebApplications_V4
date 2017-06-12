@@ -363,7 +363,7 @@ Scene.SetLineWidth = function (width) {
 //     return endPoint;
 // };
 
-Scene.Rotate = function (degree, direction){
+Scene.RotateLine = function (degree, direction){
     // if (direction===true) {
     //     Scene.movePoint.lineAngle =  90 - degree;
     //     Scene.movePoint.rotateAngle = degree;

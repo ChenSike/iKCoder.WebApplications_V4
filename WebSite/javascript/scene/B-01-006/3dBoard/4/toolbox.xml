@@ -1,8 +1,8 @@
 ﻿<xml id="toolbox" style="display: none">
   <block type="event_start"></block>
   <block type="move_forward"></block>
-  <block type="positive_rotate"></block>
-  <block type="negative_rotate"></block>
+  <block type="positive_rotate_line"></block>
+  <block type="negative_rotate_line"></block>
   <block type="forloop"></block>
   <block type="set_color"></block>
   <block type="set_lineWidth"></block>

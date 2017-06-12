@@ -304,7 +304,7 @@ Scene.SetLineWidth = function (width) {
     Scene.Brush.setLineWidth(width);
 };
 
-Scene.Rotate = function (degree, direction){
+Scene.RotateLine = function (degree, direction){
     Scene.Brush.lineRotate(degree, direction);
 };
 

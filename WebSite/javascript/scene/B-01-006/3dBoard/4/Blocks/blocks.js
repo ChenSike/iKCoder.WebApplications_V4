@@ -33,11 +33,11 @@ Blockly.JavaScript['move_forward'] = function (block) {
     return 'Scene.MoveForward(' + block.getFieldValue('move_steps') + ');\n';
 };
 
-Blockly.Blocks['positive_rotate'] = {
+Blockly.Blocks['positive_rotate_line'] = {
     init: function () {
         this.appendDummyInput()
         .appendField(new Blockly.FieldDropdown([["顺时针","positive"], ["逆时针","negative"]]), "rotate_derection")
-        .appendField("旋转")
+        .appendField("旋转线段")
 //            .appendField(new Blockly.FieldNumber(120, 1, 360, 1), "rotate_degree")
         .appendField(new Blockly.FieldDropdown([["30","30"], ["60","60"],["90","90"],["120","120"]]), "rotate_degree")
         .appendField(" 度 ")
@@ -48,19 +48,19 @@ Blockly.Blocks['positive_rotate'] = {
     }
 };
 
-Blockly.JavaScript['positive_rotate'] = function (block) {
+Blockly.JavaScript['positive_rotate_line'] = function (block) {
     var a = block.getFieldValue('rotate_derection');
     if (a == 'positive'){
-        return 'Scene.Rotate(' + block.getFieldValue('rotate_degree') + ',false);\n';
+        return 'Scene.RotateLine(' + block.getFieldValue('rotate_degree') + ',false);\n';
     }else if (a == 'negative')
-        return 'Scene.Rotate(' + block.getFieldValue('rotate_degree') + ',true);\n';
+        return 'Scene.RotateLine(' + block.getFieldValue('rotate_degree') + ',true);\n';
 };
 
-Blockly.Blocks['negative_rotate'] = {
+Blockly.Blocks['negative_rotate_line'] = {
     init: function () {
         this.appendDummyInput()
         .appendField(new Blockly.FieldDropdown([["逆时针","negative"], ["顺时针","positive"]]), "rotate_derection2")
-        .appendField("旋转")
+        .appendField("旋转线段")
 //            .appendField(new Blockly.FieldNumber(120, 1, 360, 1), "rotate_degree")
         .appendField(new Blockly.FieldDropdown([["30","30"], ["60","60"],["90","90"],["120","120"]]), "rotate_degree2")
         .appendField(" 度 ")
@@ -71,12 +71,12 @@ Blockly.Blocks['negative_rotate'] = {
     }
 };
 
-Blockly.JavaScript['negative_rotate'] = function (block) {
+Blockly.JavaScript['negative_rotate_line'] = function (block) {
     var a = block.getFieldValue('rotate_derection2');
     if (a == 'positive'){
-        return 'Scene.Rotate(' + block.getFieldValue('rotate_degree2') + ',false);\n';
+        return 'Scene.RotateLine(' + block.getFieldValue('rotate_degree2') + ',false);\n';
     }else if (a == 'negative')
-        return 'Scene.Rotate(' + block.getFieldValue('rotate_degree2') + ',true);\n';
+        return 'Scene.RotateLine(' + block.getFieldValue('rotate_degree2') + ',true);\n';
 };
 
 Blockly.Blocks['forloop'] = {
