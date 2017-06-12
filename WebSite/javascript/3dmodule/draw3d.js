@@ -702,4 +702,63 @@ PatternGroup.prototype.setRotation = function (radian) {
 
 PatternGroup.prototype.getBasePattern = function () {
     return this.patterns[0];
-}
+};
+
+function Arc(brush, centerX, centerY, radius, startAngle, endAngle, clockWise) {
+    Module.call(this);
+    this.brush = brush;
+    this.type = 'circle';
+    this.status = Engine._statusRun;
+    this.visible = true;
+    this.unique = false;
+    this.speed = 1;
+    this.lineWidth = 1;
+    this.completeFired = false;
+    this.params = {
+        x: centerX,
+        y: centerY,
+        r: radius,
+        sa: startAngle,
+        ea: endAngle,
+        cw: (typeof clockWise == 'boolean' ? clockWise : true)
+    };
+
+    this.orgRotationZ = 0;
+    this.init();
+};
+
+Arc.prototype = Object.assign(Object.create(Module.prototype), {
+    constructor: Arc
+});
+
+Arc.prototype.init = function () {
+    var path = new THREE.Shape();
+    path.moveTo(0, 0);
+    path.bezierCurveTo(0, 50 * 0.551915024494, 50 - 50 * 0.551915024494, 50, 50, 50);
+    path.bezierCurveTo(50 + 50 * 0.551915024494, 50, 100, 50 * 0.551915024494, 100, 0);
+    path.lineTo(90, 0);
+    path.bezierCurveTo(90, 40 * 0.551915024494, 50 + 40 * 0.551915024494, 40, 50, 40);
+    path.bezierCurveTo(50 - 40 * 0.551915024494, 40, 10, 40 * 0.551915024494, 10, 0);
+    path.lineTo(0, 0);
+    this.mesh = new THREE.Mesh(path.makeGeometry(), new THREE.LineBasicMaterial({ color: '#00ff00', linewidth: 10 }));
+};
+
+function Circle(brush, count, startIdx) {
+    Arc.call(this);
+    this.brush = brush;
+    this.type = 'circle';
+    this.status = Engine._statusRun;
+    this.visible = true;
+    this.unique = false;
+    this.speed = 1;
+    this.lineWidth = 1;
+    this.completeFired = false;
+
+    this.orgRotationZ = 0;
+    this.patterns = [];
+    this.init();
+};
+
+Circle.prototype = Object.assign(Object.create(Arc.prototype), {
+    constructor: Circle
+});

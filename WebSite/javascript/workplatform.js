@@ -633,11 +633,11 @@ function initData(response) {
         }
     }
 
-    addLibPath($($(response).find("toolbox")[0]));
-    var tmpPaths = $(response).find("game").find('script');
-    for (var i = 0; i < tmpPaths.length ; i++) {
-        addLibPath($(tmpPaths[i]));
-    }
+    //addLibPath($($(response).find("toolbox")[0]));
+    //var tmpPaths = $(response).find("game").find('script');
+    //for (var i = 0; i < tmpPaths.length ; i++) {
+    //    addLibPath($(tmpPaths[i]));
+    //}
 
     if (_currentStage.toLowerCase() == "a_01_001" || _currentStage.toLowerCase() == "a_01_002") {
         var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
