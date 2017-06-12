@@ -162,7 +162,6 @@ Brush.prototype.patternGroupRotate = function (angle, clockwise) {
     });
 };
 
-
 /*
 action type:
 mt: move to
@@ -295,8 +294,8 @@ Brush.prototype.updatePosition = function () {
                                 _that.mesh.visible = false;
                                 Engine.scene.add(_that.mesh);
                                 var tmpVal = Math.sqrt(Math.pow(_basePattern.mesh.geometry.vertices[1].x - _basePattern.mesh.geometry.vertices[0].x, 2) + Math.pow(_basePattern.mesh.geometry.vertices[1].y - _basePattern.mesh.geometry.vertices[0].y, 2));
-                                _that.mesh.position.x = tmpVal * Math.cos(_pGroup.mesh.rotation.z) + _basePattern.mesh.geometry.vertices[0].x + _that.basePoint.x;
-                                _that.mesh.position.y = tmpVal * Math.sin(_pGroup.mesh.rotation.z) + _basePattern.mesh.geometry.vertices[0].y + _that.basePoint.y;
+                                _that.mesh.position.x = tmpVal * Math.cos(_pGroup.mesh.rotation.z + _basePattern.mesh.rotation.z) + _basePattern.mesh.geometry.vertices[0].x + _that.basePoint.x;
+                                _that.mesh.position.y = tmpVal * Math.sin(_pGroup.mesh.rotation.z + _basePattern.mesh.rotation.z) + _basePattern.mesh.geometry.vertices[0].y + _that.basePoint.y;
                                 _that.mesh.visible = true;
                                 _that.drawing = false;
                             }
