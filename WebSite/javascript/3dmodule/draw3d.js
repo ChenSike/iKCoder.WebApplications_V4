@@ -762,3 +762,124 @@ function Circle(brush, count, startIdx) {
 Circle.prototype = Object.assign(Object.create(Arc.prototype), {
     constructor: Circle
 });
+
+
+function RectTubeGeometry(path, tubularSegments, width,height, closed, taper) {
+
+    Geometry.call(this);
+
+    this.type = 'RectTubeGeometry';
+
+    this.parameters = {
+        path: path,
+        tubularSegments: tubularSegments,
+        width: width,
+        height:height,
+        closed: closed
+    };
+
+    var bufferGeometry = new RectTubeBufferGeometry(path, tubularSegments, width, height, closed);
+    this.tangents = bufferGeometry.tangents;
+    this.normals = bufferGeometry.normals;
+    this.binormals = bufferGeometry.binormals;
+    this.fromBufferGeometry(bufferGeometry);
+    this.mergeVertices();
+}
+
+RectTubeGeometry.prototype = Object.create(THREE.TubeGeometry.prototype);
+RectTubeGeometry.prototype.constructor = RectTubeGeometry;
+
+function RectTubeBufferGeometry(path, tubularSegments, width, height, closed) {
+    BufferGeometry.call(this);
+    this.type = 'RectTubeBufferGeometry';
+    var radialSegments = 4;
+    this.parameters = {
+        path: path,
+        tubularSegments: tubularSegments,
+        width: width,
+        height: height,
+        radialSegments: radialSegments,
+        closed: closed
+    };
+
+    tubularSegments = tubularSegments || 64;
+    width = width || 1;
+    height = height || 1;
+    closed = closed || false;
+    var frames = path.computeFrenetFrames(tubularSegments, closed);
+    this.tangents = frames.tangents;
+    this.normals = frames.normals;
+    this.binormals = frames.binormals;
+    var vertex = new Vector3();
+    var normal = new Vector3();
+    var uv = new Vector2();
+    var i, j;
+    var vertices = [];
+    var normals = [];
+    var uvs = [];
+    var indices = [];
+    generateBufferData();
+    this.setIndex(indices);
+    this.addAttribute('position', new Float32BufferAttribute(vertices, 3));
+    this.addAttribute('normal', new Float32BufferAttribute(normals, 3));
+    this.addAttribute('uv', new Float32BufferAttribute(uvs, 2));
+    function generateBufferData() {
+        for (i = 0; i < tubularSegments; i++) {
+            generateSegment(i);
+        }
+
+        generateSegment((closed === false) ? tubularSegments : 0);
+        generateUVs();
+        generateIndices();
+    }
+
+    function generateSegment(i) {
+        var P = path.getPointAt(i / tubularSegments);
+        var N = frames.normals[i];
+        var B = frames.binormals[i];
+        for (j = 0; j <= radialSegments; j++) {
+            //var v = j / radialSegments * Math.PI * 2;
+            //var sin = Math.sin(v);
+            //var cos = -Math.cos(v);
+            //normal.x = (cos * N.x + sin * B.x);
+            //normal.y = (cos * N.y + sin * B.y);
+            //normal.z = (cos * N.z + sin * B.z);
+            //normal.normalize();
+            //normals.push(normal.x, normal.y, normal.z);
+            //vertex.x = P.x + radius * normal.x;
+            //vertex.y = P.y + radius * normal.y;
+            //vertex.z = P.z + radius * normal.z;
+            //vertices.push(vertex.x, vertex.y, vertex.z);
+            normal.x = (cos * N.x + sin * B.x);
+            normal.y = (cos * N.x + sin * B.x);
+            normal.z = (cos * N.x + sin * B.x);
+            normal.normalize();
+        }
+    }
+
+    function generateIndices() {
+        for (j = 1; j <= tubularSegments; j++) {
+            for (i = 1; i <= radialSegments; i++) {
+                var a = (radialSegments + 1) * (j - 1) + (i - 1);
+                var b = (radialSegments + 1) * j + (i - 1);
+                var c = (radialSegments + 1) * j + i;
+                var d = (radialSegments + 1) * (j - 1) + i;
+                indices.push(a, b, d);
+                indices.push(b, c, d);
+            }
+        }
+    }
+
+    function generateUVs() {
+        for (i = 0; i <= tubularSegments; i++) {
+            for (j = 0; j <= radialSegments; j++) {
+                uv.x = i / tubularSegments;
+                uv.y = j / radialSegments;
+                uvs.push(uv.x, uv.y);
+            }
+        }
+    }
+}
+
+RectTubeBufferGeometry.prototype = Object.create(THREE.TubeBufferGeometry.prototype);
+RectTubeBufferGeometry.prototype.constructor = RectTubeBufferGeometry;

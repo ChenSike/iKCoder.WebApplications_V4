@@ -67,8 +67,26 @@ Scene.initEnvironment = function (containerId) {
         Scene.Brush.buildBackgroundLine(0, 0, -10, -5, 5, '#000000');
         Scene.Brush.buildBackgroundLine(0, 0, -10, 5, 5, '#000000');
         //Scene.Brush.buildBackgroundLine(-10, -5,0, 0,  5, '#000000');
+
+
     });
     Scene.Brush.prepareBackground();
+
+    var points = [];
+    var aaa = new THREE.Shape();
+    aaa.absarc(0, 0, 50, 0, Math.PI);
+    var bbb = aaa.createPointsGeometry();
+    for (var i = 0; i < bbb.vertices.length; i++) {
+        points.push(bbb.vertices[i]);
+    }
+    var tubeGeometry = new THREE.TubeGeometry(
+        new THREE.SplineCurve3(points),
+        64, 10, 4, false
+    );
+
+    var tubeMesh = new THREE.Mesh(tubeGeometry, new THREE.MeshPhongMaterial({ color: '#00ff00', shading: THREE.FlatShading }));
+    Engine.scene.add(tubeMesh);
+    Engine.startScene();
 };
 
 Scene.initGlobalParams = function () {
