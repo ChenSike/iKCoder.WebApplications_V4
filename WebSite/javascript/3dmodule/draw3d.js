@@ -833,36 +833,43 @@ function RectTubeBufferGeometry(path, tubularSegments, width, height, closed) {
         }
 
         generateSegment((closed === false) ? tubularSegments : 0);
-        //generateUVs();
-        //generateIndices();
+        generateUVs();
+        generateIndices();
     }
 
     function generateSegment(i) {
         var P = path.getPointAt(i / tubularSegments);
         var N = frames.normals[i];
         var B = frames.binormals[i];
+        var tmpAngle = Math.atan(P.y / P.x);
+        var ctan = 1 / Math.tan(tmpAngle);
+        var tan = Math.tan(tmpAngle);
         for (j = 0; j <= radialSegments; j++) {
-            //var v = j / radialSegments * Math.PI * 2;
-            //var sin = Math.sin(v);
-            //var cos = -Math.cos(v);
-            //normal.x = (cos * N.x + sin * B.x);
-            //normal.y = (cos * N.y + sin * B.y);
-            //normal.z = (cos * N.z + sin * B.z);
-            //normal.normalize();
-            //normals.push(normal.x, normal.y, normal.z);
-            //vertex.x = P.x + radius * normal.x;
-            //vertex.y = P.y + radius * normal.y;
-            //vertex.z = P.z + radius * normal.z;
-            //vertices.push(vertex.x, vertex.y, vertex.z);
-            normal.x = (j == 2 || j == 3 ? -0.5 : 0.5);
-            normal.y = 0;
-            normal.z = (j == 1 || j == 2 ? -0.5 : 0.5);
-            //normal.normalize();
+            var v = j / radialSegments * Math.PI * 2;
+            var sin = Math.sin(v);
+            var cos = -Math.cos(v);
+            normal.x = (cos * N.x + sin * B.x);
+            normal.y = (cos * N.y + sin * B.y);
+            normal.z = (cos * N.z + sin * B.z);
+            normal.normalize();
             normals.push(normal.x, normal.y, normal.z);
-            vertex.x = P.x + width * normal.x;
-            vertex.y = P.y + normal.y;
-            vertex.z = P.z + height * normal.z;
+            vertex.x = P.x + radius * normal.x;
+            vertex.y = P.y + radius * normal.y;
+            vertex.z = P.z + radius * normal.z;
             vertices.push(vertex.x, vertex.y, vertex.z);
+            //normal.x = (j == 2 || j == 3 ? -0.5 : 0.5);
+            //normal.y = 0;
+            //normal.z = (j == 1 || j == 2 ? -0.5 : 0.5);
+            ////normal.normalize();
+            //normals.push(normal.x, normal.y, normal.z);
+            ////vertex.x = P.x + width * normal.x;
+            ////vertex.y = P.y + normal.y;
+            ////vertex.z = P.z + height * normal.z;
+            //vertex.x = P.x + width * normal.x * ctan;
+            //vertex.y =  P.y + width * normal.x * tan;
+            //vertex.z = P.z + height * normal.z;
+
+            //vertices.push(vertex.x, vertex.y, vertex.z);
         }
     }
 

@@ -74,13 +74,13 @@ Scene.initEnvironment = function (containerId) {
 
     var points = [];
     var aaa = new THREE.Shape();
-    aaa.absarc(0, 0, 200, 0, Math.PI);
+    aaa.absarc(0, 0, 200, 0, Math.PI/4);
     var bbb = aaa.createPointsGeometry();
     for (var i = 0; i < bbb.vertices.length; i++) {
         points.push(bbb.vertices[i]);
     }
-    var tubeGeometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 9, 10, 4, false);
-    //var tubeGeometry = new RectTubeGeometry(new THREE.CatmullRomCurve3(points), 9, 10, 4, false);
+    //var tubeGeometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 5, 10, 4, false);
+    var tubeGeometry = new RectTubeGeometry(new THREE.CatmullRomCurve3(points), 5, 20, 10, false);
 
 
 
