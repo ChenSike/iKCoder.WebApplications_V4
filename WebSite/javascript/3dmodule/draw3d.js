@@ -716,14 +716,14 @@ function Arc(brush, centerX, centerY, radius, startAngle, endAngle, clockWise) {
     this.visible = true;
     this.unique = false;
     this.speed = 1;
-    this.lineWidth = 1;
+    this.lineWidth = this.brush.linewidth;
     this.completeFired = false;
     this.params = {
         x: centerX,
         y: centerY,
         r: radius,
-        sa: startAngle,
-        ea: endAngle,
+        sa: startAngle * Math.PI/180,
+        ea: endAngle * Math.PI/180,
         cw: (typeof clockWise == 'boolean' ? clockWise : true)
     };
 
@@ -736,15 +736,117 @@ Arc.prototype = Object.assign(Object.create(Module.prototype), {
 });
 
 Arc.prototype.init = function () {
-    var path = new THREE.Shape();
-    path.moveTo(0, 0);
-    path.bezierCurveTo(0, 50 * 0.551915024494, 50 - 50 * 0.551915024494, 50, 50, 50);
-    path.bezierCurveTo(50 + 50 * 0.551915024494, 50, 100, 50 * 0.551915024494, 100, 0);
-    path.lineTo(90, 0);
-    path.bezierCurveTo(90, 40 * 0.551915024494, 50 + 40 * 0.551915024494, 40, 50, 40);
-    path.bezierCurveTo(50 - 40 * 0.551915024494, 40, 10, 40 * 0.551915024494, 10, 0);
-    path.lineTo(0, 0);
-    this.mesh = new THREE.Mesh(path.makeGeometry(), new THREE.LineBasicMaterial({ color: '#00ff00', linewidth: 10 }));
+    //var tmpRadius = this.params.r + 50;
+    //var shape = new THREE.Shape();
+    //shape.moveTo(this.params.x,this.params.y);
+    //var tmpX = tmpRadius*Math.cos(this.params.sa);
+    //var tmpY = tmpRadius*Math.sin(this.params.sa);
+    //shape.lineTo(tmpX, tmpY);
+    // tmpX = tmpRadius * Math.cos(this.params.ea);
+    // tmpY = tmpRadius * Math.sin(this.params.ea);
+    // shape.lineTo(tmpX, tmpY);
+    //shape.lineTo(this.params.x,this.params.y);
+    ////shape.arc(this.params.x,this.params.y,tmpRadius,this.params.sa,this.params.ea,this.params.cw);
+    //tmpRadius = this.params.r + this.lineWidth/2;
+    //var hole = new THREE.Path();
+    //hole.arc(this.params.x, this.params.y, tmpRadius, this.params.sa, this.params.ea, this.params.cw);
+    //shape.holes.push(hole);
+    //var options = {
+
+    //    amount:10,
+    //    bevelThickness:2,
+    //    bevelSize:1,
+    //    bevelSegments:3,
+    //    bevelEnabled:true,
+    //    curveSegments:12,
+    //    steps:1
+
+    //};
+
+
+    //this.mesh = THREE.Mesh(new THREE.ExtrudeGeometry(shape, options), new THREE.MeshBasicMaterial({ color: '#00ff00' }));
+
+
+    //var hole1 = new THREE.Path();
+    //hole1.absellipse(16,24,2,3,0,Math*PI*2,true);
+    //shape.holes.push(hole1);
+
+    //var hole2 = new THREE.Path();
+    //hole2.absellipse(23,24,2,3,0,Math.PI*2,true);
+    //shape.holes.push(hole2);
+
+    //var hole3 = new THREE.Path();
+    //hole3.absarc(20,16,2,0,Math.PI,true);
+    //shape.holes.push(hole3);
+
+
+
+    //var radius = this.params.r+this.lineWidth/2;
+    //this.mesh = new THREE.Mesh(path.makeGeometry(), new THREE.LineBasicMaterial({ color: '#00ff00', linewidth: 10 }));
+
+    //function drawShape() {
+
+    //    var shape = new THREE.Shape();
+
+    //    //将绘图点移动到指定的位置
+    //    shape.moveTo(10, 10);
+
+    //    //从当前位置画一条线到指定的位置
+    //    shape.lineTo(10, 40);
+
+    //    //贝塞尔曲线，当前点作为起始点，(15,25) 和 (25,25) 两点决定曲线的曲率，(30,40)作为结束点。
+    //    shape.bezierCurveTo(15, 25, 25, 25, 30, 40);
+
+    //    //沿着提供的点集绘制一条光滑的曲线。起始点是当前点。
+    //    shape.splineThru(
+    //    [
+    //        new THREE.Vector2(32, 30),
+    //        new THREE.Vector2(28, 20),
+    //        new THREE.Vector2(30, 10)
+    //    ]);
+
+    //    //二次曲线 (20,15) 决定当前曲线的曲率，(10,10) 曲线的结束点。当前点作为起始点。
+    //    shape.quadraticCurveTo(20, 15, 10, 10);
+
+    //    //var hole1 = new THREE.Path();
+    //    //hole1.absellipse(16, 24, 2, 3, 0, Math.PI * 2, true);
+    //    //shape.holes.push(hole1);
+
+    //    //var hole2 = new THREE.Path();
+    //    //hole2.absellipse(23, 24, 2, 3, 0, Math.PI * 2, true);
+    //    //shape.holes.push(hole2);
+
+    //    var hole3 = new THREE.Path();
+    //    hole3.absarc(20, 16, 2, 0, Math.PI, true);
+    //    shape.holes.push(hole3);
+
+    //    return shape;
+    //}
+    //function createMesh(geometry) {
+    //    var meshMaterial = new THREE.MeshNormalMaterial();
+    //    meshMaterial.side = THREE.DoubleSize;
+    //    var wireFrameMaterial = new THREE.MeshBasicMaterial();
+    //    wireFrameMaterial.wireframe = true;
+
+    //    var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [meshMaterial, wireFrameMaterial]);
+
+    //    return mesh;
+    //}
+    var options = {
+        amount: 110,
+        bevelThickness: 2,
+        bevelSize: 1,
+        bevelSegments: 3,
+        bevelEnabled: true,
+        curveSegments: 12,
+        steps: 1
+    };
+
+
+    var geometry = new THREE.CircleGeometry(100, 12, 0, Math.PI / 2);
+    var shape = new THREE.Shape();
+    shape.fromPoints(geometry.vertices);
+    this.mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ExtrudeGeometry(shape, options), [new THREE.MeshBasicMaterial({ color: '#00ff00', shading: THREE.FlatShading })]);
 };
 
 function Circle(brush, count, startIdx) {
@@ -767,151 +869,3 @@ Circle.prototype = Object.assign(Object.create(Arc.prototype), {
     constructor: Circle
 });
 
-
-function RectTubeGeometry(path, tubularSegments, width, height, closed, taper) {
-
-    THREE.Geometry.call(this);
-
-    this.type = 'RectTubeGeometry';
-
-    this.parameters = {
-        path: path,
-        tubularSegments: tubularSegments,
-        width: width,
-        height: height,
-        closed: closed
-    };
-
-    var bufferGeometry = new RectTubeBufferGeometry(path, tubularSegments, width, height, closed);
-    this.tangents = bufferGeometry.tangents;
-    this.normals = bufferGeometry.normals;
-    this.binormals = bufferGeometry.binormals;
-    this.fromBufferGeometry(bufferGeometry);
-    this.mergeVertices();
-}
-
-RectTubeGeometry.prototype = Object.create(THREE.TubeGeometry.prototype);
-RectTubeGeometry.prototype.constructor = RectTubeGeometry;
-
-function RectTubeBufferGeometry(path, tubularSegments, width, height, closed) {
-    THREE.BufferGeometry.call(this);
-    this.type = 'RectTubeBufferGeometry';
-    var radialSegments = 4;
-    this.parameters = {
-        path: path,
-        tubularSegments: tubularSegments,
-        width: width,
-        height: height,
-        radialSegments: radialSegments,
-        closed: closed
-    };
-
-    tubularSegments = tubularSegments || 64;
-    width = width || 1;
-    height = height || 1;
-    closed = closed || false;
-    var frames = path.computeFrenetFrames(tubularSegments, closed);
-    this.tangents = frames.tangents;
-    this.normals = frames.normals;
-    this.binormals = frames.binormals;
-    var vertex = new THREE.Vector3();
-    var normal = new THREE.Vector3();
-    var uv = new THREE.Vector2();
-    var i, j;
-    var vertices = [];
-    var normals = [];
-    var uvs = [];
-    var indices = [];
-    generateBufferData();
-    this.setIndex(indices);
-    this.addAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    this.addAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
-    this.addAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
-    function generateBufferData() {
-        for (i = 0; i < tubularSegments; i++) {
-            generateSegment(i);
-        }
-
-        generateSegment((closed === false) ? tubularSegments : 0);
-        generateUVs();
-        generateIndices();
-    }
-
-    function generateSegment(i) {
-        var P = path.getPointAt(i / tubularSegments);
-        var N = frames.normals[i];
-        var B = frames.binormals[i];
-        var tmpAngle = Math.atan(P.y / P.x);
-        var ctan = 1 / Math.tan(tmpAngle);
-        var tan = Math.tan(tmpAngle);
-        for (j = 0; j <= radialSegments; j++) {
-            var v = j / radialSegments * Math.PI * 2;
-            var sin = Math.sin(v);
-            var cos = -Math.cos(v);
-            normal.x = (cos * N.x + sin * B.x);
-            normal.y = (cos * N.y + sin * B.y);
-            normal.z = (cos * N.z + sin * B.z);
-            normal.normalize();
-            normals.push(normal.x, normal.y, normal.z);
-            vertex.x = P.x + radius * normal.x;
-            vertex.y = P.y + radius * normal.y;
-            vertex.z = P.z + radius * normal.z;
-            vertices.push(vertex.x, vertex.y, vertex.z);
-            //normal.x = (j == 2 || j == 3 ? -0.5 : 0.5);
-            //normal.y = 0;
-            //normal.z = (j == 1 || j == 2 ? -0.5 : 0.5);
-            ////normal.normalize();
-            //normals.push(normal.x, normal.y, normal.z);
-            ////vertex.x = P.x + width * normal.x;
-            ////vertex.y = P.y + normal.y;
-            ////vertex.z = P.z + height * normal.z;
-            //vertex.x = P.x + width * normal.x * ctan;
-            //vertex.y =  P.y + width * normal.x * tan;
-            //vertex.z = P.z + height * normal.z;
-
-            //vertices.push(vertex.x, vertex.y, vertex.z);
-        }
-    }
-
-    function generateIndices() {
-
-        for (j = 1; j <= tubularSegments; j++) {
-
-            for (i = 1; i <= radialSegments; i++) {
-
-                var a = (radialSegments + 1) * (j - 1) + (i - 1);
-                var b = (radialSegments + 1) * j + (i - 1);
-                var c = (radialSegments + 1) * j + i;
-                var d = (radialSegments + 1) * (j - 1) + i;
-
-                // faces
-
-                indices.push(a, b, d);
-                indices.push(b, c, d);
-
-            }
-
-        }
-
-    }
-
-    function generateUVs() {
-
-        for (i = 0; i <= tubularSegments; i++) {
-
-            for (j = 0; j <= radialSegments; j++) {
-
-                uv.x = i / tubularSegments;
-                uv.y = j / radialSegments;
-
-                uvs.push(uv.x, uv.y);
-
-            }
-
-        }
-
-    }
-}
-
-RectTubeBufferGeometry.prototype = Object.create(THREE.TubeBufferGeometry.prototype);
-RectTubeBufferGeometry.prototype.constructor = RectTubeBufferGeometry;

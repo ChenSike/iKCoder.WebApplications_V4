@@ -72,20 +72,20 @@ Scene.initEnvironment = function (containerId) {
     });
     Scene.Brush.prepareBackground();
 
-    var points = [];
-    var aaa = new THREE.Shape();
-    aaa.absarc(0, 0, 200, 0, Math.PI/4);
-    var bbb = aaa.createPointsGeometry();
-    for (var i = 0; i < bbb.vertices.length; i++) {
-        points.push(bbb.vertices[i]);
-    }
-    //var tubeGeometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 5, 10, 4, false);
-    var tubeGeometry = new RectTubeGeometry(new THREE.CatmullRomCurve3(points), 5, 20, 10, false);
+    //var points = [];
+    //var aaa = new THREE.Shape();
+    //aaa.absarc(0, 0, 200, 0, Math.PI/4);
+    //var bbb = aaa.createPointsGeometry();
+    //for (var i = 0; i < bbb.vertices.length; i++) {
+    //    points.push(bbb.vertices[i]);
+    //}
+    ////var tubeGeometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 5, 10, 4, false);
+    //var tubeGeometry = new RectTubeGeometry(new THREE.CatmullRomCurve3(points), 5, 20, 10, false);
 
 
 
-    tubeMesh = new THREE.Mesh(tubeGeometry, new THREE.MeshPhongMaterial({ color: '#00ff00', shading: THREE.FlatShading }));
-    Engine.scene.add(tubeMesh);
+    //tubeMesh = new THREE.Mesh(tubeGeometry, new THREE.MeshPhongMaterial({ color: '#00ff00', shading: THREE.FlatShading }));
+    //Engine.scene.add(tubeMesh);
     Engine.startScene();
 };
 
