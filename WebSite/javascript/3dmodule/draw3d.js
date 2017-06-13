@@ -214,7 +214,7 @@ Brush.prototype.updatePosition = function () {
                     this.drawing = true;
                     var line = new Line(this, targetObj.sx, targetObj.sy, targetObj.tx, targetObj.ty, targetObj.c, targetObj.w);
                     if (tmpItem.type == 'll') {
-                        if (this.patterns.length > 0) {
+                        if (this.patterns.length > 0 && this.patterns[this.patterns.length - 1].type != 'patterngroup') {
                             var lastRadian = this.patterns[this.patterns.length - 1].mesh.rotation.z;
                             line.setRotation(lastRadian);
                         }
@@ -329,7 +329,11 @@ Brush.prototype.createTargetObj = function (drawSeqItem) {
             targetObj.sy = this.mesh.position.y - this.basePoint.y;
             targetObj.ty = targetObj.sy;
             if (drawSeqItem.type == 'll') {
-                targetObj.tx = this.drawnSequence[this.drawnSequence.length - 1].x + drawSeqItem.l * Engine.params.grid.step;
+                if (this.patterns[this.patterns.length - 1].type != 'patterngroup') {
+                    targetObj.tx = this.drawnSequence[this.drawnSequence.length - 1].x + drawSeqItem.l * Engine.params.grid.step;
+                } else {
+                    targetObj.tx = this.drawnSequence[this.drawnSequence.length - 1].x + drawSeqItem.l * Engine.params.grid.step;
+                }
             } else {
                 targetObj.tx = drawSeqItem.tx;
                 targetObj.ty = drawSeqItem.ty;
@@ -764,9 +768,9 @@ Circle.prototype = Object.assign(Object.create(Arc.prototype), {
 });
 
 
-function RectTubeGeometry(path, tubularSegments, width,height, closed, taper) {
+function RectTubeGeometry(path, tubularSegments, width, height, closed, taper) {
 
-    Geometry.call(this);
+    THREE.Geometry.call(this);
 
     this.type = 'RectTubeGeometry';
 
@@ -774,7 +778,7 @@ function RectTubeGeometry(path, tubularSegments, width,height, closed, taper) {
         path: path,
         tubularSegments: tubularSegments,
         width: width,
-        height:height,
+        height: height,
         closed: closed
     };
 
@@ -790,7 +794,7 @@ RectTubeGeometry.prototype = Object.create(THREE.TubeGeometry.prototype);
 RectTubeGeometry.prototype.constructor = RectTubeGeometry;
 
 function RectTubeBufferGeometry(path, tubularSegments, width, height, closed) {
-    BufferGeometry.call(this);
+    THREE.BufferGeometry.call(this);
     this.type = 'RectTubeBufferGeometry';
     var radialSegments = 4;
     this.parameters = {
@@ -810,9 +814,9 @@ function RectTubeBufferGeometry(path, tubularSegments, width, height, closed) {
     this.tangents = frames.tangents;
     this.normals = frames.normals;
     this.binormals = frames.binormals;
-    var vertex = new Vector3();
-    var normal = new Vector3();
-    var uv = new Vector2();
+    var vertex = new THREE.Vector3();
+    var normal = new THREE.Vector3();
+    var uv = new THREE.Vector2();
     var i, j;
     var vertices = [];
     var normals = [];
@@ -820,17 +824,17 @@ function RectTubeBufferGeometry(path, tubularSegments, width, height, closed) {
     var indices = [];
     generateBufferData();
     this.setIndex(indices);
-    this.addAttribute('position', new Float32BufferAttribute(vertices, 3));
-    this.addAttribute('normal', new Float32BufferAttribute(normals, 3));
-    this.addAttribute('uv', new Float32BufferAttribute(uvs, 2));
+    this.addAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    this.addAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+    this.addAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
     function generateBufferData() {
         for (i = 0; i < tubularSegments; i++) {
             generateSegment(i);
         }
 
         generateSegment((closed === false) ? tubularSegments : 0);
-        generateUVs();
-        generateIndices();
+        //generateUVs();
+        //generateIndices();
     }
 
     function generateSegment(i) {
@@ -850,34 +854,55 @@ function RectTubeBufferGeometry(path, tubularSegments, width, height, closed) {
             //vertex.y = P.y + radius * normal.y;
             //vertex.z = P.z + radius * normal.z;
             //vertices.push(vertex.x, vertex.y, vertex.z);
-            normal.x = (cos * N.x + sin * B.x);
-            normal.y = (cos * N.x + sin * B.x);
-            normal.z = (cos * N.x + sin * B.x);
-            normal.normalize();
+            normal.x = (j == 2 || j == 3 ? -0.5 : 0.5);
+            normal.y = 0;
+            normal.z = (j == 1 || j == 2 ? -0.5 : 0.5);
+            //normal.normalize();
+            normals.push(normal.x, normal.y, normal.z);
+            vertex.x = P.x + width * normal.x;
+            vertex.y = P.y + normal.y;
+            vertex.z = P.z + height * normal.z;
+            vertices.push(vertex.x, vertex.y, vertex.z);
         }
     }
 
     function generateIndices() {
+
         for (j = 1; j <= tubularSegments; j++) {
+
             for (i = 1; i <= radialSegments; i++) {
+
                 var a = (radialSegments + 1) * (j - 1) + (i - 1);
                 var b = (radialSegments + 1) * j + (i - 1);
                 var c = (radialSegments + 1) * j + i;
                 var d = (radialSegments + 1) * (j - 1) + i;
+
+                // faces
+
                 indices.push(a, b, d);
                 indices.push(b, c, d);
+
             }
+
         }
+
     }
 
     function generateUVs() {
+
         for (i = 0; i <= tubularSegments; i++) {
+
             for (j = 0; j <= radialSegments; j++) {
+
                 uv.x = i / tubularSegments;
                 uv.y = j / radialSegments;
+
                 uvs.push(uv.x, uv.y);
+
             }
+
         }
+
     }
 }
 
