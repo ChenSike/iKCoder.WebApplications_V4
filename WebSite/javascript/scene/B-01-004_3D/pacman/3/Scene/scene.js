@@ -117,6 +117,8 @@ Scene.initMap = function () {
 
 Scene.initPlayer = function (x, y) {
 	var player = new PACMan('study', Scene.mapDATA);
+	player._stopToComplete = true;
+
 	Engine.addModuleObject(player, x, null, y);
 	player.setPosition(x, y);
 	if (Scene.mapDATA[y][x].t == 0 || Scene.mapDATA[y][x].t == 2) {
