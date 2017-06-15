@@ -45,11 +45,11 @@ function initPage() {
                         buildStageHTML(data.course);
                         updateUserInfo(data.user);
                         adjustWorkSpaceType(data);
-                        adjustAfterSiderBarResize();
                         $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
                         LoadSceneLib(data.blockly);
                         $('#mask_Page_Loading').hide();
                         $('#mask_Page_Loading').css('visibility', 'hidden');
+                        window.setTimeout('adjustAfterSiderBarResize();', 300);
                         window.setTimeout('WorkScene.saveStatus(true);', 60000);
                     },
                     dataType: 'xml',
@@ -609,6 +609,8 @@ function initData(response) {
         blockly: {
             toolbox: $(response).find("toolbox").html(),
             workspace: $(response).find("workspacestatus").html(),
+            //toolbox: 'javascript/scene/B-01-003_3D/pacman/4/toolbox.xml',
+            //workspace: 'javascript/scene/B-01-003_3D/pacman/4/default.xml',
             lib: []
         }
     }

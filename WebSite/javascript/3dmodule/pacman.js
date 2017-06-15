@@ -300,11 +300,11 @@ PACMan.prototype.turnRight = function (currentOri) {
 PACMan.prototype.initMovePath = function (type, value) {
     this.movePath = [];
     this.movePathTarget = [];
-    this.movePath.push();
+    //this.movePath.push();
 };
 /*
-type: 路径点类型：'m': move/ 'tt': turn to/'tl': turn left/'tr': turn right
-value: 路径值：     for move: the steps/for turn to: the orientation(r: 0, u: 1, l: 2, d: 3)
+type: 路径点类型：'m': move/ 'tt': turn to/'tl': turn left/'tr': turn right/'eat': eat for count goods
+value: 路径值：     for move: the steps/for turn to: the orientation(r: 0, u: 1, l: 2, d: 3)/for eat: count
 }
 */
 PACMan.prototype.addMovePath = function (type, value) {
@@ -356,6 +356,7 @@ PACMan.prototype.prepareForRun = function () {
                 tmpY += _moveMap[tmpOri] * tempSteps;
                 tmpPY = ModuleUtil.coordToPosition(tmpX, tmpY).py;
             }
+        } else if (tmpItem.t == 'eat') {
         }
 
         this.movePathTarget.push({ t: tmpItem.t, o: tmpOri, x: tmpX, y: tmpY, px: tmpPX, py: tmpPY });
@@ -379,7 +380,7 @@ PACMan.prototype.updatePosition = function () {
 PACMan.prototype.updatePositionStudy = function () {
     if (this.movePathTarget.length > 0) {
         var targetObj = this.movePathTarget[0];
-        if (targetObj.t != 'm') {
+        if (targetObj.t != 'm' && targetObj.t != 'eat') {
             if (this.orientation == targetObj.o) {
                 this.movePathTarget.shift();
             } else {
@@ -388,6 +389,16 @@ PACMan.prototype.updatePositionStudy = function () {
                     this.turnTo(targetObj.o);
                 }
             }
+            //} else if (targetObj.t == 'eat') {
+            //    var coord = ModuleUtil.positionToCoord(this.mesh.position.x, this.mesh.position.z);
+            //    this.coord.px = this.mesh.position.x;
+            //    this.coord.py = this.mesh.position.z;
+            //    if (coord.x == targetObj.x && coord.y == targetObj.y) {
+            //        if (this.mapData[coord.y][coord.x].t == 4) {
+
+            //            this.movePathTarget.shift();
+            //        }
+            //    }
         } else {
             var coord = ModuleUtil.positionToCoord(this.mesh.position.x, this.mesh.position.z);
             this.coord.px = this.mesh.position.x;
@@ -397,14 +408,20 @@ PACMan.prototype.updatePositionStudy = function () {
             if (coord.x == targetObj.x && coord.y == targetObj.y) {
                 this.coord.x = coord.x;
                 this.coord.y = coord.y;
-                if (this._stopToComplete) {
-                    if (!this.completeFired) {
-                        this.pathCompleteFn();
-                        this.completeFired = true;
+                if (targetObj.t == 'eat' && this.mapData[coord.y][coord.x].t == 4) {
+                    var countGoods = Engine.modules[this.mapData[coord.y][coord.x].s];
+                    if (!countGoods.updating) {
+                        countGoods.updateCount();
+                        this.movePathTarget.shift();
+                    }
+                } else {
+                    if (this._stopToComplete) {
+                        if (!this.completeFired) {
+                            this.pathCompleteFn();
+                            this.completeFired = true;
+                        }
                     }
 
-                    this.movePathTarget.shift();
-                } else {
                     this.movePathTarget.shift();
                 }
             } else {
@@ -544,7 +561,7 @@ PACMan.prototype.checkCollide = function () {
         nextCoordX = (this.orientation == 0 ? Math.ceil(nextCoordX) : this.orientation == 2 ? Math.floor(nextCoordX) : nextCoordX);
         nextCoordY = (this.orientation == 1 ? Math.floor(nextCoordY) : this.orientation == 3 ? Math.ceil(nextCoordY) : nextCoordY);
         var tmpItem = this.mapData[nextCoordY][nextCoordX];
-        if (tmpItem.t % 2 == 0 && tmpItem.v) {
+        if (tmpItem.t % 2 == 0 && tmpItem.t != 4 && tmpItem.v) {
             return Engine.modules[tmpItem.s].collideAction(this);
         }
     }
@@ -851,6 +868,7 @@ function CountGoods(count) {
     this.text = count.toString();
     this.textColor = '#B22222';
     this.unique = true;
+    this.updating = false;
     this.init();
 };
 
@@ -863,7 +881,9 @@ CountGoods.prototype.init = function () {
     this.textMeshs.position.y = 40;
     this.textMeshs.position.x = -13;
     this.createText();
-    this.body = new THREE.Mesh(new THREE.SphereGeometry(20, 20, 20, 0, Math.PI * 2, 0, Math.PI), new THREE.MeshPhongMaterial({ color: '#B22222', shading: THREE.FlatShading }));
+    var geometry = new THREE.SphereGeometry(20, 20, 20, 0, Math.PI * 2, 0, Math.PI);
+    var material = new THREE.MeshPhongMaterial({ color: '#B22222', shading: THREE.FlatShading });
+    this.body = new THREE.Mesh(geometry, material);
     this.body.geometry.verticesNeedUpdate = true;
     this.body.geometry.normalsNeedUpdate = true;
     this.body.geometry.castShadow = true;
@@ -888,12 +908,46 @@ CountGoods.prototype.collideAction = function (sourceModule) {
     return false;
 };
 
+CountGoods.prototype.updateCount = function (sourceModule) {
+    this.updating = true;
+    var _that = this;
+    TweenMax.to(
+        this.textMeshs.scale,
+        1,
+        {
+            x: 0.1,
+            y: 0.1,
+            z: 0.1,
+            ease: Linear.easeNone,
+            onComplete: function () {
+                _that.count--;
+                _that.text = _that.count.toString();
+                _that.createText();
+                _that.textMeshs.scale.set(0.1, 0.1, 0.1);
+                TweenMax.to(
+                    _that.textMeshs.scale,
+                    1,
+                    {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        ease: Linear.easeNone,
+                        onComplete: function () {
+                            _that.updating = false;
+                        }
+                    }
+                );
+            }
+        }
+    );
+};
+
 function QuestionMark() {
     Module.call(this);
     this.type = 'questionmark';
     this.text = '?';
-	this.textColor = '#F00';
-	this.unique = false;
+    this.textColor = '#F00';
+    this.unique = false;
     this.init();
 };
 
@@ -905,7 +959,7 @@ QuestionMark.prototype.init = function () {
     this.mesh = new THREE.Group();
     this.textMeshs.position.y = 40;
     this.textMeshs.position.x = -10;
-    this.createText();
+    this.createText({size:40});
     this.mesh.add(this.textMeshs);
     this.mesh.position.y = 15;
 };
@@ -917,7 +971,6 @@ QuestionMark.prototype.collideAction = function (sourceModule) {
 QuestionMark.prototype.updatePose = function () {
     TweenMax.fromTo(this.mesh.rotation, 2, { y: 0, repeat: -1, overwrite: 2, yoyo: true }, { y: Math.PI * 2, repeat: -1, overwrite: 1, yoyo: true });
 }
-
 
 var ModuleUtil = {};
 

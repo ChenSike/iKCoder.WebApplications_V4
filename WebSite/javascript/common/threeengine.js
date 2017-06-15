@@ -674,15 +674,30 @@ Module.prototype.addMovePath = function () {
 
 };
 
-Module.prototype.createText = function () {
+Module.prototype.createText = function (options) {
+    var opt = {
+        text: this.text,
+        size: 35,
+        height: 5,
+        color: this.textColor,
+        specular: this.textColor,
+        shininess: 0
+    };
+
+    if (typeof options != 'undefined') {
+        for (var key in options) {
+            opt[key] == options[key];
+        }
+    }
+
     var _self = this;
     var loadText = function (font) {
         if (_self.textMesh) {
             _self.textMeshs.remove(_self.textMesh);
         }
 
-        var geometry = new THREE.TextGeometry(_self.text, { font: font, size: 30, height: 5 });
-        var material = new THREE.MeshPhongMaterial({ color: _self.textColor, specular: _self.textColor, shininess: 0 });
+        var geometry = new THREE.TextGeometry(opt.text, { font: font, size: opt.size, height: opt.height });
+        var material = new THREE.MeshPhongMaterial({ color: opt.color, specular: opt.specular, shininess: opt.shininess });
         _self.textMesh = new THREE.Mesh(geometry, material);
         _self.textMeshs.add(_self.textMesh);
     };

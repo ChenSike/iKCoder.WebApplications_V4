@@ -121,7 +121,7 @@ Scene.initMap = function () {
 	}
 
 	Goods.updatePose(goods);
-	//CountGoods.updatePose(countGoods);
+	CountGoods.updatePose(Scene.countGoods);
 };
 
 Scene.initPlayer = function (x, y) {
@@ -219,14 +219,15 @@ Scene.TurnRight = function () {
 
 Scene.EatBigGoods = function () {
 	//Scene.push({ count: -1 });
-	Scene.countGoodNum = Scene.countGoodNum--;
+	//Scene.countGoodNum = Scene.countGoodNum--;
 
-	var tmpFn = function () {
-		Scene.countGoods[0].text = Scene.countGoodNum.toString();
-		Scene.countGoods[0].createText();
-	}
+	//var tmpFn = function () {
+	//	Scene.countGoods[0].text = Scene.countGoodNum.toString();
+	//	Scene.countGoods[0].createText();
+	//}
 
-	Engine.getModuleObject('pacman').setActionForCollideCountGoods(tmpFn);
+    //Engine.getModuleObject('pacman').setActionForCollideCountGoods(tmpFn);
+    Scene.addModuelPath('pacman', 'eat', 1);
 };
 
 Scene.startGame = function () {

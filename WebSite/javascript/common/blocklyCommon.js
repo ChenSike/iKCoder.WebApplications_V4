@@ -61,7 +61,7 @@ WorkScene.init = function () {
     var blocksXMLDoc = Blockly.Xml.textToDom(_workspaceCfg.toolbox);
     //for 3D Draw Test
     //var blocksXMLDoc = Blockly.Xml.textToDom('<xml id="toolbox" style="display: none"></xml>');
-    //blocksXMLDoc = Blockly.Xml.textToDom(XMLToString(LoadXMLFile(_workspaceCfg.toolbox)));
+    //var blocksXMLDoc = Blockly.Xml.textToDom(XMLToString(LoadXMLFile(_workspaceCfg.toolbox)));
 
     WorkScene.workspace = Blockly.inject('content_WorkSpace',
         {
@@ -101,7 +101,7 @@ WorkScene.init = function () {
     //for 3D Draw Test
     //var defaultXml = ('<xml></xml>');
     var defaultXml = (!_workspaceCfg.workspace ? '<xml></xml>' : _workspaceCfg.workspace);
-    //defaultXml = XMLToString(LoadXMLFile(_workspaceCfg.workspace));
+    //var defaultXml = XMLToString(LoadXMLFile(_workspaceCfg.workspace));
     //WorkScene.loadBlocks(_workspaceCfg.workspace);
     WorkScene.loadBlocks(defaultXml);
     WorkScene.workspace.addChangeListener(WorkScene.outputCode);
