@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var Scene = {};
-
+var tubeMesh;
 Scene.initEnvironment = function (containerId) {
     Scene.initGlobalParams();
     var params = {
@@ -54,7 +54,7 @@ Scene.initEnvironment = function (containerId) {
             line: '#000000',
             base: '#FF0000',
             step: 20,
-            scope: 500
+            scope: 1000
         }
     };
 
@@ -62,9 +62,13 @@ Scene.initEnvironment = function (containerId) {
     Engine.prepareForStart();
     Scene.Brush = Scene.getBrush();
     Scene.Brush.setBuildBackgroundFn(function () {
-        Scene.Brush.buildBackgroundLine(0, 0, 0, 10, 5, '#000000');
-        Scene.Brush.buildBackgroundLine(0, 10, 10, 0, 5, '#000000');
-        Scene.Brush.buildBackgroundLine(10, 0, 0, 0, 5, '#000000');
+        Scene.Brush.buildBackgroundLine(0, 0, 10, 5, 5, '#000000');
+        Scene.Brush.buildBackgroundLine(0, 0, 10, -5, 5, '#000000');
+        Scene.Brush.buildBackgroundLine(0, 0, -10, -5, 5, '#000000');
+        Scene.Brush.buildBackgroundLine(0, 0, -10, 5, 5, '#000000');
+        //Scene.Brush.buildBackgroundLine(-10, -5,0, 0,  5, '#000000');
+
+
     });
     Scene.Brush.prepareBackground();
 };
@@ -88,6 +92,7 @@ Scene.start = function () {
 };
 
 Scene.reset = function () {
+    Scene.Brush.reset();
     Engine.resetScene();
 };
 

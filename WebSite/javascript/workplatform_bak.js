@@ -115,7 +115,7 @@ function initEvents() {
     $(document).keydown(function () {
         if (arguments[0].keyCode == '27' && $('.run-scene-fullscreen').css('display') != 'none') {
             $('.run-scene-fullscreen').hide("slow", function () {
-                $('.siderbar-scene-container').append($('#game_container'));
+                $('.siderbar-content').append($('#game_container'));
             });
         }
     });
@@ -185,7 +185,7 @@ function initEvents() {
         var height = parseInt(value[1]);
         $('.run-scene-fullscreen').hide("slow", function () {
             var container = $('#game_container');
-            $('.siderbar-scene-container').append(container);
+            $('.siderbar-content').append(container);
             adjustAfterSiderBarResize();
             container.find('canvas').height(height);
             container.find('canvas').width(width);

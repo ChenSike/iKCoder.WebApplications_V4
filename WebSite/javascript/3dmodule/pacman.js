@@ -31,7 +31,7 @@ Floor.prototype.init = function () {
     this.mesh.add(this.fenceBR);
     this.mesh.add(this.fenceBL);
 
-    this.plane = new THREE.Mesh(new THREE.BoxGeometry(placeWidth, 1, placeDepth), new THREE.MeshPhongMaterial({ color: '#ffffff', shading:  THREE.FlatShading }));
+    this.plane = new THREE.Mesh(new THREE.BoxGeometry(placeWidth, 1, placeDepth), new THREE.MeshPhongMaterial({ color: '#ffffff', shading: THREE.FlatShading }));
     this.plane.geometry.receiveShadow = true;
     this.plane.position.y = -5;
     this.mesh.add(this.plane);
@@ -68,7 +68,7 @@ Floor.prototype.createFence = function (w, h, d, c, sw, sd, type) {
     fenceShape.lineTo(0, (isTop ? sd / 2 : -sd / 2));
     fenceShape.lineTo((isLeft ? -sw / 2 : sw / 2), (isTop ? sd / 2 : -sd / 2));
     fenceShape.lineTo((isLeft ? -sw / 2 : sw / 2), 0);
-    var fence = new THREE.Mesh(new THREE.ExtrudeGeometry(fenceShape, options), new THREE.MeshPhongMaterial({ color: c, shading:  THREE.FlatShading }));
+    var fence = new THREE.Mesh(new THREE.ExtrudeGeometry(fenceShape, options), new THREE.MeshPhongMaterial({ color: c, shading: THREE.FlatShading }));
     fence.geometry.receiveShadow = true;
     fence.rotation.x = -Math.PI / 2;
     fence.position.z = (isTop ? -5 : 5);
@@ -81,23 +81,22 @@ function PACMan(moveType, mapData) {
     this.type = 'pacman';
     this.unique = true;
     this.speed = 1;
-    this.posDelta = 0;
     this.veerDelta = 0;
-    this.posFrame = 15;
-    this.posCount = 5;
+    this.poseSpeed = 2;
     this.maxMouth = Math.PI / 2;
     this.mapData = mapData;
-    /*1:up, 0:right, 3: down, 2:left*/
+    /*0:right, 1:up, 2:left, 3: down*/
     this.orientation = 0;
     this.defaultCoord = { x: 0, y: 0 };
     this.coord = { x: 0, y: 0, px: 0, py: 0 };
     /*game: keep moving; study: move by commond*/
-    this._stopWhenComplete = true;
+    this._stopToComplete = false;
     this.moveType = 'study';
     this.movePath = [];
     this.movePathTarget = [];
     this.actionForCollideGoodsSeq = [];
     this.actionForCollideWallSeq = [];
+    this.doing = false;
     this.init();
 };
 
@@ -180,7 +179,7 @@ PACMan.prototype.init = function () {
     eyebrowShape.lineTo(-(10 - sqrt005), -sqrt005);
     eyebrowShape.quadraticCurveTo(-10, -sqrt005, -10, 0);
     var eyebrowGeometry = new THREE.ExtrudeGeometry(eyebrowShape, options);
-    var eyebrowMaterial = new THREE.MeshPhongMaterial({ color: '#000000', shading:  THREE.FlatShading })
+    var eyebrowMaterial = new THREE.MeshPhongMaterial({ color: '#000000', shading: THREE.FlatShading })
     this.eyebrowL = new THREE.Mesh(eyebrowGeometry, eyebrowMaterial);
     this.eyebrowL.position.y = 4;
     this.eyebrowL.position.x = -10;
@@ -230,52 +229,50 @@ PACMan.prototype.setPosition = function (x, y) {
 }
 
 PACMan.prototype.updatePose = function () {
-    var _self = this;
-    var posFrame = Math.ceil(1000 / this.posFrame);
-    var maxMouth = this.maxMouth;
-    var posCount = this.posCount;
-    var modNumber = posCount * 2 + 1;
-    var disNumber = modNumber + 1;
-    var loop = function () {
-        var tmpVal = _self.posDelta % modNumber;
-        if (tmpVal > posCount) {
-            tmpVal = posCount * 2 - tmpVal;
-        }
-        _self.head.rotation.z = maxMouth * tmpVal / disNumber;
-        _self.body.rotation.z = -maxMouth * tmpVal / disNumber;
-        _self.posDelta = (_self.posDelta == modNumber ? 0 : _self.posDelta + 1);
-        if (!Engine.looped) {
-            Engine.render();
-        }
-
-        window.setTimeout(loop, posFrame);
-    }
-
-    loop();
+    TweenMax.fromTo(this.head.rotation, 1 / this.poseSpeed, { z: 0, repeat: -1, overwrite: 2, yoyo: true }, { z: this.maxMouth / 2, repeat: -1, overwrite: 1, yoyo: true });
+    TweenMax.fromTo(this.body.rotation, 1 / this.poseSpeed, { z: 0, repeat: -1, overwrite: 2, yoyo: true }, { z: -this.maxMouth / 2, repeat: -1, overwrite: 1, yoyo: true });
 };
 
-PACMan.prototype.turnTo = function (orientation) {
+PACMan.prototype.turnTo = function (orientation, clockwise) {
+    this.mesh.rotation.y = Math.PI / 2 * this.orientation;
     orientation = (typeof orientation == 'number' ? orientation : _veerMap[orientation]);
-    if (orientation != this.orientation) {
+    if (orientation != this.orientation && !this.doing) {
         var _self = this;
-        var route = Math.PI / 2 * ((orientation == 0 ? 4 : orientation) - this.orientation);
+        var route = 0;
         if (this.moveType == 'study') {
-            route = route / 10;
-            var loop = function () {
-                _self.mesh.rotation.y = _self.mesh.rotation.y + route;
-                _self.veerDelta++;
-                Engine.render();
-                if (_self.veerDelta == 10) {
-                    _self.mesh.rotation.y = Math.PI / 2 * orientation;
-                    _self.orientation = orientation;
-                    _self.veerDelta = 0;
+            var tmpVal = 0;
+            if (typeof clockwise == 'boolean') {
+                tmpVal = orientation - this.orientation;
+                if (clockwise) {
+                    tmpVal = (tmpVal > 0 ? tmpVal - 4 : tmpVal);;
                 } else {
-                    window.setTimeout(loop, 20);
+                    tmpVal = (tmpVal < 0 ? 4 + tmpVal : tmpVal);
+                }
+            } else {
+                tmpVal = orientation - this.orientation;
+                if (Math.abs(tmpVal) == 3) {
+                    tmpVal = -tmpVal / Math.abs(tmpVal);
                 }
             }
 
-            loop();
+            route = this.mesh.rotation.y + Math.PI / 2 * tmpVal;
+            TweenMax.killTweensOf(this.mesh.rotation);
+            this.doing = true;
+            TweenMax.to(
+                this.mesh.rotation,
+                1,
+                {
+                    y: route,
+                    ease: Linear.easeNone,
+                    onComplete: function () {
+                        _self.orientation = orientation;
+                        _self.doing = false;
+                        //_self.mesh.rotation.y = Math.PI / 2 * orientation;
+                    }
+                }
+            );
         } else {
+            route = Math.PI / 2 * ((orientation == 0 ? 4 : orientation) - this.orientation);
             this.mesh.rotation.y = this.mesh.rotation.y + route;
         }
     }
@@ -287,7 +284,7 @@ PACMan.prototype.turnLeft = function (currentOri) {
         orientation = currentOri + 1;
     }
     orientation = (orientation == 4 ? 0 : orientation);
-    this.turnTo(orientation);
+    this.turnTo(orientation, false);
 };
 
 PACMan.prototype.turnRight = function (currentOri) {
@@ -297,7 +294,7 @@ PACMan.prototype.turnRight = function (currentOri) {
     }
 
     orientation = (orientation == -1 ? 3 : orientation);
-    this.turnTo(orientation);
+    this.turnTo(orientation, true);
 };
 
 PACMan.prototype.initMovePath = function (type, value) {
@@ -400,7 +397,7 @@ PACMan.prototype.updatePositionStudy = function () {
             if (coord.x == targetObj.x && coord.y == targetObj.y) {
                 this.coord.x = coord.x;
                 this.coord.y = coord.y;
-                if (this._stopWhenComplete) {
+                if (this._stopToComplete) {
                     if (!this.completeFired) {
                         this.pathCompleteFn();
                         this.completeFired = true;
@@ -418,7 +415,7 @@ PACMan.prototype.updatePositionStudy = function () {
                         this.mesh.position.z += _itemSize / 40 * this.speed * _moveMap[this.orientation];
                     }
                 } else {
-                    if (this.mapData[coord.y][coord.x].t == 2 && this._stopWhenComplete) {
+                    if (this.mapData[coord.y][coord.x].t == 2 && this._stopToComplete) {
                         if (!this.completeFired) {
                             this.pathCompleteFn();
                             this.completeFired = true;
@@ -664,31 +661,13 @@ Goods.prototype.collideAction = function (sourceModule) {
     return false;
 };
 
-Goods._loopDelta = 0;
 Goods.updatePose = function (goods) {
-    var posFrame = 1000 / 10;
-    var scale = 10;
-    var newSize = 12;
-    var loop = function () {
-        var tmpVal = Goods._loopDelta % 10;
-        if (tmpVal > 5) {
-            tmpVal = 10 - tmpVal;
-        }
-
-        tmpVal = 1 + 0.05 * tmpVal;
-        for (var i = 0; i < goods.length; i++) {
-            goods[i].mesh.scale.set(tmpVal, tmpVal, tmpVal);
-        }
-
-        Goods._loopDelta++;
-        if (!Engine.looped) {
-            Engine.render();
-        }
-
-        window.setTimeout(loop, posFrame);
+    var tmpArr = [];
+    for (var i = 0; i < goods.length; i++) {
+        tmpArr.push(goods[i].mesh.scale);
     }
 
-    loop();
+    TweenMax.fromTo(tmpArr, 1, { x: 1, y: 1, z: 1, repeat: -1, overwrite: 2, yoyo: true }, { x: 1.25, y: 1.25, z: 1.25, repeat: -1, overwrite: 1, yoyo: true });
 };
 
 function Wall() {
@@ -806,7 +785,7 @@ Monster.prototype.init = function () {
     eyebrowShape.lineTo(-(10 - sqrt005), -sqrt005);
     eyebrowShape.quadraticCurveTo(-10, -sqrt005, -10, 0);
     var eyebrowGeometry = new THREE.ExtrudeGeometry(eyebrowShape, options);
-    var eyebrowMaterial = new THREE.MeshPhongMaterial({ color: '#000000', shading:  THREE.FlatShading });
+    var eyebrowMaterial = new THREE.MeshPhongMaterial({ color: '#000000', shading: THREE.FlatShading });
     this.eyebrowL = new THREE.Mesh(eyebrowGeometry, eyebrowMaterial);
     this.eyebrowL.position.y = 4;
     this.eyebrowL.position.x = -12;
@@ -909,6 +888,37 @@ CountGoods.prototype.collideAction = function (sourceModule) {
     return false;
 };
 
+function QuestionMark() {
+    Module.call(this);
+    this.type = 'questionmark';
+    this.text = '?';
+	this.textColor = '#F00';
+	this.unique = false;
+    this.init();
+};
+
+QuestionMark.prototype = Object.assign(Object.create(Module.prototype), {
+    constructor: QuestionMark
+});
+
+QuestionMark.prototype.init = function () {
+    this.mesh = new THREE.Group();
+    this.textMeshs.position.y = 40;
+    this.textMeshs.position.x = -10;
+    this.createText();
+    this.mesh.add(this.textMeshs);
+    this.mesh.position.y = 15;
+};
+
+QuestionMark.prototype.collideAction = function (sourceModule) {
+
+};
+
+QuestionMark.prototype.updatePose = function () {
+    TweenMax.fromTo(this.mesh.rotation, 2, { y: 0, repeat: -1, overwrite: 2, yoyo: true }, { y: Math.PI * 2, repeat: -1, overwrite: 1, yoyo: true });
+}
+
+
 var ModuleUtil = {};
 
 ModuleUtil.coordToPosition = function (x, y) {
@@ -923,64 +933,42 @@ ModuleUtil.positionToCoord = function (px, py) {
     return { x: tmpX, y: tmpY };
 };
 
-Monster._loopDelta = 1;
-Monster._posFrame = 15;
-Monster._posCount = 5;
+Monster._poseSpeed = 2;
 Monster.updatePose = function (monsters) {
-    var posFrame = Math.ceil(1000 / Monster._posFrame);
-    var tStep = 3 / Monster._posCount;
-    var loop = function () {
-        var tmpVal = tStep * (Monster._loopDelta > Monster._posCount ? -1 : 1);
-        for (var i = 0; i < monsters.length; i++) {
-            monsters[i].foot_1.position.x += tmpVal;
-            monsters[i].foot_1.position.z += tmpVal;
-            monsters[i].foot_2.position.x -= tmpVal;
-            monsters[i].foot_2.position.z += tmpVal;
-            monsters[i].foot_3.position.x -= tmpVal;
-            monsters[i].foot_3.position.z -= tmpVal;
-            monsters[i].foot_4.position.x += tmpVal;
-            monsters[i].foot_4.position.z -= tmpVal;
-        }
-
-        if (!Engine.looped) {
-            Engine.render();
-        }
-
-        Monster._loopDelta = (Monster._loopDelta == Monster._posCount * 2 ? 1 : Monster._loopDelta + 1);
-        window.setTimeout(loop, Monster._posFrame);
+    if (monsters.length <= 0) {
+        return;
     }
 
-    Monster._loopDelta = 1;
-    loop();
+    var duration = 1 / (Monster._poseSpeed);
+    var footObjs = [];
+    for (var i = 1; i < 5; i++) {
+        var footObj = { x: monsters[0]['foot_' + i].position.x, z: monsters[0]['foot_' + i].position.z, items: [], symbol: i };
+        footObjs.push(footObj);
+    }
+
+    for (var i = 0; i < monsters.length; i++) {
+        for (var j = 0; j < 4; j++) {
+            footObjs[j].items.push(monsters[i]['foot_' + footObjs[j].symbol].position);
+        }
+    }
+
+    for (var i = 0; i < 4; i++) {
+        var xa = (i % 3 == 0 ? 6 : -6);
+        var za = (i > 1 ? -6 : 6);
+        TweenMax.fromTo(
+            footObjs[i].items,
+            duration,
+            { x: footObjs[i].x, z: footObjs[i].z, repeat: -1, overwrite: 2, yoyo: true },
+            { x: footObjs[i].x + xa, z: footObjs[i].z + za, repeat: -1, overwrite: 1, yoyo: true }
+        );
+    }
 };
 
 CountGoods.updatePose = function (countGoods) {
-    var posFrame = 1000 / 10;
-    var scale = 10;
-    var newSize = 12;
-    var loopDelta = 0;
-    var loop = function () {
-        var tmpVal = loopDelta % 10;
-        if (tmpVal > 5) {
-            tmpVal = 10 - tmpVal;
-        }
-
-        tmpVal = 1 + 0.05 * tmpVal;
-        for (var i = 0; i < countGoods.length; i++) {
-            countGoods[i].mesh.scale.set(tmpVal, tmpVal, tmpVal);
-            if (countGoods[i].countTexts) {
-                countGoods[i].countTexts.scale.set(tmpVal, tmpVal, tmpVal);
-            }
-        }
-
-        loopDelta++;
-        if (!Engine.looped) {
-            Engine.render();
-        }
-
-        window.setTimeout(loop, posFrame);
+    var tmpArr = [];
+    for (var i = 0; i < countGoods.length; i++) {
+        tmpArr.push(countGoods[i].mesh.scale);
     }
 
-    loop();
+    TweenMax.fromTo(tmpArr, 1, { x: 1, y: 1, z: 1, repeat: -1, overwrite: 2, yoyo: true }, { x: 1.25, y: 1.25, z: 1.25, repeat: -1, overwrite: 1, yoyo: true });
 };
-

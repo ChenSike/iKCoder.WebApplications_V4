@@ -22,3 +22,19 @@ function XMLToString(xmlDoc) {
         return (new XMLSerializer()).serializeToString(xmlDoc);
     }
 };
+
+function StringToXML(str) {
+    if (window.ActiveXObject) {
+        var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDom.loadXML(str);
+        return xmlDom;
+    } else {
+        var retDoc = new DOMParser().parseFromString(str, "text/xml");
+        if (XMLToString(retDoc) != str) {
+            retDoc = null;
+        }
+
+        return retDoc;
+    }
+
+}

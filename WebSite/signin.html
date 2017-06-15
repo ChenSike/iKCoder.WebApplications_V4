@@ -43,14 +43,14 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-12">
-                                <form class="my-3">
+                                <form class="my-3" id="form_SignIn_Section" name="form_SignIn_Section" target="iframe_for_autocomplete" action="s.html" method="post" autocomplete="on">
                                     <div class="form-group">
                                         <label for="txt_SignIn_PhoneNumber">注册手机号</label>
                                         <input class="form-control form-control-sm" id="txt_SignIn_PhoneNumber" name="signin_phonenumber" type="text" placeholder="">
                                     </div>
                                     <div class="form-group">
                                         <label for="txt_SignIn_Password">登录密码</label>
-                                        <input class="form-control form-control-sm" id="txt_SignIn_Password" name="signin_phonenumber" type="password" placeholder="">
+                                        <input class="form-control form-control-sm" id="txt_SignIn_Password" name="signin_password" type="password" placeholder="">
                                     </div>
                                     <div class="form-group">
                                         <label for="txt_SignIn_CheckCode">图片识别码</label>
@@ -63,6 +63,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <button type="submit" id="btn_AutoComplete" style="display:none;"></button>
                                 </form>
                             </div>
                         </div>

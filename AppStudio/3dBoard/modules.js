@@ -48,8 +48,8 @@ Brush.prototype.init = function () {
     triangleShape.lineTo(-halfWidth, tmpY);
     triangleShape.lineTo(halfWidth, tmpY);
     triangleShape.lineTo(width, 0);
-    this.torso = new THREE.Mesh(new THREE.ExtrudeGeometry(triangleShape, options), new THREE.MeshPhongMaterial({ color: '#ffff00', shading: THREE.GouraudShading }));
-    this.neck = new THREE.Mesh(new THREE.CylinderGeometry(9, 3, 20, 20, 5), new THREE.MeshPhongMaterial({ color: '#ff0000', shading: THREE.GouraudShading }));
+    this.torso = new THREE.Mesh(new THREE.ExtrudeGeometry(triangleShape, options), new THREE.MeshPhongMaterial({ color: '#ffff00', shading:  THREE.FlatShading }));
+    this.neck = new THREE.Mesh(new THREE.CylinderGeometry(9, 3, 20, 20, 5), new THREE.MeshPhongMaterial({ color: '#ff0000', shading:  THREE.FlatShading }));
     this.neck.position.z = -16; Engine.render();
     this.neck.rotation.x = Math.PI / 2
     this.body.add(this.torso);
@@ -64,7 +64,7 @@ Brush.prototype.init = function () {
 };
 
 Brush.prototype.setColor = function (color) {
-    this.neck.material.setValues(new THREE.MeshPhongMaterial({ color: color, shading: THREE.GouraudShading }));
+    this.neck.material.setValues(new THREE.MeshPhongMaterial({ color: color, shading:  THREE.FlatShading }));
     Engine.render();
 };
 

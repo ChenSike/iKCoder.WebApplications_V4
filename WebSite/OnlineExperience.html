@@ -19,37 +19,53 @@
     <script src="javascript/header.js"></script>
     <script src="javascript/OnlineExperience.js"></script>
 </head>
-<body>
-    <header style="width:100%; z-index:9999;"></header>
-    <div class="container" id="wrap_Page_Content" style="padding:0px;width:410px">
-        <div class="row justify-content-start" style="margin:0px;">
-            <div class="col-12" style="padding:0px;">
-                <div class="container-fluid" style="padding:0px;">
-                    <div class="row" style="margin:0px;">
-                        <div class="col-12" style="color:rgb(255,255,255); padding:0px;">
-                            <p style="font-size:35px;"><span style="color:rgb(66,166,238);padding-right:10px;">在线体验课:</span>坦克大战</p>
-                        </div>
-                    </div>
-                    <div class="row" style="margin:0px;">
-                        <div class="col-12" style="color:rgb(255,255,255); padding:0px;">
-                            <p style="font-size:15px;">通过控制吃豆人对现实世界中的模式进行识别, 并学习编程积木中的2维空间移动。</p>
-                            <p style="font-size:15px;">课程级别: 初级</p>
-                            <p style="font-size:15px;">难度: <i class="fa fa-star"></i><i class="fa fa-star"></i></p>
-                            <p style="font-size:15px;">预计学习时间: 35分钟</p>
-                            <p style="font-size:15px;">专业词汇: 5个</p>
-                        </div>
-                    </div>
-                    <div class="row" style="margin:0px;">
-                        <div class="col-6 text-center" id="btn_StartPlay">
-                            开始学习
-                        </div>
-                    </div>
+<body style="background-color:rgb(29,23,23);height:100%;">
+    <div class="wrap-background">
+        <img class="img-background" id="img_Background" src="image/TrailBack.png" style="position:absolute" width="969" height="475" />
+        <div class="container-fluid" id="wrap_Page_Content" style="z-index:100;">
+            <div class="row justify-content-center">
+                <div class="col-12 text-center">
+                    <p id="title_Content" style="color: rgb(254,254,254);"><span style="padding-right:10px;">|</span>在线体验课<span style="color:rgb(232,118,7);padding:0px 10px;">坦克大战</span>|</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-content">通过控制吃豆人对现实世界中的模式进行识别, 并学习编程积木中的2维空间移动。</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-content">
+                        <span style="padding-right:10px;">课程级别: 初级</span>
+                        <span style="padding-right:10px;">难度: 中等</span>
+                        <span style="padding-right:10px;">预计学习时间: 35分钟</span>
+                        <span>专业词汇: 5个</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-outline-primary my-1" id="btn_Start" style="border-radius: 25px;">开始学习</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="wrap-background-body">
-        <img src="image/tankback.jpg" style="position:absolute" width="1920" height="1080" />
+    <div class="wrap-progress">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+    <div class="wrap-vadio">
+        <video id="vadio_Content" autoplay="autoplay" style="width:100%; height:100%;" loop="loop"></video>
+    </div>
+    <div class="mask-vadio">
+        <div id="btn_Volume" href="#">
+            <span class="fa-stack fa-lg" style="width:30px; height:30px; line-height:30px;" title="静音">
+                <i class="fa fa-volume-off fa-stack-1x"></i>
+                <i class="fa fa-ban fa-stack-1x"></i>
+            </span>
+            <i class="fa fa-volume-up" title="播放声音"></i>
+        </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function () {

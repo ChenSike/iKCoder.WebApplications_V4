@@ -3,8 +3,8 @@
 var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
-//var _gHostName = 'http://119.23.233.224/ikcoderapi';
-var _gHostName = 'http://localhost/ikcoderapi';
+var _gHostName = 'http://119.23.233.224/ikcoderapi';
+//var _gHostName = 'http://10.111.0.81/ikcoderapi';
 //var _gHostName = 'http://10.111.0.243/ikcoderapi';
 //var _gHostName = 'http://10.86.215.83/ikcoderapi';
 var _gURLMapping = {
@@ -48,6 +48,9 @@ var _gURLMapping = {
     tmp: {
         storesave: '/bus/store/api_iKCoder_Store_Save.aspx', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
         storeload: '/bus/store/api_iKCoder_Store_Load.aspx'   //?symbol=XXX&type=XXXX'
+    },
+    share: {
+        sharesave: '/bus/share/api_iKCoder_Share_Save.aspx'//<root><sencesymbol></sencesymbol><config></config></root>
     }
 };
 
@@ -273,7 +276,6 @@ function _startCheckState() {
                 if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') == '1') {
                     $.cookie("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), { path: '/', expires: 0.125 });
                     if (!$.cookie("logined_user_nickname") || $.cookie("logined_user_nickname") == '') {
-                        _registerRemoteServer();
                         $.ajax({
                             type: 'POST',
                             async: true,
@@ -603,3 +605,13 @@ function _isIE() {
 //        $(this).attr('src', src);
 //    });
 //});
+
+function getQueryString(key) {
+    var tempArr = window.location.search.substr(1).split('&');
+    for (var i = 0; i < tempArr.length; i++) {
+        var strArr = tempArr[i].split('=');
+        if (strArr[0] == key) {
+            return strArr[1];
+        }
+    }
+};

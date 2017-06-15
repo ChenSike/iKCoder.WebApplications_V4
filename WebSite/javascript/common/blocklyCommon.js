@@ -220,10 +220,15 @@ WorkScene.startGame = function () {
     if (typeof (_blocklyFn) != 'undefined' && _blocklyFn != null) {
         WorkScene.startGame_Fn();
     } else {
-        var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
-        Scene.ResetConfig();
-        eval(code);
-        Scene.startGame();
+        try {
+            var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
+            Scene.ResetConfig();
+            eval(code);
+            Scene.startGame();
+        }
+        catch (ex) {
+
+        }
     }
 };
 
