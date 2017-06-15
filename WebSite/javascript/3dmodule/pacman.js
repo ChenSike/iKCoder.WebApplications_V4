@@ -411,7 +411,7 @@ PACMan.prototype.updatePositionStudy = function () {
                 if (targetObj.t == 'eat' && this.mapData[coord.y][coord.x].t == 4) {
                     var countGoods = Engine.modules[this.mapData[coord.y][coord.x].s];
                     if (!countGoods.updating) {
-                        countGoods.updateCount();
+                        countGoods.updateCount(this.mapData[coord.y][coord.x]);
                         this.movePathTarget.shift();
                     }
                 } else {
@@ -908,7 +908,7 @@ CountGoods.prototype.collideAction = function (sourceModule) {
     return false;
 };
 
-CountGoods.prototype.updateCount = function (sourceModule) {
+CountGoods.prototype.updateCount = function (mapItem) {
     this.updating = true;
     var _that = this;
     TweenMax.to(
@@ -934,6 +934,22 @@ CountGoods.prototype.updateCount = function (sourceModule) {
                         ease: Linear.easeNone,
                         onComplete: function () {
                             _that.updating = false;
+                            if (_that.count == 0) {
+                                mapItem.v = false;
+                                TweenMax.to(
+                                    _that.mesh.scale,
+                                    1,
+                                    {
+                                        x: 0.1,
+                                        y: 0.1,
+                                        z: 0.1,
+                                        ease: Linear.easeNone,
+                                        onComplete: function () {
+                                            _that.mesh.visible = false;
+                                        }
+                                    }
+                                );
+                            }
                         }
                     }
                 );
@@ -959,7 +975,7 @@ QuestionMark.prototype.init = function () {
     this.mesh = new THREE.Group();
     this.textMeshs.position.y = 40;
     this.textMeshs.position.x = -10;
-    this.createText({size:40});
+    this.createText({ size: 40 });
     this.mesh.add(this.textMeshs);
     this.mesh.position.y = 15;
 };

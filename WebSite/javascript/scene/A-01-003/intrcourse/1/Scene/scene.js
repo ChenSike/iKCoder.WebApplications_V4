@@ -1,4 +1,3 @@
-(function() {
     'use strict';
 
     var configuration = {
@@ -640,7 +639,6 @@
     };
 
     window.Scene = new ComputerScene(configuration);
-})();
 
 function test() {
     ComputerScene.testConnect(1, 17);
