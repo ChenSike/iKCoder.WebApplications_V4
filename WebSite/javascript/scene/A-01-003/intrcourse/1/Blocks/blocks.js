@@ -162,7 +162,7 @@
                 alt = comp.cn,
                 tmpl = generateTmpl(identifier, path, code, alt);
 
-            console.log(tmpl);
+            //console.log(tmpl);
             eval(tmpl);
         });
     };
