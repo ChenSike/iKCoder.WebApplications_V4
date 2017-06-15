@@ -11,7 +11,8 @@
 };
 
 Blockly.JavaScript['block_start'] = function (block) {
-    return '';
+    var code = "Scene.AllowStart();\n";
+    return code;
     //return '';
 };
 
@@ -44,5 +45,27 @@ Blockly.Blocks['block_run'] = {
 
 Blockly.JavaScript['block_run'] = function (block) {
     var code = 'Scene.CallIKCoderRun_Set_RunningStep();\n';
+    return code;
+};
+
+Blockly.Blocks['block_judgecollion'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("如果前方有障碍物");
+        this.appendStatementInput("NAME")
+            .setCheck(null);
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(65);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+
+Blockly.JavaScript['block_judgecollion'] = function (block) {
+    var statements_name = Blockly.JavaScript.statementToCode(block, 'NAME');
+    var code = 'Scene.CallIKCoderRun_Set_JudegeMent(\'' + $.trim(statements_name) + '\');\n';
     return code;
 };

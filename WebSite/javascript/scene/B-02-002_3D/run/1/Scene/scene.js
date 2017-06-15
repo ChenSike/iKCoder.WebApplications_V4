@@ -33,19 +33,27 @@ Scene.restart = function () {
 };
 
 Scene.startGame = function () {
-    IKCoderSenceRun_Start();
+    IKCoderSenceRun_RunActions();
 };
 
 Scene.pause = function () {
     Scene.Game.pause();
 };
 
+Scene.AllowStart = function () {
+    IKCoderSenceRun_Set_SwitchToStart();
+};
+
 Scene.CallIKCoderRun_Set_RunningStep = function () {
-    IKCoderSenceRun_Set_RunningSteps();
+    IKCoderSenceRun_Set_AddRun();
 };
 
 Scene.CallIKCoderRun_Set_JumpStep = function () {
-    IKCoderSenceRun_Set_JumpSteps();
+    IKCoderSenceRun_Set_AddJump();
+};
+
+Scene.CallIKCoderRun_Set_JudegeMent = function (callbackparam) {
+    IKCoderSenceRun_Set_AddJudegBarrier(callbackparam);
 };
 
 
