@@ -1,3 +1,23 @@
+ActionNode = function()
+{
+    this.index = 0;
+    this.actionRefMethod = null;
+    this.checkReturn = false;
+    this.checkReturnCallback = null;
+}
+
+function getActionPoolLength()
+{
+    var arr = Object.keys(i_actionPool);
+    return arr.length;
+}
+
+function getCurvemapPoolLength()
+{
+    var arr = Object.keys(i_curvemap);
+    return arr.length;
+}
+
 function onInitRun(senceWidth, senceHeight)
 {
     i_senceWidth = senceWidth;
@@ -7,15 +27,13 @@ function onInitRun(senceWidth, senceHeight)
 
 var i_GameRender;
 var i_stage;
-var i_hud;
-var i_loader;
 var i_person;
 var i_spritesObjectsPool = {};
+var i_actionPool = {};
+var i_status = "0";
+var i_requestAnimationID;
 
-var i_status_stop = "0";
-var i_status_set_runningsteps = 0;
-var i_status_set_jumpsteps = 0;
-
+var i_status_control = "0";
 
 var i_person_default_position_y;
 var i_person_default_position_x;
@@ -23,6 +41,7 @@ var i_person_ClipView;
 var i_person_currentPosition_X;
 var i_person_targetStep;
 var i_person_currentStep = 0;
+var i_person_currentStandStoneIndex = 0;
 var i_person_jumpTimes = 0;
 var i_person_jumpFlag = false;
 
@@ -34,6 +53,11 @@ var i_senceHeight;
 
 var i_animation_shine_count = 0;
 var i_collisionmap = {};
+var i_curvemap = {};
+
+var i_curve_a = 0.016;
+var i_curve_b = 3.2;
+var i_curve_c = 640;
 
 CollisionNode = function () {
     this.position_x = 0;
@@ -43,22 +67,96 @@ CollisionNode = function () {
     this.isPickup = false;
 };
 
-function IKCoderSenceRun_Set_RunningSteps()
-{
-    i_status_set_runningsteps++;
+CurveTargetNode = function () {
+    this.step = 0;
+    this.target_x = 0;
+    this.target_y = 0;
+};
+
+function IKCoderSenceRun_Set_AddRun() {
+    var tmpActionNode = new ActionNode();
+    tmpActionNode.index = getActionPoolLength();
+    tmpActionNode.actionRefMethod = IKCoderSenceRun_Person_RunStep;
+    tmpActionNode.checkReturn = false;
+    i_actionPool[tmpActionNode.index] = tmpActionNode;
 }
 
-function IKCoderSenceRun_Set_JumpSteps() {
-    i_status_set_jumpsteps++;
+function IKCoderSenceRun_Set_AddJudegBarrier(callbackparam) {
+    var tmpActionNode = new ActionNode();
+    tmpActionNode.index = getActionPoolLength();
+    tmpActionNode.actionRefMethod = IKcoderSenceRun_Get_JudegeBarrier;
+    tmpActionNode.checkReturn = true;    
+    if (callbackparam == "Scene.CallIKCoderRun_Set_RunningStep();")
+        tmpActionNode.checkReturnCallback = IKCoderSenceRun_Person_RunStep;
+    else if (callbackparam == "Scene.CallIKCoderRun_Set_JumpStep();")
+        tmpActionNode.checkReturnCallback = IKCoderSenceRun_Set_JumpSteps;
+    else
+        tmpActionNode.checkReturnCallback = null;
+    i_actionPool[tmpActionNode.index] = tmpActionNode;
+}
+
+function IKCoderSenceRun_Set_AddJump() {
+    var tmpActionNode = new ActionNode();
+    tmpActionNode.index = getActionPoolLength();
+    tmpActionNode.actionRefMethod = IKCoderSenceRun_Set_JumpSteps;
+    tmpActionNode.checkReturn = false;
+    i_actionPool[tmpActionNode.index] = tmpActionNode;
+}
+
+function IKcoderSenceRun_Get_JudegeBarrier()
+{
+    for (var startPositionX = i_person_ClipView.position.x; startPositionX <= i_curvemap[i_person_currentStandStoneIndex + 1].target_x; startPositionX++) {
+        var checkResult = IKCoderSenceRun_Person_CheckCollision(startPositionX, i_person_ClipView.position.y, 80, 80);
+        if (checkResult == "1")
+            return true;
+    }
+    return false;
+}
+
+function IKCoderSenceRun_RunActions()
+{
+    var checkResult = "0";
+    for(var actionKey in i_actionPool)
+    {        
+        var actionObject = i_actionPool[actionKey];
+        if (actionObject != null) {
+            if (actionObject.checkReturn == false) {
+                actionObject.actionRefMethod(actionObject.index);
+            }
+            else {
+                if (actionObject.actionRefMethod())
+                    actionObject.checkReturnCallback();
+            }
+            checkResult = IKCoderSenceRun_Person_CheckCollision(i_person_ClipView.position.x, i_person_ClipView.position.y, 80, 80);
+            if (checkResult == "1") {
+                IKCoderSenceRun_Person_StopAnimation();
+                cancelAnimationFrame(i_requestAnimationID);
+                Scene.stepFaild();
+                return;
+            }
+            else if (checkResult == "2") {
+                IKCoderSenceRun_Person_StopAnimation();
+                cancelAnimationFrame(i_requestAnimationID);
+                Scene.stepComplete();
+                return;
+            }
+            break;
+        }
+    }
+    i_requestAnimationID = requestAnimationFrame(IKCoderSenceRun_RunActions);
+}
+
+function IKCoderSenceRun_Set_SwitchToStart() {
+    i_status_control = "1";
 }
 
 function IKCoderSenceRun_Reset() {
     i_person_ClipView.stop();
-    i_person_ClipView.position.x = 100;
+    i_person_ClipView.position.x = 0;
     i_person_ClipView.position.y = i_background_default_height - 161;
-    i_status_set_jumpsteps = 0;
-    i_status_set_runningsteps = 0;
-    i_status_stop = "1";
+    i_person_currentStandStoneIndex = 0;
+    cancelAnimationFrame(i_requestAnimationID);
+    i_actionPool = {};
 }
 
 function IKCoderSenceRun_Begin()
@@ -78,7 +176,8 @@ function IKCoderSenceRun_Begin()
    "image/scene/run/candy.fw.png",
    "image/scene/run/PixiAssets-hd.json",
    "image/scene/run/iP4_BGtile.jpg",
-   "image/scene/run/box.fw.png"
+   "image/scene/run/box.fw.png",
+   "image/scene/run/stone.fw.png"
     ]);
 
     i_loader.addEventListener('onComplete', function (event) {
@@ -88,17 +187,43 @@ function IKCoderSenceRun_Begin()
     i_loader.load();
 }
 
-
 function IKCoderSenceRun_InitResources() {
-    IKCoderSenceRun_InitSenceSprites();
-}
+    IKCoderSenceRun_AddSprite('image/scene/run/iP4_BGtile.jpg', i_background_default_width, i_background_default_height, -1, -1);
+    i_ground_position_Y = i_background_default_height - 161;
 
-function IKCoderSenceRun_Start() {
-    i_status_stop = "0";
-    if (i_status_set_runningsteps > 0)
-        IKCoderSenceRun_Person_RunStep(i_status_set_runningsteps);
-    if (i_status_set_jumpsteps > 0)
-        IKcoderSenceRun_Person_StartJump(i_status_set_jumpsteps);
+    var i_countOfStones = i_background_default_width / 162;
+
+    for (var index = 1; index <= i_countOfStones; index++) {
+        IKCoderSenceRun_AddSprite('image/scene/run/stone.fw.png', -1, -1, 162 * index, i_background_default_height - 70);
+        var tmpMapNode = new CurveTargetNode();
+        tmpMapNode.target_x = 162 * index;
+        tmpMapNode.target_y = i_background_default_height - 70;
+        tmpMapNode.step = index;
+        i_curvemap[index] = tmpMapNode;
+    }
+
+    var sprite_box_one = IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 380, i_background_default_height - 150);
+    IKCoderSenceRun_AddcollisonNode("box_1", 380, i_background_default_height - 150, sprite_box_one.width, sprite_box_one.height, false);
+    
+    IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 880, i_background_default_height - 421);
+    IKCoderSenceRun_AddcollisonNode("box_4", 800, i_background_default_height - 421, sprite_box_one.width, sprite_box_one.height, false);
+
+    var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('image/scene/run/shine.fw.png', -1, -1, 1110, i_background_default_height - 121);
+    sprite_pickup_sunshine.anchor.x = sprite_pickup_sunshine.anchor.y = 0.5;
+    i_spritesObjectsPool["sprite_pickup_sunshine"] = sprite_pickup_sunshine;
+    var sprite_pickup_candy = IKCoderSenceRun_AddSprite('image/scene/run/candy.fw.png', -1, -1, 1080, i_background_default_height - 141);
+    i_spritesObjectsPool["sprite_pickup_candy"] = sprite_pickup_candy;
+
+    IKCoderSenceRun_AddcollisonNode("candy", 1080, i_background_default_height - 141, sprite_pickup_candy.width, sprite_pickup_candy.height, true);
+    IKCoderSenceRun_Animation_PickupShine();
+
+    IKCoderSenceRun_PersonInit(0, i_background_default_height - 161);
+
+    var middle_X, middle_Y;
+    middle_X = i_curvemap[1].target_x / 2;
+    middle_Y = 450;
+    calc_curve_AB(middle_X, middle_Y, 0.4, 0);
+
 }
 
 function IKCoderSenceRun_AddcollisonNode(name,position_x,position_y,width,height,isPickup)
@@ -110,36 +235,6 @@ function IKCoderSenceRun_AddcollisonNode(name,position_x,position_y,width,height
     collisonObj.height = height;
     collisonObj.isPickup = isPickup;
     i_collisionmap[name] = collisonObj;
-}
-
-function IKCoderSenceRun_InitSenceSprites() {
-    IKCoderSenceRun_AddSprite('image/scene/run/iP4_BGtile.jpg', i_background_default_width, i_background_default_height, -1, -1);
-   
-    i_ground_position_Y = i_background_default_height - 161;
-
-    var sprite_box_one = IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 300, i_background_default_height - 161);
-    IKCoderSenceRun_AddcollisonNode("box_1", 300, i_background_default_height - 161, sprite_box_one.width, sprite_box_one.height,false);
-
-    IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 480, i_background_default_height - 161);
-    IKCoderSenceRun_AddcollisonNode("box_2", 480, i_background_default_height - 161, sprite_box_one.width, sprite_box_one.height,false);
-
-    IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 680, i_background_default_height - 561);
-    IKCoderSenceRun_AddcollisonNode("box_3", 680, i_background_default_height - 561, sprite_box_one.width, sprite_box_one.height,false);
-    
-    IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 880, i_background_default_height - 421);
-    IKCoderSenceRun_AddcollisonNode("box_4", 800, i_background_default_height - 421, sprite_box_one.width, sprite_box_one.height,false);
-    
-    var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('image/scene/run/shine.fw.png', -1, -1, 1110, i_background_default_height - 121);
-    sprite_pickup_sunshine.anchor.x = sprite_pickup_sunshine.anchor.y = 0.5;
-    i_spritesObjectsPool["sprite_pickup_sunshine"] = sprite_pickup_sunshine;
-    var sprite_pickup_candy = IKCoderSenceRun_AddSprite('image/scene/run/candy.fw.png', -1, -1, 1080, i_background_default_height - 141);
-    i_spritesObjectsPool["sprite_pickup_candy"] = sprite_pickup_candy;
-
-    IKCoderSenceRun_AddcollisonNode("candy", 1080, i_background_default_height - 141, sprite_pickup_candy.width, sprite_pickup_candy.height, true);
-    IKCoderSenceRun_Animation_PickupShine();
-
-    IKCoderSenceRun_PersonInit(100, i_background_default_height - 161);
-    
 }
 
 function IKCoderSenceRun_Animation_PickupShine()
@@ -171,31 +266,73 @@ function IKCoderSenceRun_PersonInit(positionX,positionY)
     i_stage.addChild(i_person_ClipView);
 }
 
-function IKCoderSenceRun_Person_RunStep(step)
+function IKCoderSenceRun_Person_RunStep(actionItemIndex)
 {
-    i_person_ClipView.play();
-    i_person_targetStep = step * 10;
-    IKCoderSenceRun_Person_RunStepAnimation();
+    if (i_person_ClipView.position.x >= i_curvemap[i_person_currentStandStoneIndex + 1].target_x)
+    {
+        requestAnimationFrame(IKCoderSenceRun_RunActions);
+        IKCoderSenceRun_Person_StopAnimation();
+        i_actionPool[actionItemIndex] = null;
+        i_person_currentStandStoneIndex++;
+    }
+    else
+    {
+        cancelAnimationFrame(i_requestAnimationID);
+        IKCoderSenceRun_Person_PlayAnimation();
+        i_person_ClipView.position.x = i_person_ClipView.position.x + 1;
+    }
 }
 
 function IKCoderSenceRun_Person_StopAnimation()
 {
     i_person_ClipView.stop();
-    i_status_stop = "1";
 }
 
-
-
-function IKcoderSenceRun_Person_StartJump(times)
-{
-    i_person_jumpTimes = times * 10;
-    i_person_jumpFlag = true;
-    IKCoderSenceRun_Person_JumpStepAnimation();
+function IKCoderSenceRun_Person_PlayAnimation() {
+    i_person_ClipView.play();
 }
 
-function IKcoderSenceRun_Person_StopJump()
+function IKCoderSenceRun_Set_JumpSteps(actionItemIndex) {
+    if (i_person_currentStandStoneIndex == getCurvemapPoolLength() - 1)
+        return;
+    if (i_person_ClipView.position.x >= i_curvemap[i_person_currentStandStoneIndex + 1].target_x) {
+        requestAnimationFrame(IKCoderSenceRun_RunActions);
+        IKCoderSenceRun_Person_StopAnimation();
+        i_actionPool[actionItemIndex] = null;
+        i_person_currentStandStoneIndex++;
+    }
+    else {
+        cancelAnimationFrame(i_requestAnimationID);
+        IKCoderSenceRun_Person_PlayAnimation();
+        if (i_person_ClipView.position.x < i_curvemap[1].target_x) {            
+            i_person_ClipView.position.y = calc_curve_Y(i_person_ClipView.position.x);
+            i_person_ClipView.position.x = i_person_ClipView.position.x + 1;
+        }
+        else
+        {
+            var position_Y = calc_curve_Y(i_person_ClipView.position.x - i_curvemap[i_person_currentStandStoneIndex].target_x);
+            i_person_ClipView.position.y = position_Y;
+            i_person_ClipView.position.x = i_person_ClipView.position.x + 1;
+        }
+    }
+
+}
+
+function calc_curve_AB(random_X,random_Y,maxPonitRateForA,maxPonitLengthForB)
 {
-    i_person_jumpFlag = false;
+    i_curve_a = random_Y / (random_X * random_X);
+    if (maxPonitRateForA > 0)
+        i_curve_a = i_curve_a * maxPonitRateForA;
+    i_curve_b = -2 * i_curve_a * random_X;
+    if (maxPonitLengthForB > 0)
+        i_curve_b = i_curve_b * maxPonitLengthForB;
+}
+
+function calc_curve_Y(current_X)
+{
+    
+    return i_curve_a * (current_X * current_X) + i_curve_b * current_X + i_ground_position_Y;
+   
 }
 
 function IKCoderSenceRun_Person_CheckCollision(current_X,currect_Y,spriteWidth,spiteHeight)
@@ -219,77 +356,6 @@ function IKCoderSenceRun_Person_CheckCollision(current_X,currect_Y,spriteWidth,s
     }
     return "0";
 }
-
-
-function IKCoderSenceRun_Person_JumpStepAnimation()
-{
-    if (i_status_stop == "1")        
-        return;
-    if (i_person_jumpFlag == true) {
-        i_person_ClipView.stop();
-        if (i_person_jumpTimes > 0) {
-            if (i_person_ClipView.position.y > i_person_ClipView.height) {
-                i_person_ClipView.position.y = i_person_ClipView.position.y - 2;
-                i_person_jumpTimes--;
-            }
-            else
-            {
-                i_person_jumpFlag = false;
-            }
-            requestAnimationFrame(IKCoderSenceRun_Person_JumpStepAnimation);
-        }
-        else
-        {
-            i_person_jumpFlag = false;
-            requestAnimationFrame(IKCoderSenceRun_Person_JumpStepAnimation);
-        }
-    }
-    else {
-        if (i_person_ClipView.position.y < i_ground_position_Y) {
-            if (i_person_ClipView.position.y + 2 >= i_ground_position_Y) {
-                i_person_ClipView.play();
-                i_person_ClipView.position.y = i_ground_position_Y;
-            }
-            else {
-                i_person_ClipView.position.y = i_person_ClipView.position.y + 2;
-                requestAnimationFrame(IKCoderSenceRun_Person_JumpStepAnimation);
-            }
-        }
-    }
-}
-
-function IKCoderSenceRun_Person_RunStepAnimation()
-{
-    if (i_status_stop == "1")
-        return;
-    if (i_person_currentStep < i_person_targetStep) {
-        if (i_person_ClipView.position.x < i_background_default_width - i_person_ClipView.width) {
-            i_person_ClipView.position.x = i_person_ClipView.position.x + 2;
-            i_person_currentStep++;
-            var checkResult = IKCoderSenceRun_Person_CheckCollision(i_person_ClipView.position.x, i_person_ClipView.position.y, i_person_ClipView.width, i_person_ClipView.height);
-            if (checkResult=="1")
-            {
-                IKCoderSenceRun_Person_StopAnimation();
-                Scene.stepFaild();
-            }
-            else if (checkResult == "2")
-            {
-                IKCoderSenceRun_Person_StopAnimation();
-                Scene.stepComplete();
-            }
-            requestAnimationFrame(IKCoderSenceRun_Person_RunStepAnimation);
-        }
-        else
-            i_person_ClipView.stop();
-    }
-    else
-    {        
-        i_person_ClipView.stop();
-    }
-}
-
-
-
 
 function IKCoderSenceRun_Resize(width, height)
 {

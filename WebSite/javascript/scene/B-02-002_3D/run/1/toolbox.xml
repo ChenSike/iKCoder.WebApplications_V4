@@ -1,8 +1,15 @@
-﻿<xml id="toolbox" style="display: none">
-  <block type="event_start"></block>
-  <block type="move_onestep_up"></block>
-  <block type="move_onestep_down"></block>
-  <block type="move_onestep_left"></block>
-  <block type="move_onestep_right"></block>
- 
+﻿<xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
+  <block type="block_start"></block>
+  <block type="controls_repeat_ext">
+    <value name="TIMES">
+      <block type="math_number">
+        <field name="NUM">0</field>
+      </block>
+    </value>
+  </block>
+  <block type="block_jump"></block>
+  <block type="block_run"></block>
+  <block type="block_judgecollion">
+    <field name="steps">0</field>
+  </block>
 </xml>
