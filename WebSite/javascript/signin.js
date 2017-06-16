@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+var _timeoutRefereshCC = '';
 var _prevPage = '';
 var _bodyMinWidth = 330;
 var _checkCodeParams = {

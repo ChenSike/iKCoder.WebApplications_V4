@@ -334,10 +334,14 @@ function _startCheckState() {
             $.removeCookie('logined_user_name');
             $.removeCookie('logined_user_nickname');
         }
-    });    
+    });
 };
 
-function _refereshCheckCode(checkCodeId) {
+function _refereshCheckCode(checkCodeId, notClear) {
+    if (typeof notClear == 'undefined' || notClear != '1') {
+        window.clearTimeout(_timeoutRefereshCC);
+    }
+
     var _checkCodeParams = {
         length: 4,
         name: 'signincode',
@@ -346,6 +350,7 @@ function _refereshCheckCode(checkCodeId) {
     };
 
     $("#" + checkCodeId).attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
+    _timeoutRefereshCC = window.setTimeout('_refereshCheckCode("' + checkCodeId + '", "1");', 540000);
 };
 
 function _loadIMG(src, callback) {

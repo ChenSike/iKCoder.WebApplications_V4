@@ -69,10 +69,10 @@ var configuration = {
         dt: "显示适配器",
         path: "image/scene/intrcourse/svg/graphics-card.png"
     }, {
-        cn: "主板",
-        en: "Mother Board",
-        dt: "",
-        path: "image/scene/intrcourse/svg/mainboard.png"
+        cn: "主机",
+        en: "Computer Tower",
+        dt: "主机",
+        path: "image/scene/intrcourse/svg/computer.svg"
     }]
 };
 
@@ -598,7 +598,7 @@ scene.prototype = {
 
     buildConnect(name1, name2) {
         this.__connectionSet.push([name1, name2]);
-        _doConnect(name1, name2);
+        this._doConnect(name1, name2);
     },
 
     _doConnect(comp1Id, comp2Id) {
@@ -654,6 +654,37 @@ scene.prototype = {
 };
 
 var Scene = new scene(configuration,'game_container');
+
+Scene.reset = function () {
+    Scene.clear();
+    //$('.tooltip.tooltip-top').remove();
+    //ComputerScene.layer.clear();
+    //for (var i = 0; i < ComputerScene.layer.children.length; i++) {
+    //    var item = ComputerScene.layer.children[i];
+    //    if (item instanceof Konva.Ccomponent) {
+    //        item.comp = false;
+    //        item._isAssigned = false;
+    //        item._isAssignedCorrectly = false;
+    //        item.x(item.attrs.orgX);
+    //        item.y(item.attrs.orgY);
+    //        item.width(item.attrs.orgWidth);
+    //        item.height(item.attrs.orgHeight);
+    //        item.resultImage.image(null);
+    //        item.draggable(true);
+    //        item.on('mouseover', function () {
+    //            document.body.style.cursor = 'pointer';
+    //            showWarning(arguments[0]);
+    //            showTooltip(arguments[0], true);
+    //        });
+    //    }
+    //}
+
+    //for(var tmpItem of categoryToContainer) {
+    //    tmpItem[1].clear();
+    //}
+
+    //ComputerScene.layer.draw();
+};
 
 function test() {
     Scene.testConnect(1, 17);
