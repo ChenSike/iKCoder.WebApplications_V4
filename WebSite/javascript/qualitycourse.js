@@ -35,7 +35,8 @@ function initPage() {
     var refereshBtn = $('.workspace-tool-item.workspace-referesh-button.fa.fa-repeat');
     bindEventsToScene(playBtn, shareBtn, fullScreenBtn, refereshBtn);
     //siderBarExpand();
-    adjustAfterSiderBarResize();
+    //adjustAfterSiderBarResize();
+    window.setTimeout('adjustAfterSiderBarResize();', 300);
 };
 
 function initEvents() {
@@ -179,6 +180,9 @@ function initEvents() {
         if (_currentStep == _totalSteps) {
             //WorkScene.saveStatus();
             //window.location.href = "profile.html?rnd=" + Date.now();
+            WorkScene.reset(false);
+            resetPlayBtn('P');
+            $('.wrap-workstatus-alert').hide();
         } else {
             WorkScene.reset(false);
             resetPlayBtn('P');
