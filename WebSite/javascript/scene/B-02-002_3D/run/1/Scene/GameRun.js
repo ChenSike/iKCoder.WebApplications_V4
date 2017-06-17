@@ -113,19 +113,25 @@ function IKcoderSenceRun_Get_JudegeBarrier()
     return false;
 }
 
-function IKCoderSenceRun_RunActions()
-{
+function IKCoderSenceRun_RunActions() {
     var checkResult = "0";
-    for(var actionKey in i_actionPool)
-    {        
+    for (var actionKey in i_actionPool) {
         var actionObject = i_actionPool[actionKey];
         if (actionObject != null) {
             if (actionObject.checkReturn == false) {
                 actionObject.actionRefMethod(actionObject.index);
             }
             else {
-                if (actionObject.actionRefMethod())
-                    actionObject.checkReturnCallback();
+                if (actionObject.actionRefMethod()) {
+                    actionObject.checkReturnCallback(actionObject.index);
+                    var tmpActionNode = new ActionNode();
+                    tmpActionNode.index = actionObject.index;
+                    tmpActionNode.actionRefMethod = actionObject.checkReturnCallback;
+                    tmpActionNode.checkReturn = false;
+                    i_actionPool[tmpActionNode.index] = tmpActionNode;
+                }
+                else
+                    i_actionPool[actionObject.index] = null;
             }
             checkResult = IKCoderSenceRun_Person_CheckCollision(i_person_ClipView.position.x, i_person_ClipView.position.y, 80, 80);
             if (checkResult == "1") {
@@ -143,7 +149,18 @@ function IKCoderSenceRun_RunActions()
             break;
         }
     }
-    i_requestAnimationID = requestAnimationFrame(IKCoderSenceRun_RunActions);
+    var notCompleteFlag = true;
+    for (var actionKey in i_actionPool) {
+        if (i_actionPool[actionKey] != null)
+            notCompleteFlag = false;
+    }
+    if (notCompleteFlag == true) {
+        cancelAnimationFrame(i_requestAnimationID);
+        Scene.stepFaild();
+    }
+    else {
+        i_requestAnimationID = requestAnimationFrame(IKCoderSenceRun_RunActions);
+    }
 }
 
 function IKCoderSenceRun_Set_SwitchToStart() {
@@ -279,7 +296,7 @@ function IKCoderSenceRun_Person_RunStep(actionItemIndex)
     {
         cancelAnimationFrame(i_requestAnimationID);
         IKCoderSenceRun_Person_PlayAnimation();
-        i_person_ClipView.position.x = i_person_ClipView.position.x + 1;
+        i_person_ClipView.position.x = i_person_ClipView.position.x + 2;
     }
 }
 
