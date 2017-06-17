@@ -9,9 +9,37 @@
     <script src="javascript/common.js"></script>
     <script src="javascript/common/three.min.js"></script>
     <script src="javascript/common/TweenMax.min.js"></script>
+    <style>
+        .logo-home {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            z-index:10;
+        }
+
+        .wrap-title {
+            position: absolute;
+            top: 16px;
+            left: 0px;
+            width: 100%;
+        }
+
+        #title_Content {
+            font-size: 30px;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
 </head>
-<body style="height:100%;">
-    <div id="game_container" style="width:100%;height:100%;"></div>
+<body style="height:100%; margin:0px;padding:0px;">
+    <div id="game_container" style="width:100%;height:calc(100% - 5px);"></div>
+    <a class="logo-home" href="index.html">
+        <img src="image/logo-new-gray.png" width="150" height="50" class="d-inline-block align-top img-header-logo" alt="">
+    </a>
+    <div class="wrap-title">
+        <div id="title_Content" style="color: rgb(0,0,0);"><span style="padding-right:10px;">|</span>在线体验课<span style="color:rgb(232,118,7);padding:0px 10px;">萌宠大逃亡</span>|</div>
+    </div>
     <script type="text/javascript">
         var _shareData = null;
         $(document).ready(function () {

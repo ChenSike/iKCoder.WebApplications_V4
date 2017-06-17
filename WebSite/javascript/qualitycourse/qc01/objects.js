@@ -425,6 +425,7 @@ Rabbit.prototype.jump = function () {
     }
 
     var _this = this;
+    this.poseType = Engine._stateJump;
     var totalSpeed = 10 / this.speed;
     var jumpHeight = Engine.params.playerJumpHeight;
     //EAR
@@ -440,12 +441,30 @@ Rabbit.prototype.jump = function () {
     //MOUTH
     TweenMax.to(this.mouth.rotation, totalSpeed, { x: .5, ease: Back.easeOut });
     //MESH
-    TweenMax.to(this.mesh.position, totalSpeed / 2, { y: jumpHeight, ease: Power2.easeOut });
-    TweenMax.to(this.mesh.position, totalSpeed / 2, {
-        y: 0, ease: Power4.easeIn, delay: totalSpeed / 2, onComplete: function () {
-            _this.state = Engine._stateRun;
+    //TweenMax.to(this.mesh.position, totalSpeed / 2, { y: jumpHeight, ease: Power2.easeOut });
+    TweenMax.to(
+        this.mesh.position,
+        totalSpeed / 2,
+        {
+            y: jumpHeight,
+            ease: Power2.easeOut,
+            onComplete: function () {
+                TweenMax.to(
+                    _this.mesh.position,
+                    totalSpeed / 2,
+                    {
+                        y: 0,
+                        ease: Power4.easeIn,
+                        delay: totalSpeed / 2,
+                        onComplete: function () {
+                            _this.state = Engine._stateRun;
+                            _this.poseType = Engine._stateRun;
+                        }
+                    }
+               );
+            }
         }
-    });
+    );
 };
 
 Rabbit.prototype.hang = function () {
@@ -538,7 +557,11 @@ Wolf.prototype = Object.assign(Object.create(Module.prototype), {
 });
 
 Wolf.prototype.init = function () {
-    this.runningCycle = 0;
+    var tmpMin = (Engine.modules.player ? Engine.modules.player.speed : 6);
+    var speed = Math.min(tmpMin, Engine.params.speed.player.max);
+    this.runningCycle += Engine._delta * speed * 0.7;
+    this.runningCycle = this.runningCycle % (Math.PI * 2);
+    //this.runningCycle = 0;
     var mouthGeom = new THREE.CubeGeometry(this.params.mouth.w, this.params.mouth.h, this.params.mouth.d, 1);
     mouthGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, -2, 10));
     this.mouth = new THREE.Mesh(mouthGeom, this.params.mouth.c);
@@ -816,7 +839,7 @@ Wolf.prototype.sit = function () {
     TweenMax.to(this.torso.position, tmpConst, {
         y: -5, ease: ease, onComplete: function () {
             _this.nod();
-            Engine.state = Engine._statePrepare;
+            Engine.state = Engine._stateOver;
         }
     });
     TweenMax.to(this.head.rotation, tmpConst, { x: Math.PI / 3, y: -Math.PI / 3, ease: ease });

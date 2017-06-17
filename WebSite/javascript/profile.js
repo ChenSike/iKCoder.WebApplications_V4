@@ -644,6 +644,12 @@ function buildCourseListContent(target) {
 
             tmpHTMLStrArr.push('    </div>');
             tmpHTMLStrArr.push('</div>');
+            if (i < unitArr.length - 1) {
+                tmpHTMLStrArr.push('<div class="row justify-content-center" style="padding:0px 30px;">');
+                tmpHTMLStrArr.push('    <div class="col-12" style="border-bottom:solid 1px rgb(255,255,255);">');
+                tmpHTMLStrArr.push('    </div>');
+                tmpHTMLStrArr.push('</div>');
+            }
         }
 
         $('#content_List_Overview_Course').empty();

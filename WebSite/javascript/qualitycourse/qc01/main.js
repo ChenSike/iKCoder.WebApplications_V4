@@ -90,7 +90,7 @@ Engine.params = {
     },
     speed: {
         player: { min: 6, max: 48, freq: 3000, step: 2 },
-        monster: { pos: 0.58, tpos: 0.65, acceleration: 0.004, pursue: true }
+        monster: { pos: 0.58, tpos: 0.65, acceleration: 0.04, pursue: true }
     },
     audio: 'media/sound_1.mp3',
     floorRadius: 200,
@@ -251,8 +251,8 @@ Engine.checkCollision = function () {
 
     if (dm.length() < Engine.params.collisionObstacle && Engine.modules.obstacle.status != Engine._stateFly) {
         if (Engine.modules.obstacle.mesh.visible) {
-            //Engine.modules.monster.monsterPosTarget -= 0.04;
-            Engine.modules.monster.monsterPosTarget -= 0.01;
+            Engine.modules.monster.monsterPosTarget -= 0.04;
+            //Engine.modules.monster.monsterPosTarget -= 0.01;
             Engine.modules.obstacle.fly();
         }
     }
@@ -455,6 +455,8 @@ Engine.start = function () {
     }
 
     Engine.loop();
+    Engine.updateLevel();
+    Engine.levelInterval = setInterval(Engine.updateLevel, 3000);
 };
 
 Engine.reset = function () {
@@ -473,6 +475,7 @@ Engine.over = function () {
     TweenMax.to(this, 1, { speed: 0 });
     TweenMax.to(Engine.camera.position, 3, { z: Engine.params.camera.oz, y: Engine.params.camera.oy, x: 0 });//Engine.params.camera.ox });
     Engine.overCallbackFn();
+    clearInterval(Engine.levelInterval);
 };
 
 Engine.setControl = function (device, eventKeyCode) {
@@ -572,6 +575,14 @@ Engine.overEventFn = function () {
 Engine.setOverEventFn = function (fn) {
     Engine.overEventFn = fn;
 };
+
+Engine.updateLevel = function() {
+    if (Engine.modules.player && Engine.modules.player.speed >= Engine.params.speed.player.max) {
+        return;
+    }
+
+    Engine.modules.player.speed += 2;
+}
 
 var Module = function () {
     this.state = Engine._statePrepare;
@@ -719,9 +730,9 @@ Module.prototype.updatePose = function () {
         }
     } else if (this.state == Engine._stateJump) {
         if (this.poseType != Engine._stateJump) {
+            this.poseType == Engine._stateJump;
             this.nod();
             this.jump();
-            this.poseType == Engine._stateJump;
         }
     } else if (this.state == Engine._stateOver) {
         if (this.poseType != Engine._stateOver) {
