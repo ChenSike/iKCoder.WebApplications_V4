@@ -34,7 +34,10 @@ Scene.defaultDATA = [
 	
 ];
 
-Scene.isFirstMonster = false;
+Scene.isFirstMonster1 = false;
+Scene.isFirstMonster2 = false;
+Scene.isFirstMonster3 = false;
+Scene.isFirstMonster4 = false;
 
 Scene.mapDATA = [];
 Scene._CALCMOVEPATH = [];
@@ -238,39 +241,61 @@ Scene.start = function () {
 
 Scene.setRandomObjectStaus = function () {
 
-	var initRandomValue = Math.floor(Math.random() * 2);
+	var initRandomValue = Math.floor(Math.random() * 6);
 
 	Scene.randomObj[0].obj.mesh.visible = false;
 	Scene.randomObj[2].obj.mesh.visible = false;
 	Scene.randomObj[4].obj.mesh.visible = false;
 	Scene.randomObj[6].obj.mesh.visible = false;
 
-	if (initRandomValue == 0) {
-		Scene.randomObj[1].obj.mesh.visible = true;
-		Scene.randomObj[3].obj.mesh.visible = true;
-		Scene.randomObj[5].obj.mesh.visible = false;
-		Scene.randomObj[7].obj.mesh.visible = false;
+	Scene.isFirstMonster1 = false;
+	Scene.isFirstMonster2 = false;
+	Scene.isFirstMonster3 = false;
+	Scene.isFirstMonster4 = false;
 
-		Scene.randomObj[8].obj.mesh.visible = false;
-		Scene.randomObj[9].obj.mesh.visible = false;
-		Scene.randomObj[10].obj.mesh.visible = true;
-		Scene.randomObj[11].obj.mesh.visible = true;
-		Scene.isFirstMonster = false;
+	switch (initRandomValue) {
+		case 0:
+			Scene.setMonsterVisible(false, false, true, true);
+			break;
 
-	} else {
-		Scene.randomObj[1].obj.mesh.visible = false;
-		Scene.randomObj[3].obj.mesh.visible = false;
-		Scene.randomObj[5].obj.mesh.visible = true;
-		Scene.randomObj[7].obj.mesh.visible = true;
+		case 1:
+			Scene.setMonsterVisible(false, true, false, true);
+			break;
 
-		Scene.randomObj[8].obj.mesh.visible = true;
-		Scene.randomObj[9].obj.mesh.visible = true;
-		Scene.randomObj[10].obj.mesh.visible = false;
-		Scene.randomObj[11].obj.mesh.visible = false;
-		Scene.isFirstMonster = true;
+		case 2:
+			Scene.setMonsterVisible(false, true, true, false);
+			break;
+
+		case 3:
+			Scene.setMonsterVisible(true, false, false, true);
+			break;
+
+		case 4:
+			Scene.setMonsterVisible(true, false, true, false);
+			break;
+
+		case 5:
+			Scene.setMonsterVisible(true, true, false, false);
+			break;
 	}
-
 };
+
+Scene.setMonsterVisible = function (isMonster1, isMonster2, isMonster3, isMonster4 ) {
+	Scene.randomObj[1].obj.mesh.visible = !isMonster1;
+	Scene.randomObj[3].obj.mesh.visible = !isMonster2;
+	Scene.randomObj[5].obj.mesh.visible = !isMonster3;
+	Scene.randomObj[7].obj.mesh.visible = !isMonster4;
+
+	Scene.randomObj[8].obj.mesh.visible = isMonster1;
+	Scene.randomObj[9].obj.mesh.visible = isMonster2;
+	Scene.randomObj[10].obj.mesh.visible = isMonster3;
+	Scene.randomObj[11].obj.mesh.visible = isMonster4;
+
+	Scene.isFirstMonster1 = isMonster1;
+	Scene.isFirstMonster2 = isMonster2;
+	Scene.isFirstMonster3 = isMonster3;
+	Scene.isFirstMonster4 = isMonster4;
+}
 
 Scene.setRandomObjectOnlyQuestionMarkVisible = function () {
 	Scene.randomObj[0].obj.mesh.visible = true;
@@ -711,10 +736,14 @@ Scene.checkPointUsedByBean = function (x, y) {
 };
 
 Scene.checkPointUsedByMonster = function (x, y) {
-	if (x == Scene.monsterParams[0].x && y == Scene.monsterParams[0].y) {
-		return Scene.isFirstMonster;
-	} else if (x == Scene.monsterParams[1].x && y == Scene.monsterParams[1].y) {
-		return !Scene.isFirstMonster
+	if (x == Scene.monsterParams[0].x && y == Scene.monsterParams[0].y && Scene.isFirstMonster1) {
+		return true;
+	} else if (x == Scene.monsterParams[1].x && y == Scene.monsterParams[1].y && Scene.isFirstMonster2) {
+		return true
+	} else if (x == Scene.monsterParams[2].x && y == Scene.monsterParams[1].y && Scene.isFirstMonster3) {
+		return true
+	} else if (x == Scene.monsterParams[3].x && y == Scene.monsterParams[1].y && Scene.isFirstMonster4) {
+		return true
 	} else {
 		return false;
 	}
