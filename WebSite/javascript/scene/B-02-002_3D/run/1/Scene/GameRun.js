@@ -125,7 +125,9 @@ function IKCoderSenceRun_RunActions()
             }
             else {
                 if (actionObject.actionRefMethod())
-                    actionObject.checkReturnCallback();
+                    actionObject.checkReturnCallback(actionObject.index);
+                else
+                    i_actionPool[actionObject.index] = null;
             }
             checkResult = IKCoderSenceRun_Person_CheckCollision(i_person_ClipView.position.x, i_person_ClipView.position.y, 80, 80);
             if (checkResult == "1") {
@@ -279,7 +281,7 @@ function IKCoderSenceRun_Person_RunStep(actionItemIndex)
     {
         cancelAnimationFrame(i_requestAnimationID);
         IKCoderSenceRun_Person_PlayAnimation();
-        i_person_ClipView.position.x = i_person_ClipView.position.x + 1;
+        i_person_ClipView.position.x = i_person_ClipView.position.x + 2;
     }
 }
 
@@ -306,13 +308,13 @@ function IKCoderSenceRun_Set_JumpSteps(actionItemIndex) {
         IKCoderSenceRun_Person_PlayAnimation();
         if (i_person_ClipView.position.x < i_curvemap[1].target_x) {            
             i_person_ClipView.position.y = calc_curve_Y(i_person_ClipView.position.x);
-            i_person_ClipView.position.x = i_person_ClipView.position.x + 1;
+            i_person_ClipView.position.x = i_person_ClipView.position.x + 2;
         }
         else
         {
             var position_Y = calc_curve_Y(i_person_ClipView.position.x - i_curvemap[i_person_currentStandStoneIndex].target_x);
             i_person_ClipView.position.y = position_Y;
-            i_person_ClipView.position.x = i_person_ClipView.position.x + 1;
+            i_person_ClipView.position.x = i_person_ClipView.position.x + 2;
         }
     }
 
