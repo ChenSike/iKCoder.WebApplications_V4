@@ -15,43 +15,34 @@
     <script type="text/javascript">
         var _shareData = null;
         $(document).ready(function () {
-            //_registerRemoteServer();
-            //$.ajax({
-            //    type: 'GET',
-            //    async: true,
-            //    url: _getRequestURL(_gURLMapping.share.shareload, {}),
-            //    data: '',
-            //    success: function (response, status) {
-            //        if ($(response).find('err').length > 0) {
-            //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_Load');
-            //            return;
-            //        }
+            _registerRemoteServer();
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: _getRequestURL(_gURLMapping.share.shareload, { symbol: getQueryString('symbol') }),
+                data: '',
+                success: function (response, status) {
+                    if ($(response).find('err').length > 0) {
+                        _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_Load');
+                        return;
+                    }
 
-            //        _shareData = response;
-            //        var libItems = $(_shareData).find('data').find('lib').find('item');
-            //        var libs = [];
-            //        for (var i = 0; i < libItems.length; i++) {
-            //            libs.push($(libItems[i]).attr('src'));
-            //        }
+                    _shareData = $($($(response).find('msg')[0]).attr('msg'))[0];
+                    var libItems = $(_shareData).find('lib').find('item');
+                    var libs = [];
+                    for (var i = 0; i < libItems.length; i++) {
+                        libs.push($(libItems[i]).attr('src'));
+                    }
 
-            //        LoadLib(libs);
-            //    },
-            //    dataType: 'xml',
-            //    xhrFields: {
-            //        withCredentials: true
-            //    },
-            //    error: function () {
-            //    }
-            //});
-            _shareData = StringToXML('<data><item role="player" module="wolf" head="1" body="1" ear="2" color="#0f0707"/><item role="monster" module="rabbit" head="1" body="1" ear="2" color="#dc5f45"/><item role="obstacle" module="carrot"/><item role="prop" module="hedgehog"/><item role="floor" module="grass"/><music path="http://ikcoder.ikcoder.com/iKCoderv4/media/sound_2.mp3"/><event xmlns="http://www.w3.org/1999/xhtml" device="m" key="2"></event><lib><item src="javascript/qualitycourse/qc01/main.js"/><item src="javascript/qualitycourse/qc01/Materials.js"/><item src="javascript/qualitycourse/qc01/objects.js"/><item src="javascript/qualitycourse/qc01/share.js"/></lib></data>');
-            var libItems = $(_shareData).find('data').find('lib').find('item');
-            var libs = [];
-            for (var i = 0; i < libItems.length; i++) {
-                libs.push($(libItems[i]).attr('src'));
-            }
-
-            LoadLib(libs);
-
+                    LoadLib(libs);
+                },
+                dataType: 'xml',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+                }
+            });
         });
 
         function LoadLib(lib) {
