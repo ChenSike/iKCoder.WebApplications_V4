@@ -1,14 +1,6 @@
 //(function () {
 'use strict';
 
-var CATEGORY_THUMB_NAIL_SIZE_X = 50;
-var CATEGORY_THUMB_NAIL_SIZE_Y = 50;
-var CATEGORY_PADDING_BOTTOM = 5;
-var RESULT_WIDTH = 20;
-var RESULT_HEIGHT = 20;
-var CATEGORY_ITEM_ROW = 4;
-var CATEGORY_TITLE_FONTSIZE = 16;
-
 var configuration = {
     "Input Device": [{
         cn: "鼠标",
@@ -97,54 +89,52 @@ function searchForGroup(key, config, predicate) {
     return null;
 }
 
-function placeComponentGroups(config, layer, stage) {
-    var groups = [];
-    for (var group in config) {
-        groups.push(group);
-    }
-
-    var groupNum = groups.length,
-        groupHeight = 200,
-        groupSideMargin = 30,
-        horizontalMargin = 100,
-        groupWidth = ((stage.getWidth() - horizontalMargin) / groupNum) - groupSideMargin * 2;
-
-
-    for (var i = 0; i < groupNum; i++) {
-        var categoryConfig = {
-            stroke: 'grey',
-            strokeWidth: 1,
-            height: groupHeight,
-            width: groupWidth,
-            group: groups[i],
-            x: horizontalMargin / 2 + (groupSideMargin * 2 + groupWidth) * i + groupSideMargin,
-            y: stage.getHeight() - groupHeight - 5
-        };
-
-        loadCategory(categoryConfig, layer, stage);
-    }
-}
-
 function placeComponents(config, layer, categoryLayer, stage) {
     var ccomponents = [];
     for (var group in config) {
         ccomponents = Array.prototype.concat.apply(ccomponents, config[group]);
     }
 
-    var cellDimension = 100,
-        numberOfComponents = ccomponents.length || 0,
-        verticalMargin = 50,
-        horizontalMargin = 50,
-        columns = Math.floor((stage.getWidth() - horizontalMargin) / cellDimension),
-        rows = Math.floor((stage.getHeight() - verticalMargin) / cellDimension),
-        cells = columns * rows;
+    var cellDimension = 100;
+    var numberOfComponents = ccomponents.length || 0;
+    var verticalMargin = 50;
+    var horizontalMargin = 50;
+    var columns = Math.floor((stage.getWidth() - horizontalMargin) / cellDimension);
+    var rows = Math.floor((stage.getHeight() - verticalMargin) / cellDimension);
+    var cells = columns * rows;
+    var imgSize = 60;
 
-    var calcCcomponentConfig = function(cellIndex, cellConfig) {
+    var calcCmpSize = function () {
+        var tmpVal = stage.getWidth() * stage.getHeight() / numberOfComponents;
+        var flag = false;
+        var tmpCol = 1;
+        var tmpRow = Math.floor(numberOfComponents / tmpCol);
+        var tmpCellSize = Math.floor(stage.getWidth() / tmpCol);
+        while (!flag) {
+            tmpRow = (tmpCol * tmpRow < numberOfComponents ? tmpRow + 1 : tmpRow);
+            tmpCellSize = Math.floor(stage.getWidth() / tmpCol);
+            if (tmpCellSize * tmpRow > stage.getHeight()) {
+                tmpCol++;
+                tmpRow = Math.floor(numberOfComponents / tmpCol);
+                continue;
+            } else {
+                flag = true;
+                columns = tmpCol;
+                rows = tmpRow;
+                cellDimension = tmpCellSize;
+                verticalMargin = (stage.getHeight() - tmpCellSize * tmpRow) / 2;
+                horizontalMargin = (stage.getWidth() - tmpCellSize * tmpCol) / 2;
+                imgSize = cellDimension - 40 / 100 * cellDimension;
+            }
+        }
+    };
+
+    var calcCcomponentConfig = function (cellIndex, cellConfig) {
         var cn = cellConfig.cn,
             en = cellConfig.en,
             path = cellConfig.path,
-            height = cellConfig.height || 60,
-            width = cellConfig.width || 60,
+            height = cellConfig.height || imgSize,
+            width = cellConfig.width || imgSize,
             offsetX = (cellDimension - width) / 2,
             offsetY = (cellDimension - height) / 2,
 
@@ -168,133 +158,11 @@ function placeComponents(config, layer, categoryLayer, stage) {
         };
     };
 
-    for (var i = 0; i < Math.min(cells, ccomponents.length); i++) {
+    calcCmpSize();
+    for (var i = 0; i < Math.min(cells, ccomponents.length) ; i++) {
         loadImage(calcCcomponentConfig(i, ccomponents[i]), layer, categoryLayer);
     }
 }
-
-var categoryManager = (function() {
-    var categoryToContainer = new Map();
-
-    window.categoryToContainer = categoryToContainer;
-
-    function init(_categoryLayer) {
-        _categoryLayer.children.forEach(function(element) {
-            categoryToContainer.set(element, new CategoryContainer(element));
-        });
-    }
-
-    function isAssignedRight(rect, image) {
-        var group = searchForGroup(image, configuration, function(key, component) {
-            return key.en === component.en;
-        });
-
-        return rect._group === group;
-    }
-
-    function removeExistingFromCategories(image) {
-        for (var [k, v] of categoryToContainer) {
-            for (var i in v.children) {
-                if (v.children[i]._id === image._id) {
-                    Array.prototype.splice.call(v.children, i, 1);
-                    return;
-                }
-            }
-        }
-    }
-
-    function calculateOffsetY(i) {
-        return (CATEGORY_THUMB_NAIL_SIZE_Y + CATEGORY_PADDING_BOTTOM) * i;
-    }
-
-    function CategoryContainer(categoryRect, children) {
-        this.categoryRect = categoryRect;
-        this.children = [];
-
-        if (!!children)
-            this.add(children);
-    }
-
-    CategoryContainer.prototype.add = function(child) {
-        var that = this;
-
-        // add children
-        if (Array.isArray(child)) {
-            child.forEach(function(element) {
-                CategoryContainer.prototype.add.apply(that, element);
-            });
-        }
-
-        // add child
-        var isExist = this.children.some(function(element) {
-            return element._id == child._id;
-        });
-
-        if (!!!isExist) {
-            this.children.push(child);
-        }
-
-        return this.children.length - 1 || 0;
-    };
-
-    CategoryContainer.prototype.categorize = function(image, categoryRect, options) {
-        removeExistingFromCategories(image);
-
-        if (categoryRect !== undefined) {
-            var nth = this.add(image);
-
-            var x0 = image.x(),
-                y0 = image.y(),
-                width0 = image.width(),
-                height0 = image.height(),
-                RESULT_HEIGHT = 20,
-
-                slices = 50,
-                delta = (categoryRect.x() + 5 - x0) / slices,
-                deltaY = (categoryRect.y() + 5 + calculateOffsetY(nth) - y0) / slices,
-                deltaWidth = (CATEGORY_THUMB_NAIL_SIZE_X - width0) / slices,
-                deltaHeight = (CATEGORY_THUMB_NAIL_SIZE_Y - height0) / slices;
-
-            var i = 0;
-            var anim = new Konva.Animation(function(frame) {
-                if (i < slices) {
-                    image.height(image.height() + deltaHeight);
-                    image.width(image.width() + deltaWidth);
-                    image.x(image.x() + delta);
-                    image.y(image.y() + deltaY);
-                    i++;
-                } else {
-                    anim.stop();
-
-                    image._isAssigned = categoryRect === undefined ? false : true;
-                    image._isAssignedCorrectly = isAssignedRight(categoryRect, image);
-
-                    image.resultImage.x(image.x() + image.width() + 10);
-                    image.resultImage.y(image.y() + (image.height() - RESULT_HEIGHT) / 2);
-
-                    image.draw();
-                    image.parent.draw();
-                }
-            }, image.parent);
-
-            anim.start();
-
-            image.draggable(false);
-            image.off('mouseover');
-        }
-
-    };
-
-    // return a function that return the associated CategoryContainer instance
-    return function(_categoryLayer) {
-        init(_categoryLayer);
-        return function(categoryRect, image, options) {
-            var container = categoryToContainer.get(categoryRect);
-            CategoryContainer.prototype.categorize.call(container, image, categoryRect, options);
-        };
-    };
-
-})();
 
 function loadImage(config, layer, categoryLayer) {
     var box = new Konva.Ccomponent({
@@ -318,35 +186,33 @@ function loadImage(config, layer, categoryLayer) {
 
     var imageObj = new Image();
     imageObj.src = config.file;
-    imageObj.onload = function() {
+    imageObj.onload = function () {
         box.image(imageObj);
         layer.draw();
     };
-        
-    imageObj.onerror = function() {
+
+    imageObj.onerror = function () {
         imageObj.src = config.file + '?rnd=' + Date.now();
     };
 
     // add cursor styling
-    box.on('mouseover', function() {
+    box.on('mouseover', function () {
         document.body.style.cursor = 'pointer';
     });
 
-    box.on('mouseout', function() {
+    box.on('mouseout', function () {
         document.body.style.cursor = 'default';
     });
 
-    box.on('dragend', function() {
-        // locate the hit category
-        var detectedCategoryRect = detectIntersection(this, categoryLayer.children);
-        if (!!detectedCategoryRect) {
-            _categorizer(detectedCategoryRect, this, {});
-            // layer.draw();
-        } else {
-            this._isAssigned = false;
-            layer.draw();
-        }
+    box.on('dragend', function () {
+        this._isAssigned = false;
+        layer.draw();
     });
+
+    //box.on('mousedown', function () {
+    //    this._isAssigned = false;
+    //    layer.draw();
+    //});
 
     //console.log('adding ' + config.file + ' at ' + config.x + ' ' + config.y);
 
@@ -354,22 +220,7 @@ function loadImage(config, layer, categoryLayer) {
     layer.add(box);
 }
 
-function loadCategory(config, layer) {
-    var rect = new Konva.ComponentGroup(config);
-    var groupText = new Konva.Text({
-        x: rect.x(),
-        y: rect.y() - 20,
-        width: rect.width(),
-        text: config.group,
-        fontSize: 18,
-        fontFamily: 'Calibri',
-        align: 'center'
-    });
-    layer.add(rect);
-    layer.add(groupText);
-}
-
-var detectIntersection = (function() {
+var detectIntersection = (function () {
     function intersectRect(r1, r2) {
         return !(r2.left > r1.right ||
             r2.right < r1.left ||
@@ -395,7 +246,7 @@ var detectIntersection = (function() {
         return intersectRect(translateToRect(r1), translateToRect(r2));
     }
 
-    return function(r) {
+    return function (r) {
         var rects = Array.prototype.slice.call(arguments, 1)[0];
         for (var index = 0; index < rects.length; index++) {
             if (isDetect(rects[index], r)) {
@@ -406,8 +257,6 @@ var detectIntersection = (function() {
     };
 })();
 
-var _categorizer;
-// Used for exposing ComputerScene related API
 function scene(config, containerId) {
     this.config = config;
     this.containerId = containerId;
@@ -416,7 +265,7 @@ function scene(config, containerId) {
 
 scene.prototype = {
     constructor: scene,
-    init: function() {
+    init: function () {
         this.containerId = this.containerId || 'game_container';
         this.stage = new Konva.Stage({
             container: this.containerId,
@@ -449,19 +298,19 @@ scene.prototype = {
         ];
     },
 
-    getImages: function() {
+    getImages: function () {
         return (this.layer && this.layer.children) || [];
     },
 
-    registerResize: function() {
+    registerResize: function () {
         var that = this;
-        $("#" + this.containerId).resize(function() {
+        $("#" + this.containerId).resize(function () {
             var width = $('#' + that.containerId).width(),
                 height = $('#' + that.containerId).height();
             that.stage.width(width);
             that.stage.height(height);
             // clear content in layers
-            [that.layer, this.resultLayer, this.connectionLayer].forEach(function(layer) {
+            [that.layer, this.resultLayer, this.connectionLayer].forEach(function (layer) {
                 that._clearLayer(layer);
             });
             //console.log('onresize to width=' + width + ' height= ' + height);
@@ -470,11 +319,8 @@ scene.prototype = {
         });
     },
 
-    __paint: function() {
+    __paint: function () {
         placeComponents(this.config, this.layer, this.categoryLayer, this.stage);
-        // placeComponentGroups(this.config, this.categoryLayer, this.stage);
-
-        _categorizer = categoryManager(this.categoryLayer);
         this.stage.add(this.categoryLayer);
         this.stage.add(this.layer);
         this.stage.add(this.resultLayer);
@@ -542,7 +388,7 @@ scene.prototype = {
         return points;
     },
 
-    getByName: function(name) {
+    getByName: function (name) {
         var cc = this.layer.children,
             c;
 
@@ -567,6 +413,7 @@ scene.prototype = {
             comp.y()
         ];
     },
+
     __getLeftSidePoint(comp) {
         return [
             comp.x(),
@@ -615,7 +462,7 @@ scene.prototype = {
 
         this.connectionLayer.add(arc);
 
-        var anim = new Konva.Animation(function(frame) {
+        var anim = new Konva.Animation(function (frame) {
             if (!arc.isDone()) {
                 arc.moveAction();
             } else {
@@ -636,10 +483,10 @@ scene.prototype = {
     checkComplete() {
         var rightConnectionNum = 0;
 
-        this.__correctConnectionArr.forEach(function(fromto) {
+        this.__correctConnectionArr.forEach(function (fromto) {
             var from = fromto[0],
                 to = fromto[1];
-            this.__connectionSet.forEach(function(conntected){
+            this.__connectionSet.forEach(function (conntected) {
                 var conntectedFrom = conntected[0],
                     conntectedTo = conntected[1];
 
@@ -653,7 +500,7 @@ scene.prototype = {
     }
 };
 
-var Scene = new scene(configuration,'game_container');
+var Scene = new scene(configuration, 'game_container');
 
 Scene.reset = function () {
     Scene.clear();

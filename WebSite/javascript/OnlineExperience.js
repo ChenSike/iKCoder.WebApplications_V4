@@ -1,12 +1,13 @@
 ﻿'use strict';
 
 function initPage() {
-    $('.wrap-vadio').hide();
-    $('.mask-vadio').hide();
+    //$('.wrap-vadio').hide();
+    //$('.mask-vadio').hide();
     $('.fa.fa-volume-up').hide();
     adjustPositions();
     $(window).resize(function () {
         adjustPositions();
+        handleWindowResize();
     });
 
     $('#btn_Start').on('click', function () {
@@ -14,26 +15,30 @@ function initPage() {
     });
 
     $('#btn_Volume').on('click', function (eventObj) {
-        if ($('#vadio_Content')[0].muted) {
+        //if ($('#vadio_Content')[0].muted) {
+        if (audio.muted) {
             $('.fa-stack.fa-lg').show();
             $('.fa.fa-volume-up').hide();
-            $('#vadio_Content')[0].muted = false;
+            //$('#vadio_Content')[0].muted = false;
+            audio.muted = false;
         } else {
             $('.fa-stack.fa-lg').hide();
             $('.fa.fa-volume-up').show();
-            $('#vadio_Content')[0].muted = true;
+            //$('#vadio_Content')[0].muted = true;
+            audio.muted = true;
         }
     });
 
-    $('#vadio_Content').on('loadstart', function () {
-        vadioProgress(0);
-    });
+    init();
+    //$('#vadio_Content').on('loadstart', function () {
+    //    vadioProgress(0);
+    //});
 
-    $('#vadio_Content').on('play', function () {
-        vadioProgress(100);
-    });
+    //$('#vadio_Content').on('play', function () {
+    //    vadioProgress(100);
+    //});
 
-    $('#vadio_Content').attr('src', 'media/qc01.mp4');
+    //$('#vadio_Content').attr('src', 'media/qc01.mp4');
 };
 
 
@@ -63,15 +68,21 @@ function adjustPositions() {
     content.width(img.width());
     var fontSize = Math.floor(36 * rate);
     $('#title_Content').css('font-size', fontSize + 'px');
+    $('#title_Content').css('margin-bottom', Math.floor(60 * rate) + 'px');
     fontSize = Math.ceil(14 * rate);
     $('.text-content').css('font-size', fontSize < 12 ? '12px' : fontSize + 'px');
     $('.text-content').css('margin-bottom', Math.floor(30 * rate) + 'px');
 
-    var wrapProg = $('.wrap-progress');
-    wrapProg.width(500 * rate);
-    wrapProg.css('top', (wrap.offset().top + img.height()) + 'px');
-    wrapProg.css('left', ((bodyWidth - wrapProg.width()) / 2) + 'px');
-    wrapProg.css('margin-top', 80 * rate + 'px');
+    $('#wrap_Page_Content').show();
+    $('.wrap-scene').width($('body').width());
+    $('.wrap-scene').height($('body').height());
+    $('.contianer-scene').width($('body').width()-3);
+    $('.contianer-scene').height($('body').height()-3);
+    //var wrapProg = $('.wrap-progress');
+    //wrapProg.width(500 * rate);
+    //wrapProg.css('top', (wrap.offset().top + img.height()) + 'px');
+    //wrapProg.css('left', ((bodyWidth - wrapProg.width()) / 2) + 'px');
+    //wrapProg.css('margin-top', 80 * rate + 'px');
 };
 
 function vadioProgress(value) {
