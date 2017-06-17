@@ -6,11 +6,11 @@
   <block type="computer_component_block_monitor"></block>
   <block type="computer_component_block_keyboard"></block>
   <block type="computer_component_block_earphones"></block>
-  <block type="computer_component_block_pendrive"></block>
+  <block type="computer_component_block_usb_flash_disk"></block>
   <block type="computer_component_block_harddrive"></block>
   <block type="computer_component_block_cd"></block>
   <block type="computer_component_block_ram"></block>
   <block type="computer_component_block_cpu"></block>
-  <block type="computer_component_block_graphics card"></block>
-  <block type="computer_component_block_computer tower"></block>
+  <block type="computer_component_block_grahpics_card"></block>
+  <block type="computer_component_block_computer_tower"></block>
 </xml>

@@ -154,26 +154,6 @@
             Konva.Image.prototype.draw.apply(this);
 
             var that = this;
-
-            var imageObj = new Image();
-            var tmpSrc = !this._isAssigned ? null : this._isAssignedCorrectly ? 'image/scene/intrcourse/svg/success.svg' : 'image/scene/intrcourse/svg/error.svg';
-            if (tmpSrc == null) {
-                imageObj.src = tmpSrc;
-                that.resultImage.image(imageObj);
-                that.parent.draw();
-                that.resultImage.draw();
-            } else {
-                imageObj.src = tmpSrc;
-                imageObj.onload = function () {
-                    that.resultImage.image(imageObj);
-                    that.parent.draw();
-                    that.resultImage.draw();
-                };
-
-                imageObj.onerror = function () {
-                    imageObj.src = tmpSrc + '?rnd=' + Date.now();
-                };
-            }
         },
 
         componentPosition() {
