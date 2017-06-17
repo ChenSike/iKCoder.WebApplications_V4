@@ -356,26 +356,26 @@ function doSignIn() {
             $.cookie('logined_user_name', userName);
             $.cookie('logined_user_nickname', nickname);
             var needcheckstate = '&needcheckstate=1';
-            if (window.history.length == 0) {
-                window.location.href = "index.html?rnd=" + Date.now() + needcheckstate;
-            } else {
-                var referrer = document.referrer.toLowerCase();
-                if (referrer.indexOf('sign.html')) {
-                    referrer = 'index.html?rnd=' + Date.now();
-                } else {
-                    if (referrer.indexOf('rnd') > 0) {
-                        referrer.replace('rnd=', 'rnd=0');
-                    } else {
-                        if (referrer.indexOf('?') < 0) {
-                            referrer += '?';
-                        }
+            //if (window.history.length == 0) {
+            //    window.location.href = "index.html?rnd=" + Date.now() + needcheckstate;
+            //} else {
+            //    var referrer = document.referrer.toLowerCase();
+            //    if (referrer.indexOf('sign.html')) {
+            //        referrer = 'index.html?rnd=' + Date.now();
+            //    } else {
+            //        if (referrer.indexOf('rnd') > 0) {
+            //            referrer.replace('rnd=', 'rnd=0');
+            //        } else {
+            //            if (referrer.indexOf('?') < 0) {
+            //                referrer += '?';
+            //            }
 
-                        referrer += 'rnd=' + Date.now();
-                    }
-                }
-
-                window.location.href = referrer + needcheckstate;
-            }
+            //            referrer += 'rnd=' + Date.now();
+            //        }
+            //    }
+            //}
+            //    window.location.href = referrer + needcheckstate;
+            window.location.href = 'profile.html?rnd=' + Date.now() + needcheckstate;
         },
         dataType: 'xml',
         xhrFields: {

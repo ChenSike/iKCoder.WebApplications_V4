@@ -3,7 +3,7 @@
 function initPage() {
     //$('.wrap-vadio').hide();
     //$('.mask-vadio').hide();
-    $('.fa.fa-volume-up').hide();
+    $('.fa.fa-volume-up').show();
     adjustPositions();
     $(window).resize(function () {
         adjustPositions();
@@ -17,13 +17,13 @@ function initPage() {
     $('#btn_Volume').on('click', function (eventObj) {
         //if ($('#vadio_Content')[0].muted) {
         if (audio.muted) {
-            $('.fa-stack.fa-lg').show();
-            $('.fa.fa-volume-up').hide();
+            $('.fa-stack.fa-lg').hide();
+            $('.fa.fa-volume-up').show();
             //$('#vadio_Content')[0].muted = false;
             audio.muted = false;
         } else {
-            $('.fa-stack.fa-lg').hide();
-            $('.fa.fa-volume-up').show();
+            $('.fa-stack.fa-lg').show();
+            $('.fa.fa-volume-up').hide();
             //$('#vadio_Content')[0].muted = true;
             audio.muted = true;
         }

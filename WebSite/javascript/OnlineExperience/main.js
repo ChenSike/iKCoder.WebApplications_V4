@@ -27,7 +27,7 @@ var cameraPosGameOver = 260;
 var monsterAcceleration = 0.004;
 var malusClearColor = 0xb44b39;
 var malusClearAlpha = 0;
-var audio = new Audio('media/sound_1.mp3');
+var audio = new Audio('media/sound_3.mp3');
 
 var fieldGameOver, fieldDistance;
 

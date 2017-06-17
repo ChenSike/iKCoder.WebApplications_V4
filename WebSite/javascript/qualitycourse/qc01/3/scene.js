@@ -122,6 +122,138 @@ Scene.resetSize = function () {
 };
 
 Scene.settingComplete = function () {
-    $(_dataForSave).find('data').append($('<event device="' + Engine.params.control.device + '" key="' + Engine.params.control.key + '"/>'));
-    showCompleteAlert();
-}
+    if ($(_dataForSave).find('data').find('event').length > 0) {
+        $($(_dataForSave).find('data').find('event')[0]).attr('device', Engine.params.control.device);
+        $($(_dataForSave).find('data').find('event')[0]).attr('key', Engine.params.control.key);
+    } else {
+        $(_dataForSave).find('data').append($('<event device="' + Engine.params.control.device + '" key="' + Engine.params.control.key + '"/>'));
+    }
+
+    var symbol = getQueryString('scene').split('_')[0] + '_state_storage';
+    if ($(_dataForSave).find('data').find('lib').length <= 0) {
+        $(_dataForSave).find('data').append('<lib/>');
+        var libNode = $($(_dataForSave).find('data').find('lib')[0]);
+        var currSymbol = _currentStage.split('_')[0];
+        var libArr = [
+            '<item src="javascript/qualitycourse/' + currSymbol + '/main.js"/>',
+            '<item src="javascript/qualitycourse/' + currSymbol + '/Materials.js"/>',
+            '<item src="javascript/qualitycourse/' + currSymbol + '/objects.js"/>',
+            '<item src="javascript/qualitycourse/' + currSymbol + '/share.js"/>'
+        ];
+        libNode.append(libArr.join(''));
+    }
+
+    _registerRemoteServer();
+    var origin = window.location.origin + '/' + window.location.pathname.split('/')[1] + '/';
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.share.sharesave, {}),
+        data: '<root><sencesymbol>' + symbol + '</sencesymbol><config>' + XMLToString(_dataForSave) + '</config><serverpath>' + origin + '</serverpath></root>',
+        success: function (response, status) {
+            if ($(response).find('err').length > 0) {
+                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_QualityCourse');
+                return;
+            }
+
+            var nodes = $(response).find('msg');
+            var qrSymbol = '';
+            var linkStr = '';
+            for (var i = 0; i < nodes.length; i++) {
+                if (typeof $(nodes[i]).attr('qrsymbol') != 'undefined') {
+                    qrSymbol = $(nodes[i]).attr('qrsymbol');
+                    linkStr = $(nodes[i]).attr('link');
+                }
+            }
+
+            Scene.buildCompleteHTML(qrSymbol);            
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+        }
+    });
+};
+
+Scene.buildCompleteHTML = function (qrSymbol) {
+    var qrSrc = _getRequestURL(_gURLMapping.data.getimage, { operation: 'AllowedOperation', symbol: qrSymbol });
+    var tmpHTMLArr = [];
+    //tmpHTMLArr.push('<div class="wrap-workstatus-alert" style="display: block;">');
+    tmpHTMLArr.push('    <div class="wrap-complete-alert" style="display: block;">');
+    tmpHTMLArr.push('        <div class="container">');
+    tmpHTMLArr.push('            <div class="row justify-content-center">');
+    tmpHTMLArr.push('                <div class="col-8 text-center" style="padding-top: 60px;padding-bottom: 30px; color:rgb(255,255,2555);">');
+    tmpHTMLArr.push('                    <div class="step-complete-title" id="title_StepComplete">祝贺你！已经成功完成了体验课，接下来你可以：</div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('            <div class="row justify-content-center">');
+    tmpHTMLArr.push('                <div class="col-4 text-center">');
+    tmpHTMLArr.push('                    <div class="container-fluid">');
+    tmpHTMLArr.push('                        <div class="row">');
+    tmpHTMLArr.push('                            <div class="col-12">');
+    tmpHTMLArr.push('                                <p style="color:rgb(255,255,255);">注册账户，学习更多课程</p>');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                        <div class="row">');
+    tmpHTMLArr.push('                            <div class="col-12" style="padding:40px;">');
+    tmpHTMLArr.push('                                <form class="form-inline">');
+    tmpHTMLArr.push('                                    <div class="input-group">');
+    tmpHTMLArr.push('                                        <input type="text" class="form-control rounded-right" id="txt_QC_FreeSignUp" placeholder="手机号码">');
+    tmpHTMLArr.push('                                        <div class="input-group-addon btn btn-outline-primary" id="btn_QC_FreeSignUp" style="background-color:#0275d8;color:rgb(255,255,255)">免费注册</div>');
+    tmpHTMLArr.push('                                    </div>');
+    tmpHTMLArr.push('                                </form>');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                        <div class="row">');
+    tmpHTMLArr.push('                            <div class="col-5 offset-1">');
+    tmpHTMLArr.push('                                <div class="step-complete-button text-center" id="btn_QC_GoHome"><span class="glyphicon glyphicon-repeat"></span>返回首页</div>');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                            <div class="col-5">');
+    tmpHTMLArr.push('                                <div class="step-complete-button text-center" id="btn_QC_Restart"><span class="glyphicon glyphicon-repeat"></span>重新开始</div>');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('                <div class="col-1 text-center">');
+    tmpHTMLArr.push('                    <div style="border-right: solid 1px rgb(255,255,255); height: 80px; top: calc(50% - 40px); position:relative;">');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('                <div class="col-4 text-center">');
+    tmpHTMLArr.push('                    <div class="container-fluid">');
+    tmpHTMLArr.push('                        <div class="row">');
+    tmpHTMLArr.push('                            <div class="col-12">');
+    tmpHTMLArr.push('                                <p style="color:rgb(255,255,255);">扫一扫，分享我的作品</p>');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                        <div class="row">');
+    tmpHTMLArr.push('                            <div class="col-12" style="padding-bottom: 30px;">');
+    tmpHTMLArr.push('                                <img id="img_Share_QR" src="' + qrSrc + '" style="width:160px" />');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    //tmpHTMLArr.push('</div>');
+    $('.wrap-workstatus-alert').empty();
+    $('.wrap-workstatus-alert').append($(tmpHTMLArr.join('')));
+    $('.wrap-workstatus-alert').show();
+
+    $('#btn_QC_FreeSignUp').on('click', function () {
+        window.localStorage.removeItem(symbol);
+        window.location.href = 'signin.html?opt=signup&number=' + $('#txt_QC_FreeSignUp').val().trim() + '?rnd=' + Date.now();;
+    });
+
+    $('#btn_QC_GoHome').on('click', function () {
+        window.localStorage.removeItem(symbol);
+        window.location.href = "index.html?qid=" + _gCID;
+    });
+
+    $('#btn_QC_Restart').on('click', function () {
+        window.localStorage.removeItem(symbol);
+        window.location.href = "OnlineExperience.html?qid=" + _gCID;
+    });
+};

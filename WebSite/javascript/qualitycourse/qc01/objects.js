@@ -321,6 +321,10 @@ Rabbit.prototype.init = function () {
         }
     });
 
+    this.earL.scale.set(Engine.params.modules.rabbit.ear, Engine.params.modules.rabbit.ear, Engine.params.modules.rabbit.ear);
+    this.earR.scale.set(Engine.params.modules.rabbit.ear, Engine.params.modules.rabbit.ear, Engine.params.modules.rabbit.ear);
+    this.body.scale.set(Engine.params.modules.rabbit.body, Engine.params.modules.rabbit.body, Engine.params.modules.rabbit.body);
+    this.head.scale.set(Engine.params.modules.rabbit.head, Engine.params.modules.rabbit.head, Engine.params.modules.rabbit.head);
     this.mesh.rotation.y = Math.PI / 2;
 };
 
@@ -669,6 +673,11 @@ Wolf.prototype.init = function () {
     this.pawBL.castShadow = true;
     this.pawBR.castShadow = true;
 
+    this.earL.scale.set(Engine.params.modules.wolf.ear, Engine.params.modules.wolf.ear, Engine.params.modules.wolf.ear);
+    this.earR.scale.set(Engine.params.modules.wolf.ear, Engine.params.modules.wolf.ear, Engine.params.modules.wolf.ear);
+    this.body.scale.set(Engine.params.modules.wolf.body, Engine.params.modules.wolf.body, Engine.params.modules.wolf.body);
+    this.head.scale.set(Engine.params.modules.wolf.head, Engine.params.modules.wolf.head, Engine.params.modules.wolf.head);
+
     //this.body.rotation.y = Math.PI / 2;
     this.mesh.rotation.y = Math.PI / 2;
 };
@@ -732,6 +741,7 @@ Wolf.prototype.jump = function () {
     }
 
     var _this = this;
+    this.poseType = Engine._stateJump;
     var totalSpeed = 10 / this.speed;
     var jumpHeight = Engine.params.playerJumpHeight;
     //EAR
@@ -747,12 +757,29 @@ Wolf.prototype.jump = function () {
     //MOUTH
     TweenMax.to(this.mouth.rotation, totalSpeed, { x: .5, ease: Back.easeOut });
     //MESH
-    TweenMax.to(this.mesh.position, totalSpeed / 2, { y: jumpHeight, ease: Power2.easeOut });
-    TweenMax.to(this.mesh.position, totalSpeed / 2, {
-        y: 12, ease: Power4.easeIn, delay: totalSpeed / 2, onComplete: function () {
-            _this.state = Engine._stateRun;
+    TweenMax.to(
+        this.mesh.position,
+        totalSpeed / 2,
+        {
+            y: jumpHeight,
+            ease: Power2.easeOut,
+            onComplete: function () {
+                TweenMax.to(
+                    _this.mesh.position,
+                    totalSpeed / 2,
+                    {
+                        y: 12,
+                        ease: Power4.easeIn,
+                        delay: totalSpeed / 2,
+                        onComplete: function () {
+                            _this.state = Engine._stateRun;
+                            _this.poseType = Engine._stateRun;
+                        }
+                    }
+               );
+            }
         }
-    });
+    );
 };
 
 Wolf.prototype.hang = function () {

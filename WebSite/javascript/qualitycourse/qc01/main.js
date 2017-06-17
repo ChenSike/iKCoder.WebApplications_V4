@@ -160,7 +160,9 @@ Engine.initRender = function () {
 
     Engine.renderer.setSize(Engine.container.width(), Engine.container.height());
     Engine.renderer.shadowMap.enabled = true;
-    Engine.container.append(Engine.renderer.domElement);
+    var renderEl = Engine.renderer.domElement;
+    Engine.container.append(renderEl);
+    renderEl.oncontextmenu = new Function("event.returnValue=false;");
 };
 
 Engine.initLights = function () {
@@ -242,8 +244,8 @@ Engine.checkCollision = function () {
         if (Engine.modules.prop.mesh.visible) {
             Engine.modules.bonus.mesh.position.copy(Engine.modules.prop.mesh.position);
             Engine.modules.bonus.explose();
-            Engine.modules.prop.angle += Math.PI / 2;
-            Engine.modules.monster.monsterPosTarget += .025;
+            Engine.modules.prop.angle -= Math.PI / 2;
+            Engine.modules.monster.monsterPosTarget += .03;
         }
     }
 

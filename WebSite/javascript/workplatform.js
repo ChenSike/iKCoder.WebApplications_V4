@@ -627,6 +627,8 @@ function initData(response) {
         if (tmpAttr && tmpAttr != '') {
             if (tmpAttr.indexOf('Engine\\game_engine.JS') > 0) {
                 data.blockly.lib.push('javascript/3dmodule/pacman.js');
+            } else if (tmpAttr.indexOf('common') == 0) {
+                data.blockly.lib.push('javascript/scene/' + tmpAttr);
             } else {
                 var tmpArr = tmpAttr.split('\\');
                 tmpArr[0] = tmpArr[0] + '_3d';
@@ -643,10 +645,10 @@ function initData(response) {
         data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
     } else if (_currentStage.toLowerCase() == 'a_01_003') {
         data.blockly.toolbox = XMLToString(LoadXMLFile('javascript/scene/a-01-003/intrcourse/1/toolbox.xml'));
-        //data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js');
-        //data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Engine/konvas.js');
-        //data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Engine/game_engine.js');
-        //data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/scene/scene.js');
+        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js');
+        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Engine/konvas.js');
+        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Engine/game_engine.js');
+        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/scene/scene.js');
     } else {
         addLibPath($($(response).find("toolbox")[0]));
         var tmpPaths = $(response).find("game").find('script');

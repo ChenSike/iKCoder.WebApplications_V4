@@ -4,7 +4,7 @@ var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
 var _gHostName = 'http://119.23.233.224/ikcoderapi';
-//var _gHostName = 'http://10.111.0.81/ikcoderapi';
+//var _gHostName = 'http://10.111.0.199/ikcoderapi';
 //var _gHostName = 'http://10.111.0.243/ikcoderapi';
 //var _gHostName = 'http://10.86.215.83/ikcoderapi';
 var _gURLMapping = {
@@ -27,7 +27,8 @@ var _gURLMapping = {
     },
     data: {
         getwordlist: '/data/get_checkcodenua.aspx',
-        getaudio: '/Data/api_iKCoder_Data_Get_Audio.aspx'
+        getaudio: '/Data/api_iKCoder_Data_Get_Audio.aspx',
+        getimage: '/Data/api_iKCoder_Data_Get_Image.aspx'
     },
     bus: {
         getworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Get_Workspace.aspx',
@@ -50,7 +51,8 @@ var _gURLMapping = {
         storeload: '/bus/store/api_iKCoder_Store_Load.aspx'   //?symbol=XXX&type=XXXX'
     },
     share: {
-        sharesave: '/bus/share/api_iKCoder_Share_Save.aspx'//<root><sencesymbol></sencesymbol><config></config></root>
+        sharesave: '/bus/share/api_iKCoder_Share_Save.aspx',//<root><sencesymbol>可选参数，默认DEFAULT，多个体验课进行区别的</sencesymbol><config> 保存的内容</config><serverpath>服务器路径前缀</serverpath></root>
+        shareload:'/bus/share/api_iKCoder_Share_Load.aspx'
     }
 };
 

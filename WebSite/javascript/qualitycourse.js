@@ -40,6 +40,8 @@ function initPage() {
 };
 
 function initEvents() {
+    document.getElementsByClassName('run-scene-fullscreen-play-button')[0].oncontextmenu = new Function("event.returnValue=false;");
+
     $('#btn_Footer_Logo').on('click', function (e) {
         //WorkScene.saveStatus();
         window.location.href = "index.html?rnd=" + Date.now();
@@ -192,44 +194,8 @@ function initEvents() {
 
     $('#btn_Step_GoNext').on('click', function (e) {
         var symbol = getQueryString('scene').split('_')[0] + '_state_storage';
-        if (_currentStep == _totalSteps) {
-            $(_dataForSave).find('data').append('<lib/>');
-            var libNode = $($(_dataForSave).find('data').find('lib')[0]);
-            var currSymbol = _currentStage.split('_')[0];
-            var libArr = [
-                '<item src="javascript/qualitycourse/' + currSymbol + '/main.js"/>',
-                '<item src="javascript/qualitycourse/' + currSymbol + '/Materials.js"/>',
-                '<item src="javascript/qualitycourse/' + currSymbol + '/objects.js"/>',
-                '<item src="javascript/qualitycourse/' + currSymbol + '/share.js"/>'
-            ];
-            libNode.append(libArr.join(''));
-            _registerRemoteServer();
-            $.ajax({
-                type: 'POST',
-                async: true,
-                url: _getRequestURL(_gURLMapping.share.sharesave, {}),
-                data: '<root><sencesymbol>' + symbol + '</sencesymbol><config>' + XMLToString(_dataForSave) + '</config></root>',
-                success: function (response, status) {
-                    if ($(response).find('err').length > 0) {
-                        _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_QualityCourse');
-                        return;
-                    }
-
-                    window.location.href = 'share.html?scene=qc01&rnd=' + Date.now();
-                },
-                dataType: 'xml',
-                xhrFields: {
-                    withCredentials: true
-                },
-                error: function () {
-                }
-            });
-            window.localStorage.removeItem(symbol);
-            window.location.href = 'share.html?scene=qc01&rnd=' + Date.now();
-        } else {
-            window.localStorage.setItem(symbol, _dataForSave);
-            window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
-        }
+        window.localStorage.setItem(symbol, _dataForSave);
+        window.location.href = 'qualitycourse.html?scene=qc01_3_' + _nextStep + '&rnd=' + Date.now();
     });
 
     $('#btn_Step_FindError').on('click', function (e) {
