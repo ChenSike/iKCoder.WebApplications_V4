@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-_useFullContainer = true;
+var _useFullContainer = true;
 
 function Brush() {
     Module.call(this);
