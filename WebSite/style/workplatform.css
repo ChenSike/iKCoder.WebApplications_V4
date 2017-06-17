@@ -316,7 +316,7 @@ footer {
     border: none;
     background-color: rgb(34,34,34);
     display: none;
-    z-index: 800;
+    z-index: 1000;
 }
 
 .code-panel-header {
@@ -438,7 +438,7 @@ textarea {
     border: 1px solid rgb(00,00,00);
     background-color: rgb(249,248,228);
     display: none;
-    z-index: 800;
+    z-index: 1000;
 }
 
 .word-panel-header {
@@ -548,7 +548,7 @@ textarea {
     border: 1px solid rgb(00,00,00);
     background-color: rgb(249,248,228);
     display: none;
-    z-index: 800;
+    z-index: 1000;
 }
 
 .knowledge-panel-header {
