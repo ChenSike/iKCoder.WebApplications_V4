@@ -22,6 +22,7 @@ Scene.defaultDATA = [
 Scene.mapDATA = [];
 
 Scene.targetPos = { x: 10, y: 7 };
+Scene.bigGoodsPos = { x: 3, y: 12 };
 Scene.countGoods = [];
 Scene.countGoodNum = 5;
 
@@ -109,7 +110,7 @@ Scene.initMap = function () {
 				goods.push(newGoods);
 				tmpKey = Engine.addModuleObject(newGoods, tmpX, null, tmpZ);
 			}else if (Scene.defaultDATA[i][j] == 4) {
-				var newCountGoods = new CountGoods(5);
+				var newCountGoods = new CountGoods(Scene.countGoodNum);
 				Scene.countGoods.push(newCountGoods);
 				tmpKey = Engine.addModuleObject(newCountGoods, tmpX, null, tmpZ);
 			}
@@ -180,12 +181,11 @@ Scene.reset = function () {
 	Scene.getPlayer().reset();
 	var x = Scene.getPlayer().defaultCoord.x;
 	var y = Scene.getPlayer().defaultCoord.y;
-	if (Scene.mapDATA[y][x].t == 0 || Scene.mapDATA[y][x].t == 2) {
+	if (Scene.mapDATA[y][x].t == 0 || Scene.mapDATA[y][x].t == 2 || Scene.mapDATA[y][x].t == 4) {
 		Engine.getModuleObject(Scene.mapDATA[y][x].s).mesh.visible = false;
 	}
 
-	Scene.mapDATA[y][x].v = false;
-
+	Scene.countGoods[0].resetCount(Scene.countGoodNum, Scene.mapDATA[Scene.bigGoodsPos.y][Scene.bigGoodsPos.x]);
 };
 
 Scene.resetMap = function () {
@@ -218,15 +218,6 @@ Scene.TurnRight = function () {
 };
 
 Scene.EatBigGoods = function () {
-	//Scene.push({ count: -1 });
-	//Scene.countGoodNum = Scene.countGoodNum--;
-
-	//var tmpFn = function () {
-	//	Scene.countGoods[0].text = Scene.countGoodNum.toString();
-	//	Scene.countGoods[0].createText();
-	//}
-
-    //Engine.getModuleObject('pacman').setActionForCollideCountGoods(tmpFn);
     Scene.addModuelPath('pacman', 'eat', 1);
 };
 

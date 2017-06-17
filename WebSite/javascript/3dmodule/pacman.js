@@ -908,6 +908,16 @@ CountGoods.prototype.collideAction = function (sourceModule) {
     return false;
 };
 
+CountGoods.prototype.resetCount = function (count, mapItem) {
+	this.count=count;
+	this.text = this.count.toString();
+	this.createText();
+	this.mesh.scale.set(1, 1, 1);
+	this.textMeshs.scale.set(1, 1, 1);
+	this.mesh.visible = true;
+	mapItem.v = true;
+};
+
 CountGoods.prototype.updateCount = function (mapItem) {
     this.updating = true;
     var _that = this;
