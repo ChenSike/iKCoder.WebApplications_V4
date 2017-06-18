@@ -49,7 +49,7 @@ function initPage() {
                         LoadSceneLib(data.blockly);
                         $('#mask_Page_Loading').hide();
                         $('#mask_Page_Loading').css('visibility', 'hidden');
-                        window.setTimeout('adjustAfterSiderBarResize();', 300);
+                        window.setTimeout('adjustAfterSiderBarResize();', 2000);
                         window.setTimeout('WorkScene.saveStatus(true);', 60000);
                     },
                     dataType: 'xml',
