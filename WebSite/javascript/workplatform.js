@@ -625,33 +625,40 @@ function initData(response) {
     var addLibPath = function (node) {
         var tmpAttr = node.attr('src');
         if (tmpAttr && tmpAttr != '') {
-            if (tmpAttr.indexOf('Engine\\game_engine.JS') > 0) {
-                data.blockly.lib.push('javascript/3dmodule/pacman.js');
-            } else if (tmpAttr.indexOf('common') == 0) {
-                data.blockly.lib.push('javascript/scene/' + tmpAttr);
-            } else {
-                var tmpArr = tmpAttr.split('\\');
-                tmpArr[0] = tmpArr[0] + '_3d';
-                data.blockly.lib.push('javascript/scene/' + tmpArr.join('\\'));
-            }
+            data.blockly.lib.push('javascript/scene/' + tmpAttr);
         }
     }
 
 
-    if (('a_01_001|a_01_002').indexOf(_currentStage.toLowerCase()) >= 0) {
+    if (_currentStage.toLowerCase().indexOf('a_01_00') >= 0) {
+        if (_currentStage.toLowerCase().indexOf('3') >= 0) {
+            data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js');
+            data.blockly.toolbox = XMLToString(LoadXMLFile('javascript/scene/a-01-003/intrcourse/1/toolbox.xml'));
+        }
+
         var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
         data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
         data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
         data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
-    } else if (_currentStage.toLowerCase() == 'a_01_003') {
-        data.blockly.toolbox = XMLToString(LoadXMLFile('javascript/scene/a-01-003/intrcourse/1/toolbox.xml'));
-        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js');
-        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Engine/konvas.js');
-        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Engine/game_engine.js');
-        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/scene/scene.js');
     } else {
-        addLibPath($($(response).find("toolbox")[0]));
         var tmpPaths = $(response).find("game").find('script');
+        var include3D = false;
+        for (var i = 0; i < tmpPaths.length ; i++) {
+            if ($(tmpPaths[i]).attr('src').toLowerCase().indexOf('_3d') >= 0) {
+                include3D = true;
+                break;
+            }
+        }
+
+        if (include3D) {
+            data.blockly.lib.push('javascript/common/three.min.js');
+            data.blockly.lib.push('javascript/common/TweenMax.min.js');
+            data.blockly.lib.push('javascript/common/threeengine.js');
+        } else {
+            data.blockly.lib.push('javascript/common/pixi.js');
+        }
+
+        addLibPath($($(response).find("toolbox")[0]));
         for (var i = 0; i < tmpPaths.length ; i++) {
             addLibPath($(tmpPaths[i]));
         }
@@ -659,7 +666,6 @@ function initData(response) {
 
     _messages.success = $($(response).find("message").find('suc')[0]).attr('msg');
     _messages.faild = $($(response).find("message").find('faild')[0]).attr('msg');
-
     return data;
 };
 
