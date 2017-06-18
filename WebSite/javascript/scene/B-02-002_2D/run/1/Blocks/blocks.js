@@ -1,4 +1,4 @@
-﻿Blockly.Blocks['block_start'] = {
+﻿Blockly.Blocks['event_start'] = {
     init: function () {
         this.appendDummyInput()
             .appendField("开始运行");
@@ -10,7 +10,7 @@
     }
 };
 
-Blockly.JavaScript['block_start'] = function (block) {
+Blockly.JavaScript['event_start'] = function (block) {
     var code = "Scene.AllowStart();\n";
     return code;
     //return '';
