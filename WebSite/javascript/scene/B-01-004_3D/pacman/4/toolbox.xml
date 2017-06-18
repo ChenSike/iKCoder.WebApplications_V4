@@ -4,5 +4,5 @@
   <block type="turn_right"></block>
   <block type="move_nstep_forward"></block>
   <block type="if_condition"></block>
- 
+  <block type="forloop"></block>
 </xml>
