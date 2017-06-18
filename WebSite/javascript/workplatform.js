@@ -638,17 +638,15 @@ function initData(response) {
     }
 
 
-    if (('a_01_001|a_01_002').indexOf(_currentStage.toLowerCase()) >= 0) {
+    if (_currentStage.toLowerCase().indexOf('a_01_00') >= 0) {
         var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
         data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
         data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
         data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
-    } else if (_currentStage.toLowerCase() == 'a_01_003') {
-        data.blockly.toolbox = XMLToString(LoadXMLFile('javascript/scene/a-01-003/intrcourse/1/toolbox.xml'));
-        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js');
-        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Engine/konvas.js');
-        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Engine/game_engine.js');
-        data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/scene/scene.js');
+        if (_currentStage.toLowerCase().indexOf('3') >= 0) {
+            data.blockly.toolbox = XMLToString(LoadXMLFile('javascript/scene/a-01-003/intrcourse/1/toolbox.xml'));
+            data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js');
+        }
     } else {
         addLibPath($($(response).find("toolbox")[0]));
         var tmpPaths = $(response).find("game").find('script');
