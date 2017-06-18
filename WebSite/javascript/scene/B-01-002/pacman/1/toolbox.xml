@@ -1,5 +1,0 @@
-﻿<xml id="toolbox" style="display: none">
-  <block type="event_start"></block>
-  <block type="forloop"></block>
-  <block type="move_forward"></block>
-</xml>

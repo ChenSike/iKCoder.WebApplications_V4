@@ -1,7 +1,0 @@
-﻿<xml id="toolbox" style="display: none">
-  <block type="event_start"></block>
-  <block type="turn_right"></block>
-  <block type="turn_left"></block>
-  <block type="move_one_forward"></block>
-  <block type="whileloop"></block>
-</xml>
