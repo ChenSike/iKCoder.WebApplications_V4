@@ -181,7 +181,7 @@ Scene.buildCompleteHTML = function (qrSymbol) {
     var qrSrc = _getRequestURL(_gURLMapping.data.getimage, { operation: 'AllowedOperation', symbol: qrSymbol });
     var tmpHTMLArr = [];
     //tmpHTMLArr.push('<div class="wrap-workstatus-alert" style="display: block;">');
-    tmpHTMLArr.push('    <div class="wrap-complete-alert" style="display: block;">');
+    tmpHTMLArr.push('    <div class="wrap-complete-alert" style="display: block; height:auto;">');
     tmpHTMLArr.push('        <div class="container">');
     tmpHTMLArr.push('            <div class="row justify-content-center">');
     tmpHTMLArr.push('                <div class="col-8 text-center" style="padding-top: 60px;padding-bottom: 30px; color:rgb(255,255,2555);">');
@@ -210,7 +210,7 @@ Scene.buildCompleteHTML = function (qrSymbol) {
     tmpHTMLArr.push('                            <div class="col-5 offset-1">');
     tmpHTMLArr.push('                                <div class="step-complete-button text-center" id="btn_QC_GoHome"><span class="glyphicon glyphicon-repeat"></span>返回首页</div>');
     tmpHTMLArr.push('                            </div>');
-    tmpHTMLArr.push('                            <div class="col-5">');
+    tmpHTMLArr.push('                            <div class="col-5" style="padding-bottom:40px;">');
     tmpHTMLArr.push('                                <div class="step-complete-button text-center" id="btn_QC_Restart"><span class="glyphicon glyphicon-repeat"></span>重新开始</div>');
     tmpHTMLArr.push('                            </div>');
     tmpHTMLArr.push('                        </div>');

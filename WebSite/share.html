@@ -9,6 +9,10 @@
     <script src="javascript/common.js"></script>
     <script src="javascript/common/three.min.js"></script>
     <script src="javascript/common/TweenMax.min.js"></script>
+    <!--<script src="javascript/qualitycourse/qc01/main.js"></script>
+    <script src="javascript/qualitycourse/qc01/Materials.js"></script>
+    <script src="javascript/qualitycourse/qc01/objects.js"></script>
+    <script src="javascript/qualitycourse/qc01/share.js"></script>-->
     <style>
         .logo-home {
             position: absolute;
@@ -61,7 +65,7 @@
                     for (var i = 0; i < libItems.length; i++) {
                         libs.push($(libItems[i]).attr('src'));
                     }
-
+                    //Scene.init();
                     LoadLib(libs);
                 },
                 dataType: 'xml',
