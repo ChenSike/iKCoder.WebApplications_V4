@@ -577,11 +577,12 @@ Engine.setOverEventFn = function (fn) {
 };
 
 Engine.updateLevel = function() {
-    if (Engine.modules.player && Engine.modules.player.speed >= Engine.params.speed.player.max) {
-        return;
+    if (Engine.modules.player) {
+        if (Engine.modules.player.speed < Engine.params.speed.player.max) {
+            Engine.modules.player.speed += 2;
+            Engine.modules.monster.speed += 2;
+        }
     }
-
-    Engine.modules.player.speed += 2;
 }
 
 var Module = function () {
