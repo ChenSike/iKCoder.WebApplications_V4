@@ -197,29 +197,30 @@ Scene.resetSize = function () {
 	}
 };
 
+
 Scene.move = function (steps) {
 	Scene.addModuelPath('pacman', 'm', steps);
 
 	var curX = Scene.getPlayer().coord.x;
 	var curY = Scene.getPlayer().coord.y;
-	var curOrientation = 0;
+	var curOrientation = Scene.getPlayer().orientation;
 
 	if (Scene._CALCMOVEPATH.length > 0) {
 		curOrientation = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation;
+		curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
+		curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
+	}
 
-		switch (curOrientation) {
-			case 0:
-			case 2:
-				curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x + (curOrientation == 0 ? 1 : -1) * steps;
-				curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
-				break;
+	switch (curOrientation) {
+		case 0:
+		case 2:
+			curX = curX + (curOrientation == 0 ? 1 : -1) * steps;
+			break;
 
-			case 1:
-			case 3:
-				curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
-				curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y +(curOrientation == 1 ? -1 : 1) * steps;
-				break;
-		}
+		case 1:
+		case 3:
+			curY = curY + (curOrientation == 1 ? -1 : 1) * steps;
+			break;
 	}
 
 	var pathItemOri = {
@@ -231,6 +232,7 @@ Scene.move = function (steps) {
 	Scene._CALCMOVEPATH.push(pathItemOri);
 };
 
+
 Scene.TurnLeft = function (output) {
 	if (output === true) {
 		return 'this.turnLeft(' + Engine.getModuleObject('pacman').orientation + ');';
@@ -238,16 +240,31 @@ Scene.TurnLeft = function (output) {
 		Scene.addModuelPath('pacman', 'tl');
 	}
 
-	var orientationObj = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation + 1;
-	orientationObj = (orientationObj == 4 ? 0 : orientationObj);
+	if (Scene._CALCMOVEPATH.length == 0) {
+		var orientationObj = Scene.getPlayer().orientation + 1;
+		orientationObj = (orientationObj == 4 ? 0 : orientationObj);
 
-	var pathItemOri = {
-		x: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x,
-		y: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y,
-		orientation: orientationObj
-	};
+		var pathItemOri = {
+			x: Scene.getPlayer().coord.x,
+			y: Scene.getPlayer().coord.y,
+			orientation: orientationObj
+		};
 
-	Scene._CALCMOVEPATH.push(pathItemOri);
+		Scene._CALCMOVEPATH.push(pathItemOri);
+
+	} else {
+
+		var orientationObj = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation + 1;
+		orientationObj = (orientationObj == 4 ? 0 : orientationObj);
+
+		var pathItemOri = {
+			x: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x,
+			y: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y,
+			orientation: orientationObj
+		};
+
+		Scene._CALCMOVEPATH.push(pathItemOri);
+	}
 };
 
 Scene.TurnRight = function (output) {
@@ -257,16 +274,31 @@ Scene.TurnRight = function (output) {
 		Scene.addModuelPath('pacman', 'tr');
 	}
 
-	var orientationObj = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation - 1;
-	orientationObj = (orientationObj == -1 ? 3 : orientationObj);
+	if (Scene._CALCMOVEPATH.length == 0) {
+		var orientationObj = Scene.getPlayer().orientation - 1;
+		orientationObj = (orientationObj == -1 ? 3 : orientationObj);
 
-	var pathItemOri = {
-		x: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x,
-		y: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y,
-		orientation: orientationObj
-	};
+		var pathItemOri = {
+			x: Scene.getPlayer().coord.x,
+			y: Scene.getPlayer().coord.y,
+			orientation: orientationObj
+		};
 
-	Scene._CALCMOVEPATH.push(pathItemOri);
+		Scene._CALCMOVEPATH.push(pathItemOri);
+
+	} else {
+
+		var orientationObj = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation - 1;
+		orientationObj = (orientationObj == -1 ? 3 : orientationObj);
+
+		var pathItemOri = {
+			x: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x,
+			y: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y,
+			orientation: orientationObj
+		};
+
+		Scene._CALCMOVEPATH.push(pathItemOri);
+	}
 };
 
 Scene.moveForward = function () {
@@ -346,27 +378,6 @@ Scene.startGame = function () {
 	Scene.start();
 };
 
-
-Scene.setFunctionWhenWall = function (logicStr) {
-	var arr = logicStr.split(';');
-	var newCode = '';
-	for (var i = 0; i < arr.length; i++) {
-		if (arr[i].indexOf('Scene.TurnLeft') >= 0) {
-			newCode += Scene.TurnLeft(true);
-		} else if (arr[i].indexOf('Scene.TurnRight') >= 0) {
-			newCode += Scene.TurnRight(true);
-		}
-	}
-
-	var tmpFn = function () {
-		eval(newCode);
-		return false;
-	};
-
-	Engine.getModuleObject('pacman').setActionForCollideWallSeq(tmpFn);
-	Engine.getModuleObject('pacman').setActionForCollideGoods(function () { return true; });
-};
-
 Scene.NotEatRedBeans = function () {
 
 	var nextX, nextY, currentX, currentY, currentOrientation;
@@ -385,7 +396,7 @@ Scene.NotEatRedBeans = function () {
 		currentY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
 	}
 
-var targetPos = Scene.targetPos;
+	var targetPos = Scene.targetPos;
 	if (Scene.isWall()) {
 		return false;
 	} else {
