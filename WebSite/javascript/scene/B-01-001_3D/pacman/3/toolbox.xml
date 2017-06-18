@@ -4,5 +4,4 @@
   <block type="move_onestep_down"></block>
   <block type="move_onestep_left"></block>
   <block type="move_onestep_right"></block>
- 
 </xml>
