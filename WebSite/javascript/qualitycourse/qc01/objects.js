@@ -1,5 +1,28 @@
 ﻿'use strict';
 
+var easeModuleP1I = Power1.easeIn;
+var easeModuleP1O = Power1.easeOut;
+var easeModuleP1IO = Power1.easeOut;
+var easeModuleP2I = Power2.easeIn;
+var easeModuleP2O = Power2.easeOut;
+var easeModuleP2IO = Power2.easeInOut;
+var easeModuleP4I = Power4.easeIn;
+var easeModuleP4O = Power4.easeOut;
+var easeModuleP4IO = Power4.easeInOut;
+var easeModuleBack = Back.easeOut;
+if (window.navigator.userAgent.toLowerCase().indexOf('micromessenger/') > 0) {
+    easeModuleP1I = Linear.easeNone;
+    easeModuleP1O = Linear.easeNone;
+    easeModuleP1IO = Linear.easeNone;
+    easeModuleP2I = Linear.easeNone;
+    easeModuleP2O = Linear.easeNone;
+    easeModuleP2IO = Linear.easeNone;
+    easeModuleP4I = Linear.easeNone;
+    easeModuleP4O = Linear.easeNone;
+    easeModuleP4IO = Linear.easeNone;
+    easeModuleBack = Linear.easeNone;
+}
+
 function Floor(isForest) {
     Module.call(this);
     this.state = Engine._stateRun;
@@ -153,8 +176,8 @@ BonusParticles.prototype.explose = function () {
         p.scale.set(1, 1, 1);
         p.visible = true;
         var s = explosionSpeed + Math.random() * 0.5;
-        TweenMax.to(p.position, s, { x: tx, y: ty, z: tz, ease: Power4.easeOut });
-        TweenMax.to(p.scale, s, { x: 0.01, y: 0.01, z: 0.01, ease: Power4.easeOut, onComplete: function (p) { p.visible = false; }, onCompleteParams: [p] });
+        TweenMax.to(p.position, s, { x: tx, y: ty, z: tz, ease: easeModuleP4O });
+        TweenMax.to(p.scale, s, { x: 0.01, y: 0.01, z: 0.01, ease: easeModuleP4O, onComplete: function (p) { p.visible = false; }, onCompleteParams: [p] });
     }
 };
 
@@ -378,43 +401,43 @@ Rabbit.prototype.nod = function () {
     var random = 0.5 + Math.random();
     // HEAD
     var tmpRotation = -Math.PI / 6 + Math.random() * Math.PI / 3;
-    TweenMax.to(this.head.rotation, random, { y: tmpRotation, ease: Power4.easeInOut, onComplete: function () { _this.nod() } });
+    TweenMax.to(this.head.rotation, random, { y: tmpRotation, ease: easeModuleP4IO, onComplete: function () { _this.nod() } });
     // EARS
     tmpRotation = Math.PI / 4 + Math.random() * Math.PI / 6;
-    TweenMax.to(this.earL.rotation, random, { x: tmpRotation, ease: Power4.easeInOut });
+    TweenMax.to(this.earL.rotation, random, { x: tmpRotation, ease: easeModuleP4IO });
     tmpRotation = Math.PI / 4 + Math.random() * Math.PI / 6;
-    TweenMax.to(this.earR.rotation, random, { x: tmpRotation, ease: Power4.easeInOut });
+    TweenMax.to(this.earR.rotation, random, { x: tmpRotation, ease: easeModuleP4IO });
     // PAWS BACK LEFT
     tmpRotation = Math.random() * Math.PI / 2;
     var tmpPositionY = -4 + Math.random() * 8;
-    TweenMax.to(this.pawBL.rotation, random / 2, { x: tmpRotation, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-    TweenMax.to(this.pawBL.position, random / 2, { y: tmpPositionY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    TweenMax.to(this.pawBL.rotation, random / 2, { x: tmpRotation, ease: easeModuleP1IO, yoyo: true, repeat: 2 });
+    TweenMax.to(this.pawBL.position, random / 2, { y: tmpPositionY, ease: easeModuleP1IO, yoyo: true, repeat: 2 });
     // PAWS BACK RIGHT
     tmpRotation = Math.random() * Math.PI / 2;
     tmpPositionY = -4 + Math.random() * 8;
-    TweenMax.to(this.pawBR.rotation, random / 2, { x: tmpRotation, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-    TweenMax.to(this.pawBR.position, random / 2, { y: tmpPositionY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    TweenMax.to(this.pawBR.rotation, random / 2, { x: tmpRotation, ease: easeModuleP1IO, yoyo: true, repeat: 2 });
+    TweenMax.to(this.pawBR.position, random / 2, { y: tmpPositionY, ease: easeModuleP1IO, yoyo: true, repeat: 2 });
     // PAWS FRONT LEFT
     tmpRotation = Math.random() * Math.PI / 2;
     tmpPositionY = -4 + Math.random() * 8;
-    TweenMax.to(this.pawFL.rotation, random / 2, { x: tmpRotation, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-    TweenMax.to(this.pawFL.position, random / 2, { y: tmpPositionY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    TweenMax.to(this.pawFL.rotation, random / 2, { x: tmpRotation, ease: easeModuleP1IO, yoyo: true, repeat: 2 });
+    TweenMax.to(this.pawFL.position, random / 2, { y: tmpPositionY, ease: easeModuleP1IO, yoyo: true, repeat: 2 });
     // PAWS FRONT RIGHT
     tmpRotation = Math.random() * Math.PI / 2;
     tmpPositionY = -4 + Math.random() * 8;
-    TweenMax.to(this.pawFR.rotation, random / 2, { x: tmpRotation, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
-    TweenMax.to(this.pawFR.position, random / 2, { y: tmpPositionY, ease: Power1.easeInOut, yoyo: true, repeat: 2 });
+    TweenMax.to(this.pawFR.rotation, random / 2, { x: tmpRotation, ease: easeModuleP1IO, yoyo: true, repeat: 2 });
+    TweenMax.to(this.pawFR.position, random / 2, { y: tmpPositionY, ease: easeModuleP1IO, yoyo: true, repeat: 2 });
     // MOUTH
     tmpRotation = Math.random() * Math.PI / 8;
-    TweenMax.to(this.mouth.rotation, random, { x: tmpRotation, ease: Power1.easeInOut });
+    TweenMax.to(this.mouth.rotation, random, { x: tmpRotation, ease: easeModuleP1IO });
     // IRIS
     tmpPositionY = -1 + Math.random() * 2;
     var tmpPositionZ = -1 + Math.random() * 2;
-    TweenMax.to([this.irisL.position, this.irisR.position], random, { y: tmpPositionY, z: tmpPositionZ, ease: Power1.easeInOut });
+    TweenMax.to([this.irisL.position, this.irisR.position], random, { y: tmpPositionY, z: tmpPositionZ, ease: easeModuleP1IO });
     //EYES
     if (this.role == 'player' || this.role == 'monster') {
         if (Math.random() > 0.2) {
-            TweenMax.to([this.eyeR.scale, this.eyeL.scale], random / 8, { y: 0, ease: Power1.easeInOut, yoyo: true, repeat: 1 });
+            TweenMax.to([this.eyeR.scale, this.eyeL.scale], random / 8, { y: 0, ease: easeModuleP1IO, yoyo: true, repeat: 1 });
         }
     }
 };
@@ -429,17 +452,17 @@ Rabbit.prototype.jump = function () {
     var totalSpeed = 10 / this.speed;
     var jumpHeight = Engine.params.playerJumpHeight;
     //EAR
-    TweenMax.to(this.earL.rotation, totalSpeed, { x: "+=.3", ease: Back.easeOut });
-    TweenMax.to(this.earR.rotation, totalSpeed, { x: "-=.3", ease: Back.easeOut });
+    TweenMax.to(this.earL.rotation, totalSpeed, { x: "+=.3", ease: easeModuleBack });
+    TweenMax.to(this.earR.rotation, totalSpeed, { x: "-=.3", ease: easeModuleBack });
     //PAW
-    TweenMax.to(this.pawFL.rotation, totalSpeed, { x: "+=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawFR.rotation, totalSpeed, { x: "-=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawBL.rotation, totalSpeed, { x: "+=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawBR.rotation, totalSpeed, { x: "-=.7", ease: Back.easeOut });
+    TweenMax.to(this.pawFL.rotation, totalSpeed, { x: "+=.7", ease: easeModuleBack });
+    TweenMax.to(this.pawFR.rotation, totalSpeed, { x: "-=.7", ease: easeModuleBack });
+    TweenMax.to(this.pawBL.rotation, totalSpeed, { x: "+=.7", ease: easeModuleBack });
+    TweenMax.to(this.pawBR.rotation, totalSpeed, { x: "-=.7", ease: easeModuleBack });
     //TAIL
-    TweenMax.to(this.tail.rotation, totalSpeed, { x: "+=1", ease: Back.easeOut });
+    TweenMax.to(this.tail.rotation, totalSpeed, { x: "+=1", ease: easeModuleBack });
     //MOUTH
-    TweenMax.to(this.mouth.rotation, totalSpeed, { x: .5, ease: Back.easeOut });
+    TweenMax.to(this.mouth.rotation, totalSpeed, { x: .5, ease: easeModuleBack });
     //MESH
     //TweenMax.to(this.mesh.position, totalSpeed / 2, { y: jumpHeight, ease: Power2.easeOut });
     TweenMax.to(
@@ -447,14 +470,14 @@ Rabbit.prototype.jump = function () {
         totalSpeed / 2,
         {
             y: jumpHeight,
-            ease: Power2.easeOut,
+            ease: easeModuleP2O,
             onComplete: function () {
                 TweenMax.to(
                     _this.mesh.position,
                     totalSpeed / 2,
                     {
                         y: 0,
-                        ease: Power4.easeIn,
+                        ease: easeModuleP4I,
                         delay: totalSpeed / 2,
                         onComplete: function () {
                             _this.state = Engine._stateRun;
@@ -470,7 +493,7 @@ Rabbit.prototype.jump = function () {
 Rabbit.prototype.hang = function () {
     var _this = this;
     var speed = 1;
-    var ease = Power4.easeOut;
+    var ease = easeModuleP4O;
     TweenMax.killTweensOf(this.eyeL.scale);
     TweenMax.killTweensOf(this.eyeR.scale);
     this.body.position.y = 0;
@@ -492,7 +515,7 @@ Rabbit.prototype.hang = function () {
 
 Rabbit.prototype.sit = function () {
     var speed = 1.2;
-    var ease = Power4.easeOut;
+    var ease = easeModuleP4O;
     var _this = this;
     TweenMax.to(this.body.rotation, speed, { x: -Math.PI / 4, ease: ease });
     TweenMax.to(this.mesh.position, speed, {
@@ -748,13 +771,13 @@ Wolf.prototype.nod = function () {
     // HEAD
     var rotationY = -Math.PI / 3 + Math.random() * 0.5;
     var rotationX = Math.PI / 3 - 0.2 + Math.random() * 0.4;
-    TweenMax.to(this.head.rotation, random, { x: rotationX, y: rotationY, ease: Power4.easeInOut, onComplete: function () { _this.nod() } });
+    TweenMax.to(this.head.rotation, random, { x: rotationX, y: rotationY, ease: easeModuleP4IO, onComplete: function () { _this.nod() } });
     // TAIL
     rotationY = -Math.PI / 4;
-    TweenMax.to(this.tail.rotation, random / 8, { y: rotationY, ease: Power1.easeInOut, yoyo: true, repeat: 8 });
+    TweenMax.to(this.tail.rotation, random / 8, { y: rotationY, ease: easeModuleP1IO, yoyo: true, repeat: 8 });
     // EYES
     if (this.role == 'player' || this.role == 'monster') {
-        TweenMax.to([this.eyeR.scale, this.eyeL.scale], random / 20, { y: 0, ease: Power1.easeInOut, yoyo: true, repeat: 1 });
+        TweenMax.to([this.eyeR.scale, this.eyeL.scale], random / 20, { y: 0, ease: easeModuleP1IO, yoyo: true, repeat: 1 });
     }
 };
 
@@ -768,31 +791,31 @@ Wolf.prototype.jump = function () {
     var totalSpeed = 10 / this.speed;
     var jumpHeight = Engine.params.playerJumpHeight;
     //EAR
-    TweenMax.to(this.earL.rotation, totalSpeed, { x: "+=.3", ease: Back.easeOut });
-    TweenMax.to(this.earR.rotation, totalSpeed, { x: "-=.3", ease: Back.easeOut });
+    TweenMax.to(this.earL.rotation, totalSpeed, { x: "+=.3", ease: easeModuleBack });
+    TweenMax.to(this.earR.rotation, totalSpeed, { x: "-=.3", ease: easeModuleBack });
     //PAW
-    TweenMax.to(this.pawFL.rotation, totalSpeed, { x: "+=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawFR.rotation, totalSpeed, { x: "-=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawBL.rotation, totalSpeed, { x: "+=.7", ease: Back.easeOut });
-    TweenMax.to(this.pawBR.rotation, totalSpeed, { x: "-=.7", ease: Back.easeOut });
+    TweenMax.to(this.pawFL.rotation, totalSpeed, { x: "+=.7", ease: easeModuleBack });
+    TweenMax.to(this.pawFR.rotation, totalSpeed, { x: "-=.7", ease: easeModuleBack });
+    TweenMax.to(this.pawBL.rotation, totalSpeed, { x: "+=.7", ease: easeModuleBack });
+    TweenMax.to(this.pawBR.rotation, totalSpeed, { x: "-=.7", ease: easeModuleBack });
     //TAIL
-    TweenMax.to(this.tail.rotation, totalSpeed, { x: "+=1", ease: Back.easeOut });
+    TweenMax.to(this.tail.rotation, totalSpeed, { x: "+=1", ease: easeModuleBack });
     //MOUTH
-    TweenMax.to(this.mouth.rotation, totalSpeed, { x: .5, ease: Back.easeOut });
+    TweenMax.to(this.mouth.rotation, totalSpeed, { x: .5, ease: easeModuleBack });
     //MESH
     TweenMax.to(
         this.mesh.position,
         totalSpeed / 2,
         {
             y: jumpHeight,
-            ease: Power2.easeOut,
+            ease: easeModuleP2O,
             onComplete: function () {
                 TweenMax.to(
                     _this.mesh.position,
                     totalSpeed / 2,
                     {
                         y: 12,
-                        ease: Power4.easeIn,
+                        ease: easeModuleP4I,
                         delay: totalSpeed / 2,
                         onComplete: function () {
                             _this.state = Engine._stateRun;
@@ -808,7 +831,7 @@ Wolf.prototype.jump = function () {
 Wolf.prototype.hang = function () {
     var _this = this;
     var speed = 1;
-    var ease = Power4.easeOut;
+    var ease = easeModuleP4O;
     TweenMax.killTweensOf(this.eyeL.scale);
     TweenMax.killTweensOf(this.eyeR.scale);
     this.body.position.y = 0;
@@ -833,7 +856,7 @@ Wolf.prototype.hang = function () {
 Wolf.prototype.sit = function () {
     var tmpConst = 1.2;
     this.state = Engine._stateSit;
-    var ease = Power4.easeOut;
+    var ease = easeModuleP4O;
     var _this = this;
     TweenMax.to(this.torso.rotation, tmpConst, { x: -1.3, ease: ease });
     TweenMax.to(this.torso.position, tmpConst, {
