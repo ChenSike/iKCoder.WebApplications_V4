@@ -621,6 +621,74 @@ Brush.getLineEquation = function (sx, sy, tx, ty) {
     };
 };
 
+Brush.getPatternsTrack = function (parent) {
+    var tracks = [];
+    var pattern, tmpVal, tmpVertices, tmpGeometry, tmpMesh, subItem, tmpFlag;
+    for (var i = 0; i < parent.patterns; i++) {
+        pattern = parent.patterns[i];
+        var trackItem = {
+            type: pattern.type,
+            sx: null,
+            sy: null,
+            ex: null,
+            ey: null,
+            cx: null,
+            cy: null,
+            radius: null,
+            sa: null,
+            ea: null,
+            vertices: [],
+            patterns: []
+        }
+
+        trackItem.type = pattern.type;
+        tmpMesh = pattern.mesh;
+        if (pattern.type = 'line') {
+            tmpVertices = tmpMesh.geometry.vertices;
+            trackItem.sx = tmpVertices[0].x;
+            trackItem.sy = tmpVertices[0].y;
+            tmpVal = Math.sqrt(Math.pow(tmpVertices[1].x - tmpVertices[0].x, 2) + Math.pow(tmpVertices[1].y - tmpVertices[0].y, 2));
+            trackItem.ex = tmpVal * Math.cos(tmpMesh.rotation.z) + tmpVertices[0].x;
+            trackItem.ey = tmpVal * Math.sin(tmpMesh.rotation.z) + tmpVertices[0].y;
+        } else if (pattern.type = 'patterngroup') {
+            tmpVertices = [];
+            trackItem.vertices = [];
+            trackItem.patterns = Brush.getPatternsTrack(pattern);
+            for (var j = 0; j < trackItem.patterns.length; j++) {
+                subItem = trackItem.patterns[j];
+                if (subItem.type == 'line') {
+                    tmpVertices.push({ x: subItem.sx, y: subItem.sy });
+                    tmpVertices.push({ x: subItem.ex, y: subItem.ey });
+                }
+            }
+
+            for (var j = 0; j < tmpVertices.length; j++) {
+                tmpFlag = true;
+                for (var k = 0; k < trackItem.vertices.length; k++) {
+                    if (trackItem.vertices[k].x == tmpVertices[j].x && trackItem.vertices[k].y == tmpVertices[j].y) {
+                        tmpFlag = false;
+                        break;
+                    }
+                }
+
+                if (tmpFlag) {
+                    trackItem.vertices.push(tmpVertices[j]);
+                }
+            }
+        } else if (pattern.type = 'arc') {
+            trackItem.cx = pattern.params.x;
+            trackItem.cy = pattern.params.y;
+            trackItem.radius = pattern.params.r;
+            trackItem.sa = tmpMesh.rotation.z * 180 / Math.PI + _arc.params.sa;
+            trackItem.ea = tmpMesh.rotation.z * 180 / Math.PI + _arc.params.ea;
+        }
+
+        tracks.push(trackItem);
+    }
+
+    return tracks;
+};
+
 function Line(brush, sx, sy, tx, ty, color, width) {
     Module.call(this);
     this.brush = brush;
@@ -933,4 +1001,4 @@ Arc.prototype.getGeometry = function (loopCount) {
     var shape = new THREE.Shape();
     shape.fromPoints(this.getVertices(loopCount));
     return new THREE.ExtrudeGeometry(shape, this.params.op);
-}
+};
