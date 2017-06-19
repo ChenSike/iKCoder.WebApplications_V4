@@ -1,0 +1,20 @@
+﻿<xml id="workspacefactory_toolbox" class="toolbox">
+  <category name="事件" colour="#0076ff" id="category_Event" iconposition="0px -136px">
+  </category>
+  <category name="动作" colour="#FF2851" id="category_Action" iconposition="0px -45px">
+  </category>
+  <category name="运算" colour="#FFCD00" id="category_Calculate" iconposition="0px -90px">
+  </category>
+  <category name="外观" colour="#FF3824" id="category_Facade" iconposition="0px -181px">
+  </category>
+  <category name="控制" colour="#54C7FC" id="category_Control" iconposition="0px -232px">
+  </category>
+  <category name="数据" colour="#FF9600" id="category_Data" iconposition="0px -278px">
+
+  </category>
+  <category name="侦测" colour="#44DB5E"  id="category_Detecte" iconposition="0px -368px">
+
+  </category>
+  <category name="角色" colour="#E86CEB" id="category_Role" iconposition="0px -323px"/>
+  <category name="声音" colour="#5BE3C5" id="category_Sound" iconposition="0px -414px"/>
+</xml>

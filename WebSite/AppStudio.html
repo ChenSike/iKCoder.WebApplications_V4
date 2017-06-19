@@ -1,0 +1,494 @@
+﻿<!DOCTYPE html>
+<html style="height:100%">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <style>
+        #mask_Page_Loading {
+            display: flex !important;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(242,242,242);
+            z-index: 99999;
+            -webkit-box-align: center !important;
+            -webkit-align-items: center !important;
+            -ms-flex-align: center !important;
+            align-items: center !important;
+        }
+
+        #loader {
+            /*background-color: #dc3522;*/
+            background-color: rgb(186,186,186);
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            z-index: 1;
+            margin-top: 0px;
+            top: 0px;
+        }
+
+        #loader-center {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #loader-center-absolute {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 150px;
+            width: 150px;
+            margin-top: -75px;
+            margin-left: -75px;
+            -ms-transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .loader-object {
+            width: 20px;
+            height: 20px;
+            background-color: #FFF;
+            position: absolute;
+            left: 65px;
+            top: 65px;
+            -moz-border-radius: 50% 50% 50% 50%;
+            -webkit-border-radius: 50% 50% 50% 50%;
+            border-radius: 50% 50% 50% 50%;
+        }
+
+            .loader-object:nth-child(2n+0) {
+                margin-right: 0px;
+            }
+
+        #loader_object_one {
+            -webkit-animation: loader_object_one 2s infinite;
+            animation: loader_object_one 2s infinite;
+            -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s;
+        }
+
+        #loader_object_two {
+            -webkit-animation: loader_object_two 2s infinite;
+            animation: loader_object_two 2s infinite;
+            -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+        }
+
+        #loader_object_three {
+            -webkit-animation: loader_object_three 2s infinite;
+            animation: loader_object_three 2s infinite;
+            -webkit-animation-delay: 0.4s;
+            animation-delay: 0.4s;
+        }
+
+        #loader_object_four {
+            -webkit-animation: loader_object_four 2s infinite;
+            animation: loader_object_four 2s infinite;
+            -webkit-animation-delay: 0.5s;
+            animation-delay: 0.5s;
+        }
+
+        #loader_object_five {
+            -webkit-animation: loader_object_five 2s infinite;
+            animation: loader_object_five 2s infinite;
+            -webkit-animation-delay: 0.6s;
+            animation-delay: 0.6s;
+        }
+
+        #loader_object_six {
+            -webkit-animation: loader_object_six 2s infinite;
+            animation: loader_object_six 2s infinite;
+            -webkit-animation-delay: 0.7s;
+            animation-delay: 0.7s;
+        }
+
+        #loader_object_seven {
+            -webkit-animation: loader_object_seven 2s infinite;
+            animation: loader_object_seven 2s infinite;
+            -webkit-animation-delay: 0.8s;
+            animation-delay: 0.8s;
+        }
+
+        #loader_object_eight {
+            -webkit-animation: loader_object_eight 2s infinite;
+            animation: loader_object_eight 2s infinite;
+            -webkit-animation-delay: 0.9s;
+            animation-delay: 0.9s;
+        }
+
+        #loader_object_big {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            left: 50px;
+            top: 50px;
+            -webkit-animation: loader_object_big 2s infinite;
+            animation: loader_object_big 2s infinite;
+            -webkit-animation-delay: 0.5s;
+            animation-delay: 0.5s;
+        }
+
+        @-webkit-keyframes loader_object_big {
+            50% {
+                -webkit-transform: scale(0.5);
+            }
+        }
+
+        @keyframes loader_object_big {
+            50% {
+                transform: scale(0.5);
+                -webkit-transform: scale(0.5);
+            }
+        }
+
+        @-webkit-keyframes loader_object_one {
+            50% {
+                -webkit-transform: translate(-65px,-65px);
+            }
+        }
+
+        @keyframes loader_object_one {
+            50% {
+                transform: translate(-65px,-65px);
+                -webkit-transform: translate(-65px,-65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_two {
+            50% {
+                -webkit-transform: translate(0,-65px);
+            }
+        }
+
+        @keyframes loader_object_two {
+            50% {
+                transform: translate(0,-65px);
+                -webkit-transform: translate(0,-65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_three {
+            50% {
+                -webkit-transform: translate(65px,-65px);
+            }
+        }
+
+        @keyframes loader_object_three {
+            50% {
+                transform: translate(65px,-65px);
+                -webkit-transform: translate(65px,-65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_four {
+
+            50% {
+                -webkit-transform: translate(65px,0);
+            }
+        }
+
+        @keyframes loader_object_four {
+            50% {
+                transform: translate(65px,0);
+                -webkit-transform: translate(65px,0);
+            }
+        }
+
+        @-webkit-keyframes loader_object_five {
+            50% {
+                -webkit-transform: translate(65px,65px);
+            }
+        }
+
+        @keyframes loader_object_five {
+            50% {
+                transform: translate(65px,65px);
+                -webkit-transform: translate(65px,65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_six {
+
+            50% {
+                -webkit-transform: translate(0,65px);
+            }
+        }
+
+        @keyframes loader_object_six {
+            50% {
+                transform: translate(0,65px);
+                -webkit-transform: translate(0,65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_seven {
+
+            50% {
+                -webkit-transform: translate(-65px,65px);
+            }
+        }
+
+        @keyframes loader_object_seven {
+            50% {
+                transform: translate(-65px,65px);
+                -webkit-transform: translate(-65px,65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_eight {
+
+            50% {
+                -webkit-transform: translate(-65px,0);
+            }
+        }
+
+        @keyframes loader_object_eight {
+            50% {
+                transform: translate(-65px,0);
+                -webkit-transform: translate(-65px,0);
+            }
+        }
+
+
+        #tooltip_Component {
+            z-index: 9999;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            opacity: 0.8;
+            display: none;
+        }
+
+        .tooltip-warning-wrap {
+            z-index: -10;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            display: none;
+            border: solid 5px rgb(255,204,51);
+            border-radius: 15px;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+        }
+
+            .tooltip-warning-wrap.hidden {
+                display: none;
+            }
+    </style>
+    <link rel="stylesheet" href="style/jquery-ui.min.css">
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.min.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <link rel="stylesheet" href="style/appstudio.css">
+    <link rel="stylesheet" href="style/workspace.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.min.js"></script>
+    <script src="javascript/common/storage.js"></script>
+    <script src="javascript/blockly_compressed.js"></script>
+    <script src="javascript/blocks_compressed.js"></script>
+    <script src="javascript/javascript_compressed.js"></script>
+    <script src="msg/messages.js"></script>
+    <script src="msg/js/zh-hans.js"></script>
+    <script src="javascript/common/ExtendBlockly.js"></script>
+    <script src="javascript/common/ExtendBlockRenderSvg.js"></script>
+    <script src="javascript/common/xmloperator.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/common/three.min.js"></script>
+    <script src="javascript/common/TweenMax.min.js"></script>
+    <script src="javascript/common/threeengine.js"></script>
+    <script src="javascript/appstudio.js"></script>
+    <script src="javascript/appstudio/Blocks/blocks.js"></script>
+    <script src="javascript/appstudio/Scene/scene.js"></script>
+</head>
+<body>
+
+    <div id="mask_Page_Loading">
+        <div id="loader">
+            <div id="loader-center">
+                <div id="loader-center-absolute">
+                    <div class="loader-object" id="loader_object_one"></div>
+                    <div class="loader-object" id="loader_object_two"></div>
+                    <div class="loader-object" id="loader_object_three"></div>
+                    <div class="loader-object" id="loader_object_four"></div>
+                    <div class="loader-object" id="loader_object_five"></div>
+                    <div class="loader-object" id="loader_object_six"></div>
+                    <div class="loader-object" id="loader_object_seven"></div>
+                    <div class="loader-object" id="loader_object_eight"></div>
+                    <div class="loader-object" id="loader_object_big"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-sm navbar-light bg-success" id="menu_NavBar" style="padding:0px 15px; font-family:微软雅黑; font-size:14px;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown link
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-sm navbar-light bg-primary" id="tool_NavBar" style="padding:0px 15px; font-family:微软雅黑; font-size:14px;">
+        <a class="navbar-brand" href="#">Tool Bar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="card cord-wrap text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" style="font-family:微软雅黑; font-size:14px;">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">工作区</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">代码区</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">测试</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-block" style="padding: 0px;">
+            <div class="container-fluid" id="toolbar_Wrap_Workspace" style="height:35px;background-color:rgb(26,164,216);">
+                <div class="row align-items-center" style="height: 100%;padding-left:15px;">
+                    <div class="col" style="max-width:150px; min-width:150px;">
+                        <div class="wrap-workspace-toolbox">
+                            工具箱
+                        </div>
+                    </div>
+                    <div class="col no-padding" style="font-size: 13px; font-weight: bolder; color:rgb(255,255,255);">
+                        <div class="container-fluid" id="wrap_Workspace_Toolbar">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <span>工作区域</span>
+                                </div>
+                                <div class="col" style="min-width:200px; max-width:200px;">
+                                    <div class="container-fluid">
+                                        <div class="row" style="height: 23px;">
+                                            <div class="col-3">
+                                                <i class="workspace-tool-item workspace-play-button fa fa-play" aria-hidden="true" title="运行"></i>
+                                            </div>
+                                            <div class="col-3">
+                                                <i class="workspace-tool-item workspace-share-button fa fa-share-alt" aria-hidden="true" title="分享"></i>
+                                            </div>
+                                            <div class="col-3">
+                                                <i class="workspace-tool-item workspace-fullscreen-button fa fa-arrows-alt" aria-hidden="true" title="全屏"></i>
+                                            </div>
+                                            <div class="col-3">
+                                                <i class="workspace-tool-item workspace-referesh-button fa fa-repeat" aria-hidden="true" title="重置"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid" id="wrap_Workspace_Blockly" style="padding:0px;">
+                <div class="row" style="margin:0px;">
+                    <div class="col-12" style="padding:0px;">
+                        <div class="blockly-workspace-wrap" id="wrap_WorkSpace" style="border:none;" >
+                            <div id="content_WorkSpace"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="run-scene-fullscreen">
+        <div id="game_container">
+        </div>
+        <i class="fa fa-play-circle-o run-scene-fullscreen-play-button" title="开始运行"></i>
+        <i class="fa fa-arrows-alt run-scene-fullscreen-full-button" aria-hidden="true" title="全屏"></i>
+        <i class="fa fa-compress fa-rotate-90 run-scene-fullscreen-close-button"></i>
+        <i class="fa fa-expand fa-rotate-90 run-scene-fullscreen-expand-button"></i>
+    </div>
+    <div style="display:none">
+        <audio id="audio_Soundmark"></audio>
+    </div>
+    <div class="workplatform-msg-alert-wrap" id="wrap_WorkPlatform_Msg">
+        <div class="workplatform-msg-alert-container" id="container_WorkPlatform_Msg">
+            <div class="container-fluid">
+                <div class="row justify-content-end">
+                    <div class="col-1">
+                        <i class="fa fa-close" id="btn_WorkPlatform_Msg_Close" style="cursor:pointer;" title="Close"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p id="title_WorkPlatform_Msg" style="text-align:center; font-family:微软雅黑;"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p id="content_WorkPlatform_Msg" style="text-align:center; font-family:微软雅黑; font-size:16px;">
+
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-success" id="btn_Close_WorkPlatform_Msg">我知道了</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="workplatform-msg-alert-logo-wrap" id="wrap_WorkPlatform_Msg_Logo">
+        </div>
+        <div class="workplatform-msg-alert-logo-continer" id="container_WorkPlatform_Msg_Logo">
+            <canvas class="workplatform-msg-alert-logo" id="logo_WorkPlatform_Msg" />
+        </div>
+        <canvas id="logo_WorkPlatform_Msg_Copy" style="display: none; width: 100px; height: 100px;" />
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            _loadLabels();
+            initPage();
+            _startCheckState();
+        });
+    </script>
+</body>
+</html>
