@@ -153,15 +153,7 @@
 
         draw: function() {
             Konva.Image.prototype.draw.apply(this);
-
-            var that = this;
-
-            var imageObj = new Image();
-            imageObj.src = !this._isAssigned ? null : this._isAssignedCorrectly ? 'svg/success.svg' : 'svg/error.svg';
-            that.resultImage.image(imageObj);
-
             this.parent.draw();
-            that.resultImage.draw();
         },
 
         componentPosition() {

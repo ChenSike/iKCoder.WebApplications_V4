@@ -172,7 +172,7 @@ Engine.initScreenAnd3D = function (containerId, params) {
 
 Engine.calcWorldScale = function (needRescale) {
     if (typeof _useFullContainer != 'boolean') {
-        _useFullContainer = false;
+        window._useFullContainer = false;
     }
 
     var containerWidth = Engine.container.width();
