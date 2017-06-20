@@ -485,8 +485,8 @@ function updateTipsText(data) {
     } else {
         data = (data == null ? _topTooltip : data);
         var needEvent = false;
+        var tmpStrArr = [];
         for (var i = 0; i < data.length; i++) {
-            var tmpStrArr = [];
             tmpStrArr.push('<strong style="padding-right:5px;">');
             tmpStrArr.push(data[i].idx);
             tmpStrArr.push('.</strong>');
@@ -507,9 +507,9 @@ function updateTipsText(data) {
             }
 
             tmpStrArr.push('</br>');
-            $('.course-stage-note').html(tmpStrArr.join(''));
         }
 
+        $('.course-stage-note').html(tmpStrArr.join(''));
         if (needEvent) {
             $(".link-button-block-example").click(hightlightExampleBlock);
         }
