@@ -888,9 +888,9 @@ Blockly.BlockSvg.prototype.renderDrawLeft_ = function (steps, highlightSteps) {
                 this.svgCategoryIconRoot_ = Blockly.utils.createSvgElement('g', { 'transform': 'translate(' + tmpX + ',2)' }, this.svgGroup_);
                 this.svgCategoryIcon_ = Blockly.utils.createSvgElement('image', { 'class': 'blocklyTypeIcon', 'height': tmpSize + 'px', 'width': tmpSize + 'px', 'href': "image/icon/" + this.getCategoryIcon() }, this.svgCategoryIconRoot_);
             } else {
-                this.svgCategoryIconRoot_.setAttribute('transform', 'translate(' + tmpX + ',2)');
-                this.svgCategoryIcon_.setAttribute('height', tmpSize + 'px');
-                this.svgCategoryIcon_.setAttribute('width', tmpSize + 'px');
+                //this.svgCategoryIconRoot_.setAttribute('transform', 'translate(' + tmpX + ',2)');
+                //this.svgCategoryIcon_.setAttribute('height', tmpSize + 'px');
+                //this.svgCategoryIcon_.setAttribute('width', tmpSize + 'px');
             }
         }
     }
