@@ -532,6 +532,21 @@ Brush.prototype.checkActionComplete = function (targetObj) {
 }
 
 Brush.prototype.reset = function (resetStyle) {
+    var _self = this;
+    var tmpItem = Engine.scene.children.find(function (item) {
+        if (item.uuid == _self.mesh.uuid) {
+            return item;
+        }
+    });
+
+    if (typeof tmpItem == 'undefined') {
+        Engine.scene.add(this.mesh);
+    }
+
+    this.mesh.position.x = this.basePoint.x;
+    this.mesh.position.y = this.basePoint.y;
+    this.mesh.position.z = this.basePoint.z;
+
     this.track = [];
     this.clearPatterns();
     this.drawSequence = [{}];
@@ -543,9 +558,6 @@ Brush.prototype.reset = function (resetStyle) {
         this.lineWidth = 1;
     }
 
-    this.mesh.position.x = this.basePoint.x;
-    this.mesh.position.y = this.basePoint.y;
-    this.mesh.position.z = this.basePoint.z;
     this.target = { sx: 0, sy: 0, tx: 0, ty: 0, type: '', callback: null };
 };
 
@@ -675,6 +687,10 @@ Brush.getPatternsTrack = function (parent) {
                     trackItem.vertices.push(tmpVertices[j]);
                 }
             }
+
+            for (var j = 0; j < trackItem.vertices.length; j++) {
+
+            }
         } else if (pattern.type == 'arc') {
             trackItem.cx = pattern.params.x;
             trackItem.cy = pattern.params.y;
@@ -735,6 +751,7 @@ Line.prototype.init = function () {
     lineGeometry.vertices.push(new THREE.Vector3(this.params.sx, this.params.sy, 0));
     lineGeometry.vertices.push(new THREE.Vector3(this.params.tx, this.params.ty, 0));
     var lineMate = new THREE.LineBasicMaterial({ color: this.params.c, transparent: true, opacity: 0 });
+    //var lineMate = new THREE.LineBasicMaterial({ color: '#00ff00', transparent: true, opacity: 0.5 });
     this.mesh = new THREE.Line(lineGeometry, lineMate, THREE.LineSegments);
     var cubeGeometry = new THREE.CubeGeometry(1, this.params.w, 1);
     var cubeMaterial = new THREE.MeshBasicMaterial({ color: this.params.c, shading: THREE.FlatShading });
@@ -871,9 +888,13 @@ PatternGroup.prototype.init = function () {
         this.brush.track.pop();
     }
 
+    //this.mesh = tmpTarget[tmpTarget.length - 1].mesh;
     for (var i = this.count - 1; i >= 0; i--) {
         this.patterns.push(tmpTarget[i]);
         this.mesh.add(tmpTarget[i].mesh);
+        //if (i < this.count - 1) {
+        //    this.mesh.add(tmpTarget[i].mesh);
+        //}
     }
 
     this.brush.patterns.push(this);

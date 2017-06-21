@@ -1,13 +1,13 @@
 ﻿'use strict';
 
 var Scene = {};
-Scene.movePoint = {sx : 0, sy: 0, len : 0, lineAngle:90, rotateAngle: 0};
+Scene.movePoint = { sx: 0, sy: 0, len: 0, lineAngle: 90, rotateAngle: 0 };
 Scene.moveLength = 0;
-Scene.rotatePoint = [{x:0, y:0}];
+Scene.rotatePoint = [{ x: 0, y: 0 }];
 
 Scene.initEnvironment = function (containerId) {
     Scene.initGlobalParams();
-    
+
     var params = {
         fog: null,
         camera: {
@@ -150,16 +150,16 @@ Scene.initEnvironment = function (containerId) {
 
         //================================
         //楼梯， 长 = 4， 高 = 2
-         /*Scene.Brush.buildBackgroundLine(0, 0, 4, 0, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(4, 0, 4, 2, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(4, 2, 8, 2, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(8, 2, 8, 4, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(8, 4, 12, 4, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(12, 4, 12, 6, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(12, 6, 16, 6, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(16, 6, 16, 8, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(16, 8, 20, 8, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(20, 8, 20, 10, 4, '#ff0000');*/
+        /*Scene.Brush.buildBackgroundLine(0, 0, 4, 0, 4, '#ff0000');
+       Scene.Brush.buildBackgroundLine(4, 0, 4, 2, 4, '#ff0000');
+       Scene.Brush.buildBackgroundLine(4, 2, 8, 2, 4, '#ff0000');
+       Scene.Brush.buildBackgroundLine(8, 2, 8, 4, 4, '#ff0000');
+       Scene.Brush.buildBackgroundLine(8, 4, 12, 4, 4, '#ff0000');
+       Scene.Brush.buildBackgroundLine(12, 4, 12, 6, 4, '#ff0000');
+       Scene.Brush.buildBackgroundLine(12, 6, 16, 6, 4, '#ff0000');
+       Scene.Brush.buildBackgroundLine(16, 6, 16, 8, 4, '#ff0000');
+       Scene.Brush.buildBackgroundLine(16, 8, 20, 8, 4, '#ff0000');
+       Scene.Brush.buildBackgroundLine(20, 8, 20, 10, 4, '#ff0000');*/
 
         //圆形---圆心坐标为(0, 0), 半径为16， 根据圆的标准方程(x)²+(y)²=r² 计算圆上每点的坐标
         /*var preX = 0, preY = 16;
@@ -193,54 +193,54 @@ Scene.initEnvironment = function (containerId) {
             preY = y;
         }*/
 
-   /* //房子
-      //房顶----等腰三角形，底边 = 32，顶角120，底角30，高 = 9
-        Scene.Brush.buildBackgroundLine(0,9,-16, 0, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(-16,0,16, 0, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(16,0, 0, 9, 4, '#ff0000');
+        /* //房子
+           //房顶----等腰三角形，底边 = 32，顶角120，底角30，高 = 9
+             Scene.Brush.buildBackgroundLine(0,9,-16, 0, 4, '#ff0000');
+             Scene.Brush.buildBackgroundLine(-16,0,16, 0, 4, '#ff0000');
+             Scene.Brush.buildBackgroundLine(16,0, 0, 9, 4, '#ff0000');
+     
+             //墙 ---- 长方形，长 = 24， 宽 = 16
+             Scene.Brush.buildBackgroundLine(-12 ,0, -12, -16, 4, '#ff0000');
+             Scene.Brush.buildBackgroundLine(-12 ,-16, 12, -16, 4, '#ff0000');
+             Scene.Brush.buildBackgroundLine(12 ,-16, 12, 0, 4, '#ff0000');
+             //窗子---正方形， 边长=4
+             Scene.Brush.buildBackgroundLine(-4 ,-2, -8, -2, 4, '#ff0000');
+             Scene.Brush.buildBackgroundLine(-8 ,-2, -8, -6, 4, '#ff0000');
+             Scene.Brush.buildBackgroundLine(-8 ,-6, -4, -6, 4, '#ff0000');
+             Scene.Brush.buildBackgroundLine(-4 ,-6, -4, -2, 4, '#ff0000');
+           
+           //画圆---圆心坐标为(6, -4), 半径为2， 根据圆的标准方程(x－a)²+(y－b)²=r² 计算圆上每点的坐标
+             var a = 6, b = -4, r = 2;
+             var preX = 6, preY = -2;
+             var step = 0.5;
+             for (var x = 6;  x <= 8; x += step){
+                 var y = Math.sqrt(r*r - (x-a)*(x-a)) + b;
+                 Scene.Brush.buildBackgroundLine(preX,preY, x, y, 4, '#ff0000');
+                 preX = x;
+                 preY = y;
+             }
+             
+             var step = -0.5;
+             for (var x = 8;  x >= 4; x += step){
+                 var y = -Math.sqrt(r*r - (x-a)*(x-a)) + b;
+                 Scene.Brush.buildBackgroundLine(preX,preY, x, y, 4, '#ff0000');
+                 preX = x;
+                 preY = y;
+             }
+     
+             var step = 0.5;
+             for (var x = 4;  x <= 6; x += step){
+                 var y = Math.sqrt(r*r - (x-a)*(x-a)) + b;
+                 Scene.Brush.buildBackgroundLine(preX,preY, x, y, 4, '#ff0000');
+                 preX = x;
+                 preY = y;
+             }
+     
+             //门----正方形， 长 = 6， 宽 = 6
+             Scene.Brush.buildBackgroundLine(3 ,-10, 9, -10, 4, '#ff0000');
+             Scene.Brush.buildBackgroundLine(9 ,-10, 9, -16, 4, '#ff0000');
+             Scene.Brush.buildBackgroundLine(3 ,-16, 3, -10, 4, '#ff0000');*/
 
-        //墙 ---- 长方形，长 = 24， 宽 = 16
-        Scene.Brush.buildBackgroundLine(-12 ,0, -12, -16, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(-12 ,-16, 12, -16, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(12 ,-16, 12, 0, 4, '#ff0000');
-        //窗子---正方形， 边长=4
-        Scene.Brush.buildBackgroundLine(-4 ,-2, -8, -2, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(-8 ,-2, -8, -6, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(-8 ,-6, -4, -6, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(-4 ,-6, -4, -2, 4, '#ff0000');
-      
-      //画圆---圆心坐标为(6, -4), 半径为2， 根据圆的标准方程(x－a)²+(y－b)²=r² 计算圆上每点的坐标
-        var a = 6, b = -4, r = 2;
-        var preX = 6, preY = -2;
-        var step = 0.5;
-        for (var x = 6;  x <= 8; x += step){
-            var y = Math.sqrt(r*r - (x-a)*(x-a)) + b;
-            Scene.Brush.buildBackgroundLine(preX,preY, x, y, 4, '#ff0000');
-            preX = x;
-            preY = y;
-        }
-        
-        var step = -0.5;
-        for (var x = 8;  x >= 4; x += step){
-            var y = -Math.sqrt(r*r - (x-a)*(x-a)) + b;
-            Scene.Brush.buildBackgroundLine(preX,preY, x, y, 4, '#ff0000');
-            preX = x;
-            preY = y;
-        }
-
-        var step = 0.5;
-        for (var x = 4;  x <= 6; x += step){
-            var y = Math.sqrt(r*r - (x-a)*(x-a)) + b;
-            Scene.Brush.buildBackgroundLine(preX,preY, x, y, 4, '#ff0000');
-            preX = x;
-            preY = y;
-        }
-
-        //门----正方形， 长 = 6， 宽 = 6
-        Scene.Brush.buildBackgroundLine(3 ,-10, 9, -10, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(9 ,-10, 9, -16, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(3 ,-16, 3, -10, 4, '#ff0000');*/
-        
 
     });
     Scene.Brush.prepareBackground();
@@ -266,11 +266,11 @@ Scene.start = function () {
 
 Scene.reset = function () {
     // Engine.resetScene();
-   
+    TweenMax.killAll();
+    Scene.Brush.reset();
     Scene.Brush.clearPatterns();
-     Scene.Brush.reset();
-     Scene.movePoint = {sx : 0, sy: 0, len : 0, lineAngle:90, rotateAngle: 0};
-     Scene.rotatePoint = [{x:0, y:0}];
+    Scene.movePoint = { sx: 0, sy: 0, len: 0, lineAngle: 90, rotateAngle: 0 };
+    Scene.rotatePoint = [{ x: 0, y: 0 }];
 };
 
 Scene.resetMap = function () {
@@ -351,7 +351,7 @@ Scene.SetLineWidth = function (width) {
 //     if (angle < 180){
 //         var ex =((sx-ox) * (Math.cos(Math.PI / 180 * angle)) - (sy-oy)*(Math.sin(Math.PI / 180 * angle))+ox);
 //         var ey = ((sy-oy) * (Math.cos(Math.PI / 180 * angle)) + (sx-ox)*(Math.sin(Math.PI / 180 * angle))+oy);
-        
+
 //     }else if (angle > 180){
 //         var ex = ((sx-ox) * (Math.cos(Math.PI / 180 * angle)) - (sy-oy)*(Math.sin(Math.PI / 180 * angle))+ox);
 //         var ey = ((sy-oy) * (Math.cos(Math.PI / 180 * angle)) + (sx-ox)*(Math.sin(Math.PI / 180 * angle))+oy);
@@ -363,11 +363,11 @@ Scene.SetLineWidth = function (width) {
 //     return endPoint;
 // };
 
-Scene.RotateLine = function (degree, direction){
+Scene.RotateLine = function (degree, direction) {
     // if (direction===true) {
     //     Scene.movePoint.lineAngle =  90 - degree;
     //     Scene.movePoint.rotateAngle = degree;
-        
+
     // }else if (direction===false){
     //     if (Scene.movePoint.lineAngle == 0){
     //         Scene.movePoint.lineAngle = degree;
@@ -380,7 +380,7 @@ Scene.RotateLine = function (degree, direction){
     // var targetPoint = Scene.calcRotateEndPoint();
     // Scene.movePoint.sx = targetPoint.x;
     // Scene.movePoint.sy = targetPoint.y;
-    
+
     Scene.Brush.lineRotate(degree, direction);
 };
 
