@@ -217,7 +217,7 @@ Scene.move = function (steps) {
 			case 1:
 			case 3:
 				curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
-				curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y +(curOrientation == 1 ? -1 : 1) * steps;
+				curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y + (curOrientation == 1 ? -1 : 1) * steps;
 				break;
 		}
 	}
@@ -300,13 +300,43 @@ Scene.moveForward = function () {
 	Scene._CALCMOVEPATH.push(pathItemNext);
 };
 
+
 Scene.isWall = function () {
+	var nextPoint = Scene.getNextPoint();
+
+	return Scene.checkPointUsedByWall(nextPoint.x, nextPoint.y);
+};
+
+
+Scene.checkPointUsedByWall = function (x, y) {
+	if (Scene.defaultDATA[y][x] == 1) {
+		return true;
+	}
+	return false;
+};
+
+
+Scene.isBeans = function () {
+	var nextPoint = Scene.getNextPoint();
+	return Scene.checkPointUsedByBeans(nextPoint.x, nextPoint.y);
+};
+
+
+Scene.checkPointUsedByBeans = function (x, y) {
+	if (Scene.defaultDATA[y][x] == 0 || Scene.defaultDATA[y][x] == 2) {
+		return true;
+	}
+	return false;
+};
+
+Scene.getNextPoint = function () {
 	var nextX, nextY, currentX, currentY, currentOrientation;
 	if (Scene._CALCMOVEPATH.length != 0) {
 		currentX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
 		currentY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
 		currentOrientation = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation;
 	}
+
 	switch (currentOrientation) {
 		case 0:
 			nextX = currentX + 1;
@@ -326,21 +356,9 @@ Scene.isWall = function () {
 			break;
 	}
 
-	if (Scene.checkPointUsedByWall(nextX, nextY)) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	return { x: nextX, y: nextY };
 };
 
-Scene.checkPointUsedByWall = function (x, y) {
-	if (Scene.defaultDATA[y][x] == 1) {
-		return true;
-	}
-
-	return false;
-};
 
 Scene.startGame = function () {
 	Scene.start();
@@ -385,7 +403,7 @@ Scene.NotEatRedBeans = function () {
 		currentY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
 	}
 
-var targetPos = Scene.targetPos;
+	var targetPos = Scene.targetPos;
 	if (Scene.isWall()) {
 		return false;
 	} else {
@@ -396,4 +414,6 @@ var targetPos = Scene.targetPos;
 		}
 	}
 };
+
+
 

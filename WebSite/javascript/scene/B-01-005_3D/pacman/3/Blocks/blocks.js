@@ -162,42 +162,41 @@ Blockly.Blocks['move_one_forward'] = {
 
 Blockly.JavaScript['move_one_forward'] = function (block) {
 	//return 'Scene.move("", 1);\n';
-	return 'Scene.move(1)';
+	return 'Scene.move(1);\n';
 };
 
 Blockly.Blocks['if_condition'] = {
 	init: function () {
 		this.appendDummyInput()
 			.appendField("如果 ")
-			.appendField("前面是墙");
-		this.appendStatementInput("DO0")
+			.appendField(new Blockly.FieldDropdown([["前面是墙", "wall"], ["前面是豆子", "beans"]]), "beans_wall");
+		this.appendStatementInput("do")
 			.setCheck(null)
 			.appendField("执行");
-		//    this.appendStatementInput("ELSE")
-		//        .setCheck(null)
-		//        .appendField("否则");
 		this.setInputsInline(true);
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
-		this.setColour(230);
+		this.setColour(210);
 		this.setTooltip('');
 		this.setHelpUrl('');
 		var a = this;
 	}
 };
 
-Blockly.JavaScript['if_condition'] = function (a) {
-	var b = 0,
-		c = "",
-		d, e;
-	//do 
-	//e = Blockly.JavaScript.valueToCode(a, "IF" + b, Blockly.JavaScript.ORDER_NONE) || "false", 
-	d = Blockly.JavaScript.statementToCode(a, "DO" + b),
-		c += (0 < b ? " else " : "") + "if (Scene.isWall()) {\nScene.setFunctionWhenWall('" + d + "')}";
-	//++b;
-	//while (a.getInput("IF" + b));
-	//  a.getInput("ELSE") && (d = Blockly.JavaScript.statementToCode(a, "ELSE"), c += " else {\n" + d + "}");
-	return c + ";\n"
+Blockly.JavaScript['if_condition'] = function (block) {
+	var dropDownCode = "Scene.NotEatRedBeans()";
+	var dropDownVal = block.getFieldValue("beans_wall");
+
+	if (dropDownVal === "beans") {
+		dropDownCode = "Scene.isBeans()";
+	} else if (dropDownVal === "wall") {
+		dropDownCode = "Scene.isWall()";
+	}
+
+	var d = Blockly.JavaScript.statementToCode(block, "do");
+	var c = "if (" + dropDownCode + ") {\n" + d + "}";
+
+	return c + "\n";
 };
 
 
