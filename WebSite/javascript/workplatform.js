@@ -536,7 +536,7 @@ function initTopTooltips(notesItems) {
     }
 
     return note;
-}
+};
 
 function initData(response) {
     var userItem = $($(response).find("basic").find("usr")[0]);
@@ -571,7 +571,7 @@ function initData(response) {
         tmpItems = $(wordsItems[i]).find('paraphrase').find('item');
         tmpObj.paraphrase = [];
         for (var j = 0; j < tmpItems.length; j++) {
-            tmpObj.paraphrase.push([$(tmpItems[j]).val()]);
+            tmpObj.paraphrase.push($(tmpItems[j]).html());
         }
 
         tmpItems = $(wordsItems[i]).find('variant').find('item');
@@ -770,10 +770,10 @@ function buildWordListHTML() {
             htmlStringArr.push('            </div>');
         }
 
-        if (data[i].variant) {
+        if (data[i].variant && data[i].variant.length > 0) {
             htmlStringArr.push('        </div>');
             htmlStringArr.push('        <div class="row">');
-            htmlStringArr.push('            <div class="col-12">');
+            htmlStringArr.push('            <div class="col-12 word-variant-header">');
             htmlStringArr.push('变形');
             htmlStringArr.push('            </div>');
             for (var key in data[i].variant) {
@@ -784,6 +784,11 @@ function buildWordListHTML() {
                 htmlStringArr.push(data[i].variant[key]);
                 htmlStringArr.push('            </div>');
             }
+        } else {
+            htmlStringArr.push('        </div>');
+            htmlStringArr.push('        <div class="row">');
+            htmlStringArr.push('            <div class="col-12 my-1">');
+            htmlStringArr.push('            </div>');
         }
 
         htmlStringArr.push('        </div>');
@@ -953,7 +958,7 @@ function gotoSpecialStep(step) {
         error: function () {
         }
     });
-}
+};
 
 function showCompleteAlert() {
     $('.wrap-workstatus-alert').show();
@@ -1052,7 +1057,7 @@ function adjustCanvasSize(containerWrap) {
     playButton.css('font-size', fontSize + 'px');
     playButton.css('left', 'calc(50% - ' + (playButton.width() / 2) + 'px');
     playButton.css('top', ((newHeight - fontSize) / 2) + 'px');
-}
+};
 
 function addOperatorButton() {
 
@@ -1197,7 +1202,7 @@ function showCourseMsg(titleText, contentText) {
     var trBtn = $('#btn_WorkPlatform_Msg_Close');
     var tmpHeight = container.height() - (trBtn.parent().parent().height() + title.parent().parent().height() + button.parent().parent().height() + 30);
     content.height(tmpHeight);
-}
+};
 
 function adjustCourseMsgSize(titleText) {
     var bodyWidth = $('body').width();
@@ -1251,7 +1256,7 @@ function adjustCourseMsgSize(titleText) {
     }
 
     title.css('font-size', fontSize + 'px');
-}
+};
 
 function drawMsgAlertLogo() {
     var tmpImg = new Image();
@@ -1278,4 +1283,9 @@ function drawMsgAlertLogo() {
     tmpImg.onerror = function () {
         tmpImg.src = "image/logotop.png?rnd=" + Date.now();
     }
-}
+};
+
+function changeSiderBarWidth(newWidth) {
+    $('.siderbar-wrap').width(newWidth);
+    adjustAfterSiderBarResize();
+};

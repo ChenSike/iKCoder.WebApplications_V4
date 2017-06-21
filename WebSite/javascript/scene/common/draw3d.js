@@ -643,14 +643,14 @@ Brush.getPatternsTrack = function (parent) {
 
         trackItem.type = pattern.type;
         tmpMesh = pattern.mesh;
-        if (pattern.type = 'line') {
+        if (pattern.type == 'line') {
             tmpVertices = tmpMesh.geometry.vertices;
             trackItem.sx = tmpVertices[0].x;
             trackItem.sy = tmpVertices[0].y;
             tmpVal = Math.sqrt(Math.pow(tmpVertices[1].x - tmpVertices[0].x, 2) + Math.pow(tmpVertices[1].y - tmpVertices[0].y, 2));
             trackItem.ex = tmpVal * Math.cos(tmpMesh.rotation.z) + tmpVertices[0].x;
             trackItem.ey = tmpVal * Math.sin(tmpMesh.rotation.z) + tmpVertices[0].y;
-        } else if (pattern.type = 'patterngroup') {
+        } else if (pattern.type == 'patterngroup') {
             tmpVertices = [];
             trackItem.vertices = [];
             trackItem.patterns = Brush.getPatternsTrack(pattern);
@@ -675,7 +675,7 @@ Brush.getPatternsTrack = function (parent) {
                     trackItem.vertices.push(tmpVertices[j]);
                 }
             }
-        } else if (pattern.type = 'arc') {
+        } else if (pattern.type == 'arc') {
             trackItem.cx = pattern.params.x;
             trackItem.cy = pattern.params.y;
             trackItem.radius = pattern.params.r;

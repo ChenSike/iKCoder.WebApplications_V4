@@ -57,7 +57,7 @@ var configuration = {
         path: "image/scene/intrcourse/svg/cpu.png"
     }, {
         cn: "显卡",
-        en: "Grahpics Card",
+        en: "Graphics Card",
         dt: "计算设备，作为电脑主机里的一个重要组成部分，承担输出显示图形的任务。",
         path: "image/scene/intrcourse/svg/graphics-card.png"
     }, {
