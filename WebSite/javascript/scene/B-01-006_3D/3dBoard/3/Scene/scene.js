@@ -1,8 +1,10 @@
 ﻿'use strict';
 
 var Scene = {};
+var expectedPoint = [0, 0, 0, 8, 0, 8, 12, 8, 12, 8, 12, 0,12, 0, 0, 0];
 
 Scene.initEnvironment = function (containerId) {
+    changeSiderBarWidth(700);
     Scene.initGlobalParams();
     
     var params = {
@@ -68,11 +70,11 @@ Scene.initEnvironment = function (containerId) {
         // Scene.Brush.buildBackgroundLine(6, 10.39, 12, 0, 4, '#ff0000');
         // Scene.Brush.buildBackgroundLine(12, 0, 0, 0, 4, '#ff0000');
 
-        //长方形 --- 长 = 16，宽 = 8
-        Scene.Brush.buildBackgroundLine(0, 0, 0, 8, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(0, 8, 12, 8, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(12, 8, 12, 0, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(12, 0, 0, 0, 4, '#ff0000');
+        //长方形 --- 长 = 12，宽 = 8
+        Scene.Brush.buildBackgroundLine(0, 0, 0, 8, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(0, 8, 12, 8, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(12, 8, 12, 0, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(12, 0, 0, 0, 6, '#919191');
 
         //正方形---边长 = 14
         // Scene.Brush.buildBackgroundLine(0, 0, 0, 14, 4, '#ff0000');
@@ -309,3 +311,31 @@ Scene.RotateLine = function (degree, direction){
 };
 
 
+Scene.GetLinePoint = function () {
+    var pattern;
+    var targetPattern = [];
+    var patternsTrack = Brush.getPatternsTrack(Scene.getBrush());
+    for (var i = 0; i < patternsTrack.length; i ++){
+        pattern = patternsTrack[i];
+        if (pattern.type = 'line'){
+            var sx = parseFloat((pattern.sx/20).toFixed(3));
+            var sy = parseFloat((pattern.sy/20).toFixed(3));
+            var ex = parseFloat((pattern.ex/20).toFixed(3));
+            var ey = parseFloat((pattern.ey/20).toFixed(3));
+            targetPattern.push (sx);
+            targetPattern.push (sy);
+            targetPattern.push (ex);
+            targetPattern.push (ey);
+        }
+    }
+    return targetPattern;
+};
+
+Scene.StepCompleteFn = function (){
+    var actualLinePoint = Scene.GetLinePoint();
+    if (actualLinePoint.length == '16' && ((expectedPoint.sort(function(a,b){ return b-a}).toString() == actualLinePoint.sort(function(a,b){ return b-a}).toString()))){
+        return true;
+    }else{
+        return false;
+    }
+};

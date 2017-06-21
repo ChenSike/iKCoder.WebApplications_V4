@@ -4,10 +4,11 @@ var Scene = {};
 Scene.movePoint = { sx: 0, sy: 0, len: 0, lineAngle: 90, rotateAngle: 0 };
 Scene.moveLength = 0;
 Scene.rotatePoint = [{ x: 0, y: 0 }];
+var expectedPoint = [0, 0, 6, 10.392, 6, 10.392, 12, 0, 12, 0, 0 , 0];
 
 Scene.initEnvironment = function (containerId) {
+    changeSiderBarWidth(700);
     Scene.initGlobalParams();
-
     var params = {
         fog: null,
         camera: {
@@ -66,10 +67,10 @@ Scene.initEnvironment = function (containerId) {
     Engine.prepareForStart();
     Scene.Brush = Scene.getBrush();
     Scene.Brush.setBuildBackgroundFn(function () {
-        //等边三角形---边长 = 16
-        Scene.Brush.buildBackgroundLine(0, 0, 6, 10.39, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(6, 10.39, 12, 0, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(12, 0, 0, 0, 4, '#ff0000');
+        //等边三角形---边长 = 12
+        Scene.Brush.buildBackgroundLine(0, 0, 6, 10.392, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(6, 10.392, 12, 0, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(12, 0, 0, 0, 6, '#919191');
 
         //长方形 --- 长 = 16，宽 = 8
         // Scene.Brush.buildBackgroundLine(0, 0, 0, 8, 4, '#ff0000');
@@ -244,6 +245,7 @@ Scene.initEnvironment = function (containerId) {
 
     });
     Scene.Brush.prepareBackground();
+    
 };
 
 Scene.initGlobalParams = function () {
@@ -302,6 +304,8 @@ Scene.startGame = function () {
    Scene.Brush.lineTo(10, -10);
    Scene.Brush.lineRotate(90, false);*/
     Scene.Brush.startDraw();
+    
+
 };
 
 Scene.MoveForward = function (px) {
@@ -384,4 +388,32 @@ Scene.RotateLine = function (degree, direction) {
     Scene.Brush.lineRotate(degree, direction);
 };
 
+Scene.GetLinePoint = function () {
+    var pattern;
+    var targetPattern = [];
+    var patternsTrack = Brush.getPatternsTrack(Scene.getBrush());
+    for (var i = 0; i < patternsTrack.length; i ++){
+        pattern = patternsTrack[i];
+        if (pattern.type = 'line'){
+            var sx = parseFloat((pattern.sx/20).toFixed(3));
+            var sy = parseFloat((pattern.sy/20).toFixed(3));
+            var ex = parseFloat((pattern.ex/20).toFixed(3));
+            var ey = parseFloat((pattern.ey/20).toFixed(3));
+            targetPattern.push (sx);
+            targetPattern.push (sy);
+            targetPattern.push (ex);
+            targetPattern.push (ey);
+        }
+    }
+    return targetPattern;
+};
+
+Scene.StepCompleteFn = function (){
+    var actualLinePoint = Scene.GetLinePoint();
+    if (actualLinePoint.length == '12' && ((expectedPoint.sort(function(a,b){ return b-a}).toString() == actualLinePoint.sort(function(a,b){ return b-a}).toString()))){
+        return true;
+    }else{
+        return false;
+    }
+};
 

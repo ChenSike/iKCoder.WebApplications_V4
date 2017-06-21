@@ -588,6 +588,11 @@ Brush.prototype.setDrawCompleteFn = function (fn) {
 };
 
 Brush.prototype.drawCompleteFn = function () {
+	    if (Scene.StepCompleteFn()) {
+			Scene.stepComplete();
+		}else{
+			Scene.stepFaild();
+		}
 
 };
 
@@ -636,7 +641,7 @@ Brush.getLineEquation = function (sx, sy, tx, ty) {
 Brush.getPatternsTrack = function (parent) {
     var tracks = [];
     var pattern, tmpVal, tmpVertices, tmpGeometry, tmpMesh, subItem, tmpFlag;
-    for (var i = 0; i < parent.patterns; i++) {
+    for (var i = 0; i < parent.patterns.length; i++) {
         pattern = parent.patterns[i];
         var trackItem = {
             type: pattern.type,

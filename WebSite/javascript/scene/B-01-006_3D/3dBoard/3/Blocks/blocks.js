@@ -20,7 +20,7 @@ Blockly.Blocks['move_forward'] = {
     init: function () {
         this.appendDummyInput()
             .appendField("向前移动")
-            .appendField(new Blockly.FieldNumber(10,1,24,1), "move_steps")
+            .appendField(new Blockly.FieldNumber(12,1,24,1), "move_steps")
             .appendField(" 格 ")
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
@@ -101,7 +101,7 @@ Blockly.Blocks['set_lineWidth'] = {
     init: function () {
         this.appendDummyInput()
             .appendField("设置宽度")
-            .appendField(new Blockly.FieldNumber(1, 1, 10, 1), "lineWidth")
+            .appendField(new Blockly.FieldNumber(6, 1, 15, 1), "lineWidth")
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
         this.setTooltip('');
