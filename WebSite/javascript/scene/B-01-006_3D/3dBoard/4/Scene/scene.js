@@ -1,8 +1,10 @@
 ﻿'use strict';
 
 var Scene = {};
+var expectedPoint = [0, 0, 4, 0,4, 0, 4, 2,4, 2, 8, 2,8, 2, 8, 4,8, 4, 12, 4, 12, 4, 12, 6,12, 6, 16, 6,16, 6, 16, 8,16, 8, 20, 8,20, 8, 20, 10];
 
 Scene.initEnvironment = function (containerId) {
+    changeSiderBarWidth(700);
     Scene.initGlobalParams();
     
     var params = {
@@ -147,16 +149,16 @@ Scene.initEnvironment = function (containerId) {
 
         //================================
         //楼梯， 长 = 4， 高 = 2
-         Scene.Brush.buildBackgroundLine(0, 0, 4, 0, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(4, 0, 4, 2, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(4, 2, 8, 2, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(8, 2, 8, 4, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(8, 4, 12, 4, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(12, 4, 12, 6, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(12, 6, 16, 6, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(16, 6, 16, 8, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(16, 8, 20, 8, 4, '#ff0000');
-        Scene.Brush.buildBackgroundLine(20, 8, 20, 10, 4, '#ff0000');
+         Scene.Brush.buildBackgroundLine(0, 0, 4, 0, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(4, 0, 4, 2, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(4, 2, 8, 2, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(8, 2, 8, 4, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(8, 4, 12, 4, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(12, 4, 12, 6, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(12, 6, 16, 6, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(16, 6, 16, 8, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(16, 8, 20, 8, 6, '#919191');
+        Scene.Brush.buildBackgroundLine(20, 8, 20, 10, 6, '#919191');
 
         //圆形---圆心坐标为(0, 0), 半径为16， 根据圆的标准方程(x)²+(y)²=r² 计算圆上每点的坐标
         /*var preX = 0, preY = 16;
@@ -309,4 +311,33 @@ Scene.RotateLine = function (degree, direction){
     Scene.Brush.lineRotate(degree, direction);
 };
 
+
+Scene.GetLinePoint = function () {
+    var pattern;
+    var targetPattern = [];
+    var patternsTrack = Brush.getPatternsTrack(Scene.getBrush());
+    for (var i = 0; i < patternsTrack.length; i ++){
+        pattern = patternsTrack[i];
+        if (pattern.type = 'line'){
+            var sx = parseFloat((pattern.sx/20).toFixed(3));
+            var sy = parseFloat((pattern.sy/20).toFixed(3));
+            var ex = parseFloat((pattern.ex/20).toFixed(3));
+            var ey = parseFloat((pattern.ey/20).toFixed(3));
+            targetPattern.push (sx);
+            targetPattern.push (sy);
+            targetPattern.push (ex);
+            targetPattern.push (ey);
+        }
+    }
+    return targetPattern;
+};
+
+Scene.StepCompleteFn = function (){
+    var actualLinePoint = Scene.GetLinePoint();
+    if (actualLinePoint.length == '40' && ((expectedPoint.sort(function(a,b){ return b-a}).toString() == actualLinePoint.sort(function(a,b){ return b-a}).toString()))){
+        return true;
+    }else{
+        return false;
+    }
+};
 

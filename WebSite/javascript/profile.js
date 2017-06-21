@@ -352,6 +352,7 @@ function formatOverviewData(response) {
 
     var tmpNode = $(response).find('codetimes');
     data.codetimes.over = parseInt($(tmpNode[0]).attr('over'));
+    data.codetimes.total = parseInt($(tmpNode[0]).attr('total'));
     tmpNodes = $(response).find('codetimes').find('item');
     for (var i = 0; i < tmpNodes.length; i++) {
         var tmpObj = $(tmpNodes[i]);
@@ -769,7 +770,7 @@ function rebuildOverviewContents(data, contentHeight, itemHeight) {
 
     buildOverviewTimes(data.codetimes, itemHeight.e);
     //drawTimesGraph(data.codetimes.times);
-    var step = drawTimeBarGraph(data.codetimes.times, 'canvas_Overview_Time');
+    drawTimeBarGraph(data.codetimes.times, 'canvas_Overview_Time');
     var funData = { id: "container_Overview_Times_Items", step: 100 };
     $('#arrow_Overview_Times_Left').on('click', funData, listMovePrev);
     $('#arrow_Overview_Times_Right').on('click', funData, listMoveNext);
@@ -794,11 +795,12 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
     //    totalExp += data.experience.distribution[i].value;
     //}
 
-    var totalTime = 0;
-    for (var i = 0; i < data.codetimes.times.length; i++) {
-        totalTime += data.codetimes.times[i].time;
-    }
+    var totalTime = (isNaN(data.codetimes.total) ? 0 : data.codetimes.total);
+    //for (var i = 0; i < data.codetimes.times.length; i++) {
+    //    totalTime += data.codetimes.times[i].time;
+    //}
 
+    //totalTime = Math.round(totalTime * 100) / 100;
     var constArr = [
         {
             id: 'Honor',
@@ -827,7 +829,7 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
             color: 'rgb(124,77,255)',
             icon: 'clock-o',
             text: '<p class="overview-title-item-text">编程<span class="overview-title-item-data">' +
-                totalTime +
+                 totalTime +
                 '</span>小时</p><p class="overview-title-item-text">超了<span class="overview-title-item-data">' +
                 (isNaN(data.codetimes.over) ? 0 : data.codetimes.over) +
                 '%</span>同学</p>'
@@ -1905,9 +1907,8 @@ function formatReportData(response) {
     tmpNodes = $(response).find('codetimes').find('item');
     for (var i = 0; i < tmpNodes.length; i++) {
         timeData.times.push({
-            id: $(tmpNodes[i]).attr('id'),
-            rate: parseInt($(tmpNodes[i]).attr('value')),
-            name: $(tmpNodes[i]).attr('name')
+            date: $(tmpNodes[i]).attr('date'),
+            time: parseInt($(tmpNodes[i]).attr('value'))
         });
     }
 
@@ -2197,7 +2198,7 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('                   <div class="col-10 no-padding" style="height:210px;">');
-    tmpHTMLArr.push('                       <div id="container_Report_Time_Graph" style="height:100%;">');
+    tmpHTMLArr.push('                       <div id="container_Report_Time_Graph" style="height:100%; overflow: hidden;">');
     tmpHTMLArr.push('                           <canvas id="canvas_Report_Time_Time"></canvas>');
     tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                   </div>');
@@ -2533,6 +2534,7 @@ function drawTimeGraph(data) {
         $('.report-list-arrow.time').hide();
     }
 
+    drawTimeBarGraph(data.times, 'canvas_Report_Time_Time');
     drawTimeCompleteRate(data.course);
 };
 
@@ -2934,7 +2936,7 @@ function drawTimeBarGraph(datas, canvasId) {
     var canvas = document.getElementById(canvasId);
     var parent = $($(canvas).parent());
     var width = Math.max(Math.floor((barWidth + barSpace) * datas.length), parent.width());
-    var height = parent.height();
+    var height = parent.height() - parseInt(parent.css('padding-top')) - parseInt(parent.css('padding-bottom'));
     canvas.width = width;
     canvas.height = height;
     var context = canvas.getContext('2d');

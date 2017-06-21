@@ -101,7 +101,7 @@ Blockly.Blocks['set_lineWidth'] = {
     init: function () {
         this.appendDummyInput()
             .appendField("设置宽度")
-            .appendField(new Blockly.FieldNumber(1, 1, 10, 1), "lineWidth")
+            .appendField(new Blockly.FieldNumber(6, 1, 15, 1), "lineWidth")
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
         this.setTooltip('');
