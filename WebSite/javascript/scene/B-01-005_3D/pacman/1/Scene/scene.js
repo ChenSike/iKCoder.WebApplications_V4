@@ -204,16 +204,70 @@ Scene.move = function (steps) {
 };
 
 Scene.TurnLeft = function (output) {
+
+	if (Scene._CALCMOVEPATH.length == 0) {
+		var orientationObj = Scene.getPlayer().orientation + 1;
+		orientationObj = (orientationObj == 4 ? 0 : orientationObj);
+
+		var pathItemOri = {
+			x: Scene.getPlayer().coord.x,
+			y: Scene.getPlayer().coord.y,
+			orientation: orientationObj
+		};
+
+		Scene._CALCMOVEPATH.push(pathItemOri);
+
+	} else {
+
+		var orientationObj = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation + 1;
+		orientationObj = (orientationObj == 4 ? 0 : orientationObj);
+
+		var pathItemOri = {
+			x: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x,
+			y: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y,
+			orientation: orientationObj
+		};
+
+		Scene._CALCMOVEPATH.push(pathItemOri);
+	}
+
 	if (output === true) {
-		return 'this.turnLeft(' + Engine.getModuleObject('pacman').orientation + ');';
+		return 'Engine.modules["pacman"].turnLeft(Engine.modules["pacman"].orientation);';
 	} else {
 		Scene.addModuelPath('pacman', 'tl');
 	}
 };
 
 Scene.TurnRight = function (output) {
+
+	if (Scene._CALCMOVEPATH.length == 0) {
+		var orientationObj = Scene.getPlayer().orientation - 1;
+		orientationObj = (orientationObj == -1 ? 3 : orientationObj);
+
+		var pathItemOri = {
+			x: Scene.getPlayer().coord.x,
+			y: Scene.getPlayer().coord.y,
+			orientation: orientationObj
+		};
+
+		Scene._CALCMOVEPATH.push(pathItemOri);
+
+	} else {
+
+		var orientationObj = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation - 1;
+		orientationObj = (orientationObj == -1 ? 3 : orientationObj);
+
+		var pathItemOri = {
+			x: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x,
+			y: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y,
+			orientation: orientationObj
+		};
+
+		Scene._CALCMOVEPATH.push(pathItemOri);
+	}
+
 	if (output === true) {
-		return 'this.turnRight(' + Engine.getModuleObject('pacman').orientation + ');'
+		return 'Engine.modules["pacman"].turnRight(Engine.modules["pacman"].orientation);';
 	} else {
 		Scene.addModuelPath('pacman', 'tr');
 	}
@@ -251,39 +305,65 @@ Scene.moveForward = function () {
 };
 
 Scene.isWall = function () {
-	return true;
-	var nextX, nextY, currentX, currentY, currentOrientation;
+	var nextPoint = Scene.getNextPoint();
 
+	return Scene.checkPointUsedByWall(nextPoint.x, nextPoint.y);
+};
+
+
+Scene.checkPointUsedByWall = function (x, y) {
+	if (Scene.defaultDATA[y][x] == 1) {
+		return true;
+	}
+	return false;
+};
+
+
+Scene.isBeans = function () {
+	var nextPoint = Scene.getNextPoint();
+	return Scene.checkPointUsedByBeans(nextPoint.x, nextPoint.y);
+};
+
+
+Scene.checkPointUsedByBeans = function (x, y) {
+	if (Scene.defaultDATA[y][x] == 0 || Scene.defaultDATA[y][x] == 2) {
+		return true;
+	}
+	return false;
+};
+
+Scene.getNextPoint = function () {
+	var nextX, nextY, currentX, currentY, currentOrientation;
 	if (Scene._CALCMOVEPATH.length != 0) {
 		currentX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
 		currentY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
 		currentOrientation = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation;
+	} else {
+		currentX = Engine.modules["pacman"].coord.x;
+		currentY = Engine.modules["pacman"].coord.y;
+		currentOrientation = Engine.modules["pacman"].orientation;
 	}
 
 	switch (currentOrientation) {
 		case 0:
-			var nextX = currentX + 1;
-			var nextY = currentY;
-			break;
-		case 1:
-			var nextX = currentX;
-			var nextY = currentY - 1;
+			nextX = currentX + 1;
+			nextY = currentY;
 			break;
 		case 2:
-			var nextX = currentX - 1;
-			var nextY = currentY;
+			nextX = currentX - 1;
+			nextY = currentY;
+			break;
+		case 1:
+			nextX = currentX;
+			nextY = currentY - 1;
 			break;
 		case 3:
-			var nextX = currentX;
-			var nextY = currentY + 1;
+			nextX = currentX;
+			nextY = currentY + 1;
 			break;
 	}
-	if (Scene.mapDATA[nextY][nextX].t == 1) {
-		return true;
-	} else {
-		return false;
-	}
 
+	return { x: nextX, y: nextY };
 };
 
 Scene.startGame = function () {
@@ -321,30 +401,30 @@ Scene.NotEatRedBeans = function () {
 			x: Scene.getPlayer().coord.x,
 			y: Scene.getPlayer().coord.y
 		};
-		
+
 		currentX = Scene.getPlayer().coord.x;
 		currentY = Scene.getPlayer().coord.y;
 		Scene._CALCMOVEPATH.push(pathItemOri);
 
 	} else {
 		pathItemOri = {
-			x: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x +1,
+			x: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x + 1,
 			y: Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y
 		};
 
 		Scene._CALCMOVEPATH.push(pathItemOri);
-		
+
 		currentX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
 		currentY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
 	}
 
-var targetPos = Scene.targetPos;
-	
+	var targetPos = Scene.targetPos;
+
 	if (targetPos.x == currentX && targetPos.y == currentY) {
 		return false;
 	} else {
 		return true;
 	}
-	
+
 };
 

@@ -250,4 +250,4 @@ Blockly.JavaScript['whileloop'] = function (block) {
 		c = 'Scene.NotEatRedBeans()';
 	var code = 'while (' + c + ') {\n' + d + '};\n';
 	return code;
-};;
+};
