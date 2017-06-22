@@ -234,11 +234,6 @@ Scene.move = function (steps) {
 
 
 Scene.TurnLeft = function (output) {
-	if (output === true) {
-		return 'this.turnLeft(' + Engine.getModuleObject('pacman').orientation + ');';
-	} else {
-		Scene.addModuelPath('pacman', 'tl');
-	}
 
 	if (Scene._CALCMOVEPATH.length == 0) {
 		var orientationObj = Scene.getPlayer().orientation + 1;
@@ -265,14 +260,15 @@ Scene.TurnLeft = function (output) {
 
 		Scene._CALCMOVEPATH.push(pathItemOri);
 	}
+
+	if (output === true) {
+		return 'Engine.modules["pacman"].turnLeft(Engine.modules["pacman"].orientation);';
+	} else {
+		Scene.addModuelPath('pacman', 'tl');
+	}
 };
 
 Scene.TurnRight = function (output) {
-	if (output === true) {
-		return 'this.turnRight(' + Engine.getModuleObject('pacman').orientation + ');'
-	} else {
-		Scene.addModuelPath('pacman', 'tr');
-	}
 
 	if (Scene._CALCMOVEPATH.length == 0) {
 		var orientationObj = Scene.getPlayer().orientation - 1;
@@ -298,6 +294,12 @@ Scene.TurnRight = function (output) {
 		};
 
 		Scene._CALCMOVEPATH.push(pathItemOri);
+	}
+
+	if (output === true) {
+		return 'Engine.modules["pacman"].turnRight(Engine.modules["pacman"].orientation);';
+	} else {
+		Scene.addModuelPath('pacman', 'tr');
 	}
 };
 
@@ -366,6 +368,10 @@ Scene.getNextPoint = function () {
 		currentX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
 		currentY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
 		currentOrientation = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation;
+	} else {
+		currentX = Engine.modules["pacman"].coord.x;
+		currentY = Engine.modules["pacman"].coord.y;
+		currentOrientation = Engine.modules["pacman"].orientation;
 	}
 
 	switch (currentOrientation) {

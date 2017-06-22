@@ -117,6 +117,8 @@ Scene.initMap = function () {
 
 Scene.initPlayer = function (x, y) {
 	var player = new PACMan('study', Scene.mapDATA);
+	player._stopToComplete = true;
+
 	Engine.addModuleObject(player, x, null, y);
 	player.setPosition(x, y);
 	if (Scene.mapDATA[y][x].t == 0 || Scene.mapDATA[y][x].t == 2) {
@@ -197,30 +199,29 @@ Scene.resetSize = function () {
 	}
 };
 
-
 Scene.move = function (steps) {
 	Scene.addModuelPath('pacman', 'm', steps);
 
 	var curX = Scene.getPlayer().coord.x;
 	var curY = Scene.getPlayer().coord.y;
-	var curOrientation = Scene.getPlayer().orientation;
+	var curOrientation = 0;
 
 	if (Scene._CALCMOVEPATH.length > 0) {
 		curOrientation = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation;
-		curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
-		curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
-	}
 
-	switch (curOrientation) {
-		case 0:
-		case 2:
-			curX = curX + (curOrientation == 0 ? 1 : -1) * steps;
-			break;
+		switch (curOrientation) {
+			case 0:
+			case 2:
+				curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x + (curOrientation == 0 ? 1 : -1) * steps;
+				curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
+				break;
 
-		case 1:
-		case 3:
-			curY = curY + (curOrientation == 1 ? -1 : 1) * steps;
-			break;
+			case 1:
+			case 3:
+				curX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
+				curY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y + (curOrientation == 1 ? -1 : 1) * steps;
+				break;
+		}
 	}
 
 	var pathItemOri = {
@@ -232,13 +233,7 @@ Scene.move = function (steps) {
 	Scene._CALCMOVEPATH.push(pathItemOri);
 };
 
-
 Scene.TurnLeft = function (output) {
-	if (output === true) {
-		return 'this.turnLeft(' + Engine.getModuleObject('pacman').orientation + ');';
-	} else {
-		Scene.addModuelPath('pacman', 'tl');
-	}
 
 	if (Scene._CALCMOVEPATH.length == 0) {
 		var orientationObj = Scene.getPlayer().orientation + 1;
@@ -265,14 +260,15 @@ Scene.TurnLeft = function (output) {
 
 		Scene._CALCMOVEPATH.push(pathItemOri);
 	}
+
+	if (output === true) {
+		return 'Engine.modules["pacman"].turnLeft(Engine.modules["pacman"].orientation);';
+	} else {
+		Scene.addModuelPath('pacman', 'tl');
+	}
 };
 
 Scene.TurnRight = function (output) {
-	if (output === true) {
-		return 'this.turnRight(' + Engine.getModuleObject('pacman').orientation + ');'
-	} else {
-		Scene.addModuelPath('pacman', 'tr');
-	}
 
 	if (Scene._CALCMOVEPATH.length == 0) {
 		var orientationObj = Scene.getPlayer().orientation - 1;
@@ -298,6 +294,12 @@ Scene.TurnRight = function (output) {
 		};
 
 		Scene._CALCMOVEPATH.push(pathItemOri);
+	}
+
+	if (output === true) {
+		return 'Engine.modules["pacman"].turnRight(Engine.modules["pacman"].orientation);';
+	} else {
+		Scene.addModuelPath('pacman', 'tr');
 	}
 };
 
@@ -332,13 +334,47 @@ Scene.moveForward = function () {
 	Scene._CALCMOVEPATH.push(pathItemNext);
 };
 
+
 Scene.isWall = function () {
+	var nextPoint = Scene.getNextPoint();
+
+	return Scene.checkPointUsedByWall(nextPoint.x, nextPoint.y);
+};
+
+
+Scene.checkPointUsedByWall = function (x, y) {
+	if (Scene.defaultDATA[y][x] == 1) {
+		return true;
+	}
+	return false;
+};
+
+
+Scene.isBeans = function () {
+	var nextPoint = Scene.getNextPoint();
+	return Scene.checkPointUsedByBeans(nextPoint.x, nextPoint.y);
+};
+
+
+Scene.checkPointUsedByBeans = function (x, y) {
+	if (Scene.defaultDATA[y][x] == 0 || Scene.defaultDATA[y][x] == 2) {
+		return true;
+	}
+	return false;
+};
+
+Scene.getNextPoint = function () {
 	var nextX, nextY, currentX, currentY, currentOrientation;
 	if (Scene._CALCMOVEPATH.length != 0) {
 		currentX = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].x;
 		currentY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
 		currentOrientation = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation;
+	} else {
+		currentX = Engine.modules["pacman"].coord.x;
+		currentY = Engine.modules["pacman"].coord.y;
+		currentOrientation = Engine.modules["pacman"].orientation;
 	}
+
 	switch (currentOrientation) {
 		case 0:
 			nextX = currentX + 1;
@@ -358,21 +394,9 @@ Scene.isWall = function () {
 			break;
 	}
 
-	if (Scene.checkPointUsedByWall(nextX, nextY)) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	return { x: nextX, y: nextY };
 };
 
-Scene.checkPointUsedByWall = function (x, y) {
-	if (Scene.defaultDATA[y][x] == 1) {
-		return true;
-	}
-
-	return false;
-};
 
 Scene.startGame = function () {
 	Scene.start();
@@ -417,7 +441,7 @@ Scene.NotEatRedBeans = function () {
 		currentY = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].y;
 	}
 
-var targetPos = Scene.targetPos;
+	var targetPos = Scene.targetPos;
 	if (Scene.isWall()) {
 		return false;
 	} else {

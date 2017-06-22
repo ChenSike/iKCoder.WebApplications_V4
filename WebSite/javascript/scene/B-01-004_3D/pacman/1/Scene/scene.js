@@ -213,7 +213,7 @@ Scene.TurnLeft = function (output) {
 
 Scene.TurnRight = function (output) {
 	if (output === true) {
-		return 'Engine.modules["pacman"].turnRight(Engine.modules["pacman"].orientation);'
+		return 'Engine.modules["pacman"].turnRight(Engine.modules["pacman"].orientation);';
 	} else {
 		Scene.addModuelPath('pacman', 'tr');
 	}
