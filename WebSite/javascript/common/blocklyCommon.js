@@ -124,7 +124,9 @@ WorkScene.init = function () {
         if (Scene.resetSize) {
             Scene.resetSize();
             var fontSize = parseInt($('.run-scene-fullscreen-play-button').css('font-size'));
-            $('.run-scene-fullscreen-play-button').css('top', (($('#game_container').find('canvas').height() - fontSize) / 2) + 'px');
+            //$('.run-scene-fullscreen-play-button').css('top', (($('#game_container').find('canvas').height() - fontSize) / 2) + 'px');
+            $('.run-scene-fullscreen-play-button').css('top', (($('#game_container').find('canvas').height() - fontSize - 10)) + 'px');
+            //$('.run-scene-fullscreen-play-button').css('left', ((fontSize + 10)) + 'px');
         }
     } else {
         Scene.init('game_container', '0', { RowCol: { row: 9, col: 9 } });

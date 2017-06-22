@@ -254,9 +254,11 @@ function initEvents() {
             var playButton = $('.run-scene-fullscreen-play-button');
             var fontSize = width * 30 / 100;
             playButton.css('font-size', fontSize + 'px');
-            playButton.css('left', 'calc(50% - ' + (fontSize / 2) + 'px');
-            playButton.css('top', ((height - fontSize) / 2) + 'px');
-            playButton.css('top', ((container.find('canvas').height() - fontSize) / 2) + 'px');
+            //playButton.css('left', 'calc(50% - ' + (fontSize / 2) + 'px');
+            //playButton.css('top', ((height - fontSize) / 2) + 'px');
+            //playButton.css('top', ((container.find('canvas').height() - fontSize) / 2) + 'px');
+            playButton.css('left', (fontSize +10) + 'px');
+            playButton.css('top', (container.find('canvas').height() - fontSize - 10) + 'px');
         });
     });
 
@@ -1055,8 +1057,10 @@ function adjustCanvasSize(containerWrap) {
     var playButton = $('.run-scene-fullscreen-play-button');
     var fontSize = newWidth * 30 / 100;
     playButton.css('font-size', fontSize + 'px');
-    playButton.css('left', 'calc(50% - ' + (playButton.width() / 2) + 'px');
-    playButton.css('top', ((newHeight - fontSize) / 2) + 'px');
+    //playButton.css('left', 'calc(50% - ' + (playButton.width() / 2) + 'px');
+    //playButton.css('top', ((newHeight - fontSize) / 2) + 'px');
+    playButton.css('left', playButton.width() + 10 + 'px');
+    playButton.css('top', (newHeight - fontSize - 10) + 'px');
 };
 
 function addOperatorButton() {

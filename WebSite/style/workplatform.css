@@ -529,11 +529,11 @@ textarea {
 .run-scene-fullscreen-play-button {
     font-size: 130px;
     color: rgba(255,255,255,0.3);
-    width: 30%;
-    height: 30%;
+    width: 10%;
+    height: 10%;
     position: absolute;
-    top: 35%;
-    left: 35%;
+    /*top: 80%;
+    left: 5%;*/
     cursor: pointer;
 }
 

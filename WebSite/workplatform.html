@@ -307,14 +307,14 @@
     <script src="javascript/common/scenecommon.js"></script>
     <script src="javascript/common/blocklycommon.js"></script>
     <script src="javascript/workplatform.js"></script>
-    <script src="javascript/common/three.min.js"></script>
+    <!--<script src="javascript/common/three.min.js"></script>
     <script src="javascript/common/TweenMax.min.js"></script>
     <script src="javascript/common/threeengine.js"></script>
+    <script src="javascript/scene/common/draw3d.js"></script>
+    <script src="javascript/scene/B-01-006_3D/3dboard/1/Scene/scene.js"></script>-->
     <!--<script src="javascript/3dmodule/pacman.js"></script>
     <script src="javascript/scene/B-01-003_3D/pacman/4/Blocks/blocks.js"></script>
     <script src="javascript/scene/B-01-003_3D/pacman/4/Scene/scene.js"></script>-->
-    <!--<script src="javascript/scene/common/draw3d.js"></script>
-    <script src="javascript/scene/B-01-006_3D/3dboard/1/Scene/scene.js"></script>-->
     <!--<script src="javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js"></script>
     <script src="javascript/scene/a-01-003/intrcourse/1/Engine/konvas.js"></script>
     <script src="javascript/scene/a-01-003/intrcourse/1/Engine/game_engine.js"></script>
@@ -608,7 +608,7 @@
             Scene.Brush.lineTo(10, 0);
             Scene.Brush.lineTo(5, 5);
             Scene.Brush.groupPatterns(3);
-            Scene.Brush.patternGroupRotate(60);
+            //Scene.Brush.patternGroupRotate(60);
             Scene.Brush.startDraw();
         }
 
@@ -623,8 +623,8 @@
             console.log('line 0--r:' + lines[0].mesh.rotation.z);
             console.log('line 1--r:' + lines[1].mesh.rotation.z);
             console.log('line 1--r:' + lines[2].mesh.rotation.z);
-            lines[1].mesh.position.x = lines[1].mesh.position.y = 0;
-            lines[2].mesh.position.x = lines[2].mesh.position.y = 0;
+            //lines[1].mesh.position.x = lines[1].mesh.position.y = 0;
+           // lines[2].mesh.position.x = lines[2].mesh.position.y = 0;
         }
     </script>
 </body>
