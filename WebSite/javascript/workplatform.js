@@ -611,8 +611,6 @@ function initData(response) {
         blockly: {
             toolbox: $(response).find("toolbox").html(),
             workspace: $(response).find("workspacestatus").html(),
-            //toolbox: 'javascript/scene/B-01-003_3D/pacman/4/toolbox.xml',
-            //workspace: 'javascript/scene/B-01-003_3D/pacman/4/default.xml',
             lib: []
         }
     }

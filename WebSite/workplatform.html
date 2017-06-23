@@ -396,7 +396,7 @@
                 </div>
             </div>
             <div class="col no-padding" style="font-size: 13px; font-weight: bolder; color:rgb(255,255,255);">
-                <div class="container-fluid" id="wrap_Workspace_Toolbar">
+                <div class="container-fluid" id="wrap_Workspace_Toolbar" style="min-width:290px;">
                     <div class="row">
                         <div class="col text-center">
                             <span>工作区域</span>
@@ -599,33 +599,6 @@
             initPage();
             _startCheckState();
         });
-
-        var lines = [];
-        function testDraw() {
-            Engine.startScene();
-            Scene.Brush.moveTo(5, 5);
-            Scene.Brush.lineTo(10, 10);
-            Scene.Brush.lineTo(10, 0);
-            Scene.Brush.lineTo(5, 5);
-            Scene.Brush.groupPatterns(3);
-            //Scene.Brush.patternGroupRotate(60);
-            Scene.Brush.startDraw();
-        }
-
-        function getLines() {
-            TweenMax.killAll();
-            lines.push(Scene.Brush.patterns[0].patterns[0]);
-            lines.push(Scene.Brush.patterns[0].patterns[1]);
-            lines.push(Scene.Brush.patterns[0].patterns[2]);
-            console.log('line 0--x:' + lines[0].mesh.position.x + ',y:' + lines[0].mesh.position.y);
-            console.log('line 1--x:' + lines[1].mesh.position.x + ',y:' + lines[1].mesh.position.y);
-            console.log('line 2--x:' + lines[2].mesh.position.x + ',y:' + lines[2].mesh.position.y);
-            console.log('line 0--r:' + lines[0].mesh.rotation.z);
-            console.log('line 1--r:' + lines[1].mesh.rotation.z);
-            console.log('line 1--r:' + lines[2].mesh.rotation.z);
-            //lines[1].mesh.position.x = lines[1].mesh.position.y = 0;
-           // lines[2].mesh.position.x = lines[2].mesh.position.y = 0;
-        }
     </script>
 </body>
 </html>

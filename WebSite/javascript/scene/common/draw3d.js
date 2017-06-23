@@ -1,6 +1,11 @@
 ﻿'use strict';
 
-_useFullContainer = true;
+var _useFullContainer = true;
+var _minNumber = 0.0000000001;
+
+function _diffLessThanMin(number1, number2) {
+    return Math.abs(number1 - number2) < _minNumber ? true : false;
+}
 
 function Brush() {
     Module.call(this);
@@ -14,13 +19,13 @@ function Brush() {
     this.background = [];
     this.target = { sx: 0, sy: 0, tx: 0, ty: 0, type: '', callback: null };
     this.drawSequence = [{}];
-    this.drawnSequence = [];
     this.drawStartPoint = {};
     this.drawEquation = function () { return { x: 0, y: 0 }; };
     this.lineWidth = 1;
     this.completeFired = false;
     this.drawStart = false;
     this.drawing = false;
+    this.prevTargetObj = null
     this.defaultMaterial = new THREE.MeshPhongMaterial({ color: '#ff0000', shading: THREE.FlatShading });
     this.track = [];
     this.init();
@@ -210,7 +215,7 @@ Brush.prototype.updatePosition = function () {
     var targetObj = this.createTargetObj(tmpItem);
     var _that = this;
     if (this.checkActionComplete(targetObj)) {
-        this.drawnSequence.push({ x: this.mesh.position.x - this.basePoint.x, y: this.mesh.position.y - this.basePoint.y });
+        this.prevTargetObj = targetObj;
         this.drawSequence.shift();
         if (this.drawSequence.length == 0) {
             if (!this.completeFired) {
@@ -225,9 +230,10 @@ Brush.prototype.updatePosition = function () {
             case 'mt':
                 if (!this.drawing) {
                     this.drawing = true;
+                    var tmpLength = Line.getLengthOfLine(this.mesh.position.x, this.mesh.position.y, targetObj.tx, targetObj.ty);
                     TweenMax.to(
                         this.mesh.position,
-                        3,
+                        3 * tmpLength / 200,
                         {
                             x: targetObj.tx + _that.basePoint.x,
                             y: targetObj.ty + _that.basePoint.y,
@@ -282,9 +288,10 @@ Brush.prototype.updatePosition = function () {
                             onComplete: function () {
                                 _that.mesh.visible = false;
                                 Engine.scene.add(_that.mesh);
-                                var tmpVal = Math.sqrt(Math.pow(_line.mesh.geometry.vertices[1].x - _line.mesh.geometry.vertices[0].x, 2) + Math.pow(_line.mesh.geometry.vertices[1].y - _line.mesh.geometry.vertices[0].y, 2));
-                                _that.mesh.position.x = tmpVal * Math.cos(_line.mesh.rotation.z) + _line.mesh.geometry.vertices[0].x + _that.basePoint.x;
-                                _that.mesh.position.y = tmpVal * Math.sin(_line.mesh.rotation.z) + _line.mesh.geometry.vertices[0].y + _that.basePoint.y;
+                                var lineLength = _line.getLengthOfLine();
+                                var lineMeshVert = _line.mesh.geometry.vertices;
+                                _that.mesh.position.x = _line.mesh.position.x + lineLength * Math.cos(_line.mesh.rotation.z) + _that.basePoint.x;
+                                _that.mesh.position.y = _line.mesh.position.y + lineLength * Math.sin(_line.mesh.rotation.z) + _that.basePoint.y;
                                 _that.mesh.visible = true;
                                 _that.drawing = false;
                             }
@@ -324,9 +331,10 @@ Brush.prototype.updatePosition = function () {
                             onComplete: function () {
                                 _that.mesh.visible = false;
                                 Engine.scene.add(_that.mesh);
-                                var tmpVal = Math.sqrt(Math.pow(_basePattern.mesh.geometry.vertices[1].x - _basePattern.mesh.geometry.vertices[0].x, 2) + Math.pow(_basePattern.mesh.geometry.vertices[1].y - _basePattern.mesh.geometry.vertices[0].y, 2));
-                                _that.mesh.position.x = tmpVal * Math.cos(_pGroup.mesh.rotation.z + _basePattern.mesh.rotation.z) + _basePattern.mesh.geometry.vertices[0].x + _that.basePoint.x;
-                                _that.mesh.position.y = tmpVal * Math.sin(_pGroup.mesh.rotation.z + _basePattern.mesh.rotation.z) + _basePattern.mesh.geometry.vertices[0].y + _that.basePoint.y;
+                                var bplLength = _basePattern.getLengthOfLine();
+                                var bplMeshVert = _basePattern.mesh.geometry.vertices;
+                                _that.mesh.position.x = _basePattern.mesh.position.x + bplLength * Math.cos(_basePattern.mesh.rotation.z) + _that.basePoint.x;
+                                _that.mesh.position.y = _basePattern.mesh.position.y + bplLength * Math.sin(_basePattern.mesh.rotation.z) + _that.basePoint.y;
                                 _that.mesh.visible = true;
                                 _that.drawing = false;
                             }
@@ -384,10 +392,10 @@ Brush.prototype.updatePosition = function () {
 
 Brush.prototype.createTargetObj = function (drawSeqItem) {
     var targetObj = {
-        sx: null,
-        sy: null,
-        tx: null,
-        ty: null,
+        sx: this.mesh.position.x - this.basePoint.x,
+        sy: this.mesh.position.y - this.basePoint.y,
+        tx: this.mesh.position.x - this.basePoint.x,
+        ty: this.mesh.position.y - this.basePoint.y,
         a: null,
         c: null,
         w: null,
@@ -406,14 +414,23 @@ Brush.prototype.createTargetObj = function (drawSeqItem) {
         case 'll':
             targetObj.c = '#' + this.neck.material.color.getHexString();
             targetObj.w = this.lineWidth;
-            targetObj.sx = this.mesh.position.x - this.basePoint.x;
-            targetObj.sy = this.mesh.position.y - this.basePoint.y;
-            targetObj.ty = targetObj.sy;
+            if (drawSeqItem.type == 'mt' || this.prevTargetObj.type == 'mt' || this.patterns.length <= 0) {
+                targetObj.sx = this.mesh.position.x - this.basePoint.x;
+                targetObj.sy = this.mesh.position.y - this.basePoint.y;
+            } else {
+                targetObj.sx = this.prevTargetObj.tx;
+                targetObj.sy = this.prevTargetObj.ty;
+            }
+
             if (drawSeqItem.type == 'll') {
-                if (this.patterns.length <= 0 || this.patterns[this.patterns.length - 1].type != 'patterngroup') {
-                    targetObj.tx = this.drawnSequence[this.drawnSequence.length - 1].x + drawSeqItem.l * Engine.params.grid.step;
+                var tmpLength = drawSeqItem.l * Engine.params.grid.step;
+                if (drawSeqItem.type == 'mt' || this.prevTargetObj.type == 'mt' || this.patterns.length <= 0) {
+                    targetObj.tx = targetObj.sx + tmpLength;
+                    targetObj.ty = targetObj.sy;
                 } else {
-                    targetObj.tx = this.drawnSequence[this.drawnSequence.length - 1].x + drawSeqItem.l * Engine.params.grid.step;
+                    var prevPattern = this.patterns[this.patterns.length - 1];
+                    targetObj.tx = targetObj.sx + tmpLength * Math.cos(prevPattern.mesh.rotation.z);
+                    targetObj.ty = targetObj.sy + tmpLength * Math.sin(prevPattern.mesh.rotation.z);
                 }
             } else {
                 targetObj.tx = drawSeqItem.tx;
@@ -425,7 +442,7 @@ Brush.prototype.createTargetObj = function (drawSeqItem) {
             targetObj.w = drawSeqItem.w;
             break;
         case 'sc':
-            targetObj.c = drawSeqItem.c; //new THREE.MeshPhongMaterial({ color: drawSeqItem.c, shading:  THREE.FlatShading });
+            targetObj.c = drawSeqItem.c;
             break;
         case 'lr':
             targetObj.a = drawSeqItem.a;
@@ -460,7 +477,7 @@ Brush.prototype.checkActionComplete = function (targetObj) {
         case 'll':
             var currPosX = this.mesh.position.x - this.basePoint.x;
             var currPosY = this.mesh.position.y - this.basePoint.y;
-            if (currPosX == targetObj.tx && currPosY == targetObj.ty) {
+            if (_diffLessThanMin(currPosX, targetObj.tx) && _diffLessThanMin(currPosY, targetObj.ty)) {
                 flag = true;
                 this.track.push({ x: currPosX / Engine.params.grid.step, y: currPosY / Engine.params.grid.step });
             }
@@ -550,9 +567,9 @@ Brush.prototype.reset = function (resetStyle) {
     this.track = [];
     this.clearPatterns();
     this.drawSequence = [{}];
-    this.drawnSequence = [];
     this.completeFired = false;
     this.drawStart = false;
+    this.drawing = false;
     if (typeof (resetStyle) == 'boolean' && resetStyle) {
         this.neck.material.setValues(this.defaultMaterial);
         this.lineWidth = 1;
@@ -588,11 +605,11 @@ Brush.prototype.setDrawCompleteFn = function (fn) {
 };
 
 Brush.prototype.drawCompleteFn = function () {
-	    if (Scene.StepCompleteFn()) {
-			Scene.stepComplete();
-		}else{
-			Scene.stepFaild();
-		}
+    if (Scene.StepCompleteFn()) {
+        Scene.stepComplete();
+    } else {
+        Scene.stepFaild();
+    }
 
 };
 
@@ -640,11 +657,13 @@ Brush.getLineEquation = function (sx, sy, tx, ty) {
 
 Brush.getPatternsTrack = function (parent) {
     var tracks = [];
-    var pattern, tmpVal, tmpVertices, tmpGeometry, tmpMesh, subItem, tmpFlag;
+    var pattern, tmpLength, tmpAngle, tmpVertices, tmpMesh, subItem, tmpFlag, basePattern, tmpValue;
+    var tmpSX, tmpSY, tmpTX, tmpTY;
     for (var i = 0; i < parent.patterns.length; i++) {
         pattern = parent.patterns[i];
         var trackItem = {
             type: pattern.type,
+            uuid: (pattern.mesh.uuid),
             sx: null,
             sy: null,
             ex: null,
@@ -661,28 +680,52 @@ Brush.getPatternsTrack = function (parent) {
         trackItem.type = pattern.type;
         tmpMesh = pattern.mesh;
         if (pattern.type == 'line') {
-            tmpVertices = tmpMesh.geometry.vertices;
-            trackItem.sx = tmpVertices[0].x;
-            trackItem.sy = tmpVertices[0].y;
-            tmpVal = Math.sqrt(Math.pow(tmpVertices[1].x - tmpVertices[0].x, 2) + Math.pow(tmpVertices[1].y - tmpVertices[0].y, 2));
-            trackItem.ex = tmpVal * Math.cos(tmpMesh.rotation.z) + tmpVertices[0].x;
-            trackItem.ey = tmpVal * Math.sin(tmpMesh.rotation.z) + tmpVertices[0].y;
+            tmpLength = pattern.getLengthOfLine();
+            trackItem.sx = tmpMesh.position.x;
+            trackItem.sy = tmpMesh.position.y;
+            trackItem.ex = tmpLength * Math.cos(tmpMesh.rotation.z) + tmpMesh.position.x;
+            trackItem.ey = tmpLength * Math.sin(tmpMesh.rotation.z) + tmpMesh.position.y;
         } else if (pattern.type == 'patterngroup') {
-            tmpVertices = [];
             trackItem.vertices = [];
             trackItem.patterns = Brush.getPatternsTrack(pattern);
+            tmpVertices = [];
+            basePattern = pattern.getBasePattern();
             for (var j = 0; j < trackItem.patterns.length; j++) {
                 subItem = trackItem.patterns[j];
                 if (subItem.type == 'line') {
-                    tmpVertices.push({ x: subItem.sx, y: subItem.sy });
-                    tmpVertices.push({ x: subItem.ex, y: subItem.ey });
+                    if (subItem.uuid == basePattern.mesh.uuid) {
+                        tmpSX = subItem.sx;
+                        tmpSY = subItem.sy;
+                        tmpTX = subItem.ex;
+                        tmpTY = subItem.ey;
+                    } else {
+                        tmpLength = Line.getLengthOfLine(0, 0, subItem.sx, subItem.sy);
+                        tmpAngle = basePattern.mesh.rotation.z + Math.atan(subItem.sy / subItem.sx);
+                        tmpSX = tmpLength * Math.cos(tmpAngle) + basePattern.mesh.position.x;
+                        tmpSY = tmpLength * Math.sin(tmpAngle) + basePattern.mesh.position.y;
+                        tmpLength = Line.getLengthOfLine(0, 0, subItem.ex, subItem.ey);
+                        tmpAngle = basePattern.mesh.rotation.z + Math.atan(subItem.ey / subItem.ex);
+                        tmpTX = tmpLength * Math.cos(tmpAngle) + basePattern.mesh.position.x;
+                        tmpTY = tmpLength * Math.sin(tmpAngle) + basePattern.mesh.position.y;
+                    }
+
+                    tmpValue = parseInt(new Number(tmpSX).toFixed(11));
+                    tmpSX = _diffLessThanMin(tmpSX, tmpValue) ? tmpValue : tmpSX;
+                    tmpValue = parseInt(new Number(tmpSY).toFixed(11));
+                    tmpSY = _diffLessThanMin(tmpSY, tmpValue) ? tmpValue : tmpSY;
+                    tmpValue = parseInt(new Number(tmpTX).toFixed(11));
+                    tmpTX = _diffLessThanMin(tmpTX, tmpValue) ? tmpValue : tmpTX;
+                    tmpValue = parseInt(new Number(tmpTY).toFixed(11));
+                    tmpTY = _diffLessThanMin(tmpTY, tmpValue) ? tmpValue : tmpTY;
+                    tmpVertices.push({ x: tmpSX, y: tmpSY });
+                    tmpVertices.push({ x: tmpTX, y: tmpTY });
                 }
             }
 
             for (var j = 0; j < tmpVertices.length; j++) {
                 tmpFlag = true;
                 for (var k = 0; k < trackItem.vertices.length; k++) {
-                    if (trackItem.vertices[k].x == tmpVertices[j].x && trackItem.vertices[k].y == tmpVertices[j].y) {
+                    if (_diffLessThanMin(trackItem.vertices[k].x, tmpVertices[j].x) && _diffLessThanMin(trackItem.vertices[k].y, tmpVertices[j].y)) {
                         tmpFlag = false;
                         break;
                     }
@@ -691,10 +734,6 @@ Brush.getPatternsTrack = function (parent) {
                 if (tmpFlag) {
                     trackItem.vertices.push(tmpVertices[j]);
                 }
-            }
-
-            for (var j = 0; j < trackItem.vertices.length; j++) {
-
             }
         } else if (pattern.type == 'arc') {
             trackItem.cx = pattern.params.x;
@@ -753,41 +792,46 @@ Line.prototype.init = function () {
      transparent : true
     */
     var lineGeometry = new THREE.Geometry();
-    lineGeometry.vertices.push(new THREE.Vector3(this.params.sx, this.params.sy, 0));
-    lineGeometry.vertices.push(new THREE.Vector3(this.params.tx, this.params.ty, 0));
-    var lineMate = new THREE.LineBasicMaterial({ color: this.params.c, transparent: true, opacity: 0 });
-    //var lineMate = new THREE.LineBasicMaterial({ color: '#00ff00', transparent: true, opacity: 0.5 });
+    var lineLength = this.getLengthOfLine();
+    lineGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    lineGeometry.vertices.push(new THREE.Vector3(lineLength, 0, 0));
+    //var lineMate = new THREE.LineBasicMaterial({ color: this.params.c, transparent: true, opacity: 0 });
+    var lineMate = new THREE.LineBasicMaterial({ color: '#00ff00', transparent: true, opacity: 0.5 });
     this.mesh = new THREE.Line(lineGeometry, lineMate, THREE.LineSegments);
     var cubeGeometry = new THREE.CubeGeometry(1, this.params.w, 1);
     var cubeMaterial = new THREE.MeshBasicMaterial({ color: this.params.c, shading: THREE.FlatShading });
     this.body = new THREE.Mesh(cubeGeometry, cubeMaterial);
     this.mesh.add(this.body);
-    this.mesh.rotation.z = this.getLineAngle();
+    this.mesh.rotation.z = Line.getLineAngle(this.params);
     this.orgRotationZ = this.mesh.rotation.z;
     this.mesh.position.x = this.params.sx;
     this.mesh.position.y = this.params.sy;
 };
 
-Line.prototype.getLengthOfLine = function () {
-    return Math.sqrt(Math.pow(this.params.tx - this.params.sx, 2) + Math.pow(this.params.ty - this.params.sy, 2));
+Line.prototype.getLengthOfLine = function (params) {
+    return Line.getLengthOfLine(this.params.sx, this.params.sy, this.params.tx, this.params.ty);
 };
 
-Line.prototype.getLineAngle = function () {
-    if (this.params.sx == 0 && this.params.tx == 0) {
-        if (this.params.sy > this.params.ty) {
+Line.getLengthOfLine = function (sx, sy, tx, ty) {
+    return Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
+};
+
+Line.getLineAngle = function (params) {
+    if (params.sx == 0 && params.tx == 0) {
+        if (params.sy > params.ty) {
             return -Math.PI / 2;
         } else {
             return Math.PI / 2;
         }
-    } else if (this.params.sy == 0 && this.params.ty == 0) {
-        if (this.params.sx > this.params.tx) {
+    } else if (params.sy == 0 && params.ty == 0) {
+        if (params.sx > params.tx) {
             return -Math.PI;
         } else {
             return 0;
         }
     } else {
-        var radian = Math.atan((this.params.ty - this.params.sy) / (this.params.tx - this.params.sx));
-        if (this.params.tx - this.params.sx < 0) {
+        var radian = Math.atan((params.ty - params.sy) / (params.tx - params.sx));
+        if (params.tx - params.sx < 0) {
             radian += Math.PI;
         }
         return radian
@@ -843,8 +887,8 @@ Line.prototype.draw = function (animation) {
                 },
                 onComplete: function () {
                     Engine.scene.add(_that.brush.mesh);
-                    _that.brush.mesh.position.x = _that.mesh.geometry.vertices[1].x + _that.brush.basePoint.x;
-                    _that.brush.mesh.position.y = _that.mesh.geometry.vertices[1].y + _that.brush.basePoint.y;
+                    _that.brush.mesh.position.x = _that.mesh.position.x + lineLength * Math.cos(_that.mesh.rotation.z) + _that.brush.basePoint.x;
+                    _that.brush.mesh.position.y = _that.mesh.position.y + lineLength * Math.sin(_that.mesh.rotation.z) + _that.brush.basePoint.y;
                     _that.brush.drawing = false;
                 }
             });
@@ -856,6 +900,13 @@ Line.prototype.draw = function (animation) {
 Line.prototype.setRotation = function (radian) {
     this.mesh.rotation.z = radian;
     this.orgRotationZ = radian;
+};
+
+Line.prototype.getEndPoint = function () {
+    var lineLength = this.getLengthOfLine();
+    var x = this.mesh.position.x + lineLength * Math.cos(this.mesh.rotation.z);
+    var y = this.mesh.position.y + lineLength * Math.sin(this.mesh.rotation.z);
+    return { x: x, y: y };
 };
 
 function PatternGroup(brush, count, startIdx) {
@@ -893,17 +944,35 @@ PatternGroup.prototype.init = function () {
         this.brush.track.pop();
     }
 
-    //this.mesh = tmpTarget[tmpTarget.length - 1].mesh;
+    this.mesh = tmpTarget[tmpTarget.length - 1].mesh;
+    var tmpAngle, tmpLength, tmpX, tmpY;
     for (var i = this.count - 1; i >= 0; i--) {
         this.patterns.push(tmpTarget[i]);
-        this.mesh.add(tmpTarget[i].mesh);
-        //if (i < this.count - 1) {
-        //    this.mesh.add(tmpTarget[i].mesh);
-        //}
+        //this.mesh.add(tmpTarget[i].mesh);
+        if (i < this.count - 1) {
+            this.mesh.add(tmpTarget[i].mesh);
+            this.resetPatterrnMesh(tmpTarget[i]);
+        }
     }
 
     this.brush.patterns.push(this);
 };
+
+PatternGroup.prototype.resetPatterrnMesh = function (pattern) {
+    var tmpAngle, tmpLength, tmpX, tmpY;
+    var pMeshPos = pattern.mesh.position;
+    var pMeshRot = pattern.mesh.rotation;
+    var bMeshPos = this.mesh.position;
+    var bMeshRot = this.mesh.rotation;
+    tmpAngle = Line.getLineAngle({ sx: bMeshPos.x, sy: bMeshPos.y, tx: pMeshPos.x, ty: pMeshPos.y });
+    tmpAngle -= bMeshRot.z;
+    tmpLength = Math.sqrt(Math.pow(pMeshPos.x - bMeshPos.x, 2) + Math.pow(pMeshPos.y - bMeshPos.y, 2));
+    tmpX = tmpLength * Math.cos(tmpAngle);
+    tmpY = tmpLength * Math.sin(tmpAngle);
+    pMeshPos.x = tmpX
+    pMeshPos.y = tmpY
+    pMeshRot.z = pMeshRot.z - bMeshRot.z;
+}
 
 PatternGroup.prototype.setRotation = function (radian) {
     this.mesh.rotation.z = radian;
@@ -912,6 +981,10 @@ PatternGroup.prototype.setRotation = function (radian) {
 
 PatternGroup.prototype.getBasePattern = function () {
     return this.patterns[0];
+};
+
+PatternGroup.prototype.getEndPoint = function () {
+    return this.getBasePattern().getEndPoint();
 };
 
 function Arc(brush, centerX, centerY, radius, startAngle, endAngle, clockWise) {
@@ -1027,4 +1100,10 @@ Arc.prototype.getGeometry = function (loopCount) {
     var shape = new THREE.Shape();
     shape.fromPoints(this.getVertices(loopCount));
     return new THREE.ExtrudeGeometry(shape, this.params.op);
+};
+
+Arc.prototype.getEndPoint = function () {
+    var x = (this.params.ogv[this.params.ogv.length - 1].x + this.params.igv[this.params.ogv.length - 1].x) / 2;
+    var y = (this.params.ogv[this.params.ogv.length - 1].y + this.params.igv[this.params.ogv.length - 1].y) / 2;
+    return { x: x, y: y };
 };
