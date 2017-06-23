@@ -257,7 +257,7 @@ function initEvents() {
             //playButton.css('left', 'calc(50% - ' + (fontSize / 2) + 'px');
             //playButton.css('top', ((height - fontSize) / 2) + 'px');
             //playButton.css('top', ((container.find('canvas').height() - fontSize) / 2) + 'px');
-            playButton.css('left', (fontSize +10) + 'px');
+            playButton.css('left', (fontSize + 10) + 'px');
             playButton.css('top', (container.find('canvas').height() - fontSize - 10) + 'px');
         });
     });
@@ -567,7 +567,11 @@ function initData(response) {
         var tmpItems = $(wordsItems[i]).find('soundmark').find('item');
         tmpObj.soundmark = [];
         for (var j = 0; j < tmpItems.length; j++) {
-            tmpObj.soundmark.push([$(tmpItems[j]).attr('value'), _getRequestURL(_gURLMapping.data.getaudio, { operation: 'AllowedOperation', symbol: $(tmpItems[j]).attr('sound') })]);
+            tmpObj.soundmark.push([
+                $(tmpItems[j]).attr('value'),
+                _getRequestURL(_gURLMapping.data.getaudio, { operation: 'AllowedOperation', symbol: $(tmpItems[j]).attr('sound') }),
+                $(tmpItems[j]).attr('type')
+            ]);
         }
 
         tmpItems = $(wordsItems[i]).find('paraphrase').find('item');
@@ -628,7 +632,6 @@ function initData(response) {
             data.blockly.lib.push('javascript/scene/' + tmpAttr);
         }
     }
-
 
     if (_currentStage.toLowerCase().indexOf('a_01_00') >= 0) {
         if (_currentStage.toLowerCase().indexOf('3') >= 0) {
@@ -742,7 +745,7 @@ function buildWordListHTML() {
         htmlStringArr.push('        <div class="row word-soundmark">');
         for (var j = 0; j < data[i].soundmark.length; j++) {
             htmlStringArr.push('            <div class="col-6" style="padding-right: 0px;">');
-            htmlStringArr.push(data[i].soundmark[j][0]);
+            htmlStringArr.push('[' + data[i].soundmark[j][2] + ']' + data[i].soundmark[j][0]);
             htmlStringArr.push('                <i class="fa fa-volume-up play-soundmark-button" aria-hidden="true" data-target="' + data[i].soundmark[j][1] + '"></i>');
             htmlStringArr.push('            </div>');
         }
