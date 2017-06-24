@@ -66,9 +66,49 @@ function initPage() {
     window.setTimeout('WorkScene.saveStatus(true);', 60000);
     initEvents();
     adjustSceneContainerSize();
+    resetWPBtnPosition();
+    createTree();
 };
 
+function createTree() {
+    var tree = [
+        {
+            text: "Parent 1",
+            nodes: [
+                {
+                    text: "Child 1",
+                    nodes: [
+                        {
+                            text: "Grandchild 1"
+                        },
+                        {
+                            text: "Grandchild 2"
+                        }
+                    ]
+                },
+                {
+                    text: "Child 2"
+                }
+            ]
+        },
+        {
+            text: "Parent 2"
+        },
+        {
+            text: "Parent 3"
+        },
+        {
+            text: "Parent 4"
+        },
+        {
+            text: "Parent 5"
+        }
+    ];
+    $('#tree').treeview({ data: tree, showBorder: false });    
+}
+
 function initEvents() {
+    document.oncontextmenu = function () { return false; };
     $('.workspace-tool-item.workspace-play-button.fa.fa-play').on('click', function () {
         if (WorkScene.playableScene()) {
             if ($(this).hasClass('fa-play')) {
@@ -104,6 +144,36 @@ function initEvents() {
         }
     });
 
+    $(".sider-bar-drag-proxy").mouseup(function () {
+        $(document).unbind("mousemove");
+        var dragProxy = $(".sider-bar-drag-proxy")
+        if (dragProxy.css("display") != "none") {
+            var left = dragProxy.offset().left;
+            var tmpWidth = $('#content_WorkSpace').width() - left - $(".sider-bar-drag").width();
+            tmpWidth = (tmpWidth < 100 ? 100 : tmpWidth);
+            $(".sider-bar-wrap").width(tmpWidth);
+            $(".sider-bar-wrap").css("left", $("body").width() - tmpWidth + "px");
+            $(".sider-bar-drag-proxy").css("display", "none");
+            $(".sider-bar-drag-proxy").css("visibility", "hidden");
+            resetWPBtnPosition();
+            adjustSceneContainerSize();
+        }
+    });
+
+    $(".sider-bar-drag").mousedown(function (e) {
+        if ($(".sider-bar-drag").hasClass('expanded')) {
+            $(".sider-bar-drag-proxy").css("display", "block");
+            $(".sider-bar-drag-proxy").css("visibility", "visible");
+            $(".sider-bar-drag-proxy").height($(".sider-bar-drag").height());
+            $(".sider-bar-drag-proxy").css("left", $(".sider-bar-drag").offset().left + "px");
+            siderBarDrag(e);
+        }
+    });
+
+    $(".content_WorkSpace").focus(function () {
+        $('#wrap_Sider_Bar').hide();
+    });
+
     $('.run-scene-fullscreen-close-button').on('click', function (e) {
         var wrap = $('.run-scene-fullscreen');
         if ($('.run-scene-fullscreen-full-button').css('display') == 'none') {
@@ -112,8 +182,13 @@ function initEvents() {
             wrap.width(30);
             wrap.height(30);
             var contentEl = $('#content_WorkSpace')
+            var tmpLeft = contentEl.width() - wrap.width();
+            if ($('#wrap_Sider_Bar').css('display') != 'none') {
+                tmpLeft -= $('#wrap_Sider_Bar').width() + 4;
+            }
+
             wrap.css('top', contentEl.offset().top + 'px');
-            wrap.css('left', contentEl.width() - wrap.width() + 'px');
+            wrap.css('left', tmpLeft + 'px');
             $('.run-scene-fullscreen-full-button').hide();
             $('.run-scene-fullscreen-close-button').hide();
             $('.run-scene-fullscreen-expand-button').show();
@@ -205,7 +280,12 @@ function adjustSceneContainerSize() {
     wrap.height('30%');
     var contentEl = $('#content_WorkSpace')
     wrap.css('top', contentEl.offset().top + 'px');
-    wrap.css('left', contentEl.width() - wrap.width() + 'px');
+    var tmpLeft = contentEl.width() - wrap.width();
+    if ($('#wrap_Sider_Bar').css('display') != 'none') {
+        tmpLeft -= $('#wrap_Sider_Bar').width() + 4;
+    }
+
+    wrap.css('left', tmpLeft + 'px');
     adjustCanvasSize();
     if (typeof Scene == 'object' && Scene.resetSize) {
         Scene.resetSize();
@@ -224,7 +304,7 @@ function resizePlayButton() {
     playButton.css('font-size', fontSize + 'px');
     playButton.css('left', ((wrap.width() - fontSize) / 2) + 'px)');
     playButton.css('top', ((wrap.height() - fontSize) / 2) + 'px');
-}
+};
 
 function showFullScreen() {
     var wrap = $('.run-scene-fullscreen');
@@ -270,7 +350,7 @@ function adjustCanvasSize() {
 
     canvas.height(newHeight);
     canvas.width(newWidth);
-}
+};
 
 function getQueryString() {
     var tempArr = window.location.search.substr(1).split('&');
@@ -295,7 +375,7 @@ function showCourseMsg(titleText, contentText) {
     var trBtn = $('#btn_WorkPlatform_Msg_Close');
     var tmpHeight = container.height() - (trBtn.parent().parent().height() + title.parent().parent().height() + button.parent().parent().height() + 30);
     content.height(tmpHeight);
-}
+};
 
 function adjustCourseMsgSize(titleText) {
     var bodyWidth = $('body').width();
@@ -349,7 +429,7 @@ function adjustCourseMsgSize(titleText) {
     }
 
     title.css('font-size', fontSize + 'px');
-}
+};
 
 function drawMsgAlertLogo() {
     var tmpImg = new Image();
@@ -376,7 +456,7 @@ function drawMsgAlertLogo() {
     tmpImg.onerror = function () {
         tmpImg.src = "image/logotop.png?rnd=" + Date.now();
     }
-}
+};
 
 function LoadSceneLib(data) {
     if (data.lib.length > 0) {
@@ -387,7 +467,7 @@ function LoadSceneLib(data) {
     } else {
         WorkScene.init();
     }
-}
+};
 
 function resetPlayBtn(operation) {
     var toolboxBtn = $('.workspace-tool-item.workspace-play-button');
@@ -407,7 +487,24 @@ function resetPlayBtn(operation) {
         toolboxBtn.attr('title', '重新开始');
         screenBtn.attr('title', '重新开始');
     }
-}
+};
+
+function resetWPBtnPosition() {
+    var left = $('#content_WorkSpace').width() - $('#wrap_Sider_Bar').width() - 10;
+    var top = $('.blocklyZoom')[0].transform.animVal[0].matrix.f;
+    $('.blocklyZoom').attr('transform', 'translate(' + (left - 40) + ',' + top + ')');
+    var top = $('.blocklyTrash')[0].transform.animVal[0].matrix.f;
+    $('.blocklyTrash').attr('transform', 'translate(' + (left - 45) + ',' + top + ')');
+};
+
+function siderBarDrag(e) {
+    var _sidebarDragStarX = e.pageX;
+    $(document).bind("mousemove", function (ev) {
+        $(".sider-bar-drag-proxy").css("left", ev.pageX + "px");
+    });
+};
+
+
 //blockly common
 var WorkScene = {};
 WorkScene.workspace = null;

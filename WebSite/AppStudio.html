@@ -286,12 +286,14 @@
     <link rel="stylesheet" href="style/tether.min.css">
     <link rel="stylesheet" href="style/bootstrap.min.css">
     <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/bootstrap-treeview.min.css">
     <link rel="stylesheet" href="style/common.css">
     <link rel="stylesheet" href="style/appstudio.css">
     <link rel="stylesheet" href="style/workspace.css">
     <script src="javascript/common/jquery-3.2.1.min.js"></script>
     <script src="javascript/common/tether.min.js"></script>
     <script src="javascript/common/bootstrap.min.js"></script>
+    <script src="javascript/common/bootstrap-treeview.min.js"></script>
     <script src="javascript/common/storage.js"></script>
     <script src="javascript/blockly_compressed.js"></script>
     <script src="javascript/blocks_compressed.js"></script>
@@ -315,7 +317,6 @@
     <script src="javascript/appstudio/Scene/scene.js"></script>
 </head>
 <body>
-
     <div id="mask_Page_Loading">
         <div id="loader">
             <div id="loader-center">
@@ -333,7 +334,7 @@
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-expand-sm navbar-light bg-success" id="menu_NavBar" style="padding:0px 15px; font-family:微软雅黑; font-size:14px;">
+    <nav class="navbar navbar-expand-sm navbar-light bg-success" id="menu_NavBar" style="padding:0px 10px; font-family:微软雅黑; font-size:10px;">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -352,7 +353,7 @@
                     <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dropdown link
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="padding:0px 10px; font-family:微软雅黑; font-size:10px;">
                         <a class="dropdown-item" href="#">Action</a>
                         <a class="dropdown-item" href="#">Another action</a>
                         <a class="dropdown-item" href="#">Something else here</a>
@@ -361,8 +362,7 @@
             </ul>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-sm navbar-light bg-primary" id="tool_NavBar" style="padding:0px 15px; font-family:微软雅黑; font-size:14px;">
-        <a class="navbar-brand" href="#">Tool Bar</a>
+    <nav class="navbar navbar-expand-sm navbar-light bg-primary" id="tool_NavBar" style="padding:0px 15px; font-family:微软雅黑; font-size:10px;">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -381,8 +381,8 @@
         </div>
     </nav>
     <div class="card cord-wrap text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs" style="font-family:微软雅黑; font-size:14px;">
+        <div class="card-header" style="padding:5px 15px;">
+            <ul class="nav nav-tabs card-header-tabs" style="font-family:微软雅黑; font-size:12px;">
                 <li class="nav-item">
                     <a class="nav-link active" href="#">工作区</a>
                 </li>
@@ -436,6 +436,13 @@
                     <div class="col-12" style="padding:0px;">
                         <div class="blockly-workspace-wrap" id="wrap_WorkSpace" style="border:none;">
                             <div id="content_WorkSpace"></div>
+                            <div class="sider-bar-wrap" id="wrap_Sider_Bar">
+                                <div class="sider-bar-drag expanded"></div>
+                                <div class="side-bar-content">
+                                    <div id="tree"></div>   
+                                </div>
+                            </div>
+                            <div class="sider-bar-drag-proxy"></div>
                         </div>
                     </div>
                 </div>

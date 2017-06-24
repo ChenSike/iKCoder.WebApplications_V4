@@ -1908,7 +1908,7 @@ function formatReportData(response) {
     for (var i = 0; i < tmpNodes.length; i++) {
         timeData.times.push({
             date: $(tmpNodes[i]).attr('date'),
-            time: parseInt($(tmpNodes[i]).attr('value'))
+            time: new Number($(tmpNodes[i]).attr('value')).toFixed(2)
         });
     }
 

@@ -137,6 +137,7 @@ body {
     position: absolute;
     top: 0px;
     left: 0px;
+    overflow: hidden;
 }
 
 .run-scene-fullscreen-close-button {
@@ -215,4 +216,53 @@ body {
     position: absolute;
     top: 0px;
     left: 0px;
+}
+
+.sider-bar-wrap {
+    position: absolute;
+    width: 200px;
+    height: 100%;
+    background-color: red;
+    top: 0px;
+    right: 0px;
+}
+
+.sider-bar-drag-proxy {
+    position: absolute;
+    height: 100%;
+    width: 5px;
+    background-color: rgb(203,204,203);
+    visibility: hidden;
+    cursor: col-resize;
+    z-index: 9999;
+    top: 0px;
+}
+
+.sider-bar-drag {
+    position: relative;
+    height: 100%;
+    width: 5px;
+    top: 0px;
+    left: -5px;
+    background-image: url(../image/siderbardrag.png);
+}
+
+    .sider-bar-drag.expanded {
+        cursor: col-resize;
+    }
+
+.side-bar-content {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgb(255,255,255);
+    /*background-color: rgb(41,49,67);*/
+}
+
+.list-group-item.node-tree{
+    padding:5px 10px;
+    font-size:12px;
+    text-align: left;
 }
