@@ -1,6 +1,9 @@
 ﻿'use strict';
 
 var _workspaceCfg = {};
+var _globalTree = null;
+var _globalTreeRoot = null;
+
 function initPage() {
     //_registerRemoteServer();
     //$.ajax({
@@ -71,41 +74,10 @@ function initPage() {
 };
 
 function createTree() {
-    var tree = [
-        {
-            text: "Parent 1",
-            nodes: [
-                {
-                    text: "Child 1",
-                    nodes: [
-                        {
-                            text: "Grandchild 1"
-                        },
-                        {
-                            text: "Grandchild 2"
-                        }
-                    ]
-                },
-                {
-                    text: "Child 2"
-                }
-            ]
-        },
-        {
-            text: "Parent 2"
-        },
-        {
-            text: "Parent 3"
-        },
-        {
-            text: "Parent 4"
-        },
-        {
-            text: "Parent 5"
-        }
-    ];
+    var tree = [{ text: "工程", nodes: [] }];
     $('#tree').treeview({ data: tree, showBorder: false });
-}
+    _globalTree = $('#tree').treeview(true);
+};
 
 function initEvents() {
     document.oncontextmenu = function () { return false; };
@@ -231,6 +203,8 @@ function initEvents() {
     $(window).on('beforeunload', function () {
         WorkScene.saveStatus();
     });
+
+    initVSEvent();
 };
 
 function initData(response) {
@@ -506,8 +480,6 @@ function siderBarDrag(e) {
         $(".sider-bar-drag-proxy").css("left", ev.pageX + "px");
     });
 };
-
-
 //blockly common
 var WorkScene = {};
 WorkScene.workspace = null;
@@ -728,4 +700,40 @@ WorkScene.saveStatus = function (flag) {
 };
 
 WorkScene.OutputCodeCallBack = function (code) {
+};
+//
+function initVSEvent() {
+    var projectType = '';
+    var projectName = '';
+    $('#modal_Input_FieldName').on('show.bs.modal', function (e) {
+        var source = $(e.relatedTarget);
+        projectType = source.attr('data-p-type');
+
+    });
+
+    $('#btn_OK_Input_FieldName').on('click', function () {
+        projectName = $('#txt_Field_Name').val().trim();
+        if (projectName != '') {
+            createProject(projectType, projectName);
+            $('#modal_Input_FieldName').modal('hide');
+            $('#modal_Create_Project').modal('hide');
+        }
+    });
 }
+
+function createProject(type, name) {
+    switch (type) {
+        case 'story2d':
+            break;
+        case 'game2d':
+            break;
+    }
+
+    if (!_globalTreeRoot) {
+        _globalTreeRoot = _globalTree.getNodes('0.0')[0];
+    }
+
+    _globalTreeRoot.$el.text(name);
+    _globalTreeRoot.text = name;
+    _globalTreeRoot.itemType = 'project';
+};

@@ -345,7 +345,7 @@
                         新建
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dd_Menu_CreateNew" style="padding:0px 10px; font-family:微软雅黑; font-size:10px;">
-                        <a class="dropdown-item" id="menu_New_Project" href="#"  data-toggle="modal" data-target="#modal_Create_Project">项目</a>
+                        <a class="dropdown-item" id="menu_New_Project" href="#" data-toggle="modal" data-target="#modal_Create_Project">项目</a>
                         <a class="dropdown-item" id="menu_New_Stage" href="#">场景</a>
                     </div>
                 </li>
@@ -445,7 +445,7 @@
                             <div class="sider-bar-wrap" id="wrap_Sider_Bar">
                                 <div class="sider-bar-drag expanded"></div>
                                 <div class="side-bar-content">
-                                    <div id="tree"></div>   
+                                    <div id="tree"></div>
                                 </div>
                             </div>
                             <div class="sider-bar-drag-proxy"></div>
@@ -512,13 +512,43 @@
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
-
+                            <div class="col-8">
+                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="story2d">创建一个故事（2D）</a></p>
+                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="game2d">创建一个互动应用（2D）</a></p>
+                            </div>
+                            <div class="col-4">
+                                <p><a class="link-button-panel-bottom" href="#">示例</a></p>
+                                <p><a class="link-button-panel-bottom" href="#">示例</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer" style="padding:5px 15px;">
+                    <!--<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-primary">确定</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_Input_FieldName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="padding:5px 15px;">
+                    <p class="modal-title" id="title_Modal_Input_FieldName">项目名称</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="txt_Field_Name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="padding:5px 15px;">
                     <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-sm btn-primary">确定</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="btn_OK_Input_FieldName">确定</button>
                 </div>
             </div>
         </div>
