@@ -1,0 +1,68 @@
+﻿<xml id="workspacefactory_toolbox" class="toolbox">
+  <category name="对象分类" colour="#E86CEB" id="category_Object_Category" iconposition="0px -323px">
+    <block type="object_background" eventicon="appearance.svg" stroke="#E86CEB" maxcount="1"/>
+    <block type="object_player" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_NPC" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_prop" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_border" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_derive" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_other" eventicon="appearance.svg" stroke="#E86CEB"/>
+  </category>
+  <category name="对象事件" colour="#0076ff" id="category_Object_Event" iconposition="0px -136px">
+    <block type="event_click_object" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_dbclick_object" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_drag_object" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_mouse_down_object" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_mouse_up_object" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_mouse_move_object" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_mouse_enter_object" eventicon="tap.svg" stroke="#5C7DEC"/>blocklyToolboxDiv·
+    <block type="event_mouse_leave_object" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_receive_message_object" eventicon="msg.svg" stroke="#5C7DEC"/>
+  </category>
+  <category name="对象属性" colour="#0076ff" id="category_Object_Property" iconposition="0px -136px">
+    <block type="object_property_type" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_property_start_position" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_property_start_size" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_property_deletable" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_property_visible" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_property_moveable" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_property_interactive" eventicon="appearance.svg" stroke="#E86CEB"/>
+    <block type="object_property_custom" eventicon="appearance.svg" stroke="#E86CEB"/>
+  </category>
+  <category name="对象动作" colour="#0076ff" id="category_Object_Action" iconposition="0px -90px">
+    <block type="object_action_move" eventicon="appearance.svg" stroke="#FF2851"/>
+    <block type="object_action_rotate" eventicon="appearance.svg" stroke="#FF2851"/>
+    <block type="object_action_jump" eventicon="appearance.svg" stroke="#FF2851"/>
+    <block type="object_action_run" eventicon="appearance.svg" stroke="#FF2851"/>
+    <block type="object_action_custom" eventicon="appearance.svg" stroke="#FF2851"/>
+  </category>
+  <category name="系统事件" colour="#0076ff" id="category_System_Event" iconposition="0px -136px">
+    <block type="event_sys_start" eventicon="start.svg" stroke="#5C7DEC" maxcount="1"/>
+    <block type="event_sys_pause" eventicon="start.svg" stroke="#5C7DEC" maxcount="1"/>
+    <block type="event_sys_continue" eventicon="start.svg" stroke="#5C7DEC" maxcount="1"/>
+    <block type="event_sys_stop" eventicon="start.svg" stroke="#5C7DEC" maxcount="1"/>
+    <block type="event_sys_over" eventicon="start.svg" stroke="#5C7DEC" maxcount="1"/>
+    <block type="event_sys_click" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_dbclick" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_mouse_down" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_mouse_up" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_mouse_move" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_mouse_enter" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_mouse_leave" eventicon="tap.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_keypress" eventicon="keyboard.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_keydown" eventicon="keyboard.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_keyup" eventicon="keyboard.svg" stroke="#5C7DEC"/>
+    <block type="event_sys_receive_message" eventicon="msg.svg" stroke="#5C7DEC"/>
+  </category>
+  <category name="逻辑" colour="#FFCD00" id="category_Logic" iconposition="0px -45px">
+  </category> 
+  <category name="循环" colour="#FF3824" id="category_Facade" iconposition="0px -181px">
+  </category>
+  <category name="数学" colour="#54C7FC" id="category_Control" iconposition="0px -232px">
+  </category>
+  <category name="文本" colour="#FF9600" id="category_Data" iconposition="0px -278px">
+  </category>
+  <category name="函数" colour="#44DB5E"  id="category_Detecte" iconposition="0px -368px">
+  </category>
+  <category name="变量" colour="#5BE3C5" id="category_Sound" iconposition="0px -414px"/>
+</xml>

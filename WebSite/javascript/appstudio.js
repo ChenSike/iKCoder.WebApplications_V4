@@ -104,7 +104,7 @@ function createTree() {
             text: "Parent 5"
         }
     ];
-    $('#tree').treeview({ data: tree, showBorder: false });    
+    $('#tree').treeview({ data: tree, showBorder: false });
 }
 
 function initEvents() {
@@ -490,11 +490,14 @@ function resetPlayBtn(operation) {
 };
 
 function resetWPBtnPosition() {
-    var left = $('#content_WorkSpace').width() - $('#wrap_Sider_Bar').width() - 10;
-    var top = $('.blocklyZoom')[0].transform.animVal[0].matrix.f;
-    $('.blocklyZoom').attr('transform', 'translate(' + (left - 40) + ',' + top + ')');
-    var top = $('.blocklyTrash')[0].transform.animVal[0].matrix.f;
-    $('.blocklyTrash').attr('transform', 'translate(' + (left - 45) + ',' + top + ')');
+    try {
+        var left = $('#content_WorkSpace').width() - $('#wrap_Sider_Bar').width() - 10;
+        var top = $('.blocklyZoom')[0].transform.animVal[0].matrix.f;
+        $('.blocklyZoom').attr('transform', 'translate(' + (left - 40) + ',' + top + ')');
+        var top = $('.blocklyTrash')[0].transform.animVal[0].matrix.f;
+        $('.blocklyTrash').attr('transform', 'translate(' + (left - 45) + ',' + top + ')');
+    } catch (ex) {
+    }
 };
 
 function siderBarDrag(e) {

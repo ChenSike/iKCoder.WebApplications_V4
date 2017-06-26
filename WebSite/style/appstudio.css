@@ -133,7 +133,7 @@ body {
     width: 30%;
     height: 30%;
     background-color: rgb(41,49,67);
-    z-index: 9999;
+    z-index: 999;
     position: absolute;
     top: 0px;
     left: 0px;

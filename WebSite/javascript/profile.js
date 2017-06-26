@@ -352,7 +352,7 @@ function formatOverviewData(response) {
 
     var tmpNode = $(response).find('codetimes');
     data.codetimes.over = parseInt($(tmpNode[0]).attr('over'));
-    data.codetimes.total = parseInt($(tmpNode[0]).attr('total'));
+    data.codetimes.total = parseInt($(tmpNode[0]).attr('totaltime'));
     tmpNodes = $(response).find('codetimes').find('item');
     for (var i = 0; i < tmpNodes.length; i++) {
         var tmpObj = $(tmpNodes[i]);
