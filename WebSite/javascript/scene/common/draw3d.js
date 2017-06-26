@@ -414,7 +414,7 @@ Brush.prototype.createTargetObj = function (drawSeqItem) {
         case 'll':
             targetObj.c = '#' + this.neck.material.color.getHexString();
             targetObj.w = this.lineWidth;
-            if (drawSeqItem.type == 'mt' || this.prevTargetObj.type == 'mt' || this.patterns.length <= 0) {
+            if (drawSeqItem.type == 'mt' || this.patterns.length <= 0) {
                 targetObj.sx = this.mesh.position.x - this.basePoint.x;
                 targetObj.sy = this.mesh.position.y - this.basePoint.y;
             } else {
