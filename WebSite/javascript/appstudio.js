@@ -71,6 +71,7 @@ function initPage() {
     adjustSceneContainerSize();
     resetWPBtnPosition();
     createTree();
+    initContextMenu();
 };
 
 function createTree() {
@@ -721,6 +722,22 @@ function initVSEvent() {
     });
 }
 
+function initContextMenu() {
+    $('#tree').contextmenu({
+        target: '#menu_Tree_Context',
+        before: function (e) {
+            e.preventDefault();
+            if (e.target.tagName != 'LI') {
+                e.preventDefault();
+                this.closemenu();
+                return false;
+            }
+            this.getMenu().find("li").eq(2).find('a').html("This was dynamically changed");
+            return true;
+        }
+    });
+};
+
 function createProject(type, name) {
     switch (type) {
         case 'story2d':
@@ -735,7 +752,6 @@ function createProject(type, name) {
     }
 
     _globalTreeRoot.$el.text(name);
-    _globalTreeRoot.$el.attr('data-toggle', "context");
     _globalTreeRoot.text = name;
     _globalTreeRoot.itemType = 'project';
 };

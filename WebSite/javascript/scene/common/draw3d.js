@@ -556,7 +556,7 @@ Brush.prototype.reset = function (resetStyle) {
         }
     });
 
-    if (typeof tmpItem == 'undefined') {
+    if (typeof tmpItem == 'undefined' || !tmpItem) {
         Engine.scene.add(this.mesh);
     }
 
