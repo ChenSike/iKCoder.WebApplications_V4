@@ -731,9 +731,11 @@ function createProject(type, name) {
 
     if (!_globalTreeRoot) {
         _globalTreeRoot = _globalTree.getNodes('0.0')[0];
+        
     }
 
     _globalTreeRoot.$el.text(name);
+    _globalTreeRoot.$el.attr('data-toggle', "context");
     _globalTreeRoot.text = name;
     _globalTreeRoot.itemType = 'project';
 };
