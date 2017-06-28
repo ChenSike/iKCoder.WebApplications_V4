@@ -557,7 +557,7 @@ Brush.prototype.reset = function (resetStyle) {
         }
     });
 
-    if (typeof tmpItem == 'undefined') {
+    if (typeof tmpItem == 'undefined' || !tmpItem) {
         Engine.scene.add(this.mesh);
     }
 
@@ -740,8 +740,10 @@ Brush.getPatternsTrack = function (parent) {
             trackItem.cx = pattern.params.x;
             trackItem.cy = pattern.params.y;
             trackItem.radius = pattern.params.r;
-            trackItem.sa = tmpMesh.rotation.z * 180 / Math.PI + _arc.params.sa;
-            trackItem.ea = tmpMesh.rotation.z * 180 / Math.PI + _arc.params.ea;
+            //trackItem.sa = tmpMesh.rotation.z * 180 / Math.PI + _arc.params.sa;
+            //trackItem.ea = tmpMesh.rotation.z * 180 / Math.PI + _arc.params.ea;
+			trackItem.sa = tmpMesh.rotation.z * 180 / Math.PI + pattern.params.sa;
+            trackItem.ea = tmpMesh.rotation.z * 180 / Math.PI + pattern.params.ea;
         }
 
         tracks.push(trackItem);
