@@ -4,7 +4,7 @@ var Scene = {};
 Scene.movePoint = { sx: 0, sy: 0, len: 0, lineAngle: 90, rotateAngle: 0 };
 Scene.moveLength = 0;
 Scene.rotatePoint = [{ x: 0, y: 0 }];
-var expectedPoint = [0, 0, 6, 10.392, 6, 10.392, 12, 0, 12, 0, 0 , 0];
+var patternPoint = [0, 0, 6, 10.392, 6, 10.392, 12, 0, 12, 0, 0 , 0];
 
 Scene.initEnvironment = function (containerId) {
     changeSiderBarWidth(700);
@@ -410,7 +410,7 @@ Scene.GetLinePoint = function () {
 
 Scene.StepCompleteFn = function (){
     var actualLinePoint = Scene.GetLinePoint();
-    if (actualLinePoint.length == '12' && ((expectedPoint.sort(function(a,b){ return b-a}).toString() == actualLinePoint.sort(function(a,b){ return b-a}).toString()))){
+    if (actualLinePoint.length == '12' && ((patternPoint.sort(function(a,b){ return b-a}).toString() == actualLinePoint.sort(function(a,b){ return b-a}).toString()))){
         return true;
     }else{
         return false;

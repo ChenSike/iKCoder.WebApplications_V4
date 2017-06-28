@@ -1,5 +1,5 @@
 ﻿'use strict';
-Blockly.FieldColour.COLOURS = ['#f00', '#0f0', '#00f','#FFB90F',  '#000', '#888','#CDC8B1', '#fff','#ffff00','#f0f','#0ff','#B23AEE'];
+Blockly.FieldColour.COLOURS = [ '#00ff00','#ff0000', '#0000ff','#ffb90f',  '#000000', '#888888','#cdc8b1', '#ffffff','#ffff00','#ff00ff','#00ffff','#b23aee'];
 Blockly.FieldColour.COLUMNS = 4;
 
 Blockly.Blocks['event_start'] = {
@@ -113,7 +113,7 @@ Blockly.Blocks['set_color'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("设置颜色")
-        .appendField(new Blockly.FieldColour("#f00"), "part_color");
+        .appendField(new Blockly.FieldColour("#00ff00"), "part_color");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip('');
