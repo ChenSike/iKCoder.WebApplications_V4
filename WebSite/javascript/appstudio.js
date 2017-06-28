@@ -3,6 +3,7 @@
 var _workspaceCfg = {};
 var _globalTree = null;
 var _globalTreeRoot = null;
+var _globalProjectType = '';
 
 function initPage() {
     //_registerRemoteServer();
@@ -70,18 +71,24 @@ function initPage() {
     initEvents();
     adjustSceneContainerSize();
     resetWPBtnPosition();
-    createTree();
+    initSiderTree();
     initContextMenu();
 };
 
-function createTree() {
-    var tree = [{ text: "工程", nodes: [] }];
+function initSiderTree() {
+    var tree = [{
+        text: "",
+        nodes: [],
+        ptype: 'project',
+        icon: "fa fa-cogs"
+    }];
     $('#tree').treeview({ data: tree, showBorder: false });
     _globalTree = $('#tree').treeview(true);
 };
 
 function initEvents() {
     document.oncontextmenu = function () { return false; };
+    //$('#game_container').oncontextmenu = function () { return false; };
     $('.workspace-tool-item.workspace-play-button.fa.fa-play').on('click', function () {
         if (WorkScene.playableScene()) {
             if ($(this).hasClass('fa-play')) {
@@ -702,22 +709,80 @@ WorkScene.saveStatus = function (flag) {
 
 WorkScene.OutputCodeCallBack = function (code) {
 };
+
+function _generateGUID() {
+    var length = 20;
+    var soupLength = _generateGUID.soup_.length;
+    var id = [];
+    for (var i = 0; i < length; i++) {
+        id[i] = _generateGUID.soup_.charAt(Math.random() * soupLength);
+    }
+    return id.join('');
+};
+
+_generateGUID.soup_ = '!#$%()*+,-./:;=?@[]^_`{|}~' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 //
 function initVSEvent() {
     var projectType = '';
     var projectName = '';
+    var targetType = '';
     $('#modal_Input_FieldName').on('show.bs.modal', function (e) {
-        var source = $(e.relatedTarget);
-        projectType = source.attr('data-p-type');
+        $('#txt_Field_Name').val('');
+        var title = '项目名称';
+        projectType = '';
+        targetType = '';
+        if (typeof e.relatedTarget == 'undefined' || !e.relatedTarget) {
+            targetType = $(e.target).attr('data-targettype');
+            switch (targetType) {
+                case 'stage':
+                    title = '场景名称';
+                    break;
+                case 'object':
+                    title = '对象名称';
+                    break;
+            }
+        } else {
+            var source = $(e.relatedTarget);
+            var pType = source.attr('data-p-type');
+            if (pType.indexOf('proj-') == 0) {
+                projectType = pType;
+            } else {
+                targetType = pType;
+                $(this).attr('data-targetid', $('#modal_Create_Object').attr('data-targetid'));
+            }
+        }
+
+        $('#title_Modal_Input_FieldName').text(title);
+    });
+
+    $('#modal_Create_Object').on('show.bs.modal', function (e) {
+        var type = _globalTree.findNodes($(this).attr('data-targetid'), 'nodeId')[0].itemType;
 
     });
 
     $('#btn_OK_Input_FieldName').on('click', function () {
         projectName = $('#txt_Field_Name').val().trim();
         if (projectName != '') {
-            createProject(projectType, projectName);
+            if (projectType != '') {
+                createProject(projectType, projectName);
+                $('#modal_Create_Project').modal('hide');
+                _globalProjectType = projectType;
+            } else {
+                switch (targetType) {
+                    case 'stage':
+                        createStage(projectName);
+                        break;
+                    case 'obj-background2d':
+                    case 'obj-players2d':
+                    case 'obj-npc2d':
+                    case 'obj-prop2d':
+                        $('#modal_Create_Object').modal('hide');
+                        createObject(targetType, projectName, $('#modal_Input_FieldName').attr('data-targetid'));
+                        break;
+                }
+            }
+
             $('#modal_Input_FieldName').modal('hide');
-            $('#modal_Create_Project').modal('hide');
         }
     });
 }
@@ -727,14 +792,61 @@ function initContextMenu() {
         target: '#menu_Tree_Context',
         before: function (e) {
             e.preventDefault();
-            if (e.target.tagName != 'LI') {
+            if (e.target.tagName != 'LI' || e.target.innerText == '') {
                 e.preventDefault();
                 this.closemenu();
                 return false;
+            } else {
+                $('#menu_Tree_Context .dropdown-menu .dropdown-item').hide();
+                $('#menu_Tree_Context .dropdown-menu .dropdown-item').attr('data-targetid', '');
+                var nodeId = $(e.target).attr('data-nodeid');
+                var tmpNode = _globalTree.findNodes(nodeId, 'nodeId')[0];
+                switch (tmpNode.itemType) {
+                    case 'project':
+                        $('#item_ContextMenu_AddStage').show();
+                        $('#item_ContextMenu_AddStage').attr('data-targetid', nodeId);
+                        break;
+                    case 'stage':
+                        $('#item_ContextMenu_DeleteStage').show();
+                        $('#item_ContextMenu_DeleteStage').attr('data-targetid', nodeId);
+                        $('#item_ContextMenu_DeleteStage').text('删除场景: ' + tmpNode.text);
+                        $('#item_ContextMenu_AddObject').show();
+                        $('#item_ContextMenu_AddObject').attr('data-targetid', nodeId);
+                        break;
+                    default:
+                        if (tmpNode.itemType.indexOf('obj-') == 0) {
+                            $('#item_ContextMenu_DeleteObject').show();
+                            $('#item_ContextMenu_DeleteObject').attr('data-targetid', nodeId);
+                            $('#item_ContextMenu_DeleteObject').text('删除对象: ' + tmpNode.text);
+                            $('#item_ContextMenu_AddObject').show();
+                            $('#item_ContextMenu_AddObject').attr('data-targetid', nodeId);
+                        }
+                        break;
+                }
             }
-            this.getMenu().find("li").eq(2).find('a').html("This was dynamically changed");
+
             return true;
         }
+    });
+
+    $('#item_ContextMenu_AddStage').on('click', function (eventObj) {
+        $('#modal_Input_FieldName').attr('data-targettype', 'stage');
+        $('#modal_Input_FieldName').modal('show');
+    });
+
+    $('#item_ContextMenu_DeleteStage').on('click', function (eventObj) {
+        var tmpNode = _globalTree.findNodes($(eventObj.target).attr('data-targetid'), 'nodeId')[0];
+        $("#tree").treeview("removeNode", [tmpNode]);
+    });
+
+    $('#item_ContextMenu_AddObject').on('click', function (eventObj) {
+        $('#modal_Create_Object').attr('data-targetid', $('#item_ContextMenu_AddObject').attr('data-targetid'));
+        $('#modal_Create_Object').modal('show');
+    });
+
+    $('#item_ContextMenu_DeleteObject').on('click', function (eventObj) {
+        var tmpNode = _globalTree.findNodes($(eventObj.target).attr('data-targetid'), 'nodeId')[0];
+        $("#tree").treeview("removeNode", [tmpNode]);
     });
 };
 
@@ -748,10 +860,50 @@ function createProject(type, name) {
 
     if (!_globalTreeRoot) {
         _globalTreeRoot = _globalTree.getNodes('0.0')[0];
-        
     }
 
     _globalTreeRoot.$el.text(name);
     _globalTreeRoot.text = name;
     _globalTreeRoot.itemType = 'project';
+    _globalTreeRoot.guid = _generateGUID();
+};
+
+function createStage(stageName) {
+    var newNode = {
+        text: stageName,
+        id: _generateGUID(),
+        itemType: 'stage',
+        ptype: 'stage',
+        icon: "fa fa-folder-open"
+    };
+
+    $("#tree").treeview("addNode", [newNode, _globalTreeRoot]);
+};
+
+function createObject(objType, objName, parentNodeId) {
+    var icon = '';
+    switch (objType) {
+        case 'obj-background2d':
+            icon = 'fa fa-file-image-o';
+            break;
+        case 'obj-players2d':
+            icon = 'fa fa-gamepad';
+            break;
+        case 'obj-npc2d':
+            icon = 'fa fa-paw';
+            break;
+        case 'obj-prop2d':
+            icon = 'fa fa-wrench';
+            break;
+    }
+
+    var newNode = {
+        text: objName,
+        id: _generateGUID(),
+        itemType: objType,
+        ptype: objType,
+        icon: icon
+    };
+
+    $("#tree").treeview("addNode", [newNode, _globalTree.findNodes(parentNodeId, 'nodeId')[0]]);
 };

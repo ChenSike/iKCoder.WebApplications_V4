@@ -201,7 +201,7 @@ Scene.buildCompleteHTML = function (qrSymbol) {
     tmpHTMLArr.push('                                <form class="form-inline">');
     tmpHTMLArr.push('                                    <div class="input-group">');
     tmpHTMLArr.push('                                        <input type="text" class="form-control rounded-right" id="txt_QC_FreeSignUp" placeholder="手机号码">');
-    tmpHTMLArr.push('                                        <div class="input-group-addon btn btn-outline-primary" id="btn_QC_FreeSignUp" style="background-color:#0275d8;color:rgb(255,255,255)">免费注册</div>');
+    tmpHTMLArr.push('                                        <div class="input-group-addon btn btn-outline-primary" id="btn_QC_FreeSignUp" style="background-color:#0275d8;color:rgb(255,255,255);cursor: pointer;">免费注册</div>');
     tmpHTMLArr.push('                                    </div>');
     tmpHTMLArr.push('                                </form>');
     tmpHTMLArr.push('                            </div>');
@@ -243,17 +243,17 @@ Scene.buildCompleteHTML = function (qrSymbol) {
     $('.wrap-workstatus-alert').show();
 
     $('#btn_QC_FreeSignUp').on('click', function () {
-        window.localStorage.removeItem(symbol);
-        window.location.href = 'signin.html?opt=signup&number=' + $('#txt_QC_FreeSignUp').val().trim() + '?rnd=' + Date.now();;
+        window.localStorage.removeItem('qc01_state_storage');
+        window.location.href = 'signin.html?opt=signup&number=' + $('#txt_QC_FreeSignUp').val().trim();
     });
 
     $('#btn_QC_GoHome').on('click', function () {
-        window.localStorage.removeItem(symbol);
+        window.localStorage.removeItem('qc01_state_storage');
         window.location.href = "index.html?qid=" + _gCID;
     });
 
     $('#btn_QC_Restart').on('click', function () {
-        window.localStorage.removeItem(symbol);
+        window.localStorage.removeItem('qc01_state_storage');
         window.location.href = "OnlineExperience.html?qid=" + _gCID;
     });
 };

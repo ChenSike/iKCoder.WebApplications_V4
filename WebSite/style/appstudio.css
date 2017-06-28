@@ -261,8 +261,25 @@ body {
     /*background-color: rgb(41,49,67);*/
 }
 
-.list-group-item.node-tree{
-    padding:5px 10px;
-    font-size:12px;
+.list-group-item.node-tree {
+    padding: 5px 10px;
+    font-size: 12px;
     text-align: left;
+}
+
+.open .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    padding: 3px 0;
+    font-size: 14px;
+}
+
+.dropdown-item {
+    padding: 1px 1.5rem;
+}
+
+.dropdown-divider {
+    margin: 3px 0;
 }
