@@ -251,7 +251,8 @@ Brush.prototype.updatePosition = function () {
                     this.drawing = true;
                     var line = new Line(this, targetObj.sx, targetObj.sy, targetObj.tx, targetObj.ty, targetObj.c, targetObj.w);
                     if (tmpItem.type == 'll') {
-                        if (this.patterns.length > 0 && this.patterns[this.patterns.length - 1].type != 'patterngroup') {
+                        if (this.prevTargetObj.type == "mt") {
+                        } else if (this.patterns.length > 0 && this.patterns[this.patterns.length - 1].type != 'patterngroup') {
                             var lastRadian = this.patterns[this.patterns.length - 1].mesh.rotation.z;
                             line.setRotation(lastRadian);
                         }
@@ -795,8 +796,8 @@ Line.prototype.init = function () {
     var lineLength = this.getLengthOfLine();
     lineGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
     lineGeometry.vertices.push(new THREE.Vector3(lineLength, 0, 0));
-    //var lineMate = new THREE.LineBasicMaterial({ color: this.params.c, transparent: true, opacity: 0 });
-    var lineMate = new THREE.LineBasicMaterial({ color: '#00ff00', transparent: true, opacity: 0.5 });
+    var lineMate = new THREE.LineBasicMaterial({ color: this.params.c, transparent: true, opacity: 0 });
+    //var lineMate = new THREE.LineBasicMaterial({ color: '#00ff00', transparent: true, opacity: 0.5 });
     this.mesh = new THREE.Line(lineGeometry, lineMate, THREE.LineSegments);
     var cubeGeometry = new THREE.CubeGeometry(1, this.params.w, 1);
     var cubeMaterial = new THREE.MeshBasicMaterial({ color: this.params.c, shading: THREE.FlatShading });
