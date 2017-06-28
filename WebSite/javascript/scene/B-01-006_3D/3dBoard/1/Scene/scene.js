@@ -394,7 +394,7 @@ Scene.GetLinePoint = function () {
     var patternsTrack = Brush.getPatternsTrack(Scene.getBrush());
     for (var i = 0; i < patternsTrack.length; i ++){
         pattern = patternsTrack[i];
-        if (pattern.type = 'line'){
+        if (pattern.type == 'line'){
             var sx = parseFloat((pattern.sx/20).toFixed(3));
             var sy = parseFloat((pattern.sy/20).toFixed(3));
             var ex = parseFloat((pattern.ex/20).toFixed(3));
