@@ -1007,7 +1007,7 @@ function LoadLibs(libs) {
             LoadLibs(libs);
         });
     }
-}
+};
 
 function loadLibForProject(type) {
     var libs = [];
@@ -1035,4 +1035,16 @@ function loadLibForProject(type) {
     }
 
     LoadLibs(libs);
+};
+
+function showBlocklyPopup(title, body, handler, args) {
+    $('#title_Modal_Blockly_Popup').text(title);
+    $('#body_Modal_Blockly_Popup').html(body);
+    $('#btn_OK_Modal_Blockly_Popup').unbind();
+    $('#btn_OK_Modal_Blockly_Popup').on('click', function (eventObj) {
+        $('#modal_Blockly_Popup').modal('hide');
+        handler(args);
+    });
+
+    $('#modal_Blockly_Popup').modal('show');
 }

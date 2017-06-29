@@ -1,11 +1,11 @@
 ﻿'use strict';
 
 function openCustomBgAudioWindow(option) {
-
+    showBlocklyPopup('自定义背景音乐', 'building...', function () { }, []);
 };
 
 function openCustomBgImageWindow(option) {
-
+    showBlocklyPopup('自定义背景图片', 'building...', function () { }, []);
 };
 
 Blockly.Blocks['bg_property_audio'] = {
