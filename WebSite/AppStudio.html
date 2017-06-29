@@ -306,16 +306,34 @@
     <script src="javascript/common/xmloperator.js"></script>
     <script src="javascript/common/common.js"></script>
     <script src="javascript/common.js"></script>
-    <script src="javascript/common/three.min.js"></script>
+    <script src="javascript/appstudio.js"></script>
+    <!--<script src="javascript/common/three.min.js"></script>
     <script src="javascript/common/TweenMax.min.js"></script>
     <script src="javascript/common/threeengine.js"></script>
-    <script src="javascript/appstudio.js"></script>
-    <script src="javascript/appstudio/Blocks/blocks_system_event.js"></script>
-    <script src="javascript/appstudio/Blocks/blocks_object_event.js"></script>
-    <script src="javascript/appstudio/Blocks/blocks_object_property.js"></script>
-    <script src="javascript/appstudio/Blocks/blocks_object_action.js"></script>
-    <script src="javascript/appstudio/Blocks/blocks_object_category.js"></script>
-    <script src="javascript/appstudio/Scene/scene.js"></script>
+    <script src="javascript/appstudio/2d/Blocks/blocks_system_event.js"></script>
+    <script src="javascript/appstudio/2d/Blocks/blocks_object_event.js"></script>
+    <script src="javascript/appstudio/2d/Blocks/blocks_object_property.js"></script>
+    <script src="javascript/appstudio/2d/Blocks/blocks_object_action.js"></script>
+    <script src="javascript/appstudio/2d/Blocks/blocks_object_category.js"></script>
+    <script src="javascript/appstudio/2d/Scene/scene.js"></script>-->
+    <script src="javascript/common/pixi.js"></script>
+    <script src="javascript/appstudio/2d/blocks/background/property.js"></script>
+    <script src="javascript/appstudio/2d/blocks/background/method.js"></script>
+    <script src="javascript/appstudio/2d/blocks/background/event.js"></script>
+    <script src="javascript/appstudio/2d/blocks/player/property.js"></script>
+    <script src="javascript/appstudio/2d/blocks/player/method.js"></script>
+    <script src="javascript/appstudio/2d/blocks/player/event.js"></script>
+    <script src="javascript/appstudio/2d/blocks/npc/property.js"></script>
+    <script src="javascript/appstudio/2d/blocks/npc/method.js"></script>
+    <script src="javascript/appstudio/2d/blocks/npc/event.js"></script>
+    <script src="javascript/appstudio/2d/blocks/prop/property.js"></script>
+    <script src="javascript/appstudio/2d/blocks/prop/method.js"></script>
+    <script src="javascript/appstudio/2d/blocks/prop/event.js"></script>
+    <script src="javascript/appstudio/2d/blocks/global/object.js"></script>
+    <script src="javascript/appstudio/2d/blocks/global/property.js"></script>
+    <script src="javascript/appstudio/2d/blocks/global/method.js"></script>
+    <script src="javascript/appstudio/2d/blocks/global/event.js"></script>
+
 </head>
 <body>
     <div id="mask_Page_Loading">
@@ -449,6 +467,7 @@
                                             <a class="dropdown-item" id="item_ContextMenu_DeleteStage" href="#">删除场景</a>
                                             <a class="dropdown-item" id="item_ContextMenu_AddObject" href="#">添加对象</a>
                                             <a class="dropdown-item" id="item_ContextMenu_DeleteObject" href="#">删除对象</a>
+                                            <a class="dropdown-item" id="item_ContextMenu_AddSubObject" href="#">添加衍生对象</a>
                                         </div>
                                     </div>
                                 </div>
@@ -548,10 +567,10 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-8">
-                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="obj-background2d">创建背景对象</a></p>
-                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="obj-players2d">创建玩家角色对象</a></p>
-                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="obj-npc2d">创建非玩家角色对象</a></p>
-                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="obj-prop2d">创建道具对象</a></p>
+                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="obj-background-2d">创建背景对象</a></p>
+                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="obj-player-2d">创建玩家角色对象</a></p>
+                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="obj-npc-2d">创建非玩家角色对象</a></p>
+                                <p><a class="link-button-panel-bottom" href="#" data-toggle="modal" data-target="#modal_Input_FieldName" data-p-type="obj-prop-2d">创建道具对象</a></p>
                             </div>
                             <div class="col-4">
                                 <p><a class="link-button-panel-bottom" href="#">示例</a></p>
@@ -592,7 +611,25 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="modal_Remove_TreeNode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="padding:5px 15px;">
+                    <p class="modal-title" id="title_Modal_Remove_TreeNode">确认删除</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>确认要删除吗</p>
+                </div>
+                <div class="modal-footer" style="padding:5px 15px;">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="btn_OK_Remove_TreeNode">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();

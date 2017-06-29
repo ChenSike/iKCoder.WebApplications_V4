@@ -1,0 +1,10 @@
+﻿<xml id="workspacefactory_toolbox" class="toolbox">
+  <category name="属性" colour="#E86CEB" id="category_background_property" iconposition="0px -323px">
+    <block type="bg_property_audio" colour="#E86CEB" stroke="#E86CEB" maxcount="1"/>
+    <block type="bg_property_image" colour="#E86CEB" stroke="#E86CEB" maxcount="1"/>
+  </category>
+  <category name="方法" colour="#FF2851" id="category_background_method" iconposition="0px -323px">
+  </category>
+  <category name="事件" colour="#5C7DEC" id="category_background_event" iconposition="0px -323px">
+  </category>
+</xml>

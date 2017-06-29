@@ -4,6 +4,8 @@ var _workspaceCfg = {};
 var _globalTree = null;
 var _globalTreeRoot = null;
 var _globalProjectType = '';
+var _useFullContainer = false;
+var Scene = {};
 
 function initPage() {
     //_registerRemoteServer();
@@ -73,17 +75,6 @@ function initPage() {
     resetWPBtnPosition();
     initSiderTree();
     initContextMenu();
-};
-
-function initSiderTree() {
-    var tree = [{
-        text: "",
-        nodes: [],
-        ptype: 'project',
-        icon: "fa fa-cogs"
-    }];
-    $('#tree').treeview({ data: tree, showBorder: false });
-    _globalTree = $('#tree').treeview(true);
 };
 
 function initEvents() {
@@ -530,7 +521,8 @@ WorkScene.init = function () {
     };
 
     window.addEventListener('resize', onresize, false);
-    var blocksXMLDoc = Blockly.Xml.textToDom(XMLToString(LoadXMLFile('javascript/appstudio/toolbox.xml')));
+    //var blocksXMLDoc = Blockly.Xml.textToDom(XMLToString(LoadXMLFile('javascript/appstudio/toolbox.xml')));
+    var blocksXMLDoc = Blockly.Xml.textToDom('<xml id="toolbox" style="display: none"><category></category></xml>');
     WorkScene.workspace = Blockly.inject('content_WorkSpace',
         {
             scrollbars: true,
@@ -566,7 +558,8 @@ WorkScene.init = function () {
     );
 
     Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
-    var defaultXml = (!_workspaceCfg.workspace ? '<xml></xml>' : _workspaceCfg.workspace);
+    //var defaultXml = (!_workspaceCfg.workspace ? '<xml></xml>' : _workspaceCfg.workspace);
+    var defaultXml = ('<xml></xml>');
     WorkScene.loadBlocks(defaultXml);
     WorkScene.workspace.addChangeListener(WorkScene.outputCode);
 
@@ -580,7 +573,7 @@ WorkScene.init = function () {
     onresize();
     Blockly.svgResize(WorkScene.workspace);
     window.setTimeout(WorkScene.importPrettify, 1);
-    if (Scene.initEnvironment) {
+    if (Scene && Scene.initEnvironment) {
         Scene.initEnvironment('game_container');
         Scene.resetSize();
     }
@@ -746,18 +739,32 @@ function initVSEvent() {
             var pType = source.attr('data-p-type');
             if (pType.indexOf('proj-') == 0) {
                 projectType = pType;
-            } else {
+            } else if (pType.indexOf('obj-') == 0) {
                 targetType = pType;
-                $(this).attr('data-targetid', $('#modal_Create_Object').attr('data-targetid'));
+                var nodeId = $('#modal_Create_Object').attr('data-targetid');
+                if (pType.indexOf('background') > 0) {
+                    var sourceNode = _globalTree.findNodes(nodeId, 'nodeId')[0];
+                    if (typeof (sourceNode.nodes) == 'object' && sourceNode.nodes && sourceNode.nodes.length > 0) {
+                        for (var i = 0; i < sourceNode.nodes.length; i++) {
+                            if (sourceNode.nodes[i].itemType == pType) {
+                                _showGlobalMessage('每个场景只能包含一个背景对象！', 'warning', 'warning_Create_Background');
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+                $(this).attr('data-targetid', nodeId);
             }
         }
 
         $('#title_Modal_Input_FieldName').text(title);
+        $('#modal_Create_Object').hide();
+        $('#modal_Create_Project').hide();
     });
 
     $('#modal_Create_Object').on('show.bs.modal', function (e) {
         var type = _globalTree.findNodes($(this).attr('data-targetid'), 'nodeId')[0].itemType;
-
     });
 
     $('#btn_OK_Input_FieldName').on('click', function () {
@@ -772,10 +779,10 @@ function initVSEvent() {
                     case 'stage':
                         createStage(projectName);
                         break;
-                    case 'obj-background2d':
-                    case 'obj-players2d':
-                    case 'obj-npc2d':
-                    case 'obj-prop2d':
+                    case 'obj-background-2d':
+                    case 'obj-player-2d':
+                    case 'obj-npc-2d':
+                    case 'obj-prop-2d':
                         $('#modal_Create_Object').modal('hide');
                         createObject(targetType, projectName, $('#modal_Input_FieldName').attr('data-targetid'));
                         break;
@@ -785,7 +792,55 @@ function initVSEvent() {
             $('#modal_Input_FieldName').modal('hide');
         }
     });
-}
+
+    $('#btn_OK_Remove_TreeNode').on('click', function () {
+        var tmpNode = _globalTree.findNodes($('#modal_Create_Object').attr('data-targetid'), 'nodeId')[0];
+        $("#tree").treeview("removeNode", [tmpNode]);
+    });
+};
+
+function initSiderTree() {
+    var tree = [{
+        text: "Story",
+        nodes: [{
+            text: "Stage 1",
+            nodes: [{
+                text: "background 1",
+                itemType: 'obj-background-2d',
+                ptype: 'obj-background-2d',
+                icon: 'fa fa-file-image-o'
+            }, {
+                text: "player 1",
+                itemType: 'obj-player-2d',
+                ptype: 'obj-player-2d',
+                icon: 'fa fa-gamepad'
+            }, {
+                text: "npc 1",
+                itemType: 'obj-npc-2d',
+                ptype: 'obj-npc-2d',
+                icon: 'fa fa-paw'
+            }, {
+                text: "prop 1",
+                itemType: 'obj-prop-2d',
+                ptype: 'obj-prop-2d',
+                icon: 'fa fa-wrench'
+            }],
+            itemType: 'stage',
+            ptype: 'stage',
+            icon: "fa fa-folder-open"
+        }],
+        itemType: 'project',
+        ptype: 'project',
+        icon: "fa fa-cogs"
+    }];
+    $('#tree').treeview({ data: tree, showBorder: false });
+    $('#tree').on('nodeSelected', function (event, data) {
+        resetTBAndWS(event, data);
+    });
+
+    _globalTree = $('#tree').treeview(true);
+    loadLibForProject('game2d');
+};
 
 function initContextMenu() {
     $('#tree').contextmenu({
@@ -818,8 +873,8 @@ function initContextMenu() {
                             $('#item_ContextMenu_DeleteObject').show();
                             $('#item_ContextMenu_DeleteObject').attr('data-targetid', nodeId);
                             $('#item_ContextMenu_DeleteObject').text('删除对象: ' + tmpNode.text);
-                            $('#item_ContextMenu_AddObject').show();
-                            $('#item_ContextMenu_AddObject').attr('data-targetid', nodeId);
+                            $('#item_ContextMenu_AddSubObject').show();
+                            $('#item_ContextMenu_AddSubObject').attr('data-targetid', nodeId);
                         }
                         break;
                 }
@@ -834,30 +889,25 @@ function initContextMenu() {
         $('#modal_Input_FieldName').modal('show');
     });
 
-    $('#item_ContextMenu_DeleteStage').on('click', function (eventObj) {
-        var tmpNode = _globalTree.findNodes($(eventObj.target).attr('data-targetid'), 'nodeId')[0];
-        $("#tree").treeview("removeNode", [tmpNode]);
-    });
-
     $('#item_ContextMenu_AddObject').on('click', function (eventObj) {
         $('#modal_Create_Object').attr('data-targetid', $('#item_ContextMenu_AddObject').attr('data-targetid'));
         $('#modal_Create_Object').modal('show');
     });
 
+    $('#item_ContextMenu_AddSubObject').on('click', function (eventObj) {
+
+    });
+
     $('#item_ContextMenu_DeleteObject').on('click', function (eventObj) {
-        var tmpNode = _globalTree.findNodes($(eventObj.target).attr('data-targetid'), 'nodeId')[0];
-        $("#tree").treeview("removeNode", [tmpNode]);
+        openRemoveConfirmWindow($('#item_ContextMenu_DeleteObject').attr('data-targetid'));
+    });
+
+    $('#item_ContextMenu_DeleteStage').on('click', function (eventObj) {
+        openRemoveConfirmWindow($('#item_ContextMenu_DeleteStage').attr('data-targetid'));
     });
 };
 
 function createProject(type, name) {
-    switch (type) {
-        case 'story2d':
-            break;
-        case 'game2d':
-            break;
-    }
-
     if (!_globalTreeRoot) {
         _globalTreeRoot = _globalTree.getNodes('0.0')[0];
     }
@@ -866,6 +916,7 @@ function createProject(type, name) {
     _globalTreeRoot.text = name;
     _globalTreeRoot.itemType = 'project';
     _globalTreeRoot.guid = _generateGUID();
+    loadLibForProject(type);
 };
 
 function createStage(stageName) {
@@ -883,16 +934,16 @@ function createStage(stageName) {
 function createObject(objType, objName, parentNodeId) {
     var icon = '';
     switch (objType) {
-        case 'obj-background2d':
+        case 'obj-background-2d':
             icon = 'fa fa-file-image-o';
             break;
-        case 'obj-players2d':
+        case 'obj-player-2d':
             icon = 'fa fa-gamepad';
             break;
-        case 'obj-npc2d':
+        case 'obj-npc-2d':
             icon = 'fa fa-paw';
             break;
-        case 'obj-prop2d':
+        case 'obj-prop-2d':
             icon = 'fa fa-wrench';
             break;
     }
@@ -907,3 +958,81 @@ function createObject(objType, objName, parentNodeId) {
 
     $("#tree").treeview("addNode", [newNode, _globalTree.findNodes(parentNodeId, 'nodeId')[0]]);
 };
+
+function openRemoveConfirmWindow(nodeId) {
+    var tmpNode = _globalTree.findNodes(nodeId, 'nodeId')[0];
+    var text = '';
+    switch (tmpNode.itemType) {
+        case 'stage':
+            text = '场景';
+            break;
+        case 'obj-background-2d':
+            text = '背景';
+            break;
+        case 'obj-player-2d':
+            text = '玩家角色对象';
+            break;
+        case 'obj-npc-2d':
+            text = '非玩家角色对象';
+            break;
+        case 'obj-prop-2d':
+            text = '道具对象';
+            break;
+    }
+
+    $('#modal_Create_Object').attr('data-targetid', nodeId);
+    $('#title_Modal_Remove_TreeNode').text('确认删除' + text);
+    $('#modal_Remove_TreeNode').find('.modal-body').find('p').text('确认要删除【' + text + '】: ' + tmpNode.text + ' 吗?');
+    $('#modal_Remove_TreeNode').modal('show');
+};
+
+function resetTBAndWS(eventObj, node) {
+    WorkScene.workspace.clear();
+    var toolbox = '<xml id="toolbox" style="display: none"><category></category></xml>';
+    var workspace = '<xml></xml>';
+    if (node.itemType.indexOf('obj-') == 0) {
+        var folderArr = node.itemType.split('-');
+        toolbox = Blockly.Xml.textToDom(XMLToString(LoadXMLFile('javascript/appstudio/' + folderArr[2] + '/blocks/' + folderArr[1] + '/toolbox.xml')));
+        workspace = XMLToString(LoadXMLFile('javascript/appstudio/' + folderArr[2] + '/blocks/' + folderArr[1] + '/default.xml'));
+    }
+
+    WorkScene.loadBlocks(workspace);
+    Blockly.updateToolbox(toolbox);
+};
+
+function LoadLibs(libs) {
+    if (libs.length > 0) {
+        $.getScript(libs[0], function () {
+            libs.shift();
+            LoadLibs(libs);
+        });
+    }
+}
+
+function loadLibForProject(type) {
+    var libs = [];
+    switch (type) {
+        case 'story2d':
+        case 'game2d':
+            //libs.push('javascript/common/pixi.js');
+            //libs.push('javascript/appstudio/2d/blocks/background/property.js');
+            //libs.push('javascript/appstudio/2d/blocks/background/method.js');
+            //libs.push('javascript/appstudio/2d/blocks/background/event.js');
+            //libs.push('javascript/appstudio/2d/blocks/player/property.js');
+            //libs.push('javascript/appstudio/2d/blocks/player/method.js');
+            //libs.push('javascript/appstudio/2d/blocks/player/event.js');
+            //libs.push('javascript/appstudio/2d/blocks/npc/property.js');
+            //libs.push('javascript/appstudio/2d/blocks/npc/method.js');
+            //libs.push('javascript/appstudio/2d/blocks/npc/event.js');
+            //libs.push('javascript/appstudio/2d/blocks/prop/property.js');
+            //libs.push('javascript/appstudio/2d/blocks/prop/method.js');
+            //libs.push('javascript/appstudio/2d/blocks/prop/event.js');
+            //libs.push('javascript/appstudio/2d/blocks/global/object.js');
+            //libs.push('javascript/appstudio/2d/blocks/global/property.js');
+            //libs.push('javascript/appstudio/2d/blocks/global/method.js');
+            //libs.push('javascript/appstudio/2d/blocks/global/event.js');
+            break;
+    }
+
+    LoadLibs(libs);
+}

@@ -352,11 +352,11 @@ function formatOverviewData(response) {
 
     var tmpNode = $(response).find('codetimes');
     data.codetimes.over = parseInt($(tmpNode[0]).attr('over'));
-    data.codetimes.total = parseInt($(tmpNode[0]).attr('totaltime'));
+    data.codetimes.total = new Number(parseInt($(tmpNode[0]).attr('totaltime')) / 60).toFixed(2);
     tmpNodes = $(response).find('codetimes').find('item');
     for (var i = 0; i < tmpNodes.length; i++) {
         var tmpObj = $(tmpNodes[i]);
-        var tmpValue = parseFloat(tmpObj.attr('value'));
+        var tmpValue = new Number(parseFloat(tmpObj.attr('value'))).toFixed(2);
         data.codetimes.times.push({ date: tmpObj.attr('date'), time: (isNaN(tmpValue) ? 0 : tmpValue) });
     }
 
