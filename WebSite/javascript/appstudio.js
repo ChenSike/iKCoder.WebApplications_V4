@@ -804,11 +804,17 @@ function initSiderTree() {
         text: "Story",
         nodes: [{
             text: "Stage 1",
+            state: { expanded: true },
             nodes: [{
                 text: "background 1",
                 itemType: 'obj-background-2d',
                 ptype: 'obj-background-2d',
                 icon: 'fa fa-file-image-o'
+            }, {
+                text: "background audio 1",
+                itemType: 'obj-backgroundaudio-2d',
+                ptype: 'obj-backgroundaudio-2d',
+                icon: 'fa fa-music'
             }, {
                 text: "player 1",
                 itemType: 'obj-player-2d',
@@ -937,6 +943,9 @@ function createObject(objType, objName, parentNodeId) {
         case 'obj-background-2d':
             icon = 'fa fa-file-image-o';
             break;
+        case 'obj-backgroundaudio-2d':
+            icon = 'fa fa-music';
+            break;
         case 'obj-player-2d':
             icon = 'fa fa-gamepad';
             break;
@@ -968,6 +977,9 @@ function openRemoveConfirmWindow(nodeId) {
             break;
         case 'obj-background-2d':
             text = '背景';
+            break;
+        case 'obj-backgroundaudio-2d':
+            text = '背景音乐';
             break;
         case 'obj-player-2d':
             text = '玩家角色对象';
@@ -1018,6 +1030,9 @@ function loadLibForProject(type) {
             //libs.push('javascript/appstudio/2d/blocks/background/property.js');
             //libs.push('javascript/appstudio/2d/blocks/background/method.js');
             //libs.push('javascript/appstudio/2d/blocks/background/event.js');
+            //libs.push('javascript/appstudio/2d/blocks/backgroundaudio/property.js');
+            //libs.push('javascript/appstudio/2d/blocks/backgroundaudio/method.js');
+            //libs.push('javascript/appstudio/2d/blocks/backgroundaudio/event.js');
             //libs.push('javascript/appstudio/2d/blocks/player/property.js');
             //libs.push('javascript/appstudio/2d/blocks/player/method.js');
             //libs.push('javascript/appstudio/2d/blocks/player/event.js');
