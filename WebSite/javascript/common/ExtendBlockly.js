@@ -747,12 +747,14 @@ Blockly.Toolbox.TreeControl.prototype.setSelectedItem = function (node) {
         //toolbox.lastCategory_.getRowElement().style.backgroundColor = '';
     }
     if (node) {
-        var hexColour = node.hexColour || '#57e';
-        //node.getRowElement().style.backgroundColor = hexColour;
-        node.getElement().style.backgroundColor = hexColour;
-        // Add colours to child nodes which may have been collapsed and thus
-        // not rendered.
-        toolbox.addColour_(node);
+        if (node.hexColour) {
+            var hexColour = node.hexColour || '#57e';
+            //node.getRowElement().style.backgroundColor = hexColour;
+            node.getElement().style.backgroundColor = hexColour;
+            // Add colours to child nodes which may have been collapsed and thus
+            // not rendered.
+            toolbox.addColour_(node);
+        }
     }
     var oldNode = this.getSelectedItem();
     goog.ui.tree.TreeControl.prototype.setSelectedItem.call(this, node);

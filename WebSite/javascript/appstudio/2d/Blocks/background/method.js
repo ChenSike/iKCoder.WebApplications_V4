@@ -11,6 +11,7 @@ Blockly.Blocks['bg_method_keepmoving'] = {
             .appendField("速度")
             .appendField(new Blockly.FieldNumber(0), "fnum_speed")
             .appendField("像素/秒");
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setTooltip('');
@@ -35,7 +36,8 @@ Blockly.Blocks['bg_method_moveto'] = {
             .appendField("X:")
             .appendField(new Blockly.FieldNumber(0), "fnum_pos_x")
             .appendField("Y:")
-            .appendField(new Blockly.FieldNumber(0), "fnum_pos_y")
+            .appendField(new Blockly.FieldNumber(0), "fnum_pos_y");
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setTooltip('');
@@ -60,7 +62,8 @@ Blockly.Blocks['bg_method_rotate'] = {
             .appendField(new Blockly.FieldDropdown([["option", "OPTIONNAME"], ["option", "OPTIONNAME"], ["option", "OPTIONNAME"]]), "fdd_orientation");
         this.appendDummyInput()
             .appendField("角度")
-            .appendField(new Blockly.FieldNumber(0), "fnum_angle")
+            .appendField(new Blockly.FieldNumber(0), "fnum_angle");
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setTooltip('');
@@ -76,6 +79,26 @@ Blockly.JavaScript['bg_method_rotate'] = function (block) {
     return code;
 };
 
+Blockly.Blocks['bg_method_change_image'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("切换图片");
+        this.appendDummyInput()
+            .appendField("切换为")
+            .appendField(new Blockly.FieldDropdown([["option", "OPTIONNAME"], ["option", "OPTIONNAME"], ["option", "OPTIONNAME"]]), "fdd_orientation");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+Blockly.JavaScript['bg_method_change_image'] = function (block) {
+    // TODO: Assemble JavaScript into code variable.
+    var code = '...;\n';
+    return code;
+};
 
 Blockly.Blocks['bg_method_stop'] = {
     init: function () {

@@ -7,7 +7,13 @@
     <block type="bg_method_moveto" colour="#FF2851" stroke="#FF2851"/>
     <block type="bg_method_rotate" colour="#FF2851" stroke="#FF2851"/>
     <block type="bg_method_stop" colour="#FF2851" stroke="#FF2851"/>
+    <block type="bg_method_change_image" colour="#FF2851" stroke="#FF2851"/>
   </category>
   <category name="背景事件" colour="#5C7DEC" id="category_background_event" iconposition="0px -323px">
+    <block type="bg_event_start" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="bg_event_move_to" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="bg_event_rotate_to" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="bg_event_change_image" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="bg_event_stop" colour="#5C7DEC" stroke="#5C7DEC"/>
   </category>
 </xml>

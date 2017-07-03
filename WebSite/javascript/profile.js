@@ -1912,6 +1912,9 @@ function formatReportData(response) {
         });
     }
 
+    tmpNode = $($(response).find('codetimes')[0]);
+    var tmpVal = isNaN(tmpNode.attr('totaltime')) ? 0 : new Number(tmpNode.attr('totaltime'));
+    timeData.total = (Math.round(tmpVal / 60 * 100) / 100).toFixed(2);
     var data = {
         user: basicData,
         achieve: honorData,

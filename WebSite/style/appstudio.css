@@ -283,3 +283,37 @@ body {
 .dropdown-divider {
     margin: 3px 0;
 }
+
+.blocklyToolboxDiv [role=treeitem] {
+    border-left: 10px solid;
+    cursor: pointer;
+    color: rgb(255,255,255);
+    background-color: rgb(41,49,65);
+    padding-left: 8px;
+    padding-bottom: 2px;
+    text-align:left;
+}
+
+[role=treeitem] {
+    background: rgb(245,245,245);
+    cursor: pointer;
+    width: 85%;
+     height: auto; 
+    margin-top: 13px;
+    margin-left: 4%;
+     -webkit-box-sizing: initial; 
+    -moz-box-sizing: initial;
+     box-sizing: initial; 
+     display: block; 
+     -webkit-box-align: start; 
+    -webkit-align-items: start;
+    -moz-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}

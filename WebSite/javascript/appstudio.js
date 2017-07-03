@@ -476,7 +476,7 @@ function resetWPBtnPosition() {
 function siderBarDrag(e) {
     var _sidebarDragStarX = e.pageX;
     $(document).bind("mousemove", function (ev) {
-        $(".sider-bar-drag-proxy").css("left", ev.pageX + "px");
+        $(".sider-bar-drag-proxy").css("left", ev.pageX - 2 + "px");
     });
 };
 //blockly common
@@ -521,8 +521,8 @@ WorkScene.init = function () {
     };
 
     window.addEventListener('resize', onresize, false);
-    //var blocksXMLDoc = Blockly.Xml.textToDom(XMLToString(LoadXMLFile('javascript/appstudio/toolbox.xml')));
-    var blocksXMLDoc = Blockly.Xml.textToDom('<xml id="toolbox" style="display: none"><category></category></xml>');
+    var blocksXMLDoc = Blockly.Xml.textToDom(XMLToString(LoadXMLFile('javascript/appstudio/2d/blocks/background/toolbox.xml')));
+    //var blocksXMLDoc = Blockly.Xml.textToDom('<xml id="toolbox" style="display: none"><category></category></xml>');
     WorkScene.workspace = Blockly.inject('content_WorkSpace',
         {
             scrollbars: true,
@@ -805,28 +805,37 @@ function initSiderTree() {
         nodes: [{
             text: "Stage 1",
             state: { expanded: true },
+            guid: _generateGUID(),
+            itemType: 'project',
+            ptype: 'project',
+            icon: "fa fa-cogs",
             nodes: [{
                 text: "background 1",
+                guid: _generateGUID(),
                 itemType: 'obj-background-2d',
                 ptype: 'obj-background-2d',
                 icon: 'fa fa-file-image-o'
             }, {
                 text: "background audio 1",
+                guid: _generateGUID(),
                 itemType: 'obj-backgroundaudio-2d',
                 ptype: 'obj-backgroundaudio-2d',
                 icon: 'fa fa-music'
             }, {
                 text: "player 1",
+                guid: _generateGUID(),
                 itemType: 'obj-player-2d',
                 ptype: 'obj-player-2d',
                 icon: 'fa fa-gamepad'
             }, {
                 text: "npc 1",
+                guid: _generateGUID(),
                 itemType: 'obj-npc-2d',
                 ptype: 'obj-npc-2d',
                 icon: 'fa fa-paw'
             }, {
                 text: "prop 1",
+                guid: _generateGUID(),
                 itemType: 'obj-prop-2d',
                 ptype: 'obj-prop-2d',
                 icon: 'fa fa-wrench'
@@ -834,10 +843,7 @@ function initSiderTree() {
             itemType: 'stage',
             ptype: 'stage',
             icon: "fa fa-folder-open"
-        }],
-        itemType: 'project',
-        ptype: 'project',
-        icon: "fa fa-cogs"
+        }]
     }];
     $('#tree').treeview({ data: tree, showBorder: false });
     $('#tree').on('nodeSelected', function (event, data) {
@@ -959,7 +965,7 @@ function createObject(objType, objName, parentNodeId) {
 
     var newNode = {
         text: objName,
-        id: _generateGUID(),
+        guid: _generateGUID(),
         itemType: objType,
         ptype: objType,
         icon: icon
@@ -1004,10 +1010,36 @@ function resetTBAndWS(eventObj, node) {
     var workspace = '<xml></xml>';
     if (node.itemType.indexOf('obj-') == 0) {
         var folderArr = node.itemType.split('-');
-        toolbox = Blockly.Xml.textToDom(XMLToString(LoadXMLFile('javascript/appstudio/' + folderArr[2] + '/blocks/' + folderArr[1] + '/toolbox.xml')));
+        toolbox = $(XMLToString(LoadXMLFile('javascript/appstudio/' + folderArr[2] + '/blocks/' + folderArr[1] + '/toolbox.xml')));
         workspace = XMLToString(LoadXMLFile('javascript/appstudio/' + folderArr[2] + '/blocks/' + folderArr[1] + '/default.xml'));
+        var nodes = _globalTree.findNodes(node.parentId, 'nodeId')[0].nodes;
+        var tmpToolbox, tmpCateNode, tmpCateNodes, tmpBlockNodes;
+        for (var i = 0; i < nodes.length; i++) {
+            if (node.nodeId == nodes[i].nodeId) {
+                continue;
+            }
+
+            folderArr = nodes[i].itemType.split('-');
+            tmpToolbox = $(XMLToString(LoadXMLFile('javascript/appstudio/' + folderArr[2] + '/blocks/' + folderArr[1] + '/toolbox.xml')));
+            tmpCateNodes = tmpToolbox.find('category');
+            tmpCateNode = null;
+            for (var j = 0; j < tmpCateNodes.length; j++) {
+                tmpCateNode = $(tmpCateNodes[j]);
+                if (tmpCateNode.attr('id').indexOf('_method') > 0) {
+                    tmpCateNode.attr('name', nodes[i].text);
+                    tmpCateNode.attr('id', tmpCateNode.attr('id') + '_' + nodes[i].guid);
+                    tmpBlockNodes = tmpCateNode.find('block');
+                    for (var k = 0; k < tmpBlockNodes.length; k++) {
+                        $(tmpBlockNodes[k]).attr('sourceobj', nodes[i].guid);
+                    }
+
+                    toolbox.append(tmpCateNode);
+                }
+            }
+        }
     }
 
+    toolbox = Blockly.Xml.textToDom(toolbox[0].outerHTML);
     WorkScene.loadBlocks(workspace);
     Blockly.updateToolbox(toolbox);
 };
