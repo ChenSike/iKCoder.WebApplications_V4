@@ -35,7 +35,7 @@ Blockly.Blocks['background'] = {
                 ["填充", "1"],
                 ["居中", "2"],
                 ["拉伸铺满", "3"],
-                ["保持长宽比拉伸","4"]
+                ["保持长宽比拉伸", "4"]
             ],
             function (option) {
                 this.sourceBlock_.updateFillModle_(option);
@@ -96,6 +96,22 @@ Blockly.Blocks['backgroundaudio'] = {
     init: function () {
         this.appendDummyInput()
             .appendField("背景音乐对象");
+        this.appendDummyInput()
+            .appendField("属性")
+            .appendField("音量")
+            .appendField(new Blockly.FieldNumber(0), "bga_property_org_volume");
+        this.appendDummyInput()
+            .appendField("属性")
+            .appendField("循环方式")
+            .appendField(new Blockly.FieldDropdown([
+                ["单一循环", "1"],
+                ["全部循环", "2"],
+                ["随机播放", "3"]
+            ],
+            function (option) {
+                this.sourceBlock_.updateCycleModle_(option);
+            }
+        ), "bga_property_fillmodle");
         this.appendStatementInput("background_property")
             .setCheck(null)
             .appendField("属性");
@@ -105,10 +121,17 @@ Blockly.Blocks['backgroundaudio'] = {
         this.appendStatementInput("background_event")
             .setCheck(null)
             .appendField("事件");
-        this.setInputsInline(true);
         this.setColour(120);
         this.setTooltip('');
         this.setHelpUrl('http://www.example.com/');
+    },
+
+    updateFillModle_: function (option) {
+        if (option == '1') {
+
+        } else {
+
+        }
     }
 };
 
@@ -125,6 +148,23 @@ Blockly.Blocks['player'] = {
     init: function () {
         this.appendDummyInput()
             .appendField("玩家角色对象");
+        this.appendDummyInput()
+            .appendField("属性")
+            .appendField("音量")
+            .appendField(new Blockly.FieldNumber(0), "bga_property_org_volume");
+                this.appendDummyInput()
+                    .appendField("属性")
+                    .appendField("循环方式")
+                    .appendField(new Blockly.FieldDropdown([
+                        ["单一循环", "1"],
+                        ["全部循环", "2"],
+                        ["随机播放", "3"]
+                    ],
+                    function (option) {
+                        this.sourceBlock_.updateCycleModle_(option);
+                    }
+                ), "bga_property_fillmodle");
+
         this.appendStatementInput("player_property")
             .setCheck(null)
             .appendField("属性");

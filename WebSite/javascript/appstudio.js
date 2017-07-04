@@ -1055,29 +1055,18 @@ function LoadLibs(libs) {
 
 function loadLibForProject(type) {
     var libs = [];
+    var object2d = ['background', 'backgroundaudio', 'player', 'npc', 'prop', 'global'];
+    var subTypes = ['property', 'method', 'event'];
     switch (type) {
         case 'story2d':
         case 'game2d':
             //libs.push('javascript/common/pixi.js');
-            //libs.push('javascript/appstudio/2d/blocks/background/property.js');
-            //libs.push('javascript/appstudio/2d/blocks/background/method.js');
-            //libs.push('javascript/appstudio/2d/blocks/background/event.js');
-            //libs.push('javascript/appstudio/2d/blocks/backgroundaudio/property.js');
-            //libs.push('javascript/appstudio/2d/blocks/backgroundaudio/method.js');
-            //libs.push('javascript/appstudio/2d/blocks/backgroundaudio/event.js');
-            //libs.push('javascript/appstudio/2d/blocks/player/property.js');
-            //libs.push('javascript/appstudio/2d/blocks/player/method.js');
-            //libs.push('javascript/appstudio/2d/blocks/player/event.js');
-            //libs.push('javascript/appstudio/2d/blocks/npc/property.js');
-            //libs.push('javascript/appstudio/2d/blocks/npc/method.js');
-            //libs.push('javascript/appstudio/2d/blocks/npc/event.js');
-            //libs.push('javascript/appstudio/2d/blocks/prop/property.js');
-            //libs.push('javascript/appstudio/2d/blocks/prop/method.js');
-            //libs.push('javascript/appstudio/2d/blocks/prop/event.js');
             //libs.push('javascript/appstudio/2d/blocks/global/object.js');
-            //libs.push('javascript/appstudio/2d/blocks/global/property.js');
-            //libs.push('javascript/appstudio/2d/blocks/global/method.js');
-            //libs.push('javascript/appstudio/2d/blocks/global/event.js');
+            //for (var i = 0; i < object2d.length; i++) {
+            //    for (var j = 0; j < subTypes.length; j++) {
+            //        libs.push('javascript/appstudio/2d/blocks/' + object2d[i] + '/' + subTypes [j]+ '.js');
+            //    }
+            //}
             break;
     }
 
