@@ -1,9 +1,8 @@
 ﻿'use strict';
 
-function openCustomBgImageWindow(option) {
+function openCustomPlayerImageWindow(option) {
 
 };
-
 
 Blockly.Blocks['player_property_image'] = {
     init: function () {

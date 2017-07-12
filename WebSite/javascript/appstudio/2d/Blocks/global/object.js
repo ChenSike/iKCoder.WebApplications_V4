@@ -115,9 +115,6 @@ Blockly.Blocks['backgroundaudio'] = {
         this.appendStatementInput("background_property")
             .setCheck(null)
             .appendField("属性");
-        this.appendStatementInput("background_method")
-            .setCheck(null)
-            .appendField("方法");
         this.appendStatementInput("background_event")
             .setCheck(null)
             .appendField("事件");
@@ -150,31 +147,24 @@ Blockly.Blocks['player'] = {
             .appendField("玩家角色对象");
         this.appendDummyInput()
             .appendField("属性")
-            .appendField("音量")
-            .appendField(new Blockly.FieldNumber(0), "bga_property_org_volume");
-                this.appendDummyInput()
-                    .appendField("属性")
-                    .appendField("循环方式")
-                    .appendField(new Blockly.FieldDropdown([
-                        ["单一循环", "1"],
-                        ["全部循环", "2"],
-                        ["随机播放", "3"]
-                    ],
-                    function (option) {
-                        this.sourceBlock_.updateCycleModle_(option);
-                    }
-                ), "bga_property_fillmodle");
-
+            .appendField("初始大小")
+            .appendField("宽")
+            .appendField(new Blockly.FieldNumber(0), "bg_property_org_width")
+            .appendField("高")
+            .appendField(new Blockly.FieldNumber(0), "bg_property_org_height");
+        this.appendDummyInput()
+            .appendField("属性")
+            .appendField("初始位置")
+            .appendField("X:")
+            .appendField(new Blockly.FieldNumber(0), "bg_property_org_x")
+            .appendField("Y:")
+            .appendField(new Blockly.FieldNumber(0), "bg_property_org_y");
         this.appendStatementInput("player_property")
             .setCheck(null)
             .appendField("属性");
-        this.appendStatementInput("player_method")
-            .setCheck(null)
-            .appendField("方法");
         this.appendStatementInput("player_event")
             .setCheck(null)
             .appendField("事件");
-        this.setInputsInline(true);
         this.setColour(65);
         this.setTooltip('');
     }
@@ -208,7 +198,7 @@ Blockly.Blocks['npc'] = {
     }
 };
 
-Blockly.JavaScript['player'] = function (block) {
+Blockly.JavaScript['npc'] = function (block) {
     var statements_background_property = Blockly.JavaScript.statementToCode(block, 'npc_property');
     var statements_background_method = Blockly.JavaScript.statementToCode(block, 'npc_method');
     var statements_background_event = Blockly.JavaScript.statementToCode(block, 'npc_event');
@@ -236,7 +226,7 @@ Blockly.Blocks['prop'] = {
     }
 };
 
-Blockly.JavaScript['player'] = function (block) {
+Blockly.JavaScript['prop'] = function (block) {
     var statements_background_property = Blockly.JavaScript.statementToCode(block, 'prop_property');
     var statements_background_method = Blockly.JavaScript.statementToCode(block, 'prop_method');
     var statements_background_event = Blockly.JavaScript.statementToCode(block, 'prop_event');
