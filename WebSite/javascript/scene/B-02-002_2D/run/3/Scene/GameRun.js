@@ -254,28 +254,32 @@ function IKCoderSenceRun_InitResources() {
 		i_curvemap[index] = tmpMapNode;
 	}
 
-	var sprite_box_one = IKCoderSenceRun_AddSprite(i_box_img, -1, -1, 380, i_background_default_height - 150);
-	IKCoderSenceRun_AddcollisonNode("box_1", 380, i_background_default_height - 150, sprite_box_one.width, sprite_box_one.height, sprite_box_one, false, false);
+	var sprite_box_one = IKCoderSenceRun_AddSprite(i_box_img, -1, -1, 230, i_background_default_height - 150);
+	IKCoderSenceRun_AddcollisonNode("box_1", 230, i_background_default_height - 150, sprite_box_one.width, sprite_box_one.height, sprite_box_one, false, false);
 
-	var sprite_box_two = IKCoderSenceRun_AddSprite(i_box_img, -1, -1, 380, i_background_default_height - 280);
-	IKCoderSenceRun_AddcollisonNode("box_2", 380, i_background_default_height - 280, sprite_box_two.width, sprite_box_two.height, sprite_box_two, false, false);
+	var sprite_box_two = IKCoderSenceRun_AddSprite(i_box_img, -1, -1, 230, i_background_default_height - 280);
+	IKCoderSenceRun_AddcollisonNode("box_2", 230, i_background_default_height - 280, sprite_box_two.width, sprite_box_two.height, sprite_box_two, false, false);
 
-	var sprite_pickup_candy1 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 680, i_background_default_height - 250);
+	var sprite_pickup_candy1 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 410, i_background_default_height - 270);
 	i_spritesObjectsPool["sprite_pickup_candy1"] = sprite_pickup_candy1;
-	IKCoderSenceRun_AddcollisonNode("candy1", 680, i_background_default_height - 250, sprite_pickup_candy1.width, sprite_pickup_candy1.height, sprite_pickup_candy1, true, false);
+	IKCoderSenceRun_AddcollisonNode("candy1", 410, i_background_default_height - 270, sprite_pickup_candy1.width, sprite_pickup_candy1.height, sprite_pickup_candy1, true, false);
 
-	var sprite_pickup_candy2 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 850, i_background_default_height - 421);
+	var sprite_pickup_candy2 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 600, i_background_default_height - 421);
 	i_spritesObjectsPool["sprite_pickup_candy2"] = sprite_pickup_candy2;
-	IKCoderSenceRun_AddcollisonNode("candy2", 850, i_background_default_height - 421, sprite_pickup_candy2.width, sprite_pickup_candy2.height, sprite_pickup_candy2, true, false);
+	IKCoderSenceRun_AddcollisonNode("candy2", 600, i_background_default_height - 250, sprite_pickup_candy2.width, sprite_pickup_candy2.height, sprite_pickup_candy2, true, false);
+
+	var sprite_pickup_candy3 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 860, i_background_default_height - 250);
+	i_spritesObjectsPool["sprite_pickup_candy3"] = sprite_pickup_candy3;
+	IKCoderSenceRun_AddcollisonNode("candy3", 860, i_background_default_height - 421, sprite_pickup_candy3.width, sprite_pickup_candy3.height, sprite_pickup_candy3, true, false);
 
 	var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite(i_shine_img, -1, -1, 1110, i_background_default_height - 121);
 	sprite_pickup_sunshine.anchor.x = sprite_pickup_sunshine.anchor.y = 0.5;
 	i_spritesObjectsPool["sprite_pickup_sunshine"] = sprite_pickup_sunshine;
 
-	var sprite_pickup_candy3 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 1080, i_background_default_height - 141);
-	i_spritesObjectsPool["sprite_pickup_candy3"] = sprite_pickup_candy3;
+	var sprite_pickup_candy4 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 1080, i_background_default_height - 141);
+	i_spritesObjectsPool["sprite_pickup_candy4"] = sprite_pickup_candy4;
 
-	IKCoderSenceRun_AddcollisonNode("candy3", 1080, i_background_default_height - 141, sprite_pickup_candy3.width, sprite_pickup_candy3.height, sprite_pickup_candy3, true, true);
+	IKCoderSenceRun_AddcollisonNode("candy4", 1080, i_background_default_height - 141, sprite_pickup_candy4.width, sprite_pickup_candy4.height, sprite_pickup_candy4, true, true);
 	IKCoderSenceRun_Animation_PickupShine();
 
 	IKCoderSenceRun_PersonInit(0, i_background_default_height - 161);
@@ -403,15 +407,15 @@ function IKCoderSenceRun_Person_CheckCollision(current_X, currect_Y, spriteWidth
 
 	for (var activeCollisionKey in i_collisionmap) {
 		var activeObject = i_collisionmap[activeCollisionKey];
-		var left_x = activeObject.position_x;
-		var left_y = activeObject.position_y;
-		var right_x = activeObject.position_x + spriteWidth;
-		var leftbelow_y = left_y + spiteHeight;
+		var left_x = activeObject.spriteObject.position.x - activeObject.spriteObject.width / 2;
+		var left_y = activeObject.spriteObject.position.y + activeObject.spriteObject.height / 2;
+		var right_x = activeObject.spriteObject.position.x + activeObject.spriteObject.width / 2;
+		var leftbelow_y = activeObject.spriteObject.position.y - activeObject.spriteObject.height / 2;
 
 		params.Object = activeObject.spriteObject;
 
 		if (current_X >= left_x && current_X <= right_x) {
-			if ((currect_Y >= left_y && currect_Y <= leftbelow_y) || (currect_Y + spiteHeight >= left_y && currect_Y + spiteHeight <= leftbelow_y)) {
+			if ((currect_Y <= left_y && currect_Y >= leftbelow_y)) {
 				if (!activeObject.isPickup) {
 					params.type = "1";
 					return params;
