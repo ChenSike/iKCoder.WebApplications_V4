@@ -260,26 +260,25 @@ function IKCoderSenceRun_InitResources() {
 	var sprite_box_two = IKCoderSenceRun_AddSprite(i_box_img, -1, -1, 230, i_background_default_height - 280);
 	IKCoderSenceRun_AddcollisonNode("box_2", 230, i_background_default_height - 280, sprite_box_two.width, sprite_box_two.height, sprite_box_two, false, false);
 
-	var sprite_pickup_candy1 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 410, i_background_default_height - 270);
+	var sprite_box_three = IKCoderSenceRun_AddSprite(i_box_img, -1, -1, 540, i_background_default_height - 150);
+	IKCoderSenceRun_AddcollisonNode("box_3", 540, i_background_default_height - 150, sprite_box_three.width, sprite_box_three.height, sprite_box_three, false, false);
+
+	var sprite_pickup_candy1 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 540, i_background_default_height - 300);
 	i_spritesObjectsPool["sprite_pickup_candy1"] = sprite_pickup_candy1;
-	IKCoderSenceRun_AddcollisonNode("candy1", 410, i_background_default_height - 270, sprite_pickup_candy1.width, sprite_pickup_candy1.height, sprite_pickup_candy1, true, false);
+	IKCoderSenceRun_AddcollisonNode("candy1", 540, i_background_default_height - 300, sprite_pickup_candy1.width, sprite_pickup_candy1.height, sprite_pickup_candy1, true, false);
 
-	var sprite_pickup_candy2 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 600, i_background_default_height - 421);
+	var sprite_pickup_candy2 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 850, i_background_default_height - 421);
 	i_spritesObjectsPool["sprite_pickup_candy2"] = sprite_pickup_candy2;
-	IKCoderSenceRun_AddcollisonNode("candy2", 600, i_background_default_height - 250, sprite_pickup_candy2.width, sprite_pickup_candy2.height, sprite_pickup_candy2, true, false);
-
-	var sprite_pickup_candy3 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 860, i_background_default_height - 250);
-	i_spritesObjectsPool["sprite_pickup_candy3"] = sprite_pickup_candy3;
-	IKCoderSenceRun_AddcollisonNode("candy3", 860, i_background_default_height - 421, sprite_pickup_candy3.width, sprite_pickup_candy3.height, sprite_pickup_candy3, true, false);
+	IKCoderSenceRun_AddcollisonNode("candy2", 850, i_background_default_height - 421, sprite_pickup_candy2.width, sprite_pickup_candy2.height, sprite_pickup_candy2, true, false);
 
 	var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite(i_shine_img, -1, -1, 1110, i_background_default_height - 121);
 	sprite_pickup_sunshine.anchor.x = sprite_pickup_sunshine.anchor.y = 0.5;
 	i_spritesObjectsPool["sprite_pickup_sunshine"] = sprite_pickup_sunshine;
 
-	var sprite_pickup_candy4 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 1080, i_background_default_height - 141);
-	i_spritesObjectsPool["sprite_pickup_candy4"] = sprite_pickup_candy4;
+	var sprite_pickup_candy3 = IKCoderSenceRun_AddSprite(i_candy_img, -1, -1, 1080, i_background_default_height - 141);
+	i_spritesObjectsPool["sprite_pickup_candy3"] = sprite_pickup_candy3;
 
-	IKCoderSenceRun_AddcollisonNode("candy4", 1080, i_background_default_height - 141, sprite_pickup_candy4.width, sprite_pickup_candy4.height, sprite_pickup_candy4, true, true);
+	IKCoderSenceRun_AddcollisonNode("candy3", 1080, i_background_default_height - 141, sprite_pickup_candy3.width, sprite_pickup_candy3.height, sprite_pickup_candy3, true, true);
 	IKCoderSenceRun_Animation_PickupShine();
 
 	IKCoderSenceRun_PersonInit(0, i_background_default_height - 161);
