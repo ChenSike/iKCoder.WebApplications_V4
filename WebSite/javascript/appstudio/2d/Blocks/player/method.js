@@ -123,6 +123,84 @@ Blockly.JavaScript['player_method_jump'] = function (block) {
     return code;
 };
 
+Blockly.Blocks['player_method_squat'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("蹲下");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+Blockly.JavaScript['player_method_squat'] = function (block) {
+    // TODO: Assemble JavaScript into code variable.
+    var code = '...;\n';
+    return code;
+};
+
+Blockly.Blocks['player_method_down'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("卧倒");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+Blockly.JavaScript['player_method_down'] = function (block) {
+    // TODO: Assemble JavaScript into code variable.
+    var code = '...;\n';
+    return code;
+};
+
+Blockly.Blocks['player_method_diminish'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("缩小");
+        this.appendDummyInput()
+            .appendField("倍数")
+            .appendField(new Blockly.FieldNumber(0), "fnum_angle");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+Blockly.JavaScript['player_method_diminish'] = function (block) {
+    var number_name = block.getFieldValue('fnum_angle');
+    // TODO: Assemble JavaScript into code variable.
+    var code = '...;\n';
+    return code;
+};
+
+Blockly.Blocks['player_method_magnify'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("放大");
+        this.appendDummyInput()
+            .appendField("倍数")
+            .appendField(new Blockly.FieldNumber(0), "fnum_angle");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+Blockly.JavaScript['player_method_magnify'] = function (block) {
+    var number_name = block.getFieldValue('fnum_angle');
+    // TODO: Assemble JavaScript into code variable.
+    var code = '...;\n';
+    return code;
+};
+
 Blockly.Blocks['player_method_change_image'] = {
     init: function () {
         this.appendDummyInput()
@@ -161,23 +239,6 @@ Blockly.JavaScript['player_method_stop'] = function (block) {
     return code;
 };
 
-Blockly.Blocks['player_method_start'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField("开始");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['player_method_start'] = function (block) {
-    // TODO: Assemble JavaScript into code variable.
-    var code = '...;\n';
-    return code;
-};
-
 Blockly.Blocks['player_method_pause'] = {
     init: function () {
         this.appendDummyInput()
@@ -190,6 +251,40 @@ Blockly.Blocks['player_method_pause'] = {
 };
 
 Blockly.JavaScript['player_method_pause'] = function (block) {
+    // TODO: Assemble JavaScript into code variable.
+    var code = '...;\n';
+    return code;
+};
+
+Blockly.Blocks['player_method_shot'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("发射");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+Blockly.JavaScript['player_method_shot'] = function (block) {
+    // TODO: Assemble JavaScript into code variable.
+    var code = '...;\n';
+    return code;
+};
+
+Blockly.Blocks['player_method_invincible'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("无敌");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+        this.setHelpUrl('http://www.example.com/');
+    }
+};
+
+Blockly.JavaScript['player_method_invincible'] = function (block) {
     // TODO: Assemble JavaScript into code variable.
     var code = '...;\n';
     return code;
