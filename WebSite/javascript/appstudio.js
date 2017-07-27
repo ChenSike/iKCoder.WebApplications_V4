@@ -1037,6 +1037,13 @@ function resetTBAndWS(eventObj, node) {
                 }
             }
         }
+
+        tmpToolbox = $(XMLToString(LoadXMLFile('javascript/appstudio/' + folderArr[2] + '/blocks/global/toolbox.xml')));
+        tmpCateNodes = tmpToolbox.find('category');
+        for (var j = 0; j < tmpCateNodes.length; j++) {
+            tmpCateNode = $(tmpCateNodes[j]);
+            toolbox.append(tmpCateNode);
+        }
     }
 
     toolbox = Blockly.Xml.textToDom(toolbox[0].outerHTML);

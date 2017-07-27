@@ -1,2 +1,30 @@
 ﻿<xml id="workspacefactory_toolbox" class="toolbox">
+  <category name="属性" colour="#E86CEB" id="category_npc_property" iconposition="0px -323px">
+    <block type="npc_property_image" colour="#E86CEB" stroke="#E86CEB"/>
+    <block type="npc_property_move_animation" colour="#E86CEB" stroke="#E86CEB"/>
+    <block type="npc_property_jump_animation" colour="#E86CEB" stroke="#E86CEB"/>
+    <block type="npc_property_over_animation" colour="#E86CEB" stroke="#E86CEB"/>
+    <block type="npc_property_collide_animation" colour="#E86CEB" stroke="#E86CEB"/>
+  </category>
+  <category name="方法" colour="#FF2851" id="category_npc_method" iconposition="0px -323px">
+    <block type="npc_method_keepmoving" colour="#FF2851" stroke="#FF2851"/>
+    <block type="npc_method_moveto" colour="#FF2851" stroke="#FF2851"/>
+    <block type="npc_method_moveby" colour="#FF2851" stroke="#FF2851"/>
+    <block type="npc_method_jump" colour="#FF2851" stroke="#FF2851"/>
+    <block type="npc_method_rotate" colour="#FF2851" stroke="#FF2851"/>
+    <block type="npc_method_change_image" colour="#FF2851" stroke="#FF2851"/>
+    <block type="npc_method_stop" colour="#FF2851" stroke="#FF2851"/>
+    <block type="npc_method_pause" colour="#FF2851" stroke="#FF2851"/>
+  </category>
+  <category name="事件" colour="#5C7DEC" id="category_npc_event" iconposition="0px -323px">
+    <block type="npc_event_stop" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="npc_event_pause" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="npc_event_move_to" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="npc_event_jump_start" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="npc_event_jump_end" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="npc_event_rotate_to" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="npc_event_change_image" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="npc_event_collide" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="npc_event_over" colour="#5C7DEC" stroke="#5C7DEC"/>
+  </category>
 </xml>

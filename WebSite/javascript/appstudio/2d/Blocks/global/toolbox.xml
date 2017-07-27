@@ -1,0 +1,14 @@
+﻿<xml id="workspacefactory_toolbox" class="toolbox">
+  <category name="全局事件" colour="#5C7DEC" id="category_global_event" iconposition="0px -323px">
+    <block type="global_event_start" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="global_event_pause" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="global_event_stop" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="global_event_over" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="global_event_keydown" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="global_event_keyup" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="global_event_keypress" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="global_event_mousedown" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="global_event_mouseup" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="global_event_click" colour="#5C7DEC" stroke="#5C7DEC"/>
+  </category>
+</xml>

@@ -1,2 +1,22 @@
 ﻿<xml id="workspacefactory_toolbox" class="toolbox">
+  <category name="属性" colour="#E86CEB" id="category_prop_property" iconposition="0px -323px">
+    <block type="prop_property_image" colour="#E86CEB" stroke="#E86CEB"/>
+    <block type="prop_property_move_animation" colour="#E86CEB" stroke="#E86CEB"/>
+    <block type="prop_property_collide_animation" colour="#E86CEB" stroke="#E86CEB"/>
+  </category>
+  <category name="方法" colour="#FF2851" id="category_prop_method" iconposition="0px -323px">
+    <block type="prop_method_keepmoving" colour="#FF2851" stroke="#FF2851"/>
+    <block type="prop_method_moveto" colour="#FF2851" stroke="#FF2851"/>
+    <block type="prop_method_moveby" colour="#FF2851" stroke="#FF2851"/>
+    <block type="prop_method_change_image" colour="#FF2851" stroke="#FF2851"/>
+    <block type="prop_method_stop" colour="#FF2851" stroke="#FF2851"/>
+    <block type="prop_method_pause" colour="#FF2851" stroke="#FF2851"/>
+  </category>
+  <category name="事件" colour="#5C7DEC" id="category_prop_event" iconposition="0px -323px">
+    <block type="prop_event_stop" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="prop_event_pause" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="prop_event_move_to" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="prop_event_change_image" colour="#5C7DEC" stroke="#5C7DEC"/>
+    <block type="prop_event_collide" colour="#5C7DEC" stroke="#5C7DEC"/>
+  </category>
 </xml>

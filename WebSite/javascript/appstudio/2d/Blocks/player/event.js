@@ -122,82 +122,6 @@ Blockly.JavaScript['player_event_jump_end'] = function (block) {
     return code;
 };
 
-Blockly.Blocks['player_event_squat'] = {
-    init: function () {
-        this.appendStatementInput("event_fn")
-            .setCheck(null)
-            .appendField("当下蹲时");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['player_event_squat'] = function (block) {
-    var statements_name = Blockly.JavaScript.statementToCode(block, 'event_fn');
-    // TODO: Assemble JavaScript into code variable.
-    var code = '...;\n';
-    return code;
-};
-
-Blockly.Blocks['player_event_down'] = {
-    init: function () {
-        this.appendStatementInput("event_fn")
-            .setCheck(null)
-            .appendField("当卧倒时");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['player_event_down'] = function (block) {
-    var statements_name = Blockly.JavaScript.statementToCode(block, 'event_fn');
-    // TODO: Assemble JavaScript into code variable.
-    var code = '...;\n';
-    return code;
-};
-
-Blockly.Blocks['player_event_diminish'] = {
-    init: function () {
-        this.appendStatementInput("event_fn")
-            .setCheck(null)
-            .appendField("当缩小时");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['player_event_diminish'] = function (block) {
-    var statements_name = Blockly.JavaScript.statementToCode(block, 'event_fn');
-    // TODO: Assemble JavaScript into code variable.
-    var code = '...;\n';
-    return code;
-};
-
-Blockly.Blocks['player_event_magnify'] = {
-    init: function () {
-        this.appendStatementInput("event_fn")
-            .setCheck(null)
-            .appendField("当放大时");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['player_event_magnify'] = function (block) {
-    var statements_name = Blockly.JavaScript.statementToCode(block, 'event_fn');
-    // TODO: Assemble JavaScript into code variable.
-    var code = '...;\n';
-    return code;
-};
-
 Blockly.Blocks['player_event_change_image'] = {
     init: function () {
         this.appendStatementInput("event_fn")
@@ -236,11 +160,11 @@ Blockly.JavaScript['player_event_over'] = function (block) {
     return code;
 };
 
-Blockly.Blocks['player_event_behit'] = {
+Blockly.Blocks['player_event_collide'] = {
     init: function () {
         this.appendStatementInput("event_fn")
             .setCheck(null)
-            .appendField("当被击中");
+            .appendField("当发生碰撞");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setTooltip('');
@@ -248,26 +172,7 @@ Blockly.Blocks['player_event_behit'] = {
     }
 };
 
-Blockly.JavaScript['player_event_behit'] = function (block) {
-    var statements_name = Blockly.JavaScript.statementToCode(block, 'event_fn');
-    // TODO: Assemble JavaScript into code variable.
-    var code = '...;\n';
-    return code;
-};
-
-Blockly.Blocks['player_event_shot'] = {
-    init: function () {
-        this.appendStatementInput("event_fn")
-            .setCheck(null)
-            .appendField("当发射");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['player_event_shot'] = function (block) {
+Blockly.JavaScript['player_event_collide'] = function (block) {
     var statements_name = Blockly.JavaScript.statementToCode(block, 'event_fn');
     // TODO: Assemble JavaScript into code variable.
     var code = '...;\n';
