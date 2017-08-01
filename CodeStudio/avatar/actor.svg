@@ -1,0 +1,55 @@
+<svg
+		   xmlns:dc="http://purl.org/dc/elements/1.1/"
+		   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		   xmlns:svg="http://www.w3.org/2000/svg"
+		   xmlns="http://www.w3.org/2000/svg"
+		   xmlns:xlink="http://www.w3.org/1999/xlink"
+		   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="500" height="470">
+
+<g transform="translate(50 63) scale(1)">
+<image id="cape" x="30.69573" y="20.22379" width="320" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(0 190.6957 180.2238)"/>
+<image id="handL" x="170.3214" y="193.4737" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(349.3777 250.3214 273.4737)"/>
+<image id="handFistL" x="129.3579" y="-724.7279" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(-1.191392E-06 209.3579 -644.7279)"/>
+<image id="armL" x="144.0347" y="124.6512" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(8.587276 224.0347 204.6512)"/>
+<image id="thighL" x="149.0662" y="215.7224" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 229.0662 295.7224)"/>
+<image id="footL" x="153.1841" y="270.0993" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 233.1841 350.0993)"/>
+<image id="head_hair" x="29.4458" y="-95.29655" width="320" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(0 189.4458 64.70345)"/>
+<image id="forearmL" x="153.0293" y="171.5289" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(347.9973 233.0293 251.5289)"/>
+<image id="legL" x="147.874" y="251.8075" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 227.874 331.8075)"/>
+<image id="neck" x="114.0883" y="84.25934" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 194.0883 164.2593)"/>
+<image id="hip" x="38.22586" y="121.112" width="320" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(1.40547E-16 198.2259 281.112)"/>
+<image id="thighR" x="107.2987" y="217.6553" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 187.2987 297.6553)"/>
+<image id="footR" x="106.1741" y="274.6816" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(-1.707318E-06 186.1741 354.6816)"/>
+<image id="armL1" x="-288.3853" y="-699.2551" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(353.446 -208.3853 -619.2551)"/>
+<image id="chest" x="40.46249" y="23.9115" width="320" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(0 200.4625 183.9115)"/>
+<image id="cover" x="9.575493" y="102.1725" width="320" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(0 169.5755 262.1725)"/>
+<image id="forearmL1" x="-272.6865" y="-654.3973" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(359.451 -192.6865 -574.3973)"/>
+<image id="handL1" x="-257.3399" y="-631.1893" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(355.644 -177.3399 -551.1893)"/>
+<image id="head" x="28.6792" y="-95.29655" width="320" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(0 188.6792 64.70345)"/>
+<image id="legR" x="104.3431" y="255.5758" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(1.876472 184.3431 335.5758)"/>
+<image id="footR2" x="-368.492" y="1141.81" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(-3.414637E-06 -288.492 1221.81)"/>
+<image id="mouthSmall" x="342.0335" y="-910.9526" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 422.0335 -830.9526)"/>
+<image id="mouthteeth" x="521.8401" y="-922.6175" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(-7.020069E-16 601.8401 -842.6175)"/>
+<image id="mouth2" x="341.5836" y="-743.4028" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 421.5836 -663.4028)"/>
+<image id="mouthClosed" x="531.7473" y="-743.1929" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(-1.124521E-15 611.7473 -663.1929)"/>
+<image id="beard" x="27.87919" y="-95.29655" width="321.6" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(0 188.6792 64.70345)"/>
+<image id="hair2" x="-4.029474" y="-43.56297" width="320" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(0 155.9705 116.437)"/>
+<image id="weapon" x="23.26612" y="155.4189" width="320" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(243.5386 183.2661 315.4189)"/>
+<image id="mouth1_crying" x="674.4915" y="-748.436" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 754.4915 -668.436)"/>
+<image id="mouth1_angry" x="775.6341" y="-702.1333" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 855.6341 -622.1333)"/>
+<image id="ear" x="57.83316" y="29.82613" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 137.8332 109.8261)"/>
+<image id="mouth1" x="117.5847" y="52.82808" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 197.5847 132.8281)"/>
+<image id="armR" x="74.74769" y="133.3367" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 154.7477 213.3367)"/>
+<image id="handFistR" x="79.02609" y="201.5166" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(350.2731 159.0261 281.5166)"/>
+<image id="eyesClosed" x="-16.54211" y="-729.6748" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 63.45789 -649.6748)"/>
+<image id="hair1" x="24.99595" y="-156.7052" width="320" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(0 184.996 3.294754)"/>
+<image id="handR" x="68.38919" y="-730.9988" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 148.3892 -650.9988)"/>
+<image id="eyes_crying" x="676.4564" y="-799.6099" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 756.4564 -719.6099)"/>
+<image id="eyes_angry" x="773.4174" y="-744.8996" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 853.4174 -664.8996)"/>
+<image id="eyes" x="115.368" y="10.06195" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 195.368 90.06195)"/>
+<image id="forearmR" x="61.8817" y="178.4093" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 141.8817 258.4093)"/>
+<image id="propEyes" x="115.368" y="10.06195" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 195.368 90.06195)"/>
+<image id="nose" x="122.4706" y="40.56154" width="160" height="160" xlink:href="/codestudio/images/blank.png" transform="rotate(0 202.4706 120.5615)"/>
+<image id="hat" x="23.39595" y="-156.7052" width="323.2" height="320" xlink:href="/codestudio/images/blank.png" transform="rotate(0 184.996 3.294754)"/>
+</g>
+</svg>

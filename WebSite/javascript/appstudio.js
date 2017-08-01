@@ -1044,9 +1044,10 @@ function resetTBAndWS(eventObj, node) {
             tmpCateNode = $(tmpCateNodes[j]);
             toolbox.append(tmpCateNode);
         }
+
+        toolbox = Blockly.Xml.textToDom(toolbox[0].outerHTML);
     }
 
-    toolbox = Blockly.Xml.textToDom(toolbox[0].outerHTML);
     WorkScene.loadBlocks(workspace);
     Blockly.updateToolbox(toolbox);
 };
