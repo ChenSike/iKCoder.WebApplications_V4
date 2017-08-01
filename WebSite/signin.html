@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html style="height:100%;">
 <head>
     <title>iKCoder・中国儿童编程教育创导者</title>
@@ -17,6 +17,13 @@
     <script src="javascript/common/xmloperator.js"></script>
     <script src="javascript/common.js"></script>
     <script src="javascript/signin.js"></script>
+	<script>
+	
+    var sUserAgent = navigator.userAgent.toLowerCase();
+    if (sUserAgent.indexOf("ipad") > -1) {
+        window.location.href = "isignin.html?rnd"+ Date.now();
+    }
+	</script>
 </head>
 <body>
     <div class="container-fluid" id="navbar_Header">
