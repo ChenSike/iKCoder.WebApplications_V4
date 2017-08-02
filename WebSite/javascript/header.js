@@ -96,11 +96,22 @@ function initNavBarEvent() {
     });
 
     $("#btn_SignIn").on('click', function () {
-        window.location.href = "signin.html?opt=signin&rnd=" + Date.now();
+        var sUserAgent = navigator.userAgent.toLowerCase();
+
+        if (sUserAgent.indexOf("ipad")>-1) {
+            window.location.href = "isignin.html?opt=signin&rnd=" + Date.now();
+        } else {
+            window.location.href = "signin.html?opt=signin&rnd=" + Date.now();
+        }
     });
 
     $("#btn_FreeSignUp").on('click', function () {
-        window.location.href = "signin.html?opt=signup&rnd=" + Date.now();
+        var sUserAgent = navigator.userAgent.toLowerCase();
+
+        if (sUserAgent.indexOf("ipad") > -1) {
+            window.location.href = "isignin.html?opt=signin&rnd=" + Date.now();
+        } else {
+        }
     });
 };
 
