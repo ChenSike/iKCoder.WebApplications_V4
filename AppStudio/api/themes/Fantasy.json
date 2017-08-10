@@ -1,0 +1,536 @@
+﻿[
+  {
+    "dir": "characters",
+    "path": "themes\/Fantasy\/characters",
+    "entries": [
+      {
+        "dir": "wizard",
+        "path": "themes\/Fantasy\/characters\/wizard",
+        "entries": [
+          {
+            "id": "53ebd4da84aafa6d7400009d",
+            "name": "wizard 1.png",
+            "type": "png",
+            "url": "medialib\/53ebd4da84aafa6d7400009d.png"
+          },
+          {
+            "id": "53ebd4da84aafae774000047",
+            "name": "wizard 2.png",
+            "type": "png",
+            "url": "medialib\/53ebd4da84aafae774000047.png"
+          },
+          {
+            "id": "53ebd4da84aafaa8740000e2",
+            "name": "wizard 3.png",
+            "type": "png",
+            "url": "medialib\/53ebd4da84aafaa8740000e2.png"
+          },
+          {
+            "id": "538fbc8984aafa9b5a00001f",
+            "name": "wizard casting spell 2.png",
+            "type": "png",
+            "url": "medialib\/538fbc8984aafa9b5a00001f.png"
+          },
+          {
+            "id": "538fbc8984aafa9b5a000023",
+            "name": "wizard flying.png",
+            "type": "png",
+            "url": "medialib\/538fbc8984aafa9b5a000023.png"
+          }
+        ]
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0000b3",
+        "name": "angry dwarf.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0000b3.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0000ab",
+        "name": "confused dwarf.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0000ab.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0000b7",
+        "name": "dumb dwarf.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0000b7.png"
+      },
+      {
+        "id": "538fbc8984aafa9b5a00001b",
+        "name": "happy dwarf.png",
+        "type": "png",
+        "url": "medialib\/538fbc8984aafa9b5a00001b.png"
+      },
+      {
+        "id": "543489c384aafafe500005e8",
+        "name": "laughing dwarf.png",
+        "type": "png",
+        "url": "medialib\/543489c384aafafe500005e8.png"
+      },
+      {
+        "id": "543489c384aafafe500005e4",
+        "name": "whistling dwarf.png",
+        "type": "png",
+        "url": "medialib\/543489c384aafafe500005e4.png"
+      }
+    ]
+  },
+  {
+    "dir": "creatures",
+    "path": "themes\/Fantasy\/creatures",
+    "entries": [
+      {
+        "dir": "troll",
+        "path": "themes\/Fantasy\/creatures\/troll",
+        "entries": [
+          {
+            "id": "538fbc8a84aafa9b5a00017c",
+            "name": "angry troll.png",
+            "type": "png",
+            "url": "medialib\/538fbc8a84aafa9b5a00017c.png"
+          },
+          {
+            "id": "538fbc8a84aafa9b5a000160",
+            "name": "running troll.png",
+            "type": "png",
+            "url": "medialib\/538fbc8a84aafa9b5a000160.png"
+          }
+        ]
+      },
+      {
+        "id": "543489c384aafafe500005d8",
+        "name": "angry_dragon.png",
+        "type": "png",
+        "url": "medialib\/543489c384aafafe500005d8.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000170",
+        "name": "big troll.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000170.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000154",
+        "name": "blue dragon 1.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000154.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000158",
+        "name": "blue dragon 2.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000158.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000174",
+        "name": "cartoon dragon 2.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000174.png"
+      },
+      {
+        "id": "543489c384aafafe500005dc",
+        "name": "chinese_dragon1.png",
+        "type": "png",
+        "url": "medialib\/543489c384aafafe500005dc.png"
+      },
+      {
+        "id": "543489c384aafafe500005d4",
+        "name": "evil genie.png",
+        "type": "png",
+        "url": "medialib\/543489c384aafafe500005d4.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000168",
+        "name": "frog prince.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000168.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a00015c",
+        "name": "green dragon.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a00015c.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000178",
+        "name": "lazy dragon.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000178.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000164",
+        "name": "orange dragon.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000164.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a00016c",
+        "name": "sleeping dragon.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a00016c.png"
+      }
+    ]
+  },
+  {
+    "dir": "music",
+    "path": "themes\/Fantasy\/music",
+    "entries": [
+      {
+        "id": "51f2fc6736d5776b29002df8",
+        "name": "chivalrous music.wav",
+        "type": "wav",
+        "url": "medialib\/51f2fc6736d5776b29002df8.wav"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a00014c",
+        "name": "fantasy theme.mp3",
+        "type": "mp3",
+        "url": "medialib\/538fbc8a84aafa9b5a00014c.mp3"
+      },
+      {
+        "id": "51f2fc6336d5776b29002cf7",
+        "name": "magical music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6336d5776b29002cf7.mp3"
+      },
+      {
+        "id": "51f2fc6136d5776b29002ca0",
+        "name": "sad farewell music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6136d5776b29002ca0.mp3"
+      }
+    ]
+  },
+  {
+    "dir": "props",
+    "path": "themes\/Fantasy\/props",
+    "entries": [
+      {
+        "id": "538fbc8a84aafa9b5a0001c8",
+        "name": "Fantasy wall.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001c8.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a00018c",
+        "name": "arrow.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a00018c.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001d4",
+        "name": "axe.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001d4.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001a8",
+        "name": "boulder.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001a8.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001a0",
+        "name": "bow.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001a0.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a00019c",
+        "name": "cannon ball.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a00019c.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001bc",
+        "name": "cannon.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001bc.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001a4",
+        "name": "castle copy.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001a4.png"
+      },
+      {
+        "id": "545bfb6784aafa793c00036f",
+        "name": "castle wall crumble1.png",
+        "type": "png",
+        "url": "medialib\/545bfb6784aafa793c00036f.png"
+      },
+      {
+        "id": "545bfb6784aafa793c00037c",
+        "name": "castle wall crumble2.png",
+        "type": "png",
+        "url": "medialib\/545bfb6784aafa793c00037c.png"
+      },
+      {
+        "id": "545bfb6784aafa793c000380",
+        "name": "castle wall crumble3.png",
+        "type": "png",
+        "url": "medialib\/545bfb6784aafa793c000380.png"
+      },
+      {
+        "id": "545bfb6684aafa793c000366",
+        "name": "castle wall crumble4.png",
+        "type": "png",
+        "url": "medialib\/545bfb6684aafa793c000366.png"
+      },
+      {
+        "id": "545bfb6784aafa793c000384",
+        "name": "castle wall1.png",
+        "type": "png",
+        "url": "medialib\/545bfb6784aafa793c000384.png"
+      },
+      {
+        "id": "545bfb6784aafa793c00038c",
+        "name": "castle wall2.png",
+        "type": "png",
+        "url": "medialib\/545bfb6784aafa793c00038c.png"
+      },
+      {
+        "id": "545bfb6784aafa793c000374",
+        "name": "castle wall3.png",
+        "type": "png",
+        "url": "medialib\/545bfb6784aafa793c000374.png"
+      },
+      {
+        "id": "545bfb6684aafa793c00036a",
+        "name": "castle wall4.png",
+        "type": "png",
+        "url": "medialib\/545bfb6684aafa793c00036a.png"
+      },
+      {
+        "id": "545bfb6784aafa793c000388",
+        "name": "castle wall5.png",
+        "type": "png",
+        "url": "medialib\/545bfb6784aafa793c000388.png"
+      },
+      {
+        "id": "545bfb6784aafa793c000378",
+        "name": "castle wall6.png",
+        "type": "png",
+        "url": "medialib\/545bfb6784aafa793c000378.png"
+      },
+      {
+        "id": "545bfb6684aafa793c000362",
+        "name": "castle wall7.png",
+        "type": "png",
+        "url": "medialib\/545bfb6684aafa793c000362.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001b8",
+        "name": "forest tree 1.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001b8.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001b0",
+        "name": "forest tree 2.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001b0.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001b4",
+        "name": "forest tree 3.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001b4.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000194",
+        "name": "forest trees large.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000194.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000190",
+        "name": "forest trees small.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000190.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001c0",
+        "name": "grass platform long.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001c0.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001d0",
+        "name": "grass platform.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001d0.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000188",
+        "name": "mace.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000188.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000180",
+        "name": "magic spell 1.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000180.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001c4",
+        "name": "magic spell 2.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001c4.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000198",
+        "name": "mountain 1.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000198.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001cc",
+        "name": "mountain 2.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001cc.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001d8",
+        "name": "mountain 3.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001d8.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000184",
+        "name": "mountain 4.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a000184.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001dc",
+        "name": "potion.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001dc.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001ac",
+        "name": "sword.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001ac.png"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a0001e0",
+        "name": "war hammer.png",
+        "type": "png",
+        "url": "medialib\/538fbc8a84aafa9b5a0001e0.png"
+      }
+    ]
+  },
+  {
+    "dir": "scenes",
+    "path": "themes\/Fantasy\/scenes",
+    "entries": [
+      {
+        "id": "543489c384aafafe500005e0",
+        "name": "castle.png",
+        "type": "png",
+        "url": "medialib\/543489c384aafafe500005e0.png"
+      },
+      {
+        "id": "538fbc8984aafa9b5a000013",
+        "name": "fantasy landscape.jpg",
+        "type": "jpg",
+        "url": "medialib\/538fbc8984aafa9b5a000013.jpg"
+      },
+      {
+        "id": "538fbc8984aafa9b5a000007",
+        "name": "fantasy open.jpg",
+        "type": "jpg",
+        "url": "medialib\/538fbc8984aafa9b5a000007.jpg"
+      },
+      {
+        "id": "538fbc8984aafa9b5a00000b",
+        "name": "fantasy overhead.jpg",
+        "type": "jpg",
+        "url": "medialib\/538fbc8984aafa9b5a00000b.jpg"
+      },
+      {
+        "id": "538fbc8984aafa9b5a00000f",
+        "name": "fantasy red.jpg",
+        "type": "jpg",
+        "url": "medialib\/538fbc8984aafa9b5a00000f.jpg"
+      },
+      {
+        "id": "538fbc8984aafa9b5a000003",
+        "name": "fantasy stage.jpg",
+        "type": "jpg",
+        "url": "medialib\/538fbc8984aafa9b5a000003.jpg"
+      }
+    ]
+  },
+  {
+    "dir": "sounds",
+    "path": "themes\/Fantasy\/sounds",
+    "entries": [
+      {
+        "id": "51f2fc7336d5776b29003170",
+        "name": "Wind Chimes.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc7336d5776b29003170.mp3"
+      },
+      {
+        "id": "51f2fc7736d5776b29003402",
+        "name": "arrow hit.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc7736d5776b29003402.mp3"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000150",
+        "name": "fireball.mp3",
+        "type": "mp3",
+        "url": "medialib\/538fbc8a84aafa9b5a000150.mp3"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a00013f",
+        "name": "roar.mp3",
+        "type": "mp3",
+        "url": "medialib\/538fbc8a84aafa9b5a00013f.mp3"
+      },
+      {
+        "id": "51f2fc6836d5776b29002e38",
+        "name": "swish 3.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6836d5776b29002e38.mp3"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000147",
+        "name": "sword hit 1.mp3",
+        "type": "mp3",
+        "url": "medialib\/538fbc8a84aafa9b5a000147.mp3"
+      },
+      {
+        "id": "51f2fc6836d5776b29002e34",
+        "name": "sword hit 2.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6836d5776b29002e34.mp3"
+      },
+      {
+        "id": "538fbc8a84aafa9b5a000143",
+        "name": "sword hit 2.mp3",
+        "type": "mp3",
+        "url": "medialib\/538fbc8a84aafa9b5a000143.mp3"
+      },
+      {
+        "id": "51f2fc6836d5776b29002e2c",
+        "name": "sword hit 3.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6836d5776b29002e2c.mp3"
+      },
+      {
+        "id": "51f2fc6836d5776b29002e58",
+        "name": "sword unsheathing.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6836d5776b29002e58.mp3"
+      }
+    ]
+  }
+]

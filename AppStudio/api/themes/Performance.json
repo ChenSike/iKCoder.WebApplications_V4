@@ -1,0 +1,320 @@
+﻿[
+  {
+    "dir": "characters",
+    "path": "themes\/Performance\/characters",
+    "entries": [
+      {
+        "id": "543489cb84aafafe50000df7",
+        "name": "clown 2.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000df7.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dff",
+        "name": "clown.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dff.png"
+      },
+      {
+        "id": "543489cb84aafafe50000e07",
+        "name": "guru.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000e07.png"
+      },
+      {
+        "id": "543489cb84aafafe50000df3",
+        "name": "magician.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000df3.png"
+      },
+      {
+        "id": "543489cb84aafafe50000de7",
+        "name": "mariachi 1.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000de7.png"
+      },
+      {
+        "id": "543489cb84aafafe50000e03",
+        "name": "mariachi 2.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000e03.png"
+      },
+      {
+        "id": "543489cb84aafafe50000ddf",
+        "name": "mariachi 3.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000ddf.png"
+      },
+      {
+        "id": "543489cb84aafafe50000def",
+        "name": "mexican couple 2.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000def.png"
+      },
+      {
+        "id": "543489cb84aafafe50000de3",
+        "name": "mexican couple.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000de3.png"
+      },
+      {
+        "id": "543489cb84aafafe50000deb",
+        "name": "rockstar.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000deb.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dfb",
+        "name": "singer.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dfb.png"
+      }
+    ]
+  },
+  {
+    "dir": "music",
+    "path": "themes\/Performance\/music",
+    "entries": [
+      {
+        "id": "51f2fc6636d5776b29002dbe",
+        "name": "classical music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6636d5776b29002dbe.mp3"
+      },
+      {
+        "id": "51f2fc5736d5776b29002c78",
+        "name": "flamenco music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc5736d5776b29002c78.mp3"
+      },
+      {
+        "id": "51f2fc6536d5776b29002d84",
+        "name": "waltz music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6536d5776b29002d84.mp3"
+      },
+      {
+        "id": "51f2fc6636d5776b29002dd9",
+        "name": "we will rock you music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6636d5776b29002dd9.mp3"
+      },
+      {
+        "id": "51f2fc6436d5776b29002d18",
+        "name": "yodel music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6436d5776b29002d18.mp3"
+      }
+    ]
+  },
+  {
+    "dir": "props",
+    "path": "themes\/Performance\/props",
+    "entries": [
+      {
+        "id": "543489cb84aafafe50000dc3",
+        "name": "drumset green.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dc3.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dd7",
+        "name": "drumset.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dd7.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dbb",
+        "name": "flower bouquet.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dbb.png"
+      },
+      {
+        "id": "543489cb84aafafe50000ddb",
+        "name": "flute.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000ddb.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dc7",
+        "name": "guitar blue.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dc7.png"
+      },
+      {
+        "id": "543489cb84aafafe50000db3",
+        "name": "guitar red.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000db3.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dcb",
+        "name": "guitar white.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dcb.png"
+      },
+      {
+        "id": "543489cb84aafafe50000daf",
+        "name": "guitar.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000daf.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dd3",
+        "name": "magician hat.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dd3.png"
+      },
+      {
+        "id": "543489cb84aafafe50000db7",
+        "name": "saxophone.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000db7.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dcf",
+        "name": "violin bow.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dcf.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dbf",
+        "name": "violin.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000dbf.png"
+      }
+    ]
+  },
+  {
+    "dir": "scenes",
+    "path": "themes\/Performance\/scenes",
+    "entries": [
+      {
+        "id": "543489cb84aafafe50000d94",
+        "name": "ballroom.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000d94.png"
+      },
+      {
+        "id": "543489cb84aafafe50000d99",
+        "name": "bamboo stage.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000d99.png"
+      },
+      {
+        "id": "543489cb84aafafe50000dab",
+        "name": "stage 1.jpg",
+        "type": "jpg",
+        "url": "medialib\/543489cb84aafafe50000dab.jpg"
+      },
+      {
+        "id": "543489cb84aafafe50000da7",
+        "name": "stage 2.jpg",
+        "type": "jpg",
+        "url": "medialib\/543489cb84aafafe50000da7.jpg"
+      },
+      {
+        "id": "543489cb84aafafe50000da1",
+        "name": "stage 2.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000da1.png"
+      },
+      {
+        "id": "543489cb84aafafe50000d9d",
+        "name": "stage.png",
+        "type": "png",
+        "url": "medialib\/543489cb84aafafe50000d9d.png"
+      }
+    ]
+  },
+  {
+    "dir": "sounds",
+    "path": "themes\/Performance\/sounds",
+    "entries": [
+      {
+        "id": "51f2fc7336d5776b290031a4",
+        "name": "Applause.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc7336d5776b290031a4.mp3"
+      },
+      {
+        "id": "51f2fc6b36d5776b29002ec0",
+        "name": "bugle call 1.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6b36d5776b29002ec0.mp3"
+      },
+      {
+        "id": "51f2fc7636d5776b290033d6",
+        "name": "clown honk.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc7636d5776b290033d6.mp3"
+      },
+      {
+        "id": "51f2fc7536d5776b290032fa",
+        "name": "cymbal crash 1.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc7536d5776b290032fa.mp3"
+      },
+      {
+        "id": "51f2fc7036d5776b29002f60",
+        "name": "group gasp.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc7036d5776b29002f60.mp3"
+      },
+      {
+        "id": "51f2fc6336d5776b29002cf2",
+        "name": "monkey doodle music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6336d5776b29002cf2.mp3"
+      },
+      {
+        "id": "51f2fc7736d5776b2900349a",
+        "name": "pow.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc7736d5776b2900349a.mp3"
+      },
+      {
+        "id": "51f2fc5636d5776b29002c5f",
+        "name": "salsa music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc5636d5776b29002c5f.mp3"
+      },
+      {
+        "id": "51f2fc7036d5776b29002f00",
+        "name": "shaker 1.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc7036d5776b29002f00.mp3"
+      },
+      {
+        "id": "51f2fc6936d5776b29002ea8",
+        "name": "shaker 2.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6936d5776b29002ea8.mp3"
+      },
+      {
+        "id": "51f2fc6f36d5776b29002ee0",
+        "name": "snare roll 1.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6f36d5776b29002ee0.mp3"
+      },
+      {
+        "id": "51f2fc7036d5776b29002f08",
+        "name": "snare roll 2.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc7036d5776b29002f08.mp3"
+      },
+      {
+        "id": "51f2fc6f36d5776b29002ed8",
+        "name": "timpani hit 1.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6f36d5776b29002ed8.mp3"
+      },
+      {
+        "id": "51f2fc6f36d5776b29002ed0",
+        "name": "timpani roll 1.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6f36d5776b29002ed0.mp3"
+      }
+    ]
+  }
+]

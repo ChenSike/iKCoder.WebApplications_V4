@@ -1,0 +1,248 @@
+﻿[
+  {
+    "dir": "characters",
+    "path": "themes\/Comics\/characters",
+    "entries": [
+      {
+        "id": "543489c184aafafe500004bc",
+        "name": "flying superhero.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe500004bc.png"
+      },
+      {
+        "id": "543489c184aafafe500004c0",
+        "name": "superhero.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe500004c0.png"
+      },
+      {
+        "id": "543489c184aafafe500004af",
+        "name": "superhero1.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe500004af.png"
+      },
+      {
+        "id": "543489c184aafafe500004b3",
+        "name": "superhero2.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe500004b3.png"
+      },
+      {
+        "id": "543489c184aafafe500004b8",
+        "name": "superhero3.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe500004b8.png"
+      }
+    ]
+  },
+  {
+    "dir": "music",
+    "path": "themes\/Comics\/music",
+    "entries": [
+      {
+        "id": "51f2fc6436d5776b29002d50",
+        "name": "action hero music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6436d5776b29002d50.mp3"
+      },
+      {
+        "id": "51f2fc6236d5776b29002cc5",
+        "name": "brave music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6236d5776b29002cc5.mp3"
+      },
+      {
+        "id": "51f2fc6236d5776b29002cce",
+        "name": "superhero music.mp3",
+        "type": "mp3",
+        "url": "medialib\/51f2fc6236d5776b29002cce.mp3"
+      }
+    ]
+  },
+  {
+    "dir": "props",
+    "path": "themes\/Comics\/props",
+    "entries": [
+      {
+        "id": "548a090384aafab81e00006d",
+        "name": "HeroCrest.png",
+        "type": "png",
+        "url": "medialib\/548a090384aafab81e00006d.png"
+      },
+      {
+        "id": "543489c184aafafe5000046b",
+        "name": "bam.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe5000046b.png"
+      },
+      {
+        "id": "543489c184aafafe5000049b",
+        "name": "boom.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe5000049b.png"
+      },
+      {
+        "id": "543489c184aafafe50000487",
+        "name": "boom2.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe50000487.png"
+      },
+      {
+        "id": "543489c184aafafe50000497",
+        "name": "crack.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe50000497.png"
+      },
+      {
+        "id": "543489c184aafafe5000047f",
+        "name": "crash.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe5000047f.png"
+      },
+      {
+        "id": "543489c184aafafe50000473",
+        "name": "crunch.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe50000473.png"
+      },
+      {
+        "id": "543489c184aafafe5000046f",
+        "name": "dust.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe5000046f.png"
+      },
+      {
+        "id": "543489c184aafafe500004a3",
+        "name": "exclamation.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe500004a3.png"
+      },
+      {
+        "id": "543489c184aafafe5000047b",
+        "name": "exclamation2.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe5000047b.png"
+      },
+      {
+        "id": "543489c184aafafe500004ab",
+        "name": "haha.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe500004ab.png"
+      },
+      {
+        "id": "543489c184aafafe50000493",
+        "name": "huh.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe50000493.png"
+      },
+      {
+        "id": "543489c184aafafe50000477",
+        "name": "pow.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe50000477.png"
+      },
+      {
+        "id": "543489c184aafafe5000049f",
+        "name": "powpow.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe5000049f.png"
+      },
+      {
+        "id": "543489c184aafafe5000048f",
+        "name": "question.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe5000048f.png"
+      },
+      {
+        "id": "543489c184aafafe5000048b",
+        "name": "vroom.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe5000048b.png"
+      },
+      {
+        "id": "543489c184aafafe500004a7",
+        "name": "whap.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe500004a7.png"
+      },
+      {
+        "id": "543489c184aafafe50000483",
+        "name": "wow.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe50000483.png"
+      },
+      {
+        "id": "543489c184aafafe50000467",
+        "name": "zonk.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe50000467.png"
+      },
+      {
+        "id": "543489c184aafafe50000463",
+        "name": "zwoosh.png",
+        "type": "png",
+        "url": "medialib\/543489c184aafafe50000463.png"
+      }
+    ]
+  },
+  {
+    "dir": "scenes",
+    "path": "themes\/Comics\/scenes",
+    "entries": [
+      {
+        "id": "560d591daf9231a17f8b458e",
+        "name": "blank",
+        "type": "png",
+        "url": "medialib\/560d591daf9231a17f8b458e.png"
+      },
+      {
+        "id": "546fae5784aafab1120001e0",
+        "name": "comic panels 1 transparent.png",
+        "type": "png",
+        "url": "medialib\/546fae5784aafab1120001e0.png"
+      },
+      {
+        "id": "543489c184aafafe5000045f",
+        "name": "comic panels 1.jpg",
+        "type": "jpg",
+        "url": "medialib\/543489c184aafafe5000045f.jpg"
+      },
+      {
+        "id": "546fae5784aafab1120001ee",
+        "name": "comic panels 2 transparent.png",
+        "type": "png",
+        "url": "medialib\/546fae5784aafab1120001ee.png"
+      },
+      {
+        "id": "543489c184aafafe5000045b",
+        "name": "comic panels 2.jpg",
+        "type": "jpg",
+        "url": "medialib\/543489c184aafafe5000045b.jpg"
+      },
+      {
+        "id": "546fae5784aafab1120001e9",
+        "name": "comic panels 3 transparent.png",
+        "type": "png",
+        "url": "medialib\/546fae5784aafab1120001e9.png"
+      },
+      {
+        "id": "560d591eaf923141018b4576",
+        "name": "kitchen",
+        "type": "jpg",
+        "url": "medialib\/560d591eaf923141018b4576.jpg"
+      },
+      {
+        "id": "560d591faf9231b2028b4575",
+        "name": "scenes",
+        "type": "jpg",
+        "url": "medialib\/560d591faf9231b2028b4575.jpg"
+      },
+      {
+        "id": "560d591daf9231e17e8b4582",
+        "name": "space",
+        "type": "jpg",
+        "url": "medialib\/560d591daf9231e17e8b4582.jpg"
+      }
+    ]
+  }
+]
