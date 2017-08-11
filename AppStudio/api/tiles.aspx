@@ -1,9 +1,9 @@
 ﻿[
   {
-    "label": "Platformer",
+    "label": "精选",
     "tiles": [
       {
-        "label": "Tiles",
+        "label": "拼贴",
         "tiles": [ "castle", "ruins", "jungle", "stone", "stonevines", "scifi", "scifiwreck", "space", "steampunk", "steampunkwreck", "trees", "clouds", "ice", "fire-", "waterfall-", "coral", "dirt", "purplegeode" ]
       }
     ],
@@ -36,7 +36,7 @@
         ]
       },
       {
-        "label": "Heroes",
+        "label": "英雄",
         "objects": [
           {
             "id": "Hero Walking",
@@ -80,7 +80,7 @@
         ]
       },
       {
-        "label": "Villains",
+        "label": "坏人",
         "objects": [
           {
             "id": "Villain Walking",
@@ -132,7 +132,7 @@
         ]
       },
       {
-        "label": "Awards",
+        "label": "奖赏",
         "code": "[{\"func\":\"registerFlagTrigger\",\"values\":[],\"next\":{\"func\":\"blockInlineComment\",\"values\":[{\"type\":\"string\",\"value\":\"hide all this\"}],\"next\":{\"func\":\"blockVarSet\",\"values\":[{\"type\":\"string\",\"value\":\"got\"},{\"type\":\"string\",\"value\":\"0\"}],\"next\":{\"func\":\"blockLooksSetSize\",\"values\":[{\"type\":\"number\",\"value\":\"100\"}],\"next\":{\"func\":\"blockLooksShow\",\"values\":[],\"next\":{\"func\":\"blockPhysicsSetActorActive\",\"values\":[{\"type\":\"string\",\"value\":\"self\"},{\"type\":\"boolean\",\"value\":\"true\"}],\"next\":{\"func\":\"blockPhysicsSetActorStatic\",\"values\":[{\"type\":\"string\",\"value\":\"self\"},{\"type\":\"boolean\",\"value\":\"true\"}]}}}}}},\"x\":20,\"y\":20},{\"func\":\"registerSpriteCollision\",\"values\":[],\"next\":{\"func\":\"blockVarSet\",\"values\":[{\"type\":\"string\",\"value\":\"got\"},{\"type\":\"wrapper\",\"func\":\"valueSensingGetTag\",\"values\":[{\"type\":\"wrapper\",\"func\":\"valuePhysicsGetProperty\",\"values\":[{\"type\":\"choice\",\"value\":\"last actor collided with\"},{\"type\":\"string\",\"value\":\"self\"}]}]}]},\"x\":20,\"y\":248},{\"func\":\"registerFunction\",\"cat\":\"functions\",\"name\":\"when collected change score by\",\"label\":\"when collected change score by {param:amount}\",\"hasFlap\":false,\"values\":[{\"type\":\"wrapper\",\"func\":\"valueParam\",\"name\":\"amount\"}],\"next\":{\"func\":\"blockControlForever\",\"values\":[],\"containers\":[{\"func\":\"blockLooksNextCostume\",\"values\":[],\"next\":{\"func\":\"blockControlWait\",\"values\":[{\"type\":\"number\",\"value\":\".01\"}],\"next\":{\"func\":\"blockControlIf\",\"values\":[{\"type\":\"wrapper\",\"func\":\"valueOpEqual\",\"values\":[{\"type\":\"wrapper\",\"func\":\"valueVar\",\"name\":\"got\"},{\"type\":\"string\",\"value\":\"hero\"}]}],\"containers\":[{\"func\":\"blockVarSet\",\"values\":[{\"type\":\"string\",\"value\":\"got\"},{\"type\":\"string\",\"value\":\"1\"}],\"next\":{\"func\":\"blockPhysicsSetActorActive\",\"values\":[{\"type\":\"string\",\"value\":\"self\"},{\"type\":\"boolean\",\"value\":\"false\"}],\"next\":{\"func\":\"blockSoundPlay\",\"values\":[{\"type\":\"string\",\"value\":\"game sound 13 loop\"}],\"next\":{\"func\":\"blockVarChangeBy\",\"values\":[{\"type\":\"string\",\"value\":\"score\"},{\"type\":\"wrapper\",\"func\":\"valueParam\",\"name\":\"amount\"}],\"next\":{\"func\":\"blockLooksHide\",\"values\":[],\"next\":{\"func\":\"blockMotionGoTowards\",\"values\":[{\"type\":\"string\",\"value\":\"left edge\"}],\"next\":{\"func\":\"blockMotionChangeYBy\",\"values\":[{\"type\":\"wrapper\",\"func\":\"valueOpRandom\",\"values\":[{\"type\":\"number\",\"value\":\"-1000\"},{\"type\":\"number\",\"value\":\"-2000\"}]}]}}}}}}}]}}}]},\"x\":20,\"y\":343}]",
         "objects": [
           {
@@ -162,7 +162,7 @@
         ]
       },
       {
-        "label": "Widgets",
+        "label": "部件",
         "objects": [
           {
             "name": "Score Bar",
@@ -181,10 +181,10 @@
     ]
   },
   {
-    "label": "Top Down",
+    "label": "最受欢迎",
     "tiles": [
       {
-        "label": "Tiles",
+        "label": "拼贴",
         "tiles": [ "fortress", "green trees", "house", "dungeon", "blue trees", "pink trees", "yellow trees", "desert", "water-", "slime-", "acid-", "grass", "sand", "plaingrass", "plainsand", "darkgravel", "gravel", "mud", "rock", "shallowwater", "deepwater", "sidewalk1", "sidewalk2", "orangetrack", "asphalt", "topsoil", "hole" ]
       }
     ],
@@ -203,7 +203,7 @@
         ]
       },
       {
-        "label": "Heroes",
+        "label": "英雄",
         "objects": [
           {
             "id": "Knight",
@@ -239,7 +239,7 @@
         ]
       },
       {
-        "label": "Villains",
+        "label": "坏人",
         "objects": [
           {
             "id": "Goblin",
@@ -275,7 +275,7 @@
         ]
       },
       {
-        "label": "Awards",
+        "label": "奖赏",
         "objects": [
           {
             "name": "Health Potion",
@@ -316,7 +316,7 @@
         ]
       },
       {
-        "label": "Props",
+        "label": "道具",
         "objects": [
           {
             "name": "Ladder Hold",
@@ -345,7 +345,7 @@
         ]
       },
       {
-        "label": "Widgets",
+        "label": "部件",
         "objects": [
           {
             "name": "Score Bar",
