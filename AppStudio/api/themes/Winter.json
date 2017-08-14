@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "characters",
+    "label": "人物角色",
     "path": "themes\/Winter\/characters",
     "entries": [
       {
@@ -73,6 +74,7 @@
   },
   {
     "dir": "creatures",
+    "label": "生物",
     "path": "themes\/Winter\/creatures",
     "entries": [
       {
@@ -169,6 +171,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Winter\/props",
     "entries": [
       {
@@ -427,6 +430,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Winter\/scenes",
     "entries": [
       {

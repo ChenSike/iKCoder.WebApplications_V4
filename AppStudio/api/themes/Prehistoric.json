@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "characters",
+    "label": "人物角色",
     "path": "themes\/Prehistoric\/characters",
     "entries": [
       {
@@ -67,6 +68,7 @@
   },
   {
     "dir": "creatures",
+    "label": "生物",
     "path": "themes\/Prehistoric\/creatures",
     "entries": [
       {
@@ -133,6 +135,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Prehistoric\/props",
     "entries": [
       {
@@ -175,6 +178,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Prehistoric\/scenes",
     "entries": [
       {
@@ -199,6 +203,7 @@
   },
   {
     "dir": "sounds",
+    "label": "声音",
     "path": "themes\/Prehistoric\/sounds",
     "entries": [
       {

@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "characters",
+    "label": "人物角色",
     "path": "themes\/City Life\/characters",
     "entries": [
       {
@@ -259,6 +260,7 @@
   },
   {
     "dir": "creatures",
+    "label": "生物",
     "path": "themes\/City Life\/creatures",
     "entries": [
       {
@@ -559,6 +561,7 @@
   },
   {
     "dir": "music",
+    "label": "音乐",
     "path": "themes\/City Life\/music",
     "entries": [
       {
@@ -595,6 +598,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/City Life\/props",
     "entries": [
       {
@@ -1021,6 +1025,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/City Life\/scenes",
     "entries": [
       {
@@ -1075,6 +1080,7 @@
   },
   {
     "dir": "sounds",
+    "label": "声音",
     "path": "themes\/City Life\/sounds",
     "entries": [
       {

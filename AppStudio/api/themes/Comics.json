@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "characters",
+    "label": "人物角色",
     "path": "themes\/Comics\/characters",
     "entries": [
       {
@@ -37,6 +38,7 @@
   },
   {
     "dir": "music",
+    "label": "音乐",
     "path": "themes\/Comics\/music",
     "entries": [
       {
@@ -61,6 +63,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Comics\/props",
     "entries": [
       {
@@ -187,6 +190,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Comics\/scenes",
     "entries": [
       {

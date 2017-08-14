@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "characters",
+    "label": "人物角色",
     "path": "themes\/Cooking\/characters",
     "entries": [
       {
@@ -31,6 +32,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Cooking\/props",
     "entries": [
       {
@@ -379,6 +381,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Cooking\/scenes",
     "entries": [
       {
@@ -397,6 +400,7 @@
   },
   {
     "dir": "sounds",
+    "label": "声音",
     "path": "themes\/Cooking\/sounds",
     "entries": [
       {

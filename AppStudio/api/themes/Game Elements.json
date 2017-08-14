@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "backgrounds",
+    "label": "背景",
     "path": "themes\/Game Elements\/backgrounds",
     "entries": [
       {
@@ -211,6 +212,7 @@
   },
   {
     "dir": "creatures",
+    "label": "生物",
     "path": "themes\/Game Elements\/creatures",
     "entries": [
       {
@@ -319,6 +321,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Game Elements\/props",
     "entries": [
       {
@@ -1561,6 +1564,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Game Elements\/scenes",
     "entries": [
       {
@@ -1639,6 +1643,7 @@
   },
   {
     "dir": "sounds",
+    "label": "声音",
     "path": "themes\/Game Elements\/sounds",
     "entries": [
       {

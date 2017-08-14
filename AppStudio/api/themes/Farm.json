@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "characters",
+    "label": "人物角色",
     "path": "themes\/Farm\/characters",
     "entries": [
       {
@@ -37,6 +38,7 @@
   },
   {
     "dir": "creatures",
+    "label": "生物",
     "path": "themes\/Farm\/creatures",
     "entries": [
       {
@@ -169,6 +171,7 @@
   },
   {
     "dir": "music",
+    "label": "音乐",
     "path": "themes\/Farm\/music",
     "entries": [
       {
@@ -193,6 +196,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Farm\/props",
     "entries": [
       {
@@ -271,6 +275,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Farm\/scenes",
     "entries": [
       {
@@ -289,6 +294,7 @@
   },
   {
     "dir": "sounds",
+    "label": "声音",
     "path": "themes\/Farm\/sounds",
     "entries": [
       {

@@ -5225,7 +5225,8 @@ WinMediaAssets.showPicker = function (b, c, d, e, f) {
                     var e = b[d];
                     if (e.dir == "themes")
                         for (var g = 0; g < e.entries.length; g++) {
-                            var q = $('<li class="tab" data-theme="' + e.entries[g].dir + '" data-path="' + e.entries[g].path + '">' + e.entries[g].dir + "</li>");
+                            //var q = $('<li class="tab" data-theme="' + e.entries[g].dir + '" data-path="' + e.entries[g].path + '">' + e.entries[g].dir + "</li>");
+                            var q = $('<li class="tab" data-theme="' + e.entries[g].dir + '" data-path="' + e.entries[g].path + '">' + e.entries[g].label + "</li>");
                             q.click(WinMediaAssets._themeClicked);
                             h.append(q);
                             if (!c) c = e.entries[g].path
@@ -5366,7 +5367,11 @@ WinMediaAssets._showResults = function (b, c) {
                         if (WinMediaAssets.displayOrder[e] ==
                             g.dir && g.entries.length > 0) {
                             f = $("<h3></h3>");
-                            f.text(g.dir.charAt(0).toUpperCase() + g.dir.substring(1));
+                            var tmpText = g.dir.charAt(0).toUpperCase() + g.dir.substring(1);
+                            if (g.label && g.label != '') {
+                                tmpText = g.label;
+                            }
+                            f.text(tmpText);
                             for (var h = $("<ul></ul>"), j = 0; j < g.entries.length; j++) {
                                 var k = null,
                                     l = g.entries[j];

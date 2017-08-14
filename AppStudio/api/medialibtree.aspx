@@ -47,6 +47,7 @@
     "entries": [
       {
         "dir": "Default",
+        "label": "常用",
         "path": "themes\/Default",
         "entries": [
           {
@@ -77,6 +78,7 @@
       },
       {
         "dir": "Adventure",
+        "label": "冒险",
         "path": "themes\/Adventure",
         "entries": [
           {
@@ -117,6 +119,7 @@
       },
       {
         "dir": "City Life",
+        "label": "都市生活",
         "path": "themes\/City Life",
         "entries": [
           {
@@ -179,6 +182,7 @@
       },
       {
         "dir": "Comics",
+        "label": "漫画",
         "path": "themes\/Comics",
         "entries": [
           {
@@ -201,6 +205,7 @@
       },
       {
         "dir": "Cooking",
+        "label": "烹饪",
         "path": "themes\/Cooking",
         "entries": [
           {
@@ -223,6 +228,7 @@
       },
       {
         "dir": "Fantasy",
+        "label": "奇幻",
         "path": "themes\/Fantasy",
         "entries": [
           {
@@ -265,6 +271,7 @@
       },
       {
         "dir": "Farm",
+        "label": "农场",
         "path": "themes\/Farm",
         "entries": [
           {
@@ -301,6 +308,7 @@
       },
       {
         "dir": "Game Elements",
+        "label": "游戏元素",
         "path": "themes\/Game Elements",
         "entries": [
           {
@@ -365,6 +373,7 @@
       },
       {
         "dir": "Greeting Cards",
+        "label": "贺卡",
         "path": "themes\/Greeting Cards",
         "entries": [
           {
@@ -383,6 +392,7 @@
       },
       {
         "dir": "Nature",
+        "label": "自然界",
         "path": "themes\/Nature",
         "entries": [
           {
@@ -439,6 +449,7 @@
       },
       {
         "dir": "Ocean",
+        "label": "海洋",
         "path": "themes\/Ocean",
         "entries": [
           {
@@ -499,6 +510,7 @@
       },
       {
         "dir": "Peep",
+        "label": "小鸡家园",
         "path": "themes\/Peep",
         "entries": [
           {
@@ -599,6 +611,7 @@
       },
       {
         "dir": "Performance",
+        "label": "表演",
         "path": "themes\/Performance",
         "entries": [
           {
@@ -625,6 +638,7 @@
       },
       {
         "dir": "Prehistoric",
+        "label": "史前世界",
         "path": "themes\/Prehistoric",
         "entries": [
           {
@@ -651,6 +665,7 @@
       },
       {
         "dir": "Sci Fi",
+        "label": "科幻世界",
         "path": "themes\/Sci Fi",
         "entries": [
           {
@@ -727,6 +742,7 @@
       },
       {
         "dir": "Spooky",
+        "label": " 幽灵世界",
         "path": "themes\/Spooky",
         "entries": [
           {
@@ -771,6 +787,7 @@
       },
       {
         "dir": "Sports",
+        "label": " 体育",
         "path": "themes\/Sports",
         "entries": [
           {
@@ -803,6 +820,7 @@
       },
       {
         "dir": "Winter",
+        "label": " 冬季",
         "path": "themes\/Winter",
         "entries": [
           {

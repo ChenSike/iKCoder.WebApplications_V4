@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "characters",
+    "label": "人物角色",
     "path": "themes\/Ocean\/characters",
     "entries": [
       {
@@ -91,6 +92,7 @@
   },
   {
     "dir": "creatures",
+    "label": "生物",
     "path": "themes\/Ocean\/creatures",
     "entries": [
       {
@@ -1027,6 +1029,7 @@
   },
   {
     "dir": "music",
+    "label": "音乐",
     "path": "themes\/Ocean\/music",
     "entries": [
       {
@@ -1081,6 +1084,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Ocean\/props",
     "entries": [
       {
@@ -1357,6 +1361,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Ocean\/scenes",
     "entries": [
       {
@@ -1399,6 +1404,7 @@
   },
   {
     "dir": "sounds",
+    "label": "声音",
     "path": "themes\/Ocean\/sounds",
     "entries": [
       {

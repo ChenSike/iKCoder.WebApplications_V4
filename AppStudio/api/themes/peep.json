@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "characters",
+    "label": "人物角色",
     "path": "themes\/Peep\/characters",
     "entries": [
       {
@@ -1729,6 +1730,7 @@
   },
   {
     "dir": "creatures",
+    "label": "生物",
     "path": "themes\/Peep\/creatures",
     "entries": [
       {
@@ -1765,6 +1767,7 @@
   },
   {
     "dir": "music",
+    "label": "音乐",
     "path": "themes\/Peep\/music",
     "entries": [
       {
@@ -1813,6 +1816,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Peep\/props",
     "entries": [
       {
@@ -1939,6 +1943,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Peep\/scenes",
     "entries": [
       {

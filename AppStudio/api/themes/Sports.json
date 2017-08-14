@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "characters",
+    "label": "人物角色",
     "path": "themes\/Sports\/characters",
     "entries": [
       {
@@ -121,6 +122,7 @@
   },
   {
     "dir": "music",
+    "label": "音乐",
     "path": "themes\/Sports\/music",
     "entries": [
       {
@@ -157,6 +159,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Sports\/props",
     "entries": [
       {
@@ -271,6 +274,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Sports\/scenes",
     "entries": [
       {
@@ -337,6 +341,7 @@
   },
   {
     "dir": "sounds",
+    "label": "声音",
     "path": "themes\/Sports\/sounds",
     "entries": [
       {

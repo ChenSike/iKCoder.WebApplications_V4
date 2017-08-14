@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "creatures",
+    "label": "生物",
     "path": "themes\/Nature\/creatures",
     "entries": [
       {
@@ -529,6 +530,7 @@
   },
   {
     "dir": "music",
+    "label": "音乐",
     "path": "themes\/Nature\/music",
     "entries": [
       {
@@ -547,6 +549,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Nature\/props",
     "entries": [
       {
@@ -583,6 +586,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Nature\/scenes",
     "entries": [
       {
@@ -625,6 +629,7 @@
   },
   {
     "dir": "sounds",
+    "label": "声音",
     "path": "themes\/Nature\/sounds",
     "entries": [
       {

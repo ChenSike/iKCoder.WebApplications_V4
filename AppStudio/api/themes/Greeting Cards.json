@@ -1,6 +1,7 @@
 ﻿[
   {
     "dir": "music",
+    "label": "音乐",
     "path": "themes\/Greeting Cards\/music",
     "entries": [
       {
@@ -31,6 +32,7 @@
   },
   {
     "dir": "props",
+    "label": "道具",
     "path": "themes\/Greeting Cards\/props",
     "entries": [
       {
@@ -595,6 +597,7 @@
   },
   {
     "dir": "scenes",
+    "label": "场景",
     "path": "themes\/Greeting Cards\/scenes",
     "entries": [
       {
