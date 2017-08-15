@@ -573,7 +573,7 @@ function buildOverviewCourse(datas, containerHeight) {
     tmpHTMLArr.push('</div>');
 
     $('#Content_Overview_Honor').after($(tmpHTMLArr.join('')));
-    var itemWidth = width + space;
+    var itemWidth = width + space + 3;
     $('#container_Overview_Course_Items').width(itemWidth * itemCount - space);
     var funData = { id: "container_Overview_Course_Items", step: itemWidth };
     $('#arrow_Overview_Course_Left').on('click', funData, listMovePrev);
@@ -672,7 +672,7 @@ function buildOverviewExperience(data, height) {
     var itemCount = idArr.length;
     var padding = Math.floor(40 / 350 * height);
     var width = Math.floor(padding / 40 * 225);
-    var spaceWidth = Math.floor(padding / 40 * 90);
+    var spaceWidth = Math.floor(padding / 40 * 40);
     var disWidth = Math.max(width, data.distribution.length * 35);
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Experience" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">');
@@ -710,7 +710,7 @@ function buildOverviewExperience(data, height) {
     tmpHTMLArr.push('</div>');
 
     $('#Content_Overview_Course').after($(tmpHTMLArr.join('')));
-    var itemWidth = width + spaceWidth;
+    var itemWidth = width + spaceWidth + 1;
     $('#container_Overview_Experience_Items').width(disWidth + itemWidth * (itemCount - 1));
     var funData = { id: "container_Overview_Experience_Items", step: itemWidth };
     $('#arrow_Overview_Experience_Left').on('click', funData, listMovePrev);
@@ -2400,7 +2400,7 @@ function drawAbilityGraph(datas) {
     var tmpSteps = maxValue / 20;
     var tmpRadius = radius / tmpSteps;
     var vertex = [];
-    for (var i = 1; i < tmpSteps; i++) {
+    for (var i = 1; i <= tmpSteps; i++) {
         var tmpStyle = lightStyle;
         if (i % 5 == 0) {
             tmpStyle = boldStyle;
@@ -2548,7 +2548,7 @@ function drawTimeCompleteRate(datas) {
     var id = 'canvas_Report_Time_Course';
     var canvas = document.getElementById(id);
     var parent = $($(canvas).parent());
-    var width = parent.width();
+    var width = parent.width() - 45;
     var height = parent.height();
     canvas.width = Math.floor(width);
     canvas.height = Math.floor(height)
