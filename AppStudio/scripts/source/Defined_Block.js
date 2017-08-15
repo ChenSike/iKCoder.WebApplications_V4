@@ -5605,34 +5605,34 @@
                 ]
             }
         ]
-    }, {
-        label: "第三方硬件",
-        cat: "hardware",
-        items: [{
-            label: "Sphero智能球",
-            items: [g_steps.blockSpheroSetSpeed, g_steps.blockSpheroRoll, g_steps.blockSpheroStop, g_steps.blockSpheroTurnCW, g_steps.blockSpheroTurnCCW, g_steps.blockSpheroHeading, g_steps.blockSpheroColor, g_steps.valueSpheroSpeed, g_steps.valueSpheroHeading, g_steps.valueSpheroConnected, g_steps.valueSpheroProperty, g_steps.valueSpheroOdometer, g_steps.valueSpheroCollidedSinceLastCheck, g_steps.registerHardwareTrigger,
-                g_steps.blockSpheroSetStabilization, g_steps.blockSpheroSet
-            ]
-        }, {
-            label: "Drone无人机",
-            items: [g_steps.blockDroneTakeOff, g_steps.blockDroneLand, g_steps.blockDroneStop, g_steps.blockDroneEmergency, g_steps.blockDroneSetSpeed, g_steps.blockDroneForward, g_steps.blockDroneBackward, g_steps.blockDroneLeft, g_steps.blockDroneRight, g_steps.blockDroneTurnCW, g_steps.blockDroneTurnCCW, g_steps.blockDroneAnimation, g_steps.blockDroneUp, g_steps.blockDroneDown, g_steps.valueDroneConnected, g_steps.blockDroneStartUp, g_steps.blockDroneStartDown,
-                g_steps.blockDroneStartRotateLeft, g_steps.blockDroneStartRotateRight, g_steps.blockDroneTakePicture, g_steps.blockDroneFetchPicture, g_steps.blockDroneDeletePicture, g_steps.blockDroneVarSetNumPictures, g_steps.blockDroneSetProductName, g_steps.valueDroneHasGrabber, g_steps.blockDroneControlGrabber, g_steps.valueDroneHasCannon, g_steps.blockDroneControlCannon, g_steps.blockDroneSetFlyingMode
-            ]
-        }, {
-            label: "WeDo 2.0乐高遥控机器人",
-            items: [g_steps.blockWedo2RunMotorFor, g_steps.blockWedo2SetMotorPower, g_steps.blockWedo2SetMotorDirection,
-                g_steps.blockWedo2MotorOn, g_steps.blockWedo2MotorOff, g_steps.blockWedo2MotorDrift, g_steps.valueWedo2MotorPower, g_steps.valueWedo2MotorDirection, g_steps.valueWedo2ConnectedTo, g_steps.blockWedo2SetLightColor, g_steps.valueWedo2TiltSensorDirection, g_steps.blockWedo2SetTiltSensorMode, g_steps.valueWedo2TiltSensorMode, g_steps.valueWedo2TiltSensorAngle, g_steps.valueWedo2TiltSensorBumpCount, g_steps.blockWedo2SensorReset, g_steps.valueWedo2MotionSensorDistance, g_steps.blockWedo2SetMotionSensorMode, g_steps.valueWedo2MotionSensorMode,
-                g_steps.valueWedo2MotionSensorCount, g_steps.blockWedo2PlayToneFor, g_steps.blockWedo2StopTone
-            ]
-        }, {
-            label: "Hue飞利浦智能照明",
-            items: [g_steps.blockHueState, g_steps.valueHueState, g_steps.blockHueColor, g_steps.blockHueSetHue, g_steps.blockHueChangeHue, g_steps.blockHueBrightness, g_steps.valueHueBrightness]
-        }, {
-            label: "Parrot Jumping Sumo遥控机器人",
-            items: [g_steps.blockJumpingSumoStop, g_steps.blockJumpingSumoEmergency, g_steps.blockJumpingSumoJump, g_steps.blockJumpingSumoAnimation, g_steps.blockJumpingSumoForward, g_steps.blockJumpingSumoBackward,
-                g_steps.blockJumpingSumoTurnCW, g_steps.blockJumpingSumoTurnCCW, g_steps.blockJumpingSumoSetSpeed, g_steps.blockJumpingSumoSetTurn, g_steps.blockJumpingSumoMove, g_steps.blockJumpingSumoStart, g_steps.blockJumpingSumoPose, g_steps.blockJumpingSumoSetVolume, g_steps.blockJumpingSumoSetAudioTheme
-            ]
-        }]
+    //}, {
+    //    label: "第三方硬件",
+    //    cat: "hardware",
+    //    items: [{
+    //        label: "Sphero智能球",
+    //        items: [g_steps.blockSpheroSetSpeed, g_steps.blockSpheroRoll, g_steps.blockSpheroStop, g_steps.blockSpheroTurnCW, g_steps.blockSpheroTurnCCW, g_steps.blockSpheroHeading, g_steps.blockSpheroColor, g_steps.valueSpheroSpeed, g_steps.valueSpheroHeading, g_steps.valueSpheroConnected, g_steps.valueSpheroProperty, g_steps.valueSpheroOdometer, g_steps.valueSpheroCollidedSinceLastCheck, g_steps.registerHardwareTrigger,
+    //            g_steps.blockSpheroSetStabilization, g_steps.blockSpheroSet
+    //        ]
+    //    }, {
+    //        label: "Drone无人机",
+    //        items: [g_steps.blockDroneTakeOff, g_steps.blockDroneLand, g_steps.blockDroneStop, g_steps.blockDroneEmergency, g_steps.blockDroneSetSpeed, g_steps.blockDroneForward, g_steps.blockDroneBackward, g_steps.blockDroneLeft, g_steps.blockDroneRight, g_steps.blockDroneTurnCW, g_steps.blockDroneTurnCCW, g_steps.blockDroneAnimation, g_steps.blockDroneUp, g_steps.blockDroneDown, g_steps.valueDroneConnected, g_steps.blockDroneStartUp, g_steps.blockDroneStartDown,
+    //            g_steps.blockDroneStartRotateLeft, g_steps.blockDroneStartRotateRight, g_steps.blockDroneTakePicture, g_steps.blockDroneFetchPicture, g_steps.blockDroneDeletePicture, g_steps.blockDroneVarSetNumPictures, g_steps.blockDroneSetProductName, g_steps.valueDroneHasGrabber, g_steps.blockDroneControlGrabber, g_steps.valueDroneHasCannon, g_steps.blockDroneControlCannon, g_steps.blockDroneSetFlyingMode
+    //        ]
+    //    }, {
+    //        label: "WeDo 2.0乐高遥控机器人",
+    //        items: [g_steps.blockWedo2RunMotorFor, g_steps.blockWedo2SetMotorPower, g_steps.blockWedo2SetMotorDirection,
+    //            g_steps.blockWedo2MotorOn, g_steps.blockWedo2MotorOff, g_steps.blockWedo2MotorDrift, g_steps.valueWedo2MotorPower, g_steps.valueWedo2MotorDirection, g_steps.valueWedo2ConnectedTo, g_steps.blockWedo2SetLightColor, g_steps.valueWedo2TiltSensorDirection, g_steps.blockWedo2SetTiltSensorMode, g_steps.valueWedo2TiltSensorMode, g_steps.valueWedo2TiltSensorAngle, g_steps.valueWedo2TiltSensorBumpCount, g_steps.blockWedo2SensorReset, g_steps.valueWedo2MotionSensorDistance, g_steps.blockWedo2SetMotionSensorMode, g_steps.valueWedo2MotionSensorMode,
+    //            g_steps.valueWedo2MotionSensorCount, g_steps.blockWedo2PlayToneFor, g_steps.blockWedo2StopTone
+    //        ]
+    //    }, {
+    //        label: "Hue飞利浦智能照明",
+    //        items: [g_steps.blockHueState, g_steps.valueHueState, g_steps.blockHueColor, g_steps.blockHueSetHue, g_steps.blockHueChangeHue, g_steps.blockHueBrightness, g_steps.valueHueBrightness]
+    //    }, {
+    //        label: "Parrot Jumping Sumo遥控机器人",
+    //        items: [g_steps.blockJumpingSumoStop, g_steps.blockJumpingSumoEmergency, g_steps.blockJumpingSumoJump, g_steps.blockJumpingSumoAnimation, g_steps.blockJumpingSumoForward, g_steps.blockJumpingSumoBackward,
+    //            g_steps.blockJumpingSumoTurnCW, g_steps.blockJumpingSumoTurnCCW, g_steps.blockJumpingSumoSetSpeed, g_steps.blockJumpingSumoSetTurn, g_steps.blockJumpingSumoMove, g_steps.blockJumpingSumoStart, g_steps.blockJumpingSumoPose, g_steps.blockJumpingSumoSetVolume, g_steps.blockJumpingSumoSetAudioTheme
+    //        ]
+    //    }]
     }, {
         label: "变量",
         cat: "variables",

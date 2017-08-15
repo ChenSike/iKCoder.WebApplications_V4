@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="style/profile.css">
     <style>
         .fa-lg {
-            line-height:36px;
+            line-height: 36px;
         }
     </style>
     <script src="javascript/common/jquery-3.2.1.min.js"></script>
@@ -460,8 +460,7 @@
                 tmpHTMLArr.push('                                <div class="container-fluid no-padding">');
                 tmpHTMLArr.push('                                    <div class="row no-margin">');
                 tmpHTMLArr.push('                                        <div class="col-12 no-padding">');
-                tmpHTMLArr.push('                                            <p class="text-size-10">' + data.name + ',' + data.title + '</p>');
-                tmpHTMLArr.push('                                            <p class="text-size-10" style="min-width: 120px;">当前课程经验值: <span class="text-size-12 text-color-data">' + data.exp + '%</span></p>');
+                tmpHTMLArr.push('                                            <p class="text-size-16 bold">' + data.name + ',' + data.title + '</p>');
                 tmpHTMLArr.push('                                            <hr style="height:2px; color:rgb(239,239,239); margin: 5px 0px;" />');
                 tmpHTMLArr.push('                                        </div>');
                 tmpHTMLArr.push('                                    </div>');
@@ -513,22 +512,22 @@
                 tmpHTMLArr.push('            <h2 class="report-section-title">成就</h2>');
                 tmpHTMLArr.push('        </div>');
                 tmpHTMLArr.push('    </div>');
-                tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
-                for (var i = 0; i < data.length; i++) {
-                    var tmpId = (data[i].id < 10 ? '0' + data[i].id : data[i].id);
-                    tmpHTMLArr.push('        <div class="col-4 ">');
-                    tmpHTMLArr.push('            <div class="container-fluid no-padding">');
-                    tmpHTMLArr.push('                <div class="row">');
-                    tmpHTMLArr.push('                    <div class="col-3 no-padding text-size-75 text-color-index">' + tmpId + '</div>');
-                    tmpHTMLArr.push('                    <div class="col-7 no-padding">');
-                    tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart" style="padding-left: 10px;">' + data[i].title + '</p>');
-                    tmpHTMLArr.push('                        <p class="text-size-10" style="padding-left: 10px;">' + data[i].content + '</p>');
-                    tmpHTMLArr.push('                    </div>');
-                    tmpHTMLArr.push('                </div>');
-                    tmpHTMLArr.push('            </div>');
-                    tmpHTMLArr.push('        </div>');
-                }
-                tmpHTMLArr.push('</div>');
+                tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
+                tmpHTMLArr.push('        <div class="col-5 ">');
+                tmpHTMLArr.push('            <div class="container-fluid no-padding">');
+                tmpHTMLArr.push('                <div class="row">');
+                tmpHTMLArr.push('                    <div class="col-3 no-padding text-size-75 text-color-index">01</div>');
+                tmpHTMLArr.push('                    <div class="col-7 no-padding">');
+                tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart" style="padding-left: 10px;">' + data[0].title + '</p>');
+                tmpHTMLArr.push('                        <p class="text-size-10" style="padding-left: 10px;">' + data[0].content + '</p>');
+                tmpHTMLArr.push('                    </div>');
+                tmpHTMLArr.push('                </div>');
+                tmpHTMLArr.push('            </div>');
+                tmpHTMLArr.push('        </div>');
+                tmpHTMLArr.push('        <div class="col-5 offset-col-2">');
+                tmpHTMLArr.push('        <img src="image/pdf.png" class="report-attention-pdf-button" width="100%" height="200" />');
+                tmpHTMLArr.push('        </div>');
+                tmpHTMLArr.push('   </div>');
 
                 $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
             };

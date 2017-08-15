@@ -7818,7 +7818,7 @@ function hardwareNop() {
     Runtime.background.font = "normal 60px Arial,Helvetica,sans-serif";
     Runtime.background.fontColor = "#000000";
     Runtime.background.fillColor = "#ffffff";
-    _doBlockLooksSay(Runtime.background, "This project contains hardware blocks.  Please run this project on a tablet to control the hardware.");
+    _doBlockLooksSay(Runtime.background, "此项目包含第三方硬件blocks.  请在平板电脑上运行此项目以控制第三方硬件.");
     return false
 }
 
