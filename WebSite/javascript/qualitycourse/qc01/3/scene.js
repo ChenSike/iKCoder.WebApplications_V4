@@ -143,42 +143,104 @@ Scene.settingComplete = function () {
         libNode.append(libArr.join(''));
     }
 
-    _registerRemoteServer();
-    var origin = window.location.origin + '/' + window.location.pathname.split('/')[1] + '/';
-    $.ajax({
-        type: 'POST',
-        async: true,
-        url: _getRequestURL(_gURLMapping.share.sharesave, {}),
-        data: '<root><sencesymbol>' + symbol + '</sencesymbol><config>' + XMLToString(_dataForSave) + '</config><serverpath>' + origin + '</serverpath></root>',
-        success: function (response, status) {
-            if ($(response).find('err').length > 0) {
-                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_QualityCourse');
-                return;
-            }
+    Scene.buildCompleteHTML(symbol);
+};
 
-            var nodes = $(response).find('msg');
-            var qrSymbol = '';
-            var linkStr = '';
-            for (var i = 0; i < nodes.length; i++) {
-                if (typeof $(nodes[i]).attr('qrsymbol') != 'undefined') {
-                    qrSymbol = $(nodes[i]).attr('qrsymbol');
-                    linkStr = $(nodes[i]).attr('link');
+Scene.buildCompleteHTML = function (symbol) {
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('    <div class="wrap-complete-alert" style="display: block; height:auto;">');
+    tmpHTMLArr.push('        <div class="container">');
+    tmpHTMLArr.push('            <div class="row justify-content-center">');
+    tmpHTMLArr.push('                <div class="col-8 text-center" style="padding-top: 60px;padding-bottom: 30px; color:rgb(255,255,2555);">');
+    tmpHTMLArr.push('                    <div class="step-complete-title" id="title_StepComplete">请输入你的名字：</div>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('            <div class="row justify-content-center">');
+    tmpHTMLArr.push('                <div class="col-4 text-center" style="padding-bottom: 40px;">');
+    tmpHTMLArr.push('                   <form>');
+    tmpHTMLArr.push('                       <div class="form-group">');
+    tmpHTMLArr.push('                           <input type="text" class="form-control" id="txt_TempName" placeholder="">');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </form>');
+    tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('            <div class="row justify-content-center">');
+    tmpHTMLArr.push('               <div class="col-2" style="padding-bottom:40px;">');
+    tmpHTMLArr.push('                   <div class="step-complete-button text-center" id="btn_Name_Continue"><span class="glyphicon glyphicon-repeat"></span>继续</div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('    </div>');
+    $('.wrap-workstatus-alert').empty();
+    $('.wrap-workstatus-alert').append($(tmpHTMLArr.join('')));
+    $('.wrap-workstatus-alert').show();
+
+    $('#btn_Name_Continue').on('click', function () {
+        _registerRemoteServer();
+        var origin = window.location.origin + '/' + window.location.pathname.split('/')[1] + '/';
+        $.ajax({
+            type: 'POST',
+            async: true,
+            url: _getRequestURL(_gURLMapping.share.sharesave, {}),
+            data: '<root><sencesymbol>' + symbol + '</sencesymbol><config>' + XMLToString(_dataForSave) + '</config><serverpath>' + origin + '</serverpath></root>',
+            success: function (response, status) {
+                if ($(response).find('err').length > 0) {
+                    _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_QualityCourse');
+                    return;
                 }
-            }
 
-            Scene.buildCompleteHTML(qrSymbol);            
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-        }
+                var nodes = $(response).find('msg');
+                var qrSymbol = '';
+                var linkStr = '';
+                for (var i = 0; i < nodes.length; i++) {
+                    if (typeof $(nodes[i]).attr('qrsymbol') != 'undefined') {
+                        qrSymbol = $(nodes[i]).attr('qrsymbol');
+                        linkStr = $(nodes[i]).attr('link');
+                    }
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: _getRequestURL(_gURLMapping.bus.setexpreport, { tmpname: $('#txt_TempName').val().trim() }),
+                    data: '<root></root>',
+                    success: function (response, status) {
+                        if ($(response).find('err').length > 0) {
+                            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Set_ExpReport');
+                            return;
+                        }
+
+                        var nodes = $(response).find('msg');
+                        var qrSymbolRpt = '';
+                        for (var i = 0; i < nodes.length; i++) {
+                            if (typeof $(nodes[i]).attr('qrsymbol') != 'undefined') {
+                                qrSymbolRpt = $(nodes[i]).attr('qrsymbol');
+                            }
+                        }
+
+                        Scene.buildCompleteHTML_1(qrSymbol, qrSymbolRpt);
+                    },
+                    dataType: 'xml',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    error: function () {
+                    }
+                });
+            },
+            dataType: 'xml',
+            xhrFields: {
+                withCredentials: true
+            },
+            error: function () {
+            }
+        });
     });
 };
 
-Scene.buildCompleteHTML = function (qrSymbol) {
+Scene.buildCompleteHTML_1 = function (qrSymbol, qrSymbolRpt) {
     var qrSrc = _getRequestURL(_gURLMapping.data.getimage, { operation: 'AllowedOperation', symbol: qrSymbol });
+    var qrSrcRpt = _getRequestURL(_gURLMapping.data.getimage, { operation: 'AllowedOperation', symbol: qrSymbolRpt });
     var tmpHTMLArr = [];
     //tmpHTMLArr.push('<div class="wrap-workstatus-alert" style="display: block;">');
     tmpHTMLArr.push('    <div class="wrap-complete-alert" style="display: block; height:auto;">');
@@ -189,7 +251,7 @@ Scene.buildCompleteHTML = function (qrSymbol) {
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('            </div>');
     tmpHTMLArr.push('            <div class="row justify-content-center">');
-    tmpHTMLArr.push('                <div class="col-4 text-center">');
+    tmpHTMLArr.push('                <div class="col-5 text-center">');
     tmpHTMLArr.push('                    <div class="container-fluid">');
     tmpHTMLArr.push('                        <div class="row">');
     tmpHTMLArr.push('                            <div class="col-12">');
@@ -220,7 +282,7 @@ Scene.buildCompleteHTML = function (qrSymbol) {
     tmpHTMLArr.push('                    <div style="border-right: solid 1px rgb(255,255,255); height: 80px; top: calc(50% - 40px); position:relative;">');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
-    tmpHTMLArr.push('                <div class="col-4 text-center">');
+    tmpHTMLArr.push('                <div class="col-3 text-center">');
     tmpHTMLArr.push('                    <div class="container-fluid">');
     tmpHTMLArr.push('                        <div class="row">');
     tmpHTMLArr.push('                            <div class="col-12">');
@@ -234,13 +296,42 @@ Scene.buildCompleteHTML = function (qrSymbol) {
     tmpHTMLArr.push('                        </div>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('                <div class="col-3 text-center">');
+    tmpHTMLArr.push('                    <div class="container-fluid">');
+    tmpHTMLArr.push('                        <div class="row">');
+    tmpHTMLArr.push('                            <div class="col-12">');
+    tmpHTMLArr.push('                                <p style="color:rgb(255,255,255);">扫一扫，查看学习报告</p>');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                        <div class="row">');
+    tmpHTMLArr.push('                            <div class="col-12" style="padding-bottom: 30px;">');
+    tmpHTMLArr.push('                                <img id="img_Share_QR" src="' + qrSrcRpt + '" style="width:160px" />');
+    tmpHTMLArr.push('                            </div>');
+    tmpHTMLArr.push('                        </div>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('            </div>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     //tmpHTMLArr.push('</div>');
     $('.wrap-workstatus-alert').empty();
     $('.wrap-workstatus-alert').append($(tmpHTMLArr.join('')));
-    $('.wrap-workstatus-alert').show();
+    $('.wrap-workstatus-alert').show(1000, function () {
+        $.ajax({
+            type: 'POST',
+            async: true,
+            url: _getRequestURL(_gURLMapping.data.setremovebindata, { symbol: qrSymbolRpt }),
+            data: '<root></root>',
+            success: function (response, status) {
+            },
+            dataType: 'xml',
+            xhrFields: {
+                withCredentials: true
+            },
+            error: function () {
+            }
+        });
+    });
 
     $('#btn_QC_FreeSignUp').on('click', function () {
         window.localStorage.removeItem('qc01_state_storage');

@@ -28,7 +28,8 @@ var _gURLMapping = {
     data: {
         getwordlist: '/data/get_checkcodenua.aspx',
         getaudio: '/Data/api_iKCoder_Data_Get_Audio.aspx',
-        getimage: '/Data/api_iKCoder_Data_Get_Image.aspx'
+        getimage: '/Data/api_iKCoder_Data_Get_Image.aspx',
+        setremovebindata:'/Data/api_iKCoder_Data_Set_RemoveBinData.aspx'
     },
     bus: {
         getworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Get_Workspace.aspx',
@@ -44,7 +45,8 @@ var _gURLMapping = {
         getsysmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_SysMessageList.aspx',
         getqamsglist: '/Bus/Message/api_iKCoder_Workspace_Get_QAMessageList.aspx',
         removemsg: '/Bus/Message/api_iKCoder_Workspace_Set_RemoveMessage.aspx',
-        gethtmlreport: '/Bus/Report/api_iKCoder_Report_Get_HtmlReport.aspx'
+        gethtmlreport: '/Bus/Report/api_iKCoder_Report_Get_HtmlReport.aspx',
+        setexpreport:'/Bus/Report/api_iKCoder_Report_Set_ExpReport.aspx'
     },
     tmp: {
         storesave: '/bus/store/api_iKCoder_Store_Save.aspx', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
