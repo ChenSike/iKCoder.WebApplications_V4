@@ -1821,21 +1821,21 @@
                     </ul>
                 </div>
                 <div class="tool-color"><img src="ide/imgs/paint/color.png"></div>
-                <div class="tool-eyedropper" title="Color Picker Tool"></div>
+                <div class="tool-eyedropper" title="颜色拾取工具"></div>
             </div>
             <div class="copy hidden">
                 <ul>
-                    <li class="selection-type selrectangle" data-tool_type="rectangle" title="Box Selection"></li>
-                    <li class="selection-type selellipse" data-tool_type="ellipse" title="Ellipse Selection"></li>
+                    <li class="selection-type selrectangle" data-tool_type="rectangle" title="矩形选择"></li>
+                    <li class="selection-type selellipse" data-tool_type="ellipse" title="椭圆形选择"></li>
                     <li>&nbsp;</li>
-                    <li class="cut" title="Cut"></li>
-                    <li class="copy hidden" title="Copy"></li>
-                    <li class="paste" title="Paste"></li>
+                    <li class="cut" title="剪切"></li>
+                    <li class="copy hidden" title="复制"></li>
+                    <li class="paste" title="粘贴"></li>
                     <li>&nbsp;</li>
-                    <li class="flip-horizontally" title="Flip Horizontally"></li>
-                    <li class="flip-vertically" title="Flip Vertically"></li>
-                    <li class="shrink" title="Shrink"></li>
-                    <li class="grow" title="Grow"></li>
+                    <li class="flip-horizontally" title="水平翻转"></li>
+                    <li class="flip-vertically" title="垂直翻转"></li>
+                    <li class="shrink" title="缩小"></li>
+                    <li class="grow" title="放大"></li>
                 </ul>
             </div>
             <div class="centertool hidden">
@@ -1854,14 +1854,14 @@
             <div class="edit right">
                 <a class="edit-menu dropdown" href="#"><span class="icon-list-title"></span> </a>
                 <ul class="menu hidden">
-                    <li><a href="#" data-option="import_image">Import Image</a></li>
-                    <li><a href="#" data-option="clear_canvas">Clear Canvas</a></li>
+                    <li><a href="#" data-option="import_image">导入图像</a></li>
+                    <li><a href="#" data-option="clear_canvas">清空画布</a></li>
                     <li><hr></li>
-                    <li><a href="#" data-option="flip_canvas_horizontal">Flip Canvas Horizontally</a></li>
-                    <li><a href="#" data-option="flip_canvas_vertical">Flip Canvas Vertically</a></li>
+                    <li><a href="#" data-option="flip_canvas_horizontal">水平翻转画布</a></li>
+                    <li><a href="#" data-option="flip_canvas_vertical">垂直翻转画布</a></li>
                     <li><hr></li>
-                    <li><a href="#" class="toggle-center" data-option="toggle_center">Show Actor Center Point</a></li>
-                    <li><a href="#" class="toggle-grid" data-option="toggle_grid">Hide Grid</a></li>
+                    <li><a href="#" class="toggle-center" data-option="toggle_center">显示角色中心点</a></li>
+                    <li><a href="#" class="toggle-grid" data-option="toggle_grid">隐藏网格</a></li>
                 </ul>
                 <a class="exit icon-cancel" href="#"></a>
             </div>
@@ -1882,40 +1882,52 @@
             </div>
             <div class="undo right">
                 <ul>
-                    <li class="undo" title="Undo"></li>
-                    <li class="redo" title="Redo"></li>
+                    <li class="undo" title="撤销"></li>
+                    <li class="redo" title="重做"></li>
                 </ul>
             </div>
         </div>
-        <div class="canvas" style="background-size: 30px;"><canvas class="hidden"></canvas><canvas></canvas><canvas></canvas><canvas class="hidden"></canvas><div id="drop-zone" class="hidden"><p>Drop files here</p></div><canvas></canvas><canvas class="hidden"></canvas><canvas></canvas></div>
+        <div class="canvas" style="background-size: 30px;">
+            <canvas class="hidden"></canvas>
+            <canvas></canvas>
+            <canvas></canvas>
+            <canvas class="hidden"></canvas>
+            <div id="drop-zone" class="hidden">
+                <p>Drop files here</p>
+            </div>
+            <canvas></canvas>
+            <canvas class="hidden"></canvas>
+
+            <canvas></canvas>
+        </div>
         <div class="tools">
             <ul>
-                <li class="paint-tools tool-pencil selected" title="Pen"></li>
-                <li class="paint-tools tool-brush" title="Paint Brush"></li>
-                <li class="paint-tools tool-eraser" title="Eraser"></li>
-                <li class="paint-tools tool-fill" title="Paint Bucket"></li>
-                <li class="paint-tools tool-stamp" title="Stamping Tool"></li>
-                <li class="paint-tools tool-shape rectangle" title="Draw Shape Tool">
+                <li class="paint-tools tool-pencil selected" title="钢笔"></li>
+                <li class="paint-tools tool-brush" title="油漆刷"></li>
+                <li class="paint-tools tool-eraser" title="橡皮擦"></li>
+                <li class="paint-tools tool-fill" title="油漆桶"></li>
+                <li class="paint-tools tool-stamp" title="印花工具"></li>
+                <li class="paint-tools tool-shape rectangle" title="形状工具">
                     <div class="hidden">
                         <ul>
-                            <li class="paint-tools tool-rectangle" title="Box Tool"></li>
-                            <li class="paint-tools tool-filledrectangle" title=""></li>
-                            <li class="paint-tools tool-ellipse" title="Ellipse Tool"></li>
-                            <li class="paint-tools tool-filledellipse" title=""></li>
-                            <li class="paint-tools tool-line" title="Line Tool"></li>
+                            <li class="paint-tools tool-rectangle" title="矩形工具"></li>
+                            <li class="paint-tools tool-filledrectangle" title="实心矩形工具"></li>
+                            <li class="paint-tools tool-ellipse" title="椭圆形工具"></li>
+                            <li class="paint-tools tool-filledellipse" title="实心椭圆形工具"></li>
+                            <li class="paint-tools tool-line" title="线条工具"></li>
                         </ul>
                     </div>
                 </li>
-                <li class="paint-tools tool-text" title="Text"></li>
+                <li class="paint-tools tool-text" title="文本"></li>
                 <li class="paint-tools tool-separator"></li>
-                <li class="paint-tools tool-selection" title="Selection Tool"></li>
-                <li class="paint-tools tool-center" title="Choose Actor Center"></li>
+                <li class="paint-tools tool-selection" title="选择工具"></li>
+                <li class="paint-tools tool-center" title="选择角色中心点"></li>
             </ul>
         </div>
     </div>
     <div id="win-svgpaint" class="winpanel hidden">
         <iframe scrolling="no" border="0" marginheight="0" marginwidth="0" src="blank.html"></iframe>
-        <a href="#" class="btn-round orange save">Save</a>
+        <a href="#" class="btn-round orange save">保存</a>
         <a href="#" class="exit icon-cancel"></a>
     </div>
     <div id="win-backpack" class="winpanel hidden ui-resizable ui-draggable">
