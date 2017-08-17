@@ -5456,22 +5456,22 @@ WinMediaAssets._showResults = function (b, c) {
         }
         d = $('<a class="asset-action" href="#"></a>');
         if (c == "upload") {
-            d.text("Upload an Asset");
+            d.text("上传一个资源");
             d.click(WinMediaAssets._upload)
         } else if (c == "photo") {
-            d.text("Take a Picture");
+            d.text("拍照");
             d.click(WinMediaAssets._camera)
         } else if (c == "drawing") {
-            e = $('<a class="asset-action" href="#">Vector Image</a>');
+            e = $('<a class="asset-action" href="#">矢量图像</a>');
             e.click(WinMediaAssets._drawVector);
             h.prepend(e);
-            d.text("Draw an Image");
+            d.text("绘制一个图像");
             d.click(WinMediaAssets._draw)
         } else if (c == "audio") {
-            d.text("Record Audio");
+            d.text("录音");
             d.click(WinMediaAssets._record);
             e = $('<a class="asset-action" href="#"></a>');
-            e.text("Upload a Sound File");
+            e.text("上传一个声音文件");
             e.click(WinMediaAssets._upload);
             h.prepend(e)
         }
@@ -5662,6 +5662,7 @@ WinMediaAssets.selectMyStuff = function (b) {
     $("#win-media-assets .tab-content").addClass("mystuff");
     $.ajax({
         url: WinMediaAssets.medialibmy,
+        dataType: "json",
         success: function (c) {
             for (var d = [{
                 dir: "sounds",
@@ -8415,9 +8416,9 @@ var WinMediaCapture = {
                 $("#win-paint .exit").unbind().click(function () {
                     if (WinPaint.redoIndex >
                         1 || WinPaint.centerChanged) {
-                        IDE.confirmDialog("There are changes to the image. Do you want to discard your changes?", function () {
+                        IDE.confirmDialog("图像已经被修改. 你想放弃你的改变吗?", function () {
                             $("#win-paint").addClass("hidden")
-                        }, "Discard Changes", "Cancel", function () { });
+                        }, "放弃改变", "取消", function () { });
                         $("#confirm").modal()
                     } else $("#win-paint").addClass("hidden");
                     return false
@@ -10516,10 +10517,10 @@ var WinMediaCapture = {
                 return false
             });
             $("#win-svgpaint > .exit").unbind().click(function () {
-                IDE.confirmDialog("Do you want to discard your changes?",
+                IDE.confirmDialog("你想放弃你的改变吗?",
                     function () {
                         WinSVGPaint.hide()
-                    }, "Discard Changes", "Cancel",
+                    }, "放弃改变", "取消",
                     function () { });
                 $("#confirm").modal();
                 return false

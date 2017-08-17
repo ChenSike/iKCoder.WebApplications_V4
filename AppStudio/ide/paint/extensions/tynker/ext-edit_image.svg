@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <g id="edit_image">
+        <svg id="eye-Page%201" viewBox="0 0 27 27" style="background-color:#ffffff00" version="1.1"
+             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+             x="0px" y="0px" width="27px" height="27px">
+            <g id="Layer%201">
+                <path fill="#F3F3F3" d="M23.377,8.006H3.624v13.602h19.753V8.006z M19.849,9.676c0.91,0,1.646,0.748,1.646,1.67s-0.736,1.671-1.646,1.671c-0.908,0-1.646-0.749-1.646-1.671S18.94,9.676,19.849,9.676z M5.034,20.175L9.972,9.438l5.173,7.158l2.587-2.147l4.233,5.727H5.034z"/>
+                <path fill="#F3F3F3" d="M0,0v27h27V0H0z M25.258,23.517H1.742V6.097h23.516V23.517z"/>
+            </g>
+        </svg>
+    </g>
+</svg>

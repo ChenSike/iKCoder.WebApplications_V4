@@ -1,0 +1,773 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="lib/jgraduate/css/jPicker.css" type="text/css">
+    <link rel="stylesheet" href="lib/jgraduate/css/jgraduate.css" type="text/css">
+    <link rel="stylesheet" href="css/method-draw.css" type="text/css">
+    <link rel="stylesheet" href="css/fonts.css" type="text/css">
+    <link rel="stylesheet" href="css/tynker/main.css" type="text/css">
+    <link rel="stylesheet" href="css/tynker/skin.css" type="text/css">
+    <link rel="stylesheet" href="css/tynker/winpaint.css" type="text/css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script type="text/javascript" src="lib/jquery.js"></script>
+    <script type="text/javascript" src="lib/pathseg.js"></script>
+    <script type="text/javascript" src="lib/touch.js"></script>
+    <script type="text/javascript" src="lib/js-hotkeys/jquery.hotkeys.min.js"></script>
+    <script type="text/javascript" src="lib/jquerybbq/jquery.bbq.min.js"></script>
+    <script type="text/javascript" src="icons/jquery.svgicons.js"></script>
+    <script type="text/javascript" src="lib/jgraduate/jquery.jgraduate.js"></script>
+    <script type="text/javascript" src="lib/contextmenu/jquery.contextMenu.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui/jquery-ui-1.8.17.custom.min.js"></script>
+    <script type="text/javascript" src="src/browser.js"></script>
+    <script type="text/javascript" src="src/svgtransformlist.js"></script>
+    <script type="text/javascript" src="src/math.js"></script>
+    <script type="text/javascript" src="src/units.js"></script>
+    <script type="text/javascript" src="src/svgutils.js"></script>
+    <script type="text/javascript" src="src/sanitize.js"></script>
+    <script type="text/javascript" src="src/history.js"></script>
+    <script type="text/javascript" src="src/select.js"></script>
+    <script type="text/javascript" src="src/draw.js"></script>
+    <script type="text/javascript" src="src/path.js"></script>
+    <script type="text/javascript" src="src/dialog.js"></script>
+    <script type="text/javascript" src="src/svgcanvas.js"></script>
+    <script type="text/javascript" src="src/method-draw.js"></script>
+    <script type="text/javascript" src="lib/jquery-draginput.js"></script>
+    <script type="text/javascript" src="lib/contextmenu.js"></script>
+    <script type="text/javascript" src="lib/jgraduate/jpicker.min.js"></script>
+    <script type="text/javascript" src="lib/mousewheel.js"></script>
+    <script type="text/javascript" src="extensions/ext-eyedropper.js"></script>
+    <script type="text/javascript" src="extensions/ext-grid.js"></script>
+    <script type="text/javascript" src="lib/requestanimationframe.js"></script>
+    <script type="text/javascript" src="lib/taphold.js"></script>
+    <script type="text/javascript" src="lib/tynker/winpaint.js"></script>
+    <script type="text/javascript" src="lib/tynker/colorPicker.js"></script>
+    <script type="text/javascript" src="extensions/tynker/ext-cancel_action.js"></script>
+    <script type="text/javascript" src="extensions/tynker/ext-actor_center.js"></script>
+    <script type="text/javascript" src="extensions/tynker/ext-color_picker_tweaks.js"></script>
+    <script type="text/javascript" src="extensions/tynker/ext-edit_image.js"></script>
+    <script type="text/javascript" src="extensions/tynker/ext-mode_label.js"></script>
+    <script type="text/javascript" src="extensions/tynker/ext-shapes.js"></script>
+    <script type="text/javascript" src="extensions/tynker/ext-tynker_opensave.js"></script>
+    <script type="text/javascript" src="src/tynker/config.js"></script>
+    <script text="text/javascript" src="src/tynker/load.js"></script>
+    <script type="text/javascript" src="src/tynker/path.js"></script>
+    <link href="http://fonts.googleapis.com/css?family=Caesar+Dressing|Meie+Script|Rye" rel="stylesheet" type="text/css">
+    <title>Method Draw</title>
+</head>
+<body>
+    <div id="svg_editor">
+        <div id="rulers">
+            <div id="ruler_corner"></div>
+            <div id="ruler_x">
+                <div id="ruler_x_cursor"></div>
+                <div>
+                    <canvas height="15"></canvas>
+                </div>
+            </div>
+            <div id="ruler_y">
+                <div id="ruler_y_cursor"></div>
+                <div>
+                    <canvas width="15"></canvas>
+                </div>
+            </div>
+        </div>
+        <div id="workarea">
+            <div id="svgcanvas" style="position: relative">
+            </div>
+        </div>
+        <div id="menu_bar">
+            <a class="menu">
+                <div class="menu_title" id="logo"></div>
+                <div class="menu_list">
+                    <div id="tool_about" class="menu_item">关于...</div>
+                    <div class="separator"></div>
+                    <div id="tool_about" class="menu_item">快捷键...</div>
+                </div>
+            </a>
+            <div class="menu">
+                <div class="menu_title">文件</div>
+                <div class="menu_list" id="file_menu">
+                    <div id="tool_clear" class="menu_item">新建</div>
+                    <div id="tool_open" class="menu_item invisible"><div id="fileinputs"></div>打开SVG...</div>
+                    <div id="tool_import" class="menu_item"><div id="fileinputs_import"></div>导入图像...</div>
+                    <div id="tool_save" class="menu_item invisible">保存... <span class="shortcut">Ctrl+S</span></div>
+                    <div id="tool_export" class="menu_item invisible">导出PNG</div>
+                </div>
+            </div>
+            <div class="menu">
+                <div class="menu_title">编辑</div>
+                <div class="menu_list" id="edit_menu">
+                    <div class="menu_item" id="tool_undo">撤销 <span class="shortcut">Ctrl+Z</span></div>
+                    <div class="menu_item" id="tool_redo">重做 <span class="shortcut">Ctrl+Y</span></div>
+                    <div class="separator"></div>
+                    <div class="menu_item action_selected disabled" id="tool_cut">剪切 <span class="shortcut">Ctrl+X</span></div>
+                    <div class="menu_item action_selected disabled" id="tool_copy">复制 <span class="shortcut">Ctrl+C</span></div>
+                    <div class="menu_item action_selected disabled" id="tool_paste">粘贴 <span class="shortcut">Ctrl+V</span></div>
+                    <div class="menu_item action_selected disabled" id="tool_clone">克隆 <span class="shortcut">Ctrl+D</span></div>
+                    <div class="menu_item action_selected disabled" id="tool_delete">删除 <span>⌫</span></div>
+                </div>
+            </div>
+            <div class="menu">
+                <div class="menu_title">对象</div>
+                <div class="menu_list" id="object_menu">
+                    <div class="menu_item action_selected disabled" id="tool_move_top">置前 <span class="shortcut">Ctrl+⇧↑</span></div>
+                    <div class="menu_item action_selected disabled" id="tool_move_up">置于最前 <span class="shortcut">Ctrl+↑</span></div>
+                    <div class="menu_item action_selected disabled" id="tool_move_down">置后 <span class="shortcut">Ctrl+↓</span></div>
+                    <div class="menu_item action_selected disabled" id="tool_move_bottom">置于最后 <span class="shortcut">Ctrl+⇧↓</span></div>
+                    <div class="separator"></div>
+                    <div class="menu_item action_multi_selected disabled" id="tool_group">组合 <span class="shortcut">Ctrl+G</span></div>
+                    <div class="menu_item action_group_selected disabled" id="tool_ungroup">拆分 <span class="shortcut">Ctrl+⇧G</span></div>
+                    <div class="separator"></div>
+                    <div class="menu_item action_path_convert_selected disabled" id="tool_topath">转为路径</div>
+                    <div class="menu_item action_path_selected disabled" id="tool_reorient">调整路径</div>
+                </div>
+            </div>
+            <div class="menu invisible">
+                <div class="menu_title">视图</div>
+                <div class="menu_list" id="view_menu">
+                    <div class="menu_item push_button_pressed" id="tool_rulers">显示标尺</div>
+                    <div class="menu_item" id="tool_wireframe">显示线框</div>
+                    <div class="menu_item" id="tool_snap">对齐网格</div>
+                    <div class="separator"></div>
+                    <div class="menu_item" id="tool_source">源码... <span class="shortcut">Ctrl+U</span></div>
+                </div>
+            </div>
+
+            <div class="menu">
+                <div class="menu_title">
+                    缩放:
+                    <div id="zoom_panel" class="toolset" title="改变缩放等级">
+                        <div class="draginput select" id="zoom_label">
+                            <span id="zoomLabel" class="zoom_tool icon_label"></span>
+                            <select id="zoom_select">
+                                <option value="6">6%</option>
+                                <option value="12">12%</option>
+                                <option value="16">16%</option>
+                                <option value="25">25%</option>
+                                <option value="50">50%</option>
+                                <option value="75">75%</option>
+                                <option value="100" selected="selected">100%</option>
+                                <option value="150">150%</option>
+                                <option value="200">200%</option>
+                                <option value="300">300%</option>
+                                <option value="400">400%</option>
+                                <option value="600">600%</option>
+                                <option value="800">800%</option>
+                                <option value="1600">1600%</option>
+                            </select>
+                            <div class="caret"></div>
+                            <input id="zoom" size="3" value="100%" type="text" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu">
+                <div class="menu_button" id="tool_undo_button">
+                    <div class="menu_button_icon undo"></div>
+                    <span>撤销</span>
+                </div>
+                <div class="menu_button" id="tool_redo_button">
+                    <div class="menu_button_icon redo"></div>
+                    <span>重做</span>
+                </div>
+            </div>
+        </div>
+        <div id="tools_top" class="tools_panel">
+            <div id="mode_panel"><h4 class="large clearfix">选择工具</h4></div>
+            <div id="color_panel">
+                <h4 class="clearfix">颜色</h4>
+                <div id="color_tools">
+                    <div id="tool_switch" title="转换模式和填充颜色 [X]"></div>
+                    <div class="color_tool active" id="tool_fill">
+                        <label class="icon_label" title="改变填充色"></label>
+                        <div class="color_block">
+                            <div id="fill_bg"></div>
+                            <div id="fill_color" class="color_block">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="color_tool" id="tool_stroke">
+                        <label class="icon_label" title="改变描边颜色"></label>
+                        <div class="color_block">
+                            <div id="stroke_bg"></div>
+                            <div id="stroke_color" class="color_block" title="改变描边颜色">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="palette" title="点击改变填充色, 长按改变描边颜色">
+                </div>
+            </div>
+            <div id="actor_center_panel" class="context_panel clearfix"></div>
+            <div id="canvas_panel" class="context_panel">
+                <h4 class="clearfix">画布</h4>
+                <label data-title="改变画布宽度">
+                    <input size="3" id="canvas_width" type="text" pattern="[0-9]*" autocomplete="off" readonly="readonly" data-scale="28.571428571428573" data-domain="70" data-cursor="false">
+                    <span class="icon_label">Width</span>
+                </label>
+                <label data-title="改变画布高度">
+                    <input id="canvas_height" size="3" type="text" pattern="[0-9]*" autocomplete="off" readonly="readonly" data-scale="28.571428571428573" data-domain="70" data-cursor="false">
+                    <span class="icon_label">Height</span>
+                </label>
+                <label data-title="改变画布底色" class="draginput">
+                    <span>Color</span>
+                    <div id="color_canvas_tools">
+                        <div class="color_tool active" id="tool_canvas">
+                            <div class="color_block">
+                                <div id="canvas_bg"></div>
+                                <div id="canvas_color">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </label>
+                <div class="draginput">
+                    <span>尺寸</span>
+                    <select id="resolution">
+                        <option id="selectedPredefined" selected="selected">自定义</option>
+                        <option>640x480</option>
+                        <option>800x600</option>
+                        <option>1024x768</option>
+                        <option>1280x960</option>
+                        <option>1600x1200</option>
+                        <option id="fitToContent" value="content">适应容器</option>
+                    </select>
+                    <div class="caret"></div>
+                    <label id="resolution_label">自定义</label>
+                </div>
+            </div>
+            <div id="stroke_panel" class="context_panel clearfix">
+                <div class="clearfix"></div>
+                <h4>编辑</h4>
+                <div class="toolset" data-title="改变描边">
+                    <label>
+                        <input id="stroke_width" size="2" value="5" data-attr="stroke-width" min="0" max="99" step="1">
+                        <span class="icon_label">描边宽度</span>
+                    </label>
+                </div>
+                <div class="stroke_tool draginput">
+                    <span>描边线型</span>
+                    <select id="stroke_style" data-title="改变描边线型风格">
+                        <option selected="selected" value="none">—</option>
+                        <option value="2,2">···</option>
+                        <option value="5,5">- -</option>
+                        <option value="5,2,2,2">-·-</option>
+                        <option value="5,2,2,2,2,2">-··-</option>
+                    </select>
+                    <div class="caret"></div>
+                    <label id="stroke_style_label">—</label>
+                </div>
+                <label style="display: none;">
+                    <span class="icon_label">Stroke Join</span>
+                </label>
+                <label style="display: none;">
+                    <span class="icon_label">Stroke Cap</span>
+                </label>
+            </div>
+            <div id="rect_panel" class="context_panel">
+                <h4>矩形</h4>
+                <label id="rect_width_tool attr_changer" data-title="改变矩形宽度">
+                    <input id="rect_width" class="attr_changer" size="3" data-attr="width" type="text" pattern="[0-9]*">
+                    <span class="icon_label">Width</span>
+                </label>
+                <label id="rect_height_tool" data-title="改变矩形高度">
+                    <input id="rect_height" class="attr_changer" size="3" data-attr="height" type="text" pattern="[0-9]*">
+                    <span class="icon_label">Height</span>
+                </label>
+                <div class="clearfix"></div>
+                <h4 class="clearfix">移动</h4>
+                <label>
+                    <input id="rect_x" class="attr_changer" data-title="Change X coordinate" size="3" data-attr="x" pattern="[0-9]*">
+                    <span>X</span>
+                </label>
+                <label>
+                    <input id="rect_y" class="attr_changer" data-title="Change Y coordinate" size="3" data-attr="y" pattern="[0-9]*">
+                    <span>Y</span>
+                </label>
+            </div>
+            <div id="text_panel" class="context_panel">
+                <h4>文本</h4>
+                <div class="toolset draginput select twocol" id="tool_font_family">
+                    <span>字体</span>
+                    <div id="preview_font" style="font-family: Helvetica, Arial, sans-serif;">Helvetica</div>
+                    <div class="caret"></div>
+                    <input id="font_family" data-title="改变字体" size="12" type="hidden">
+                    <select id="font_family_dropdown">
+                        <option value="Helvetica, Arial, sans-serif" selected="selected">Helvetica</option>
+                        <option value="'Trebuchet MS', Gadget, sans-serif">Trebuchet</option>
+                        <option value="Georgia, Times, 'Times New Roman', serif">Georgia</option>
+                        <option value="'Palatino Linotype', 'Book Antiqua', Palatino, serif">Palatino</option>
+                        <option value="'Times New Roman', Times, serif">Times</option>
+                        <option value="'Courier New', Courier, monospace">Courier</option>
+                        <option value="'Caesar Dressing', monospace">Caesar Dressing</option>
+                        <option value="'Meie Script', cursive">Meie Script</option>
+                        <option value="'Rye', serif">Rye</option>
+                    </select>
+                    <div class="tool_button" id="tool_bold" data-title="Bold Text [B]">B</div>
+                    <div class="tool_button" id="tool_italic" data-title="Italic Text [I]">i</div>
+                </div>
+                <label id="tool_font_size" data-title="改变文字大小">
+                    <input id="font_size" size="3" value="0">
+                    <span id="font_sizeLabel" class="icon_label">文字大小</span>
+                </label>
+
+                <input id="text" type="text" size="35">
+                <div class="clearfix"></div>
+                <h4>Move</h4>
+                <label>
+                    <input id="text_x" class="attr_changer" data-title="改变文本X坐标" size="3" data-attr="x" pattern="[0-9]*">
+                    <span>X</span>
+                </label>
+                <label>
+                    <input id="text_y" class="attr_changer" data-title="改变文本Y坐标" size="3" data-attr="y" pattern="[0-9]*">
+                    <span>Y</span>
+                </label>
+                <div class="clearfix"></div>
+            </div>
+            <div id="path_panel" class="context_panel clearfix">
+                <h4 class="clearfix">移动</h4>
+                <label>
+                    <input id="path_x" class="attr_changer" data-title="改变椭圆中心X坐标" size="3" data-attr="x" pattern="[0-9]*">
+                    <span>X</span>
+                </label>
+                <label>
+                    <input id="path_y" class="attr_changer" data-title="改变椭圆中心Y坐标" size="3" data-attr="y" pattern="[0-9]*">
+                    <span>Y</span>
+                </label>
+            </div>
+            <div id="image_panel" class="context_panel clearfix">
+                <h4>图像</h4>
+                <label>
+                    <input id="image_width" class="attr_changer" data-title="改变图像宽度" size="3" data-attr="width" pattern="[0-9]*">
+                    <span class="icon_label">Width</span>
+                </label>
+                <label>
+                    <input id="image_height" class="attr_changer" data-title="改变图像高度" size="3" data-attr="height" pattern="[0-9]*">
+                    <span class="icon_label">Height</span>
+                </label>
+                <div class="clearfix"></div>
+                <h4>移动</h4>
+                <label>
+                    <input id="image_x" class="attr_changer" data-title="改变X坐标" size="3" data-attr="x" pattern="[0-9]*">
+                    <span>X</span>
+                </label>
+                <label>
+                    <input id="image_y" class="attr_changer" data-title="改变Y坐标" size="3" data-attr="y" pattern="[0-9]*">
+                    <span>Y</span>
+                </label>
+            </div>
+            <div id="circle_panel" class="context_panel">
+                <h4>圆形</h4>
+                <label id="tool_circle_r">
+                    <span>半径</span>
+                    <input id="circle_r" class="attr_changer" title="改变圆的半径" size="3" data-attr="r">
+                </label>
+                <div class="clearfix"></div>
+                <h4>移动</h4>
+                <label id="tool_circle_cx">
+                    <span>圆心 X</span>
+                    <input id="circle_cx" class="attr_changer" title="改变圆心X坐标" size="3" data-attr="cx">
+                </label>
+                <label id="tool_circle_cy">
+                    <span>圆心 Y</span>
+                    <input id="circle_cy" class="attr_changer" title="改变圆心Y坐标" size="3" data-attr="cy">
+                </label>
+            </div>
+            <div id="ellipse_panel" class="context_panel clearfix">
+                <h4>椭圆</h4>
+                <label id="tool_ellipse_rx">
+                    <input id="ellipse_rx" class="attr_changer" data-title="改变椭圆的X半径" size="3" data-attr="rx" pattern="[0-9]*">
+                    <span>X半径</span>
+                </label>
+                <label id="tool_ellipse_ry">
+                    <input id="ellipse_ry" class="attr_changer" data-title="改变椭圆的Y半径" size="3" data-attr="ry" pattern="[0-9]*">
+                    <span>Y半径</span>
+                </label>
+                <div class="clearfix"></div>
+                <h4>移动</h4>
+                <label id="tool_ellipse_cx">
+                    <input id="ellipse_cx" class="attr_changer" data-title="改变椭圆中心X坐标" size="3" data-attr="cx" pattern="[0-9]*">
+                    <span>X</span>
+                </label>
+                <label id="tool_ellipse_cy">
+                    <input id="ellipse_cy" class="attr_changer" data-title="改变椭圆中心Y坐标" size="3" data-attr="cy" pattern="[0-9]*">
+                    <span>Y</span>
+                </label>
+            </div>
+            <div id="line_panel" class="context_panel clearfix">
+                <h4>直线</h4>
+                <label id="tool_line_x1">
+                    <input id="line_x1" class="attr_changer" data-title="改变起点X坐标" size="3" data-attr="x1" pattern="[0-9]*">
+                    <span>Start X</span>
+                </label>
+                <label id="tool_line_y1">
+                    <input id="line_y1" class="attr_changer" data-title="改变起点Y坐标" size="3" data-attr="y1" pattern="[0-9]*">
+                    <span>Start Y</span>
+                </label>
+                <label id="tool_line_x2">
+                    <input id="line_x2" class="attr_changer" data-title="改变终点X坐标" size="3" data-attr="x2" pattern="[0-9]*">
+                    <span>End X</span>
+                </label>
+                <label id="tool_line_y2">
+                    <input id="line_y2" class="attr_changer" data-title="改变终点Y坐标" size="3" data-attr="y2" pattern="[0-9]*">
+                    <span>End Y</span>
+                </label>
+            </div>
+            <div id="selected_panel" class="context_panel">
+                <label id="tool_angle" data-title="改变旋转角度" class="draginput">
+                    <input id="angle" class="attr_changer" size="2" value="0" data-attr="transform" data-min="-180" data-max="180" type="text">
+                    <span class="icon_label">旋转</span>
+                    <div id="tool_angle_indicator">
+                        <div id="tool_angle_indicator_cursor"></div>
+                    </div>
+                </label>
+                <label class="toolset" id="tool_opacity" data-title="改变选中项的透明度">
+                    <input id="group_opacity" class="attr_changer" data-attr="opacity" data-multiplier="0.01" size="3" value="100" step="5" min="0" max="100">
+                    <span id="group_opacityLabel" class="icon_label">透明度</span>
+                </label>
+                <div class="toolset invisible" id="tool_blur" data-title="高斯模糊值更改">
+                    <label>
+                        <input id="blur" size="2" value="0" step=".1" min="0" max="10">
+                        <span class="icon_label">模糊值</span>
+                    </label>
+                </div>
+                <label id="cornerRadiusLabel" data-title="改变矩形圆角半径">
+                    <input id="rect_rx" size="3" value="0" data-attr="rx" class="attr_changer" type="text" pattern="[0-9]*">
+                    <span class="icon_label">圆角</span>
+                </label>
+                <div class="clearfix"></div>
+                <div id="align_tools">
+                    <h4>对齐</h4>
+                    <div class="toolset align_buttons" id="tool_position">
+                        <label>
+                            <div class="col last clear" id="position_opts">
+                                <div class="draginput_cell" id="tool_posleft" title="左对齐"></div>
+                                <div class="draginput_cell" id="tool_poscenter" title="水平居中"></div>
+                                <div class="draginput_cell" id="tool_posright" title="右对齐"></div>
+                                <div class="draginput_cell" id="tool_postop" title="顶部对齐"></div>
+                                <div class="draginput_cell" id="tool_posmiddle" title="垂直居中"></div>
+                                <div class="draginput_cell" id="tool_posbottom" title="底部对齐"></div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div id="container_panel" class="context_panel clearfix"></div>
+            <div id="use_panel" class="context_panel clearfix">
+                <div class="tool_button clearfix" id="tool_unlink_use" data-title="中断引用元素的链接 (变成唯一)">中断引用链接</div>
+            </div>
+            <div id="g_panel" class="context_panel clearfix">
+                <h4>移动</h4>
+                <label>
+                    <input id="g_x" class="attr_changer" data-title="改变组合的X坐标" size="3" data-attr="x" pattern="[0-9]*">
+                    <span>X</span>
+                </label>
+                <label>
+                    <input id="g_y" class="attr_changer" data-title="改变组合的Y坐标" size="3" data-attr="y" pattern="[0-9]*">
+                    <span>Y</span>
+                </label>
+            </div>
+            <div id="path_node_panel" class="context_panel clearfix">
+                <h4>移动</h4>
+                <label id="tool_node_x">
+                    <input id="path_node_x" class="attr_changer" data-title="改变节点的X坐标" size="3" data-attr="x">
+                    <span>X</span>
+                </label>
+                <label id="tool_node_y">
+                    <input id="path_node_y" class="attr_changer" data-title="改变节点的Y坐标" size="3" data-attr="y">
+                    <span>Y</span>
+                </label>
+                <div id="segment_type" class="draginput label">
+                    <span>分段类型</span>
+                    <select id="seg_type" data-title="改变分段类型">
+                        <option id="straight_segments" selected="selected" value="4">直线</option>
+                        <option id="curve_segments" value="6">曲线</option>
+                    </select>
+                    <div class="caret"></div>
+                    <label id="seg_type_label">直线</label>
+                </div>
+
+                <div class="clearfix"></div>
+                <div class="tool_button" id="tool_node_clone" title="添加节点">
+                    添加节点
+                </div>
+                <div class="tool_button" id="tool_node_delete" title="Delete Node">
+                    删除节点
+                </div>
+                <div class="tool_button" id="tool_openclose_path" title="Open/close sub-path">
+                    打开路径
+                </div>
+            </div>
+            <div id="multiselected_panel" class="context_panel clearfix">
+                <h4 class="hidable">多个元素</h4>
+                <div class="toolset align_buttons" style="position: relative">
+                    <label id="tool_align_relative" style="margin-top: 10px;">
+                        <select id="align_relative_to" title="相对于对齐 ...">
+                            <option id="selected_objects" value="selected">对齐到对象</option>
+                            <option id="page" value="page">对齐到页面</option>
+                        </select>
+                    </label>
+                    <h4>.</h4>
+                    <div class="col last clear">
+                        <div class="draginput_cell" id="tool_alignleft" title="左对齐">
+                        </div>
+                        <div class="draginput_cell" id="tool_aligncenter" title="水平居中">
+                        </div>
+                        <div class="draginput_cell" id="tool_alignright" title="右对齐">
+                        </div>
+                        <div class="draginput_cell" id="tool_aligntop" title="顶部对齐">
+                        </div>
+                        <div class="draginput_cell" id="tool_alignmiddle" title="垂直居中">
+                        </div>
+                        <div class="draginput_cell" id="tool_alignbottom" title="底部对齐">
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div id="cur_context_panel">
+        </div>
+        <div id="tools_left" class="tools_panel">
+            <div class="tool_button" id="tool_select" title="选择工具  (V)"></div>
+            <div class="tool_button" id="tool_fhpath" title="铅笔工具  (Q)"></div>
+            <div class="tool_button" id="tool_path" title="路径工具  (P)"></div>
+            <div class="tool_button" id="tool_ellipse" title="椭圆/圆形工具  (C)"></div>
+            <div class="tool_button" id="tool_rect" title="正方形/矩形工具  (R)"></div>
+            <div class="tool_button" id="tool_line" title="直线工具  (L)"></div>
+            <div class="tool_button" id="tool_text" title="文本工具 [T]"></div>
+            <div class="tool_button" id="tool_zoom" title="缩放工具 [Z]"></div>
+        </div>
+        <div id="tools_bottom" class="tools_panel"></div>
+        <div id="color_picker"></div>
+    </div>
+    <div id="svg_source_editor">
+        <div id="svg_source_overlay"></div>
+        <div id="svg_source_container">
+            <div id="save_output_btns">
+                <p id="copy_save_note">将这个框的内容复制到一个文本编辑器中，然后用.svg扩展的扩展名保存文件.</p>
+                <button id="copy_save_done">完成</button>
+            </div>
+            <form>
+                <textarea id="svg_source_textarea" spellcheck="false"></textarea>
+            </form>
+            <div id="tool_source_back" class="toolbar_button">
+                <button id="tool_source_cancel" class="cancel">取消</button>
+                <button id="tool_source_save" class="ok">应用</button>
+            </div>
+        </div>
+    </div>
+    <div id="base_unit_container">
+        <select id="base_unit">
+            <option value="px">像素</option>
+            <option value="cm">厘米</option>
+            <option value="mm">毫米</option>
+            <option value="in">英寸</option>
+            <option value="pt">点</option>
+            <option value="pc">12点(point)活字的字行长度(约为1／6英寸)</option>
+            <option value="em">Ems</option>
+            <option value="ex">Exs</option>
+        </select>
+    </div>
+    <div id="dialog_box">
+        <div id="dialog_box_overlay"></div>
+        <div id="dialog_container">
+            <div id="dialog_content"></div>
+            <div id="dialog_buttons"></div>
+        </div>
+    </div>
+    <div id="edit_image_box">
+        <div id="edit_image_box_overlay"></div>
+        <div id="edit_image_container">
+            <div id="edit_image_content">
+                <div id="win-paint" class="float-container">
+                    <input type="file" id="import-image-file" style="display:none" />
+                    <div style="clear: both"></div>
+                    <h2>图像编辑器</h2>
+                    <div class="tool-options">
+                        <div class="pencil">
+                            <a class="pencilsize dropdown" href="#"><div><span></span></div> &nbsp; <img src="images/tynker/winpaint/dropdown.png" /></a>
+                            <div class="menu hidden">
+                                <ul style="padding-left: 0px;">
+                                    <li radius="2"><div></div></li>
+                                    <li radius="6"><div></div></li>
+                                    <li radius="10"><div></div></li>
+                                    <li radius="14"><div></div></li>
+                                    <li radius="20"><div></div></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="brush">
+                            <a class="brushsize dropdown" href="#"><div><span></span><img class="hidden" src /></div> &nbsp; <img src="images/tynker/winpaint/dropdown.png" /></a>
+                            <div class="menu hidden">
+                                <ul class="oval">
+                                    <li type="oval" radius="2"><div></div></li>
+                                    <li type="oval" radius="6"><div></div></li>
+                                    <li type="oval" radius="10"><div></div></li>
+                                    <li type="oval" radius="14"><div></div></li>
+                                    <li type="oval" radius="20"><div></div></li>
+                                </ul>
+                                <ul class="wetbrush">
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/red.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/blue1.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/green.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/yellow.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/brown.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/orange1.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/pink1.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/cyan.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/purple.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/white.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/black.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/butterfly2.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/butterfly.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/pink.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/flower1.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/blue.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/blue2.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/tree.png" /></li>
+                                    <li type="wetbrush"><img src="images/tynker/winpaint/brushes/orange.png" /></li>
+                                </ul>
+                                <div class="showsize"><div class="oval"><img class="hidden" src /></div></div>
+                                <div class="slider"></div>
+                            </div>
+                        </div>
+                        <div class="pen">
+                            <a class="pensize dropdown" href="#"><div><span></span></div> &nbsp; <img src="images/tynker/winpaint/dropdown.png" /></a>
+                            <div class="menu hidden">
+                                <ul>
+                                    <li size="1"><div></div></li>
+                                    <li size="2"><div></div></li>
+                                    <li size="3"><div></div></li>
+                                    <li size="4"><div></div></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="colorpicker">
+                            <div class="fillcolor"><div></div></div>
+                            <div class="strokecolor"><div></div></div>
+                            <div class="color-predefined">
+                                <ul class="color-block">
+                                    <li style="background-color:none"></li>
+                                    <li style="background-color:#000000"></li>
+                                    <li style="background-color:#0000ff"></li>
+                                    <li style="background-color:#996633"></li>
+                                    <li style="background-color:#00ffff"></li>
+                                    <li style="background-color:#00ff00"></li>
+                                    <li style="background-color:#ff00ff"></li>
+                                    <li style="background-color:#ff8000"></li>
+                                    <li style="background-color:#800080"></li>
+                                    <li style="background-color:#ff0000"></li>
+                                    <li style="background-color:#ffff00"></li>
+                                    <li style="background-color:#ffffff"></li>
+                                </ul>
+                                <ul class="color-tray">
+                                    <li style="background-color:#8774bf"></li>
+                                    <li style="background-color:#34a99b"></li>
+                                    <li style="background-color:#6777f3"></li>
+                                    <li style="background-color:#eac5d7"></li>
+                                    <li style="background-color:#33c542"></li>
+                                    <li style="background-color:#785f7c"></li>
+                                    <li style="background-color:#07dc17"></li>
+                                    <li style="background-color:#9d66a8"></li>
+                                    <li style="background-color:#63158f"></li>
+                                    <li style="background-color:#ce46d2"></li>
+                                    <li style="background-color:#dcdc8c"></li>
+                                    <li style="background-color:#8dcee4"></li>
+                                    <li style="background-color:#6ea689"></li>
+                                    <li style="background-color:#90e888"></li>
+                                    <li style="background-color:#68f7c9"></li>
+                                    <li style="background-color:#2ccdea"></li>
+                                    <li style="background-color:#654225"></li>
+                                    <li style="background-color:#edc08f"></li>
+                                    <li style="background-color:#98f329"></li>
+                                    <li style="background-color:#d88805"></li>
+                                    <li style="background-color:#210d9b"></li>
+                                    <li style="background-color:#63e9f7"></li>
+                                    <li style="background-color:#9ac946"></li>
+                                    <li style="background-color:#e59950"></li>
+                                    <li style="background-color:#2f2292"></li>
+                                    <li style="background-color:#a92cde"></li>
+                                    <li style="background-color:#6bd276"></li>
+                                    <li style="background-color:#f67096"></li>
+                                    <li style="background-color:#417f4e"></li>
+                                    <li style="background-color:#fefd50"></li>
+                                    <li style="background-color:#f95543"></li>
+                                    <li style="background-color:#f3bc11"></li>
+                                    <li style="background-color:#891300"></li>
+                                    <li style="background-color:#574a93"></li>
+                                    <li style="background-color:#d57ec6"></li>
+                                    <li style="background-color:#a38688"></li>
+                                </ul>
+                            </div>
+                            <div class="tool-eyedropper"></div>
+                        </div>
+                        <div class="copy">
+                            <ul>
+                                <li class="selection-type selrectangle" data-tool_type="rectangle" title="矩形选取"></li>
+                                <li class="selection-type selellipse" data-tool_type="ellipse" title="椭圆形选取"></li>
+                                <li class="selection-type sellasso" data-tool_type="lasso" title="套索选取"></li>
+                                <li class="cut" title="剪下选择的项目"></li>
+                                <li class="copy hidden" title="复制选择的项目"></li>
+                                <li class="paste" title="粘贴"></li>
+                                <li class="invisible flip-horizontally" title="水平翻转选择的项目"></li>
+                                <li class="invisible flip-vertically" title="垂直翻转选择的项目"></li>
+                                <li class="shrink" title="缩小选择的项目"></li>
+                                <li class="grow" title="放大选择的项目"></li>
+                            </ul>
+                        </div>
+                        <div class="stamp">
+                            <ul>
+                                <li class="selection-type" data-tool_type="rectangle">矩形</li>
+                                <li class="selection-type" data-tool_type="ellipse">椭圆形</li>
+                            </ul>
+                        </div>
+                        <div class="zoom">
+                            <ul>
+                                <li class="zoom-type zoom-in" data-tool_type="zoom-in"></li>
+                                <li class="zoom-type zoom-out" data-tool_type="zoom-out"></li>
+                            </ul>
+                        </div>
+                        <div class="undo">
+                            <ul>
+                                <li class="undo"></li>
+                                <li class="redo"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tools">
+                        <ul>
+                            <li class="paint-tools tool-eraser"></li>
+                            <li class="paint-tools tool-fill"></li>
+                            <li class="paint-tools tool-selection"></li>
+                            <li class="paint-tools tool-zoom"></li>
+                        </ul>
+                    </div>
+                    <div class="canvas"></div>
+                </div>
+            </div>
+            <div id="edit_image_buttons">
+                <input type="button" class="save" value="保存更改">
+                <input type="button" class="cancel" value="忽略更改">
+            </div>
+        </div>
+    </div>
+    <ul id="cmenu_canvas" class="contextMenu">
+        <li><a href="#cut">剪切 <span class="shortcut">Ctrl+X;</span></a></li>
+        <li><a href="#copy">复制<span class="shortcut">Ctrl+C</span></a></li>
+        <li><a href="#paste">粘贴<span class="shortcut">Ctrl+V</span></a></li>
+        <li class="separator"><a href="#delete">删除<span class="shortcut">⌫</span></a></li>
+        <li class="separator"><a href="#group">组合<span class="shortcut">Ctrl+G</span></a></li>
+        <li><a href="#ungroup">拆分<span class="shortcut">Ctrl+⇧G</span></a></li>
+        <li class="separator"><a href="#move_front">置于最前<span class="shortcut">Ctrl+⇧↑</span></a></li>
+        <li><a href="#move_up">置前<span class="shortcut">Ctrl+↑</span></a></li>
+        <li><a href="#move_down">置后<span class="shortcut">Ctrl+↓</span></a></li>
+        <li><a href="#move_back">置于最后<span class="shortcut">Ctrl+⇧↓</span></a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,278 @@
+#svgcanvas {
+    background-color: #6c6c6c;
+}
+
+#menu_bar {
+    background-image: linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -o-linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -moz-linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -webkit-linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -ms-linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.09,#fbfbfb),color-stop(0.55,#ededed) );
+    background-color: #fff;
+    border-bottom: 1px solid black;
+    height: 35px;
+}
+
+.menu_title {
+    color: #222222;
+}
+
+#rulers > div {
+    background-color: #404040;
+}
+
+.tool_button, .push_button, .tool_button_current, .push_button_pressed {
+    border-color: #f3f3f3;
+}
+
+#tools_left {
+    background-color: #f3f3f3;
+}
+
+    #tools_left .tool_button_current {
+        background-color: #ff9933;
+    }
+
+    #tools_left .tool_button.loaded {
+        background-color: #2f2f2c;
+    }
+
+        #tools_left .tool_button.loaded:hover {
+            background-color: #ff9933;
+        }
+
+        #tools_left .tool_button.loaded# tools_shapelib_show {
+            background-color: #f3f3f3;
+        }
+
+    #tools_left .tool_button:after {
+        border-color: #ededed;
+    }
+
+    #tools_left .tool_button:hover:after, #tools_left .tool_button_current:after {
+        border-color: #ff9933;
+    }
+
+#tools_top {
+    background-color: #f3f3f3;
+}
+
+    #tools_top h4 {
+        color: #222222;
+    }
+
+#tools_bottom {
+    background-image: linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -o-linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -moz-linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -webkit-linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -ms-linear-gradient(bottom,#fbfbfb 9%,#ededed 55%);
+    background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.09,#fbfbfb),color-stop(0.55,#ededed) );
+}
+
+.draginput {
+    background-color: #5d626d;
+}
+
+    .draginput input {
+        color: #6699cc;
+    }
+
+    .draginput:hover input {
+        color: #ff9933;
+    }
+
+    .draginput.active input {
+        color: #ff9933;
+    }
+
+    .draginput:hover #tool_angle_indicator_cursor {
+        border-top-color: #ff9933;
+    }
+
+    .draginput.active #tool_angle_indicator_cursor {
+        border-top-color: #ff9933;
+    }
+
+    .draginput .draginput_cursor {
+        border-top-color: #6699cc;
+    }
+
+    .draginput:hover .draginput_cursor {
+        border-top-color: #ff9933;
+    }
+
+    .draginput.active .draginput_cursor {
+        border-top-color: #ff9933;
+    }
+
+.draginput_cell {
+    border-color: #5d626d;
+}
+
+    .draginput_cell:after {
+        border-color: transparent;
+    }
+
+#use_panel .tool_button, #path_node_panel .tool_button {
+    background-color: #5d626d;
+    color: #ffffff;
+}
+
+#preview_font:after {
+    border-right: solid #5d626d 10px;
+    background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxsaW5lYXJHcmFkaWVudCBpZD0iZzU4MCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjAlIj48c3RvcCBzdG9wLWNvbG9yPSIjNWQ2MjZkIiBzdG9wLW9wYWNpdHk9IjAiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiM1ZDYyNmQiIG9mZnNldD0iMC43Ii8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2c1ODApIiAvPjwvc3ZnPg==);
+}
+
+#shape_buttons .tool_button:hover {
+    border: 1px solid #333;
+    margin: 4px 4px 4px 3px;
+}
+
+#tools_left .tool_button.loaded, #tools_left .tool_button.loaded:hover, #tools_left .tool_button_current.loaded, #tools_left .tool_button_current.loaded:hover {
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 26px 26px;
+}
+
+#tools_left #tool_select {
+    background-image: url('../../images/tynker/dt_pointer.png');
+}
+
+    #tools_left #tool_select.tool_button_current {
+        background-image: url('../../images/tynker/dt_pointer_current.png');
+    }
+
+#tools_left #tool_fhpath {
+    background-image: url('../../images/tynker/dt_pen.png');
+}
+
+    #tools_left #tool_fhpath.tool_button_current {
+        background-image: url('../../images/tynker/dt_pen_current.png');
+    }
+
+#tools_left #tool_line {
+    background-image: url('../../images/tynker/dt_line.png');
+}
+
+    #tools_left #tool_line.tool_button_current {
+        background-image: url('../../images/tynker/dt_line_current.png');
+    }
+
+#tools_left #tool_rect {
+    background-image: url('../../images/tynker/dt_square.png');
+}
+
+    #tools_left #tool_rect.tool_button_current {
+        background-image: url('../../images/tynker/dt_square_current.png');
+    }
+
+#tools_left #tool_ellipse {
+    background-image: url('../../images/tynker/dt_circle.png');
+}
+
+    #tools_left #tool_ellipse.tool_button_current {
+        background-image: url('../../images/tynker/dt_circle_current.png');
+    }
+
+#tools_left #tool_path {
+    background-image: url('../../images/tynker/dt_path.png');
+}
+
+    #tools_left #tool_path.tool_button_current {
+        background-image: url('../../images/tynker/dt_path_current.png');
+    }
+
+#tools_left #tool_text {
+    background-image: url('../../images/tynker/dt_type.png');
+}
+
+    #tools_left #tool_text.tool_button_current {
+        background-image: url('../../images/tynker/dt_type_current.png');
+    }
+
+#tools_left #tool_eyedropper {
+    background-image: url('../../extensions/tynker/dt_eyedropper.png');
+}
+
+    #tools_left #tool_eyedropper.tool_button_current {
+        background-image: url('../../extensions/tynker/dt_eyedropper_current.png');
+    }
+
+#tools_left #tool_zoom {
+    background-image: url('../../images/tynker/dt_zoom.png');
+}
+
+    #tools_left #tool_zoom.tool_button_current {
+        background-image: url('../../images/tynker/dt_zoom_current.png');
+    }
+
+#tools_left #edit_center {
+    background-image: url('../../extensions/tynker/dt_center.png');
+}
+
+    #tools_left #edit_center.tool_button_current {
+        background-image: url('../../extensions/tynker/dt_center_current.png');
+    }
+
+    #tools_left #edit_center img {
+        display: none;
+    }
+
+#tools_left #edit_image {
+    background: #333;
+}
+
+    #tools_left #edit_image.tool_button_current {
+        background: #ff9933;
+    }
+
+#mode_panel {
+    margin-top: 10px;
+}
+
+    #mode_panel h4 {
+        font-size: 16px;
+        margin-top: 16px;
+    }
+
+#zoom_panel {
+    border: 1px solid #bbb;
+    border-radius: 4px;
+}
+
+.menu_button {
+    border: 1px solid #bbb;
+    border-radius: 4px;
+}
+
+#zoom_label {
+    padding: 2px 20px 0 5px;
+    margin-bottom: -2px;
+}
+
+#menu_bar {
+    padding: 5px 0 0 120px;
+}
+
+#tools_left {
+    top: 40px;
+}
+
+#tools_top {
+    top: 40px;
+}
+
+#ruler_x {
+    top: 40px;
+}
+
+#rulers #ruler_corner {
+    top: 40px;
+}
+
+div#workarea {
+    top: 40px;
+}
