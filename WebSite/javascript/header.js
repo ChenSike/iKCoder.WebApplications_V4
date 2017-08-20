@@ -60,6 +60,14 @@ function initHeader(isIndexPage) {
     buildHeaderHTML(isIndexPage);
     initNavBarEvent();
     updateUserInfor();
+	var sUserAgent = navigator.userAgent.toLowerCase();
+
+    if (!sUserAgent.indexOf("ipad")>-1) {
+        $("#linkBtn_Course").parent().hide();
+        $("#linkBtn_Price").parent().hide();
+        $("#linkBtn_Help").parent().hide();
+		$("#section_Partner").hide();
+    } 
 };
 
 function initNavBarEvent() {
@@ -161,7 +169,13 @@ function updateUserInfor() {
                     $.removeCookie('logined_user_name');
                     $.removeCookie('logined_user_nickname');
                     //_needCheckState = false;
-                    window.location.href = 'index.html?rnd=' + Date.now();
+					var sUserAgent = navigator.userAgent.toLowerCase();
+
+					if (sUserAgent.indexOf("ipad")>-1) {
+						window.location.href = 'isignin.html?rnd=' + Date.now();
+					}else{
+						window.location.href = 'index.html?rnd=' + Date.now();
+					}
                 },
                 dataType: 'xml',
                 xhrFields: {
