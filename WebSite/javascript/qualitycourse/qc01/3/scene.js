@@ -55,7 +55,7 @@ Scene.getCfgValue = function (node, attr, defVal) {
     if (typeof (node.attr(attr)) == 'string') {
         retVal = node.attr(attr);
         if (typeof (defVal) == 'number') {
-            retVal = parseInt(retVal);
+            retVal = parseFloat(retVal);
         }
 
     } else {
@@ -317,20 +317,7 @@ Scene.buildCompleteHTML_1 = function (qrSymbol, qrSymbolRpt) {
     $('.wrap-workstatus-alert').empty();
     $('.wrap-workstatus-alert').append($(tmpHTMLArr.join('')));
     $('.wrap-workstatus-alert').show(1000, function () {
-        $.ajax({
-            type: 'POST',
-            async: true,
-            url: _getRequestURL(_gURLMapping.data.setremovebindata, { symbol: qrSymbolRpt }),
-            data: '<root></root>',
-            success: function (response, status) {
-            },
-            dataType: 'xml',
-            xhrFields: {
-                withCredentials: true
-            },
-            error: function () {
-            }
-        });
+        window.setTimeout(' removeRptQR("' + qrSymbolRpt + '")', 1000);
     });
 
     $('#btn_QC_FreeSignUp').on('click', function () {
@@ -346,5 +333,22 @@ Scene.buildCompleteHTML_1 = function (qrSymbol, qrSymbolRpt) {
     $('#btn_QC_Restart').on('click', function () {
         window.localStorage.removeItem('qc01_state_storage');
         window.location.href = "OnlineExperience.html?qid=" + _gCID;
+    });
+};
+
+function removeRptQR(qrSymbolRpt) {
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.data.setremovebindata, { symbol: qrSymbolRpt }),
+        data: '<root></root>',
+        success: function (response, status) {
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+        }
     });
 };
