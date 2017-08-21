@@ -157,7 +157,7 @@ Scene.buildCompleteHTML = function (symbol) {
     tmpHTMLArr.push('            </div>');
     tmpHTMLArr.push('            <div class="row justify-content-center">');
     tmpHTMLArr.push('                <div class="col-4 text-center" style="padding-bottom: 40px;">');
-    tmpHTMLArr.push('                   <form>');
+    tmpHTMLArr.push('                   <form onsubmit="return false;">');
     tmpHTMLArr.push('                       <div class="form-group">');
     tmpHTMLArr.push('                           <input type="text" class="form-control" id="txt_TempName" placeholder="">');
     tmpHTMLArr.push('                       </div>');
@@ -175,7 +175,7 @@ Scene.buildCompleteHTML = function (symbol) {
     $('.wrap-workstatus-alert').append($(tmpHTMLArr.join('')));
     $('.wrap-workstatus-alert').show();
 
-    $('#btn_Name_Continue').on('click', function () {
+    var fnContinue = function fnContinue() {
         _registerRemoteServer();
         var origin = window.location.origin + '/' + window.location.pathname.split('/')[1] + '/';
         $.ajax({
@@ -235,6 +235,14 @@ Scene.buildCompleteHTML = function (symbol) {
             error: function () {
             }
         });
+    }
+
+    $('#btn_Name_Continue').on('click', fnContinue);
+    $('#btn_Name_Continue').on('keypress', fnContinue);
+    $('#txt_TempName').on('keypress', function () {
+        if (arguments[0].keyCode == 13) {
+            fnContinue();
+        }
     });
 };
 
@@ -286,7 +294,8 @@ Scene.buildCompleteHTML_1 = function (qrSymbol, qrSymbolRpt) {
     tmpHTMLArr.push('                    <div class="container-fluid">');
     tmpHTMLArr.push('                        <div class="row">');
     tmpHTMLArr.push('                            <div class="col-12">');
-    tmpHTMLArr.push('                                <p style="color:rgb(255,255,255);">扫一扫，分享我的作品</p>');
+    //tmpHTMLArr.push('                                <div class="step-complete-button text-center" id="btn_ShareWork">分享我的作品</div>');
+    tmpHTMLArr.push('                                <p style="color:rgb(255,255,255);"><a href="#">分享我的作品</a></p>');
     tmpHTMLArr.push('                            </div>');
     tmpHTMLArr.push('                        </div>');
     tmpHTMLArr.push('                        <div class="row">');
@@ -300,7 +309,8 @@ Scene.buildCompleteHTML_1 = function (qrSymbol, qrSymbolRpt) {
     tmpHTMLArr.push('                    <div class="container-fluid">');
     tmpHTMLArr.push('                        <div class="row">');
     tmpHTMLArr.push('                            <div class="col-12">');
-    tmpHTMLArr.push('                                <p style="color:rgb(255,255,255);">扫一扫，查看学习报告</p>');
+    //tmpHTMLArr.push('                                <div class="step-complete-button text-center" id="btn_ViewReport">查看学习报告</div>');
+    tmpHTMLArr.push('                                <p style="color:rgb(255,255,255);"><a href="#">查看学习报告</a></p>');
     tmpHTMLArr.push('                            </div>');
     tmpHTMLArr.push('                        </div>');
     tmpHTMLArr.push('                        <div class="row">');
