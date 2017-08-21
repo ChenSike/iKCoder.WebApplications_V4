@@ -434,11 +434,11 @@ function initData() {
             toolbox: XMLToString(LoadXMLFile('javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/toolbox.xml')),
             workspace: XMLToString(LoadXMLFile('javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/workspace.xml')),
             lib: [
-                //'javascript/qualitycourse/' + currSymbol + '/main.js',
-                //'javascript/qualitycourse/' + currSymbol + '/Materials.js',
-                //'javascript/qualitycourse/' + currSymbol + '/objects.js',
-                //'javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/blocks.js',
-                //'javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/scene.js'
+                'javascript/qualitycourse/' + currSymbol + '/main.js',
+                'javascript/qualitycourse/' + currSymbol + '/Materials.js',
+                'javascript/qualitycourse/' + currSymbol + '/objects.js',
+                'javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/blocks.js',
+                'javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/scene.js'
             ]
         }
     }
