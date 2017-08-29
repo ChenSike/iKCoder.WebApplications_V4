@@ -28,12 +28,14 @@ function BuildFooterHTML() {
     tmpHtmlStrArr.push('                        iKCoder.Co (ShenZhen)');
     tmpHtmlStrArr.push('                        </span>');
     tmpHtmlStrArr.push('                    </p>');
-    tmpHtmlStrArr.push('                    <div class="socials">');
-    tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('微信') + '"><i class="fa fa-weixin fa-lg"></i></a>');
-    tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('新浪微博') + '"><i class="fa fa-weibo fa-lg"></i></a>');
-    tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('QQ') + '"><i class="fa fa-qq fa-lg"></i></a>');
-    tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('人人') + '"><i class="fa fa-renren fa-lg"></i></a>');
-    tmpHtmlStrArr.push('                    </div>');
+    if (navigator.userAgent.toLowerCase().indexOf("ipad") < 0) {
+        tmpHtmlStrArr.push('                    <div class="socials">');
+        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('微信') + '"><i class="fa fa-weixin fa-lg"></i></a>');
+        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('新浪微博') + '"><i class="fa fa-weibo fa-lg"></i></a>');
+        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('QQ') + '"><i class="fa fa-qq fa-lg"></i></a>');
+        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('人人') + '"><i class="fa fa-renren fa-lg"></i></a>');
+        tmpHtmlStrArr.push('                    </div>');
+    }
     tmpHtmlStrArr.push('                </div>');
     tmpHtmlStrArr.push('            </div>');
     tmpHtmlStrArr.push('        </div>');

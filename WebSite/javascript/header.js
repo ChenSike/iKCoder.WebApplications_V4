@@ -21,29 +21,29 @@ function buildHeaderHTML(isIndexPage) {
     tmpHtmlStrArr.push('            <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container">');
     tmpHtmlStrArr.push('                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">');
     tmpHtmlStrArr.push('                    <ul class="navbar-nav" id="ul_NavBar_Container">');
+    //tmpHtmlStrArr.push('                        <li class="nav-item">');
+    //tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Course">' + _getLabel('课程') + '</a>');
+    //tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Course">' + _getLabel('课程') + '</a>');
+    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_OnlineCourse">' + _getLabel('体验课') + '</a>');
     tmpHtmlStrArr.push('                        </li>');
-    tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_OnlineCourse">' + _getLabel('在线体验课') + '</a>');
-    tmpHtmlStrArr.push('                        </li>');
-    tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Price">' + _getLabel('价格') + '</a>');
-    tmpHtmlStrArr.push('                        </li>');
-    tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Help">' + _getLabel('帮助') + '</a>');
-    tmpHtmlStrArr.push('                        </li>');
+    //tmpHtmlStrArr.push('                        <li class="nav-item">');
+    //tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Price">' + _getLabel('价格') + '</a>');
+    //tmpHtmlStrArr.push('                        </li>');
+    //tmpHtmlStrArr.push('                        <li class="nav-item">');
+    //tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Help">' + _getLabel('帮助') + '</a>');
+    //tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                        <li class="nav-item">');
     tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_About">' + _getLabel('关于') + '</a>');
     tmpHtmlStrArr.push('                        </li>');
-    tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Blog">' + _getLabel('博客') + '</a>');
-    tmpHtmlStrArr.push('                        </li>');
+    //tmpHtmlStrArr.push('                        <li class="nav-item">');
+    //tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Blog">' + _getLabel('博客') + '</a>');
+    //tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                    </ul>');
-    tmpHtmlStrArr.push('                    <form class="form-inline my-2 my-lg-0  justify-content-center" id="form_NavBar_Sign">');
-    tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1 ml-md-5 mr-3" id="btn_SignIn" type="button">' + _getLabel('登录') + '</button>');
-    tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1" id="btn_FreeSignUp" type="button">' + _getLabel('免费注册') + '</button>');
-    tmpHtmlStrArr.push('                    </form>');
+    //tmpHtmlStrArr.push('                    <form class="form-inline my-2 my-lg-0  justify-content-center" id="form_NavBar_Sign">');
+    //tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1 ml-md-5 mr-3" id="btn_SignIn" type="button">' + _getLabel('登录') + '</button>');
+    //tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1" id="btn_FreeSignUp" type="button">' + _getLabel('免费注册') + '</button>');
+    //tmpHtmlStrArr.push('                    </form>');
     tmpHtmlStrArr.push('                </div>');
     tmpHtmlStrArr.push('            </div>');
     tmpHtmlStrArr.push('        </div>');
@@ -60,14 +60,12 @@ function initHeader(isIndexPage) {
     buildHeaderHTML(isIndexPage);
     initNavBarEvent();
     updateUserInfor();
-	var sUserAgent = navigator.userAgent.toLowerCase();
-
-    if (!sUserAgent.indexOf("ipad")>-1) {
+    if (navigator.userAgent.toLowerCase().indexOf("ipad") >= 0) {
         $("#linkBtn_Course").parent().hide();
         $("#linkBtn_Price").parent().hide();
         $("#linkBtn_Help").parent().hide();
-		$("#section_Partner").hide();
-    } 
+        $("#section_Partner").hide();
+    }
 };
 
 function initNavBarEvent() {
@@ -105,8 +103,7 @@ function initNavBarEvent() {
 
     $("#btn_SignIn").on('click', function () {
         var sUserAgent = navigator.userAgent.toLowerCase();
-
-        if (sUserAgent.indexOf("ipad")>-1) {
+        if (sUserAgent.indexOf("ipad") > -1) {
             window.location.href = "isignin.html?opt=signin&rnd=" + Date.now();
         } else {
             window.location.href = "signin.html?opt=signin&rnd=" + Date.now();
@@ -115,15 +112,16 @@ function initNavBarEvent() {
 
     $("#btn_FreeSignUp").on('click', function () {
         var sUserAgent = navigator.userAgent.toLowerCase();
-
         if (sUserAgent.indexOf("ipad") > -1) {
-            window.location.href = "isignin.html?opt=signin&rnd=" + Date.now();
+            window.location.href = "isignin.html?opt=signup&rnd=" + Date.now();
         } else {
+            window.location.href = "signin.html?opt=signup&rnd=" + Date.now();
         }
     });
 };
 
 function updateUserInfor() {
+    return;
     removeUserInfoItem();
     //if ($.cookie('logined_user_name') && $.cookie('logined_user_nickname') && $.cookie('logined_user_name') != "" && $.cookie('logined_user_nickname') != "") {
     if ($.cookie('logined_user_nickname') && $.cookie('logined_user_nickname') != "") {
@@ -169,13 +167,13 @@ function updateUserInfor() {
                     $.removeCookie('logined_user_name');
                     $.removeCookie('logined_user_nickname');
                     //_needCheckState = false;
-					var sUserAgent = navigator.userAgent.toLowerCase();
+                    var sUserAgent = navigator.userAgent.toLowerCase();
 
-					if (sUserAgent.indexOf("ipad")>-1) {
-						window.location.href = 'isignin.html?rnd=' + Date.now();
-					}else{
-						window.location.href = 'index.html?rnd=' + Date.now();
-					}
+                    if (sUserAgent.indexOf("ipad") > -1) {
+                        window.location.href = 'isignin.html?rnd=' + Date.now();
+                    } else {
+                        window.location.href = 'index.html?rnd=' + Date.now();
+                    }
                 },
                 dataType: 'xml',
                 xhrFields: {
