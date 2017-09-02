@@ -9,7 +9,8 @@
   </block>
   <block type="block_jump"></block>
   <block type="block_large_jump"></block>
-  <block type="block_run"></block>
+  <block type="block_pickup"></block>
+  <block type="block_jumppickup"></block>
   <block type="block_judgecollion">
     <field name="steps">0</field>
   </block>

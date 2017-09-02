@@ -37,7 +37,7 @@ Blockly.JavaScript['block_jump'] = function (block) {
 Blockly.Blocks['block_large_jump'] = {
 	init: function () {
 		this.appendDummyInput()
-			.appendField("人物大跳跃");
+			.appendField("跃过障碍物");
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(20);
@@ -46,14 +46,14 @@ Blockly.Blocks['block_large_jump'] = {
 };
 
 Blockly.JavaScript['block_large_jump'] = function (block) {
-	var code = 'Scene.CallIKCoderRun_Set_LargeJumpStep();\n';
+	var code = 'Scene.CallIKCoderRun_Set_JumpBarrierStep();\n';
 	return code;
 };
 
-Blockly.Blocks['block_run'] = {
+Blockly.Blocks['block_pickup'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("人物奔跑");
+            .appendField("跑步获得币");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(120);
@@ -61,9 +61,25 @@ Blockly.Blocks['block_run'] = {
     }
 };
 
-Blockly.JavaScript['block_run'] = function (block) {
-    var code = 'Scene.CallIKCoderRun_Set_RunningStep();\n';
+Blockly.JavaScript['block_pickup'] = function (block) {
+    var code = 'Scene.CallIKCoderRun_Set_PickupStep();\n';
     return code;
+};
+
+Blockly.Blocks['block_jumppickup'] = {
+	init: function () {
+		this.appendDummyInput()
+            .appendField("跳跃获得币");
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(120);
+		this.setTooltip('');
+	}
+};
+
+Blockly.JavaScript['block_jumppickup'] = function (block) {
+	var code = 'Scene.CallIKCoderRun_Set_JumpPickupStep();\n';
+	return code;
 };
 
 Blockly.Blocks['block_judgecollion'] = {
