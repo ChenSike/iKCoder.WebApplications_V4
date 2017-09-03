@@ -70,7 +70,7 @@ GAME.CollisionManager.prototype.playerVsPickup = function () {
 				steve.steveActionCount += 1;
 
 			} else {
-				if (steve.position.x >= pickup.position.x + 200) {
+				if (steve.position.x >= (steve.steveActionPools[steve.steveActionCount] && steve.steveActionPools[steve.steveActionCount].isJump ? pickup.position.x + 200 : pickup.position.x) ) {
 					steve.die();
 					Scene.stepFaild();
 				}

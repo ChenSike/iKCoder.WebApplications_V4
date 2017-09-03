@@ -135,6 +135,7 @@ function IKCoderSenceRun_Set_SwitchToStart() {
 function IKCoderSenceRun_Reset() {
 
 	i_actionPool = {};
+	game.steve.position.x = 0;
 	game.steve.steveActionCount = 0;
 	game.steve.parabolaXPosition = 0;
 	game.steve.enemiesCount = 0;
