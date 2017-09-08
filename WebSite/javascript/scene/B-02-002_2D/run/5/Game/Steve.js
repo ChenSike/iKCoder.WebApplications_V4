@@ -64,6 +64,7 @@ GAME.Steve = function (engine) {
 	this.steveRunSetupSet = { x: 0, y: 0 };
 	this.stevePosition = { x: 0, y: 0 };
 	this.parabolaXPosition = 0;
+	this.pause = false;
 
 }
 

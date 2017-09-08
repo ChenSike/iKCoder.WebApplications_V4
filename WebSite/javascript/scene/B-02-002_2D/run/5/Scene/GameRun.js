@@ -298,6 +298,7 @@ function update() {
 function onTap() {
 	
 	interactive = false;
+	game.steve.pause = false;
 	game.segmentManager.reset(true);
 	game.steve.normalMode();
 	game.steve.position.x = 0;

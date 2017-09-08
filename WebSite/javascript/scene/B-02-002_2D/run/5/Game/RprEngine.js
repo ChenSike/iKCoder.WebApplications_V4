@@ -54,7 +54,7 @@ GAME.RprEngine.prototype.start = function () {
 
 GAME.RprEngine.prototype.update = function () {
 
-	if (!this.steve.isDead) {
+	if (!this.steve.isDead && !this.steve.pause) {
 		GAME.time.update();
 
 		var targetCamY = 0;
