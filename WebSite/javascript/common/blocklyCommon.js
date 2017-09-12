@@ -168,16 +168,27 @@ WorkScene.discard = function () {
     }
 };
 
+//WorkScene.renderContent = function () {
+//    try {
+//        var content = document.getElementById('txt_Code_Content');
+//        var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
+//        content.textContent = code;
+//        if (typeof prettyPrintOne == 'function') {
+//            code = content.innerHTML;
+//            code = prettyPrintOne(code, 'js');
+//            content.innerHTML = code;
+//        }
+//    }
+//    catch (ex) {
+
+//    }
+//};
+
 WorkScene.renderContent = function () {
     try {
-        var content = document.getElementById('txt_Code_Content');
+        var editor = $('#iframe_CodeEditor')[0].contentWindow.editor;
         var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
-        content.textContent = code;
-        if (typeof prettyPrintOne == 'function') {
-            code = content.innerHTML;
-            code = prettyPrintOne(code, 'js');
-            content.innerHTML = code;
-        }
+        editor.setValue(code);
     }
     catch (ex) {
 
@@ -188,12 +199,24 @@ WorkScene.changeSceneCfg = function (cfgObj) {
     Scene.changeConfig(cfgObj);
 }
 
+//WorkScene.outputCode = function () {
+//    try {
+//        var content = $('#txt_Code_Content');
+//        var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
+//        content.text(code);
+//        content.data("autoRowsNumbers").updateLine(code.match(/\n/g).length + 1);
+//        WorkScene.OutputCodeCallBack(code);
+//    }
+//    catch (ex) {
+
+//    }
+//};
+
 WorkScene.outputCode = function () {
     try {
-        var content = $('#txt_Code_Content');
+        var editor = $('#iframe_CodeEditor')[0].contentWindow.editor;
         var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
-        content.text(code);
-        content.data("autoRowsNumbers").updateLine(code.match(/\n/g).length + 1);
+        editor.setValue(code);
         WorkScene.OutputCodeCallBack(code);
     }
     catch (ex) {
@@ -223,7 +246,8 @@ WorkScene.startGame = function () {
         WorkScene.startGame_Fn();
     } else {
         try {
-            var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
+            //var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
+            var code = $('#iframe_CodeEditor')[0].contentWindow.editor.getValue();
             Scene.ResetConfig();
             eval(code);
             Scene.startGame();

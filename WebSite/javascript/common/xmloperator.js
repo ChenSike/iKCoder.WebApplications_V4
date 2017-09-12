@@ -36,5 +36,4 @@ function StringToXML(str) {
 
         return retDoc;
     }
-
 }

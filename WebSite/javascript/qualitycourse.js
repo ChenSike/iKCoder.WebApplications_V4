@@ -23,7 +23,7 @@ function initPage() {
     buildStageHTML(data.course);
     $('.siderbar-wrap').width($('body').width() / 3);
     adjustAfterSiderBarResize();
-    $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
+    //$("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
     LoadSceneLib(data.blockly);
     $('#mask_Page_Loading').hide();
     $('#mask_Page_Loading').css('visibility', 'hidden');
@@ -102,6 +102,8 @@ function initEvents() {
             showWordPanel(e);
         } else if ($(e.currentTarget).attr('id') == 'btn_Footer_KnowledgeMode') {
             showKnowledgePanel(e);
+        } else if ($(e.currentTarget).attr('id') == 'btn_Footer_ViewMode') {
+            showCodeViewerPanel(e);
         } else {
             activeCreativeMode();
         }
@@ -120,12 +122,21 @@ function initEvents() {
         $('.modle-tip').css('display', "none");
     });
 
-    $('.code-panel-header-close').on('click', function (e) {
-        //$('#panel_CodeMode').css('display', 'none');
-        $('#panel_CodeMode').hide("slow");
+    //$('.code-panel-header-close').on('click', function (e) {
+    //    //$('#panel_CodeMode').css('display', 'none');
+    //    //$('#panel_CodeMode').hide("slow");
+    //    $('.footer-tool-item').removeClass('selected');
+    //    $('#btn_Footer_CreateMode').addClass('selected');
+    //});
+    $('#panel_CodeMode').on('hidden.bs.modal', function () {
         $('.footer-tool-item').removeClass('selected');
         $('#btn_Footer_CreateMode').addClass('selected');
-    });
+    })
+
+    $('#panel_ViewMode').on('hidden.bs.modal', function () {
+        $('.footer-tool-item').removeClass('selected');
+        $('#btn_Footer_CreateMode').addClass('selected');
+    })
 
     $('.word-panel-header-close').on('click', function (e) {
         //$('#panel_WordMode').css('display', 'none');
@@ -168,7 +179,7 @@ function initEvents() {
 
     $('.run-scene-fullscreen-play-button').on('click', _playSceneFullScreen);
 
-    $('#panel_CodeMode').draggable({ containment: "body", scroll: false }).resizable();
+    //$('#panel_CodeMode').draggable({ containment: "body", scroll: false }).resizable();
 
     $('#panel_WordMode').draggable({ containment: "body", scroll: false }).resizable();
 
@@ -202,6 +213,18 @@ function initEvents() {
         $('.wrap-workstatus-alert').hide();
     });
 
+    $('#btn_Viewer_Block').on('click', function (e) {
+        loadScriptText('blocks');
+    });
+
+    $('#btn_Viewer_Scene').on('click', function (e) {
+        loadScriptText('scene');
+    });
+
+    $('#btn_Viewer_Core').on('click', function (e) {
+        loadScriptText('');
+    });
+
     $(window).resize(function () {
         onWindowResize();
     });
@@ -210,6 +233,31 @@ function initEvents() {
         //WorkScene.saveStatus();
     });
 };
+
+function loadScriptText(symbol) {
+    var currLib = '';
+    for (var i = 0; i < _globalLibs.length; i++) {
+        var tmpPath = _globalLibs[i].toLowerCase().replace(/\\/g, '/');
+        var tmpArr = tmpPath.split('/');
+        if (symbol == '') {
+            if (tmpArr[tmpArr.length - 1].indexOf('blocks') < 0 && tmpArr[tmpArr.length - 1].indexOf('scene') < 0) {
+                currLib = tmpPath;
+                break;
+            }
+        } else {
+            if (tmpArr[tmpArr.length - 1].indexOf(symbol) == 0) {
+                currLib = tmpPath;
+                break;
+            }
+        }
+    }
+
+    if (currLib != '') {
+        $.get(tmpPath, function (data, status) {
+            $('#iframe_CodeViewer')[0].contentWindow.editor.setValue(data, -1);
+        });
+    }
+}
 
 function siderBarExpand() {
     var tmpObj = $(".siderbar-wrap");
@@ -443,13 +491,20 @@ function initData() {
         }
     }
 
+    _globalLibs = [
+        'javascript/qualitycourse/' + currSymbol + '/objects.js',
+        'javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/blocks.js',
+        'javascript/qualitycourse/' + currSymbol + '/' + _currentStep + '/scene.js'
+    ]
+
     _messages.success = '恭喜你，你已经完成了第 ' + _currentStep + ' 步了.距离成为一个工程师已经不远了.';
     _messages.faild = '非常抱歉，您的工作出现错误，请检查后继续运行.';
     return data;
 };
 
 function activeCreativeMode() {
-    $('#panel_CodeMode').hide("slow");
+    //$('#panel_CodeMode').hide("slow");
+    $('#panel_CodeMode').modal('hide');
     $('#panel_WordMode').hide("slow");
     $('#panel_KnowledgeMode').hide("slow");
     $('.footer-tool-item').removeClass('selected');
@@ -457,18 +512,41 @@ function activeCreativeMode() {
 };
 
 var _codePanelInit = false;
+//function showCodePanel(e) {
+//    var codePanel = $('#panel_CodeMode');
+//    if (codePanel.css('display') == 'none') {
+//        $('#panel_WordMode').hide("slow");
+//        $('#panel_KnowledgeMode').hide("slow");
+//        codePanel.show('slow');
+//        adjustCodePanelSize(codePanel, _codePanelInit);
+//        adjustCodePanelPosition(codePanel, e, _codePanelInit);
+//    } else {
+//        codePanel.width(400);
+//        codePanel.height(300);
+//        codePanel.hide("slow");
+//        $('.footer-tool-item').removeClass('selected');
+//        $('#btn_Footer_CreateMode').addClass('selected');
+//    }
+//};
 function showCodePanel(e) {
     var codePanel = $('#panel_CodeMode');
-    if (codePanel.css('display') == 'none') {
+    codePanel.modal('toggle');
+    if (!codePanel.hasClass('show')) {
         $('#panel_WordMode').hide("slow");
         $('#panel_KnowledgeMode').hide("slow");
-        codePanel.show('slow');
-        adjustCodePanelSize(codePanel, _codePanelInit);
-        adjustCodePanelPosition(codePanel, e, _codePanelInit);
     } else {
-        codePanel.width(400);
-        codePanel.height(300);
-        codePanel.hide("slow");
+        $('.footer-tool-item').removeClass('selected');
+        $('#btn_Footer_CreateMode').addClass('selected');
+    }
+};
+
+function showCodeViewerPanel(e) {
+    var viewPanel = $('#panel_ViewMode');
+    viewPanel.modal('toggle');
+    if (!viewPanel.hasClass('show')) {
+        $('#panel_WordMode').hide("slow");
+        $('#panel_KnowledgeMode').hide("slow");
+    } else {
         $('.footer-tool-item').removeClass('selected');
         $('#btn_Footer_CreateMode').addClass('selected');
     }
@@ -478,7 +556,7 @@ var _wordPanelInit = false;
 function showWordPanel(e) {
     var wordPanel = $('#panel_WordMode');
     if (wordPanel.css('display') == 'none') {
-        $('#panel_CodeMode').hide("slow");
+        //$('#panel_CodeMode').hide("slow");
         $('#panel_KnowledgeMode').hide("slow");
         wordPanel.show('slow');
         if (!_wordPanelInit) {
@@ -578,7 +656,7 @@ var _knowledgePanelInit = false;
 function showKnowledgePanel(e) {
     var knowledgePanel = $('#panel_KnowledgeMode');
     if (knowledgePanel.css('display') == 'none') {
-        $('#panel_CodeMode').hide("slow");
+        //$('#panel_CodeMode').hide("slow");
         $('#panel_WordMode').hide("slow");
         knowledgePanel.show('slow');
         if (!_wordPanelInit) {

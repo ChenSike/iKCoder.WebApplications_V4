@@ -433,27 +433,32 @@
                 <div class="col-2">
                     <img id="btn_Footer_Logo" src="image/logo-new-white.png" width="100" height="35">
                 </div>
-                <div class="col-3 offset-3">
+                <div class="col-4 offset-2">
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-3">
+                            <div class="col-2">
                                 <div class="footer-tool-item selected" id="btn_Footer_CreateMode" data-tip="创作模式">
                                     <i class="fa fa-gamepad fa-lg"></i>
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <div class="footer-tool-item" id="btn_Footer_KnowledgeMode" data-tip="查看知识点">
                                     <i class="fa fa-book fa-lg"></i>
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <div class="footer-tool-item" id="btn_Footer_CodeMode" data-tip="代码模式">
                                     <i class="fa fa-code fa-lg"></i>
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <div class="footer-tool-item" id="btn_Footer_WordMode" data-tip="词汇术语">
                                     <i class="fa fa-language fa-lg"></i>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="footer-tool-item" id="btn_Footer_ViewMode" data-tip="核心代码">
+                                    <i class="fa fa-file-code-o fa-lg"></i>
                                 </div>
                             </div>
                         </div>
@@ -495,12 +500,61 @@
     </div>
     <div class="siderbar-drag-proxy"></div>
     <div class="modle-tip">创作模式</div>
-    <div class="code-panel" id="panel_CodeMode">
+    <!--<div class="code-panel" id="panel_CodeMode">
         <div class="code-panel-header">
             <div class="code-panel-header-close"><i class="fa fa-times-circle-o"></i></div>
         </div>
         <div class="code-panel-content">
             <textarea type="text" class="code-text-content" id="txt_Code_Content" spellcheck="false"></textarea>
+        </div>
+    </div>-->
+    <div class="modal fade" id="panel_CodeMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="max-width: 830px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Code Editor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="iframe_CodeEditor" src="codeeditor.html" width="800" height="600" frameborder="1" scrolling="auto" style="border: none;"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="panel_ViewMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="max-width: 830px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Code Viewer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" style="padding: 0px;">
+                        <div class="row">
+                            <div class="col-12" style="padding-bottom:10px;">
+                                <button id="btn_Viewer_Block" type="button" class="btn btn-outline-primary">模块</button>
+                                <button id="btn_Viewer_Scene" type="button" class="btn btn-outline-primary">场景</button>
+                                <button id="btn_Viewer_Core" type="button" class="btn btn-outline-primary">核心</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <iframe id="iframe_CodeViewer" src="codeviewer.html" width="800" height="600" frameborder="1" scrolling="auto" style="border: none;"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="word-panel" id="panel_WordMode">

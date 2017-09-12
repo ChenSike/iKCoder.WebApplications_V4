@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 var currSceneSymbol = '';
+var _globalLibs = [];
 
 function LoadSceneLib(data) {
     if (data.lib.length > 0) {
