@@ -116,8 +116,8 @@ GAME.Steve.prototype.updateRunning = function () {
 			}
 
 			var parabolaWidth = 0;
-			if ((afterPickupPosition.x - prevPickupPosition.x) > 162) {
-				parabolaWidth = 162;
+			if ((afterPickupPosition.x - prevPickupPosition.x) > 100) {
+				parabolaWidth = 100;
 			} else {
 				parabolaWidth = afterPickupPosition.x - prevPickupPosition.x;
 			}

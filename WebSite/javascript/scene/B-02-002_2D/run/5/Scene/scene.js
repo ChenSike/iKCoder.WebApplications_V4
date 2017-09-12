@@ -59,7 +59,7 @@ Scene.CallIKCoderRun_Set_JumpPickupStep = function () {
 };
 
 Scene.CallIKCoderRun_Set_JumpBarrierStep = function () {
-	IKCoderSetCurve(0.6, 0);
+	IKCoderSetCurve(0.4, 0);
 	IKCoderSenceRun_Set_AddJumpBarrier();
 };
 

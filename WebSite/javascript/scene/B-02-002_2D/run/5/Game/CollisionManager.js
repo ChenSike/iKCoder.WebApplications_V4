@@ -25,20 +25,25 @@ GAME.CollisionManager.prototype.playerVsBlock = function () {
 	for (var i = 0; i < enemies.length; i++) {
 		var enemy = enemies[i]
 
+		if (steve.position.x > enemy.position.x + enemy.width + 81) {
+			steve.steveActionCount += 1;
+			steve.enemiesCount += 1;
+		}
+
 		var xdist = enemy.position.x - steve.position.x;
 		if (xdist > -enemy.width / 2 && xdist < enemy.width / 2) {
 			var ydist = enemy.position.y - steve.position.y;
 
-			if (ydist > -enemy.height / 2 && ydist < enemy.height / 2) {
-				steve.steveActionCount += 1;
-				steve.enemiesCount += 1;
-			}
+			//if (ydist > -enemy.height / 2 && ydist < enemy.height / 2 && !steve.isDead && steve.steveActionPools[steve.steveActionCount] && steve.steveActionPools[steve.steveActionCount].isBarrier) {
+			//	steve.steveActionCount += 1;
+			//	steve.enemiesCount += 1;
+			//}
 
 			//if (ydist > -enemy.height / 2 - 20 && ydist < enemy.height / 2) {
-			//	if (!steve.joyRiding) {
-			//		steve.die();
-			//		this.engine.gameover();
+			//	if (!steve.joyRiding && steve.steveActionPools[steve.steveActionCount] && steve.steveActionPools[steve.steveActionCount].isJump) {
 			//		enemy.hit();
+			//		steve.stop();
+			//		steve.pause = true;
 			//		Scene.stepFaild();
 			//	}
 			//}
@@ -71,8 +76,6 @@ GAME.CollisionManager.prototype.playerVsPickup = function () {
 
 			} else {
 				if (steve.position.x >= (steve.steveActionPools[steve.steveActionCount] && steve.steveActionPools[steve.steveActionCount].isJump ? pickup.position.x + 200 : pickup.position.x) ) {
-					
-					//steve.die();
 					steve.stop();
 					steve.pause = true;
 					Scene.stepFaild();	
