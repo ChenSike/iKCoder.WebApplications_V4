@@ -80,7 +80,6 @@ GAME.RprView.prototype.hideHud = function () {
 GAME.RprView.prototype.update = function () {
 	this.count += 0.01;
 
-
 	var ratio = (this.zoom - 1);
 	var position = -GAME.width / 2
 	var position2 = -this.engine.steve.view.position.x;

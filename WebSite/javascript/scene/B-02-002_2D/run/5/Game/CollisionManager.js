@@ -71,8 +71,11 @@ GAME.CollisionManager.prototype.playerVsPickup = function () {
 
 			} else {
 				if (steve.position.x >= (steve.steveActionPools[steve.steveActionCount] && steve.steveActionPools[steve.steveActionCount].isJump ? pickup.position.x + 200 : pickup.position.x) ) {
-					steve.die();
-					Scene.stepFaild();
+					
+					//steve.die();
+					steve.stop();
+					steve.pause = true;
+					Scene.stepFaild();	
 				}
 			}
 		}
@@ -93,7 +96,9 @@ GAME.CollisionManager.prototype.playerVsFloor = function () {
 		//this.engine.view.doSplash();
 		//this.engine.gameover();
 		steve.baseSpeed = 0;
-		steve.die();
+		steve.stop();
+		
+		//steve.die();
 		Scene.stepComplete();
 		return;
 	}
