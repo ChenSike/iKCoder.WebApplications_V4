@@ -1,6 +1,3 @@
-/**
- * @author Mat Groves
- */
 var GAME = GAME || {};
 
 GAME.Steve = function () {
@@ -72,7 +69,7 @@ GAME.Steve.prototype.update = function () {
 
 GAME.Steve.prototype.normalMode = function () {
 	this.joyRiding = false;
-	
+
 	TweenLite.to(this.speed, 0.6, {
 		x: this.baseSpeed,
 		ease: Cubic.easeOut
@@ -172,15 +169,15 @@ GAME.Steve.prototype.jump = function () {
 GAME.Steve.prototype.die = function () {
 	if (this.isDead) return;
 
-	
-	
-	
+
+
+
 
 	TweenLite.to(GAME.time, 0.5, {
 		speed: 0.1,
 		ease: Cubic.easeOut,
 		onComplete: function () {
-			
+
 			TweenLite.to(GAME.time, 2, {
 				speed: 1,
 				delay: 1

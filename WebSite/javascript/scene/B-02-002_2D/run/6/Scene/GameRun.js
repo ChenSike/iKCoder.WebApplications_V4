@@ -44,6 +44,7 @@ var gameMode = 0;
 var loader;
 var black;
 var logo;
+var countdown;
 
 
 var interactive = true;
@@ -161,7 +162,7 @@ function IKCoderSenceRun_Reset() {
 	game.pickupManager.allPickups = [];
 	game.steve.steveActionPools = {};
 	game.DELTA_TIME = 1;
-	game.steve.baseSpeed = 0;
+	//game.steve.baseSpeed = 0;
 	//game.segmentManager.reset(true);
 };
 
@@ -180,30 +181,28 @@ function IKCoderSenceRun_Begin() {
 
 	i_GameRender = PIXI.autoDetectRenderer(i_background_default_width, i_background_default_height);
 
-	 loader = new PIXI.AssetLoader([
-        "image/scene/run/stretched_hyper_tile.jpg",
-        "image/scene/run/SplashAssets.json",
-        "image/scene/run/WorldAssets-hd.json",
-        "image/scene/run/HudAssets-hd.json",
-        "image/scene/run/PixiAssets-hd.json",
-        "image/scene/run/iP4_BGtileEx.jpg",
-        "image/scene/run/blackSquare.jpg",
-        "image/scene/run/hud/pausedPanel.png",
-        "image/scene/run/hud/pixieRevised_controls.png",
-        "image/scene/run/hud/ContinuePlay.png",
-        "image/scene/run/hud/RestartPlay.png",
-        "image/scene/run/hud/soundOff.png",
-        "image/scene/run/hud/soundOn.png",
-        "image/scene/run/hud/pause.png",
-        "image/scene/run/hud/PersonalBest.png"
+	loader = new PIXI.AssetLoader([
+	   "image/scene/run/stretched_hyper_tile.jpg",
+	   "image/scene/run/SplashAssets.json",
+	   "image/scene/run/WorldAssets-hd.json",
+	   "image/scene/run/HudAssets-hd.json",
+	   "image/scene/run/PixiAssets-hd.json",
+	   "image/scene/run/iP4_BGtileEx.jpg",
+	   "image/scene/run/blackSquare.jpg",
+	   "image/scene/run/hud/pausedPanel.png",
+	   "image/scene/run/hud/pixieRevised_controls.png",
+	   "image/scene/run/hud/ContinuePlay.png",
+	   "image/scene/run/hud/RestartPlay.png",
+	   "image/scene/run/hud/pause.png",
+	   "image/scene/run/hud/PersonalBest.png"
 	]);
 
 
-	 loader.addEventListener('onComplete', function (event) {
+	loader.addEventListener('onComplete', function (event) {
 		init();
 	});
 
-	 loader.load();
+	loader.load();
 };
 
 
@@ -267,26 +266,6 @@ function IKCoderSenceRun_Resize(width, height) {
 	i_GameRender.view.style.height = height + "px";
 };
 
-
-//function init() {
-
-//	game = new GAME.RprEngine();
-
-//	Scene.container.append(game.view.renderer.view);
-//	//document.body.appendChild(game.view.renderer.view);
-//	//game.view.renderer.view.style.position = "absolute";
-//	//game.view.renderer.view.webkitImageSmoothingEnabled = false;
-//	GAME.viewWidth = i_senceWidth;
-
-//	requestAnimFrame(update);
-
-//	//game.onGameover = onGameover;
-
-//	resize(i_senceWidth, i_senceHeight);
-
-//};
-
-
 function init() {
 	gameMode = GAME_MODE.INTRO;
 	interactive = false;
@@ -296,7 +275,7 @@ function init() {
 	Scene.container.append(game.view.renderer.view);
 
 	requestAnimFrame(update);
-	
+
 	game.onGameover = onGameover;
 
 	black = new PIXI.Sprite.fromImage("image/scene/run/blackSquare.jpg");
@@ -312,7 +291,7 @@ function init() {
 	logo.anchor.y = 0.5;
 	logo.alpha = 0;
 
-	this.game.view.hud.addChild(logo);
+	//this.game.view.hud.addChild(logo);
 
 	personalBestTitle = PIXI.Sprite.fromImage("assets/hud/PersonalBest.png");
 	personalBestTitle.anchor.x = 0.5;
@@ -420,10 +399,6 @@ function pauseEnded() {
 	resumeButton.visible = false;
 	restartButton.alpha = 0;
 	restartButton.visible = false;
-	soundOnButton.alpha = 0;
-	soundOnButton.visible = false;
-	soundOffButton.alpha = 0;
-	soundOffButton.visible = false;
 };
 
 function onPaused() {
@@ -625,12 +600,6 @@ function resize() {
 
 		restartButton.position.x = (newWidth * 0.5) + 125;
 		restartButton.position.y = (h * 0.5);
-
-		soundOffButton.position.x = (newWidth * 0.5) - 125;
-		soundOffButton.position.y = (h * 0.5);
-
-		soundOnButton.position.x = (newWidth * 0.5) - 125;
-		soundOnButton.position.y = (h * 0.5);
 	}
 
 	GAME.width = (width / ratio);
@@ -640,9 +609,7 @@ function resize() {
 function update() {
 	game.update();
 
-	if (!GAME.lowMode) {
-		requestAnimFrame(update);
-	}
+	requestAnimFrame(update);
 };
 
 
@@ -715,33 +682,6 @@ PIXI.InteractionManager.prototype.onTouchStart = function (event) {
 	}
 };
 
-//function resize(viewWidth, viewHeight) {
-
-//	var h = 640;
-//	var width = viewWidth;
-//	var height = viewHeight;
-//	var ratio = height / h;
-
-//	if (game) {
-//		var view = game.view.renderer.view;
-//		//view.style.height = height + "px";
-//		//view.style.width = width + "px";
-
-//		view.style.height = h * ratio + "px";
-
-//		var newWidth = (width / ratio);
-
-//		view.style.width = width + "px";
-
-//		game.view.resize(newWidth, h);
-//	}
-
-//	//GAME.width = width;
-//	//GAME.height = height;
-
-//	GAME.width = (width / ratio);
-//	GAME.height = h;
-//};
 
 function update() {
 	game.update();
@@ -756,15 +696,13 @@ function onTap(event) {
 		if (!interactive) return;
 
 		if (gameMode === GAME_MODE.INTRO) {
-
-
 			interactive = false;
 			gameMode = GAME_MODE.TITLE;
 
 			logo.alpha = 0;
 			logo.scale.x = 1.5;
 			logo.scale.y = 1.5;
-			logo.setTexture(PIXI.Texture.fromFrame("assets/hud/pixieRevised_controls.png"));
+			logo.setTexture(PIXI.Texture.fromFrame("image/scene/run/hud/pixieRevised_controls.png"));
 
 			TweenLite.to(logo, 0.1, {
 				alpha: 1

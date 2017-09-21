@@ -1,5 +1,3 @@
-
-
 var Math2 = {};
 
 Math2.random = function (from, to) {

@@ -1,11 +1,3 @@
-/**
- * @author Mat Groves
- */
-
-/**
- * @author Mat Groves
- */
-
 var GAME = GAME || {};
 
 GAME.Score = function () {
@@ -68,7 +60,6 @@ GAME.Score.prototype.jump = function () {
 }
 
 function formatScore(n) {
-
 	var nArray = n.toString().split("");
 	var text = "";
 	var total = nArray.length;

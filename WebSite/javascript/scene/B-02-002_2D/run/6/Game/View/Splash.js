@@ -1,11 +1,3 @@
-/**
- * @author Mat Groves
- */
-
-/**
- * @author Mat Groves
- */
-
 var GAME = GAME || {};
 
 
@@ -32,7 +24,6 @@ GAME.Splash = function (owner) {
 
 	this.realPosition;
 }
-
 
 
 GAME.Splash.constructor = GAME.Splash;

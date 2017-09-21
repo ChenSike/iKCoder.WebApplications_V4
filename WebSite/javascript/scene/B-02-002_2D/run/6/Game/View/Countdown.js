@@ -1,8 +1,3 @@
-/**
- * @author Mat Groves
- * v2 by Tom Slezakowski
- */
-
 var GAME = GAME || {};
 
 var enemyFrames;

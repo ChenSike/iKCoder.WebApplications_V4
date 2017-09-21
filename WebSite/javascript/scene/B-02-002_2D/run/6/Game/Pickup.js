@@ -1,11 +1,3 @@
-/**
- * @author Mat Groves
- */
-
-/**
- * @author Mat Groves
- */
-
 var GAME = GAME || {};
 
 var enemyFrames;
@@ -45,7 +37,6 @@ GAME.Pickup.prototype.reset = function () {
 
 }
 
-
 GAME.Pickup.prototype.update = function () {
 	if (!this.isPickedUp) {
 		this.count += 0.1 * GAME.time.DELTA_TIME;
@@ -64,6 +55,5 @@ GAME.Pickup.prototype.update = function () {
 
 	this.view.position.x = this.position.x - GAME.camera.x;
 	this.view.position.y = this.position.y;
-
 }
 

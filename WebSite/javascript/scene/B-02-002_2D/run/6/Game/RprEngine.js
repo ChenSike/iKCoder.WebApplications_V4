@@ -1,14 +1,9 @@
-/**
- * @author Mat Groves
- */
-
 var GAME = GAME || {};
 
 GAME.HIGH_MODE = true;
 GAME.camera = new PIXI.Point();
 GAME.height;
 GAME.newHighScore = false;
-
 
 GAME.RprEngine = function () {
 	this.onGameover;
@@ -20,7 +15,6 @@ GAME.RprEngine = function () {
 	this.pickupManager = new GAME.PickupManager(this);
 	this.floorManager = new GAME.FloorManager(this);
 	this.collisionManager = new GAME.CollisionManager(this);
-
 
 	this.steve.view.visible = false;
 

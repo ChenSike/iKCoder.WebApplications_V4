@@ -1,11 +1,3 @@
-/**
- * @author Mat Groves
- */
-
-/**
- * @author Mat Groves
- */
-
 var GAME = GAME || {};
 
 GAME.RprView = function (engine) {

@@ -1,7 +1,3 @@
-/**
- * @author Mat Groves
- */
-
 var GAME = GAME || {};
 
 GAME.FloorManager = function (engine) {
