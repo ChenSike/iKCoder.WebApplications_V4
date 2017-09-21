@@ -32714,3 +32714,43 @@ em.block {
         width: 40px;
         margin: 4px;
     }
+
+#ide-header .load #wincmd-tbload {
+    display: inline-block;
+    color: #fff;
+    text-align: center;
+    font-weight: 400;
+    padding: 0 15px;
+}
+
+    #ide-header .load #wincmd-tbload span {
+        line-height: 45px;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    #ide-header .load #wincmd-tbload:before {
+        font-size: 20px;
+        vertical-align: middle;
+    }
+
+    #ide-header .load #wincmd-tbload .spinner {
+        display: none;
+    }
+
+    #ide-header .load #wincmd-tbload.loading .spinner {
+        display: inline-block;
+    }
+
+    #ide-header .load #wincmd-tbload.loading:before {
+        content: "";
+    }
+
+    #ide-header .load #wincmd-tbload.need-load {
+        background-color: #3067e2;
+    }
+
+#ide-header .load .icon-arrow-up-5 {
+    font-size: 20px;
+    margin-right: 5px;
+}

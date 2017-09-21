@@ -23,6 +23,7 @@
     </style>
     <title>IKCoder APP Studio</title>
     <meta name="viewport" content="width=device-width,user-scalable=no">
+    <link href="../image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="styles/ide.css">
     <script type="text/javascript" async="" src="scripts/ec.js"></script>
     <script async="" src="scripts/analytics.js"></script>
@@ -51,6 +52,9 @@
     <script type="text/javascript" src="scripts/source/CodeGen.js"></script>
     <script type="text/javascript" src="scripts/source/SwiftCodeGen.js"></script>
     <script type="text/javascript" src="scripts/source/Global_2.js"></script>
+    <script type="text/javascript" src="../javascript/common.js"></script>
+    <script type="text/javascript" src="../javascript/common/xmloperator.js"></script>
+
 
     <style id="ace_editor">
         .ace_editor {
@@ -705,7 +709,7 @@
 
         var g_hideNotes = false;
 
-        var serverName = "www.tynker.com";
+        var serverName = "www.ikcoder.com";
         var userid = "597ffc4b5ae02906568b4568";
         var prefs = {
             userid: "597ffc4b5ae02906568b4568",
@@ -1081,9 +1085,12 @@
 <body class="ide-app ng-scope">
     <header id="ide-header" class="toolbar-top">
         <div class="header-wrapper">
-            <a id="wincmd-top" class="wincmd-home icon-home menu-icon" href="http://www.ikcoder.com/index.html"></a>
+            <!--<a id="wincmd-top" class="wincmd-home icon-home menu-icon" href="http://www.ikcoder.com/index.html"></a>-->
             <div class="title puzzle hidden">Untitled</div>
             <ul class="ide-menus main">
+                <li class="load">
+                    <a id="wincmd-tbload" class="need-load"><img class="spinner" src="image/loaders/loader16.gif"> <i class="icon-arrow-up-5"></i><span data-unchanged="Load" data-changed="Load">加载</span></a>
+                </li>
                 <li class="save">
                     <a id="wincmd-tbsave" class="need-save"><img class="spinner" src="image/loaders/loader16.gif"> <i class="icon-arrow-down-5"></i><span data-unchanged="Save" data-changed="Save">保存</span></a>
                 </li>

@@ -217,11 +217,12 @@ IDE.spriteEvent = function (b, c) {
 IDE.setTitle = function (b) {
     IDE.currentProjectName = b;
     if (b == null) {
-        window.document.title = "[tynker]";
+        window.document.title = "[App Studio - iKCoder]";
         $("#ide-header .project-title span").text("New Project");
         $("#ide-header .project-title input").val("New Project")
     } else {
-        window.document.title = b;
+        //window.document.title = b;
+        window.document.title = "[App Studio - iKCoder]";
         $("#ide-header .project-title span").text(b);
         $("#ide-header .project-title input").val(b);
         $("#ide-header .title.puzzle").text(b)
@@ -1798,6 +1799,23 @@ IDE.cmdProjectSave = function (b) {
         })
     }
 };
+IDE.cmdProjectLoad = function (b) {
+    //IDE.currentProjectName || IDE.setTitle(IDE.defaultProjectName);
+    //if (!IDE.currentProjectName || IDE.currentProjectName == IDE.defaultProjectName || WinAnnotation.hasNotes() && (!IDE.currentProjectDescription || IDE.currentProjectDescription == "Please add a description for your lesson")) {
+    //    if (WinAnnotation.hasNotes() && (!IDE.currentProjectDescription || IDE.currentProjectDescription == "Please add a description for your lesson")) IDE.currentProjectDescription = "Please add a description for your lesson";
+    //    IDE.cmdProjectSaveAs(true, b)
+    //} else {
+    //    var c = Runtime.stage.captureScreenshot();
+    //    $("#wincmd-tbsave").addClass("saving");
+    //    IDE._doProjectSave(null, null, c, false, true, Runtime.currentLevelIndex, null, function (c) {
+    //        $("#wincmd-tbsave").removeClass("saving");
+    //        IDE._clearDirty();
+    //        b && b();
+    //        if (c) window.location = "?p=" + IDE.currentProjectId
+    //    })
+    //}
+    alert('show load list window');
+};
 IDE.cmdProjectSaveAs = function (b, c, d) {
     Runtime.stage.selectActor(null);
     var e = IDE.currentProjectName;
@@ -2534,6 +2552,10 @@ var Director = {
             });
             $("#wincmd-tbsave").click(function () {
                 $(this).hasClass("disabled") || IDE.cmdProjectSave();
+                return false
+            });
+            $("#wincmd-tbload").click(function () {
+                $(this).hasClass("disabled") || IDE.cmdProjectLoad();
                 return false
             });
             $("#wincmd-tbsubmitentry").click(function () {

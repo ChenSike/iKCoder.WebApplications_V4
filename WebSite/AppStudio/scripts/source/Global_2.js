@@ -9228,7 +9228,7 @@ AvatarChooser = {
     currentType: null,
     currentParts: null,
     init: function () {
-
+        _startCheckState();
 
 
 
