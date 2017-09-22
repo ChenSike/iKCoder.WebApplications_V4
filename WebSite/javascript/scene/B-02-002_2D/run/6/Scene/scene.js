@@ -48,31 +48,3 @@ Scene.pause = function () {
 Scene.AllowStart = function () {
 	IKCoderSenceRun_Set_SwitchToStart();
 };
-
-Scene.CallIKCoderRun_Set_PickupStep = function () {
-	IKCoderSenceRun_Set_AddPickup();
-};
-
-Scene.CallIKCoderRun_Set_JumpPickupStep = function () {
-	IKCoderSetCurve(0.4, 0);
-	IKCoderSenceRun_Set_AddJumpPickup();
-};
-
-Scene.CallIKCoderRun_Set_JumpBarrierStep = function () {
-	IKCoderSetCurve(0.4, 0);
-	IKCoderSenceRun_Set_AddJumpBarrier();
-};
-
-Scene.CallIKCoderRun_Set_JumpStep = function () {
-	IKCoderSetCurve(0.4, 0);
-	IKCoderSenceRun_Set_AddJump();
-};
-
-Scene.CallIKCoderRun_Set_LargeJumpStep = function () {
-	IKCoderSetCurve(0.8, 0);
-	IKCoderSenceRun_Set_AddJump();
-};
-
-Scene.CallIKCoderRun_Set_JudegeMent = function (callbackparam) {
-	IKCoderSenceRun_Set_AddJudegBarrier(callbackparam);
-};

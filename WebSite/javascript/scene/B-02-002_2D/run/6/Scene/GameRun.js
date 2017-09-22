@@ -8,7 +8,6 @@ window.onorientationchange = resize;
 PIXI.Texture.fromFrameId = PIXI.Texture.fromFrame;
 
 var i_GameRender;
-var i_stage;
 var i_person;
 var i_actionPool = {};
 var i_status = "0";
@@ -81,58 +80,6 @@ function onInitRun(senceWidth, senceHeight) {
 };
 
 
-function CurveTargetNode() {
-	this.step = 0;
-	this.target_x = 0;
-	this.target_y = 0;
-};
-
-
-function IKCoderSenceRun_Set_AddPickup() {
-	var tmpActionNode = new ActionNode();
-	tmpActionNode.index = getActionPoolLength();
-	tmpActionNode.isPickUp = true;
-
-	i_actionPool[tmpActionNode.index] = tmpActionNode;
-};
-
-function IKCoderSenceRun_Set_AddJumpPickup() {
-	var tmpActionNode = new ActionNode();
-	tmpActionNode.index = getActionPoolLength();
-	tmpActionNode.isPickUp = true;
-	tmpActionNode.isJump = true;
-	tmpActionNode.curveA = i_curve_a;
-	tmpActionNode.curveB = i_curve_b;
-
-	i_actionPool[tmpActionNode.index] = tmpActionNode;
-};
-
-
-function IKCoderSenceRun_Set_AddJumpBarrier() {
-	var tmpActionNode = new ActionNode();
-
-	tmpActionNode.index = getActionPoolLength();
-	tmpActionNode.isJump = true;
-	tmpActionNode.isBarrier = true;
-	tmpActionNode.curveA = i_curve_a;
-	tmpActionNode.curveB = i_curve_b;
-
-	i_actionPool[tmpActionNode.index] = tmpActionNode;
-};
-
-
-function IKCoderSenceRun_Set_AddJump() {
-	var tmpActionNode = new ActionNode();
-
-	tmpActionNode.index = getActionPoolLength();
-	tmpActionNode.isJump = true;
-	tmpActionNode.curveA = i_curve_a;
-	tmpActionNode.curveB = i_curve_b;
-
-	i_actionPool[tmpActionNode.index] = tmpActionNode;
-};
-
-
 function IKCoderSenceRun_RunActions() {
 
 	if (getActionPoolLength(i_actionPool) == 0) {
@@ -143,7 +90,6 @@ function IKCoderSenceRun_RunActions() {
 
 	onTap();
 	game.steve.steveActionPools = i_actionPool;
-
 };
 
 
@@ -153,7 +99,6 @@ function IKCoderSenceRun_Set_SwitchToStart() {
 
 
 function IKCoderSenceRun_Reset() {
-
 	i_actionPool = {};
 	game.steve.position.x = 0;
 	game.steve.steveActionCount = 0;
@@ -162,17 +107,6 @@ function IKCoderSenceRun_Reset() {
 	game.pickupManager.allPickups = [];
 	game.steve.steveActionPools = {};
 	game.DELTA_TIME = 1;
-	//game.steve.baseSpeed = 0;
-	//game.segmentManager.reset(true);
-};
-
-
-function IKCoderVisibleChildren() {
-	for (var i = 0; i < i_stage.children.length; i++) {
-		if (!i_stage.children[i].visible) {
-			i_stage.children[i].visible = true;
-		}
-	}
 };
 
 
