@@ -192,7 +192,7 @@ function onTap(event) {
 }
 
 function init() {
-    gameMode = GAME_MODE.INTRO;
+    gameMode = GAME_MODE.INTRO;    
     interactive = false;
 
     game = new GAME.RprEngine();
