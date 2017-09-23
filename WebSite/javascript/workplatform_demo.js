@@ -18,33 +18,28 @@ var _messages = {
 function initPage() {
     var dataXML = Blockly.Xml.textToDom('<root>' +
         '   <basic>' +
-        '		<usr id="42" nickname=""/>' +
+        '		<usr id="" nickname=""/>' +
         '	</basic>' +
-        '	<sence name="初级第一课：模式设别" symbol="b_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="b_01_002"/>' +
+        '	<sence name="课件演示" symbol="b_01_001" id="" totalstage="1" currentstage="1" finishstage="0" next=""/>' +
         '	<tips>' +
         '		<item index="1">' +
-        '			<content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>' +
+        '			<content chinese="此课件仅为演示课件" english="" blocktype=""/>' +
         '		</item>' +
         '	</tips>' +
         '	<toolbox>' +
         '		<xml id="toolbox" style="display: none">' +
+        '           <block type="event_setting"/>' +
+        '           <block type="block_background"></block>' +
+        '           <block type="block_obstacle"></block>' +
+        '           <block type="block_prop"></block>' +
+        '           <block type="block_player"></block>' +
         '			<block type="event_start"/>' +
-        '           <block type="controls_repeat_ext">' +
-        '               <value name="TIMES">' +
-        '                   <block type="math_number">' +
-        '                   <field name="NUM">0</field>' +
-        '                   </block>' +
-        '               </value>' +
-        '           </block>' +
-        '           <block type="block_jump"></block>' +
-        '           <block type="block_run"></block>' +
-        '           <block type="block_judgecollion">' +
-        '               <field name="steps">0</field>' +
-        '           </block>' +
         '		</xml>' +
         '	</toolbox>' +
         '	<workspacestatus>' +
-        '		<xml xmlns="http://www.w3.org/1999/xhtml"/>' +
+        '		<xml id="toolbox" style="display: none">' +
+        '         <block type="event_setting" id="temp_setting_block" x="63" y="63"></block>' +
+        '       </xml>' +
         '	</workspacestatus>' +
         '	<game>' +
         //'		<script src="T-01-001_2D/run/1/Scene/game_engine.JS"/>' +
@@ -56,18 +51,6 @@ function initPage() {
         '	</message>' +
         '	<words>' +
         '		<stage value="1">' +
-        '			<word value="move" note="儿童英语/CET4/计算机英语" star="4">' +
-        '				<soundmark>' +
-        '					<item type="us" value="美 [kəm"pjutɚ]" sound="sound_word_computer_us"/>' +
-        '					<item type="uk" value="英 [kəm"pjuːtə]" sound="sound_word_computer_uk"/>' +
-        '				</soundmark>' +
-        '				<paraphrase>' +
-        '					<item>v.移动</item>' +
-        '				</paraphrase>' +
-        '				<variant>' +
-        '				<item name="复数" value="computers"/>' +
-        '				</variant>' +
-        '			</word>' +
         '		</stage>' +
         '	</words>' +
         '</root>');
@@ -620,8 +603,10 @@ function initData(response) {
     var data = {
         user: {
             id: userItem.attr('id'),
-            name: userItem.attr('nickname'),
-            img: _getRequestURL(userItem.attr('header'), {})
+            //name: userItem.attr('nickname'),
+            //img: _getRequestURL(userItem.attr('header'), {})
+            name: '演示用户',
+            img: 'image/logotop.png'
         },
         course: {
             id: _currentStage,
@@ -695,8 +680,9 @@ function initData(response) {
 };
 
 function updateUserInfo(data) {
-    $('.header-user-image').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
-    $('.header-user-name-text').text(data.name);
+    //$('.header-user-image').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
+    //$('.header-user-name-text').text(data.name);
+    $('.header-user-image').attr('src', data.img);
     $('.header-user-name-text').text(data.name);
 };
 

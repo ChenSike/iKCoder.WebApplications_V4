@@ -1,27 +1,32 @@
-ActionNode = function()
-{
+﻿var _loadBackground = false;
+var _loadPlayer = false;
+var _loadProps = false;
+var _loadObstacle = false;
+
+ActionNode = function () {
     this.index = 0;
     this.actionRefMethod = null;
     this.checkReturn = false;
     this.checkReturnCallback = null;
 }
 
-function getActionPoolLength()
-{
+function getActionPoolLength() {
     var arr = Object.keys(i_actionPool);
     return arr.length;
 }
 
-function getCurvemapPoolLength()
-{
+function getCurvemapPoolLength() {
     var arr = Object.keys(i_curvemap);
     return arr.length;
 }
 
-function onInitRun(senceWidth, senceHeight)
-{
+//初始化环境
+function onInitRun(senceWidth, senceHeight) {
+    //设置画布宽度
     i_senceWidth = senceWidth;
+    //设置画布高度
     i_senceHeight = senceHeight;
+    //运行环境初始化开始
     IKCoderSenceRun_Begin();
 }
 
@@ -85,7 +90,7 @@ function IKCoderSenceRun_Set_AddJudegBarrier(callbackparam) {
     var tmpActionNode = new ActionNode();
     tmpActionNode.index = getActionPoolLength();
     tmpActionNode.actionRefMethod = IKcoderSenceRun_Get_JudegeBarrier;
-    tmpActionNode.checkReturn = true;    
+    tmpActionNode.checkReturn = true;
     if (callbackparam == "Scene.CallIKCoderRun_Set_RunningStep();")
         tmpActionNode.checkReturnCallback = IKCoderSenceRun_Person_RunStep;
     else if (callbackparam == "Scene.CallIKCoderRun_Set_JumpStep();")
@@ -103,8 +108,7 @@ function IKCoderSenceRun_Set_AddJump() {
     i_actionPool[tmpActionNode.index] = tmpActionNode;
 }
 
-function IKcoderSenceRun_Get_JudegeBarrier()
-{
+function IKcoderSenceRun_Get_JudegeBarrier() {
     for (var startPositionX = i_person_ClipView.position.x; startPositionX <= i_curvemap[i_person_currentStandStoneIndex + 1].target_x; startPositionX++) {
         var checkResult = IKCoderSenceRun_Person_CheckCollision(startPositionX, i_person_ClipView.position.y, 80, 80);
         if (checkResult == "1")
@@ -149,7 +153,8 @@ function IKCoderSenceRun_RunActions() {
             break;
         }
     }
-    var notCompleteFlag = true;
+    //var notCompleteFlag = true;
+    var notCompleteFlag = false;
     for (var actionKey in i_actionPool) {
         if (i_actionPool[actionKey] != null)
             notCompleteFlag = false;
@@ -168,24 +173,25 @@ function IKCoderSenceRun_Set_SwitchToStart() {
 }
 
 function IKCoderSenceRun_Reset() {
-    i_person_ClipView.stop();
-    i_person_ClipView.position.x = 0;
-    i_person_ClipView.position.y = i_background_default_height - 161;
-    i_person_currentStandStoneIndex = 0;
-    cancelAnimationFrame(i_requestAnimationID);
-    i_actionPool = {};
+    if (i_person_ClipView) {
+        i_person_ClipView.stop();
+        i_person_ClipView.position.x = 0;
+        i_person_ClipView.position.y = i_background_default_height - 161;
+        i_person_currentStandStoneIndex = 0;
+        cancelAnimationFrame(i_requestAnimationID);
+        i_actionPool = {};
+    }
 }
 
-function IKCoderSenceRun_Begin()
-{
+function IKCoderSenceRun_Begin() {
     interactive = false;
     document.body.scroll = "no";
 
     i_GameRender = PIXI.autoDetectRenderer(i_background_default_width, i_background_default_height);
-    
+
     Scene.container.append(i_GameRender.view);
     i_stage = new PIXI.Stage();
-       
+
     IKCoderSenceRun_Resize(i_senceWidth, i_senceHeight);
 
     i_loader = new PIXI.AssetLoader([
@@ -204,47 +210,60 @@ function IKCoderSenceRun_Begin()
     i_loader.load();
 }
 
+//初始化资源
 function IKCoderSenceRun_InitResources() {
-    IKCoderSenceRun_AddSprite('image/scene/run/iP4_BGtile.jpg', i_background_default_width, i_background_default_height, -1, -1);
-    i_ground_position_Y = i_background_default_height - 161;
-
-    var i_countOfStones = i_background_default_width / 162;
-
-    for (var index = 1; index <= i_countOfStones; index++) {
-        IKCoderSenceRun_AddSprite('image/scene/run/stone.fw.png', -1, -1, 162 * index, i_background_default_height - 70);
-        var tmpMapNode = new CurveTargetNode();
-        tmpMapNode.target_x = 162 * index;
-        tmpMapNode.target_y = i_background_default_height - 70;
-        tmpMapNode.step = index;
-        i_curvemap[index] = tmpMapNode;
+    //背景
+    if (_loadBackground) {
+        IKCoderSenceRun_AddSprite('image/scene/run/iP4_BGtile.jpg', i_background_default_width, i_background_default_height, -1, -1);
+        i_ground_position_Y = i_background_default_height - 161;
     }
 
-    var sprite_box_one = IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 380, i_background_default_height - 150);
-    IKCoderSenceRun_AddcollisonNode("box_1", 380, i_background_default_height - 150, sprite_box_one.width, sprite_box_one.height, false);
-    
-    IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 880, i_background_default_height - 421);
-    IKCoderSenceRun_AddcollisonNode("box_4", 800, i_background_default_height - 421, sprite_box_one.width, sprite_box_one.height, false);
+    if (_loadObstacle) {
+        var i_countOfStones = i_background_default_width / 162;
 
-    var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('image/scene/run/shine.fw.png', -1, -1, 1110, i_background_default_height - 121);
-    sprite_pickup_sunshine.anchor.x = sprite_pickup_sunshine.anchor.y = 0.5;
-    i_spritesObjectsPool["sprite_pickup_sunshine"] = sprite_pickup_sunshine;
-    var sprite_pickup_candy = IKCoderSenceRun_AddSprite('image/scene/run/candy.fw.png', -1, -1, 1080, i_background_default_height - 141);
-    i_spritesObjectsPool["sprite_pickup_candy"] = sprite_pickup_candy;
+        for (var index = 1; index <= i_countOfStones; index++) {
+            IKCoderSenceRun_AddSprite('image/scene/run/stone.fw.png', -1, -1, 162 * index, i_background_default_height - 70);
+            var tmpMapNode = new CurveTargetNode();
+            tmpMapNode.target_x = 162 * index;
+            tmpMapNode.target_y = i_background_default_height - 70;
+            tmpMapNode.step = index;
+            i_curvemap[index] = tmpMapNode;
+        }
+        //地雷
+        var sprite_box_one = IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 380, i_background_default_height - 150);
+        IKCoderSenceRun_AddcollisonNode("box_1", 380, i_background_default_height - 150, sprite_box_one.width, sprite_box_one.height, false);
 
-    IKCoderSenceRun_AddcollisonNode("candy", 1080, i_background_default_height - 141, sprite_pickup_candy.width, sprite_pickup_candy.height, true);
-    IKCoderSenceRun_Animation_PickupShine();
+        IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 880, i_background_default_height - 421);
+        IKCoderSenceRun_AddcollisonNode("box_4", 800, i_background_default_height - 421, sprite_box_one.width, sprite_box_one.height, false);
+    }
 
-    IKCoderSenceRun_PersonInit(0, i_background_default_height - 161);
+    if (_loadProps) {
+        //道具特效
+        var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('image/scene/run/shine.fw.png', -1, -1, 1110, i_background_default_height - 121);
+        sprite_pickup_sunshine.anchor.x = sprite_pickup_sunshine.anchor.y = 0.5;
+        i_spritesObjectsPool["sprite_pickup_sunshine"] = sprite_pickup_sunshine;
+        //道具
+        var sprite_pickup_candy = IKCoderSenceRun_AddSprite('image/scene/run/candy.fw.png', -1, -1, 1080, i_background_default_height - 141);
+        i_spritesObjectsPool["sprite_pickup_candy"] = sprite_pickup_candy;
 
-    var middle_X, middle_Y;
-    middle_X = i_curvemap[1].target_x / 2;
-    middle_Y = 450;
-    calc_curve_AB(middle_X, middle_Y, 0.4, 0);
+        IKCoderSenceRun_AddcollisonNode("candy", 1080, i_background_default_height - 141, sprite_pickup_candy.width, sprite_pickup_candy.height, true);
+        IKCoderSenceRun_Animation_PickupShine();
+    }
 
+    //游戏角色
+    if (_loadPlayer) {
+        IKCoderSenceRun_PersonInit(0, i_background_default_height - 161);
+    }
+
+    if (i_curvemap > 1) {
+        var middle_X, middle_Y;
+        middle_X = i_curvemap[1].target_x / 2;
+        middle_Y = 450;
+        calc_curve_AB(middle_X, middle_Y, 0.4, 0);
+    }
 }
 
-function IKCoderSenceRun_AddcollisonNode(name,position_x,position_y,width,height,isPickup)
-{
+function IKCoderSenceRun_AddcollisonNode(name, position_x, position_y, width, height, isPickup) {
     var collisonObj = new CollisionNode();
     collisonObj.position_x = position_x;
     collisonObj.position_y = position_y;
@@ -254,19 +273,18 @@ function IKCoderSenceRun_AddcollisonNode(name,position_x,position_y,width,height
     i_collisionmap[name] = collisonObj;
 }
 
-function IKCoderSenceRun_Animation_PickupShine()
-{
+function IKCoderSenceRun_Animation_PickupShine() {
     if (i_spritesObjectsPool["sprite_pickup_sunshine"] && i_spritesObjectsPool["sprite_pickup_sunshine"].rotation) {
         i_spritesObjectsPool["sprite_pickup_sunshine"].rotation = i_animation_shine_count * 0.2;
     }
-    
+
     i_animation_shine_count = i_animation_shine_count + 0.1;
     i_GameRender.render(i_stage);
     requestAnimationFrame(IKCoderSenceRun_Animation_PickupShine);
 }
-
-function IKCoderSenceRun_PersonInit(positionX,positionY)
-{
+//游戏角色初始化
+function IKCoderSenceRun_PersonInit(positionX, positionY) {
+    //动作图片集合
     var runningFrames = [
         PIXI.Texture.fromFrame("characterRUNscaled_01.png"),
         PIXI.Texture.fromFrame("characterRUNscaled_02.png"),
@@ -282,29 +300,25 @@ function IKCoderSenceRun_PersonInit(positionX,positionY)
     i_person_ClipView = new PIXI.MovieClip(runningFrames);
     i_person_ClipView.animationSpeed = 0.2;
     i_person_ClipView.position.x = positionX;
-    i_person_ClipView.position.y = positionY;   
+    i_person_ClipView.position.y = positionY;
     i_stage.addChild(i_person_ClipView);
 }
 
-function IKCoderSenceRun_Person_RunStep(actionItemIndex)
-{
-    if (i_person_ClipView.position.x >= i_curvemap[i_person_currentStandStoneIndex + 1].target_x)
-    {
+function IKCoderSenceRun_Person_RunStep(actionItemIndex) {
+    if (i_person_ClipView.position.x >= i_curvemap[i_person_currentStandStoneIndex + 1].target_x) {
         requestAnimationFrame(IKCoderSenceRun_RunActions);
         IKCoderSenceRun_Person_StopAnimation();
         i_actionPool[actionItemIndex] = null;
         i_person_currentStandStoneIndex++;
     }
-    else
-    {
+    else {
         cancelAnimationFrame(i_requestAnimationID);
         IKCoderSenceRun_Person_PlayAnimation();
         i_person_ClipView.position.x = i_person_ClipView.position.x + 2;
     }
 }
 
-function IKCoderSenceRun_Person_StopAnimation()
-{
+function IKCoderSenceRun_Person_StopAnimation() {
     i_person_ClipView.stop();
 }
 
@@ -324,12 +338,11 @@ function IKCoderSenceRun_Set_JumpSteps(actionItemIndex) {
     else {
         cancelAnimationFrame(i_requestAnimationID);
         IKCoderSenceRun_Person_PlayAnimation();
-        if (i_person_ClipView.position.x < i_curvemap[1].target_x) {            
+        if (i_person_ClipView.position.x < i_curvemap[1].target_x) {
             i_person_ClipView.position.y = calc_curve_Y(i_person_ClipView.position.x);
             i_person_ClipView.position.x = i_person_ClipView.position.x + 1;
         }
-        else
-        {
+        else {
             var position_Y = calc_curve_Y(i_person_ClipView.position.x - i_curvemap[i_person_currentStandStoneIndex].target_x);
             i_person_ClipView.position.y = position_Y;
             i_person_ClipView.position.x = i_person_ClipView.position.x + 1;
@@ -338,8 +351,7 @@ function IKCoderSenceRun_Set_JumpSteps(actionItemIndex) {
 
 }
 
-function calc_curve_AB(random_X,random_Y,maxPonitRateForA,maxPonitLengthForB)
-{
+function calc_curve_AB(random_X, random_Y, maxPonitRateForA, maxPonitLengthForB) {
     i_curve_a = random_Y / (random_X * random_X);
     if (maxPonitRateForA > 0)
         i_curve_a = i_curve_a * maxPonitRateForA;
@@ -348,39 +360,34 @@ function calc_curve_AB(random_X,random_Y,maxPonitRateForA,maxPonitLengthForB)
         i_curve_b = i_curve_b * maxPonitLengthForB;
 }
 
-function calc_curve_Y(current_X)
-{
-    
+function calc_curve_Y(current_X) {
+
     return i_curve_a * (current_X * current_X) + i_curve_b * current_X + i_ground_position_Y;
-   
+
 }
 
-function IKCoderSenceRun_Person_CheckCollision(current_X,currect_Y,spriteWidth,spiteHeight)
-{
+function IKCoderSenceRun_Person_CheckCollision(current_X, currect_Y, spriteWidth, spiteHeight) {
     for (var activeCollisionKey in i_collisionmap) {
         var activeObject = i_collisionmap[activeCollisionKey];
         var left_x = activeObject.position_x;
         var left_y = activeObject.position_y;
         var right_x = activeObject.position_x + spriteWidth;
         var leftbelow_y = left_y + spiteHeight;
-        if(current_X >= left_x && current_X <=right_x)
-        {
-            if((currect_Y >= left_y && currect_Y <= leftbelow_y) || (currect_Y+spiteHeight >= left_y && currect_Y+spiteHeight <= leftbelow_y))
-            {
+        if (current_X >= left_x && current_X <= right_x) {
+            if ((currect_Y >= left_y && currect_Y <= leftbelow_y) || (currect_Y + spiteHeight >= left_y && currect_Y + spiteHeight <= leftbelow_y)) {
                 if (!activeObject.isPickup)
                     return "1";
                 else
                     return "2";
-            }           
+            }
         }
     }
     return "0";
 }
 
-function IKCoderSenceRun_Resize(width, height)
-{
-    i_GameRender.view.style.width = width+"px";
-    i_GameRender.view.style.height = height+"px";
+function IKCoderSenceRun_Resize(width, height) {
+    i_GameRender.view.style.width = width + "px";
+    i_GameRender.view.style.height = height + "px";
 }
 
 function IKCoderSenceRun_AddSprite(fileURI, width, height, startX, startY) {
@@ -396,5 +403,4 @@ function IKCoderSenceRun_AddSprite(fileURI, width, height, startX, startY) {
     i_stage.addChild(sprite);
     i_GameRender.render(i_stage);
     return sprite;
-
 }
