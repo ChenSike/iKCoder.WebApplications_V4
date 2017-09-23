@@ -29,7 +29,7 @@ var _gURLMapping = {
         getwordlist: '/data/get_checkcodenua.aspx',
         getaudio: '/Data/api_iKCoder_Data_Get_Audio.aspx',
         getimage: '/Data/api_iKCoder_Data_Get_Image.aspx',
-        setremovebindata:'/Data/api_iKCoder_Data_Set_RemoveBinData.aspx'
+        setremovebindata: '/Data/api_iKCoder_Data_Set_RemoveBinData.aspx'
     },
     bus: {
         getworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Get_Workspace.aspx',
@@ -46,7 +46,10 @@ var _gURLMapping = {
         getqamsglist: '/Bus/Message/api_iKCoder_Workspace_Get_QAMessageList.aspx',
         removemsg: '/Bus/Message/api_iKCoder_Workspace_Set_RemoveMessage.aspx',
         gethtmlreport: '/Bus/Report/api_iKCoder_Report_Get_HtmlReport.aspx',
-        setexpreport:'/Bus/Report/api_iKCoder_Report_Set_ExpReport.aspx'
+        setexpreport: '/Bus/Report/api_iKCoder_Report_Set_ExpReport.aspx',
+        appstudiosave: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Set_Save.aspx',
+        appstudioload: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Set_Load.aspx',
+        appstudiolist: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Get_SavedList.aspx'
     },
     tmp: {
         storesave: '/bus/store/api_iKCoder_Store_Save.aspx', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
@@ -54,7 +57,7 @@ var _gURLMapping = {
     },
     share: {
         sharesave: '/bus/share/api_iKCoder_Share_Save.aspx',//<root><sencesymbol>可选参数，默认DEFAULT，多个体验课进行区别的</sencesymbol><config> 保存的内容</config><serverpath>服务器路径前缀</serverpath></root>
-        shareload:'/bus/share/api_iKCoder_Share_Load.aspx'
+        shareload: '/bus/share/api_iKCoder_Share_Load.aspx'
     }
 };
 
@@ -272,7 +275,13 @@ function _startCheckState() {
         data: '<root></root>',
         success: function (responseData, status) {
             if ($(responseData).find('err').length > 0) {
-                window.location.href = "signin.html?rnd=" + Date.now();
+                var tmpIndex = window.location.href.indexOf("/appstudio/");
+                if (tmpIndex > 0) {
+                    window.location.href = window.location.href.substring(0, tmpIndex + 1) + "signin.html?rnd=" + Date.now();
+                } else {
+                    window.location.href = "signin.html?rnd=" + Date.now();
+                }
+
                 $.removeCookie('logined_user_name');
                 $.removeCookie('logined_user_nickname');
                 return;

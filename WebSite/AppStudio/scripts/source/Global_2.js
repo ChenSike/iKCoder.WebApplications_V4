@@ -9229,11 +9229,6 @@ AvatarChooser = {
     currentParts: null,
     init: function () {
         _startCheckState();
-
-
-
-
-
         $.ajax({
             url: "api/userpref.aspx",
             data: {

@@ -1799,23 +1799,41 @@ IDE.cmdProjectSave = function (b) {
         })
     }
 };
-IDE.cmdProjectLoad = function (b) {
-    //IDE.currentProjectName || IDE.setTitle(IDE.defaultProjectName);
-    //if (!IDE.currentProjectName || IDE.currentProjectName == IDE.defaultProjectName || WinAnnotation.hasNotes() && (!IDE.currentProjectDescription || IDE.currentProjectDescription == "Please add a description for your lesson")) {
-    //    if (WinAnnotation.hasNotes() && (!IDE.currentProjectDescription || IDE.currentProjectDescription == "Please add a description for your lesson")) IDE.currentProjectDescription = "Please add a description for your lesson";
-    //    IDE.cmdProjectSaveAs(true, b)
-    //} else {
-    //    var c = Runtime.stage.captureScreenshot();
-    //    $("#wincmd-tbsave").addClass("saving");
-    //    IDE._doProjectSave(null, null, c, false, true, Runtime.currentLevelIndex, null, function (c) {
-    //        $("#wincmd-tbsave").removeClass("saving");
-    //        IDE._clearDirty();
-    //        b && b();
-    //        if (c) window.location = "?p=" + IDE.currentProjectId
-    //    })
-    //}
-    alert('show load list window');
+IDE.cmdProjectLoad = function () {
+    Runtime.stage.selectActor(null);
+    g = $("#project-load");
+    g.modal();
+    _registerRemoteServer();
+    $.ajax({
+        //url: "api/projectsave.aspx",
+        url: _getRequestURL(_gURLMapping.bus.appstudiolist),
+        type: "GET",
+        data: '',
+        success: function (b) {
+            var a = 0;
+        },
+        async: true,
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+        }
+    });
+
+    g.find("a.loadBtn").unbind().click(function () {
+        IDE._doProjectLoad();
+        $.modal.close()
+        return false
+    });
+
+    g.find("a.cancelBtn").unbind().click(function () {
+        $.modal.close();
+        return false
+    });
+    return false
 };
+
 IDE.cmdProjectSaveAs = function (b, c, d) {
     Runtime.stage.selectActor(null);
     var e = IDE.currentProjectName;
@@ -1920,23 +1938,52 @@ IDE._doProjectSave = function (b, c, d, e, f, g, h, j) {
         s: g
     };
     h !== null && (d.t = h);
+    _registerRemoteServer();
     $.ajax({
-        url: "api/projectsave.aspx",
+        //url: "api/projectsave.aspx",
+        url: _getRequestURL(_gURLMapping.bus.appstudiosave),
         type: "POST",
-        data: d,
-        success: function (b) {
+        data: '<root><content>' + JSON.stringify(d) + '</content></root>',
+        success: function (reponseData) {
             IDE._clearDirty();
-            b = JSON.parse(b);
-            console.log("saved project " + IDE.currentProjectName);
-            var c = IDE.currentProjectId != b.id;
-            IDE.currentProjectId = b.id;
-            if (b.sid && Runtime.levels && g < Runtime.levels.length) {
-                Runtime.levels[g].screenshotid = b.sid;
-                $("#stagecmd-edit").hasClass("selected") && WinMediaSidebar.showLevels()
+            //reponse：
+            //{
+            //    "result":true,
+            //    "id":"59940aa91c36d1e27e8b456e",
+            //    "sc":"1",
+            //    "sid":"59940c10949b564c1b8b4576"
+            //}
+            //b = JSON.parse(b);
+            //console.log("saved project " + IDE.currentProjectName);
+            var b = {
+                "result": true,
+                "id": null,
+                "sc": "0",
+                "sid": ""
+            };
+            $('#wincmd-tbsave').removeClass();
+            $('#wincmd-tbsave').addClass('need-save');
+            var tmpDoc = $(reponseData).find('msg');
+            if (tmpDoc.find('err').length <= 0) {
+                b.id = (typeof (tmpDoc.attr('id')) == 'string' ? tmpDoc.attr('id') : IDE.currentProjectId);
+                b.sc = (typeof (tmpDoc.attr('sc')) == 'string' ? tmpDoc.attr('sc') : "0");
+                b.sid = (typeof (tmpDoc.attr('sid')) == 'string' ? tmpDoc.attr('sid') : "");
+                var c = IDE.currentProjectId != b.id;
+                IDE.currentProjectId = b.id;
+                if (b.sid && Runtime.levels && g < Runtime.levels.length) {
+                    Runtime.levels[g].screenshotid = b.sid;
+                    $("#stagecmd-edit").hasClass("selected") && WinMediaSidebar.showLevels()
+                }
+                j && (typeof j == "function" && IDE.currentProjectId) && j(c)
             }
-            j && (typeof j == "function" && IDE.currentProjectId) && j(c)
         },
-        error: function () { }
+        async: true,
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {            
+        }
     })
 };
 IDE.cmdProjectSubmitEntry = function (b) {
