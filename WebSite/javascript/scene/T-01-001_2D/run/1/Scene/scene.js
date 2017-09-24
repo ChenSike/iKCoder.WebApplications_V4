@@ -1,15 +1,11 @@
 ﻿Scene = {};
 Scene.Game = null;
 
-
 Scene.init = function (containerId, model, configs) {
-    //this.container = document.getElementById(containerId);
-    //if (this.container != null) {
-    //    var height = $(this.container).height();
-    //    var width = $(this.container).width();
-    //    var newSize = Scene.adjustSize(width, height);
-    //    onInitRun(newSize.w, newSize.h);
-    //}
+    _loadBackground = false;
+    _loadPlayer = false;
+    _loadProps = false;
+    _loadObstacle = false;
 };
 
 Scene.adjustSize = function (width, height) {
@@ -25,27 +21,6 @@ Scene.resetSize = function () {
 };
 
 Scene.start = function () {
-
-};
-
-Scene.reset = function () {
-    IKCoderSenceRun_Reset();
-};
-
-Scene.restart = function () {
-    Scene.Game.restart();
-};
-
-Scene.startGame = function () {
-    IKCoderSenceRun_RunActions();
-};
-
-Scene.pause = function () {
-    Scene.Game.pause();
-};
-
-Scene.AllowStart = function () {
-    //IKCoderSenceRun_Set_SwitchToStart();
     this.container = document.getElementById('game_container');
     if (this.container != null) {
         if ($(this.container).find('canvas').length > 0) {
@@ -55,21 +30,23 @@ Scene.AllowStart = function () {
         var height = $(this.container).height();
         var width = $(this.container).width();
         var newSize = Scene.adjustSize(width, height);
-        onInitRun(newSize.w, newSize.h);
-        i_status_control = "1";
+        onReady(newSize.w, newSize.h);
     }
 };
 
-Scene.CallIKCoderRun_Set_RunningStep = function () {
-    IKCoderSenceRun_Set_AddRun();
-};
+Scene.reset = function () {
+    this.container = document.getElementById('game_container');
+    if (this.container != null) {
+        if ($(this.container).find('canvas').length > 0) {
+            $(this.container).find('canvas').remove();
+        }
 
-Scene.CallIKCoderRun_Set_JumpStep = function () {
-    IKCoderSenceRun_Set_AddJump();
-};
-
-Scene.CallIKCoderRun_Set_JudegeMent = function (callbackparam) {
-    IKCoderSenceRun_Set_AddJudegBarrier(callbackparam);
+        Scene.ResetConfig();
+        game = null;
+        loadInterval = false;
+        loadCount = 0;
+        gameMode = 0;
+    }
 };
 
 Scene.ResetConfig = function () {

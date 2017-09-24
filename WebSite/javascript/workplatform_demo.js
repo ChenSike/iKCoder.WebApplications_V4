@@ -38,7 +38,11 @@ function initPage() {
         '	</toolbox>' +
         '	<workspacestatus>' +
         '		<xml id="toolbox" style="display: none">' +
-        '         <block type="event_setting" id="temp_setting_block" x="63" y="63"></block>' +
+        '         <block type="event_setting" id="temp_setting_block" x="63" y="63">' +
+        '           <next>' +
+        '               <block type="event_start" id="temp_event_start_block"></block>' +
+        '           </next>' +
+        '         </block>' +
         '       </xml>' +
         '	</workspacestatus>' +
         '	<game>' +
@@ -62,11 +66,12 @@ function initPage() {
     updateUserInfo(data.user);
     adjustWorkSpaceType(data);
     adjustAfterSiderBarResize();
-    $("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
+    //$("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
     LoadSceneLib(data.blockly);
     $('#mask_Page_Loading').hide();
     $('#mask_Page_Loading').css('visibility', 'hidden');
-    window.setTimeout('WorkScene.saveStatus(true);', 60000);
+    window.setTimeout('adjustAfterSiderBarResize();', 2000);
+    //window.setTimeout('WorkScene.saveStatus(true);', 60000);
 
     initEvents();
     var playBtn = $('.workspace-tool-item.workspace-play-button.fa.fa-play');
@@ -665,7 +670,7 @@ function initData(response) {
             data.blockly.lib.push('javascript/common/TweenMax.min.js');
             data.blockly.lib.push('javascript/common/threeengine.js');
         } else {
-            data.blockly.lib.push('javascript/common/pixi.js');
+            //data.blockly.lib.push('javascript/common/pixi.js');
         }
 
         addLibPath($($(response).find("toolbox")[0]));

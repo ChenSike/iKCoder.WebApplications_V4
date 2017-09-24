@@ -309,8 +309,38 @@
     <script src="javascript/common/blocklycommon.js"></script>
     <script src="javascript/workplatform_demo.js"></script>    
     <script src="javascript/scene/T-01-001_2D/run/1/Blocks/blocks.js"></script>
-    <script src="javascript/scene/T-01-001_2D/run/1/Scene/game_engine.js"></script>
-    <script src="javascript/scene/T-01-001_2D/run/1/Scene/scene.js"></script>
+    <!--<script src="javascript/scene/T-01-001_2D/run/1/Scene/game_engine.js"></script>
+    <script src="javascript/scene/T-01-001_2D/run/1/Scene/scene.js"></script>-->    
+    <script type="text/javascript" src="javascript/CoursewareDemo/SegmentData.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/plugins.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/ready.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/TimelineLite.min.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/TweenLite.min.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/EasePack.min.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/stats.min.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/pixi.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/GoodBoySplash.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Device.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/LocalStorage.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/howler.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Math2.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Lava.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Countdown.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Splash.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/PowerBar.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Score.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/BestScore.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/GameObjectPool.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Enemy.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Pickup.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Background.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/JoyBackground.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/SteveTrail.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/Explosion.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/SteveTrailFire.js"></script>
+    <script type="text/javascript" src="javascript/CoursewareDemo/PixiDust.js"></script>
+    <script type="text/javascript" src="javascript/scene/T-01-001_2D/run/1/Scene/game_engine.js"></script>
+    <script type="text/javascript" src="javascript/scene/T-01-001_2D/run/1/Scene/scene.js"></script>
 </head>
 <body>
     <div id="mask_Page_Loading">
@@ -481,7 +511,7 @@
         <div class="sidebar-content-wrap">
             <div class="siderbar-content">
                 <div id="game_container" style="text-align: center; padding:0px 10px;">
-                    <i class="fa fa-play-circle-o run-scene-fullscreen-play-button" title="开始运行"></i>
+                    <i class="fa fa-play-circle-o run-scene-fullscreen-play-button" title="开始运行" style="z-index:100;"></i>
                 </div>
             </div>
         </div>
@@ -558,7 +588,7 @@
         <div class="knowledge-panel-content container"></div>
     </div>
     <div class="run-scene-fullscreen">
-        <i class="fa fa-times-circle-o run-scene-fullscreen-close-button"></i>
+        <i class="fa fa-times-circle-o run-scene-fullscreen-close-button" style="z-index:100;"></i>
     </div>
     <div style="display:none">
         <audio id="audio_Soundmark"></audio>
@@ -643,7 +673,7 @@
         $(document).ready(function () {
             _loadLabels();
             initPage();
-            _startCheckState();
+            //_startCheckState();
         });
     </script>
 </body>

@@ -1,3 +1,7 @@
 ﻿<xml id="toolbox" style="display: none">
-  <block type="event_setting" id="temp_setting_block" x="63" y="63"></block>
+  <block type="event_setting" id="temp_setting_block" x="63" y="63">
+    <next>
+      <block type="event_start" id="temp_event_start_block"></block>
+    </next>
+  </block>
 </xml>

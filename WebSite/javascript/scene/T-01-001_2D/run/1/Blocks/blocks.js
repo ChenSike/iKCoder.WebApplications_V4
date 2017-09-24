@@ -11,7 +11,7 @@
 };
 
 Blockly.JavaScript['event_start'] = function (block) {
-    var code = "Scene.AllowStart();\n";
+    var code = "Scene.start();\n";
     return code;
     //return '';
 };

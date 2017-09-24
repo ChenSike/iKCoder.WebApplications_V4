@@ -248,6 +248,9 @@ WorkScene.startGame = function () {
         try {
             //var code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
             var code = $('#iframe_CodeEditor')[0].contentWindow.editor.getValue();
+            if (code == "") {
+                code = Blockly.JavaScript.workspaceToCode(WorkScene.workspace);
+            }
             Scene.ResetConfig();
             eval(code);
             Scene.startGame();
