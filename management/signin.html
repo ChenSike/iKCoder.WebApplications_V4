@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <title>iKCoder・中国儿童编程教育创导者</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/file-input.min.css">
+    <script src="javascript/jquery-3.2.1.min.js"></script>
+    <script src="javascript/tether.min.js"></script>
+    <script src="javascript/bootstrap.js"></script>
+    <script src="javascript/fileinput.min.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/xmloperator.js"></script>
+    <script src="javascript/signin.js"></script>
+    <style>
+        .form-control-label {
+            font-family: 微软雅黑;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="height:100%;">
+    <div class="container-fluid" style="margin:0px; padding:0px;">
+        <div class="row" style="margin:0px; padding:0px;">
+            <div class="col-7" style="margin:0px; padding:0px;">
+                <img src="image/bg_sign.png" class="img-fluid" id="image_page_bg" alt="Responsive image">
+            </div>
+            <div class="col-5" style="margin:0px; padding:0px;">
+                <div class="container-fluid" style="padding-top:100px;">
+                    <div class="row">
+                        <div class="col">
+                            <h2>iKCoder</h2>
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="padding:100px 30px;">
+                        <div class="col">
+                            <div class="container" style="border:solid 2px #666666; border-radius:20px;">
+                                <div class="row">
+                                    <div class="col" style="padding:30px 20px;">
+                                        <form>
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="formGroupExampleInput">用户名</label>
+                                                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="formGroupExampleInput2">密码</label>
+                                                <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="formGroupExampleInput2">授权Key</label>
+                                                <!--<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">-->
+                                                <input id="input-b9" name="input-b9[]" multiple type="file" '>
+                                            </div>
+                                            <button type="button" class="btn btn-primary btn-lg btn-block" id="btn_Login">登录</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="position:absolute;bottom:20px; width:100%;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-6" style="text-align:center;">
+                                © 2017 iKCoder
+                            </div>
+                            <div class="col-5">
+                                <img src="image/logo-new-gray.png" id="image_logo" style="width: 60px;height: 20px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initPage();
+        });
+    </script>
+</body>
+</html>
