@@ -15,7 +15,6 @@ Blockly.Blocks['event_start'] = {
 Blockly.JavaScript['event_start'] = function (block) {
     var code = "Scene.AllowStart();\n";
     return code;
-    //return '';
 };
 
 Blockly.Blocks['block_jump'] = {

@@ -258,7 +258,6 @@ function init() {
 	//game.onGameover = onGameover;
 
 	resize(i_senceWidth, i_senceHeight);
-
 };
 
 

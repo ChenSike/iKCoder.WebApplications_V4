@@ -15,8 +15,8 @@ Blockly.Blocks['event_start'] = {
 Blockly.JavaScript['event_start'] = function (block) {
     var code = "Scene.AllowStart();\n";
     return code;
-    //return '';
 };
+
 
 Blockly.Blocks['block_jump'] = {
     init: function () {
@@ -29,10 +29,12 @@ Blockly.Blocks['block_jump'] = {
     }
 };
 
+
 Blockly.JavaScript['block_jump'] = function (block) {    
     var code = 'Scene.CallIKCoderRun_Set_JumpStep();\n';
     return code;
 };
+
 
 Blockly.Blocks['block_large_jump'] = {
 	init: function () {
@@ -45,10 +47,12 @@ Blockly.Blocks['block_large_jump'] = {
 	}
 };
 
+
 Blockly.JavaScript['block_large_jump'] = function (block) {
 	var code = 'Scene.CallIKCoderRun_Set_LargeJumpStep();\n';
 	return code;
 };
+
 
 Blockly.Blocks['block_run'] = {
     init: function () {
@@ -61,10 +65,12 @@ Blockly.Blocks['block_run'] = {
     }
 };
 
+
 Blockly.JavaScript['block_run'] = function (block) {
     var code = 'Scene.CallIKCoderRun_Set_RunningStep();\n';
     return code;
 };
+
 
 Blockly.Blocks['block_judgecollion'] = {
     init: function () {
