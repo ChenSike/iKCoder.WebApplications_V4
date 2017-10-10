@@ -3,27 +3,26 @@
 var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
-var _gHostName = 'http://119.23.233.224/ikcoderapi';
-//var _gHostName = 'http://10.111.0.199/ikcoderapi';
-//var _gHostName = 'http://10.111.0.243/ikcoderapi';
-//var _gHostName = 'http://10.86.215.83/ikcoderapi';
+//var _gHostName = 'http://119.23.233.224/ikcoderapi';
+var _gHostName = 'http://10.86.18.67/ikcoderapi';
 var _gURLMapping = {
     server: {
         reg: '/Sys/api_iKCoder_Sys_Set_RegDomain.aspx'
     },
     account: {
         reg: '/Account/User/api_iKCoder_User_Set_Reg.aspx',
-        sign: '/Account/User/api_iKCoder_User_Set_Sign.aspx',
-        signwithcode: '/Account/User/api_iKCoder_User_Set_SignWithCheckCode.aspx',
-        checkcode: '/Util/api_iKCoder_Util_Get_CheckCode.aspx',
-        signstatus: '/Account/User/api_iKCoder_User_Get_SignStatus.aspx',
+        signstatus: '/Account/Common/api_iKCoder_Common_Get_SignStatus.aspx',
         util: '/Account/Profile/api_iKCoder_Profile_Get_SelectNodes.aspx',
         updatepwd: '/Account/User/api_iKCoder_User_Set_ResetPassword.aspx',
         logout: '/Account/User/api_iKCoder_User_Set_Logout.aspx',
         getheader: '/Account/Profile/api_iKCoder_Profile_Get_HeaderImg.aspx',
         updateheader: '/Account/Profile/api_iKCoder_Profile_Set_UploadTmpHeaderImg.aspx',
         clipheaderimg: '/Account/Profile/api_iKCoder_Profile_Set_ClipHeaderImg.aspx',
-        updateutil: '/Account/Profile/api_iKCoder_Profile_Set_Nodes.aspx'
+        updateutil: '/Account/Profile/api_iKCoder_Profile_Set_Nodes.aspx',
+        edusignin: '/Account/EduCenter/api_iKCoder_EduCenter_Set_Sign.aspx',//?symbol=&password=
+        teachersignin: '/Account/EduCenter/api_iKCoder_Teacher_Set_Sign.aspx',//?symbol=&password=&licence=
+        advisorsignin: '/Account/EduCenter/api_iKCoder_EduCenter_Set_Sign.aspx',//?symbol=&password=
+        tmsignin: '/Account/EduCenter/api_iKCoder_EduCenter_Set_Sign.aspx',//?symbol=&password=
     },
     data: {
         getwordlist: '/data/get_checkcodenua.aspx',
@@ -49,7 +48,8 @@ var _gURLMapping = {
         setexpreport: '/Bus/Report/api_iKCoder_Report_Set_ExpReport.aspx',
         appstudiosave: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Set_Save.aspx',
         appstudioload: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Set_Load.aspx',
-        appstudiolist: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Get_SavedList.aspx'
+        appstudiolist: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Get_SavedList.aspx',
+        getcurrentdoc: '/BUS/LessonsNav/api_iKCoder_LessonNav_GetCurentDoc.aspx'//?symbol=B_01_001'
     },
     tmp: {
         storesave: '/bus/store/api_iKCoder_Store_Save.aspx', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
@@ -265,7 +265,7 @@ function _getOffsetPosition(target, topParentClass) {
 
     return offsetPos;
 };
-//var _needCheckState = (_getSearchValue('needcheckstate') == '1' ? true : false);
+
 function _startCheckState() {
     _registerRemoteServer();
     $.ajax({
@@ -275,65 +275,15 @@ function _startCheckState() {
         data: '<root></root>',
         success: function (responseData, status) {
             if ($(responseData).find('err').length > 0) {
-                var tmpIndex = window.location.href.indexOf("/appstudio/");
-                if (tmpIndex > 0) {
-                    window.location.href = window.location.href.substring(0, tmpIndex + 1) + "signin.html?rnd=" + Date.now();
-                } else {
-                    window.location.href = "signin.html?rnd=" + Date.now();
-                }
-
+                window.location.href = "signin.html?rnd=" + Date.now();
                 $.removeCookie('logined_user_name');
-                $.removeCookie('logined_user_nickname');
                 return;
             } else {
-                if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') == '1') {
+                if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') != '') {
                     $.cookie("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), { path: '/', expires: 0.125 });
-                    if (!$.cookie("logined_user_nickname") || $.cookie("logined_user_nickname") == '') {
-                        $.ajax({
-                            type: 'POST',
-                            async: true,
-                            url: _getRequestURL(_gURLMapping.account.util),
-                            data: '<root>' +
-                                '<select>' +
-                                '<items value="/root/usrbasic/usr_nickname"></items>' +
-                                '</select>' +
-                                '</root>',
-                            success: function (responseData_2, status) {
-                                if ($(responseData_2).find('err').length > 0) {
-                                    window.location.href = "signin.html?rnd=" + Date.now();
-                                    $.removeCookie('logined_user_name');
-                                    $.removeCookie('logined_user_nickname');
-                                    return;
-                                } else {
-                                    var nickName = '';
-                                    var tmpObject = $(responseData_2).find('msg');
-                                    for (var i = 0; i < tmpObject.length; i++) {
-                                        if ((!$(tmpObject[i]).attr('type') || $(tmpObject[i]).attr('type') != '1') && $(tmpObject[i]).attr('xpath') == '/root/usrbasic/usr_nickname') {
-                                            nickName = $(tmpObject[i]).attr('value');
-                                        }
-                                    }
-
-                                    if (nickName) {
-                                        $.cookie("logined_user_nickname", nickName, { path: '/', expires: 0.125 });
-                                    }
-                                }
-                            },
-                            dataType: 'xml',
-                            xhrFields: {
-                                withCredentials: true
-                            },
-                            error: function () {
-                                window.location.href = "signin.html?rnd=" + Date.now();
-                                $.removeCookie('logined_user_name');
-                                $.removeCookie('logined_user_nickname');
-                            }
-                        });
-                    }
-
                     window.setTimeout(_startCheckState, 30000);
                 } else {
                     $.removeCookie('logined_user_name');
-                    $.removeCookie('logined_user_nickname');
                     window.location.href = "signin.html?rnd=" + Date.now();
                 }
             }
@@ -345,25 +295,8 @@ function _startCheckState() {
         error: function () {
             window.location.href = "signin.html?rnd=" + Date.now();
             $.removeCookie('logined_user_name');
-            $.removeCookie('logined_user_nickname');
         }
     });
-};
-
-function _refereshCheckCode(checkCodeId, notClear) {
-    if (typeof notClear == 'undefined' || notClear != '1') {
-        window.clearTimeout(_timeoutRefereshCC);
-    }
-
-    var _checkCodeParams = {
-        length: 4,
-        name: 'signincode',
-        width: 70,
-        height: 30
-    };
-
-    $("#" + checkCodeId).attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
-    _timeoutRefereshCC = window.setTimeout('_refereshCheckCode("' + checkCodeId + '", "1");', 540000);
 };
 
 function _loadIMG(src, callback) {
@@ -462,7 +395,7 @@ function _showGlobalMessage(msg, type, id) {
         $('body').append($('<div class="alert-mask-custom"></div>'));
     }
     $('.alert-mask-custom').show();
-    $('.alert-mask-custom').height($('body')[0].scrollHeight);
+    //$('.alert-mask-custom').height($('body')[0].scrollHeight);
     $('body').append($('<div class="alert alert-' + type + '  alert-dismissable custom-global-alert" id="' + id + '"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + msg + '</div>'));
     $('#' + id).bind('close.bs.alert', function () {
         $('.alert-mask-custom').hide();

@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="style/tether.min.css">
     <link rel="stylesheet" href="style/bootstrap.css">
     <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
     <script src="javascript/jquery-3.2.1.min.js"></script>
     <script src="javascript/tether.min.js"></script>
     <script src="javascript/bootstrap.js"></script>
     <script src="javascript/common.js"></script>
     <script src="javascript/xmloperator.js"></script>
-    <script src="javascript/main.js"></script>
+    <script src="javascript/management.js"></script>
     <style>
         .no-padding-margin {
             padding: 0px;
@@ -116,12 +117,12 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col">
-                                                        欢迎你, 李老师
+                                                        <p id="label_UserName">欢迎你, 李老师</p>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col">
-                                                        <a href="#" style="color:#8FAC66;">[退出登录]</a>
+                                                        <a id="lbtn_Logout" href="#" style="color:#8FAC66;">[退出登录]</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -131,8 +132,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col user-info-txt" style="text-align:center; padding-top:20px; color:#699BED">
-                                上次登录时间: 2017-09-25 15:00:00
+                            <div class="col user-info-txt" style="text-align:center; color:#699BED">
+                                <p id="label_LastLoginTime">上次登录时间: 2017-09-25 15:00:00</p>
                             </div>
                         </div>
                         <div class="row">
@@ -140,8 +141,8 @@
                                 <div class="card">
                                     <div class="card-header" role="tab" id="headingOne">
                                         <h5 class="mb-0">
-                                            <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                教员管理
+                                            <a id="menu_Lessons" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                课程管理
                                             </a>
                                         </h5>
                                     </div>
@@ -149,8 +150,7 @@
                                         <div class="card-block">
                                             <div class="col no-padding-margin">
                                                 <ul class="list-group">
-                                                    <li class="list-group-item">教员总览</li>
-                                                    <li class="list-group-item">投诉处理</li>
+                                                    <li id="menu_Lesson_All" class="list-group-item">课程表</li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -159,14 +159,28 @@
                                 <div class="card">
                                     <div class="card-header" role="tab" id="headingTwo">
                                         <h5 class="mb-0">
-                                            <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                市场数据
+                                            <a id="menu_Homework" class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                作业管理
                                             </a>
                                         </h5>
                                     </div>
-                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                                        <div class="card-block">
-                                        </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <a id="menu_Q_A" class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                Q&A
+                                            </a>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <a id="menu_UpdatePWD" class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                修改密码
+                                            </a>
+                                        </h5>
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +189,7 @@
                 </div>
             </div>
             <div class="col-9" style="height:100%; padding:0px;">
-                <div class="container-fluid">
+                <div class="container-fluid" id="container_Datas">
                     <div class="row">
                         <div class="col" style="height:80px; background-color:#F1F1F1;">
                         </div>
@@ -281,5 +295,11 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initPage();
+            //_startCheckState();
+        });
+    </script>
 </body>
 </html>

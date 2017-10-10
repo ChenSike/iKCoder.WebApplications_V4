@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <title>iKCoder・中国儿童编程教育创导者</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <script src="javascript/jquery-3.2.1.min.js"></script>
+    <script src="javascript/tether.min.js"></script>
+    <script src="javascript/bootstrap.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/xmloperator.js"></script>
+    <script src="javascript/main.js"></script>
+    <style>
+        .no-padding-margin {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .user-info-txt {
+            font-family: 微软雅黑;
+            font-size: 10px;
+            color: #ffffff;
+        }
+
+        .list-group-item {
+            border: none;
+            background-color: transparent;
+            font-family: 微软雅黑;
+            font-size: 14px;
+            color: #ffffff;
+            padding: 5px 1.25rem;
+        }
+
+            .list-group-item:hover {
+                background-color: #3965DE;
+                color: #699BED;
+                cursor: pointer;
+            }
+
+        .data-panel-title {
+            color: #ffffff;
+            font-family: 微软雅黑;
+            font-size: 16px;
+        }
+
+        button.btn.btn-sm {
+            font-family: 微软雅黑;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .card {
+            background-color: transparent;
+            border: none;
+        }
+
+        .card-header {
+            background-color: transparent;
+            padding: 10px 20px;
+        }
+
+        h5.mb-0 {
+            font-family: 微软雅黑;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+            h5.mb-0 a {
+                color: #ffffff;
+            }
+
+                h5.mb-0 a:hover {
+                    color: #699BED;
+                }
+
+        .card-block {
+            padding: 0px 20px;
+        }
+
+        .table th, .table td {
+            font-family: 微软雅黑;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 10px;
+            vertical-align: middle;
+        }
+
+        .table td {
+            font-weight: normal;
+        }
+
+        label.custom-control.custom-checkbox {
+            margin: 0px;
+        }
+    </style>
+</head>
+<body style="height:100%;">
+    <div class="container-fluid" style="height:100%;">
+        <div class="row" style="height:100%;">
+            <div class="col-3 no-padding-margin" style="height:100%; background-color:#2955CE;">
+                <div style="height:100%;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col" style="padding:20px 0px;">
+                                <div class="container-fluid">
+                                    <div class="row  align-items-center">
+                                        <div class="col-5">
+                                            <img src="image/logotop.png" id="image_User_Header">
+                                        </div>
+                                        <div class="col-7 user-info-txt">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        欢迎你, TM
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <a href="#" style="color:#8FAC66;">[退出登录]</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col user-info-txt" style="text-align:center; padding-top:20px; color:#699BED">
+                                上次登录时间: 2017-09-25 15:00:00
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="accordion" role="tablist" style="width:100%;">
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingOne">
+                                        <h5 class="mb-0">
+                                            <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                数据管理
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                                        <div class="card-block">
+                                            <div class="col no-padding-margin">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item">数据总览</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                数据跟踪
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                                        <div class="card-block">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9" style="height:100%; padding:0px;">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col" style="height:80px; background-color:#F1F1F1;">
+                        </div>
+                    </div>
+                    <div class="row" style="padding:5px 10px;">
+                        <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">
+                            <div class="container-fluid">
+                                <div class="row justify-content-around">
+                                    <div class="col-2 data-panel-title" style="line-height:40px;">
+                                        数据管理
+                                    </div>
+                                    <div class="col" style="padding-top:5px">
+                                        <button type="button" class="btn btn-sm btn-secondary">批量删除</button>
+                                    </div>
+                                    <div class="col" style="padding-top:5px">
+                                        <form class="form-inline">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control  form-control-sm" id="inlineFormInputGroup" placeholder="Username">
+                                                <button type="button" class="btn btn-sm btn-success">搜索</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="padding-top:10px;">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;"></th>
+                                        <th style="width: 60px;">选择</th>
+                                        <th style="width: 180px;">操作</th>
+                                        <th>Column 1</th>
+                                        <th>Column 2</th>
+                                        <th>Column 3</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td style="text-align: center;">
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <span class="custom-control-indicator"></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-danger">删除</button>
+                                            <button type="button" class="btn btn-sm btn-success">编辑</button>
+                                        </td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td style="text-align: center;">
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <span class="custom-control-indicator"></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-danger">删除</button>
+                                            <button type="button" class="btn btn-sm btn-success">编辑</button>
+                                        </td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td style="text-align: center;">
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <span class="custom-control-indicator"></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-danger">删除</button>
+                                            <button type="button" class="btn btn-sm btn-success">编辑</button>
+                                        </td>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
