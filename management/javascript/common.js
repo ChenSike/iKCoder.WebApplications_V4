@@ -549,14 +549,6 @@ function _isIE() {
     };
 }));
 
-//$(document).ready(function () {
-//    $('img').error(function () {
-//        var src = $(this).attr('src');
-//        src += (src.indexOf('?') < 0 ? '?err=' : '&err=') + Date.now();
-//        $(this).attr('src', src);
-//    });
-//});
-
 function getQueryString(key) {
     var tempArr = window.location.search.substr(1).split('&');
     for (var i = 0; i < tempArr.length; i++) {
@@ -566,3 +558,29 @@ function getQueryString(key) {
         }
     }
 };
+
+function _logout() {
+    _registerRemoteServer();
+    $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.logout),
+        data: '<root></root>',
+        success: function (data, status) {
+            if ($(data).find('err').length > 0) {
+                _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_Logout_Error');
+            }
+
+            $.removeCookie('logined_user_name');
+            var sUserAgent = navigator.userAgent.toLowerCase();
+            window.location.href = 'signin.html?rnd=' + Date.now();
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            $.removeCookie('logined_user_name');
+        }
+    });
+}

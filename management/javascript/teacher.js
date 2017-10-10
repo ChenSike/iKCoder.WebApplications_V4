@@ -40,7 +40,7 @@ function initPage() {
 function initData(xml) {
     var data = {
         id: '001',
-        name: $.cookie("logined_user_name"),
+        name: "陈思克",
         last: "2017-09-30 12:01:02"
     };
 
@@ -174,8 +174,4 @@ function initEvents() {
     $('#menu_MarketData').on('click', function () {
         alert('Show All Market Data');
     });
-
-    $('#lbtn_Logout').on('click', function () {
-        _logout();
-    });    
 };
