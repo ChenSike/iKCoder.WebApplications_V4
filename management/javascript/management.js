@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 function initPage() {
+    _gRoleObj = _roleValue.admin;
     //_registerRemoteServer();
     //$.ajax({
     //    type: 'GET',
@@ -177,5 +178,9 @@ function initEvents() {
 
     $('#lbtn_Logout').on('click', function () {
         _logout();
+    });
+
+    $('#menu_UpdatePWD').on('click', function () {
+        _showChgPWDPopup();
     });    
 };

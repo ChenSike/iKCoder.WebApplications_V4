@@ -761,6 +761,12 @@ var Carousel = function ($) {
           event.preventDefault();
           this.next();
           break;
+          case 36:
+              this.to(0);
+              break;
+          case 35:
+              this.to(this._items.length - 1);
+              break;
         default:
           return;
       }

@@ -1,12 +1,5 @@
 ﻿'use strict';
 
-var _roleValue = {
-    admin: { role: '1', url: _gURLMapping.account.edusignin, target: 'management.html' },
-    teacher: { role: '2', url: _gURLMapping.account.teachersignin, target: 'teacher.html' },
-    advisor: { role: '3', url: _gURLMapping.account.teachersignin, target: 'advisor.html' },
-    tm: { role: '4', url: _gURLMapping.account.teachersignin, target: 'tm.html' },
-}
-
 function initPage() {
     $("#image_page_bg").css("height", $("body").height() + 'px');
     $('#btn_Login').on('click', function () {
@@ -52,8 +45,8 @@ function signin() {
         }
     }
 
-    var roleObj = getRoelObject(role);
-    if (roleObj == null) {
+    _gRoleObj = getRoelObject(role);
+    if (_gRoleObj == null) {
         return;
     }
 
@@ -61,7 +54,7 @@ function signin() {
     $.ajax({
         type: 'POST',
         async: true,
-        url: _getRequestURL(roleObj.url),
+        url: _getRequestURL(_gRoleObj.url.signin),
         data: '<root>' +
             '<symbol>' + $("#txt_SignIn").val().trim() + '</symbol>' +
             '<password>' + $("#pwd_SignIn").val().trim() + '</password>' +
@@ -75,7 +68,7 @@ function signin() {
 
             var userName = $($(data).find('msg')[0]).attr('logined_user_name');
             $.cookie('logined_user_name', userName);
-            window.location.href = roleObj.target + '?rnd=' + Date.now() + '&needcheckstate=1';
+            window.location.href = _gRoleObj.target + '?rnd=' + Date.now() + '&needcheckstate=1';
         },
         dataType: 'xml',
         xhrFields: {

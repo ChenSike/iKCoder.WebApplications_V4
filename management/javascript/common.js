@@ -3,6 +3,7 @@
 var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
+var _gRoleObj = null;
 //var _gHostName = 'http://119.23.233.224/ikcoderapi';
 var _gHostName = 'http://10.86.18.67/ikcoderapi';
 var _gURLMapping = {
@@ -13,15 +14,18 @@ var _gURLMapping = {
         reg: '/Account/User/api_iKCoder_User_Set_Reg.aspx',
         signstatus: '/Account/Common/api_iKCoder_Common_Get_SignStatus.aspx',
         util: '/Account/Profile/api_iKCoder_Profile_Get_SelectNodes.aspx',
-        updatepwd: '/Account/User/api_iKCoder_User_Set_ResetPassword.aspx',
-        logout: '/Account/User/api_iKCoder_User_Set_Logout.aspx',
+        educhgpwd: '/Account/EduCenter/api_iKCoder_EduCenter_Set_ChangePassword.aspx',
+        teachchgpwd: '/Account/Teacher/api_iKCoder_Teacher_Set_ChangePassword.aspx',
+        advisorchgpwd: '/Account/Advisor/api_iKCoder_Advisor_Set_ChangePassword.aspx',
+        tmchgpwd: '/Account/EduCenter/api_iKCoder_EduCenter_Set_ChangePassword.aspx',
+        logout: '/Account/Common/api_iKCoder_Common_Set_Logout.aspx',
         getheader: '/Account/Profile/api_iKCoder_Profile_Get_HeaderImg.aspx',
         updateheader: '/Account/Profile/api_iKCoder_Profile_Set_UploadTmpHeaderImg.aspx',
         clipheaderimg: '/Account/Profile/api_iKCoder_Profile_Set_ClipHeaderImg.aspx',
         updateutil: '/Account/Profile/api_iKCoder_Profile_Set_Nodes.aspx',
         edusignin: '/Account/EduCenter/api_iKCoder_EduCenter_Set_Sign.aspx',//?symbol=&password=
-        teachersignin: '/Account/EduCenter/api_iKCoder_Teacher_Set_Sign.aspx',//?symbol=&password=&licence=
-        advisorsignin: '/Account/EduCenter/api_iKCoder_EduCenter_Set_Sign.aspx',//?symbol=&password=
+        teachersignin: '/Account/Teacher/api_iKCoder_Teacher_Set_Sign.aspx',//?symbol=&password=&licence=
+        advisorsignin: '/Account/Advisor/api_iKCoder_Advisor_Set_Sign.aspx',//?symbol=&password=
         tmsignin: '/Account/EduCenter/api_iKCoder_EduCenter_Set_Sign.aspx',//?symbol=&password=
     },
     data: {
@@ -60,6 +64,41 @@ var _gURLMapping = {
         shareload: '/bus/share/api_iKCoder_Share_Load.aspx'
     }
 };
+
+var _roleValue = {
+    admin: {
+        role: '1',
+        url: {
+            sign: _gURLMapping.account.edusignin,
+            chgpwd: _gURLMapping.account.educhgpwd
+        },
+        target: 'management.html'
+    },
+    teacher: {
+        role: '2',
+        url: {
+            sign: _gURLMapping.account.teachersignin,
+            chgpwd: _gURLMapping.account.teachchgpwd
+        },
+        target: 'teacher.html'
+    },
+    advisor: {
+        role: '3',
+        url: {
+            sign: _gURLMapping.account.tmsignin,
+            chgpwd: _gURLMapping.account.advisorchgpwd
+        },
+        target: 'advisor.html'
+    },
+    tm: {
+        role: '4',
+        url: {
+            sign: _gURLMapping.account.teachersignin,
+            chgpwd: _gURLMapping.account.tmchgpwd
+        },
+        target: 'tm.html'
+    },
+}
 
 var _gCitys = [
     { p: '北京', pt: '市', c: ['东城', '西城', '崇文', '宣武', '朝阳', '海淀', '丰台', '石景山'], ct: '区' },
@@ -572,7 +611,6 @@ function _logout() {
             }
 
             $.removeCookie('logined_user_name');
-            var sUserAgent = navigator.userAgent.toLowerCase();
             window.location.href = 'signin.html?rnd=' + Date.now();
         },
         dataType: 'xml',
@@ -583,4 +621,67 @@ function _logout() {
             $.removeCookie('logined_user_name');
         }
     });
-}
+};
+
+function _showChgPWDPopup() {
+    if ($('#modal_ChangePWD').length == 0) {
+        var tmpHTMLStr = '<div class="modal fade" id="modal_ChangePWD" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
+        '    <div class="modal-dialog" role="document">' +
+        '        <div class="modal-content">' +
+        '            <div class="modal-header">' +
+        '                <h5 class="modal-title" id="exampleModalLabel">修改密码</h5>' +
+        '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+        '                    <span aria-hidden="true">&times;</span>' +
+        '                </button>' +
+        '            </div>' +
+        '            <div class="modal-body">' +
+        '                <form>' +
+        '                    <div class="form-group">' +
+        '                        <label for="txt_PWD" class="form-control-label">新密码</label>' +
+        '                        <input type="password" class="form-control" id="txt_ChangePWD_New" placeholder="请输入一个6到20位的新密码">' +
+        '                    </div>' +
+        '                </form>' +
+        '            </div>' +
+        '            <div class="modal-footer">' +
+        '                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>' +
+        '                <button type="button" class="btn btn-primary" id="btn_ChangePWD">确定</button>' +
+        '            </div>' +
+        '        </div>' +
+        '    </div>' +
+        '</div>';
+        $('body').append($(tmpHTMLStr));
+        $('#btn_ChangePWD').on('click', function () {
+            var newPWD = $('#txt_ChangePWD_New').val().trim();
+            if (newPWD.length < 6 || newPWD.length > 20) {
+                _showGlobalMessage('新密码的长度超过限制！', 'warning', 'alert_ChangePWD_NewLength');
+                return;
+            }
+
+            _registerRemoteServer();
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: _getRequestURL(_gRoleObj.url.chgpwd),
+                data: '<root><password>' + newPWD + '</password></root>',
+                success: function (data, status) {
+                    if ($(data).find('err').length > 0) {
+                        _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_ChangePWD_Error');
+                        return;
+                    }
+
+                    $('#modal_ChangePWD').modal('hide');
+                    _logout();
+                },
+                dataType: 'xml',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+                }
+            });
+
+        });
+    }
+
+    $('#modal_ChangePWD').modal('show');
+};

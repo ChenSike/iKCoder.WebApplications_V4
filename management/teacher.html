@@ -99,6 +99,36 @@
             margin: 0px;
         }
     </style>
+    <style>
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(41, 85, 206, 0.61);
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            border-radius: 20px;
+        }
+
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' transform='translate(30)' viewBox='0 0 8 8'%3E%3Cpath d='M4 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E" transform="translate(30 12)");
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' transform='translate(10)' viewBox='0 0 8 8'%3E%3Cpath d='M1.5 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+        }
+
+        .carousel-inner {
+            border: solid 1px rgb(41, 85, 206);
+            border-radius: 10px;
+            height: 100%;
+        }
+
+        .carousel-item {
+            height: 100%;
+        }
+    </style>
 </head>
 <body style="height:100%;">
     <div class="container-fluid" style="height:100%;">
@@ -191,105 +221,7 @@
             <div class="col-9" style="height:100%; padding:0px;">
                 <div class="container-fluid" id="container_Datas">
                     <div class="row">
-                        <div class="col" style="height:80px; background-color:#F1F1F1;">
-                        </div>
-                    </div>
-                    <div class="row" style="padding:5px 10px;">
-                        <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">
-                            <div class="container-fluid">
-                                <div class="row justify-content-around">
-                                    <div class="col-2 data-panel-title" style="line-height:40px;">
-                                        教员管理
-                                    </div>
-                                    <div class="col" style="padding-top:5px">
-                                        <button type="button" class="btn btn-sm btn-success">添加教员</button>
-                                        <button type="button" class="btn btn-sm btn-secondary">批量删除</button>
-                                    </div>
-                                    <div class="col" style="padding-top:5px">
-                                        <form class="form-inline">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control  form-control-sm" id="inlineFormInputGroup" placeholder="Username">
-                                                <button type="button" class="btn btn-sm btn-success">搜索</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" style="padding-top:10px;">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50px;"></th>
-                                        <th style="width: 60px;text-align: center;">
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                            </label>
-                                        </th>
-                                        <th style="width: 180px;">操作</th>
-                                        <th>姓名</th>
-                                        <th>职称</th>
-                                        <th>信息</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td style="text-align: center;">
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-danger">删除</button>
-                                            <button type="button" class="btn btn-sm btn-success">编辑</button>
-                                            <button type="button" class="btn btn-sm btn-warning">锁定</button>
-                                        </td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td style="text-align: center;">
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-danger">删除</button>
-                                            <button type="button" class="btn btn-sm btn-success">编辑</button>
-                                            <button type="button" class="btn btn-sm btn-warning">锁定</button>
-                                        </td>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td style="text-align: center;">
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-danger">删除</button>
-                                            <button type="button" class="btn btn-sm btn-success">编辑</button>
-                                            <button type="button" class="btn btn-sm btn-warning">锁定</button>
-                                        </td>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <div class="col" style="height:50px; background-color:#F1F1F1;"></div>
                     </div>
                 </div>
             </div>
