@@ -1382,7 +1382,6 @@ function updateProfile() {
         }
     });
 
-
     _registerRemoteServer();
     $.ajax({
         type: 'POST',
@@ -1413,8 +1412,6 @@ function updateProfile() {
                         updateUserInfor();
                     }
                 }
-
-
             } else {
                 _showGlobalMessage('发生未知的错误, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
             }
