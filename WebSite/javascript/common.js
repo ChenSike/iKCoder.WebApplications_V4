@@ -121,6 +121,7 @@ function _initURLMapping() {
 };
 
 function _registerRemoteServer() {
+    return true;
     $.ajax({
         type: 'GET',
         async: true,
@@ -267,6 +268,7 @@ function _getOffsetPosition(target, topParentClass) {
 };
 //var _needCheckState = (_getSearchValue('needcheckstate') == '1' ? true : false);
 function _startCheckState() {
+    return true;
     _registerRemoteServer();
     $.ajax({
         type: 'GET',

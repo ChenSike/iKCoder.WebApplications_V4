@@ -223,6 +223,7 @@ IDE.setTitle = function (b) {
     } else {
         //window.document.title = b;
         window.document.title = "[App Studio - iKCoder]";
+        b = "New Project";
         $("#ide-header .project-title span").text(b);
         $("#ide-header .project-title input").val(b);
         $("#ide-header .title.puzzle").text(b)

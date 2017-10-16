@@ -19,9 +19,8 @@ function BuildFooterHTML() {
     tmpHtmlStrArr.push('            <div class="row justify-content-center">');
     tmpHtmlStrArr.push('                <div class="col-10">');
     tmpHtmlStrArr.push('                    <p class="copyright-txt">');
-    tmpHtmlStrArr.push('                        Designed By');
     tmpHtmlStrArr.push('                        <span style="font-weight:bold">');
-    tmpHtmlStrArr.push('                            iKCoder.Co (ShenZhen)');
+    tmpHtmlStrArr.push('                           深圳市鹏博教育科技有限公司');
     tmpHtmlStrArr.push('                        </span>');
     tmpHtmlStrArr.push('                        |                     Powered by');
     tmpHtmlStrArr.push('                        <span style="font-weight:bold">');
