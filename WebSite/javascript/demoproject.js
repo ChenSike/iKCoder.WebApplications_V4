@@ -4,6 +4,7 @@
     $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
     $('#wrap_Left').height($('body').height() - $('nav').height() - $('footer').height());
 
+    var projectId = getQueryString('proj');
     var data = {
         img: 'image/tankback.jpg',
         name: '坦克大战',
@@ -14,6 +15,32 @@
         type: '游戏',
         desc: '《坦克大战》是由日本南梦宫Namco游戏公司开发的一款平面射击游戏，于1985年发售。游戏以坦克战斗及保卫基地为主题，属于策略型联机类。同时也是FC平台上少有的内建关卡编辑器的几个游戏之一，玩家可自己创建独特的关卡，并通过获取一些道具使坦克和基地得到强化。'
     };
+    switch (projectId) {
+        case '2':
+            data = {
+                img: 'image/gaosiback.jpg',
+                name: 'Project 2',
+                id: '2',
+                author: 'Tom',
+                adviser: '教师 2',
+                date: '2017-10-02',
+                type: '故事',
+                desc: '《坦克大战》是由日本南梦宫Namco游戏公司开发的一款平面射击游戏，于1985年发售。游戏以坦克战斗及保卫基地为主题，属于策略型联机类。同时也是FC平台上少有的内建关卡编辑器的几个游戏之一，玩家可自己创建独特的关卡，并通过获取一些道具使坦克和基地得到强化。'
+            };
+            break;
+        case '3':
+            data = {
+                img: 'image/team-temp.png',
+                name: 'Project 3',
+                id: '3',
+                author: 'Tom',
+                adviser: '教师 3',
+                date: '2017-10-03',
+                type: '游戏',
+                desc: '《坦克大战》是由日本南梦宫Namco游戏公司开发的一款平面射击游戏，于1985年发售。游戏以坦克战斗及保卫基地为主题，属于策略型联机类。同时也是FC平台上少有的内建关卡编辑器的几个游戏之一，玩家可自己创建独特的关卡，并通过获取一些道具使坦克和基地得到强化。'
+            };
+            break;
+    }
 
     var projectImg = new Image();
     projectImg.src = data.img;
