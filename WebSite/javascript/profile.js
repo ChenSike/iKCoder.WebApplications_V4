@@ -16,6 +16,7 @@ function initPage() {
     loadHeaderImg();
     loadSiderbarData();
     //getUnreadMsgCount();
+    //getUncompleteCount();
     initEvents();
     $('#wrap_Category_Title').show();
     rebuildContent('overview');
@@ -69,6 +70,11 @@ function hideLoadingMask() {
 }
 
 function rebuildContent(symbol) {
+    if (symbol == 'appshop') {
+        _showGlobalMessage('演示版本，此功能暂不开放！', 'warning', 'alert_ForgetPWD_Success');
+        return;
+    }
+
     showLoadingMask();
     var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();
     $('#wrap_Category_Title').empty();
@@ -95,18 +101,28 @@ function rebuildContent(symbol) {
             contertWrap.addClass('col');
             rebuildOverviewPanel(contentHeight);
             break;
-        case 'message':
+        case 'homework':
             currentItem = $($('.left-bar-category-item')[1]);
+            contertWrap.addClass('col');
+            rebuildHomeworkPanel(contentHeight + 16);
+            break;
+        case 'exam':
+            currentItem = $($('.left-bar-category-item')[2]);
+            contertWrap.addClass('col-9');
+            rebuildExamPanel(contentHeight + 16);
+            break;
+        case 'message':
+            currentItem = $($('.left-bar-category-item')[3]);
             contertWrap.addClass('col');
             rebuildMesagesPanel(contentHeight + 16);
             break;
         case 'report':
-            currentItem = $($('.left-bar-category-item')[2]);
+            currentItem = $($('.left-bar-category-item')[4]);
             contertWrap.addClass('col-9');
             rebuildReportPanel(contentHeight);
             break;
         case 'settings':
-            currentItem = $($('.left-bar-category-item')[3]);
+            currentItem = $($('.left-bar-category-item')[5]);
             contertWrap.addClass('col');
             rebuildSettingsPanel(contentHeight);
             break;
@@ -2354,6 +2370,773 @@ function clearUnreadState() {
     $('.left-bar-message-count').text('0');
     //$('.left-bar-message-count').hide();
     $('.left-bar-message-count').css('background-color', 'rgb(185,185,185)');
+};
+
+/*Homework*/
+var _currentHomeWorkItem = null;
+function rebuildHomeworkPanel(contentHeight) {
+    clearUncompleteState();
+    rebuildHomeworkTitles(contentHeight);
+    displayHomeworkByType('1');
+};
+
+function rebuildHomeworkTitles(contentHeight) {
+    var homeworkTypeMap = [
+        { type: '1', id: 'objective', name: '客观题', icon: 'question' },
+        { type: '2', id: 'experimental', name: '实验题', icon: 'flask' }
+    ];
+    var height = contentHeight / homeworkTypeMap.length;
+    var minWidth = $('#sideBar_Page_Left').width() + 550;
+    if ($('body').width < minWidth) {
+        $('body').width = minWidth;
+    }
+
+    $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width() - 18);
+    for (var i = 0; i < homeworkTypeMap.length; i++) {
+        var id = 'title_Homework_' + homeworkTypeMap[i].id + '_Title';
+        var bgColor = (i == 0 ? 'rgb(237,87,138)' : 'rgb(130, 138, 142)');
+        var tmpHTMLArr = [];
+        tmpHTMLArr.push('<div class="container profile-homework-title" id="' + id + '" style="background-color:' + bgColor + ';" data-target="' + homeworkTypeMap[i].type + '">');
+        tmpHTMLArr.push('   <div class="row align-items-center" id="' + id + '_Row" style="height:' + height + 'px;">');
+        tmpHTMLArr.push('       <div class="col-12 text-center">');
+        tmpHTMLArr.push('           <i class="fa fa-' + homeworkTypeMap[i].icon + '" aria-hidden="true" style="font-size:48px; cursor: pointer; color:rgb(255,255,255);"></i>');
+        tmpHTMLArr.push('           <p class="overview-title-item-text" style="color:rgb(255,255,255);">' + homeworkTypeMap[i].name + '</p>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
+        $('#wrap_Category_Title').append($(tmpHTMLArr.join('')));
+    }
+
+    $('.profile-homework-title').on('click', function (eventObj) {
+        var titleItems = $('.profile-homework-title');
+        for (var i = 0; i < titleItems.length; i++) {
+            $(titleItems[i]).css('background-color', 'rgb(130,138,142)');
+        }
+
+        $(eventObj.currentTarget).css('background-color', 'rgb(237,87,138)');
+        displayHomeworkByType($(eventObj.currentTarget).attr('data-target'));
+    });
+};
+
+function displayHomeworkByType(type) {
+    var data = [
+        {
+            id: '1',
+            type: '1',
+            date: '2017-10-1',
+            teacher: 'Teacher 1',
+            status: '0',
+            title: 'B-01-001: 模式识别',
+            total: 6,
+            correct: 2,
+            incorrect: 1
+        },
+        {
+            id: '2',
+            type: '1',
+            date: '2017-10-2',
+            teacher: 'Teacher 2',
+            status: '1',
+            title: 'B-01-002: 路径识别',
+            total: 5,
+            correct: 5,
+            incorrect: 0
+        },
+        {
+            id: '3',
+            type: '2',
+            date: '2017-10-2',
+            teacher: 'Teacher 2',
+            status: '',
+            title: 'B-01-001: 模式识别',
+            content: 'Experimental topics 1, Content of experimental topics.',
+            correct: "",
+            incorrect: ""
+        }
+    ];
+
+    var tmpDatas = [];
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].type == type) {
+            tmpDatas.push(data[i]);
+        }
+    }
+
+    rebuildHomeworkContents(tmpDatas, type);
+    hideLoadingMask();
+};
+
+function rebuildHomeworkContents(data, type) {
+    $('#wrap_Category_Content').empty();
+    var tmpHTMLArr = [];
+    var tHeader = '';
+    var blockPadding = 10;
+    tmpHTMLArr.push('<div class="container-fluid wrap-homework-section" style="background-color:rgb(255,255,255); height:100%; border-left: solid 5px rgb(237,87,138);">');
+    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('        <div class="col-12 no-padding">');
+    tmpHTMLArr.push('           <div class="container-fluid wrap-homework-items no-padding" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('               <div class="row no-margin">');
+    tmpHTMLArr.push('                   <div class="col-12 no-padding" id="wrap_col_profile_homework_items" style="overflow:auto;">');
+    tmpHTMLArr.push('                       <div id="accordion" role="tablist">');
+    for (var i = 0; i < data.length; i++) {
+        if (type == '1') {
+            tHeader = '<i class="fa fa-pause profile-homework-top-symbol uncomplete" id="icon_Homework_Item_Header_' + data[i].id + '"></i>';
+            if (data[i].status == '1') {
+                tHeader = '<i class="fa fa-check profile-homework-top-symbol complete"></i>';
+            }
+            blockPadding = 0;
+        } else {
+            tHeader = '<i class="fa fa-flask profile-homework-top-symbol complete"></i>';
+            blockPadding = 10;
+        }
+
+        tmpHTMLArr.push('<div class="card" style="border-radius: 0px;">');
+        tmpHTMLArr.push('   <div class="card-header" role="tab" id="heading_' + data[i].id + '" style="padding:0px;">');
+        tmpHTMLArr.push('       <table class="table table-striped" style="margin-bottom: 0px;">');
+        tmpHTMLArr.push('           <tbody>');
+        tmpHTMLArr.push('               <tr>');
+        tmpHTMLArr.push('                   <th>' + tHeader + '</th>');
+        tmpHTMLArr.push('                   <td><a data-toggle="collapse" href="#collapse_' + data[i].id + '" aria-expanded="true" aria-controls="collapse_' + data[i].id + '">' + data[i].title + '</a></td>');
+        tmpHTMLArr.push('                   <td class="profile-message-date-text">' + data[i].date + '</td>');
+        tmpHTMLArr.push('                   <td class="profile-message-date-text">' + data[i].teacher + '</td>');
+        if (type == '1') {
+            tmpHTMLArr.push('                   <td class="profile-message-date-text homework-item-correct-count-' + data[i].id + '" style="min-width:20px; color: rgb(34,139,34);"><i class="fa fa-check"></i><span>' + data[i].correct + '</span></td>');
+            tmpHTMLArr.push('                   <td class="profile-message-date-text homework-item-question-count-' + data[i].id + '" style="min-width:20px; color: rgb(243,151,0);"><i class="fa fa-question"></i><span>' + (data[i].total - data[i].incorrect - data[i].correct) + '</span</td>');
+            tmpHTMLArr.push('                   <td class="profile-message-date-text homework-item-incorrect-count-' + data[i].id + '" style="min-width:20px; color: rgb(255,0,0);"><i class="fa fa-remove"></i><span>' + data[i].incorrect + '</span</td>');
+        }
+
+        tmpHTMLArr.push('               </tr>');
+        tmpHTMLArr.push('           </tbody>');
+        tmpHTMLArr.push('       </table>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div id="collapse_' + data[i].id + '" class="collapse profile-homework-item" role="tabpanel" aria-labelledby="heading_' + data[i].id + '" data-parent="#accordion" data-target="' + type + '|' + data[i].id + '">');
+        tmpHTMLArr.push('       <div class="card-block" id="wrap_profile_homework_card_block_' + data[i].id + '" style="padding:' + blockPadding + 'px; border: solid 5px rgba(47, 168, 225,0.3);">');
+        if (type == '2') {
+            tmpHTMLArr.push(data[i].content);
+        }
+
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
+    }
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
+    $('#wrap_col_profile_homework_items').height($('.container-fluid.wrap-homework-section').height());
+
+    if (type == '1') {
+        $('.collapse.profile-homework-item').on('show.bs.collapse', function () {
+            var itemDetail = $(arguments[0].target).attr('data-target').split('|');
+            if (itemDetail[0] == '1') {
+                loadHomeworkById(itemDetail[1]);
+            }
+        });
+    }
+};
+
+function loadHomeworkById(itemId) {
+    _currentHomeWorkItem = [
+        {
+            id: '1',
+            content: 'Objective Questions 1',
+            correct: ['1'],
+            options: [
+                { id: '1', content: 'Option 1' },
+                { id: '2', content: 'Option 2' },
+                { id: '3', content: 'Option 3' }
+            ],
+            answer: ['1']
+        }, {
+            id: '2',
+            content: 'Objective Questions 2',
+            correct: ['5', '6'],
+            options: [
+                { id: '4', content: 'Option 4' },
+                { id: '5', content: 'Option 5' },
+                { id: '6', content: 'Option 6' }
+            ],
+            answer: ['5']
+        }, {
+            id: '3',
+            content: 'Objective Questions 3',
+            correct: ['25'],
+            options: [
+                { id: '24', content: 'Option 24' },
+                { id: '25', content: 'Option 25' },
+                { id: '26', content: 'Option 26' }
+            ],
+            answer: ['25']
+        }, {
+            id: '4',
+            content: 'Objective Questions 4',
+            correct: ['7', '8', '9', '10'],
+            options: [
+                { id: '7', content: 'Option 7' },
+                { id: '8', content: 'Option 8' },
+                { id: '9', content: 'Option 9' },
+                { id: '10', content: 'Option 10' }
+            ],
+            answer: []
+        }, {
+            id: '5',
+            content: 'Objective Questions 5',
+            correct: ['12'],
+            options: [
+                { id: '11', content: 'Option 11' },
+                { id: '12', content: 'Option 12' },
+                { id: '13', content: 'Option 13' }
+            ],
+            answer: []
+        }, {
+            id: '6',
+            content: 'Objective Questions 6',
+            correct: ['14', '16'],
+            options: [
+                { id: '14', content: 'Option 14' },
+                { id: '15', content: 'Option 15' },
+                { id: '16', content: 'Option 16' },
+                { id: '17', content: 'Option 17' }
+            ],
+            answer: []
+        }
+    ];
+    if (itemId != '1') {
+        _currentHomeWorkItem = [
+            {
+                id: '1',
+                content: 'Objective Questions 1',
+                correct: ['1'],
+                options: [
+                    { id: '1', content: 'Option 1' },
+                    { id: '2', content: 'Option 2' },
+                    { id: '3', content: 'Option 3' }
+                ],
+                answer: ['1']
+            }, {
+                id: '2',
+                content: 'Objective Questions 2',
+                correct: ['5', '6'],
+                options: [
+                    { id: '4', content: 'Option 4' },
+                    { id: '5', content: 'Option 5' },
+                    { id: '6', content: 'Option 6' }
+                ],
+                answer: ['5', '6'],
+            }, {
+                id: '3',
+                content: 'Objective Questions 3',
+                correct: ['25'],
+                options: [
+                    { id: '24', content: 'Option 24' },
+                    { id: '25', content: 'Option 25' },
+                    { id: '26', content: 'Option 26' }
+                ],
+                answer: ['25']
+            }, {
+                id: '4',
+                content: 'Objective Questions 4',
+                correct: ['7', '8', '9', '10'],
+                options: [
+                    { id: '7', content: 'Option 7' },
+                    { id: '8', content: 'Option 8' },
+                    { id: '9', content: 'Option 9' },
+                    { id: '10', content: 'Option 10' }
+                ],
+                answer: ['7', '8', '9', '10']
+            }, {
+                id: '5',
+                content: 'Objective Questions 5',
+                correct: ['12'],
+                options: [
+                    { id: '11', content: 'Option 11' },
+                    { id: '12', content: 'Option 12' },
+                    { id: '13', content: 'Option 13' }
+                ],
+                answer: ['12']
+            }
+        ];
+    }
+
+    var data = _currentHomeWorkItem;
+    var wrap = $('#wrap_profile_homework_card_block_' + itemId);
+    wrap.empty();
+    var tmpHTMLArr = [];
+    var btnTemplate = '<button type="button" class="btn btn-%btntype% btn-sm btn-submit-homework-item" id="btn_homework_item_%itemsymbol%" data-correct="%datacorrect%" data-symbols="%datasymbol%">提交</button>';
+    var tHeader = '';
+    var tButton = '';
+    var chkName = '';
+    var chkId = '';
+    var checkAnswer = false;
+    var tmpChecked = false;
+    tmpHTMLArr.push('<table class="table table-striped">');
+    tmpHTMLArr.push('   <tbody>');
+    for (var i = 0; i < data.length; i++) {
+        tHeader = '';
+        tButton = '';
+        checkAnswer = false;
+        if (data[i].answer.length == 0) {
+            tHeader = '<i class="fa fa-question profile-homework-top-symbol uncomplete" id="i_status_homework_item_' + itemId + '_' + data[i].id + '"></i>';
+            tButton = btnTemplate.replace('%itemsymbol%', itemId + '_' + data[i].id).replace('%btntype%', 'warning').replace('%datacorrect%', data[i].correct.join('|')).replace('%datasymbol%', itemId + '|' + data[i].id);
+        } else {
+            checkAnswer = checkAnswersDo(data[i].answer, data[i].correct);
+            if (checkAnswer) {
+                tHeader = '<i class="fa fa-check profile-homework-top-symbol complete" id="i_status_homework_item_' + itemId + '_' + data[i].id + '"></i>';
+            } else {
+                tHeader = '<i class="fa fa-remove profile-homework-top-symbol incorrect" id="i_status_homework_item_' + itemId + '_' + data[i].id + '"></i>';
+                tButton = btnTemplate.replace('%itemsymbol%', itemId + '_' + data[i].id).replace('%btntype%', 'danger').replace('%datacorrect%', data[i].correct.join('|')).replace('%datasymbol%', itemId + '|' + data[i].id);
+            }
+        }
+
+        tmpHTMLArr.push('<tr>');
+        tmpHTMLArr.push('   <td style="padding: 5px 10px;">');
+        tmpHTMLArr.push('       <table style="border: none; width:100%;">');
+        tmpHTMLArr.push('           <tbody style="border: none;">');
+        tmpHTMLArr.push('               <tr style="border: none;background-color: transparent;">');
+        tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none; width:50px; ">' + (i + 1) + '</th>');
+        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; font-size:15px;">' + data[i].content + '</td>');
+        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; width:50px;">' + tHeader + '</td>');
+        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; width:80px;">' + tButton + '</td>');
+        tmpHTMLArr.push('               </tr>');
+        tmpHTMLArr.push('               <tr style="border: none;">');
+        tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none;"></th>');
+        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none;" col-spac="3">');
+        tmpHTMLArr.push('                       <form>');
+        if (checkAnswer) {
+            tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_homework_item_' + itemId + '_' + data[i].id + '" style="margin:0px;" disabled>');
+        } else {
+            tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_homework_item_' + itemId + '_' + data[i].id + '" style="margin:0px;">');
+        }
+
+        for (var j = 0; j < data[i].options.length; j++) {
+            chkName = 'chk-homework-item-' + itemId + '-' + data[i].id;
+            chkId = 'chk_Homework_Item_' + itemId + '_' + data[i].id + '_' + j;
+            tmpHTMLArr.push('                           <div class="form-check" style="margin:0px;">');
+            tmpHTMLArr.push('                               <label class="form-check-label" style="font-size:14px;">');
+            tmpChecked = false;
+            for (var k = 0; k < data[i].answer.length; k++) {
+                if (data[i].answer[k] == data[i].options[j].id) {
+                    tmpChecked = true;
+                    break;
+                }
+            }
+
+            if (tmpChecked) {
+                tmpHTMLArr.push('                                   <input type="checkbox" class="form-check-input" name="' + chkName + '" id="' + chkId + '" value="' + data[i].options[j].id + '" checked>');
+            } else {
+                tmpHTMLArr.push('                                   <input type="checkbox" class="form-check-input" name="' + chkName + '" id="' + chkId + '" value="' + data[i].options[j].id + '">');
+            }
+            tmpHTMLArr.push('                                   <span style="padding-left:10px;">' + data[i].options[j].content + '</span>');
+            tmpHTMLArr.push('                               </label>');
+            tmpHTMLArr.push('                           </div>');
+        }
+
+        tmpHTMLArr.push('                           </fieldset>');
+        tmpHTMLArr.push('                       </form>');
+        tmpHTMLArr.push('                   </td>');
+        tmpHTMLArr.push('               </tr>');
+        tmpHTMLArr.push('           </tbody>');
+        tmpHTMLArr.push('       </table>');
+        tmpHTMLArr.push('   </td>');
+        tmpHTMLArr.push('</tr>');
+    }
+
+    tmpHTMLArr.push('   </tbody>');
+    tmpHTMLArr.push('</table>');
+    wrap.append($(tmpHTMLArr.join('')));
+    $('.btn.btn-sm.btn-submit-homework-item').on('click', function () {
+        var target = $(arguments[0].target);
+        var itemSymbol = target.attr('data-symbols').split('|');
+        var correct = target.attr('data-correct').split('|');
+        var answer = [];
+        $("[name='chk-homework-item-" + itemSymbol[0] + "-" + itemSymbol[1] + "']").each(function () {
+            if ($(this).is(':checked')) {
+                answer.push($(this).val());
+            }
+        });
+
+        for (var i = 0; i < _currentHomeWorkItem.length; i++) {
+            if (_currentHomeWorkItem[i].id == itemSymbol[1]) {
+                _currentHomeWorkItem[i].answer = answer;
+                break;
+            }
+        }
+
+        var checkResult = checkAnswersDo(answer, correct);
+        resetHWCmpsStatus(itemSymbol[0], itemSymbol[1], checkResult);
+        resetHWStatusCounts(itemSymbol[0]);
+    });
+};
+
+function resetHWCmpsStatus(itemId, subId, checkResult) {
+    var itemIcon = $('#i_status_homework_item_' + itemId + "_" + subId);
+    var itemBtn = $('#btn_homework_item_' + itemId + "_" + subId);
+    if (checkResult == null) {
+        itemBtn.removeClass('btn-danger');
+        itemBtn.addClass('btn-warning');
+        itemIcon.removeClass('fa-remove');
+        itemIcon.addClass('fa-question');
+        itemIcon.removeClass('incorrect');
+        itemIcon.addClass('uncomplete');
+    } else if (checkResult === true) {
+        $('#fs_homework_item_' + itemId + "_" + subId).attr('disabled', '1');
+        itemBtn.remove();
+        itemIcon.removeClass('fa-question');
+        itemIcon.removeClass('fa-remove');
+        itemIcon.addClass('fa-check');
+        itemIcon.removeClass('uncomplete');
+        itemIcon.removeClass('incorrect');
+        itemIcon.addClass('complete');
+    } else {
+        itemBtn.removeClass('btn-warning');
+        itemBtn.addClass('btn-danger');
+        itemIcon.removeClass('fa-question');
+        itemIcon.addClass('fa-remove');
+        itemIcon.removeClass('uncomplete');
+        itemIcon.addClass('incorrect');
+    }
+};
+
+function resetHWStatusCounts(itemId) {
+    var cCount = 0;
+    var iCount = 0;
+    for (var i = 0; i < _currentHomeWorkItem.length; i++) {
+        if (_currentHomeWorkItem[i].answer.length > 0) {
+            if (checkAnswersDo(_currentHomeWorkItem[i].answer, _currentHomeWorkItem[i].correct)) {
+                cCount++;
+            } else {
+                iCount++;
+            }
+        }
+    }
+
+    $('.profile-message-date-text.homework-item-correct-count-' + itemId + ' span').text(cCount);
+    $('.profile-message-date-text.homework-item-question-count-' + itemId + ' span').text(_currentHomeWorkItem.length - cCount - iCount);
+    $('.profile-message-date-text.homework-item-incorrect-count-' + itemId + ' span').text(iCount);
+
+    if (cCount == _currentHomeWorkItem.length) {
+        var tmpHeaderIcon = $('#icon_Homework_Item_Header_' + data[i].id);
+        tmpHeaderIcon.removeClass('pause');
+        tmpHeaderIcon.addClass('check');
+        tmpHeaderIcon.removeClass('uncomplete');
+        tmpHeaderIcon.addClass('complete');
+    }
+};
+
+function checkAnswersDo(answer, correct) {
+    if (answer.length == 0) {
+        return null;
+    }
+
+    var cCount = correct.length;
+    for (var i = 0; i < correct.length; i++) {
+        for (var j = 0; j < answer.length; j++) {
+            if (answer[j] == correct[i]) {
+                cCount--;
+                break;
+            }
+        }
+    }
+
+    return (cCount == 0 ? true : false);
+}
+
+function clearUncompleteState() {
+    $('.left-bar-homework-count').css('background-color', 'rgb(185,185,185)');
+    //$('.left-bar-homework-count').hide();
+};
+
+/*Exam*/
+var _currentExamItem = null;
+function rebuildExamPanel(contentHeight) {
+    clearUncompleteState();
+    rebuildExamTitles(contentHeight);
+    displayExamContent();
+};
+
+function rebuildExamTitles(contentHeight) {
+    $('#wrap_Category_Title').hide();
+    $('#wrap_Category_Content').removeClass('col-9');
+    $('#wrap_Category_Content').addClass('col-12');
+};
+
+function displayExamContent() {
+    _currentExamItem = {
+        id: '1',
+        date: '2017-10-3',
+        teacher: 'Teacher 1',
+        title: 'B-01-001: 模式识别',
+        total: 6,
+        correct: 0,
+        incorrect: 0,
+        items: [
+            {
+                id: '1',
+                content: 'Objective Questions 1',
+                correct: ['1'],
+                options: [
+                    { id: '1', content: 'Option 1' },
+                    { id: '2', content: 'Option 2' },
+                    { id: '3', content: 'Option 3' }
+                ],
+                answer: []
+            }, {
+                id: '2',
+                content: 'Objective Questions 2',
+                correct: ['5', '6'],
+                options: [
+                    { id: '4', content: 'Option 4' },
+                    { id: '5', content: 'Option 5' },
+                    { id: '6', content: 'Option 6' }
+                ],
+                answer: []
+            }, {
+                id: '3',
+                content: 'Objective Questions 3',
+                correct: ['25'],
+                options: [
+                    { id: '24', content: 'Option 24' },
+                    { id: '25', content: 'Option 25' },
+                    { id: '26', content: 'Option 26' }
+                ],
+                answer: []
+            }, {
+                id: '4',
+                content: 'Objective Questions 4',
+                correct: ['7', '8', '9', '10'],
+                options: [
+                    { id: '7', content: 'Option 7' },
+                    { id: '8', content: 'Option 8' },
+                    { id: '9', content: 'Option 9' },
+                    { id: '10', content: 'Option 10' }
+                ],
+                answer: []
+            }, {
+                id: '5',
+                content: 'Objective Questions 5',
+                correct: ['12'],
+                options: [
+                    { id: '11', content: 'Option 11' },
+                    { id: '12', content: 'Option 12' },
+                    { id: '13', content: 'Option 13' }
+                ],
+                answer: []
+            }, {
+                id: '6',
+                content: 'Objective Questions 6',
+                correct: ['14', '16'],
+                options: [
+                    { id: '14', content: 'Option 14' },
+                    { id: '15', content: 'Option 15' },
+                    { id: '16', content: 'Option 16' },
+                    { id: '17', content: 'Option 17' }
+                ],
+                answer: []
+            }
+        ]
+    };
+
+    rebuildHomeworkContents();
+    hideLoadingMask();
+};
+
+function rebuildHomeworkContents() {
+    $('#wrap_Category_Content').empty();
+    var tmpHTMLArr = [];
+    var tHeader = '';
+    var data = _currentExamItem;
+    var blockPadding = 10;
+    tmpHTMLArr.push('<div class="container-fluid wrap-exam-section" style="background-color:rgb(255,255,255); height:100%;">');
+    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('        <div class="col-12 no-padding">');
+    tmpHTMLArr.push('           <div class="container-fluid wrap-exam-items no-padding" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('               <div class="row no-margin">');
+    tmpHTMLArr.push('                   <div class="col-12 no-padding" id="wrap_col_profile_exam_items" style="overflow:auto;">');
+    tmpHTMLArr.push('                       <div id="accordion" role="tablist">');
+    tmpHTMLArr.push('<div class="card" style="border-radius: 0px;">');
+    tmpHTMLArr.push('   <div class="card-header" role="tab" id="heading_' + data.id + '" style="padding:0px;">');
+    tmpHTMLArr.push('       <table class="table table-striped" style="margin-bottom: 0px;">');
+    tmpHTMLArr.push('           <tbody>');
+    tmpHTMLArr.push('               <tr>');
+    tmpHTMLArr.push('                   <th><i class="fa fa-superscript profile-homework-top-symbol complete"></i></th>');
+    tmpHTMLArr.push('                   <td><a data-toggle="collapse" href="#collapse_exam_' + data.id + '" aria-expanded="true" aria-controls="collapse_exam_' + data.id + '">' + data.title + '</a></td>');
+    tmpHTMLArr.push('                   <td class="profile-exam-date-text">' + data.date + '</td>');
+    tmpHTMLArr.push('                   <td class="profile-exam-date-text">' + data.teacher + '</td>');
+    tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-correct-count-' + data.id + '" style="min-width:20px; color: rgb(34,139,34);"><i class="fa fa-check"></i><span>' + data.correct + '</span></td>');
+    tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-question-count-' + data.id + '" style="min-width:20px; color: rgb(243,151,0);"><i class="fa fa-question"></i><span>' + (data.total - data.incorrect - data.correct) + '</span</td>');
+    tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-incorrect-count-' + data.id + '" style="min-width:20px; color: rgb(255,0,0);"><i class="fa fa-remove"></i><span>' + data.incorrect + '</span</td>');
+    tmpHTMLArr.push('               </tr>');
+    tmpHTMLArr.push('           </tbody>');
+    tmpHTMLArr.push('       </table>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div id="collapse_exam_' + data.id + '" class="collapse show profile-exam-item" role="tabpanel" aria-labelledby="heading_exam_' + data.id + '" data-parent="#accordion">');
+    tmpHTMLArr.push('       <div class="card-block" id="wrap_profile_exam_card_block_' + data.id + '" style="padding: 0px; border: solid 5px rgba(47, 168, 225,0.3);">');
+    loadExamItems(tmpHTMLArr);
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+
+    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
+    $('#wrap_col_profile_exam_items').height($('#sideBar_Page_Left').height() + 16);
+
+    $('.btn.btn-sm.btn-submit-exam-item').on('click', function () {
+        var target = $(arguments[0].target);
+        var itemSymbol = target.attr('data-symbols').split('|');
+        var correct = target.attr('data-correct').split('|');
+        var answer = [];
+        $("[name='chk-exam-item-" + itemSymbol[0] + "-" + itemSymbol[1] + "']").each(function () {
+            if ($(this).is(':checked')) {
+                answer.push($(this).val());
+            }
+        });
+
+        for (var i = 0; i < data.items.length; i++) {
+            if (data.items[i].id == itemSymbol[1]) {
+                data.items[i].answer = answer;
+                resetExamStatusCounts();
+                break;
+            }
+        }
+
+        var checkResult = checkAnswersDo(answer, correct);
+        resetExamCmpsStatus(itemSymbol[0], itemSymbol[1], checkResult);
+    });
+};
+
+function loadExamItems(tmpHTMLArr) {
+    var data = _currentExamItem.items;
+    var itemId = _currentExamItem.id;
+    var wrap = $('#wrap_profile_exam_card_block_' + itemId);
+    wrap.empty();
+    var btnTemplate = '<button type="button" class="btn btn-%btntype% btn-sm btn-submit-exam-item" id="btn_exam_item_%itemsymbol%" data-correct="%datacorrect%" data-symbols="%datasymbol%">提交</button>';
+    var tHeader = '';
+    var tButton = '';
+    var chkName = '';
+    var chkId = '';
+    var checkAnswer = false;
+    var tmpChecked = false;
+    tmpHTMLArr.push('<table class="table table-striped">');
+    tmpHTMLArr.push('   <tbody>');
+    for (var i = 0; i < data.length; i++) {
+        tHeader = '';
+        tButton = '';
+        checkAnswer = false;
+        tHeader = '<i class="fa fa-question profile-homework-top-symbol uncomplete" id="i_status_exam_item_' + itemId + '_' + data[i].id + '"></i>';
+        tButton = btnTemplate.replace('%itemsymbol%', itemId + '_' + data[i].id).replace('%btntype%', 'warning').replace('%datacorrect%', data[i].correct.join('|')).replace('%datasymbol%', itemId + '|' + data[i].id);
+        tmpHTMLArr.push('<tr>');
+        tmpHTMLArr.push('   <td style="padding: 5px 10px;">');
+        tmpHTMLArr.push('       <table style="border: none; width:100%;">');
+        tmpHTMLArr.push('           <tbody style="border: none;">');
+        tmpHTMLArr.push('               <tr style="border: none;background-color: transparent;">');
+        tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none; width:50px; ">' + (i + 1) + '</th>');
+        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; font-size:15px;">' + data[i].content + '</td>');
+        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; width:50px;">' + tHeader + '</td>');
+        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; width:80px;">' + tButton + '</td>');
+        tmpHTMLArr.push('               </tr>');
+        tmpHTMLArr.push('               <tr style="border: none;">');
+        tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none;"></th>');
+        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none;" col-spac="3">');
+        tmpHTMLArr.push('                       <form>');
+        if (checkAnswer) {
+            tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_exam_item_' + itemId + '_' + data[i].id + '" style="margin:0px;" disabled>');
+        } else {
+            tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_exam_item_' + itemId + '_' + data[i].id + '" style="margin:0px;">');
+        }
+
+        for (var j = 0; j < data[i].options.length; j++) {
+            chkName = 'chk-exam-item-' + itemId + '-' + data[i].id;
+            chkId = 'chk_Exam_Item_' + itemId + '_' + data[i].id + '_' + j;
+            tmpHTMLArr.push('                           <div class="form-check" style="margin:0px;">');
+            tmpHTMLArr.push('                               <label class="form-check-label" style="font-size:14px;">');
+            tmpChecked = false;
+            for (var k = 0; k < data[i].answer.length; k++) {
+                if (data[i].answer[k] == data[i].options[j].id) {
+                    tmpChecked = true;
+                    break;
+                }
+            }
+
+            if (tmpChecked) {
+                tmpHTMLArr.push('                                   <input type="checkbox" class="form-check-input" name="' + chkName + '" id="' + chkId + '" value="' + data[i].options[j].id + '" checked>');
+            } else {
+                tmpHTMLArr.push('                                   <input type="checkbox" class="form-check-input" name="' + chkName + '" id="' + chkId + '" value="' + data[i].options[j].id + '">');
+            }
+            tmpHTMLArr.push('                                   <span style="padding-left:10px;">' + data[i].options[j].content + '</span>');
+            tmpHTMLArr.push('                               </label>');
+            tmpHTMLArr.push('                           </div>');
+        }
+
+        tmpHTMLArr.push('                           </fieldset>');
+        tmpHTMLArr.push('                       </form>');
+        tmpHTMLArr.push('                   </td>');
+        tmpHTMLArr.push('               </tr>');
+        tmpHTMLArr.push('           </tbody>');
+        tmpHTMLArr.push('       </table>');
+        tmpHTMLArr.push('   </td>');
+        tmpHTMLArr.push('</tr>');
+    }
+
+    tmpHTMLArr.push('   </tbody>');
+    tmpHTMLArr.push('</table>');
+};
+
+function resetExamCmpsStatus(itemId, subId, checkResult) {
+    var itemIcon = $('#i_status_exam_item_' + itemId + "_" + subId);
+    var itemBtn = $('#btn_exam_item_' + itemId + "_" + subId);
+    if (checkResult == null) {
+        itemBtn.removeClass('btn-danger');
+        itemBtn.addClass('btn-warning');
+        itemIcon.removeClass('fa-remove');
+        itemIcon.addClass('fa-question');
+        itemIcon.removeClass('incorrect');
+        itemIcon.addClass('uncomplete');
+    } else if (checkResult === true) {
+        $('#fs_exam_item_' + itemId + "_" + subId).attr('disabled', '1');
+        itemBtn.remove();
+        itemIcon.removeClass('fa-question');
+        itemIcon.removeClass('fa-remove');
+        itemIcon.addClass('fa-check');
+        itemIcon.removeClass('uncomplete');
+        itemIcon.removeClass('incorrect');
+        itemIcon.addClass('complete');
+    } else {
+        itemBtn.removeClass('btn-warning');
+        itemBtn.addClass('btn-danger');
+        itemIcon.removeClass('fa-question');
+        itemIcon.addClass('fa-remove');
+        itemIcon.removeClass('uncomplete');
+        itemIcon.addClass('incorrect');
+    }
+};
+
+function resetExamStatusCounts() {
+    var cCount = 0;
+    var iCount = 0;
+    for (var i = 0; i < _currentExamItem.items.length; i++) {
+        if (_currentExamItem.items[i].answer.length > 0) {
+            if (checkAnswersDo(_currentExamItem.items[i].answer, _currentExamItem.items[i].correct)) {
+                cCount++;
+            } else {
+                iCount++;
+            }
+        }
+    }
+
+    $('.profile-exam-date-text.exam-item-correct-count-' + _currentExamItem.id + ' span').text(cCount);
+    $('.profile-exam-date-text.exam-item-question-count-' + _currentExamItem.id + ' span').text(_currentExamItem.items.length - cCount - iCount);
+    $('.profile-exam-date-text.exam-item-incorrect-count-' + _currentExamItem.id + ' span').text(iCount);
 };
 
 /*Global*/

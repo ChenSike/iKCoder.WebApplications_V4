@@ -24,7 +24,7 @@
     cursor: pointer;
 }
 
-.left-bar-message-count {
+.left-bar-message-count, .left-bar-homework-count {
     width: 40px;
     display: inline-block;
     text-align: center;
@@ -34,6 +34,11 @@
     -moz-border-radius: 12px;
     -webkit-border-radius: 12px;
     border-radius: 12px;
+}
+
+.left-bar-homework-count {
+    font-size: 14px;
+    line-height: 24px;
 }
 
 .overview-title-item-data {
@@ -397,9 +402,9 @@
     font-size: 16px;
 }
 
-.text-size-16.bold {
-    font-weight:bold
-}
+    .text-size-16.bold {
+        font-weight: bold;
+    }
 
 .text-size-21 {
     font-size: 23px;
@@ -544,6 +549,18 @@
     color: rgb(237,87,138);
 }
 
+.profile-homework-top-symbol.complete {
+    color: rgb(34,139,34);
+}
+
+.profile-homework-top-symbol.uncomplete {
+    color: rgb(255,215,0);
+}
+
+.profile-homework-top-symbol.incorrect {
+    color: rgb(255,0,0);
+}
+
 .profile-message-top-content {
     font-weight: bold;
 }
@@ -572,14 +589,14 @@
     font-size: 14px;
     padding-right: 20px;
     font-weight: bold;
-    cursor:pointer;
+    cursor: pointer;
 }
 
     .lesson-title-course-overview.finished {
         color: rgb(114,174,75);
     }
 
-     .lesson-title-course-overview.disabled {
+    .lesson-title-course-overview.disabled {
         color: rgb(185, 185, 185);
-        cursor:default;
+        cursor: default;
     }

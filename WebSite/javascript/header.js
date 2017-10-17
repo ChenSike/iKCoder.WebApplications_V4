@@ -16,9 +16,9 @@ function buildHeaderHTML(isIndexPage) {
     tmpHtmlStrArr.push('    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">');
     tmpHtmlStrArr.push('        <span class="navbar-toggler-icon"></span>');
     tmpHtmlStrArr.push('    </button>');
-    tmpHtmlStrArr.push('    <div class="container-fluid" style="padding-right: 35px;">');
+    tmpHtmlStrArr.push('    <div class="container-fluid" style="padding-right: 5px;">');
     tmpHtmlStrArr.push('        <div class="row w-100 justify-content-end">');
-    tmpHtmlStrArr.push('            <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container">');
+    tmpHtmlStrArr.push('            <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container" style="padding-right:0px;">');
     tmpHtmlStrArr.push('                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">');
     tmpHtmlStrArr.push('                    <ul class="navbar-nav" id="ul_NavBar_Container">');
     //tmpHtmlStrArr.push('                        <li class="nav-item">');
@@ -40,17 +40,9 @@ function buildHeaderHTML(isIndexPage) {
     tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Center">' + _getLabel('学员中心') + '</a>');
     tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" style="color: red; cursor: default;">' + _getLabel('[演示版本]') + '</a>');
+    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" style="color: #f39700; cursor: default; font-style: italic; font-weight: bold; font-size: 15px;">Demo Version</a>');
     tmpHtmlStrArr.push('                        </li>');
-
-    //tmpHtmlStrArr.push('                        <li class="nav-item">');
-    //tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Blog">' + _getLabel('博客') + '</a>');
-    //tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                    </ul>');
-    //tmpHtmlStrArr.push('                    <form class="form-inline my-2 my-lg-0  justify-content-center" id="form_NavBar_Sign">');
-    //tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1 ml-md-5 mr-3" id="btn_SignIn" type="button">' + _getLabel('登录') + '</button>');
-    //tmpHtmlStrArr.push('                        <button class="btn btn-outline-info my-2 my-sm-1" id="btn_FreeSignUp" type="button">' + _getLabel('免费注册') + '</button>');
-    //tmpHtmlStrArr.push('                    </form>');
     tmpHtmlStrArr.push('                </div>');
     tmpHtmlStrArr.push('            </div>');
     tmpHtmlStrArr.push('        </div>');

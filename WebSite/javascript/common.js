@@ -353,6 +353,7 @@ function _startCheckState() {
 };
 
 function _refereshCheckCode(checkCodeId, notClear) {
+    return;
     if (typeof notClear == 'undefined' || notClear != '1') {
         window.clearTimeout(_timeoutRefereshCC);
     }
