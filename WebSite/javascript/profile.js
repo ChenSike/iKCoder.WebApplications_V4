@@ -2868,7 +2868,8 @@ function rebuildExamTitles(contentHeight) {
 function displayExamContent() {
     _currentExamItem = {
         id: '1',
-        date: '2017-10-3',
+        date: '2017-10-3',        
+        time: 20,
         teacher: 'Teacher 1',
         title: 'B-01-001: 模式识别',
         total: 6,
@@ -2941,11 +2942,11 @@ function displayExamContent() {
         ]
     };
 
-    rebuildHomeworkContents();
+    rebuildExamContents();
     hideLoadingMask();
 };
 
-function rebuildHomeworkContents() {
+function rebuildExamContents() {
     $('#wrap_Category_Content').empty();
     var tmpHTMLArr = [];
     var tHeader = '';
@@ -2963,7 +2964,7 @@ function rebuildHomeworkContents() {
     tmpHTMLArr.push('       <table class="table table-striped" style="margin-bottom: 0px;">');
     tmpHTMLArr.push('           <tbody>');
     tmpHTMLArr.push('               <tr>');
-    tmpHTMLArr.push('                   <th><i class="fa fa-superscript profile-homework-top-symbol complete"></i></th>');
+    tmpHTMLArr.push('                   <th><i class="fa fa-clock-o profile-homework-top-symbol complete"></i></th>');
     tmpHTMLArr.push('                   <td><a data-toggle="collapse" href="#collapse_exam_' + data.id + '" aria-expanded="true" aria-controls="collapse_exam_' + data.id + '">' + data.title + '</a></td>');
     tmpHTMLArr.push('                   <td class="profile-exam-date-text">' + data.date + '</td>');
     tmpHTMLArr.push('                   <td class="profile-exam-date-text">' + data.teacher + '</td>');
