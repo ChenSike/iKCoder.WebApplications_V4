@@ -12,7 +12,9 @@ var _distributionMap = {
 function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
     $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
-    $('#sideBar_Page_Left').height($('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height());
+    //$('#sideBar_Page_Left').height($('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height());
+    $('.container-fluid.main-content-wrap').height($('body').height() - $('nav').height() - $('footer').height());
+    $('.row.justify-content-start.main-content-row').height($('.container-fluid.main-content-wrap').height());
     loadHeaderImg();
     loadSiderbarData();
     //getUnreadMsgCount();
@@ -70,13 +72,15 @@ function hideLoadingMask() {
 }
 
 function rebuildContent(symbol) {
-    if (symbol == 'appshop') {
+    if (symbol == 'appshop' || symbol == 'teamsuit') {
         _showGlobalMessage('演示版本，此功能暂不开放！', 'warning', 'alert_ForgetPWD_Success');
         return;
     }
 
     showLoadingMask();
-    var contentHeight = $('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height();
+    $('.row.justify-content-start.main-content-row')[0].scrollTop = 0;
+    //var contentHeight = $('body').height() - $('nav').height() - 16 - $('footer').height();
+    var contentHeight = $('#sideBar_Page_Left .container-fluid.left-sidebar-wrap').height();
     $('#wrap_Category_Title').empty();
     $('#wrap_Category_Title').show();
     var contertWrap = $('#wrap_Category_Content');
@@ -104,17 +108,17 @@ function rebuildContent(symbol) {
         case 'homework':
             currentItem = $($('.left-bar-category-item')[1]);
             contertWrap.addClass('col');
-            rebuildHomeworkPanel(contentHeight + 16);
+            rebuildHomeworkPanel(contentHeight);
             break;
         case 'exam':
             currentItem = $($('.left-bar-category-item')[2]);
             contertWrap.addClass('col-9');
-            rebuildExamPanel(contentHeight + 16);
+            rebuildExamPanel(contentHeight);
             break;
         case 'message':
             currentItem = $($('.left-bar-category-item')[3]);
             contertWrap.addClass('col');
-            rebuildMesagesPanel(contentHeight + 16);
+            rebuildMesagesPanel(contentHeight);
             break;
         case 'report':
             currentItem = $($('.left-bar-category-item')[4]);
@@ -135,6 +139,11 @@ function rebuildContent(symbol) {
 
     resetCategoryItemCSS(currentItem);
 };
+
+window.onresize = function () {
+    $('.container-fluid.main-content-wrap').height($('body').height() - $('nav').height() - $('footer').height());
+    $('.row.justify-content-start.main-content-row').height($('.container-fluid.main-content-wrap').height());
+}
 
 /*Overview panel*/
 function rebuildOverviewPanel(contentHeight) {
@@ -2274,9 +2283,10 @@ function displayMessageByType(type) {
 };
 
 function rebuildMessageContents(data, type) {
+    var tmpHeight = $('.container-fluid.left-sidebar-wrap').height();
     $('#wrap_Category_Content').empty();
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-message-section" style="background-color:rgb(255,255,255); height:100%; border-left: solid 5px rgb(237,87,138);">');
+    tmpHTMLArr.push('<div class="container-fluid wrap-message-section" style="background-color:rgb(255,255,255); border-left: solid 5px rgb(237,87,138); height: ' + tmpHeight + 'px;">');
     tmpHTMLArr.push('    <div class="row">');
     tmpHTMLArr.push('        <div class="col-12 no-padding">');
     tmpHTMLArr.push('           <div class="container-fluid wrap-message-items no-padding" style="background-color:rgb(255,255,255);">');
@@ -2528,14 +2538,33 @@ function rebuildHomeworkContents(data, type) {
     tmpHTMLArr.push('</div>');
 
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
-    $('#wrap_col_profile_homework_items').height($('.container-fluid.wrap-homework-section').height());
+    //$('#wrap_col_profile_exam_items').height($('#sideBar_Page_Left').height() + 16);
+    var wrapSection = $('.container-fluid.wrap-homework-section');
+    var wrapItems = $('.container-fluid.wrap-homework-items');
+    var expTitleRow = $('#title_Homework_experimental_Title_Row');
+    var tmpHeight = $('.container-fluid.left-sidebar-wrap').height();
+    if (wrapSection.height() < tmpHeight) {
+        wrapSection.height(tmpHeight);
+    }
+    //$('#wrap_col_profile_homework_items').height($('.container-fluid.wrap-homework-section').height());
 
     if (type == '1') {
-        $('.collapse.profile-homework-item').on('show.bs.collapse', function () {
+        var tmpItem = $('.collapse.profile-homework-item');
+        tmpItem.on('show.bs.collapse', function () {
             var itemDetail = $(arguments[0].target).attr('data-target').split('|');
             if (itemDetail[0] == '1') {
                 loadHomeworkById(itemDetail[1]);
             }
+        });
+
+        tmpItem.on('shown.bs.collapse', function () {
+            wrapSection.height(Math.max(wrapItems.height(), tmpHeight));
+            expTitleRow.height(expTitleRow.height() + Math.abs(wrapItems.height() - tmpHeight));
+        });
+
+        tmpItem.on('hidden.bs.collapse', function () {
+            wrapSection.height(Math.max(wrapItems.height(), tmpHeight));
+            expTitleRow.height(tmpHeight / 2);
         });
     }
 };
@@ -2868,7 +2897,7 @@ function rebuildExamTitles(contentHeight) {
 function displayExamContent() {
     _currentExamItem = {
         id: '1',
-        date: '2017-10-3',        
+        date: '2017-10-3',
         time: 20,
         teacher: 'Teacher 1',
         title: 'B-01-001: 模式识别',
@@ -2917,27 +2946,6 @@ function displayExamContent() {
                     { id: '10', content: 'Option 10' }
                 ],
                 answer: []
-            }, {
-                id: '5',
-                content: 'Objective Questions 5',
-                correct: ['12'],
-                options: [
-                    { id: '11', content: 'Option 11' },
-                    { id: '12', content: 'Option 12' },
-                    { id: '13', content: 'Option 13' }
-                ],
-                answer: []
-            }, {
-                id: '6',
-                content: 'Objective Questions 6',
-                correct: ['14', '16'],
-                options: [
-                    { id: '14', content: 'Option 14' },
-                    { id: '15', content: 'Option 15' },
-                    { id: '16', content: 'Option 16' },
-                    { id: '17', content: 'Option 17' }
-                ],
-                answer: []
             }
         ]
     };
@@ -2958,14 +2966,13 @@ function rebuildExamContents() {
     tmpHTMLArr.push('           <div class="container-fluid wrap-exam-items no-padding" style="background-color:rgb(255,255,255);">');
     tmpHTMLArr.push('               <div class="row no-margin">');
     tmpHTMLArr.push('                   <div class="col-12 no-padding" id="wrap_col_profile_exam_items" style="overflow:auto;">');
-    tmpHTMLArr.push('                       <div id="accordion" role="tablist">');
     tmpHTMLArr.push('<div class="card" style="border-radius: 0px;">');
     tmpHTMLArr.push('   <div class="card-header" role="tab" id="heading_' + data.id + '" style="padding:0px;">');
     tmpHTMLArr.push('       <table class="table table-striped" style="margin-bottom: 0px;">');
     tmpHTMLArr.push('           <tbody>');
     tmpHTMLArr.push('               <tr>');
     tmpHTMLArr.push('                   <th><i class="fa fa-clock-o profile-homework-top-symbol complete"></i></th>');
-    tmpHTMLArr.push('                   <td><a data-toggle="collapse" href="#collapse_exam_' + data.id + '" aria-expanded="true" aria-controls="collapse_exam_' + data.id + '">' + data.title + '</a></td>');
+    tmpHTMLArr.push('                   <td><p style="font-weight:bold; color: rgb(47, 168, 225)">' + data.title + '</p></td>');
     tmpHTMLArr.push('                   <td class="profile-exam-date-text">' + data.date + '</td>');
     tmpHTMLArr.push('                   <td class="profile-exam-date-text">' + data.teacher + '</td>');
     tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-correct-count-' + data.id + '" style="min-width:20px; color: rgb(34,139,34);"><i class="fa fa-check"></i><span>' + data.correct + '</span></td>');
@@ -2981,7 +2988,6 @@ function rebuildExamContents() {
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('</div>');
-    tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
@@ -2990,7 +2996,11 @@ function rebuildExamContents() {
     tmpHTMLArr.push('</div>');
 
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
-    $('#wrap_col_profile_exam_items').height($('#sideBar_Page_Left').height() + 16);
+    //$('#wrap_col_profile_exam_items').height($('#sideBar_Page_Left').height() + 16);
+    var tmpHeight = $('.container-fluid.left-sidebar-wrap').height();
+    if ($('.container-fluid.wrap-exam-section').height() < tmpHeight) {
+        $('.container-fluid.wrap-exam-section').height(tmpHeight);
+    }
 
     $('.btn.btn-sm.btn-submit-exam-item').on('click', function () {
         var target = $(arguments[0].target);

@@ -16,7 +16,7 @@ var _messages = {
 };
 
 function initPage() {
-    var sceneSymbol = getQueryString('scene');
+    var sceneSymbol = getQueryString('scene').toUpperCase();
     //_registerRemoteServer();
     //$.ajax({
     //    type: 'GET',
@@ -97,6 +97,55 @@ function initPage() {
            '	<game>' +
            '		<script src="Common/pacman.js"/>' +
            '		<script src="B-01-001_3D/pacman/1/Scene/scene.JS"/>' +
+           '	</game>' +
+           '	<message>' +
+           '		<faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>' +
+           '		<suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>' +
+           '	</message>' +
+           '	<words>' +
+           '		<stage value="1">' +
+           '			<word value="move" note="儿童英语/CET4/计算机英语" star="4">' +
+           '				<soundmark>' +
+           '					<item type="us" value="美 [kəm"pjutɚ]" sound="sound_word_computer_us"/>' +
+           '					<item type="uk" value="英 [kəm"pjuːtə]" sound="sound_word_computer_uk"/>' +
+           '				</soundmark>' +
+           '				<paraphrase>' +
+           '					<item>v.移动</item>' +
+           '				</paraphrase>' +
+           '				<variant>' +
+           '				<item name="复数" value="computers"/>' +
+           '				</variant>' +
+           '			</word>' +
+           '		</stage>' +
+           '	</words>' +
+           '</root>');
+    } else if (sceneSymbol == 'B_01_006') {
+        dataXML = Blockly.Xml.textToDom('<root>' +
+           '   <basic>' +
+           '		<usr id="46" nickname="Tom"/>' +
+           '	</basic>' +
+           '	<sence name="初级第一课：模式设别" symbol="B_01_006" id="" totalstage="1" currentstage="1" finishstage="0" next="B_01_006"/>' +
+           '	<tips>' +
+           '		<item index="1">' +
+           '			<content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>' +
+           '		</item>' +
+           '	</tips>' +
+           '	<toolbox src="B-01-006_3D/3dBoard/1/Blocks/blocks.JS">' +
+           '		<xml id="toolbox" style="display: none">' +
+           '			<block type="event_start"/>' +
+           '			<block type="move_forward"/>' +
+           '			<block type="positive_rotate_line"/>' +
+           '			<block type="set_color"/>' +
+           '			<block type="set_lineWidth"/>' +
+           '		</xml>' +
+           '	</toolbox>' +
+           '	<workspacestatus>' +
+           '		<xml xmlns="http://www.w3.org/1999/xhtml"/>' +
+           '     <block type="event_start" id="f0Gt`~jczerKhI$;4tt`" colour="#5ba580" stroke="#000000" eventicon="" categoryicon="" maxcount="Infinity" x="248" y="26"/>' +
+           '	</workspacestatus>' +
+           '	<game>' +
+           '		<script src="Common/draw3d.js"/>' +
+           '		<script src="B-01-006_3D/3dBoard/1/Scene/scene.JS"/>' +
            '	</game>' +
            '	<message>' +
            '		<faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>' +

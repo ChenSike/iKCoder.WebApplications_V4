@@ -294,6 +294,7 @@ WorkScene.saveStatus = function (flag) {
     }
 
     var tempXML = XMLToString(Blockly.Xml.workspaceToDom(WorkScene.workspace));
+    return;
     _registerRemoteServer();
     $.ajax({
         type: 'POST',
