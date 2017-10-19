@@ -1,0 +1,14 @@
+﻿{
+  "name": "Laser",
+  "version": "0.1.0",
+  "description": "Laser game",
+  "repository": "",
+  "dependencies": {
+    "howler": "^1.1.28",
+    "tween": "^0.9.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-fluent-ffmpeg": "^1.0.2"
+  }
+}
