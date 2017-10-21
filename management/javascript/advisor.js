@@ -80,7 +80,7 @@ function createNewStudent() {
 }
 
 function buildCreateNewStudentPopup() {
-    var tmpHTMLStr = '<div class="modal fade" id="modal_Student_New" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
+    var tmpHTMLStr = '<div class="modal fade" id="modal_Student_New" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
     '    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">' +
     '        <div class="modal-content">' +
     '            <div class="modal-header">' +
@@ -345,7 +345,6 @@ function buildDataTableColHeaderHTML_Student() {
     '<th>联系电话</th>';
     $('#container_DataTable_Header').append($(tmpHTMLStr));
 };
-
 
 function formatData_Student() {
     var data = [

@@ -9,6 +9,10 @@
             case '1':
                 window.location.href = "demos/laser/index.html";
                 break;
+            case '2':
+                window.location.href = "demos/runpixierun/index.html";
+                break;
+
         }
     });
 
@@ -27,7 +31,7 @@
     switch (projectId) {
         case '2':
             data = {
-                img: 'image/gaosiback.jpg',
+                img: 'image/demoimage/2.png',
                 name: 'Project 2',
                 id: '2',
                 author: 'Tom',

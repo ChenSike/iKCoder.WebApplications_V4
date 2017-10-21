@@ -13,6 +13,7 @@
     <script src="javascript/jquery-3.2.1.min.js"></script>
     <script src="javascript/tether.min.js"></script>
     <script src="javascript/bootstrap.js"></script>
+    <script src="javascript/popover.min.js"></script>
     <script src="javascript/common.js"></script>
     <script src="javascript/xmloperator.js"></script>
     <script src="javascript/teacher.js"></script>
@@ -100,6 +101,10 @@
         }
     </style>
     <style>
+        body {
+            font-family: 微软雅黑;
+        }
+
         .carousel-control-prev-icon,
         .carousel-control-next-icon {
             display: inline-block;
@@ -128,12 +133,74 @@
         .carousel-item {
             height: 100%;
         }
+
+        .accordion-white-bg h5.mb-0 a {
+            color: #0275d8;
+        }
+
+            .accordion-white-bg h5.mb-0 a:hover {
+                color: #699BED;
+            }
+
+        .fa.fa-check {
+            color: rgb(34,139,34);
+        }
+
+            .fa.fa-check span {
+                cursor: pointer;
+                color: rgb(34,139,34);
+                font-size: 14px;
+                font-weight: bold;
+                padding-left: 5px;
+                text-decoration: underline;
+            }
+
+        .fa.fa-question {
+            color: rgb(243,151,0);
+        }
+
+            .fa.fa-question span {
+                cursor: pointer;
+                color: rgb(243,151,0);
+                font-size: 14px;
+                font-weight: bold;
+                padding-left: 5px;
+                text-decoration: underline;
+            }
+
+        .fa.fa-percent {
+            color: rgb(255,0,0);
+        }
+
+            .fa.fa-percent span {
+                color: rgb(255,0,0);
+                font-size: 14px;
+                font-weight: bold;
+                padding-left: 5px;
+            }
+
+        .fa.fa-remove {
+            color: rgb(255,0,0);
+        }
+
+            .fa.fa-remove span {
+                cursor: pointer;
+                color: rgb(255,0,0);
+                font-size: 14px;
+                font-weight: bold;
+                padding-left: 5px;
+                text-decoration: underline;
+            }
+
+        .tooltip.tooltip-left .tooltip-inner::before, .tooltip.bs-tether-element-attached-right .tooltip-inner::before {
+            display: none;
+        }
     </style>
 </head>
 <body style="height:100%;">
     <div class="container-fluid" style="height:100%;">
         <div class="row" style="height:100%;">
-            <div class="col-3 no-padding-margin" style="height:100%; background-color:#2955CE;">
+            <div class="col-3 no-padding-margin" id="wrap_LeftBar" style="height:100%; background-color:#2955CE;">
                 <div style="height:100%;">
                     <div class="container-fluid">
                         <div class="row">
@@ -248,6 +315,20 @@
             </div>
         </div>
     </div>
+    <div class="tooltip tooltip-left homework-class-items" role="tooltip" style="display:none;">
+        <div class="tooltip-inner">
+            <div class="container-fluid" style="padding: 0px;">
+
+            </div>
+        </div>
+    </div>
+    <div class="tooltip tooltip-left homework-class-items-detail-correct-answer" role="tooltip" style="display:none;">
+        <div class="tooltip-inner" style="background-color: rgba(153, 153, 153, 1); border: solid 2px black;">
+            <div class="container-fluid" style="padding: 0px;">
+
+            </div>
+        </div>
+    </div>    
     <script type="text/javascript">
         $(document).ready(function () {
             initPage();
