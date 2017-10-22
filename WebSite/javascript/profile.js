@@ -3008,10 +3008,31 @@ function rebuildExamContents() {
     });
 };
 
-function formatTimeForTiming(seconds) {
+function formatTimeForTiming(seconds, type) {
+    var mins = 0;
+    var secs = 0;
+    if (type == 1) {
+        if (seconds < 0) {
+            var wrap = $('#span_Profile_Exam_Time');
+            var times = wrap.text().split(':');
+            seconds = parseInt(times[0]) * 60 + parseInt(times[1]) - 1;
+        }
+    } else {
+        var wrap = $('#span_Profile_Exam_Time');
+        var times = wrap.text().split(':');
+        var pSecs = parseInt(times[0]) * 60 + parseInt(times[1]);
+        seconds = seconds - pSecs;
+    }
+
     var mins = parseInt(seconds / 60);
     var secs = seconds % 60;
-    return (mins < 10 ? '0' + mins : mins) + ':' + (secs < 10 ? '0' + secs : secs);
+    var retVal = {
+        min: mins,
+        sec: secs,
+        text: (mins < 10 ? '0' + mins : mins) + ':' + (secs < 10 ? '0' + secs : secs)
+    };
+
+    return retVal;
 };
 
 var _gTimeoutSymbol = 0;
@@ -3019,26 +3040,38 @@ function beginExam(startTime, collapseId) {
     if ($('#span_Profile_Exam_Time').length == 0) {
         $('#td_Profile_Exam_Timer').empty();
         var tmpHTMLArr = [];
-        tmpHTMLArr.push('<i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>');
-        tmpHTMLArr.push('<span id="span_Profile_Exam_Time" style="padding-left:10px;">' + formatTimeForTiming(startTime * 60) + '</span>');
+        tmpHTMLArr.push('<i class="fa fa-spinner fa-pulse fa-lg fa-fw timer-profile-exam-progress"></i>');
+        tmpHTMLArr.push('<span id="span_Profile_Exam_Time" style="padding-left:10px;">' + formatTimeForTiming(startTime * 60, 1).text + '</span>');
         $('#td_Profile_Exam_Timer').append($(tmpHTMLArr.join('')));
         $('#btn_Profile_Exam_Submit').show();
         $('#' + collapseId).addClass('show');
         $('#btn_Profile_Exam_Submit').on('click', function () {
-            window.clearTimeout(_gTimeoutSymbol);
-            $('#form_Profile_Exam').find('fieldset').prop('disabled', true);
+            completeExam(startTime * 60);
         });
     }
 
-    var wrap = $('#span_Profile_Exam_Time');
-    var times = wrap.text().split(':');
-    wrap.text(formatTimeForTiming(parseInt(times[0]) * 60 + parseInt(times[1]) - 1));
-    if (parseInt(times[0]) <= 0 && parseInt(times[1]) <= 0) {
+    var timerObj = formatTimeForTiming(-1, 1);
+    $('#span_Profile_Exam_Time').text(timerObj.text);
+    if (timerObj.min <= 0 && timerObj.sec <= 0) {
         window.clearTimeout(_gTimeoutSymbol);
         $('#form_Profile_Exam').find('fieldset').prop('disabled', true);
     } else {
         _gTimeoutSymbol = window.setTimeout('beginExam();', 1000);
     }
+}
+
+function completeExam(totalTime) {
+    window.clearTimeout(_gTimeoutSymbol);
+    $('#form_Profile_Exam').find('fieldset').prop('disabled', true);
+    $('.timer-profile-exam-progress').removeClass('fa-pulse');
+    $('#btn_Profile_Exam_Submit').hide();
+    var timerObj = formatTimeForTiming(totalTime, 2);
+    $('#td_Profile_Exam_Timer').empty();
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<i class="fa fa-clock-o fa-pulse fa-lg fa-fw timer-profile-exam-progress" style="color:rgb(34,139,34);"></i>');
+    tmpHTMLArr.push('<span id="span_Profile_Exam_Time_Cost" style="padding-left:10px;">共用时:' + timerObj.text + '</span>');
+    $('#td_Profile_Exam_Timer').append($(tmpHTMLArr.join('')));
+    //$('#btn_Profile_Exam_Submit').parent().append('<span>共用时: ' + timerObj.text + '</span>');
 }
 
 function loadExamItems(tmpHTMLArr) {
