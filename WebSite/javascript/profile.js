@@ -2971,18 +2971,19 @@ function rebuildExamContents() {
     tmpHTMLArr.push('       <table class="table table-striped" style="margin-bottom: 0px;">');
     tmpHTMLArr.push('           <tbody>');
     tmpHTMLArr.push('               <tr>');
-    tmpHTMLArr.push('                   <th><i class="fa fa-clock-o profile-homework-top-symbol complete"></i></th>');
+    tmpHTMLArr.push('                   <th style="width: 50px; padding-left:20px;line-height: 20px;"><i class="fa fa-lg fa-superscript profile-homework-top-symbol complete"></i></th>');
     tmpHTMLArr.push('                   <td><p style="font-weight:bold; color: rgb(47, 168, 225)">' + data.title + '</p></td>');
     tmpHTMLArr.push('                   <td class="profile-exam-date-text">' + data.date + '</td>');
-    tmpHTMLArr.push('                   <td class="profile-exam-date-text">' + data.teacher + '</td>');
-    tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-correct-count-' + data.id + '" style="min-width:20px; color: rgb(34,139,34);"><i class="fa fa-check"></i><span>' + data.correct + '</span></td>');
-    tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-question-count-' + data.id + '" style="min-width:20px; color: rgb(243,151,0);"><i class="fa fa-question"></i><span>' + (data.total - data.incorrect - data.correct) + '</span</td>');
-    tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-incorrect-count-' + data.id + '" style="min-width:20px; color: rgb(255,0,0);"><i class="fa fa-remove"></i><span>' + data.incorrect + '</span</td>');
+    tmpHTMLArr.push('                   <td class="profile-exam-date-text" id="td_Profile_Exam_Timer"><button type="button" class="btn btn-sm btn-success" id="btn_Profile_Exam_Begin">开始测试</button></td>');
+    tmpHTMLArr.push('                   <td class="profile-exam-date-text" style="width: 100px;"><button type="button" class="btn btn-sm btn-warning" id="btn_Profile_Exam_Submit" style="display:none;">完成测试</button></td>');
+    //tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-correct-count-' + data.id + '" style="min-width:20px; color: rgb(34,139,34);"><i class="fa fa-check"></i><span>' + data.correct + '</span></td>');
+    //tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-question-count-' + data.id + '" style="min-width:20px; color: rgb(243,151,0);"><i class="fa fa-question"></i><span>' + (data.total - data.incorrect - data.correct) + '</span</td>');
+    //tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-incorrect-count-' + data.id + '" style="min-width:20px; color: rgb(255,0,0);"><i class="fa fa-remove"></i><span>' + data.incorrect + '</span</td>');
     tmpHTMLArr.push('               </tr>');
     tmpHTMLArr.push('           </tbody>');
     tmpHTMLArr.push('       </table>');
     tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('   <div id="collapse_exam_' + data.id + '" class="collapse show profile-exam-item" role="tabpanel" aria-labelledby="heading_exam_' + data.id + '" data-parent="#accordion">');
+    tmpHTMLArr.push('   <div id="collapse_exam_' + data.id + '" class="collapse profile-exam-item" role="tabpanel" aria-labelledby="heading_exam_' + data.id + '" data-parent="#accordion">');
     tmpHTMLArr.push('       <div class="card-block" id="wrap_profile_exam_card_block_' + data.id + '" style="padding: 0px; border: solid 5px rgba(47, 168, 225,0.3);">');
     loadExamItems(tmpHTMLArr);
     tmpHTMLArr.push('       </div>');
@@ -3002,50 +3003,55 @@ function rebuildExamContents() {
         $('.container-fluid.wrap-exam-section').height(tmpHeight);
     }
 
-    $('.btn.btn-sm.btn-submit-exam-item').on('click', function () {
-        var target = $(arguments[0].target);
-        var itemSymbol = target.attr('data-symbols').split('|');
-        var correct = target.attr('data-correct').split('|');
-        var answer = [];
-        $("[name='chk-exam-item-" + itemSymbol[0] + "-" + itemSymbol[1] + "']").each(function () {
-            if ($(this).is(':checked')) {
-                answer.push($(this).val());
-            }
-        });
-
-        for (var i = 0; i < data.items.length; i++) {
-            if (data.items[i].id == itemSymbol[1]) {
-                data.items[i].answer = answer;
-                resetExamStatusCounts();
-                break;
-            }
-        }
-
-        var checkResult = checkAnswersDo(answer, correct);
-        resetExamCmpsStatus(itemSymbol[0], itemSymbol[1], checkResult);
+    $('#btn_Profile_Exam_Begin').on('click', function () {
+        beginExam(data.time, 'collapse_exam_' + data.id);
     });
 };
+
+function formatTimeForTiming(seconds) {
+    var mins = parseInt(seconds / 60);
+    var secs = seconds % 60;
+    return (mins < 10 ? '0' + mins : mins) + ':' + (secs < 10 ? '0' + secs : secs);
+};
+
+var _gTimeoutSymbol = 0;
+function beginExam(startTime, collapseId) {
+    if ($('#span_Profile_Exam_Time').length == 0) {
+        $('#td_Profile_Exam_Timer').empty();
+        var tmpHTMLArr = [];
+        tmpHTMLArr.push('<i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>');
+        tmpHTMLArr.push('<span id="span_Profile_Exam_Time" style="padding-left:10px;">' + formatTimeForTiming(startTime * 60) + '</span>');
+        $('#td_Profile_Exam_Timer').append($(tmpHTMLArr.join('')));
+        $('#btn_Profile_Exam_Submit').show();
+        $('#' + collapseId).addClass('show');
+        $('#btn_Profile_Exam_Submit').on('click', function () {
+            window.clearTimeout(_gTimeoutSymbol);
+            $('#form_Profile_Exam').find('fieldset').prop('disabled', true);
+        });
+    }
+
+    var wrap = $('#span_Profile_Exam_Time');
+    var times = wrap.text().split(':');
+    wrap.text(formatTimeForTiming(parseInt(times[0]) * 60 + parseInt(times[1]) - 1));
+    if (parseInt(times[0]) <= 0 && parseInt(times[1]) <= 0) {
+        window.clearTimeout(_gTimeoutSymbol);
+        $('#form_Profile_Exam').find('fieldset').prop('disabled', true);
+    } else {
+        _gTimeoutSymbol = window.setTimeout('beginExam();', 1000);
+    }
+}
 
 function loadExamItems(tmpHTMLArr) {
     var data = _currentExamItem.items;
     var itemId = _currentExamItem.id;
     var wrap = $('#wrap_profile_exam_card_block_' + itemId);
     wrap.empty();
-    var btnTemplate = '<button type="button" class="btn btn-%btntype% btn-sm btn-submit-exam-item" id="btn_exam_item_%itemsymbol%" data-correct="%datacorrect%" data-symbols="%datasymbol%">提交</button>';
-    var tHeader = '';
-    var tButton = '';
     var chkName = '';
     var chkId = '';
-    var checkAnswer = false;
-    var tmpChecked = false;
+    tmpHTMLArr.push('<form id="form_Profile_Exam">');
     tmpHTMLArr.push('<table class="table table-striped">');
     tmpHTMLArr.push('   <tbody>');
     for (var i = 0; i < data.length; i++) {
-        tHeader = '';
-        tButton = '';
-        checkAnswer = false;
-        tHeader = '<i class="fa fa-question profile-homework-top-symbol uncomplete" id="i_status_exam_item_' + itemId + '_' + data[i].id + '"></i>';
-        tButton = btnTemplate.replace('%itemsymbol%', itemId + '_' + data[i].id).replace('%btntype%', 'warning').replace('%datacorrect%', data[i].correct.join('|')).replace('%datasymbol%', itemId + '|' + data[i].id);
         tmpHTMLArr.push('<tr>');
         tmpHTMLArr.push('   <td style="padding: 5px 10px;">');
         tmpHTMLArr.push('       <table style="border: none; width:100%;">');
@@ -3053,44 +3059,23 @@ function loadExamItems(tmpHTMLArr) {
         tmpHTMLArr.push('               <tr style="border: none;background-color: transparent;">');
         tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none; width:50px; ">' + (i + 1) + '</th>');
         tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; font-size:15px;">' + data[i].content + '</td>');
-        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; width:50px;">' + tHeader + '</td>');
-        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; width:80px;">' + tButton + '</td>');
         tmpHTMLArr.push('               </tr>');
         tmpHTMLArr.push('               <tr style="border: none;">');
         tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none;"></th>');
-        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none;" col-spac="3">');
-        tmpHTMLArr.push('                       <form>');
-        if (checkAnswer) {
-            tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_exam_item_' + itemId + '_' + data[i].id + '" style="margin:0px;" disabled>');
-        } else {
-            tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_exam_item_' + itemId + '_' + data[i].id + '" style="margin:0px;">');
-        }
-
+        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none;">');
+        tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_exam_item_' + itemId + '_' + data[i].id + '" style="margin:0px;">');
         for (var j = 0; j < data[i].options.length; j++) {
             chkName = 'chk-exam-item-' + itemId + '-' + data[i].id;
             chkId = 'chk_Exam_Item_' + itemId + '_' + data[i].id + '_' + j;
             tmpHTMLArr.push('                           <div class="form-check" style="margin:0px;">');
             tmpHTMLArr.push('                               <label class="form-check-label" style="font-size:14px;">');
-            tmpChecked = false;
-            for (var k = 0; k < data[i].answer.length; k++) {
-                if (data[i].answer[k] == data[i].options[j].id) {
-                    tmpChecked = true;
-                    break;
-                }
-            }
-
-            if (tmpChecked) {
-                tmpHTMLArr.push('                                   <input type="checkbox" class="form-check-input" name="' + chkName + '" id="' + chkId + '" value="' + data[i].options[j].id + '" checked>');
-            } else {
-                tmpHTMLArr.push('                                   <input type="checkbox" class="form-check-input" name="' + chkName + '" id="' + chkId + '" value="' + data[i].options[j].id + '">');
-            }
+            tmpHTMLArr.push('                                   <input type="checkbox" class="form-check-input" name="' + chkName + '" id="' + chkId + '" value="' + data[i].options[j].id + '">');
             tmpHTMLArr.push('                                   <span style="padding-left:10px;">' + data[i].options[j].content + '</span>');
             tmpHTMLArr.push('                               </label>');
             tmpHTMLArr.push('                           </div>');
         }
 
         tmpHTMLArr.push('                           </fieldset>');
-        tmpHTMLArr.push('                       </form>');
         tmpHTMLArr.push('                   </td>');
         tmpHTMLArr.push('               </tr>');
         tmpHTMLArr.push('           </tbody>');
@@ -3101,53 +3086,7 @@ function loadExamItems(tmpHTMLArr) {
 
     tmpHTMLArr.push('   </tbody>');
     tmpHTMLArr.push('</table>');
-};
-
-function resetExamCmpsStatus(itemId, subId, checkResult) {
-    var itemIcon = $('#i_status_exam_item_' + itemId + "_" + subId);
-    var itemBtn = $('#btn_exam_item_' + itemId + "_" + subId);
-    if (checkResult == null) {
-        itemBtn.removeClass('btn-danger');
-        itemBtn.addClass('btn-warning');
-        itemIcon.removeClass('fa-remove');
-        itemIcon.addClass('fa-question');
-        itemIcon.removeClass('incorrect');
-        itemIcon.addClass('uncomplete');
-    } else if (checkResult === true) {
-        $('#fs_exam_item_' + itemId + "_" + subId).attr('disabled', '1');
-        itemBtn.remove();
-        itemIcon.removeClass('fa-question');
-        itemIcon.removeClass('fa-remove');
-        itemIcon.addClass('fa-check');
-        itemIcon.removeClass('uncomplete');
-        itemIcon.removeClass('incorrect');
-        itemIcon.addClass('complete');
-    } else {
-        itemBtn.removeClass('btn-warning');
-        itemBtn.addClass('btn-danger');
-        itemIcon.removeClass('fa-question');
-        itemIcon.addClass('fa-remove');
-        itemIcon.removeClass('uncomplete');
-        itemIcon.addClass('incorrect');
-    }
-};
-
-function resetExamStatusCounts() {
-    var cCount = 0;
-    var iCount = 0;
-    for (var i = 0; i < _currentExamItem.items.length; i++) {
-        if (_currentExamItem.items[i].answer.length > 0) {
-            if (checkAnswersDo(_currentExamItem.items[i].answer, _currentExamItem.items[i].correct)) {
-                cCount++;
-            } else {
-                iCount++;
-            }
-        }
-    }
-
-    $('.profile-exam-date-text.exam-item-correct-count-' + _currentExamItem.id + ' span').text(cCount);
-    $('.profile-exam-date-text.exam-item-question-count-' + _currentExamItem.id + ' span').text(_currentExamItem.items.length - cCount - iCount);
-    $('.profile-exam-date-text.exam-item-incorrect-count-' + _currentExamItem.id + ' span').text(iCount);
+    tmpHTMLArr.push('</form>');
 };
 
 /*Global*/

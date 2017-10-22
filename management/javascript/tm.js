@@ -41,14 +41,9 @@ function initPage() {
 };
 
 function initEvents() {
-    $('#menu_Class_New').on('click', function () {
-        createNewClass();
-    });
-
     $('#menu_Class_All').on('click', function () {
         buildDataHTML_Class();
     });
-
 
     $('#menu_Course_All').on('click', function () {
     });
@@ -68,13 +63,13 @@ function buildUserInfoHTML(data) {
     //$('#image_User_Header').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
 };
 
-function createNewClass() {
+function showCreateNewClassPopup() {
     if ($('#modal_Class_New').length <= 0) {
         buildCreateNewClassPopup(null);
         $('#modal_Class_New').on('show.bs.modal', function (e) {
             fillNewClassSymbol();
             fillRoomList();
-            fillTeacherListAndSymbol();
+            fillTeacherList();
         });
 
         $('#btn_NewRoom_Class_New').on('click', function () {
@@ -120,7 +115,7 @@ function buildCreateNewClassPopup(rspXML) {
     '                    <div class="form-group row">' +
     '                        <label for="sel_Level_Class_New" class="col-3 col-form-label class-create">级别</label>' +
     '                        <div class="col-9">' +
-    '                            <select class="form-control" id="sel_Level_Class_New">' +
+    '                            <select class="form-control form-control-sm" id="sel_Level_Class_New">' +
     '                                <option value="1">初级</option>' +
     '                                <option value="2">中级</option>' +
     '                                <option value="3">高级</option>' +
@@ -132,41 +127,41 @@ function buildCreateNewClassPopup(rspXML) {
     '                    <div class="form-group row">' +
     '                        <label for="txt_Symbol_Class_New" class="col-3 col-form-label class-create">编号</label>' +
     '                        <div class="col-9">' +
-    '                            <input class="form-control" type="text" value="" id="txt_Symbol_Class_New" readonly>' +
+    '                            <input class="form-control form-control-sm" type="text" value="" id="txt_Symbol_Class_New" readonly>' +
     '                        </div>' +
     '                    </div>' +
     '                    <div class="form-group row">' +
     '                        <label for="txt_Teacher_Class_New`" class="col-3 col-form-label class-create">教员</label>' +
     '                        <div class="col-9">' +
-    '                            <select class="form-control" value="" id="sel_Teacher_Class_New"></select>' +
+    '                            <select class="form-control form-control-sm" value="" id="sel_Teacher_Class_New"></select>' +
     '                        </div>' +
     '                    </div>' +
     '                    <div class="form-group row">' +
     '                        <label for="txt_Room_Class_New" class="col-3 col-form-label class-create">教室</label>' +
     '                        <div class="col-6">' +
-    '                            <select class="form-control" value="" id="sel_Room_Class_New"></select>' +
+    '                            <select class="form-control form-control-sm" value="" id="sel_Room_Class_New"></select>' +
     '                        </div>' +
     '                        <div class="col-2">' +
-    '                            <button class="btn btn-primary" id="btn_NewRoom_Class_New" type="button">添加</button>' +
+    '                            <button class="btn btn-sm btn-primary" id="btn_NewRoom_Class_New" type="button">添加</button>' +
     '                        </div>' +
     '                    </div>' +
     '                    <div class="form-group row">' +
     '                        <label for="txt_Start_Class_New" class="col-3 col-form-label class-create">开学时间</label>' +
     '                        <div class="col-9">' +
-    '                            <input class="form-control" type="date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '" id="txt_Start_Class_New">' +
+    '                            <input class="form-control form-control-sm" type="date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '" id="txt_Start_Class_New">' +
     '                        </div>' +
     '                    </div>' +
     '                    <div class="form-group row">' +
     '                        <label for="txt_Amount_Class_New" class="col-3 col-form-label class-create">人数</label>' +
     '                        <div class="col-9">' +
-    '                            <input class="form-control" type="number" value="10" id="txt_Amount_Class_New">' +
+    '                            <input class="form-control form-control-sm" type="number" value="10" id="txt_Amount_Class_New">' +
     '                        </div>' +
     '                    </div>' +
     '                </form>' +
     '            </div>' +
     '            <div class="modal-footer">' +
-    '                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>' +
-    '                <button type="button" class="btn btn-primary">确定</button>' +
+    '                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>' +
+    '                <button type="button" class="btn btn-sm btn-primary">确定</button>' +
     '            </div>' +
     '        </div>' +
     '    </div>' +
@@ -285,13 +280,13 @@ function buildCreateNewRoomPopup() {
     '                <form>' +
     '                    <div class="form-group">' +
     '                        <label for="recipient-name" class="form-control-label">教室名称:</label>' +
-    '                        <input type="text" class="form-control" id="recipient-name">' +
+    '                        <input type="text" class="form-control form-control-sm" id="recipient-name">' +
     '                    </div>' +
     '                </form>' +
     '            </div>' +
     '            <div class="modal-footer">' +
-    '                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>' +
-    '                <button type="button" class="btn btn-primary">添加</button>' +
+    '                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>' +
+    '                <button type="button" class="btn btn-sm btn-primary">添加</button>' +
     '            </div>' +
     '        </div>' +
     '    </div>' +
@@ -416,12 +411,15 @@ function buildDataHeaderHTML_Class() {
 
     $('#container_Datas').append($(tmpHTMLStr));
     buildDataHeaderButtons_Class();
-    buildDataHeaderFields_Class();
+    //buildDataHeaderFields_Class();
 };
 
 function buildDataHeaderButtons_Class() {
-    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success" id="btn_NewClass_DataTB">添加班级</button>'));
-    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-warning" id="btn_DelClasses_DataTB" style="margin-left:10px;">批量删除</button>'));
+    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success" id="btn_NewClass_DataTB">创建班级</button>'));
+    //$('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-warning" id="btn_DelClasses_DataTB" style="margin-left:10px;">批量删除</button>'));
+    $('#btn_NewClass_DataTB').on('click',function(){
+        showCreateNewClassPopup();
+    })
 };
 
 function buildDataHeaderFields_Class() {
@@ -452,7 +450,7 @@ function buildDataTableHTML_Class(data) {
 
 function buildDataTableColHeaderHTML_Class() {
     var tmpHTMLStr = '<th style="width: 50px;"></th>' +
-    '<th style="width: 120px;">操作</th>' +
+    '<th style="width: 80px;">操作</th>' +
     '<th>编号</th>' +
     '<th>级别</th>' +
     '<th>教员</th>' +
@@ -470,7 +468,7 @@ function buildDataTableDataRowsHTML_Class(data) {
         '   <th scope="row">' + (i + 1) + '</th>' +
         '   <td>' +
         '       <button type="button" class="btn btn-sm btn-success btn-Class-Detail" data-target="' + data[i].symbol + '">明细</button>' +
-        '       <button type="button" class="btn btn-sm btn-warning btn-Class-Delete" data-target="' + data[i].symbol + '">删除</button>' +
+        //'       <button type="button" class="btn btn-sm btn-warning btn-Class-Delete" data-target="' + data[i].symbol + '">删除</button>' +
         '   </td>' +
         '   <td>' + data[i].symbol + '</td>' +
         '   <td>' + data[i].level.name + '</td>' +
@@ -482,6 +480,6 @@ function buildDataTableDataRowsHTML_Class(data) {
         $('#container_DataTable_Rows').append($(tmpHTMLStr));
     }
 
-    $('.btn.btn-sm.btn-success.btn-Class-doc').on('click', openClassDoc);
-    $('.btn.btn-sm.btn-warning.btn-Class-wp').on('click', openWorkplatform);
+    //$('.btn.btn-sm.btn-success.btn-Class-doc').on('click', openClassDoc);
+    //$('.btn.btn-sm.btn-warning.btn-Class-wp').on('click', openWorkplatform);
 };
