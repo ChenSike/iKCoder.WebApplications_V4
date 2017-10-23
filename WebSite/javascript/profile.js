@@ -11,7 +11,6 @@ var _distributionMap = {
 
 function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
-    $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
     //$('#sideBar_Page_Left').height($('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height());
     $('.container-fluid.main-content-wrap').height($('body').height() - $('nav').height() - $('footer').height());
     $('.row.justify-content-start.main-content-row').height($('.container-fluid.main-content-wrap').height());
@@ -26,7 +25,7 @@ function initPage() {
 };
 
 function loadSiderbarData() {
-    $('#txt_NickName_Profile_Title').text('Tom');
+    $('#txt_NickName_Profile_Title').text('Alice');
     $('#txt_Title_Profile_Title').text('Level  1');
 };
 
@@ -694,8 +693,8 @@ function rebuildSettingsPanel(contentHeight) {
     ];
     var tmpHeight = calcSettingsItemheight(contentHeight);
     var data = {
-        header: 'image/logotop.png',
-        name: 'Tom',
+        header: 'image/tmpheader.jpg',
+        name: 'Alice',
         gender: '1',
         birthday: '2006-08-08',
         province: '广东',
@@ -812,7 +811,7 @@ function buildSettingsProfile(data, tmpHeight) {
 
 function updateProfileValue(data) {
     var headerImg = new Image();
-    headerImg.src = 'image/logotop.png';
+    headerImg.src = 'image/tmpheader.jpg';
     headerImg.onload = function () {
         $('#img_Settings_Profile_Header').attr('src', headerImg.src);
     }
@@ -1042,9 +1041,9 @@ function initCustomHeaderImg(uploadType) {
     ctx.clearRect(0, 0, 320, 320);
     var image = new Image();
     if (!uploadType && _currentHeaderImageSrc == '') {
-        image.src = 'image/logotop.png';
+        image.src = 'image/tmpheader.jpg';
     } else if (typeof uploadType == 'string' && uploadType != '') {
-        image.src = 'image/logotop.png';
+        image.src = 'image/tmpheader.jpg';
         //image.src = "images/head/head_11.jpg";
     } else {
         image.src = _currentHeaderImageSrc;
@@ -1308,8 +1307,8 @@ function rebuildSettingsTitles(tmpHeight) {
 function rebuildReportPanel() {
     var data = {
         user: {
-            header: 'image/logotop.png',
-            name: 'Tom',
+            header: 'image/tmpheader.jpg',
+            name: 'Alice',
             title: 'Level 1',
             exp: 2.5,
             over: 65,
@@ -2265,7 +2264,7 @@ function displayMessageByType(type) {
     var data = [
             { id: '1', top: 1, type: '1', content: '系统消息: 欢迎来到iKCoder的编程世界！', time: '2017-10-1', answer: null },
             { id: '2', top: 1, type: '1', content: '系统消息: 课件版本已更新至最新版本！', time: '2017-10-20', answer: null },
-            { id: '3', top: 1, type: '2', content: '提问: 如果在代码状态进行参数修改是否有效？', time: '2017-10-7', answer: { id: '4', type: '21', content: '解答: 你好，Tom，在代码状态进行参数修改是有效的。', time: '2017-10-8', owner: '1' } }
+            { id: '3', top: 1, type: '2', content: '提问: 如果在代码状态进行参数修改是否有效？', time: '2017-10-7', answer: { id: '4', type: '21', content: '解答: 你好，Alice，在代码状态进行参数修改是有效的。', time: '2017-10-8', owner: '1' } }
     ];
 
     var tmpDatas = data;
@@ -2460,6 +2459,7 @@ function displayHomeworkByType(type) {
             status: '',
             title: 'B-01-001: 模式识别',
             content: 'Experimental topics 1, Content of experimental topics.',
+            attach: ['image/tankback.jpg', 'image/TrailBack.png', 'image/gaosiback.jpg', 'image/ikcoderkid.png'],
             correct: "",
             incorrect: ""
         }
@@ -2520,9 +2520,22 @@ function rebuildHomeworkContents(data, type) {
         tmpHTMLArr.push('       </table>');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('   <div id="collapse_' + data[i].id + '" class="collapse profile-homework-item" role="tabpanel" aria-labelledby="heading_' + data[i].id + '" data-parent="#accordion" data-target="' + type + '|' + data[i].id + '">');
-        tmpHTMLArr.push('       <div class="card-block" id="wrap_profile_homework_card_block_' + data[i].id + '" style="padding:' + blockPadding + 'px; border: solid 5px rgba(47, 168, 225,0.3);">');
+        tmpHTMLArr.push('       <div class="card-block" id="wrap_profile_homework_card_block_' + data[i].id + '" style="padding:' + blockPadding + 'px; border: solid 2px rgb(188, 188, 188);;">');
         if (type == '2') {
-            tmpHTMLArr.push(data[i].content);
+            tmpHTMLArr.push('       <table class="table table-sm" style="margin-bottom: 0px;font-size: 14px;">');
+            tmpHTMLArr.push('           <tbody>');
+            if (data[i].attach.length > 0) {
+                tmpHTMLArr.push('               <tr>');
+                tmpHTMLArr.push('                   <td class="profile-message-date-text" style="font-weight:bold; border: none;background-color: orange;border-radius: 10px; padding-left: 20px;">');
+                tmpHTMLArr.push('                       <a href="#" id="lbtn_profile_homework_attach" data-target="' + data[i].id + '">共有' + data[i].attach.length + '个附件，点击查看。</a>');
+                tmpHTMLArr.push('                   </td>');
+                tmpHTMLArr.push('               <tr>');
+            }
+            tmpHTMLArr.push('               <tr>');
+            tmpHTMLArr.push('                   <td class="profile-message-date-text" style="border: none;">' + data[i].content + '</td>');
+            tmpHTMLArr.push('               <tr>');
+            tmpHTMLArr.push('           <tbody>');
+            tmpHTMLArr.push('       <table class="table" style="margin-bottom: 0px;">');
         }
 
         tmpHTMLArr.push('       </div>');
@@ -2547,6 +2560,17 @@ function rebuildHomeworkContents(data, type) {
         wrapSection.height(tmpHeight);
     }
     //$('#wrap_col_profile_homework_items').height($('.container-fluid.wrap-homework-section').height());
+    $('#lbtn_profile_homework_attach').on('click', function () {
+        var dataId = $(arguments[0].target).attr('data-target');
+        var attachs = [];
+        for (var i = 0; i < data.length; i++) {
+            if (dataId == data[i].id) {
+                attachs = data[i].attach;
+            }
+        }
+
+        showHomeworkAttachs(attachs);
+    });
 
     if (type == '1') {
         var tmpItem = $('.collapse.profile-homework-item');
@@ -2880,6 +2904,59 @@ function clearUncompleteState() {
     //$('.left-bar-homework-count').hide();
 };
 
+function showHomeworkAttachs(attachs) {
+    if ($('#modal_Profile_HW_Attachs').length == 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_Profile_HW_Attachs" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;max-width: 70%; max-height: 70%;">');
+        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">题目附件</h5>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('                <div id="carousel_Profile_HW_Attachs" class="carousel slide" data-ride="carousel" data-interval="90000" data-keyboard="true" data-wrap="false" data-ride="true">');
+        tmpHTMLStr.push('                    <div class="carousel-inner">');
+        tmpHTMLStr.push('                    </div>');
+        tmpHTMLStr.push('                    <a class="carousel-control-prev" href="#carousel_Profile_HW_Attachs" role="button" data-slide="prev">');
+        tmpHTMLStr.push('                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>');
+        tmpHTMLStr.push('                        <span class="sr-only" style="color:darkred">Previous</span>');
+        tmpHTMLStr.push('                    </a>');
+        tmpHTMLStr.push('                    <a class="carousel-control-next" href="#carousel_Profile_HW_Attachs" role="button" data-slide="next">');
+        tmpHTMLStr.push('                        <span class="carousel-control-next-icon" aria-hidden="true"></span>');
+        tmpHTMLStr.push('                        <span class="sr-only">Next</span>');
+        tmpHTMLStr.push('                    </a>');
+        tmpHTMLStr.push('                </div>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+        $('#carousel_Profile_HW_Attachs .carousel-inner').empty();
+        var tmpItemStr = '';
+        for (var i = 0; i < attachs.length; i++) {
+            if (i == 0) {
+                tmpItemStr += '<div class="carousel-item active">';
+            } else {
+                tmpItemStr += '<div class="carousel-item">';
+            }
+
+            tmpItemStr += '<img class="d-block w-100" src="' + attachs[i] + '" alt="Second slide">';
+            tmpItemStr += '</div>';
+        }
+        $('#carousel_Profile_HW_Attachs .carousel-inner').append($(tmpItemStr));
+
+    }
+
+    $('#modal_Profile_HW_Attachs').modal('show');
+};
+
 /*Exam*/
 var _currentExamItem = null;
 function rebuildExamPanel(contentHeight) {
@@ -2966,29 +3043,38 @@ function rebuildExamContents() {
     tmpHTMLArr.push('           <div class="container-fluid wrap-exam-items no-padding" style="background-color:rgb(255,255,255);">');
     tmpHTMLArr.push('               <div class="row no-margin">');
     tmpHTMLArr.push('                   <div class="col-12 no-padding" id="wrap_col_profile_exam_items" style="overflow:auto;">');
-    tmpHTMLArr.push('<div class="card" style="border-radius: 0px;">');
-    tmpHTMLArr.push('   <div class="card-header" role="tab" id="heading_' + data.id + '" style="padding:0px;">');
-    tmpHTMLArr.push('       <table class="table table-striped" style="margin-bottom: 0px;">');
-    tmpHTMLArr.push('           <tbody>');
-    tmpHTMLArr.push('               <tr>');
-    tmpHTMLArr.push('                   <th style="width: 50px; padding-left:20px;line-height: 20px;"><i class="fa fa-lg fa-superscript profile-homework-top-symbol complete"></i></th>');
-    tmpHTMLArr.push('                   <td><p style="font-weight:bold; color: rgb(47, 168, 225)">' + data.title + '</p></td>');
-    tmpHTMLArr.push('                   <td class="profile-exam-date-text">' + data.date + '</td>');
-    tmpHTMLArr.push('                   <td class="profile-exam-date-text" id="td_Profile_Exam_Timer"><button type="button" class="btn btn-sm btn-success" id="btn_Profile_Exam_Begin">开始测试</button></td>');
-    tmpHTMLArr.push('                   <td class="profile-exam-date-text" style="width: 100px;"><button type="button" class="btn btn-sm btn-warning" id="btn_Profile_Exam_Submit" style="display:none;">完成测试</button></td>');
-    //tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-correct-count-' + data.id + '" style="min-width:20px; color: rgb(34,139,34);"><i class="fa fa-check"></i><span>' + data.correct + '</span></td>');
-    //tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-question-count-' + data.id + '" style="min-width:20px; color: rgb(243,151,0);"><i class="fa fa-question"></i><span>' + (data.total - data.incorrect - data.correct) + '</span</td>');
-    //tmpHTMLArr.push('                   <td class="profile-exam-date-text exam-item-incorrect-count-' + data.id + '" style="min-width:20px; color: rgb(255,0,0);"><i class="fa fa-remove"></i><span>' + data.incorrect + '</span</td>');
-    tmpHTMLArr.push('               </tr>');
-    tmpHTMLArr.push('           </tbody>');
-    tmpHTMLArr.push('       </table>');
-    tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('   <div id="collapse_exam_' + data.id + '" class="collapse profile-exam-item" role="tabpanel" aria-labelledby="heading_exam_' + data.id + '" data-parent="#accordion">');
-    tmpHTMLArr.push('       <div class="card-block" id="wrap_profile_exam_card_block_' + data.id + '" style="padding: 0px; border: solid 5px rgba(47, 168, 225,0.3);">');
+    tmpHTMLArr.push('                       <div class="card" style="border-radius: 0px;">');
+    tmpHTMLArr.push('                           <div class="card-header" role="tab" id="heading_' + data.id + '" style="padding:0px;">');
+    tmpHTMLArr.push('                               <table class="table table-striped" style="margin-bottom: 0px;">');
+    tmpHTMLArr.push('                                   <tbody>');
+    tmpHTMLArr.push('                                       <tr>');
+    tmpHTMLArr.push('                                           <th style="width: 50px; padding-left:20px;line-height: 20px;">');
+    tmpHTMLArr.push('                                               <i class="fa fa-lg fa-superscript profile-homework-top-symbol complete"></i>');
+    tmpHTMLArr.push('                                           </th>');
+    tmpHTMLArr.push('                                           <td><p style="font-weight:bold; color: rgb(47, 168, 225)">' + data.title + '</p></td>');
+    tmpHTMLArr.push('                                           <td class="profile-exam-date-text">' + data.date + '</td>');
+    tmpHTMLArr.push('                                           <td class="profile-exam-date-text" id="td_Profile_Exam_Timer">');
+    tmpHTMLArr.push('                                               <button type="button" class="btn btn-sm btn-success" id="btn_Profile_Exam_Begin">开始测试</button>');
+    tmpHTMLArr.push('                                           </td>');
+    tmpHTMLArr.push('                                           <td class="profile-exam-date-text" style="width: 100px;">');
+    tmpHTMLArr.push('                                               <button type="button" class="btn btn-sm btn-warning" id="btn_Profile_Exam_Submit" style="display:none;">完成测试</button>');
+    tmpHTMLArr.push('                                           </td>');
+    tmpHTMLArr.push('                                           <td class="profile-exam-date-text" style="min-width:20px; color: rgb(34,139,34); display:none;">');
+    tmpHTMLArr.push('                                               <i class="fa fa-check"></i><span class="exam-item-correct-count"></span>');
+    tmpHTMLArr.push('                                           </td>');
+    tmpHTMLArr.push('                                           <td class="profile-exam-date-text" style="min-width:20px; color: rgb(255,0,0);display:none;">');
+    tmpHTMLArr.push('                                               <i class="fa fa-remove"></i><span class="exam-item-incorrect-count"></span>');
+    tmpHTMLArr.push('                                           </td>');
+    tmpHTMLArr.push('                                       </tr>');
+    tmpHTMLArr.push('                                   </tbody>');
+    tmpHTMLArr.push('                               </table>');
+    tmpHTMLArr.push('                           </div>');
+    tmpHTMLArr.push('                           <div id="collapse_exam_' + data.id + '" class="collapse profile-exam-item" role="tabpanel" aria-labelledby="heading_exam_' + data.id + '" data-parent="#accordion">');
+    tmpHTMLArr.push('                               <div class="card-block" id="wrap_profile_exam_card_block_' + data.id + '" style="padding: 0px; border: solid 2px rgb(188, 188, 188);;">');
     loadExamItems(tmpHTMLArr);
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('</div>');
+    tmpHTMLArr.push('                               </div>');
+    tmpHTMLArr.push('                           </div>');
+    tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
@@ -3021,7 +3107,11 @@ function formatTimeForTiming(seconds, type) {
         var wrap = $('#span_Profile_Exam_Time');
         var times = wrap.text().split(':');
         var pSecs = parseInt(times[0]) * 60 + parseInt(times[1]);
-        seconds = seconds - pSecs;
+        if (type == 2) {
+            seconds = seconds - pSecs;
+        } else {
+            seconds = pSecs;
+        }
     }
 
     var mins = parseInt(seconds / 60);
@@ -3046,6 +3136,14 @@ function beginExam(startTime, collapseId) {
         $('#btn_Profile_Exam_Submit').show();
         $('#' + collapseId).addClass('show');
         $('#btn_Profile_Exam_Submit').on('click', function () {
+            var text = formatTimeForTiming(startTime * 60, 3).text;
+            var tmpAlertStr = [];
+            tmpAlertStr.push('<div class="alert alert-warning" id="alert_Profile_Exam_MoreTimeLeft" role="alert">');
+            tmpAlertStr.push('  <strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.');
+            tmpAlertStr.push('  <button type="button" class="btn btn-primary">Primary</button>');
+            tmpAlertStr.push('  <button type="button" class="btn btn-success">success</button>');
+            tmpAlertStr.push('</div>');
+            $('body').append(tmpAlertStr.join(''));
             completeExam(startTime * 60);
         });
     }
@@ -3064,13 +3162,46 @@ function completeExam(totalTime) {
     window.clearTimeout(_gTimeoutSymbol);
     $('#form_Profile_Exam').find('fieldset').prop('disabled', true);
     $('.timer-profile-exam-progress').removeClass('fa-pulse');
-    $('#btn_Profile_Exam_Submit').hide();
+    //$('#btn_Profile_Exam_Submit').hide();
+    $('#btn_Profile_Exam_Submit').parent().remove();
     var timerObj = formatTimeForTiming(totalTime, 2);
     $('#td_Profile_Exam_Timer').empty();
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<i class="fa fa-clock-o fa-pulse fa-lg fa-fw timer-profile-exam-progress" style="color:rgb(34,139,34);"></i>');
     tmpHTMLArr.push('<span id="span_Profile_Exam_Time_Cost" style="padding-left:10px;">共用时:' + timerObj.text + '</span>');
     $('#td_Profile_Exam_Timer').append($(tmpHTMLArr.join('')));
+
+    var answerFileds = $('#form_Profile_Exam fieldset');
+    var subjectId = '';
+    var inputs = [];
+    var answers = [];
+    var retCorrect = 0;
+    var retTotal = _currentExamItem.items.length;
+    for (var i = 0; i < answerFileds.length; i++) {
+        subjectId = $(answerFileds[i]).attr('data-target');
+        for (var j = 0; j < retTotal; j++) {
+            if (_currentExamItem.items[j].id == subjectId) {
+                answers = [];
+                inputs = $(answerFileds[i]).find('.form-check-input');
+                for (var k = 0; k < inputs.length; k++) {
+                    if ($(inputs[k]).prop('checked')) {
+                        answers.push($(inputs[k]).val());
+                    }
+                }
+
+                if (answers.length > 0 && checkAnswersDo(answers, _currentExamItem.items[j].correct)) {
+                    retCorrect++
+                }
+
+                break;
+            }
+        }
+    }
+
+    $('span.exam-item-correct-count').text(retCorrect);
+    $('span.exam-item-correct-count').parent().show();
+    $('span.exam-item-incorrect-count').text(retTotal - retCorrect);
+    $('span.exam-item-incorrect-count').parent().show();
     //$('#btn_Profile_Exam_Submit').parent().append('<span>共用时: ' + timerObj.text + '</span>');
 }
 
@@ -3096,7 +3227,7 @@ function loadExamItems(tmpHTMLArr) {
         tmpHTMLArr.push('               <tr style="border: none;">');
         tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none;"></th>');
         tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none;">');
-        tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_exam_item_' + itemId + '_' + data[i].id + '" style="margin:0px;">');
+        tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_exam_item_' + itemId + '_' + data[i].id + '" style="margin:0px;" data-target="' + data[i].id + '">');
         for (var j = 0; j < data[i].options.length; j++) {
             chkName = 'chk-exam-item-' + itemId + '-' + data[i].id;
             chkId = 'chk_Exam_Item_' + itemId + '_' + data[i].id + '_' + j;
@@ -3125,7 +3256,7 @@ function loadExamItems(tmpHTMLArr) {
 /*Global*/
 var _headerImgSrc = '';
 function loadHeaderImg() {
-    _headerImgSrc = 'image/logotop.png';
+    _headerImgSrc = 'image/tmpheader.jpg';
     _loadIMG(_headerImgSrc, loadHeaderImg_Do);
 };
 

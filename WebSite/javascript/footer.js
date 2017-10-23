@@ -17,7 +17,7 @@ function BuildFooterHTML() {
     tmpHtmlStrArr.push('    <div class="footer-txt" style="background-color: rgb(23,23,23);">');
     tmpHtmlStrArr.push('        <div class="container w-100">');
     tmpHtmlStrArr.push('            <div class="row justify-content-center">');
-    tmpHtmlStrArr.push('                <div class="col-10">');
+    tmpHtmlStrArr.push('                <div class="col-11">');
     tmpHtmlStrArr.push('                    <p class="copyright-txt">');
     tmpHtmlStrArr.push('                        <span style="font-weight:bold">');
     tmpHtmlStrArr.push('                           深圳市鹏博教育科技有限公司');
@@ -26,13 +26,16 @@ function BuildFooterHTML() {
     tmpHtmlStrArr.push('                        <span style="font-weight:bold">');
     tmpHtmlStrArr.push('                        iKCoder.Co (ShenZhen)');
     tmpHtmlStrArr.push('                        </span>');
+    tmpHtmlStrArr.push('                        <span style="color: #f39700; cursor: default; font-style: italic; font-weight: bold; padding-left:10px;">');
+    tmpHtmlStrArr.push('                        Demo Version');
+    tmpHtmlStrArr.push('                        </span>');
     tmpHtmlStrArr.push('                    </p>');
     if (navigator.userAgent.toLowerCase().indexOf("ipad") < 0) {
         tmpHtmlStrArr.push('                    <div class="socials">');
-        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('微信') + '"><i class="fa fa-weixin fa-lg"></i></a>');
-        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('新浪微博') + '"><i class="fa fa-weibo fa-lg"></i></a>');
-        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('QQ') + '"><i class="fa fa-qq fa-lg"></i></a>');
-        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('人人') + '"><i class="fa fa-renren fa-lg"></i></a>');
+        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('微信') + '"><i class="fa fa-weixin"></i></a>');
+        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('新浪微博') + '"><i class="fa fa-weibo"></i></a>');
+        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('QQ') + '"><i class="fa fa-qq"></i></a>');
+        tmpHtmlStrArr.push('                        <a href="#" title="' + _getLabel('人人') + '"><i class="fa fa-renren"></i></a>');
         tmpHtmlStrArr.push('                    </div>');
     }
     tmpHtmlStrArr.push('                </div>');

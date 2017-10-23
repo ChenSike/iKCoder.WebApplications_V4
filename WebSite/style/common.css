@@ -168,11 +168,11 @@ header {
 }
 
 #footer .copyright-txt {
-    color: rgb(102,102,102);
+    color: rgb(172,172,172);
     float: left;
-    font-size: 1rem;
+    font-size: 13px;
     font-weight: 300;
-    padding: 13px 0px;
+    padding: 5px 0px;
     margin: 0px;
 }
 
@@ -186,13 +186,13 @@ header {
 
     #footer .socials a {
         float: left;
-        width: 36px;
-        height: 36px;
+        width: 20px;
+        height: 20px;
         color: rgb(102,102,102);
-        font-size: 1.2rem;
-        line-height: 34px;
+        font-size: 15px;
+        line-height: 20px;
         text-align: center;
-        margin: 7px 0px 7px 20px;
+        margin: 5px 0px 5px 20px;
         border: 0px solid rgb(102,102,102);
         border-radius: 50%;
     }

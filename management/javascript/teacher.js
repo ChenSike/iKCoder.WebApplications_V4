@@ -65,7 +65,7 @@ function initEvents() {
     $('#menu_Exam').on('click', function () {
         buildDataHTML_Exam();
     });
-    
+
     $('#menu_Q_A').on('click', function () {
     });
 
@@ -84,7 +84,7 @@ function buildUserInfoHTML(data) {
     //$('#image_User_Header').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
 };
 
-/*Lesson*/
+/*ClassBegin*/
 function formatData_ClassBegin() {
     var data = [
         {
@@ -93,7 +93,8 @@ function formatData_ClassBegin() {
             content: '变量 1 ',
             status: '0',
             symbol: 'B_01_001',
-            grade: { id: 1, name: '初级1班' }
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
         }, {
             datetime: '2017-10-10 14:00',
             room: 'Room 2',
@@ -183,8 +184,8 @@ function buildDataTableHTML_ClassBegin(data) {
 };
 
 function buildDataTableColHeaderHTML_ClassBegin() {
-    var tmpHTMLStr = '<th style="width: 50px;"></th>' +
-    '<th style="width: 120px;">操作</th>' +
+    var tmpHTMLStr = '<th style="width: 45px;"></th>' +
+    '<th style="width: 260px;">操作</th>' +
     '<th>时间</th>' +
     '<th>班级</th>' +
     '<th>教室</th>' +
@@ -196,29 +197,114 @@ function buildDataTableColHeaderHTML_ClassBegin() {
 
 function buildDataTableDataRowsHTML_ClassBegin(data) {
     for (var i = 0; i < data.length; i++) {
-        var tmpHTMLStr = '<tr>' +
-        '   <th scope="row">' + (i + 1) + '</th>' +
-        '   <td>' +
-        '       <button type="button" class="btn btn-sm btn-success btn-lesson-doc" data-target="' + data[i].symbol + '">教案</button>' +
-        '       <button type="button" class="btn btn-sm btn-warning btn-lesson-wp" data-target="' + data[i].symbol + '">课件</button>' +
-        '   </td>' +
-        '   <td>' + data[i].datetime + '</td>' +
-        '   <td>' + data[i].grade.name + '</td>' +
-        '   <td>' + data[i].room + '</td>' +
-        '   <td>' + data[i].symbol + '</td>' +
-        '   <td>' + data[i].content + '</td>' +
-        '   <td><button type="button" class="btn btn-sm btn-primary btn-lesson-classbegin" data-target="' + data[i].symbol + '">上课</button></td>' +
-        '</tr>';
-        $('#container_DataTable_Rows').append($(tmpHTMLStr));
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-classbegin-doc" data-target="' + data[i].symbol + '">教案</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-warning btn-classbegin-wp" data-target="' + data[i].symbol + '">课件</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-classbegin-signin" data-target="' + data[i].symbol + '">签到</button>');
+        if (typeof (data[i].custome) != 'undefined' && data[i].custome > 0) {
+            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-primary btn-classbegin-custom" data-target="' + data[i].symbol + '">自定义教案</button>');
+        }
+
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td>' + data[i].datetime + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].grade.name + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].room + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].symbol + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].content + '</td>');
+        tmpHTMLStr.push('   <td><button type="button" class="btn btn-sm btn-primary btn-classbegin-begin" data-target="' + data[i].symbol + '">上课</button></td>');
+        tmpHTMLStr.push('</tr>');
+        $('#container_DataTable_Rows').append($(tmpHTMLStr.join('')));
     }
 
-    $('.btn.btn-sm.btn-success.btn-lesson-doc').on('click', openLessonDoc);
-    $('.btn.btn-sm.btn-warning.btn-lesson-wp').on('click', openWorkplatform);
-    $('.btn.btn-sm.btn-primary.btn-lesson-classbegin').on('click', function () {
+    $('.btn.btn-sm.btn-success.btn-classbegin-doc').on('click', openLessonDoc);
+    $('.btn.btn-sm.btn-warning.btn-classbegin-wp').on('click', openWorkplatform);
+    $('.btn.btn-sm.btn-info.btn-classbegin-signin').on('click', showStudentsSignIn);
+    $('.btn.btn-sm.btn-primary.btn-classbegin-begin').on('click', function () {
         var parentTd = $(arguments[0].target).parent();
         parentTd.empty();
         parentTd.append($('<span>已开始</span>'));
     });
+};
+
+function showStudentsSignIn() {
+    var tmpHTMLStr = [];
+    if ($('#modal_ClassBegin_SignIn').length == 0) {
+        tmpHTMLStr.push('<div class="modal fade" id="modal_ClassBegin_SignIn" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">');
+        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">签到情况</h5>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('               <div class="container-fluid">');
+        tmpHTMLStr.push('                   <div class="row">');
+        tmpHTMLStr.push('                       <div class="col-12">');
+        tmpHTMLStr.push('                           <table class="table table-striped">');
+        tmpHTMLStr.push('                               <thead>');
+        tmpHTMLStr.push('                                   <tr id="th_DataTable_Header_ClassBegin_SignIn">');
+        tmpHTMLStr.push('                                       <th style="width: 50px;"></th>');
+        tmpHTMLStr.push('                                       <th>学员</th>');
+        tmpHTMLStr.push('                                       <th style="width: 60px;">签到</th>');
+        tmpHTMLStr.push('                                   </tr>');
+        tmpHTMLStr.push('                               </thead>');
+        tmpHTMLStr.push('                               <tbody id="tb_DataTable_Body_ClassBegin_SignIn"></tbody>');
+        tmpHTMLStr.push('                           </table>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('               </div>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+    }
+
+    var data = [
+        { id: '1', name: '学员 1', signin: 1 },
+        { id: '2', name: '学员 2', signin: 1 },
+        { id: '3', name: '学员 3', signin: 1 },
+        { id: '4', name: '学员 4', signin: 1 },
+        { id: '5', name: '学员 5', signin: 0 },
+        { id: '6', name: '学员 6', signin: 1 },
+        { id: '7', name: '学员 7', signin: 0 },
+        { id: '8', name: '学员 8', signin: 1 },
+        { id: '9', name: '学员 9', signin: 1 },
+        { id: '10', name: '学员 10', signin: 0 }
+    ];
+
+    $('#tb_DataTable_Body_ClassBegin_SignIn').empty();
+    for (var i = 0; i < data.length; i++) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td>' + data[i].name + '</td>');
+        tmpHTMLStr.push('   <td style="text-align: center;">');
+        tmpHTMLStr.push('       <label class="custom-control custom-checkbox">');
+        if (data[i].signin == 1) {
+            tmpHTMLStr.push('           <input type="checkbox" class="custom-control-input" checked disabled>');
+            tmpHTMLStr.push('           <span class="custom-control-indicator bg-success"></span>');
+        } else {
+            tmpHTMLStr.push('           <input type="checkbox" class="custom-control-input" disabled>');
+            tmpHTMLStr.push('           <span class="custom-control-indicator bg-warning"></span>');
+        }
+
+        tmpHTMLStr.push('       </label>');
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('</tr>');
+        $('#tb_DataTable_Body_ClassBegin_SignIn').append($(tmpHTMLStr.join('')));
+    }
+
+    $('#modal_ClassBegin_SignIn').modal('show');
 };
 
 /*Lesson*/
@@ -229,7 +315,8 @@ function formatData_Lesson() {
             room: 'Room 1',
             content: '变量 1 ',
             status: '0',
-            symbol: 'B_01_001'
+            symbol: 'B_01_001',
+            custome: 1
         }, {
             datetime: '2017-10-11 11:00',
             room: 'Room 2',
@@ -241,7 +328,8 @@ function formatData_Lesson() {
             room: 'Room 3',
             content: '变量 3',
             status: '0',
-            symbol: 'B_01_001'
+            symbol: 'B_01_001',
+            custome: 2
         }, {
             datetime: '2018-01-10 13:00',
             room: 'Room 4',
@@ -354,7 +442,7 @@ function buildDataTableHTML_Lesson(data) {
 
 function buildDataTableColHeaderHTML_Lesson() {
     var tmpHTMLStr = '<th style="width: 50px;"></th>' +
-    '<th style="width: 120px;">操作</th>' +
+    '<th style="width: 210px;">操作</th>' +
     '<th>时间</th>' +
     '<th>教室</th>' +
     '<th>编号</th>' +
@@ -368,19 +456,24 @@ function buildDataTableDataRowsHTML_Lesson(data) {
     var status = '';
     for (var i = 0; i < count; i++) {
         status = (data[i].status == '0' ? '未完成' : '已完成');
-        var tmpHTMLStr = '<tr>' +
-        '   <th scope="row">' + (i + 1) + '</th>' +
-        '   <td>' +
-        '       <button type="button" class="btn btn-sm btn-success btn-lesson-doc" data-target="' + data[i].symbol + '">教案</button>' +
-        '       <button type="button" class="btn btn-sm btn-warning btn-lesson-wp" data-target="' + data[i].symbol + '">课件</button>' +
-        '   </td>' +
-        '   <td>' + data[i].datetime + '</td>' +
-        '   <td>' + data[i].room + '</td>' +
-        '   <td>' + data[i].symbol + '</td>' +
-        '   <td>' + data[i].content + '</td>' +
-        '   <td>' + status + '</td>' +
-        '</tr>';
-        $('#container_DataTable_Rows').append($(tmpHTMLStr));
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-lesson-doc" data-target="' + data[i].symbol + '">教案</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-warning btn-lesson-wp" data-target="' + data[i].symbol + '">课件</button>');
+        if (typeof (data[i].custome) != 'undefined' && data[i].custome > 0) {
+            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-primary btn-lesson-custom" data-target="' + data[i].symbol + '">自定义教案</button>');
+        }
+
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td>' + data[i].datetime + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].room + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].symbol + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].content + '</td>');
+        tmpHTMLStr.push('   <td>' + status + '</td>');
+        tmpHTMLStr.push('</tr>');
+        $('#container_DataTable_Rows').append($(tmpHTMLStr.join('')));
     }
 
     $('.btn.btn-sm.btn-success.btn-lesson-doc').on('click', openLessonDoc);
@@ -398,7 +491,8 @@ function formatData_Doc() {
                 {
                     id: '01',
                     content: '初级 1 ',
-                    symbol: 'B_01_001'
+                    symbol: 'B_01_001',
+                    custome: 1
                 }, {
                     id: '02',
                     content: '初级 2',
@@ -414,7 +508,8 @@ function formatData_Doc() {
                 }, {
                     id: '05',
                     content: '初级 5',
-                    symbol: 'B_01_001'
+                    symbol: 'B_01_001',
+                    custome: 1
                 }
             ]
         }, {
@@ -548,23 +643,14 @@ function buildDataHeaderHTML_Doc() {
     '</div>';
 
     $('#container_Datas').append($(tmpHTMLStr));
-    //buildDataHeaderButtons_Lesson();
-    //buildDataHeaderFields_Lesson();
+    buildDataHeaderButtons_Doc();
 };
 
 function buildDataHeaderButtons_Doc() {
-    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success">添加教员</button>'));
-    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success">批量删除</button>'));
-};
-
-function buildDataHeaderFields_Doc() {
-    var tmpHTMLStr = '<form class="form-inline">' +
-    '   <div class="input-group">' +
-    '       <input type="text" class="form-control  form-control-sm" id="data_" placeholder="Username">' +
-    '       <button type="button" class="btn btn-sm btn-success">搜索</button>' +
-    '   </div>' +
-    '</form>';
-    $('#container_DataHeader_Fields').append($(tmpHTMLStr));
+    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success" id="btn_DOC_Create_Custom">自定义教案</button>'));
+    $('#btn_DOC_Create_Custom').on('click', function () {
+        showCreateCustomDocPopup();
+    });
 };
 
 function buildDataTableHTML_Doc() {
@@ -586,7 +672,7 @@ function buildDataTableHTML_Doc() {
         tmpHTMLStr.push('                   <thead>');
         tmpHTMLStr.push('                       <tr id="container_DataTable_Header">');
         tmpHTMLStr.push('                           <th style="width: 50px;"></th>');
-        tmpHTMLStr.push('                           <th style="width: 120px;">操作</th>');
+        tmpHTMLStr.push('                           <th style="width: 200px;">操作</th>');
         tmpHTMLStr.push('                           <th>编号</th>');
         tmpHTMLStr.push('                           <th>内容</th>');
         tmpHTMLStr.push('                       </tr>');
@@ -615,6 +701,10 @@ function buildDataTableDataRowsHTML_Doc(data, tmpHTMLStr) {
         tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
         tmpHTMLStr.push('   <td>');
         tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-doc-open" data-target="' + data[i].id + '">打开</button>');
+        if (typeof (data[i].custome) != 'undefined' && data[i].custome > 0) {
+            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-doc-custome" data-target="' + data[i].id + '">自定义教案</button>');
+        }
+
         tmpHTMLStr.push('   </td>');
         tmpHTMLStr.push('   <td>' + data[i].symbol + '</td>');
         tmpHTMLStr.push('   <td>' + data[i].content + '</td>');
@@ -622,6 +712,71 @@ function buildDataTableDataRowsHTML_Doc(data, tmpHTMLStr) {
     }
 };
 
+function showCreateCustomDocPopup() {
+    var tmpHTMLStr = [];
+    if ($('#modal_DOC_CreateCustom').length == 0) {
+        tmpHTMLStr.push('<div class="modal fade" id="modal_DOC_CreateCustom" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;max-width: 70%; max-height: 70%;">');
+        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">自定义教案</h5>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('               <div class="container-fluid">');
+        tmpHTMLStr.push('                   <form>');
+        tmpHTMLStr.push('                       <div class="row">');
+        tmpHTMLStr.push('                           <div class="form-group col-md-4">');
+        tmpHTMLStr.push('                               <label for="sel_DOC_Create_Course" class="col-form-label">对应课程</label>');
+        tmpHTMLStr.push('                               <select class="form-control form-control-sm" id="sel_DOC_Create_Course"></select>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                           <div class="form-group col-md-4">');
+        tmpHTMLStr.push('                               <label for="sel_DOC_Create_Template" class="col-form-label">教案模板</label>');
+        tmpHTMLStr.push('                               <select class="form-control form-control-sm" id="sel_DOC_Create_Template"></select>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                           <div class="form-group col-md-4">');
+        tmpHTMLStr.push('                               <label for="btn_DOC_Create_Progress" class="col-form-label">&nbsp;</label>');
+        tmpHTMLStr.push('                               <button type="button" class="btn btn-primary btn-sm form-control" id="btn_DOC_Create_Progress">流程指引</button>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                   </form>');
+        tmpHTMLStr.push('                   <div class="row">');
+        tmpHTMLStr.push('                       <div class="form-group col-12">');
+        tmpHTMLStr.push('                           <div class="file-loading">');
+        tmpHTMLStr.push('                               <label for="input-b9" class="col-form-label">上传教案</label>');
+        tmpHTMLStr.push('                               <input id="input-b9" name="input-b9[]" multiple type="file">');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('               </div>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">提交</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+        $("#input-b9").fileinput({
+            uploadUrl: "index.html",
+            allowedFileExtensions: ["jpg", "png", "gif"],
+            maxImageWidth: 2000,
+            maxFileCount: -1,
+            resizeImage: true
+        }).on('filepreupload', function () {
+            $('#kv-success-box').html('');
+        }).on('fileuploaded', function (event, data) {
+            $('#kv-success-box').append(data.response.link);
+            $('#kv-success-modal').modal('show');
+        });
+    }
+
+    $('#modal_DOC_CreateCustom').modal('show');
+};
 /*Scene*/
 var _currentSceneData = [];
 function formatData_Scene() {

@@ -1,17 +1,10 @@
 ﻿'use strict';
 
 function buildHeaderHTML(isIndexPage) {
-    var tmpString = '';
-    if (_getSearchValue('needcheckstate') == '1') {
-        if ($.cookie('logined_user_nickname')) {
-            tmpString = '&needcheckstate=1';
-        }
-    }
-
     var tmpHtmlStrArr = [];
-    tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header" style="background-color:transparent;z-index: 1040;">');
-    tmpHtmlStrArr.push('    <a class="navbar-brand" href="#">');
-    tmpHtmlStrArr.push('        <img src="image/logo-new-white.png" width="150" height="50" class="d-inline-block align-top img-header-logo" alt="">');
+    tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header" style="background-color:transparent;z-index: 1040; padding:5px;">');
+    tmpHtmlStrArr.push('    <a class="navbar-brand" href="#" style="padding:0px 20px;">');
+    tmpHtmlStrArr.push('        <img src="image/logo-new-black.png" width="225" height="30" class="d-inline-block align-top img-header-logo" alt="">');
     tmpHtmlStrArr.push('    </a>');
     tmpHtmlStrArr.push('    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">');
     tmpHtmlStrArr.push('        <span class="navbar-toggler-icon"></span>');
@@ -21,26 +14,8 @@ function buildHeaderHTML(isIndexPage) {
     tmpHtmlStrArr.push('            <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container" style="padding-right:0px;">');
     tmpHtmlStrArr.push('                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">');
     tmpHtmlStrArr.push('                    <ul class="navbar-nav" id="ul_NavBar_Container">');
-    //tmpHtmlStrArr.push('                        <li class="nav-item">');
-    //tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Course">' + _getLabel('课程') + '</a>');
-    //tmpHtmlStrArr.push('                        </li>');
-    //tmpHtmlStrArr.push('                        <li class="nav-item">');
-    //tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_OnlineCourse">' + _getLabel('体验课') + '</a>');
-    //tmpHtmlStrArr.push('                        </li>');
-    //tmpHtmlStrArr.push('                        <li class="nav-item">');
-    //tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Price">' + _getLabel('价格') + '</a>');
-    //tmpHtmlStrArr.push('                        </li>');
-    //tmpHtmlStrArr.push('                        <li class="nav-item">');
-    //tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Help">' + _getLabel('帮助') + '</a>');
-    //tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_About">' + _getLabel('关于') + '</a>');
-    tmpHtmlStrArr.push('                        </li>');
-    tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" id="linkBtn_Center">' + _getLabel('学员中心') + '</a>');
-    tmpHtmlStrArr.push('                        </li>');
-    tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <a class="nav-link" href="#" style="color: #f39700; cursor: default; font-style: italic; font-weight: bold; font-size: 15px;">Demo Version</a>');
+    tmpHtmlStrArr.push('                            <button type="button" class="btn btn-sm btn-primary" id="btn_Student_SignIn" style="border-radius: 10px;">点击签到</button>');
     tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                    </ul>');
     tmpHtmlStrArr.push('                </div>');
