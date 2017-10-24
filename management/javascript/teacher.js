@@ -28,12 +28,12 @@ function initPage() {
     //});
     var dataXML = StringToXML('<root>' +
         '   <basic>' +
-        '		<usr id="001" nickname="陈思克" last="2017-09-30 12:01:02"/>' +
+        '		<usr id="001" nickname="Aaron" last="2017-09-30 12:01:02"/>' +
         '	</basic>' +
         '</root>');
     var data = {
         id: '001',
-        name: "陈思克",
+        name: "Aaron",
         last: "2017-09-30 12:01:02"
     };
     buildUserInfoHTML(data);
@@ -84,6 +84,14 @@ function buildUserInfoHTML(data) {
     //$('#image_User_Header').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
 };
 
+function buildDataTopHTML() {
+    var tmpHTMLStr = '<div class="row justify-content-end" style="background-color:#F1F1F1;">' +
+    '    <div class="col" style="height:50px;">' +
+    '       <img src="image/logo-new-gray.png" style="width:120px; height:35px; background-color:transparent; border:none; right: 10px; top: 8px; position: absolute;" alt="">' +
+    '    </div>' +
+    '</div>';
+    $('#container_Datas').append($(tmpHTMLStr));
+};
 /*ClassBegin*/
 function formatData_ClassBegin() {
     var data = [
@@ -136,7 +144,7 @@ function buildDataHTML_ClassBegin() {
     var rspXML = "";
     var data = formatData_ClassBegin(rspXML);
     $('#container_Datas').empty();
-    buildDataTopHTML_ClassBegin();
+    buildDataTopHTML();
     buildDataHeaderHTML_ClassBegin();
     buildDataTableHTML_ClassBegin(data);
 };
@@ -155,7 +163,7 @@ function buildDataHeaderHTML_ClassBegin() {
     '    <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">' +
     '        <div class="container-fluid">' +
     '            <div class="row justify-content-around">' +
-    '                <div class="col-2 data-panel-title" style="line-height:40px;">课程表</div>' +
+    '                <div class="col-2 data-panel-title" style="line-height:40px;">开始上课</div>' +
     '                <div class="col" id="container_DataHeader_Button" style="padding-top:5px"></div>' +
     '                <div class="col" id="container_DataHeader_Fields" style="padding-top:5px">' +
     '                </div>' +
@@ -185,7 +193,7 @@ function buildDataTableHTML_ClassBegin(data) {
 
 function buildDataTableColHeaderHTML_ClassBegin() {
     var tmpHTMLStr = '<th style="width: 45px;"></th>' +
-    '<th style="width: 260px;">操作</th>' +
+    '<th style="width: 280px;">操作</th>' +
     '<th>时间</th>' +
     '<th>班级</th>' +
     '<th>教室</th>' +
@@ -311,37 +319,11 @@ function showStudentsSignIn() {
 function formatData_Lesson() {
     var data = [
         {
-            datetime: '2017-10-10 10:00',
-            room: 'Room 1',
-            content: '变量 1 ',
-            status: '0',
-            symbol: 'B_01_001',
-            custome: 1
+            id: '1',
+            name: '初级1班'
         }, {
-            datetime: '2017-10-11 11:00',
-            room: 'Room 2',
-            content: '变量 2',
-            status: '1',
-            symbol: 'B_01_001'
-        }, {
-            datetime: '2017-10-12 12:00',
-            room: 'Room 3',
-            content: '变量 3',
-            status: '0',
-            symbol: 'B_01_001',
-            custome: 2
-        }, {
-            datetime: '2018-01-10 13:00',
-            room: 'Room 4',
-            content: '变量 4',
-            status: '1',
-            symbol: 'B_01_001'
-        }, {
-            datetime: '2018-01-12 14:00',
-            room: 'Room 5',
-            content: '变量 5',
-            status: '0',
-            symbol: 'B_01_001'
+            id: '2',
+            name: '中级1班'
         }
     ];
 
@@ -376,7 +358,7 @@ function buildDataHTML_Lesson() {
     var rspXML = "";
     var data = formatData_Lesson(rspXML);
     $('#container_Datas').empty();
-    buildDataTopHTML_Lesson();
+    buildDataTopHTML();
     buildDataHeaderHTML_Lesson();
     buildDataTableHTML_Lesson(data);
 };
@@ -425,33 +407,113 @@ function buildDataHeaderFields_Lesson() {
 };
 
 function buildDataTableHTML_Lesson(data) {
-    var tmpHTMLStr = '<div class="row">' +
-    '    <div class="col" style="padding-top:10px;">' +
-    '        <table class="table table-striped">' +
-    '            <thead>' +
-    '                <tr id="container_DataTable_Header"></tr>' +
-    '            </thead>' +
-    '            <tbody id="container_DataTable_Rows"></tbody>' +
-    '        </table>' +
-    '    </div>' +
-    '</div>';
-    $('#container_Datas').append($(tmpHTMLStr));
-    buildDataTableColHeaderHTML_Lesson();
-    buildDataTableDataRowsHTML_Lesson(data);
+    var tmpHTMLStr = ['<div class="accordion-white-bg" id="accordion_Lessons_Class" role="tablist">'];
+    var headerId = '';
+    var collapseId = '';
+    var cardblockId = '';
+    for (var i = 0; i < data.length; i++) {
+        headerId = 'hd_Lessons_Class_' + data[i].id;
+        collapseId = 'collapse_Lessons_Class_' + data[i].id;
+        cardblockId = 'cardblock_Lessons_Class_' + data[i].id;
+        tmpHTMLStr.push('   <div class="card">');
+        tmpHTMLStr.push('        <div class="card-header" role="tab" id="' + headerId + '">');
+        tmpHTMLStr.push('            <h5 class="mb-0">');
+        tmpHTMLStr.push('                <a data-toggle="collapse" href="#' + collapseId + '" aria-expanded="true" aria-controls="' + collapseId + '">');
+        tmpHTMLStr.push(data[i].name);
+        tmpHTMLStr.push('                </a>');
+        tmpHTMLStr.push('            </h5>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('        <div id="' + collapseId + '" class="collapse collapse-lessons-class" role="tabpanel" aria-labelledby="' + headerId + '" data-parent="#accordion_Lessons_Class" data-target="' + data[i].id + '">');
+        tmpHTMLStr.push('            <div class="card-block" id="' + cardblockId + '">');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+    }
+
+    tmpHTMLStr.push('</div>');
+    $('#container_Datas').append($(tmpHTMLStr.join('')));
+    $('#container_Datas').css('overflow', 'auto');
+    $('#container_Datas').height($('#wrap_LeftBar').height());
+    $('.collapse.collapse-lessons-class').on('show.bs.collapse', function () {
+        if ($(arguments[0].target).hasClass('collapse-lessons-class')) {
+            var classId = $(arguments[0].target).attr('data-target');
+            loadLessonsByClass(classId);
+        }
+    });
 };
 
-function buildDataTableColHeaderHTML_Lesson() {
-    var tmpHTMLStr = '<th style="width: 50px;"></th>' +
-    '<th style="width: 210px;">操作</th>' +
-    '<th>时间</th>' +
-    '<th>教室</th>' +
-    '<th>编号</th>' +
-    '<th>内容</th>' +
-    '<th>状态</th>';
-    $('#container_DataTable_Header').append($(tmpHTMLStr));
+function loadLessonsByClass(classId) {
+    var data = [
+        {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '变量 1 ',
+            status: '0',
+            symbol: 'B_01_001',
+            custome: 1
+        }, {
+            datetime: '2017-10-11 11:00',
+            room: 'Room 2',
+            content: '变量 2',
+            status: '1',
+            symbol: 'B_01_001'
+        }, {
+            datetime: '2017-10-12 12:00',
+            room: 'Room 3',
+            content: '变量 3',
+            status: '0',
+            symbol: 'B_01_001',
+            custome: 1
+        }, {
+            datetime: '2018-01-10 13:00',
+            room: 'Room 4',
+            content: '变量 4',
+            status: '1',
+            symbol: 'B_01_001'
+        }, {
+            datetime: '2018-01-12 14:00',
+            room: 'Room 5',
+            content: '变量 5',
+            status: '0',
+            symbol: 'B_01_001'
+        }
+    ];
+
+    var container = $('#cardblock_Lessons_Class_' + classId);
+    container.empty();
+    container.append($(buildDataTableHTML_CL(classId)));;
+    $('#container_DataTable_Header_' + classId).append($(buildDataTableColHeaderHTML_CL()));;
+    buildDataTableDataRowsHTML_CL(data, classId);
+}
+
+function buildDataTableHTML_CL(classId) {
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('<div class="row">');
+    tmpHTMLStr.push('    <div class="col" style="padding-top:10px;">');
+    tmpHTMLStr.push('        <table class="table table-striped">');
+    tmpHTMLStr.push('            <thead>');
+    tmpHTMLStr.push('                <tr id="container_DataTable_Header_' + classId + '"></tr>');
+    tmpHTMLStr.push('            </thead>');
+    tmpHTMLStr.push('            <tbody id="container_DataTable_Rows_' + classId + '"></tbody>');
+    tmpHTMLStr.push('        </table>');
+    tmpHTMLStr.push('    </div>');
+    tmpHTMLStr.push('</div>');
+    return tmpHTMLStr.join('');
 };
 
-function buildDataTableDataRowsHTML_Lesson(data) {
+function buildDataTableColHeaderHTML_CL() {
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('<th style="width: 50px;"></th>');
+    tmpHTMLStr.push('<th style="width: 210px;">操作</th>');
+    tmpHTMLStr.push('<th>时间</th>');
+    tmpHTMLStr.push('<th>教室</th>');
+    tmpHTMLStr.push('<th>编号</th>');
+    tmpHTMLStr.push('<th>内容</th>');
+    tmpHTMLStr.push('<th>状态</th>');
+    return tmpHTMLStr.join('');
+};
+
+function buildDataTableDataRowsHTML_CL(data, classId) {
     var count = data.length;
     var status = '';
     for (var i = 0; i < count; i++) {
@@ -465,7 +527,6 @@ function buildDataTableDataRowsHTML_Lesson(data) {
         if (typeof (data[i].custome) != 'undefined' && data[i].custome > 0) {
             tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-primary btn-lesson-custom" data-target="' + data[i].symbol + '">自定义教案</button>');
         }
-
         tmpHTMLStr.push('   </td>');
         tmpHTMLStr.push('   <td>' + data[i].datetime + '</td>');
         tmpHTMLStr.push('   <td>' + data[i].room + '</td>');
@@ -473,7 +534,7 @@ function buildDataTableDataRowsHTML_Lesson(data) {
         tmpHTMLStr.push('   <td>' + data[i].content + '</td>');
         tmpHTMLStr.push('   <td>' + status + '</td>');
         tmpHTMLStr.push('</tr>');
-        $('#container_DataTable_Rows').append($(tmpHTMLStr.join('')));
+        $('#container_DataTable_Rows_' + classId).append($(tmpHTMLStr.join('')));
     }
 
     $('.btn.btn-sm.btn-success.btn-lesson-doc').on('click', openLessonDoc);
@@ -614,7 +675,7 @@ function buildDataHTML_Docs() {
     var rspXML = "";
     formatData_Doc(rspXML);
     $('#container_Datas').empty();
-    buildDataTopHTML_Doc();
+    buildDataTopHTML();
     buildDataHeaderHTML_Doc();
     buildDataTableHTML_Doc();
 };
@@ -647,7 +708,7 @@ function buildDataHeaderHTML_Doc() {
 };
 
 function buildDataHeaderButtons_Doc() {
-    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success" id="btn_DOC_Create_Custom">自定义教案</button>'));
+    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success" id="btn_DOC_Create_Custom">添加自定义教案</button>'));
     $('#btn_DOC_Create_Custom').on('click', function () {
         showCreateCustomDocPopup();
     });
@@ -740,12 +801,24 @@ function showCreateCustomDocPopup() {
         tmpHTMLStr.push('                               <label for="btn_DOC_Create_Progress" class="col-form-label">&nbsp;</label>');
         tmpHTMLStr.push('                               <button type="button" class="btn btn-primary btn-sm form-control" id="btn_DOC_Create_Progress">流程指引</button>');
         tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                           <div class="form-group col-md-12" style=" margin-bottom: 0px;>');
+        tmpHTMLStr.push('                               <div class="form-group row" style=" margin-bottom: 5px;">');
+        tmpHTMLStr.push('                                   <div class="col" style="padding-left:0px;">');
+        tmpHTMLStr.push('                                       <div class="form-check">');
+        tmpHTMLStr.push('                                           <label class="custom-control custom-checkbox">');
+        tmpHTMLStr.push('                                               <input type="checkbox" class="custom-control-input">');
+        tmpHTMLStr.push('                                               <span class="custom-control-indicator"></span>');
+        tmpHTMLStr.push('                                               <span class="custom-control-description" style="line-height: 24px;">共享到教案库 <b style="color:rgb(234,85,21);">【每名教员针对每个课程仅能自定义一个教案】</b></span>');
+        tmpHTMLStr.push('                                           </label>');
+        tmpHTMLStr.push('                                       </div>');
+        tmpHTMLStr.push('                                   </div>');
+        tmpHTMLStr.push('                               </div>');
+        tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                       </div>');
         tmpHTMLStr.push('                   </form>');
         tmpHTMLStr.push('                   <div class="row">');
         tmpHTMLStr.push('                       <div class="form-group col-12">');
         tmpHTMLStr.push('                           <div class="file-loading">');
-        tmpHTMLStr.push('                               <label for="input-b9" class="col-form-label">上传教案</label>');
         tmpHTMLStr.push('                               <input id="input-b9" name="input-b9[]" multiple type="file">');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                       </div>');
@@ -909,17 +982,17 @@ function buildDataHTML_Scene() {
     var rspXML = "";
     formatData_Scene(rspXML);
     $('#container_Datas').empty();
-    buildDataTopHTML_Scene();
+    buildDataTopHTML();
     buildDataHeaderHTML_Scene();
     buildDataTableHTML_Scene();
 };
 
 function buildDataTopHTML_Scene() {
-    var tmpHTMLStr = '<div class="row">' +
-    '    <div class="col" style="height:50px; background-color:#F1F1F1;">' +
+    var tmpHTMLStr = '<div class="row justify-content-end" style="background-color:#F1F1F1;">' +
+    '    <div class="col" style="height:50px;">' +
+    '       <img src="image/logo-new-gray.png" style="width:120px; height:35px; background-color:transparent; border:none; right: 10px; top: 8px; position: absolute;" alt="">' +
     '    </div>' +
     '</div>';
-
     $('#container_Datas').append($(tmpHTMLStr));
 };
 
@@ -1060,7 +1133,7 @@ function buildDataHTML_HW() {
     var rspXML = "";
     var data = formatData_HW(rspXML);
     $('#container_Datas').empty();
-    buildDataTopHTML_HW();
+    buildDataTopHTML();
     buildDataHeaderHTML_HW();
     buildDataTableHTML_HW(data);
 };
@@ -1755,8 +1828,8 @@ function showAssignHWExpPopup(classId) {
         }
     };
 
-    var tmpHTMLStr = [];
     if ($('#modal_HW_Class_Assign_HW_Exp').length == 0) {
+        var tmpHTMLStr = [];
         tmpHTMLStr.push('<div class="modal fade" id="modal_HW_Class_Assign_HW_Exp" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
         tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;max-width: 70%; max-height: 70%;">');
         tmpHTMLStr.push('        <div class="modal-content">');
@@ -1766,33 +1839,170 @@ function showAssignHWExpPopup(classId) {
         tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
         tmpHTMLStr.push('                </button>');
         tmpHTMLStr.push('            </div>');
-        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('            <div class="modal-body" style="padding: 0px 15px;">');
         tmpHTMLStr.push('               <div class="container-fluid">');
         tmpHTMLStr.push('                   <form>');
         tmpHTMLStr.push('                       <div class="row">');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
-        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Class" class="col-form-label">班级</label>');
-        tmpHTMLStr.push('                               <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Class" value="' + data.name + '" readonly>');
+        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_Class" class="col-form-label">班级</label>');
+        tmpHTMLStr.push('                               <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Class" value="' + data.name + '" readonly>');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
-        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Class_Type" class="col-form-label">类型</label>');
-        tmpHTMLStr.push('                               <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Class_Type" value="' + data.level.name + '" readonly>');
+        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_Type" class="col-form-label">类型</label>');
+        tmpHTMLStr.push('                               <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Type" value="' + data.level.name + '" readonly>');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
-        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Date" class="col-form-label">日期</label>');
-        tmpHTMLStr.push('                               <input type="date" class="form-control  form-control-sm" id="txt_HW_Assign_Date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '">');
+        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_Date" class="col-form-label">日期</label>');
+        tmpHTMLStr.push('                               <input type="date" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '">');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                       <div class="row">');
+        tmpHTMLStr.push('                           <div class="col">');
+        tmpHTMLStr.push('                               <button type="button" class="btn btn-info btn-sm" id="btn_HW_Assign_HW_Exp_Lib">从题库选题</button>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                       <div class="row" id="row_HW_Assign_HW_Exp_Creator" style="display:none;">');
+        tmpHTMLStr.push('                           <div class="form-group col-md-12">');
+        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_Creator" class="col-form-label">作者</label>');
+        tmpHTMLStr.push('                               <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Creator" readonly>');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                       </div>');
         tmpHTMLStr.push('                       <div class="row">');
         tmpHTMLStr.push('                           <div class="form-group col-md-12">');
-        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Class" class="col-form-label">题目</label>');
-        tmpHTMLStr.push('                               <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Title">');
+        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_Title" class="col-form-label">题目</label>');
+        tmpHTMLStr.push('                               <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Title">');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                       </div>');
         tmpHTMLStr.push('                       <div class="row">');
         tmpHTMLStr.push('                           <div class="form-group col-md-12">');
-        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Class" class="col-form-label">内容</label>');
-        tmpHTMLStr.push('                               <textarea class="form-control form-control-sm" id="txt_HW_Assign_Content" rows="10"></textarea>');
+        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_Content" class="col-form-label">内容</label>');
+        tmpHTMLStr.push('                               <textarea class="form-control form-control-sm" id="txt_HW_Assign_Exp_Content" rows="5"></textarea>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                   </form>');
+        tmpHTMLStr.push('                   <div class="row" id="lb_HW_Assign_HW_Exp_Attach">');
+        tmpHTMLStr.push('                       <div class="form-group col-md-12">上传附件</div>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('                   <div class="row"  id="row_HW_Assign_HW_Exp_Attach">');
+        tmpHTMLStr.push('                       <div class="form-group col-12">');
+        tmpHTMLStr.push('                           <div class="file-loading">');
+        tmpHTMLStr.push('                               <input id="input-b19" name="input-b19[]" multiple type="file">');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('                   <div class="row"  id="lb_HW_Assign_HW_Exp_Attach_Lib" style="display:none;">');
+        tmpHTMLStr.push('                       <div class="form-group col-md-12">题目附件</div>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('                   <div class="row"  id="row_HW_Assign_HW_Exp_Attach_Lib" style="display:none;">');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('               </div>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">提交</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">共享到题库</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+
+        $("#input-b19").fileinput({
+            uploadUrl: "index.html",
+            allowedFileExtensions: ["jpg", "png", "gif"],
+            maxImageWidth: 2000,
+            maxFileCount: -1,
+            resizeImage: true
+        }).on('filepreupload', function () {
+            $('#kv-success-box').html('');
+        }).on('fileuploaded', function (event, data) {
+            $('#kv-success-box').append(data.response.link);
+            $('#kv-success-modal').modal('show');
+        });
+
+        $('#btn_HW_Assign_HW_Exp_Lib').on('click', function () {
+            showHWExpSelectPopup();
+        });
+    } else {
+        $('#txt_HW_Assign_Exp_Class').val(data.name);
+        $('#txt_HW_Assign_Exp_Type').val(data.level.name);
+        $('#txt_HW_Assign_Exp_Date').val((new Date()).toLocaleDateString().replace(/\//g, '-'));
+        $('#row_HW_Assign_HW_Exp_Creator').hide();
+        $('#txt_HW_Assign_Exp_Creator').val("");
+        $('#txt_HW_Assign_Exp_Title').val("");
+        $('#txt_HW_Assign_Exp_Title').prop('readonly', false);
+        $('#txt_HW_Assign_Exp_Content').val("");
+        $('#txt_HW_Assign_Exp_Content').prop('readonly', false);
+        $('#lb_HW_Assign_HW_Exp_Attach').show();
+        $('#row_HW_Assign_HW_Exp_Attach').show();
+        $('#input-b19').fileinput('reset');
+        $('#lb_HW_Assign_HW_Exp_Attach_Lib').hide();
+        $('#row_HW_Assign_HW_Exp_Attach_Lib').hide();
+    }
+
+    $('#modal_HW_Class_Assign_HW_Exp').modal('show');
+};
+
+function showHWExpSelectPopup() {
+    $('#modal_HW_Class_Assign_HW_Exp').modal('hide');
+    if ($('#modal_HW_Class_Assign_HW_Exp_Lib').length == 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_HW_Class_Assign_HW_Exp_Lib" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;max-width: 70%; max-height: 70%;">');
+        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">题目筛选</h5>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('               <div class="container-fluid">');
+        tmpHTMLStr.push('                   <form>');
+        tmpHTMLStr.push('                       <div class="row"><div class="col-12" style="line-height:30px;">当前题库共有<b style="color:rgb(41,85,206);">1320019</b>道题目，请尽量缩小筛选范围。</div></div>');
+        tmpHTMLStr.push('                       <div class="row">');
+        tmpHTMLStr.push('                           <div class="form-group col-md-4">');
+        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_SubjectSel_Level" class="col-form-label">难度</label>');
+        tmpHTMLStr.push('                               <select class="form-control form-control-sm" id="txt_HW_Assign_Exp_SubjectSel_Level"></select>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                           <div class="form-group col-md-4">');
+        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_SubjectSel_Point" class="col-form-label">知识点</label>');
+        tmpHTMLStr.push('                               <select class="form-control  form-control-sm" id="txt_HW_Assign_Exp_SubjectSel_Point"></select>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                           <div class="form-group col-md-4">');
+        tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_SubjectSel_Keyword" class="col-form-label">关键字</label>');
+        tmpHTMLStr.push('                               <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_SubjectSel_Keyword" value="">');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                       <div class="row">');
+        tmpHTMLStr.push('                           <div class="col-2">');
+        tmpHTMLStr.push('                               <button type="button" class="btn btn-primary btn-sm" id="btn_HW_Assign_Exp_SubjectSel_Search">开始筛选</button></th>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                       <div class="row">');
+        tmpHTMLStr.push('                           <div class="col-12" style="padding:10px 15px;">');
+        tmpHTMLStr.push('                               <div class="progress">');
+        tmpHTMLStr.push('                                   <div class="progress-bar progress-bar-striped progress-bar-animated" id="pb_HW_Assign_Exp_SubjectSel_Search" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>');
+        tmpHTMLStr.push('                               </div>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                       <div class="row"><div class="col-12" style="line-height:30px; font-weight:bold;">题目 : </div></div>');
+        tmpHTMLStr.push('                       <div class="row">');
+        tmpHTMLStr.push('                           <div class="col-12">');
+        tmpHTMLStr.push('                               <table class="table table-striped">');
+        tmpHTMLStr.push('                                   <thead>');
+        tmpHTMLStr.push('                                       <tr id="th_DataTable_Header_HW_Assign_Exp_SubjectSel">');
+        tmpHTMLStr.push('                                           <th style="width: 50px;"></th>');
+        tmpHTMLStr.push('                                           <th style="width: 120px;"></th>');
+        tmpHTMLStr.push('                                           <th>难度</th>');
+        tmpHTMLStr.push('                                           <th>内容</th>');
+        tmpHTMLStr.push('                                           <th style="width: 80px; text-align: center;">自定义</th>');
+        tmpHTMLStr.push('                                           <th style="width: 60px; text-align: center;">附件</th>');
+        tmpHTMLStr.push('                                       </tr>');
+        tmpHTMLStr.push('                                   </thead>');
+        tmpHTMLStr.push('                                   <tbody id="tb_DataTable_Body_HW_Assign_Exp_SubjectSel"></tbody>');
+        tmpHTMLStr.push('                               </table>');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                       </div>');
         tmpHTMLStr.push('                   </form>');
@@ -1800,16 +2010,327 @@ function showAssignHWExpPopup(classId) {
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('            <div class="modal-footer">');
         tmpHTMLStr.push('                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>');
-        tmpHTMLStr.push('                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">提交</button>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('        </div>');
         tmpHTMLStr.push('    </div>');
         tmpHTMLStr.push('</div>');
 
         $('body').append($(tmpHTMLStr.join('')));
+        $('#btn_HW_Assign_Exp_SubjectSel_Search').on('click', function () {
+            var progress = $('#pb_HW_Assign_Exp_SubjectSel_Search');
+            progress.attr('aria-valuenow', '0');
+            progress.css('width', '0%');
+            _gTSSubjectSearch = window.setTimeout('subjectProgress_HW("Exp");', 500);
+            searchHWExpSubject();
+        });
     }
 
-    $('#modal_HW_Class_Assign_HW_Exp').modal('show');
+    $('#modal_HW_Class_Assign_HW_Exp_Lib').modal('show');
+};
+
+function searchHWExpSubject() {
+    loadHWExpSubjectResult();
+};
+
+function loadHWExpSubjectResult() {
+    var data = [
+        {
+            id: '1',
+            content: 'Experimental Topics 1',
+            level: { id: '1', name: '初级' },
+            point: 'knowledge point 1',
+            creator: null,
+            attach: 1
+        }, {
+            id: '2',
+            content: 'Experimental Topics 2',
+            level: { id: '1', name: '初级' },
+            point: 'knowledge point 1',
+            creator: { id: '1', name: '教员 1' },
+            attach: 1
+        }, {
+            id: '3',
+            content: 'Experimental Topics 3',
+            level: { id: '1', name: '初级' },
+            creator: null,
+            point: 'knowledge point 1',
+            attach: 0
+        }, {
+            id: '4',
+            content: 'Experimental Topics 4',
+            level: { id: '1', name: '初级' },
+            creator: { id: '2', name: '教员 2' },
+            point: 'knowledge point 1',
+            attach: 1
+        }, {
+            id: '5',
+            content: 'Experimental Topics 5',
+            level: { id: '1', name: '初级' },
+            point: 'knowledge point 1',
+            creator: null,
+            attach: 1
+        }
+    ];
+
+    for (var i = 0; i < data.length; i++) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td style="text-align: center;">');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-primary btn-HW-assign-exp-subject-search-result-item-detail" data-target="' + data[i].id + '">详情</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-HW-assign-exp-subject-search-result-item-select" data-target="' + data[i].id + '">选定</button>');
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td>' + data[i].level.name + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].content + '</td>');
+        tmpHTMLStr.push('   <td style="text-align: center;">');
+        tmpHTMLStr.push('       <label class="custom-control custom-checkbox">');
+        if (data[i].creator != null) {
+            tmpHTMLStr.push('           <input type="checkbox" class="custom-control-input" checked disabled>');
+            tmpHTMLStr.push('           <span class="custom-control-indicator" style="background-color:rgb(41,85,206);"></span>');
+        } else {
+            tmpHTMLStr.push('           <input type="checkbox" class="custom-control-input" disabled>');
+            tmpHTMLStr.push('           <span class="custom-control-indicator" style="background-color:rgb(192,192,192);"></span>');
+        }
+
+        tmpHTMLStr.push('       </label>');
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td style="text-align: center;">');
+        tmpHTMLStr.push('       <label class="custom-control custom-checkbox">');
+        if (data[i].attach == '1') {
+            tmpHTMLStr.push('           <input type="checkbox" class="custom-control-input" checked disabled>');
+            tmpHTMLStr.push('           <span class="custom-control-indicator" style="background-color:rgb(41,85,206);"></span>');
+        } else {
+            tmpHTMLStr.push('           <input type="checkbox" class="custom-control-input" disabled>');
+            tmpHTMLStr.push('           <span class="custom-control-indicator" style="background-color:rgb(192,192,192);"></span>');
+        }
+
+        tmpHTMLStr.push('       </label>');
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('</tr>');
+
+        $('#tb_DataTable_Body_HW_Assign_Exp_SubjectSel').append($(tmpHTMLStr.join('')));
+    }
+
+    $('.btn-HW-assign-exp-subject-search-result-item-detail').on('click', function () {
+        var itemId = $(arguments[0].target).attr('data-target');
+        showExpSubjectDetail(itemId);
+    });
+
+    $('.btn-HW-assign-exp-subject-search-result-item-select').on('click', function () {
+        $('#modal_HW_Class_Assign_HW_Exp_Lib').modal('hide');
+        var itemId = $(arguments[0].target).attr('data-target');
+        addHWExpSubject(itemId);
+        $('#modal_HW_Class_Assign_HW_Exp').modal('show');
+    });
+
+    var progress = $('#pb_HW_Assign_Exp_SubjectSel_Search');
+    progress.attr('aria-valuenow', '100');
+    progress.css('width', '100%');
+    window.clearTimeout(_gTSSubjectSearch);
+};
+
+function addHWExpSubject(itemId) {
+    var data = {
+        id: '1',
+        title: 'Experimental Topics 1',
+        content: 'Experimental Topics 1,Experimental Topics 1, Experimental Topics 1, Experimental Topics 1, Experimental Topics 1',
+        point: 'knowledge point 1',
+        level: { id: '1', name: '初级' },
+        creator: null,
+        attach: [
+            'image/lessondoc_1.jpg',
+            'image/lessondoc_2.jpg',
+            'image/lessondoc_3.jpg',
+            'image/lessondoc_4.jpg',
+        ]
+    };
+
+    if (itemId == '2') {
+        data = {
+            id: '1',
+            title: 'Experimental Topics 1',
+            content: 'Experimental Topics 1,Experimental Topics 1, Experimental Topics 1, Experimental Topics 1, Experimental Topics 1',
+            point: 'knowledge point 1',
+            level: { id: '1', name: '初级' },
+            creator: { id: '1', name: '教员 1' },
+            attach: [
+                'image/lessondoc_1.jpg',
+                'image/lessondoc_2.jpg',
+                'image/lessondoc_3.jpg',
+                'image/lessondoc_4.jpg',
+            ]
+        };
+    }
+
+    $('#txt_HW_Assign_Exp_Title').val(data.title);
+    $('#txt_HW_Assign_Exp_Title').prop('readonly', true);
+    $('#txt_HW_Assign_Exp_Content').val(data.content);
+    $('#txt_HW_Assign_Exp_Content').prop('readonly', true);
+    if (data.creator == null) {
+        $('#row_HW_Assign_HW_Exp_Creator').hide();
+        $('#txt_HW_Assign_Exp_Creator').val("");
+    } else {
+        $('#row_HW_Assign_HW_Exp_Creator').show();
+        $('#txt_HW_Assign_Exp_Creator').val(data.creator.name);
+    }
+
+    $('#lb_HW_Assign_HW_Exp_Attach').hide();
+    $('#row_HW_Assign_HW_Exp_Attach').hide();
+    $('#input-b19').fileinput('reset');
+    if (data.attach.length == 0) {
+        $('#lb_HW_Assign_HW_Exp_Attach_Lib').hide();
+        $('#row_HW_Assign_HW_Exp_Attach_Lib').hide();
+    } else {
+        $('#lb_HW_Assign_HW_Exp_Attach_Lib').show();
+        $('#row_HW_Assign_HW_Exp_Attach_Lib').show();
+        $('#row_HW_Assign_HW_Exp_Attach_Lib').empty();
+        var tmpArr = ['<div class="col-md-12">附件</div>'];
+        for (var i = 0; i < data.attach.length; i++) {
+            tmpArr.push('<div class="col-sm-6 col-md-3">');
+            tmpArr.push('       <img class="img-thumbnail" src="' + data.attach[i] + '" alt="通用的占位符缩略图">');
+            tmpArr.push('</div>');
+        }
+
+        $('#row_HW_Assign_HW_Exp_Attach_Lib').append($(tmpArr.join('')));
+    }
+};
+
+function showExpSubjectDetail(itemId) {
+    var data = {
+        id: '1',
+        title: 'Experimental Topics 1',
+        content: 'Experimental Topics 1,Experimental Topics 1, Experimental Topics 1, Experimental Topics 1, Experimental Topics 1',
+        point: 'knowledge point 1',
+        level: { id: '1', name: '初级' },
+        creator: null,
+        attach: [
+            'image/lessondoc_1.jpg',
+            'image/lessondoc_2.jpg',
+            'image/lessondoc_3.jpg',
+            'image/lessondoc_4.jpg',
+        ]
+    };
+
+    if (itemId == "2") {
+        data = {
+            id: '1',
+            title: 'Experimental Topics 1',
+            content: 'Experimental Topics 1,Experimental Topics 1, Experimental Topics 1, Experimental Topics 1, Experimental Topics 1',
+            point: 'knowledge point 1',
+            level: { id: '1', name: '初级' },
+            creator: { id: '1', name: '教员 1' },
+            attach: [
+                'image/lessondoc_1.jpg',
+                'image/lessondoc_2.jpg',
+                'image/lessondoc_3.jpg',
+                'image/lessondoc_4.jpg',
+            ]
+        };
+    }
+
+    var creator = (data.creator == null ? '' : data.creator.name);
+    $('#modal_HW_Class_Assign_HW_Exp_Lib').modal('hide');
+    if ($('#modal_HW_Class_Assign_HW_Exp_Item_Detail').length == 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_HW_Class_Assign_HW_Exp_Item_Detail" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;max-width: 70%; max-height: 70%;">');
+        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">实验题目详情</h5>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('               <div class="container-fluid">');
+        tmpHTMLStr.push('                   <div class="row">');
+        tmpHTMLStr.push('                       <div class="form-group col-md-4">');
+        tmpHTMLStr.push('                           <label for="txt_HW_Assign_Exp_Detail_Type" class="col-form-label">类型</label>');
+        tmpHTMLStr.push('                           <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Detail_Type" value="' + data.level.name + '" readonly>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                       <div class="form-group col-md-8">');
+        tmpHTMLStr.push('                           <label for="txt_HW_Assign_Exp_Detail_Point" class="col-form-label">相关知识点</label>');
+        tmpHTMLStr.push('                           <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Detail_Point" value="' + data.point + '" readonly>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('                   <div class="row" id="row_HW_Assign_Exp_Detail_Creator">');
+        tmpHTMLStr.push('                       <div class="form-group col-md-12">');
+        tmpHTMLStr.push('                           <label for="txt_HW_Assign_Exp_Detail_Creator" class="col-form-label">作者</label>');
+        tmpHTMLStr.push('                           <input type="text" class="form-control form-control-sm" id="txt_HW_Assign_Exp_Detail_Creator" value="' + creator + '" readonly>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('                   <div class="row">');
+        tmpHTMLStr.push('                       <div class="form-group col-md-12">');
+        tmpHTMLStr.push('                           <label for="txt_HW_Assign_Exp_Detail_Title" class="col-form-label">题目</label>');
+        tmpHTMLStr.push('                           <input type="text" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Detail_Title" value="' + data.title + '" readonly>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('                   <div class="row">');
+        tmpHTMLStr.push('                       <div class="form-group col-md-12">');
+        tmpHTMLStr.push('                           <label for="txt_HW_Assign_Exp_Detail_Content" class="col-form-label">内容</label>');
+        tmpHTMLStr.push('                           <textarea class="form-control form-control-sm" id="txt_HW_Assign_Exp_Detail_Content" rows="5" readonly>' + data.content + '</textarea>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('                   <div class="row"  id="row_HW_Assign_Exp_Detail_Attach">');
+        tmpHTMLStr.push('                       <div class="col-md-12">附件</div>');
+        for (var i = 0; i < data.attach.length; i++) {
+            tmpHTMLStr.push('                       <div class="col-sm-6 col-md-3">');
+            tmpHTMLStr.push('                               <img class="img-thumbnail" src="' + data.attach[i] + '" alt="通用的占位符缩略图">');
+            tmpHTMLStr.push('                       </div>');
+        }
+
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('               </div>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+        $('#modal_HW_Class_Assign_HW_Exp_Item_Detail').on('hidden.bs.modal', function (e) {
+            $('#modal_HW_Class_Assign_HW_Exp_Lib').modal('show');
+        });
+
+        if (creator == "") {
+            $('#row_HW_Assign_Exp_Detail_Creator').hide();
+        }
+
+        if (data.attach.length == 0) {
+            $('#row_HW_Assign_Exp_Detail_Attach').hide();
+        }
+    } else {
+        $('#txt_HW_Assign_Exp_Detail_Type').val(data.level.name);
+        $('#txt_HW_Assign_Exp_Detail_Point').val(data.point);
+        $('#txt_HW_Assign_Exp_Detail_Title').val(data.name);
+        $('#txt_HW_Assign_Exp_Detail_Content').val(data.name);
+
+        if (creator == "") {
+            $('#row_HW_Assign_Exp_Detail_Creator').hide();
+        } else {
+            $('#row_HW_Assign_Exp_Detail_Creator').show();
+            $('#txt_HW_Assign_Exp_Detail_Creator').val(creator);
+        }
+
+        if (data.attach.length == 0) {
+            $('#row_HW_Assign_Exp_Detail_Attach').hide();
+        } else {
+            $('#row_HW_Assign_Exp_Detail_Attach').show();
+            $('#row_HW_Assign_Exp_Detail_Attach').empty();
+            var tmpArr = ['<div class="col-md-12">附件</div>'];
+            for (var i = 0; i < data.attach.length; i++) {
+                tmpArr.push('<div class="col-sm-6 col-md-3">');
+                tmpArr.push('       <img class="img-thumbnail" src="' + data.attach[i] + '" alt="通用的占位符缩略图">');
+                tmpArr.push('</div>');
+            }
+
+            $('#row_HW_Assign_Exp_Detail_Attach').append($(tmpArr.join('')));
+        }
+    }
+
+    $('#modal_HW_Class_Assign_HW_Exp_Item_Detail').modal('show');
 };
 
 function showAssignHWPopup(classId) {
@@ -2094,7 +2615,7 @@ function showHWManualSelectPopup() {
             var progress = $('#pb_HW_Assign_SubjectSel_Search');
             progress.attr('aria-valuenow', '0');
             progress.css('width', '0%');
-            _gTimeoutSymbol = window.setTimeout('subjectProgress_HW();', 500);
+            _gTSSubjectSearch = window.setTimeout('subjectProgress_HW("");', 500);
             searchHWSubject();
         });
 
@@ -2125,9 +2646,9 @@ function showHWManualSelectPopup() {
     $('#modal_HW_Class_Assign_HW_ManualSelect').modal('show');
 };
 
-var _gTimeoutSymbol;
-function subjectProgress_HW() {
-    var progress = $('#pb_HW_Assign_SubjectSel_Search');
+var _gTSSubjectSearch;
+function subjectProgress_HW(symbol) {
+    var progress = $('#pb_HW_Assign_' + symbol + '_SubjectSel_Search');
     var currentVal = parseInt(progress.attr('aria-valuenow'));
     if (currentVal == 100) {
         progress.attr('aria-valuenow', '0');
@@ -2137,7 +2658,7 @@ function subjectProgress_HW() {
         progress.css('width', (currentVal + 5) + '%');
     }
 
-    _gTimeoutSymbol = window.setTimeout('subjectProgress_HW();', 500);
+    _gTSSubjectSearch = window.setTimeout('subjectProgress_HW();', 500);
 };
 
 function searchHWSubject() {
@@ -2228,7 +2749,7 @@ function loadHWSubjectResult() {
     var progress = $('#pb_HW_Assign_SubjectSel_Search');
     progress.attr('aria-valuenow', '100');
     progress.css('width', '100%');
-    window.clearTimeout(_gTimeoutSymbol);
+    window.clearTimeout(_gTSSubjectSearch);
 };
 
 /*Exam*/
@@ -2279,7 +2800,7 @@ function buildDataHTML_Exam() {
     var rspXML = "";
     var data = formatData_HW(rspXML);
     $('#container_Datas').empty();
-    buildDataTopHTML_Exam();
+    buildDataTopHTML();
     buildDataHeaderHTML_Exam();
     buildDataTableHTML_Exam(data);
 };

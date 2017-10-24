@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>iKCoder・中国青少年编程教育创导者</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common/xmloperator.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/appshop.js"></script>
+    <style>
+        #btn_Header_Search:hover {
+            background-color: #025aa5;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row" style="margin:0px;">
+            <div class="col">
+                <p style="padding-top:10px; margin-bottom:0px;">iKCoder App Shop 应用商店</p>
+            </div>
+            <div class="col" style="text-align:right;">
+                <p style="padding-top:10px; margin-bottom:0px;">Welcome back Alice</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-ffffff">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">应用</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">游戏</a>
+                            </li>
+                        </ul>
+                        <form class="form-inline my-2 my-lg-0">
+                            <div class="input-group input-group-sm mb-2 mr-sm-2 mb-sm-0">
+                                <input type="text" class="form-control form-control-sm" id="inlineFormInputGroup" placeholder="Username">
+                                <div class="input-group-addon" id="btn_Header_Search" style="cursor:pointer;">Search</div>
+                            </div>
+                        </form>
+                        <div class="btn-group btn-group-sm" role="group" style="padding: 0rem 0.5rem; height: 30px; margin-top: 5px;">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-sm" aria-labelledby="btnGroupDrop1" style="min-width:unset;">
+                                <a class="dropdown-item dropdown-item-sm" href="#">应用列表</a>
+                                <a class="dropdown-item" href="#">发布应用</a>
+                                <a class="dropdown-item" href="#">管理应用</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="background-color:#025aa5">
+        <div class="row" style="margin:0px;">
+            <div class="col-5">
+                <div class="container-fluid" style="background-color:#025aa5">
+                    <div class="row" style="margin:0px;">
+                        <div class="col-12">
+                            <div style="background-color:#ffffff; margin:15px; border:solid 2px #ffffff; border-radius: 15px; height: 150px;">
+                                在App Shop中获取优秀应用
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div style="text-align:center; padding:20px;color:yellow;">Top Application</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7">
+                <div class="card-deck" style="margin:15px 0px;">
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">aaaaaaa</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">bbbbbbbbbbbbb.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text"> cccccccccccc.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin:0px;">
+            <div class="col-12">
+                <div style="padding:20px;color:#ffffff;">Newest 最新</div>
+            </div>
+            <div class="col-12">
+                <div class="card-deck" style="margin:15px 0px;">
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">aaaaaaa</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">bbbbbbbbbbbbb.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text"> cccccccccccc.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">bbbbbbbbbbbbb.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text"> cccccccccccc.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin:0px;">
+            <div class="col-12">
+                <div style="padding:20px;color:#ffffff;">Population 流行</div>
+            </div>
+            <div class="col-12">
+                <div class="card-deck" style="margin:15px 0px;">
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">aaaaaaa</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">bbbbbbbbbbbbb.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text"> cccccccccccc.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">bbbbbbbbbbbbb.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <div class="card-block">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text"> cccccccccccc.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+        <div class="container-fluid" style="background-color:#222222; padding:0px;">
+            <div class="row" style="margin:0px;padding:0px;">
+                <div class="col" style="padding:10px 15px;text-align:right; font-size:12px; color:#cccccc;">
+                    iKCoder App Shop应用商店为iKCoder所有, Copyright © 2017 iKCoder. 其中所发布的所有应用均基于iKCoder Lib.
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            _loadLabels();
+            initHeader(true);
+            initFooter();
+            initPage();
+        });
+    </script>
+</body>
+</html>

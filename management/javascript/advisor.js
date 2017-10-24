@@ -27,12 +27,12 @@ function initPage() {
     //});
     var dataXML = StringToXML('<root>' +
         '   <basic>' +
-        '		<usr id="001" nickname="陈思克" last="2017-09-30 12:01:02"/>' +
+        '		<usr id="001" nickname="Aaron" last="2017-09-30 12:01:02"/>' +
         '	</basic>' +
         '</root>');
     var data = {
         id: '001',
-        name: "陈思克",
+        name: "Aaron",
         last: "2017-09-30 12:01:02"
     };
     buildUserInfoHTML(data);

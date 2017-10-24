@@ -71,8 +71,21 @@ function hideLoadingMask() {
 }
 
 function rebuildContent(symbol) {
-    if (symbol == 'appshop' || symbol == 'teamsuit') {
+    if (symbol == 'teamsuit') {
         _showGlobalMessage('演示版本，此功能暂不开放！', 'warning', 'alert_ForgetPWD_Success');
+        return;
+    }
+
+    if (symbol == 'workplatform' || symbol == 'appshop') {
+        switch (symbol) {
+            case 'workplatform':
+                window.open("appstudio/index.html");
+                break;
+            case 'appshop':
+                window.open("appshop.html");
+                break;
+        }
+
         return;
     }
 
@@ -128,9 +141,6 @@ function rebuildContent(symbol) {
             currentItem = $($('.left-bar-category-item')[5]);
             contertWrap.addClass('col');
             rebuildSettingsPanel(contentHeight);
-            break;
-        case 'workplatform':
-            window.location.href = "appstudio/index.html";
             break;
         default:
             break;
@@ -691,6 +701,7 @@ function rebuildSettingsPanel(contentHeight) {
         { n: 'city', p: '/root/usrbasic/city' },
         { n: 'school', p: '/root/usrbasic/school' }
     ];
+    contentHeight = $('#sideBar_Page_Left').height() - 1;
     var tmpHeight = calcSettingsItemheight(contentHeight);
     var data = {
         header: 'image/tmpheader.jpg',
@@ -712,6 +723,10 @@ function calcSettingsItemheight(contentHeight) {
 
     if (profileHeight < 440) {
         profileHeight = 440;
+    }
+
+    if (pwdHeight + profileHeight < contentHeight) {
+        pwdHeight = contentHeight - profileHeight;
     }
 
     if (pwdHeight < 285) {

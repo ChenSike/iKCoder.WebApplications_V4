@@ -2,9 +2,9 @@
 
 function buildHeaderHTML(isIndexPage) {
     var tmpHtmlStrArr = [];
-    tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header" style="background-color:transparent;z-index: 1040; padding:5px;">');
+    tmpHtmlStrArr.push('<nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header" style="background-color:transparent;z-index: 1040; padding:10px 5px;">');
     tmpHtmlStrArr.push('    <a class="navbar-brand" href="#" style="padding:0px 20px;">');
-    tmpHtmlStrArr.push('        <img src="image/logo-new-black.png" width="225" height="30" class="d-inline-block align-top img-header-logo" alt="">');
+    tmpHtmlStrArr.push('        <img src="image/logo-new-black.png" width="255" height="35" class="d-inline-block align-top img-header-logo" alt="">');
     tmpHtmlStrArr.push('    </a>');
     tmpHtmlStrArr.push('    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">');
     tmpHtmlStrArr.push('        <span class="navbar-toggler-icon"></span>');
@@ -15,7 +15,33 @@ function buildHeaderHTML(isIndexPage) {
     tmpHtmlStrArr.push('                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">');
     tmpHtmlStrArr.push('                    <ul class="navbar-nav" id="ul_NavBar_Container">');
     tmpHtmlStrArr.push('                        <li class="nav-item">');
-    tmpHtmlStrArr.push('                            <button type="button" class="btn btn-sm btn-primary" id="btn_Student_SignIn" style="border-radius: 10px;">点击签到</button>');
+    tmpHtmlStrArr.push('                            <button type="button" class="btn btn-sm btn-primary" id="btn_Student_SignIn" style="border-radius: 10px; margin-left:10px;">');
+    tmpHtmlStrArr.push('                                <span class="fa-stack" style="color:yellow;font-size: 12px;">');
+    tmpHtmlStrArr.push('                                    <i class="fa fa-circle-o-notch fa-spin fa-stack-2x fa-fw"></i>');
+    tmpHtmlStrArr.push('                                    <i class="fa fa-bell fa-stack-1x"></i>');
+    tmpHtmlStrArr.push('                                </span>');
+    tmpHtmlStrArr.push('                                <span style="line-height:24px;">点击签到</span>');
+    tmpHtmlStrArr.push('                            </button>');
+    tmpHtmlStrArr.push('                        </li>');
+    tmpHtmlStrArr.push('                        <li class="nav-item">');
+    tmpHtmlStrArr.push('                            <div class="btn-group" data-toggle="buttons">');
+    tmpHtmlStrArr.push('                                <label class="btn btn-primary active" style="margin-left:10px; padding: 4px 8px;line-height: 25px;border-top-left-radius: 10px;border-bottom-left-radius: 10px;">');
+    tmpHtmlStrArr.push('                                    <span class="fa-stack" style="color:rgb(240,140,140);font-size: 12px;">');
+    tmpHtmlStrArr.push('                                        <i class="fa fa-circle-o-notch fa-spin fa-stack-2x fa-fw"></i>');
+    tmpHtmlStrArr.push('                                        <i class="fa fa-heartbeat fa-stack-1x"></i>');
+    tmpHtmlStrArr.push('                                    </span>');
+    tmpHtmlStrArr.push('                                    <span style="font-size: 14px;">心情日记</span>');
+    tmpHtmlStrArr.push('                                </label>');
+    tmpHtmlStrArr.push('                                <label class="btn btn-success" style=" padding: 4px 8px;line-height: 25px; cursor:pointer;">');
+    tmpHtmlStrArr.push('                                    <i class="fa fa-smile-o fa-lg" ></i>');
+    tmpHtmlStrArr.push('                                </label>');
+    tmpHtmlStrArr.push('                                <label class="btn btn-warning" style=" padding: 4px 8px;line-height: 25px; cursor:pointer;">');
+    tmpHtmlStrArr.push('                                    <i class="fa fa-meh-o fa-lg"  ></i>');
+    tmpHtmlStrArr.push('                                </label>');
+    tmpHtmlStrArr.push('                                <label class="btn btn-danger" style=" padding: 4px 8px;line-height: 25px; cursor:pointer;border-top-right-radius: 10px;border-bottom-right-radius: 10px;">');
+    tmpHtmlStrArr.push('                                    <i class="fa fa-frown-o fa-lg" ></i>');
+    tmpHtmlStrArr.push('                                </label>');
+    tmpHtmlStrArr.push('                            </div>');
     tmpHtmlStrArr.push('                        </li>');
     tmpHtmlStrArr.push('                    </ul>');
     tmpHtmlStrArr.push('                </div>');
