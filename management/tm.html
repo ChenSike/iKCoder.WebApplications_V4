@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style/tether.min.css">
     <link rel="stylesheet" href="style/bootstrap.css">
     <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
     <script src="javascript/jquery-3.2.1.min.js"></script>
     <script src="javascript/tether.min.js"></script>
     <script src="javascript/bootstrap.js"></script>
@@ -16,99 +17,120 @@
     <script src="javascript/xmloperator.js"></script>
     <script src="javascript/tm.js"></script>
     <style>
-        .no-padding-margin {
-            padding: 0px;
-            margin: 0px;
-        }
-
-        .user-info-txt {
-            font-family: 微软雅黑;
-            font-size: 10px;
-            color: #ffffff;
-        }
-
-        .list-group-item {
-            border: none;
-            background-color: transparent;
-            font-family: 微软雅黑;
-            font-size: 14px;
-            color: #ffffff;
-            padding: 5px 1.25rem;
-        }
-
-            .list-group-item:hover {
-                background-color: #3965DE;
-                color: #699BED;
-                cursor: pointer;
-            }
-
-        .data-panel-title {
-            color: #ffffff;
-            font-family: 微软雅黑;
-            font-size: 16px;
-        }
-
-        button.btn.btn-sm {
-            font-family: 微软雅黑;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .card {
-            background-color: transparent;
-            border: none;
-        }
-
-        .card-header {
-            background-color: transparent;
-            padding: 10px 20px;
-        }
-
-        h5.mb-0 {
-            font-family: 微软雅黑;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-            h5.mb-0 a {
-                color: #ffffff;
-            }
-
-                h5.mb-0 a:hover {
-                    color: #699BED;
-                }
-
-        .card-block {
-            padding: 0px 20px;
-        }
-
-        .table th, .table td {
-            font-family: 微软雅黑;
-            font-size: 14px;
+        .col-form-label.class-create {
             font-weight: bold;
-            padding: 5px 10px;
-            vertical-align: middle;
+            font-size: 14px;
         }
 
-        .table td {
-            font-weight: normal;
+        #container_DataTable_Body table tr th {
+            border: none;
         }
 
-        label.custom-control.custom-checkbox {
-            margin: 0px;
+        #container_DataTable_Body table tr td {
+            border: none;
         }
-    </style>
-    <style>
-        .col-form-label.class-create{
-            font-weight:bold;
-            font-size:14px;
+
+        .a-link-classes-item-detail-signin-sign {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(34,139,34);
+        }
+
+        .a-link-classes-item-detail-signin-unsign {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(255,0,0);
+        }
+
+        .a-link-classes-item-detail-signin-vacate {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(243,151,0);
+        }
+
+        .a-link-classes-item-detail-homework-complete {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(34,139,34);
+        }
+
+        .a-link-classes-item-detail-homework-uncomplete {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(255,0,0);
+        }
+
+        .a-link-classes-item-detail-homework-accuracy {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(243,151,0);
+        }
+
+        .a-link-classes-item-detail-exam-complete {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(34,139,34);
+        }
+
+        .a-link-classes-item-detail-exam-uncomplete {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(255,0,0);
+        }
+
+        .a-link-classes-item-detail-exam-accuracy {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(243,151,0);
+        }
+
+        .a-link-classes-item-detail-teacher-ontime {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(34,139,34);
+        }
+
+        .a-link-classes-item-detail-teacher-notontime {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(243,151,0);
+        }
+
+        .a-link-classes-item-detail-teacher-miss {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(255,0,0);
+        }
+
+        .a-link-classes-item-detail-teacher-substitution {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(34,139,34);
+        }
+
+        .a-link-classes-item-detail-teacher-schedule {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(41,85,206);
+        }
+
+        .a-link-classes-item-detail-teacher-topic {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(41,85,206);
+        }
+
+        .a-link-classes-item-detail-teacher-doc {
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(41,85,206);
         }
     </style>
 </head>
 <body style="height:100%;">
     <div class="container-fluid" style="height:100%;">
         <div class="row" style="height:100%;">
-            <div class="col-3 no-padding-margin" style="height:100%; background-color:#2955CE;">
+            <div class="col-3 no-padding-margin" id="wrap_LeftBar" style="height:100%; background-color:#2955CE; max-width: 265px;">
                 <div style="height:100%;">
                     <div class="container-fluid">
                         <div class="row">
@@ -118,8 +140,8 @@
                                         <div class="col-5">
                                             <img src="image/logotop.png" id="image_User_Header">
                                         </div>
-                                        <div class="col-7 user-info-txt">
-                                            <div class="container-fluid">
+                                        <div class="col-7 user-info-txt" style="padding: 0px;">
+                                            <div class="container-fluid" style="padding: 0px;">
                                                 <div class="row">
                                                     <div class="col">
                                                         <p id="label_UserName"></p>
@@ -137,8 +159,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col user-info-txt" style="text-align:center; padding-top:20px; color:#699BED">
-                                <p id="label_LastLoginTime"></p>
+                            <div class="col user-info-txt" style="text-align:center; color:#699BED">
+                                <p id="label_LastLoginTime">上次登录时间: 2017-09-25 15:00:00</p>
                             </div>
                         </div>
                         <div class="row">
@@ -150,10 +172,29 @@
                                                 班级管理
                                             </a>
                                         </h5>
-                                    </div>                                    
+                                    </div>
                                 </div>
                                 <div class="card">
                                     <div class="card-header" role="tab" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <a id="menu_Student" data-toggle="collapse" href="#collapseTwo" aria-expanded="true">
+                                                学员管理
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                                        <div class="card-block">
+                                            <div class="col no-padding-margin">
+                                                <ul class="list-group">
+                                                    <li id="menu_Student_New" class="list-group-item">未分班学员</li>
+                                                    <li id="menu_Student_Old" class="list-group-item">已分班学员</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingThree">
                                         <h5 class="mb-0">
                                             <a id="menu_Course_All" data-toggle="collapse" href="#" aria-expanded="true" aria-controls="">
                                                 课表管理
@@ -162,7 +203,7 @@
                                     </div>
                                 </div>
                                 <div class="card">
-                                    <div class="card-header" role="tab" id="headingTwo">
+                                    <div class="card-header" role="tab" id="headingFour">
                                         <h5 class="mb-0">
                                             <a id="menu_Teacher_All" data-toggle="collapse" href="#" aria-expanded="true" aria-controls="">
                                                 教员管理
@@ -171,7 +212,7 @@
                                     </div>
                                 </div>
                                 <div class="card">
-                                    <div class="card-header" role="tab" id="headingThree">
+                                    <div class="card-header" role="tab" id="headingFive">
                                         <h5 class="mb-0">
                                             <a class="collapsed" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="">
                                                 数据跟踪
@@ -180,7 +221,7 @@
                                     </div>
                                 </div>
                                 <div class="card">
-                                    <div class="card-header" role="tab" id="headingFour">
+                                    <div class="card-header" role="tab" id="headingSix">
                                         <h5 class="mb-0">
                                             <a id="menu_UpdatePWD" class="collapsed" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="">
                                                 修改密码
@@ -193,11 +234,45 @@
                     </div>
                 </div>
             </div>
-            <div class="col-9" style="height:100%; padding:0px;">
+            <div class="col" style="height:100%; padding:0px;">
                 <div class="container-fluid" id="container_Datas">
                     <div class="row">
                         <div class="col" style="height:50px; background-color:#F1F1F1;"></div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_Class_Item_Detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 5px 15px;">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 0px 15px;">
+                </div>
+                <div class="modal-footer" style="padding: 5px 15px;">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_Student_New_Assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog" role="document" style="max-width: 70%;">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 5px 15px;">
+                    <h5 class="modal-title" id="exampleModalLabel">分配班级</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 0px 15px;">
+                </div>
+                <div class="modal-footer" style="padding: 5px 15px;">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>

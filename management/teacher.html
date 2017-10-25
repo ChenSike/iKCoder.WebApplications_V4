@@ -20,183 +20,45 @@
     <script src="javascript/xmloperator.js"></script>
     <script src="javascript/teacher.js"></script>
     <style>
-        .no-padding-margin {
-            padding: 0px;
-            margin: 0px;
-        }
-
-        .user-info-txt {
-            font-family: 微软雅黑;
-            font-size: 10px;
-            color: #ffffff;
-        }
-
-        .list-group-item {
-            border: none;
-            background-color: transparent;
-            font-family: 微软雅黑;
-            font-size: 14px;
-            color: #ffffff;
-            padding: 5px 1.25rem;
-        }
-
-            .list-group-item:hover {
-                background-color: #3965DE;
-                color: #699BED;
-                cursor: pointer;
-            }
-
-        .data-panel-title {
-            color: #ffffff;
-            font-family: 微软雅黑;
-            font-size: 16px;
-        }
-
-        button.btn.btn-sm {
-            font-family: 微软雅黑;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .card {
-            background-color: transparent;
-            border: none;
-        }
-
-        .card-header {
-            background-color: transparent;
-            padding: 10px 20px;
-        }
-
-        h5.mb-0 {
-            font-family: 微软雅黑;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-            h5.mb-0 a {
-                color: #ffffff;
-            }
-
-                h5.mb-0 a:hover {
-                    color: #699BED;
-                }
-
-        .card-block {
-            padding: 0px 20px;
-        }
-
-        .table th, .table td {
-            font-family: 微软雅黑;
-            font-size: 14px;
-            font-weight: bold;
-            padding: 5px 10px;
-            vertical-align: middle;
-        }
-
-        .table td {
-            font-weight: normal;
-        }
-
-        label.custom-control.custom-checkbox {
-            margin: 0px;
-        }
-    </style>
-    <style>
-        body {
-            font-family: 微软雅黑;
-        }
-
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(41, 85, 206, 0.61);
-            -webkit-background-size: 100% 100%;
-            background-size: 100% 100%;
-            border-radius: 20px;
-        }
-
-        .carousel-control-prev-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' transform='translate(30)' viewBox='0 0 8 8'%3E%3Cpath d='M4 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E" transform="translate(30 12)");
-        }
-
-        .carousel-control-next-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' transform='translate(10)' viewBox='0 0 8 8'%3E%3Cpath d='M1.5 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
-        }
-
-        .carousel-inner {
-            border: solid 1px rgb(41, 85, 206);
-            border-radius: 10px;
-            height: 100%;
-        }
-
-        .carousel-item {
-            height: 100%;
-        }
-
-        .accordion-white-bg h5.mb-0 a {
-            color: #0275d8;
-        }
-
-            .accordion-white-bg h5.mb-0 a:hover {
-                color: #699BED;
-            }
-
-        .fa.fa-check {
-            color: rgb(34,139,34);
-        }
-
-            .fa.fa-check span {
-                cursor: pointer;
-                color: rgb(34,139,34);
-                font-size: 14px;
-                font-weight: bold;
-                padding-left: 5px;
-                text-decoration: underline;
-            }
-
-        .fa.fa-question {
-            color: rgb(243,151,0);
-        }
-
-            .fa.fa-question span {
-                cursor: pointer;
-                color: rgb(243,151,0);
-                font-size: 14px;
-                font-weight: bold;
-                padding-left: 5px;
-                text-decoration: underline;
-            }
-
-        .fa.fa-percent {
-            color: rgb(255,0,0);
-        }
-
-            .fa.fa-percent span {
-                color: rgb(255,0,0);
-                font-size: 14px;
-                font-weight: bold;
-                padding-left: 5px;
-            }
-
-        .fa.fa-remove {
-            color: rgb(255,0,0);
-        }
-
-            .fa.fa-remove span {
-                cursor: pointer;
-                color: rgb(255,0,0);
-                font-size: 14px;
-                font-weight: bold;
-                padding-left: 5px;
-                text-decoration: underline;
-            }
-
         .tooltip.tooltip-left .tooltip-inner::before, .tooltip.bs-tether-element-attached-right .tooltip-inner::before {
             display: none;
         }
+    </style>
+    <style>
+        @-webkit-keyframes marquee-msg {
+            0% {
+                left: 0;
+            }
+
+            100% {
+                left: -100%;
+            }
+        }
+
+        @keyframes marquee-msg {
+            0% {
+                left: 0;
+            }
+
+            100% {
+                left: -100%;
+            }
+        }
+
+        .marquee-msg {
+            height: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+            .marquee-msg div {
+                display: block;
+                width: 200%;
+                position: absolute;
+                overflow: hidden;
+                -webkit-animation: marquee-msg 10s linear infinite;
+                animation: marquee-msg 10s linear infinite;
+            }
     </style>
 </head>
 <body style="height:100%;">
@@ -296,7 +158,7 @@
                                 <div class="card">
                                     <div class="card-header" role="tab" id="headingFour">
                                         <h5 class="mb-0">
-                                            <a id="menu_Q_A" class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                            <a id="menu_Message" class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                                 消息管理
                                             </a>
                                         </h5>

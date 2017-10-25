@@ -66,7 +66,8 @@ function initEvents() {
         buildDataHTML_Exam();
     });
 
-    $('#menu_Q_A').on('click', function () {
+    $('#menu_Message').on('click', function () {
+        buildDataHTML_Msg();
     });
 
     $('#menu_UpdatePWD').on('click', function () {
@@ -230,6 +231,7 @@ function buildDataTableDataRowsHTML_ClassBegin(data) {
     $('.btn.btn-sm.btn-success.btn-classbegin-doc').on('click', openLessonDoc);
     $('.btn.btn-sm.btn-warning.btn-classbegin-wp').on('click', openWorkplatform);
     $('.btn.btn-sm.btn-info.btn-classbegin-signin').on('click', showStudentsSignIn);
+    $('.btn.btn-sm.btn-primary.btn-classbegin-custom').on('click', openLessonDoc);
     $('.btn.btn-sm.btn-primary.btn-classbegin-begin').on('click', function () {
         var parentTd = $(arguments[0].target).parent();
         parentTd.empty();
@@ -258,7 +260,8 @@ function showStudentsSignIn() {
         tmpHTMLStr.push('                                   <tr id="th_DataTable_Header_ClassBegin_SignIn">');
         tmpHTMLStr.push('                                       <th style="width: 50px;"></th>');
         tmpHTMLStr.push('                                       <th>学员</th>');
-        tmpHTMLStr.push('                                       <th style="width: 60px;">签到</th>');
+        tmpHTMLStr.push('                                       <th style="width: 50px;">签到</th>');
+        tmpHTMLStr.push('                                       <th style="width: 50px;"></th>');
         tmpHTMLStr.push('                                   </tr>');
         tmpHTMLStr.push('                               </thead>');
         tmpHTMLStr.push('                               <tbody id="tb_DataTable_Body_ClassBegin_SignIn"></tbody>');
@@ -307,6 +310,11 @@ function showStudentsSignIn() {
         }
 
         tmpHTMLStr.push('       </label>');
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td>');
+        if (data[i].signin != 1) {
+            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-warning">请假</button>');
+        }
         tmpHTMLStr.push('   </td>');
         tmpHTMLStr.push('</tr>');
         $('#tb_DataTable_Body_ClassBegin_SignIn').append($(tmpHTMLStr.join('')));
@@ -538,6 +546,7 @@ function buildDataTableDataRowsHTML_CL(data, classId) {
     }
 
     $('.btn.btn-sm.btn-success.btn-lesson-doc').on('click', openLessonDoc);
+    $('.btn.btn-sm.btn-primary.btn-lesson-custom').on('click', openLessonDoc);
     $('.btn.btn-sm.btn-warning.btn-lesson-wp').on('click', openWorkplatform);
 };
 
@@ -752,7 +761,8 @@ function buildDataTableHTML_Doc() {
     $('#container_Datas').append($(tmpHTMLStr.join('')));
     $('#container_Datas').css('overflow', 'auto');
     $('#container_Datas').height($('#wrap_LeftBar').height());
-    $('.btn.btn-sm.btn-success.btn-doc-open').on('click', openLessonDoc);
+    $(".btn.btn-sm.btn-success.btn-doc-standard").on('click', openLessonDoc);
+    $(".btn.btn-sm.btn-info.btn-doc-custome").on('click', openLessonDoc);
 };
 
 function buildDataTableDataRowsHTML_Doc(data, tmpHTMLStr) {
@@ -761,9 +771,9 @@ function buildDataTableDataRowsHTML_Doc(data, tmpHTMLStr) {
         tmpHTMLStr.push('<tr>');
         tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
         tmpHTMLStr.push('   <td>');
-        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-doc-open" data-target="' + data[i].id + '">打开</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-doc-standard" data-target="' + data[i].id + '">标准</button>');
         if (typeof (data[i].custome) != 'undefined' && data[i].custome > 0) {
-            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-doc-custome" data-target="' + data[i].id + '">自定义教案</button>');
+            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-doc-custome" data-target="' + data[i].id + '">自定义</button>');
         }
 
         tmpHTMLStr.push('   </td>');
@@ -801,7 +811,7 @@ function showCreateCustomDocPopup() {
         tmpHTMLStr.push('                               <label for="btn_DOC_Create_Progress" class="col-form-label">&nbsp;</label>');
         tmpHTMLStr.push('                               <button type="button" class="btn btn-primary btn-sm form-control" id="btn_DOC_Create_Progress">流程指引</button>');
         tmpHTMLStr.push('                           </div>');
-        tmpHTMLStr.push('                           <div class="form-group col-md-12" style=" margin-bottom: 0px;>');
+        tmpHTMLStr.push('                           <div class="form-group col-md-12" style=" margin-bottom: 0px;">');
         tmpHTMLStr.push('                               <div class="form-group row" style=" margin-bottom: 5px;">');
         tmpHTMLStr.push('                                   <div class="col" style="padding-left:0px;">');
         tmpHTMLStr.push('                                       <div class="form-check">');
@@ -3875,6 +3885,280 @@ function loadExamSubjectResult() {
     progress.css('width', '100%');
     window.clearTimeout(_gTimeoutExamSymbol);
 };
+
+/*Message*/
+function buildDataHTML_Msg() {
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'GET',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
+    //    data: '<root></root>',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
+    //            return;
+    //        }
+
+    //        var data = initData(response);
+    //        buildUserInfoHTML(data);
+    //        buildMenuHTML(data);
+    //        buildDataHTML(data);
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    var rspXML = "";
+    $('#container_Datas').empty();
+    buildDataTopHTML();
+    buildDataHeaderHTML_Msg();
+    buildDataTableHTML_Msg();
+};
+
+function buildDataHeaderHTML_Msg() {
+    var tmpHTMLStr = '<div class="row" style="padding:5px 10px;">' +
+    '    <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">' +
+    '        <div class="container-fluid">' +
+    '            <div class="row justify-content-around">' +
+    '                <div class="col-2 data-panel-title" style="line-height:40px;">消息管理</div>' +
+    '                <div class="col" id="container_DataHeader_Button" style="padding-top:5px"></div>' +
+    '                <div class="col" id="container_DataHeader_Fields" style="padding-top:5px">' +
+    '                </div>' +
+    '            </div>' +
+    '        </div>' +
+    '    </div>' +
+    '</div>';
+
+    $('#container_Datas').append($(tmpHTMLStr));
+    //buildDataHeaderButtons_Msg();
+    //buildDataHeaderFields_Msg();
+};
+
+function buildDataHeaderButtons_Msg() {
+    //$('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success">添加教员</button>'));
+    //$('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success">批量删除</button>'));
+};
+
+function buildDataHeaderFields_Msg() {
+    var tmpHTMLStr = '<form class="form-inline">' +
+    '   <div class="input-group">' +
+    '       <input type="text" class="form-control  form-control-sm" id="data_" placeholder="Username">' +
+    '       <button type="button" class="btn btn-sm btn-success">搜索</button>' +
+    '   </div>' +
+    '</form>';
+    $('#container_DataHeader_Fields').append($(tmpHTMLStr));
+};
+
+function buildDataTableHTML_Msg() {
+    var tmpHTMLStr = ['<div class="accordion-white-bg" id="accordion_Message_Type" role="tablist">'];
+    var headerId = '';
+    var collapseId = '';
+    var types = [
+        { id: '1', name: '消息' },
+        { id: '2', name: 'Q&A' },
+    ];
+
+    for (var i = 0; i < types.length; i++) {
+        headerId = 'hd_Message_Type_' + types[i].id;
+        collapseId = 'collapse_Message_Type_' + types[i].id;
+        tmpHTMLStr.push('   <div class="card">');
+        tmpHTMLStr.push('        <div class="card-header" role="tab" id="' + headerId + '">');
+        tmpHTMLStr.push('            <h5 class="mb-0">');
+        tmpHTMLStr.push('                <a data-toggle="collapse" href="#' + collapseId + '" aria-expanded="true" aria-controls="' + collapseId + '">' + types[i].name + '</a>');
+        tmpHTMLStr.push('            </h5>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('        <div id="' + collapseId + '" class="collapse collapse-message" data-target="' + types[i].id + '" role="tabpanel" aria-labelledby="' + headerId + '" data-parent="#accordion_Message_Type">');
+        tmpHTMLStr.push('            <div class="card-block">');
+        tmpHTMLStr.push('               <table class="table table-striped">');
+        if (types[i].id == '2') {
+            tmpHTMLStr.push('                   <thead>');
+            tmpHTMLStr.push('                       <tr id="container_DataTable_Header">');
+            tmpHTMLStr.push('                           <th style="width: 50px;"></th>');
+            tmpHTMLStr.push('                           <th style="width: 80px;">来自</th>');
+            tmpHTMLStr.push('                           <th style="text-align:center;">内容</th>');
+            tmpHTMLStr.push('                           <th style="width: 80px;"></th>');
+            tmpHTMLStr.push('                       </tr>');
+            tmpHTMLStr.push('                   </thead>');
+        }
+
+        tmpHTMLStr.push('                   <tbody id="container_DataTable_Rows_' + types[i].id + '">');
+        tmpHTMLStr.push('                   </tbody>');
+        tmpHTMLStr.push('               </table>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+    }
+
+    tmpHTMLStr.push('</div>');
+    $('#container_Datas').append($(tmpHTMLStr.join('')));
+    $('#container_Datas').css('overflow', 'auto');
+    $('#container_Datas').height($('#wrap_LeftBar').height());
+    $('.collapse.collapse-message').on('shown.bs.collapse', function () {
+        var typeId = $(arguments[0].target).attr('data-target');
+        loadMessageByType(typeId);
+    });
+};
+
+function loadMessageByType(typeId) {
+    var data = [
+        { id: '1', top: 1, type: '1', content: '系统消息: 系统消息: 欢迎来到iKCoder的编程世界！系统消息: 欢迎来到iKCoder的编程世界！系统消息: 欢迎来到iKCoder的编程世界！', time: '2017-10-1', answer: null },
+        { id: '2', top: 0, type: '1', content: '系统消息: 课件版本已更新至最新版本！', time: '2017-10-20', answer: null }
+    ];
+
+    if (typeId == "2") {
+        data = [
+            {
+                id: '3',
+                top: 1,
+                type: '2',
+                from: { id: '1', name: 'Tom' },
+                content: '如果在代码状态进行参数修改是否有效？',
+                time: '2017-10-7',
+                answer: {
+                    id: '4',
+                    type: '21',
+                    content: '解答: 你好，Alice，在代码状态进行参数修改是有效的。',
+                    time: '2017-10-8',
+                    owner: { id: '1', name: '教员 1' }
+                }
+            }, {
+                id: '4',
+                top: 0,
+                type: '2',
+                from: { id: '12', name: 'Alice' },
+                content: '如何使用App Studio创建一个应用？',
+                time: '2017-10-7',
+                answer: null
+            }
+        ];
+        buildQAMsgRows(data);
+    } else {
+        buildSystemMsgRows(data);
+    }
+};
+
+function buildSystemMsgRows(data) {
+    var tmpHTMLStr;
+    var tbody = $('#container_DataTable_Rows_1');
+    var colWidth = tbody.width() - 50;
+    var tmpWidth = 0;
+    var tmpContent = '';
+    tbody.empty();
+    for (var i = 0; i < data.length; i++) {
+        tmpWidth = testTextWidth(data[i].content, '14px', (data[i].top == '1' ? 'bold' : ''), '', '');
+        tmpContent = (data[i].top == '1' ? '<b>' + data[i].content + '</b>' : data[i].content);
+        tmpHTMLStr = [];
+        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('   <th scope="row" style="width:50px;">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td>');
+        if (tmpWidth > colWidth) {
+            tmpHTMLStr.push('<div class="marquee-msg">');
+            tmpHTMLStr.push('    <div>');
+            tmpHTMLStr.push(tmpContent);
+            tmpHTMLStr.push('    </div>');
+            tmpHTMLStr.push('</div>');
+        } else {
+            tmpHTMLStr.push(tmpContent);
+        }
+
+        tmpHTMLStr.push('   </td>');
+
+        tmpHTMLStr.push('</tr>');
+        tbody.append($(tmpHTMLStr.join('')));
+    }
+};
+
+function buildQAMsgRows(data) {
+    var tmpHTMLStr;
+    var tbody = $('#container_DataTable_Rows_2');
+    var colWidth = tbody.width() - 50;
+    var tmpWidth = 0;
+    var tmpContent = '';
+    tbody.empty();
+    for (var i = 0; i < data.length; i++) {
+        tmpWidth = testTextWidth(data[i].content, '14px', (data[i].top == '1' ? 'bold' : ''), '', '');
+        tmpContent = (data[i].top == '1' ? '<b>' + data[i].content + '</b>' : data[i].content);
+        tmpHTMLStr = [];
+        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td>' + data[i].from.name + '</td>');
+        tmpHTMLStr.push('   <td>');
+        if (tmpWidth > colWidth) {
+            tmpHTMLStr.push('<div class="marquee-msg">');
+            tmpHTMLStr.push('    <div>');
+            tmpHTMLStr.push(tmpContent);
+            tmpHTMLStr.push('    </div>');
+            tmpHTMLStr.push('</div>');
+        } else {
+            tmpHTMLStr.push(tmpContent);
+        }
+
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td><button type="button" class="btn btn-sm btn-primary btn-message-qa-answer" data-target="' + data[i].id + '">答复</button></td>');
+        tmpHTMLStr.push('</tr>');
+        tbody.append($(tmpHTMLStr.join('')));
+    }
+
+    $('.btn-message-qa-answer').on('click', function () {
+        var target = $(arguments[0].target);
+        if (target.text() == '提交') {
+            target.text('答复');
+            $('#tr_Message_QA_Answer').remove();
+            target.addClass('btn-primary');
+            target.removeClass('btn-success');
+        } else {
+            var msgId = target.attr('data-target');
+            var tmpTR = target.parent().parent();
+            var tmpHTMLArr = [];
+            tmpHTMLArr.push('<tr id="tr_Message_QA_Answer">');
+            tmpHTMLArr.push('   <td colspan="4">');
+            tmpHTMLArr.push('       <table class="table">');
+            tmpHTMLArr.push('           <thead>');
+            tmpHTMLArr.push('               <tr>');
+            tmpHTMLArr.push('                   <th style="width:100px;">解答者: </th>');
+            tmpHTMLArr.push('                   <th id="lb_Message_QA_Answer_Teacher"></th>');
+            tmpHTMLArr.push('                   <th style="width:100px;">解答时间: </th>');
+            tmpHTMLArr.push('                   <th id="lb_Message_QA_Answer_Date"></th>');
+            tmpHTMLArr.push('               </tr>');
+            tmpHTMLArr.push('           </thead>');
+            tmpHTMLArr.push('           <tbody>');
+            tmpHTMLArr.push('               <tr>');
+            tmpHTMLArr.push('                   <td colspan="4">');
+            tmpHTMLArr.push('                       <form>');
+            tmpHTMLArr.push('                           <div class="form-group">');
+            tmpHTMLArr.push('                               <textarea class="form-control" id="txt_Message_QA_Answer" rows="3"></textarea>');
+            tmpHTMLArr.push('                           </div>');
+            tmpHTMLArr.push('                       </form>');
+            tmpHTMLArr.push('                   </td>');
+            tmpHTMLArr.push('               </tr>');
+            tmpHTMLArr.push('           </tbody>');
+            tmpHTMLArr.push('       </table>');
+            tmpHTMLArr.push('   </td>');
+            tmpHTMLArr.push('</tr>');
+            tmpTR.after($(tmpHTMLArr.join('')));
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].id == msgId) {
+                    if (data[i].answer != null) {
+                        $('#txt_Message_QA_Answer').val(data[i].answer.content);
+                        $('#lb_Message_QA_Answer_Teacher').val(data[i].answer.content);
+                        $('#lb_Message_QA_Answer_Date').val(data[i].answer.date);
+                    }
+
+                    break;
+                }
+            }
+
+            target.text('提交');
+            target.removeClass('btn-primary');
+            target.addClass('btn-success');
+        }
+    })
+};
+
 /*Common*/
 function openLessonDoc() {
     var symbol = $(arguments[0].currentTarget).attr('data-target');
