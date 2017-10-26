@@ -718,3 +718,36 @@ function testTextWidthFromEl(source) {
 
     return testTextWidth(source.text(), source.css('font-size'), source.css('font-weight'), source.css('font-family'), source.css('letter-spacing'));
 };
+
+function reloadCityList(provinceEl, cityEl) {
+    var province = provinceEl.val();
+    var item = {};
+    for (var i = 0; i < _gCitys.length; i++) {
+        item = _gCitys[i];
+        if (item.p == province) {
+            break;
+        }
+    }
+
+    var tmpPt = '省';
+    if (item.pt && item.pt != '') {
+        tmpPt = item.pt;
+    }
+
+    var tmpCt = '市';
+    if (item.ct && item.ct != '') {
+        tmpCt = item.ct;
+    }
+
+    var tmpId = provinceEl.attr('id').replace('select', 'title');
+    $("#" + tmpId).text(tmpPt);
+    tmpId = cityEl.attr('id').replace('select', 'title');
+    $("#" + tmpId).text(tmpCt);
+    var tmpHTMLArr = [];
+    for (var i = 0; i < item.c.length; i++) {
+        tmpHTMLArr.push('<option value="' + item.c[i] + '">' + item.c[i] + '</option>');
+    }
+
+    cityEl.empty();
+    cityEl.append(tmpHTMLArr.join(''));
+}

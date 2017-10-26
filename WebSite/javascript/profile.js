@@ -92,7 +92,8 @@ function rebuildContent(symbol) {
     showLoadingMask();
     $('.row.justify-content-start.main-content-row')[0].scrollTop = 0;
     //var contentHeight = $('body').height() - $('nav').height() - 16 - $('footer').height();
-    var contentHeight = $('#sideBar_Page_Left .container-fluid.left-sidebar-wrap').height();
+    //var contentHeight = $('#sideBar_Page_Left .container-fluid.left-sidebar-wrap').height();
+    var contentHeight = Math.max($('#sideBar_Page_Left').height(), $('.container-fluid.left-sidebar-wrap').height());
     $('#wrap_Category_Title').empty();
     $('#wrap_Category_Title').show();
     var contertWrap = $('#wrap_Category_Content');
@@ -2297,7 +2298,8 @@ function displayMessageByType(type) {
 };
 
 function rebuildMessageContents(data, type) {
-    var tmpHeight = $('.container-fluid.left-sidebar-wrap').height();
+    //var tmpHeight = $('.container-fluid.left-sidebar-wrap').height();
+    var tmpHeight = Math.max($('#sideBar_Page_Left').height(), $('.container-fluid.left-sidebar-wrap').height());
     $('#wrap_Category_Content').empty();
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid wrap-message-section" style="background-color:rgb(255,255,255); border-left: solid 5px rgb(237,87,138); height: ' + tmpHeight + 'px;">');

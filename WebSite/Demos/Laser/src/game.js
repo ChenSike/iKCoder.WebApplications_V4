@@ -246,12 +246,12 @@ window['start'] = function() {
     resizer.canvas.addEventListener('mousedown', eventListener);
     resizer.canvas.addEventListener('mouseup', eventListener);
     resizer.canvas.addEventListener('mouseout', eventListener);
-    if (postLD) {
+    //if (postLD) {
         resizer.canvas.addEventListener('touchmove', eventListener);
         resizer.canvas.addEventListener('touchstart', eventListener);
         resizer.canvas.addEventListener('touchend', eventListener);
         resizer.canvas.addEventListener('touchcancel', eventListener);
-    }
+    //}
     
     startMainLoop([resizer, game, loadingBar, resizer.pixelator()], {debugMode: DEBUG_MAIN_LOOP});
 };

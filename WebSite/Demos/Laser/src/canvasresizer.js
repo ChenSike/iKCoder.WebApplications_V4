@@ -636,7 +636,7 @@ GJS.CanvasResizer.prototype.createPointerEventListener = function(callbackObject
         }
         e.preventDefault();
     };
-    if (listenOnCanvas) {
+    //if (listenOnCanvas) {
         this.canvas.addEventListener('mousemove', eventListener);
         this.canvas.addEventListener('mousedown', eventListener);
         this.canvas.addEventListener('mouseup', eventListener);
@@ -645,7 +645,7 @@ GJS.CanvasResizer.prototype.createPointerEventListener = function(callbackObject
         this.canvas.addEventListener('touchstart', eventListener);
         this.canvas.addEventListener('touchend', eventListener);
         this.canvas.addEventListener('touchcancel', eventListener);
-    }
+    //}
     
     return eventListener;
 };

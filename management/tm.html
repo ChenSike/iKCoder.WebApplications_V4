@@ -125,12 +125,46 @@
             cursor: pointer;
             color: rgb(41,85,206);
         }
+
+        .link-btn-successs{
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(34,139,34);
+        }
+
+        .link-btn-warning{
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(243,151,0);
+        }
+
+        .link-btn-danger{
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(255,0,0);
+        }
+
+        .modal-header {
+            padding: 5px 15px;
+        }
+
+        .modal-body {
+            padding: 5px 15px;
+        }
+
+        .modal-footer {
+            padding: 5px 15px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body style="height:100%;">
     <div class="container-fluid" style="height:100%;">
         <div class="row" style="height:100%;">
-            <div class="col-3 no-padding-margin" id="wrap_LeftBar" style="height:100%; background-color:#2955CE; max-width: 265px;">
+            <div class="col no-padding-margin" id="wrap_LeftBar" style="height:100%; background-color:#2955CE; max-width: 265px;min-width: 265px;">
                 <div style="height:100%;">
                     <div class="container-fluid">
                         <div class="row">
@@ -177,7 +211,7 @@
                                 <div class="card">
                                     <div class="card-header" role="tab" id="headingTwo">
                                         <h5 class="mb-0">
-                                            <a id="menu_Student" data-toggle="collapse" href="#collapseTwo" aria-expanded="true">
+                                            <a data-toggle="collapse" href="#collapseTwo" aria-expanded="true">
                                                 学员管理
                                             </a>
                                         </h5>
@@ -206,16 +240,54 @@
                                     <div class="card-header" role="tab" id="headingFour">
                                         <h5 class="mb-0">
                                             <a id="menu_Teacher_All" data-toggle="collapse" href="#" aria-expanded="true" aria-controls="">
-                                                教员管理
+                                                教员总览
                                             </a>
                                         </h5>
                                     </div>
                                 </div>
                                 <div class="card">
+                                    <div class="card-header" role="tab" id="headingSeven">
+                                        <h5 class="mb-0">
+                                            <a data-toggle="collapse" href="#collapseThree" aria-expanded="true">
+                                                教学资料
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingSeven" data-parent="#accordion">
+                                        <div class="card-block">
+                                            <div class="col no-padding-margin">
+                                                <ul class="list-group">
+                                                    <li id="menu_Resource_Lib" class="list-group-item">题库</li>
+                                                    <li id="menu_Resource_Doc" class="list-group-item">教案</li>
+                                                    <li id="menu_Resource_Scene" class="list-group-item">课件</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
                                     <div class="card-header" role="tab" id="headingFive">
                                         <h5 class="mb-0">
-                                            <a class="collapsed" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="">
-                                                数据跟踪
+                                            <a class="collapsed" id="menu_Team_Suit" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="">
+                                                Team Suit
+                                            </a>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingEight">
+                                        <h5 class="mb-0">
+                                            <a class="collapsed" id="menu_Certification" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="">
+                                                认证测试
+                                            </a>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingEight">
+                                        <h5 class="mb-0">
+                                            <a class="collapsed" id="menu_Feedback" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="">
+                                                教质反馈
                                             </a>
                                         </h5>
                                     </div>
@@ -234,7 +306,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col" style="height:100%; padding:0px;">
+            <div class="col" style="height:100%; padding:0px;overflow:auto">
                 <div class="container-fluid" id="container_Datas">
                     <div class="row">
                         <div class="col" style="height:50px; background-color:#F1F1F1;"></div>
@@ -244,7 +316,7 @@
         </div>
     </div>
     <div class="modal fade" id="modal_Class_Item_Detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document" style="max-width: fit-content;">
             <div class="modal-content">
                 <div class="modal-header" style="padding: 5px 15px;">
                     <h5 class="modal-title" id="exampleModalLabel"></h5>
@@ -268,6 +340,132 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                </div>
+                <div class="modal-body" style="padding: 0px 15px;">
+                </div>
+                <div class="modal-footer" style="padding: 5px 15px;">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_Student_Detail" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">学员信息详情</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group row">
+                            <label for="sel_Level_Student_Detail" class="col-3 col-form-label class-create">课程级别</label>
+                            <div class="col-9">
+                                <select class="form-control form-control-sm" id="sel_Level_Student_Detail">
+                                    <option value="1">初级</option>
+                                    <option value="2">中级</option>
+                                    <option value="3">高级</option>
+                                    <option value="4">拓展</option>
+                                    <option value="5">课程包</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txt_Symbol_Student_Detail" class="col-3 col-form-label class-create">编号</label>
+                            <div class="col-9">
+                                <input class="form-control form-control-sm" type="text" value="" id="txt_Symbol_Student_Detail" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="sel_Class_Student_Detail" class="col-3 col-form-label class-create">班级</label>
+                            <div class="col-9">
+                                <select class="form-control form-control-sm" id="select_Class_Student_Detail" disabled></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txt_Name_Student_Detail" class="col-3 col-form-label class-create">姓名</label>
+                            <div class="col-9">
+                                <input class="form-control form-control-sm" type="text" value="" id="txt_Name_Student_Detail" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txt_Gender_Student_Detail" class="col-3 col-form-label class-create">性别</label>
+                            <div class="col-9">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="newStudentGenderRadios" id="rb_Gender_Student_Detail_1" value="1" disabled>男
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="newStudentGenderRadios" id="rb_Gender_Student_Detail_2" value="2" disabled>女
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txt_Birthday_Student_Detail" class="col-3 col-form-label class-create">生日</label>
+                            <div class="col-9">
+                                <input class="form-control form-control-sm" type="date" value="" id="txt_Birthday_Student_Detail" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txt_City_Student_Detail" class="col-3 col-form-label class-create">所在城市</label>
+                            <div class="col-3" style="padding-right:0px;">
+                                <select class="form-control form-control-sm" id="select_City_Province_Student_Detail" disabled></select>
+                            </div>
+                            <label class="col-2 col-form-label class-create" id="title_City_Province_Student_Detail" style="padding:5px;">市</label>
+                            <div class="col-3" style="padding:0px;">
+                                <select class="form-control form-control-sm" id="select_City_City_Student_Detail" disabled></select>
+                            </div>
+                            <label class="col-1 col-form-label class-create" id="title_City_City_Student_Detail" style="padding:5px;">区</label>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txt_Address_Student_Detail" class="col-3 col-form-label class-create">联系地址</label>
+                            <div class="col-9">
+                                <input class="form-control form-control-sm" type="text" value="" id="txt_Address_Student_Detail">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txt_School_Student_Detail" class="col-3 col-form-label class-create">就读学校</label>
+                            <div class="col-9">
+                                <input class="form-control form-control-sm" type="text" value="" id="txt_School_Student_Detail">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txt_Contect_Student_Detail" class="col-3 col-form-label class-create">联系人</label>
+                            <div class="col-9">
+                                <input class="form-control form-control-sm" type="text" value="" id="txt_Contect_Student_Detail">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txt_PhoneNumber_Student_Detail" class="col-3 col-form-label class-create">联系电话</label>
+                            <div class="col-9">
+                                <input class="form-control form-control-sm" type="text" value="" id="txt_PhoneNumber_Student_Detail">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-between" id="row_Buttons_Student_Detail" style="padding:15px;">
+                            <button type="button" class="btn btn-sm btn-info col-2" id="btn_Student_Detail_SignIn">签到情况</button>
+                            <button type="button" class="btn btn-sm btn-info col-2" id="btn_Student_Detail_Homework">作业情况</button>
+                            <button type="button" class="btn btn-sm btn-info col-2" id="btn_Student_Detail_Exam">测试情况</button>
+                            <button type="button" class="btn btn-sm btn-warning col-2" id="btn_Student_Detail_ResetPWD">重置密码</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-sm btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_Student_Detail_Info" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 5px 15px;">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
                 </div>
                 <div class="modal-body" style="padding: 0px 15px;">
                 </div>

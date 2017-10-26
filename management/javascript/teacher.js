@@ -211,8 +211,8 @@ function buildDataTableDataRowsHTML_ClassBegin(data) {
         tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
         tmpHTMLStr.push('   <td>');
         tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-classbegin-doc" data-target="' + data[i].symbol + '">教案</button>');
-        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-warning btn-classbegin-wp" data-target="' + data[i].symbol + '">课件</button>');
-        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-classbegin-signin" data-target="' + data[i].symbol + '">签到</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-classbegin-wp" data-target="' + data[i].symbol + '">课件</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-warning btn-classbegin-signin" data-target="' + data[i].symbol + '">签到</button>');
         if (typeof (data[i].custome) != 'undefined' && data[i].custome > 0) {
             tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-primary btn-classbegin-custom" data-target="' + data[i].symbol + '">自定义教案</button>');
         }
@@ -453,33 +453,38 @@ function buildDataTableHTML_Lesson(data) {
 function loadLessonsByClass(classId) {
     var data = [
         {
-            datetime: '2017-10-10 10:00',
+            date: '2017-10-10',
+            time: '10:00',
             room: 'Room 1',
             content: '变量 1 ',
             status: '0',
             symbol: 'B_01_001',
             custome: 1
         }, {
-            datetime: '2017-10-11 11:00',
+            date: '2017-10-11',
+            time: '13:00',
             room: 'Room 2',
             content: '变量 2',
             status: '1',
             symbol: 'B_01_001'
         }, {
-            datetime: '2017-10-12 12:00',
+            date: '2017-10-12',
+            time: '12:00',
             room: 'Room 3',
             content: '变量 3',
             status: '0',
             symbol: 'B_01_001',
             custome: 1
         }, {
-            datetime: '2018-01-10 13:00',
+            date: '2018-01-10',
+            time: '13:00',
             room: 'Room 4',
             content: '变量 4',
             status: '1',
             symbol: 'B_01_001'
         }, {
-            datetime: '2018-01-12 14:00',
+            date: '2018-01-12',
+            time: '14:00',
             room: 'Room 5',
             content: '变量 5',
             status: '0',
@@ -513,6 +518,8 @@ function buildDataTableColHeaderHTML_CL() {
     var tmpHTMLStr = [];
     tmpHTMLStr.push('<th style="width: 50px;"></th>');
     tmpHTMLStr.push('<th style="width: 210px;">操作</th>');
+    tmpHTMLStr.push('<th style="width: 60px;"></th>');
+    tmpHTMLStr.push('<th>日期</th>');
     tmpHTMLStr.push('<th>时间</th>');
     tmpHTMLStr.push('<th>教室</th>');
     tmpHTMLStr.push('<th>编号</th>');
@@ -531,12 +538,20 @@ function buildDataTableDataRowsHTML_CL(data, classId) {
         tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
         tmpHTMLStr.push('   <td>');
         tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-lesson-doc" data-target="' + data[i].symbol + '">教案</button>');
-        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-warning btn-lesson-wp" data-target="' + data[i].symbol + '">课件</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-lesson-wp" data-target="' + data[i].symbol + '">课件</button>');
         if (typeof (data[i].custome) != 'undefined' && data[i].custome > 0) {
-            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-primary btn-lesson-custom" data-target="' + data[i].symbol + '">自定义教案</button>');
+            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-primary btn-lesson-custom" data-target="' + data[i].symbol + '" style="font-size: 10px; line-height: 20px;">自定义教案</button>');
         }
+
         tmpHTMLStr.push('   </td>');
-        tmpHTMLStr.push('   <td>' + data[i].datetime + '</td>');
+        tmpHTMLStr.push('   <td>');
+        if (data[i].status == '0') {
+            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-warning btn-lesson-vacate" data-target="' + data[i].symbol + '">请假</button>');
+        }
+
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td>' + data[i].date + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].time + '</td>');
         tmpHTMLStr.push('   <td>' + data[i].room + '</td>');
         tmpHTMLStr.push('   <td>' + data[i].symbol + '</td>');
         tmpHTMLStr.push('   <td>' + data[i].content + '</td>');

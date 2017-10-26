@@ -197,7 +197,7 @@ function buildCreateNewStudentPopup() {
 
     $("#select_City_Province_Student_New").change(function () {
         var pVal = $("#select_City_Province_Student_New").val();
-        reloadCityList(pVal);
+        reloadCityList($("#select_City_Province_Student_New"), $("#select_City_City_Student_New"));
     });
 
     $('#sel_Level_Student_New').on('click', function () {
@@ -208,36 +208,6 @@ function buildCreateNewStudentPopup() {
 function rebuildStudentSymbol() {
 
 };
-
-function reloadCityList(province) {
-    var item = {};
-    for (var i = 0; i < _gCitys.length; i++) {
-        item = _gCitys[i];
-        if (item.p == province) {
-            break;
-        }
-    }
-
-    var tmpPt = '省';
-    if (item.pt && item.pt != '') {
-        tmpPt = item.pt;
-    }
-
-    var tmpCt = '市';
-    if (item.ct && item.ct != '') {
-        tmpCt = item.ct;
-    }
-
-    $("#title_City_Province_Student_New").text(tmpPt);
-    $("#title_City_City_Student_New").text(tmpCt);
-    var tmpHTMLArr = [];
-    for (var i = 0; i < item.c.length; i++) {
-        tmpHTMLArr.push('<option value="' + item.c[i] + '">' + item.c[i] + '</option>');
-    }
-
-    $("#select_City_City_Student_New").empty();
-    $("#select_City_City_Student_New").append(tmpHTMLArr.join(''));
-}
 
 function buildDataHTML_Student() {
     //_registerRemoteServer();
