@@ -751,3 +751,98 @@ function reloadCityList(provinceEl, cityEl) {
     cityEl.empty();
     cityEl.append(tmpHTMLArr.join(''));
 }
+/*DOC*/
+function openLessonDoc() {
+    var symbol = $(arguments[0].target).attr('data-target');
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'GET',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.getcurrentdoc, { symbol: symbol }),
+    //    data: '<root></root>',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_GetCurrentDoc');
+    //            return;
+    //        }
+
+    //        var data = initData_LessonDoc(response);
+    //        showLessonDoc(data);
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    var data = initData_LessonDoc("");
+    showLessonDoc(data);
+};
+
+function initData_LessonDoc(responseXML) {
+    /*
+    <root>
+    <lesson symbol="b_01_001" >
+        <page index="1" symbol=""></page>
+    </lesson>
+</root>
+    */
+    var data = ['image/lessondoc_1.jpg', 'image/lessondoc_2.jpg', 'image/lessondoc_3.jpg', 'image/lessondoc_4.jpg'];
+    return data;
+};
+
+function showLessonDoc(data) {
+    if ($('#modal_LessonDoc').length == 0) {
+        var tmpHTMLStr = '<div class="modal fade" id="modal_LessonDoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
+        '    <div class="modal-dialog" role="document" style="max-width:100%; max-height:100%; width:100%; height:100%; margin:0px;">' +
+        '        <div class="modal-content" style="max-width:100%; max-height:100%; width:100%; height:100%; margin:0px;">' +
+        '            <div class="modal-body">' +
+        '                <div id="carousel_LessonDoc" class="carousel slide" data-ride="carousel" data-interval="90000" data-keyboard="true" data-wrap="false" data-ride="true">' +
+        '                    <div class="carousel-inner">' +
+        '                    </div>' +
+        '                    <a class="carousel-control-prev" href="#carousel_LessonDoc" role="button" data-slide="prev">' +
+        '                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>' +
+        '                        <span class="sr-only" style="color:darkred">Previous</span>' +
+        '                    </a>' +
+        '                    <a class="carousel-control-next" href="#carousel_LessonDoc" role="button" data-slide="next">' +
+        '                        <span class="carousel-control-next-icon" aria-hidden="true"></span>' +
+        '                        <span class="sr-only">Next</span>' +
+        '                    </a>' +
+        '                </div>' +
+        '            </div>' +
+        '            <div class="modal-footer">' +
+        '                <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>' +
+        '            </div>' +
+        '        </div>' +
+        '    </div>' +
+        '</div>';
+        $('body').append($(tmpHTMLStr));
+    }
+
+    $('#modal_LessonDoc .carousel-inner').empty();
+    var tmpItemStr = '';
+    for (var i = 0; i < data.length; i++) {
+        if (i == 0) {
+            tmpItemStr += '<div class="carousel-item active">';
+        } else {
+            tmpItemStr += '<div class="carousel-item">';
+        }
+
+        tmpItemStr += '<img class="d-block w-100" src="' + data[i] + '" alt="Second slide">';
+        tmpItemStr += '</div>';
+    }
+    $('#modal_LessonDoc .carousel-inner').append($(tmpItemStr));
+
+    $('#modal_LessonDoc').modal('show');
+    $('#modal_LessonDoc').on('shown.bs.modal', function (e) {
+        var parent = $($('#carousel_LessonDoc').parent());
+        $('#carousel_LessonDoc').height(parent.height() - 30);
+        $('#carousel_LessonDoc').width(parent.width() - 30);
+    })
+};
+/*Workplatform*/
+function openWorkplatform() {
+    var symbol = $(arguments[0].currentTarget).attr('data-target');
+    window.open('/ikcoder/workplatform.html?scene=' + symbol, 'workplatform', "")
+};
