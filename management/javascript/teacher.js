@@ -70,6 +70,10 @@ function initEvents() {
         buildDataHTML_Msg();
     });
 
+    $('#menu_TeamSuit').on('click', function () {
+        window.open("/ikcoder/teamsuit.html");
+    }); 
+
     $('#menu_UpdatePWD').on('click', function () {
         _showChgPWDPopup();
     });

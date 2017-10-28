@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <title>iKCoder・中国青少年编程教育创导者</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common/xmloperator.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/teamsuit.js"></script>
+    <style>
+        #btn_Header_Search:hover {
+            background-color: #025aa5;
+            color: #ffffff;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+    </style>
+</head>
+<body style="height:100%;">
+    <header style="width:calc(100% - 15px);">
+        <div class="container-fluid" style="margin:0px;padding:0px;">
+            <div class="row" style="margin:0px;padding:0px;">
+                <div class="col" style="margin:0px;padding:0px;">
+                    <img class="img-fluid" src="image/logo-appshop.png" />
+                </div>
+                <div class="col" style="text-align:right;">
+                    <p style="padding-top:10px; margin-bottom:0px;">Welcome back Alice<span style="margin-left:10px;"><a id="lbtn_Header_Setting" href="#">[设置]</a></span></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-dark bg-ffffff" style="padding-bottom: 0px;">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Issue</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">跟踪</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">社区</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-12" style="padding: 0px 30px;">
+                    <hr style="height: 2px; border: none; border-top: 1px solid #0080ff; margin: 0px;" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container-fluid" style="margin:0px;padding:0px;padding-top:85px;">
+        <div class="row" style="margin:0px;padding:0px;">
+            <div class="col" style="margin:0px;padding:0px; width:100%;overflow: auto;">
+                <div class="container-fluid" style="margin:0px;padding:0px;">
+                    <div class="row" style="margin:0px;">
+                        <div class="col-12">
+                            <p style="padding:20px;color:#5f5f5f;line-height: 20px;">
+                                Project
+                                <button type="button" class="btn btn-sm btn-primary" style="margin-left:20px; margin-top: -1px; padding: 0px 5px; line-height: 20px;">
+                                    <i class="fa fa-plus" style="line-height: 20px;"></i>
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:0px;">
+                        <div class="col-12">
+                            <table class="table table-striped" style="text-align:center;">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align:center;">项目名称</th>
+                                        <th style="text-align:center;">编号</th>
+                                        <th style="text-align:center;">优先级</th>
+                                        <th style="text-align:center;">子项目</th>
+                                        <th style="text-align:center;">参与者</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td scope="row">贪吃蛇</td>
+                                        <td>Ex-01-001</td>
+                                        <td>中级</td>
+                                        <td>背景构建</br>主体构建</br>事件响应</br>基本动作</br>逻辑关系</td>
+                                        <td>Tom</br>Alice</br>Jack</br>Kevin</br>Betty</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer" style="bottom: 0px; position: absolute; width: 100%;">
+        <div class="container-fluid" style="background-color:#222222; padding:0px;">
+            <div class="row" style="margin:0px;padding:0px;">
+                <div class="col" style="padding:10px 15px;text-align:right; font-size:12px; color:#cccccc;">
+                    iKCoder Team Suit为iKCoder所有, Copyright © 2017 iKCoder. 其中所发布的所有项目均基于iKCoder Lib.
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            _loadLabels();
+            initHeader(true);
+            initFooter();
+            initPage();
+        });
+    </script>
+</body>
+</html>

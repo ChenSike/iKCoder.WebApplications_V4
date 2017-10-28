@@ -43,8 +43,7 @@ function initPage() {
         last: "2017-09-30 12:01:02"
     };
     buildUserInfoHTML(data);
-    //buildDataHTML_Class();
-    buildDataTableHTML_DateView();
+    buildDataHTML_Class();    
     initEvents();
 };
 
@@ -457,7 +456,7 @@ function loadClassItemInfo_Sign(classId) {
     tmpHTMLStr.push('   <tbody>');
     for (var i = 0; i < data.length; i++) {
         tmpHTMLStr.push('<tr>');
-        tmpHTMLStr.push('   <td scope="row">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td scope="row">' + (i + 1) + '</td>');
         tmpHTMLStr.push('   <td>' + data[i].name + '</td>');
         tmpHTMLStr.push('   <td><a class="' + tmpClassStr + 'sign" href="#" data-target="' + data[i].id + '|' + data[i].name + '">' + data[i].sign + '</a></td>');
         tmpHTMLStr.push('   <td><a class="' + tmpClassStr + 'unsign" href="#" data-target="' + data[i].id + '|' + data[i].name + '">' + data[i].unsign + '</a></td>');
@@ -3444,7 +3443,7 @@ function buildDataTableHTML_DateView() {
     tmpHTMLStr.push('       <div class="col-2" style="line-height:30px;">选择时间段</div>');
     tmpHTMLStr.push('       <div class="col" style="line-height:30px;text-align:right;">从 : </div>');
     tmpHTMLStr.push('       <div class="col-3">');
-    tmpHTMLStr.push('           <input type="date" class="form-control form-control-sm" id="txt_Schedule_ViewDate_Start" value="2017-09-01">');
+    tmpHTMLStr.push('           <input type="date" class="form-control form-control-sm" id="txt_Schedule_ViewDate_Start" value="2017-09-03">');
     tmpHTMLStr.push('       </div>');
     tmpHTMLStr.push('       <div class="col" style="line-height:30px;text-align:right;">到 :</div>');
     tmpHTMLStr.push('       <div class="col-3">');
@@ -3468,52 +3467,229 @@ function buildDataTableHTML_DateView() {
 };
 
 function loadScheduleByPeriod() {
+    var data = {
+        2017: {
+            9: {
+                10: {
+                    1: 0,
+                    2: 3,
+                    3: 0,
+                    4: 7
+                }
+            }
+        }
+    };
+
+    var gData = {
+        rooms: [
+            { id: '1', name: '教室 1', max: '20' },
+            { id: '2', name: '教室 2', max: '15' },
+            { id: '3', name: '教室 3', max: '22' },
+            { id: '4', name: '教室 4', max: '18' }
+        ],
+        times: [
+            { id: '1', name: '09:30' },
+            { id: '2', name: '10:30' },
+            { id: '3', name: '11:30' },
+            { id: '4', name: '14:30' },
+            { id: '5', name: '15:30' },
+            { id: '6', name: '16:30' },
+            { id: '7', name: '19:30' }
+        ]
+    };
+
     var startDate = new Date($('#txt_Schedule_ViewDate_Start').val());
     var endDate = new Date($('#txt_Schedule_ViewDate_End').val());
-    //var years = endDate.getFullYear() - startDate.getFullYear();
-    //var months = endDate.getMonth() - startDate.getMonth();
-    //var days = endDate.getDate() - startDate.getDate();
-    var days = (endDate - startDate) / 1000 / 60 / 60 / 24;
-    var weekDay = startDate.getDay();
-    var rows = 0;
-    if (days % 7 == 0) {
-        rows = (weekDay == 0 ? days / 7 : parseInt(days / 7) + 1);
-    } else {
-        rows = parseInt(days / 7) + 1;
+
+    var getParams = function (newDate, startDay, endDay) {
+        var retRows, retDSC, retMSC, retMEC, retDEC;
+        var tmpMonth = newDate.getMonth();
+        var tmpYear = newDate.getFullYear();
+        var tmpDays = 31;
+        if (tmpMonth == 1) {
+            if ((tmpYear % 100 != 0 && tmpYear % 4 == 0) || (tmpYear % 100 == 0 && tmpYear % 400 == 0)) {
+                tmpDays = 29;
+            } else {
+                tmpDays = 28;
+            }
+        } else if (tmpMonth == 3 || tmpMonth == 5 || tmpMonth == 8 || tmpMonth == 10) {
+            tmpDays = 30;
+        }
+
+        retMSC = newDate.getDay();
+        if (parseInt(startDay) > 1) {
+            retDSC = (new Date([tmpYear, tmpMonth + 1, startDay].join('-'))).getDay();
+        } else {
+            retDSC = retMSC;
+        }
+
+        retMEC = (new Date([tmpYear, tmpMonth + 1, tmpDays].join('-'))).getDay();
+        if (parseInt(endDay) > 0 && parseInt(endDay) != tmpDays) {
+            retDEC = (new Date([tmpYear, tmpMonth + 1, endDay].join('-'))).getDay();
+        } else {
+            retDEC = retMEC;
+        }
+
+        switch (tmpDays) {
+            case 28:
+                retRows = (retMSC > 0 ? 5 : 4);
+                break;
+            case 29:
+                retRows = 5;
+                break;
+            case 30:
+                retRows = (retMSC >= 6 ? 6 : 5);
+                break;
+            default:
+                retRows = (retMSC >= 5 ? 6 : 5);
+                break;
+        }
+
+        return { r: retRows, msc: retMSC, mec: retMEC, dsc: retDSC, dec: retDEC, days: tmpDays };
+    };
+    var findStatus = function (year, month, day) {
+
+    };
+
+    var newYear = startDate.getFullYear();
+    var newMonth = startDate.getMonth() + 1;
+    var newDay = 1;
+    var newDate, currStartDate, currEndDate, tmpClass, tmpRoomClass, currRoomStatus;
+    var tmpHStyle = 'style = "height:' + (gData.rooms.length * 30 + 10) + 'px;"';
+    var tmpHTMLStr = [];
+    $('#wrap_Schedule_ViewDate_Result').empty();
+    tmpHTMLStr.push('<div class="container-fluid container-months">');
+    var tables = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth()) + 1;
+    for (var k = 0; k < tables; k++) {
+        newDay = 1;
+        newDate = new Date([newYear, newMonth, '1'].join('-'));
+        currStartDate = (k == 0 ? startDate.getDate() : 1);
+        var params = getParams(newDate, currStartDate);
+        currEndDate = (k == tables - 1 ? endDate.getDate() : params.days);
+        tmpHTMLStr.push('   <div class="row row-month-title">');
+        tmpHTMLStr.push('       <div class="col-12 col-month-title">' + newYear + ' - ' + newMonth + '</div>');
+        tmpHTMLStr.push('       <div class="col" style="overflow:auto;">');
+        tmpHTMLStr.push('<table class="table">');
+        tmpHTMLStr.push('   <thead>');
+        tmpHTMLStr.push('       <tr>');
+        tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期日</th>');
+        tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期一</th>');
+        tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期二</th>');
+        tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期三</th>');
+        tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期四</th>');
+        tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期五</th>');
+        tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期六</th>');
+        tmpHTMLStr.push('       </tr>');
+        tmpHTMLStr.push('   </thead>');
+        tmpHTMLStr.push('   <tbody>');
+        for (var i = 0; i < params.r; i++) {
+            tmpHTMLStr.push('       <tr>');
+            for (var j = 0; j < 7; j++) {
+                if ((i == 0 && j < params.msc) || (i == params.r - 1 && j > params.mec)) {
+                    tmpHTMLStr.push('           <td ' + tmpHStyle + '>');
+                    //tmpHTMLStr.push('               <div class="div-date-container unavailable-item" ' + tmpHStyle + '></div">');
+                    tmpHTMLStr.push('           </td>');
+                } else {
+                    tmpHTMLStr.push('           <td>');
+                    tmpClass = (newDay > currEndDate || newDay < currStartDate ? 'outperiod-item' : 'period-item');
+                    tmpHTMLStr.push('               <div class="container-fluid div-date-container ' + tmpClass + '" ' + tmpHStyle + '>');
+                    tmpHTMLStr.push('                   <div class="row row-date-container">');
+                    tmpHTMLStr.push('                       <div class="col-2 col-date-text" >' + newDay + '</div>');
+                    tmpHTMLStr.push('                       <div class="col-10 col-date-room-container">');
+                    for (var m = 0; m < gData.rooms.length; m++) {
+                        currRoomStatus = 0;
+                        if (data[newYear] && data[newYear][newMonth] && data[newYear][newMonth][newDay] && data[newYear][newMonth][newDay][gData.rooms[m].id]) {
+                            currRoomStatus = data[newYear][newMonth][newDay][gData.rooms[m].id];
+                        }
+
+                        tmpRoomClass = (currRoomStatus == 0 ? 'course-empty' : currRoomStatus == gData.times.length ? 'course-full' : '');
+                        tmpHTMLStr.push('                           <div class="row">');
+                        tmpHTMLStr.push('                               <div class="col col-date-room-item ' + tmpRoomClass + '" data-target="' + newYear + '|' + newMonth + '|' + newDay + '|' + gData.rooms[m].id + '">');
+                        tmpHTMLStr.push('                                   <div class="marquee-wrap"><div>' + gData.rooms[m].name + '</div></div>');
+                        tmpHTMLStr.push('                               </div>');
+                        tmpHTMLStr.push('                           </div>');
+                    }
+
+                    tmpHTMLStr.push('                       </div>');
+                    tmpHTMLStr.push('                   </div>');
+                    tmpHTMLStr.push('               </div>');
+                    tmpHTMLStr.push('           </td>');
+                    newDay = (newDay == params.days ? 1 : newDay + 1);
+                }
+            }
+
+            tmpHTMLStr.push('       </tr>');
+        }
+
+        tmpHTMLStr.push('   </tbody>');
+        tmpHTMLStr.push('</table>');
+        tmpHTMLStr.push('       </div>');
+        tmpHTMLStr.push('   </div>');
+        newYear = (newMonth == 12 ? newYear + 1 : newYear);
+        newMonth = (newMonth == 12 ? 1 : newMonth + 1);
     }
 
-    var cols = rows * 7;
+    tmpHTMLStr.push('</div>');
+    $('#wrap_Schedule_ViewDate_Result').append($(tmpHTMLStr.join('')));
+
+    var tmpDivs = $('.col-date-room-item .marquee-wrap');
+    var wrapWidth = $('.col-date-room-item').width();
+    for (var i = 0; i < tmpDivs.length; i++) {
+        if (testTextWidth($($(tmpDivs[i]).find('div')[0]).text(), '14px', '', '', '') > wrapWidth) {
+            $(tmpDivs[i]).addClass('marquee');
+        }
+    }
+
+    $('.period-item .col-date-room-item').on('click', function () {
+        showDateCourseDetail($(arguments[0].currentTarget).attr('data-target'));
+    });
+};
+
+function showDateCourseDetail(symbol) {
+    symbol = symbol.split('|');
+    var year = symbol[0];
+    var month = symbol[1];
+    var day = symbol[2];
+    var data = {
+        id: '1',
+        name: '教室 1',
+        times: [
+            { id: '1', name: '09:30', cid: '1', csymbol: 'B-01-001', cname: '初级 1 班', tid: '1', tname: '教员 1' },
+            { id: '2', name: '10:30', cid: '', csymbol: '', cname: '', tid: '', tname: '' },
+            { id: '3', name: '11:30', cid: '2', csymbol: 'B-02-002', cname: '中级 2 班', tid: '2', tname: '教员 2' },
+            { id: '4', name: '14:30', cid: '', csymbol: '', cname: '', tid: '', tname: '' },
+            { id: '5', name: '15:30', cid: '', csymbol: '', cname: '', tid: '', tname: '' },
+            { id: '6', name: '16:30', cid: '', csymbol: '', cname: '', tid: '', tname: '' },
+            { id: '7', name: '19:30', cid: '5', csymbol: 'B-03-003', cname: '高级 3 班', tid: '5', tname: '教员 5' }
+        ]
+    };
+
+    var title = '课程表详情 - ' + year + '/' + month + '/' + day + ' ' + data.name;
+    $('#modal_Class_Item_Detail .modal-title').text(title);
+    $('#modal_Class_Item_Detail .modal-body').empty();
     var tmpHTMLStr = [];
-    tmpHTMLStr.push('<div class="container-fluid" style="border: solid 2px rgb(41,85,206); border-radius:20px; margin-top:20px;">');
-    tmpHTMLStr.push('   <div class="row">');
-    tmpHTMLStr.push('       <div class="col">');
-    tmpHTMLStr.push('<table class="table table-striped">');
+    tmpHTMLStr.push('<table class="table table-striped" style="text-align:center;">');
     tmpHTMLStr.push('   <thead>');
     tmpHTMLStr.push('       <tr>');
-    tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期日</th>');
-    tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期一</th>');
-    tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期二</th>');
-    tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期三</th>');
-    tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期四</th>');
-    tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期五</th>');
-    tmpHTMLStr.push('           <th style="border:none; text-align:center; width: 12%">星期六</th>');
+    tmpHTMLStr.push('           <th style="text-align:center;width: 50px;"></th>');
+    tmpHTMLStr.push('           <th style="text-align:center;">时间</th>');
+    tmpHTMLStr.push('           <th style="text-align:center;">班级</th>');
+    tmpHTMLStr.push('           <th style="text-align:center;">教员</th>');
     tmpHTMLStr.push('       </tr>');
     tmpHTMLStr.push('   </thead>');
     tmpHTMLStr.push('   <tbody>');
-    for (var i = 0; i < rows; i++) {
-        tmpHTMLStr.push('       <tr>');
-        for (var j = 0; j < 7; j++) {
-            tmpHTMLStr.push('           <td style="background-color:' + (j % 2 == 0 ? 'red' : 'blue') + '; line-height:30px;">a</td>');
-        }
-
-        tmpHTMLStr.push('       </tr>');
+    for (var i = 0; i < data.times.length; i++) {
+        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('   <td scope="row">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td>' + data.times[i].name + '</td>');
+        tmpHTMLStr.push('   <td>' + data.times[i].cname + ' ( ' + data.times[i].csymbol + ' )</td>');
+        tmpHTMLStr.push('   <td>' + data.times[i].tname + '</td>');
+        tmpHTMLStr.push('</tr>');
     }
 
     tmpHTMLStr.push('   </tbody>');
     tmpHTMLStr.push('</table>');
-    tmpHTMLStr.push('       </div>');
-    tmpHTMLStr.push('   </div>');
-    tmpHTMLStr.push('</div>');
-
-    $('#wrap_Schedule_ViewDate_Result').append($(tmpHTMLStr.join('')));
+    $('#modal_Class_Item_Detail .modal-dialog').css("max-width", "fit-content");
+    $('#modal_Class_Item_Detail .modal-body').append($(tmpHTMLStr.join('')));
+    $('#modal_Class_Item_Detail').modal('show');
 }

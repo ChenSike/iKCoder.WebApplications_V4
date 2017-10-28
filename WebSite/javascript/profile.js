@@ -71,18 +71,16 @@ function hideLoadingMask() {
 }
 
 function rebuildContent(symbol) {
-    if (symbol == 'teamsuit') {
-        _showGlobalMessage('演示版本，此功能暂不开放！', 'warning', 'alert_ForgetPWD_Success');
-        return;
-    }
-
-    if (symbol == 'workplatform' || symbol == 'appshop') {
+    if (symbol == 'workplatform' || symbol == 'appshop' || symbol == 'teamsuit') {
         switch (symbol) {
             case 'workplatform':
                 window.open("appstudio/index.html");
                 break;
             case 'appshop':
                 window.open("appshop.html");
+                break;
+            case 'teamsuit':
+                window.open("teamsuit.html");
                 break;
         }
 
