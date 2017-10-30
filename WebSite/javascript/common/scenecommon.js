@@ -26,7 +26,7 @@ function _shareScene() {
 };
 
 function _fullScreen() {
-    WorkScene.fullScreen();    
+    WorkScene.fullScreen();
 }
 
 function _playScene() {
@@ -43,10 +43,10 @@ function _playScene() {
 
 function _playSceneFullScreen() {
     if (WorkScene.playableScene) {
-        if ($(this).hasClass('fa-play-circle-o')) {
+        if ($('.run-scene-fullscreen-play-button').hasClass('fa-play-circle-o')) {
             WorkScene.startGame();
             resetPlayBtn('R');
-        } else if ($(this).hasClass('fa-undo')) {
+        } else if ($('.run-scene-fullscreen-play-button').hasClass('fa-undo')) {
             WorkScene.resetScene();
             resetPlayBtn('P');
         }

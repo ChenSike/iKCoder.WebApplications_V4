@@ -72,7 +72,15 @@ function initEvents() {
 
     $('#menu_TeamSuit').on('click', function () {
         window.open("/ikcoder/teamsuit.html");
-    }); 
+    });
+
+    $('#menu_AppStudio').on('click', function () {
+        window.open("/ikcoder/appstudio/index.html");
+    });
+
+    $('#menu_AppShop').on('click', function () {
+        window.open("/ikcoder/appshop.html");
+    });
 
     $('#menu_UpdatePWD').on('click', function () {
         _showChgPWDPopup();
@@ -211,7 +219,7 @@ function buildDataTableColHeaderHTML_ClassBegin() {
 function buildDataTableDataRowsHTML_ClassBegin(data) {
     for (var i = 0; i < data.length; i++) {
         var tmpHTMLStr = [];
-        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('<tr class="row-classbegin-items">');
         tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
         tmpHTMLStr.push('   <td>');
         tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-classbegin-doc" data-target="' + data[i].symbol + '">教案</button>');
@@ -232,14 +240,27 @@ function buildDataTableDataRowsHTML_ClassBegin(data) {
         $('#container_DataTable_Rows').append($(tmpHTMLStr.join('')));
     }
 
-    $('.btn.btn-sm.btn-success.btn-classbegin-doc').on('click', openLessonDoc);
-    $('.btn.btn-sm.btn-warning.btn-classbegin-wp').on('click', openWorkplatform);
-    $('.btn.btn-sm.btn-info.btn-classbegin-signin').on('click', showStudentsSignIn);
-    $('.btn.btn-sm.btn-primary.btn-classbegin-custom').on('click', openLessonDoc);
-    $('.btn.btn-sm.btn-primary.btn-classbegin-begin').on('click', function () {
-        var parentTd = $(arguments[0].target).parent();
-        parentTd.empty();
-        parentTd.append($('<span>已开始</span>'));
+    $('.btn-classbegin-doc').on('click', openLessonDoc);
+    $('.btn-classbegin-wp').on('click', openWorkplatform);
+    $('.btn-classbegin-signin').on('click', showStudentsSignIn);
+    $('.btn-classbegin-custom').on('click', openLessonDoc);
+    $('.btn-classbegin-begin').on('click', function () {
+        //var parentTd = $(arguments[0].target).parent();
+        //parentTd.empty();
+        //parentTd.append($('<span>已开始</span>'));
+        var button = $(arguments[0].target);
+        if (button.hasClass('btn-primary')) {
+            button.text('下课');
+            button.removeClass('btn-primary');
+            button.addClass('btn-warning');
+        } else {
+            var parentTd = $(arguments[0].target).parent().parent();
+            parentTd.remove();
+            var tmpRows = $('.row-classbegin-items');
+            for (var i = 0; i < tmpRows.length; i++) {
+                $($(tmpRows[i]).find('th')[0]).text(i + 1);
+            }
+        }
     });
 };
 

@@ -1,7 +1,8 @@
 ﻿function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
     $('.nav-item')[1].remove();
-    $('.img-header-logo').attr('src', 'image/logo-new-gray.png');
+    $('.nav-item')[0].remove();
+    $('.img-header-logo').attr('src', 'image/demologo.png');
     $('#wrap_Left').height($('body').height() - $('nav').height() - $('footer').height());
     $('#btn_StartDemo').on('click', function () {
         var id = $('#btn_StartDemo').attr('data-target');
@@ -12,7 +13,9 @@
             case '2':
                 window.location.href = "demos/runpixierun/index.html";
                 break;
-
+            case '3':
+                window.location.href = "demos/Draw-Demo/index.html";
+                break;
         }
     });
 
