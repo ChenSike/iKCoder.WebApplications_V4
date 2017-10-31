@@ -47,7 +47,7 @@
             break;
         case '3':
             data = {
-                img: 'image/team-temp.png',
+                img: 'image/demoimage/3.png',
                 name: 'Project 3',
                 id: '3',
                 author: 'Alice',

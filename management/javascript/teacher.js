@@ -37,7 +37,7 @@ function initPage() {
         last: "2017-09-30 12:01:02"
     };
     buildUserInfoHTML(data);
-    buildDataHTML_Lesson();
+    buildDataHTML_ClassBegin();
     initEvents();
 };
 
@@ -121,7 +121,7 @@ function formatData_ClassBegin() {
             room: 'Room 2',
             content: '路径跟随',
             status: '1',
-            symbol: 'B_01_001',
+            symbol: 'C_01_001',
             grade: { id: 1, name: '中级2班' }
         }
     ];

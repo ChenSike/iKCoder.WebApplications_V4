@@ -788,7 +788,25 @@ function initData_LessonDoc(responseXML) {
     </lesson>
 </root>
     */
-    var data = ['image/lessondoc_1.jpg', 'image/lessondoc_2.jpg', 'image/lessondoc_3.jpg', 'image/lessondoc_4.jpg'];
+    var data = [
+        'image/docs/b_01_001/p_0.fw.png',
+        'image/docs/b_01_001/p_1.fw.png',
+        'image/docs/b_01_001/p_2.fw.png',
+        'image/docs/b_01_001/p_3.fw.png',
+        'image/docs/b_01_001/p_4.fw.png',
+        'image/docs/b_01_001/p_5.fw.png',
+        'image/docs/b_01_001/p_6.fw.png',
+        'image/docs/b_01_001/p_7.fw.png',
+        'image/docs/b_01_001/p_9.fw.png',
+        'image/docs/b_01_001/p_10.fw.png',
+        'image/docs/b_01_001/p_11.fw.png',
+        'image/docs/b_01_001/p_12.fw.png',
+        'image/docs/b_01_001/p_13.fw.png',
+        'image/docs/b_01_001/p_14.fw.png',
+        'image/docs/b_01_001/p_15.fw.png',
+        'image/docs/b_01_001/p_16.fw.png',
+        'image/docs/b_01_001/p_17.fw.png'
+    ];
     return data;
 };
 
