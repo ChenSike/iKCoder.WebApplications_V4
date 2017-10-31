@@ -379,7 +379,7 @@ function buildOverviewCourse(datas, containerHeight) {
         var target = $(eventObj.currentTarget);
         var tipWrap = $('#list_Overview_Course');
         if (target.attr('data-target') != '') {
-            window.location.href = "workplatform.html?scene=" + target.attr('data-target');
+            window.location.href = "workplatform.html?scene=" + target.attr('data-target') + '&step=1';
         }
     });
 };

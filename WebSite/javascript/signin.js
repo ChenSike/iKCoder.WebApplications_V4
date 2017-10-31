@@ -326,7 +326,7 @@ function doSignIn() {
         return;
     }
 
-    if ($("#txt_SignIn_PhoneNumber").val().trim() != 'Tom' || $("#txt_SignIn_Password").val().trim() != '888888') {
+    if ($("#txt_SignIn_PhoneNumber").val().trim() != 'Alice' || $("#txt_SignIn_Password").val().trim() != '888888') {
         _showGlobalMessage('请输入正确的用户名和密码！', 'danger', 'alert_SignIn_CannotSignIn');
         return;
     }
@@ -336,8 +336,8 @@ function doSignIn() {
         return;
     }
 
-    var userName = 'Tom';
-    var nickname = 'Tom';
+    var userName = 'Alice';
+    var nickname = 'Alice';
     $.cookie('logined_user_name', userName);
     $.cookie('logined_user_nickname', nickname);
     window.location.href = 'profile.html?rnd=' + Date.now();

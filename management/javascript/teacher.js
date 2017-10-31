@@ -111,7 +111,7 @@ function formatData_ClassBegin() {
         {
             datetime: '2017-10-10 10:00',
             room: 'Room 1',
-            content: '变量 1 ',
+            content: '模式识别 ',
             status: '0',
             symbol: 'B_01_001',
             grade: { id: 1, name: '初级1班' },
@@ -119,7 +119,7 @@ function formatData_ClassBegin() {
         }, {
             datetime: '2017-10-10 14:00',
             room: 'Room 2',
-            content: '变量 2',
+            content: '路径跟随',
             status: '1',
             symbol: 'B_01_001',
             grade: { id: 1, name: '中级2班' }

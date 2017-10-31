@@ -19,7 +19,7 @@ function initPage() {
     var dataXML = '';
     dataXML = Blockly.Xml.textToDom('<root>' +
        '   <basic>' +
-       '		<usr id="46" nickname="Tom"/>' +
+       '		<usr id="46" nickname="Alice"/>' +
        '	</basic>' +
        '	<sence name="初级第一课：模式设别" symbol="B_01_001" id="" totalstage="1" currentstage="1" finishstage="0" next="B_01_002"/>' +
        '	<tips>' +
@@ -49,21 +49,16 @@ function initPage() {
        '	</game>' +
        '	<message>' +
        '		<faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>' +
-       '		<suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>' +
+       '		<suc msg="恭喜你，你已经完成了本课的学习目标."/>' +
        '	</message>' +
        '	<words>' +
        '		<stage value="1">' +
-       '			<word value="move" note="儿童英语/CET4/计算机英语" star="4">' +
-       '				<soundmark>' +
-       '					<item type="us" value="美 [kəm"pjutɚ]" sound="sound_word_computer_us"/>' +
-       '					<item type="uk" value="英 [kəm"pjuːtə]" sound="sound_word_computer_uk"/>' +
-       '				</soundmark>' +
+       '			<word value="Algorithm" note="计算机英语" star="4">' +
+       '				<soundmark></soundmark>' +
        '				<paraphrase>' +
-       '					<item>v.移动</item>' +
+       '					<item>n.算法</item>' +
        '				</paraphrase>' +
-       '				<variant>' +
-       '				<item name="复数" value="computers"/>' +
-       '				</variant>' +
+       '				<variant></variant>' +
        '			</word>' +
        '		</stage>' +
        '	</words>' +

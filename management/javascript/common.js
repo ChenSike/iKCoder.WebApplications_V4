@@ -844,5 +844,5 @@ function showLessonDoc(data) {
 /*Workplatform*/
 function openWorkplatform() {
     var symbol = $(arguments[0].currentTarget).attr('data-target');
-    window.open('/ikcoder/workplatform.html?scene=' + symbol, 'workplatform', "")
+    window.open('/ikcoder/workplatform.html?scene=' + symbol + '&step=1', 'workplatform', "")
 };
