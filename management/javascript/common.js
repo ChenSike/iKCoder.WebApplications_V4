@@ -812,10 +812,10 @@ function initData_LessonDoc(responseXML) {
 
 function showLessonDoc(data) {
     if ($('#modal_LessonDoc').length == 0) {
-        var tmpHTMLStr = '<div class="modal fade" id="modal_LessonDoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
-        '    <div class="modal-dialog" role="document" style="max-width:100%; max-height:100%; width:100%; height:100%; margin:0px;">' +
-        '        <div class="modal-content" style="max-width:100%; max-height:100%; width:100%; height:100%; margin:0px;">' +
-        '            <div class="modal-body">' +
+        var tmpHTMLStr = '<div class="modal fade" id="modal_LessonDoc" style="" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
+        '    <div class="modal-dialog" role="document" style="margin:0px;max-width: 100%;">' +
+        '        <div class="modal-content" style="width: 100%; height: 100%; max-width: 100%;">' +
+        '            <div class="modal-body" style="width: 100%;">' +
         '                <div id="carousel_LessonDoc" class="carousel slide" data-ride="carousel" data-interval="90000" data-keyboard="true" data-wrap="false" data-ride="true">' +
         '                    <div class="carousel-inner">' +
         '                    </div>' +
@@ -837,6 +837,7 @@ function showLessonDoc(data) {
         '</div>';
         $('body').append($(tmpHTMLStr));
     }
+    //max-width:100%; max-height:100%; width:100%; height:100%; margin:0px;
 
     $('#modal_LessonDoc .carousel-inner').empty();
     var tmpItemStr = '';
@@ -847,16 +848,24 @@ function showLessonDoc(data) {
             tmpItemStr += '<div class="carousel-item">';
         }
 
-        tmpItemStr += '<img class="d-block w-100" src="' + data[i] + '" alt="Second slide">';
+        //tmpItemStr += '<img class="d-block w-100" src="' + data[i] + '" alt="Second slide">';
+        tmpItemStr += '<img class="rounded mx-auto d-block" src="' + data[i] + '" alt="Second slide">';
         tmpItemStr += '</div>';
     }
     $('#modal_LessonDoc .carousel-inner').append($(tmpItemStr));
 
     $('#modal_LessonDoc').modal('show');
     $('#modal_LessonDoc').on('shown.bs.modal', function (e) {
+        var modalDialog = $('#modal_LessonDoc .modal-dialog');
+        modalDialog.height($('body').height() - 1);
+        modalDialog.width($('body').width() - 1);
         var parent = $($('#carousel_LessonDoc').parent());
-        $('#carousel_LessonDoc').height(parent.height() - 30);
+        //$('#carousel_LessonDoc').height(parent.height() - 30);
+        //$('#carousel_LessonDoc').width(parent.width() - 30);
+        $('#carousel_LessonDoc').height(modalDialog.height() - 80);
         $('#carousel_LessonDoc').width(parent.width() - 30);
+        $('#carousel_LessonDoc').carousel();
+        $('.carousel-control-next').focus();
     })
 };
 /*Workplatform*/
