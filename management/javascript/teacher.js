@@ -629,19 +629,19 @@ function formatData_Doc() {
                 {
                     id: '06',
                     content: '中级 1 ',
-                    symbol: 'B_01_001'
+                    symbol: 'C_01_001'
                 }, {
                     id: '07',
                     content: '中级 2',
-                    symbol: 'B_01_001'
+                    symbol: 'C_01_001'
                 }, {
                     id: '08',
                     content: '中级 3',
-                    symbol: 'B_01_001'
+                    symbol: 'C_01_001'
                 }, {
                     id: '09',
                     content: '中级 4',
-                    symbol: 'B_01_001'
+                    symbol: 'C_01_001'
                 }
             ]
         }, {
@@ -811,7 +811,7 @@ function buildDataTableDataRowsHTML_Doc(data, tmpHTMLStr) {
         tmpHTMLStr.push('<tr>');
         tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
         tmpHTMLStr.push('   <td>');
-        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-doc-standard" data-target="' + data[i].id + '">标准</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-doc-standard" data-target="' + data[i].symbol + '">标准</button>');
         if (typeof (data[i].custome) != 'undefined' && data[i].custome > 0) {
             tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-doc-custome" data-target="' + data[i].id + '">自定义</button>');
         }
