@@ -1,5 +1,6 @@
 var GAME = GAME || {};
 
+//初始化疯狂模式时的背景
 GAME.JoyBackground = function()
 {
 	PIXI.DisplayObjectContainer.call( this );
@@ -17,6 +18,7 @@ GAME.JoyBackground.constructor = GAME.LowFiBackground;
 
 GAME.JoyBackground.prototype = Object.create( PIXI.DisplayObjectContainer.prototype );
 
+//更新转换位置
 GAME.JoyBackground.prototype.updateTransform = function()
 {
 	this.scrollPosition = GAME.camera.x + 4000// * GAME.time.DELTA_TIME;

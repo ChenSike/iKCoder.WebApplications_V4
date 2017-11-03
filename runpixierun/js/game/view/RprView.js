@@ -1,5 +1,6 @@
 var GAME = GAME || {};
 
+//加各个子元素到View里
 GAME.RprView = function (engine) {
 	this.engine = engine;
 
@@ -118,6 +119,7 @@ GAME.RprView.prototype.hideHud = function () {
 
 }
 
+//更新View 里的各个元素
 GAME.RprView.prototype.update = function () {
 	this.count += 0.01;
 
@@ -159,6 +161,7 @@ GAME.RprView.prototype.update = function () {
 	this.renderer.render(this.stage);
 }
 
+//快速模式
 GAME.RprView.prototype.joyrideMode = function () {
 	this.game.removeChild(this.background);
 	this.background = this.joyBackground;
@@ -172,10 +175,12 @@ GAME.RprView.prototype.joyrideMode = function () {
 	});
 }
 
+//做出飞溅效果
 GAME.RprView.prototype.doSplash = function () {
 	this.splash.splash(this.engine.steve.position);
 }
 
+//标准模式
 GAME.RprView.prototype.normalMode = function () {
 	this.game.removeChild(this.background);
 	this.background = this.normalBackground;
@@ -189,6 +194,7 @@ GAME.RprView.prototype.normalMode = function () {
 	});
 }
 
+//重新定义大小
 GAME.RprView.prototype.resize = function (w, h) {
 	//    console.log("Width ->" + w);
 	//    console.log("Height -> " + h);

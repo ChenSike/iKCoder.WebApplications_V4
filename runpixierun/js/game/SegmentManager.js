@@ -1,5 +1,6 @@
 var GAME = GAME || {};
 
+//游戏分段设置
 GAME.SegmentManager = function(engine)
 {
 	this.engine = engine;
@@ -17,6 +18,7 @@ GAME.SegmentManager = function(engine)
 // constructor
 GAME.SegmentManager.constructor = GAME.SegmentManager;
 
+//分段重置
 GAME.SegmentManager.prototype.reset = function(dontReset)
 {
 //	this.currentSegment.start;// = GAME.camera.x;
@@ -30,6 +32,7 @@ GAME.SegmentManager.prototype.reset = function(dontReset)
 	}
 }
 
+//分段里的各元素更新：碰撞，地面，拾取
 GAME.SegmentManager.prototype.update = function()
 {
 	this.position = GAME.camera.x + width * 2;
@@ -39,8 +42,6 @@ GAME.SegmentManager.prototype.update = function()
 //	console.log(Math.round(relativePosition) + " " +this.currentSegment.length);
 	if(relativePosition > this.currentSegment.length)
 	{
-		
-			
 		if(this.engine.joyrideMode)
 		{
 			var nextSegment = this.startSegment
@@ -57,7 +58,7 @@ GAME.SegmentManager.prototype.update = function()
 		
 		
 		var nextSegment = this.sections[this.count % this.sections.length];
-//		if(this.chillMode)nextSegment =  this.sections[0];
+	//	if(this.chillMode)nextSegment =  this.sections[0];
 	//	console.log( this.sections.length)
 
 		// section finished!
@@ -88,8 +89,6 @@ GAME.SegmentManager.prototype.update = function()
 		}
 		
 		this.count ++;
-		
 	}
-	
 }
 

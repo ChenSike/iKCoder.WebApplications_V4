@@ -1,5 +1,6 @@
 var GAME = GAME || {};
 
+//初始化一个游戏对象
 GAME.GameObjectPool = function(classType)
 {
 	this.classType = classType;
@@ -9,6 +10,7 @@ GAME.GameObjectPool = function(classType)
 // constructor
 GAME.GameObjectPool.constructor = GAME.GameObjectPool;
 
+//得到一个游戏对象
 GAME.GameObjectPool.prototype.getObject = function()
 {
 	var object = this.pool.pop();
@@ -24,8 +26,3 @@ GAME.GameObjectPool.prototype.returnObject = function(object)
 {
 	//this.pool.push(object);
 }
-
-
-
-
-

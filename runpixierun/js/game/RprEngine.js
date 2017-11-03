@@ -6,6 +6,7 @@ GAME.height;
 GAME.bundleId = "com.goodboy.runpixierun";
 GAME.newHighScore = false;
 
+//游戏引擎入口
 GAME.RprEngine = function () {
 	this.onGameover;
 
@@ -33,6 +34,7 @@ GAME.RprEngine = function () {
 	this.view.game.addChild(this.steve.view);
 }
 
+//开始游戏
 GAME.RprEngine.prototype.start = function () {
 	this.segmentManager.reset();
 	this.enemyManager.destroyAll();
@@ -51,9 +53,9 @@ GAME.RprEngine.prototype.start = function () {
 	this.steve.view.visible = true;
 	this.segmentManager.chillMode = false;
 	this.bulletMult = 1;
-
 }
 
+//游戏更新，包括：游戏人，障碍物，地板，碰撞，分段，拾取
 GAME.RprEngine.prototype.update = function () {
 	GAME.time.update();
 
@@ -98,6 +100,7 @@ GAME.RprEngine.prototype.update = function () {
 	this.view.update();
 }
 
+//游戏重置
 GAME.RprEngine.prototype.reset = function () {
 	this.enemyManager.destroyAll();
 	this.floorManager.destroyAll();
@@ -111,6 +114,7 @@ GAME.RprEngine.prototype.reset = function () {
 	this.view.game.addChild(this.steve.view);
 }
 
+//积蓄力量完成
 GAME.RprEngine.prototype.joyrideComplete = function () {
 	this.joyrideMode = false;
 	this.pickupCount = 0;
@@ -120,6 +124,7 @@ GAME.RprEngine.prototype.joyrideComplete = function () {
 	this.enemyManager.destroyAll();
 }
 
+//游戏结束
 GAME.RprEngine.prototype.gameover = function () {
 	this.isPlaying = false;
 	this.isDying = true;
@@ -141,12 +146,14 @@ GAME.RprEngine.prototype.gameover = function () {
 	});
 }
 
+//游戏真正结束
 GAME.RprEngine.prototype.gameoverReal = function () {
 	this.gameReallyOver = true;
 	this.isDying = false;
 	this.onGameoverReal();
 }
 
+//设置在高速模式后的各个元素的状态
 GAME.RprEngine.prototype.pickup = function () {
 	if (this.steve.isDead) return;
 
@@ -187,6 +194,7 @@ Time = function () {
 
 Time.constructor = Time;
 
+//时间更新
 Time.prototype.update = function () {
 	var time = Date.now();
 	var currentTime = time;

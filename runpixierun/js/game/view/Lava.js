@@ -1,6 +1,6 @@
 var GAME = GAME || {};
 
-
+//初始化火山岩浆
 GAME.Lava = function(owner)
 {
 	this.textures = [PIXI.Texture.fromFrameId("lava_slosh_01.png"),
@@ -40,6 +40,7 @@ GAME.Lava = function(owner)
 	this.count = 0;
 }
 
+//设置火山岩浆的位置
 GAME.Lava.prototype.setPosition = function(position)
 {
 	var h = this.spriteWidth;

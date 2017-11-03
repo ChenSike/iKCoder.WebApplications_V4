@@ -1,4 +1,6 @@
-GAME.SteveTrail = function(stage)
+
+//游戏角色起跳时的拖影
+GAME.SteveTrail = function (stage)
 {
 	this.stage = stage;
 	this.target = new PIXI.Point();
@@ -10,6 +12,7 @@ GAME.SteveTrail = function(stage)
 
 GAME.SteveTrail.constructor = GAME.SteveTrail;
 
+//更新拖影
 GAME.SteveTrail.prototype.update = function()
 {	
 	if(this.target.isFlying && !this.target.isDead )

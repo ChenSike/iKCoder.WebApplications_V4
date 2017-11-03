@@ -54,12 +54,14 @@ var soundOnButton = false;
 var soundOffButton = false;
 var sound = true;
 
+//程序入口
 function onReady() {
 	FidoAudio.init();
 	stressTest = new PIXI.StressTest(onStressTestComplete);
 	resize();
 }
 
+//加载游戏里的各图像，事件监听，调整大小。
 function onStressTestComplete() {
 	stressTest.end();
 	GAME.lowMode = stressTest.result < 40;
@@ -96,6 +98,7 @@ function onStressTestComplete() {
 	resize();
 }
 
+//根据游戏模式来确定是：开始， 结束， 暂停 
 function onTap(event) {
 	event.originalEvent.preventDefault();
 
@@ -164,13 +167,14 @@ function onTap(event) {
 			});
 		}
 		else {
-			// handle our jump sound
+			// 操作跳跃时的声音
 			thrusters = true;
 			if (game.isPlaying) game.steve.jump();
 		}
 	}
 }
 
+//开始游戏
 function startGame(){
 	interactive = false;
 
@@ -196,6 +200,7 @@ function startGame(){
 	});
 }
 
+//初始化游戏
 function init() {
 	//gameMode = GAME_MODE.INTRO;
 	gameMode = GAME_MODE.TITLE;
@@ -350,16 +355,19 @@ function init() {
 	startGame();
 }
 
+    //暂停游戏
 	function onResumePressed() {
 		onPaused();
 	}
 
+    //重新开始游戏
 	function onRestartPressed() {
 		onPaused();
 		game.steve.die();
 		game.gameover();
 	}
 
+	//打开声音
 	function onSoundOnPressed() {
 		FidoAudio.muteAll();
 
@@ -381,6 +389,7 @@ function init() {
 		});
 	}
 
+	//关闭声音
 	function onSoundOffPressed() {
 		FidoAudio.unMuteAll();
 
@@ -405,6 +414,7 @@ function init() {
 
 	var prevState = false;
 
+	//允许暂停
 	function pauseEnded() {
 		pauseScreen.visible = false;
 		pauseScreen.scale.x = 1.5;
@@ -420,6 +430,7 @@ function init() {
 		soundOffButton.visible = false;
 	}
 
+	//暂停
 	function onPaused() {
 		pauseButton.scale.set(0.5);
 
@@ -544,6 +555,7 @@ function init() {
 		interactive = true;
 	}
 
+	//游戏结束
 	function onGameover() {
 		pauseButton.interactive = false;
 		FidoAudio.setVolume('thrusters', 0);
@@ -558,6 +570,7 @@ function init() {
 		interactive = false;
 	}
 
+	//显示游戏结束
 	function showGameover() {
 		logo.visible = true;
 		TweenLite.to(logo, 0.3, {
@@ -571,10 +584,12 @@ function init() {
 		interactive = true;
 	}
 
+	//触摸开始
 	function onTouchStart(event) {
 		onTap(event);
 	}
 
+	//计数完成
 	function onCountdownComplete() {
 		interactive = true;
 		gameMode = GAME_MODE.PLAYING;
@@ -587,6 +602,7 @@ function init() {
 		});
 	}
 
+	//触摸结束
 	function onTouchEnd(event) {
 		event.originalEvent.preventDefault();
 		thrusters = false;
@@ -594,6 +610,7 @@ function init() {
 		if (game.isPlaying) game.steve.fall();
 	}
 
+	//得到比率
 	function getRatio(type, w, h) {
 
 		var width = Device.cocoonJS ? window.innerWidth : w,
@@ -628,6 +645,7 @@ function init() {
 		return result;
 	}
 
+	//调整尺寸
 	function resize() {
 		window.scrollTo(0, 0);
 
@@ -680,6 +698,7 @@ function init() {
 		GAME.height = h;
 	}
 
+	//更新屏幕
 	function update() {
 		game.update();
 

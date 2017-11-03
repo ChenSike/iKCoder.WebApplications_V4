@@ -1,5 +1,6 @@
 var GAME = GAME || {};
 
+//游戏地面管理
 GAME.FloorManager = function (engine) {
 	this.engine = engine;
 	this.count = 0;
@@ -9,6 +10,7 @@ GAME.FloorManager = function (engine) {
 
 GAME.FloorManager.constructor = GAME.FloorManager;
 
+//地面更新
 GAME.FloorManager.prototype.update = function () {
 	for (var i = 0; i < this.floors.length; i++) {
 		var floor = this.floors[i];
@@ -23,6 +25,7 @@ GAME.FloorManager.prototype.update = function () {
 	}
 }
 
+//加一块地面
 GAME.FloorManager.prototype.addFloor = function (floorData) {
 	var floor = this.floorPool.getObject();
 	floor.x = floorData;
@@ -31,6 +34,7 @@ GAME.FloorManager.prototype.addFloor = function (floorData) {
 	this.floors.push(floor);
 }
 
+//消灭所有的地面元素
 GAME.FloorManager.prototype.destroyAll = function () {
 	for (var i = 0; i < this.floors.length; i++) {
 		var floor = this.floors[i];
@@ -44,7 +48,6 @@ GAME.FloorManager.prototype.destroyAll = function () {
 GAME.Floor = function () {
 	PIXI.Sprite.call(this, PIXI.Texture.fromFrameId("00_forest_floor.png"));
 }
-
 
 
 GAME.Floor.constructor = PIXI.Floor;

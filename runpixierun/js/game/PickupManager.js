@@ -2,6 +2,7 @@ var GAME = GAME || {};
 
 var laserCount = 0;
 
+//拾取币管理
 GAME.PickupManager = function(engine)
 {
 	this.engine = engine;
@@ -18,6 +19,7 @@ GAME.PickupManager = function(engine)
 // constructor
 GAME.PickupManager.constructor = GAME.PickupManager;
 
+//位置更新
 GAME.PickupManager.prototype.update = function()
 {
 	if(this.engine.joyrideMode)
@@ -60,8 +62,6 @@ GAME.PickupManager.prototype.update = function()
 		}
 		else
 		{
-			
-			
 			if(pickup.view.position.x < -100-GAME.xOffset)
 			{
 				// remove!
@@ -75,6 +75,7 @@ GAME.PickupManager.prototype.update = function()
 	}
 }
 
+//拾取一个币
 GAME.PickupManager.prototype.addPickup = function(x, y)
 {
 	var pickup = this.pickupPool.getObject();
@@ -85,6 +86,7 @@ GAME.PickupManager.prototype.addPickup = function(x, y)
 	this.engine.view.game.addChild(pickup.view);
 }
 
+//移除一个币
 GAME.PickupManager.prototype.removePickup = function(index)
 {
 	var pickup = this.pickups[index];
@@ -94,7 +96,7 @@ GAME.PickupManager.prototype.removePickup = function(index)
 	pickup.ratio = 0;
 }
 
-
+//消除所有币
 GAME.PickupManager.prototype.destroyAll = function()
 {
 	for (var i = 0; i < this.pickups.length; i++) 
@@ -108,6 +110,7 @@ GAME.PickupManager.prototype.destroyAll = function()
 	this.pickups = [];
 }
 
+//消除屏幕上的所有币
 GAME.PickupManager.prototype.destroyAllOffScreen = function()
 {
 	for (var i = 0; i < this.pickups.length; i++) 
@@ -122,7 +125,6 @@ GAME.PickupManager.prototype.destroyAllOffScreen = function()
 			i--;
 		}
 			// remove!
-		
 	}
 	
 }

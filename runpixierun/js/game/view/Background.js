@@ -1,5 +1,6 @@
 var GAME = GAME || {};
 
+//设置游戏背景
 GAME.Background = function(frontView)
 {
 	PIXI.DisplayObjectContainer.call( this );
@@ -12,8 +13,6 @@ GAME.Background = function(frontView)
 	this.foggyTrees = new GAME.BackgroundElement(PIXI.Texture.fromFrameId("05_far_BG.jpg"), 40, this);
 	this.rearSilhouette = new GAME.BackgroundElement(PIXI.Texture.fromFrameId("03_rear_silhouette.png"), 358, this);
 	this.rearCanopy = new GAME.BackgroundElement(PIXI.Texture.fromFrameId("03_rear_canopy.png"), 0, this);
-	
-	
 	
 	this.tree1 = PIXI.Sprite.fromFrame("02_tree_1.png");
 	this.tree1.anchor.x = 0.5;
@@ -39,8 +38,6 @@ GAME.Background = function(frontView)
 	this.frontSilhouette.speed = 1.6/2;
 	this.roofLeaves.speed = 2/2;
 	//this.ground.speed = 1
-	
-	
 }
 
 // constructor
@@ -48,6 +45,7 @@ GAME.Background.constructor = GAME.Background;
 
 GAME.Background.prototype = Object.create( PIXI.DisplayObjectContainer.prototype );
 
+//背景元素场景转换后，各个元素当前的位置
 GAME.Background.prototype.updateTransform = function()
 {
 	this.scrollPosition = GAME.camera.x + 4000// * GAME.time.DELTA_TIME;
@@ -76,10 +74,10 @@ GAME.Background.prototype.updateTransform = function()
 	
 	this.vines.setPosition(this.scrollPosition);
 	
-	
 	PIXI.DisplayObjectContainer.prototype.updateTransform.call( this );
 }
 
+//设置藤蔓
 GAME.Vines = function(owner)
 {
 	this.vines = [];
@@ -99,6 +97,7 @@ GAME.Vines = function(owner)
 	this.speed = 1;
 }
 
+//设置藤蔓的位置
 GAME.Vines.prototype.setPosition = function(position)
 {
 	for (var i=0; i < this.vines.length; i++) 
@@ -117,7 +116,6 @@ GAME.Vines.prototype.setPosition = function(position)
 GAME.Background.prototype.joyRideMode = function()
 {
 	// change background!
-	
 }
 
 GAME.Background.prototype.normalMode = function()
@@ -125,6 +123,7 @@ GAME.Background.prototype.normalMode = function()
 	
 }
 
+//加背景元素
 GAME.BackgroundElement = function(texture, y, owner)
 {
 	this.sprites = [];
@@ -143,6 +142,7 @@ GAME.BackgroundElement = function(texture, y, owner)
 	this.speed = 1;
 }
 
+//设置背景元素的位置
 GAME.BackgroundElement.prototype.setPosition = function(position)
 {
 	var h = this.spriteWidth;

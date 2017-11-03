@@ -3,6 +3,7 @@ var GAME = GAME || {};
 var enemyFrames;
 var m_cCountdown = false;
 
+//初始化倒数计秒数字
 GAME.Countdown = function()
 {
 	PIXI.DisplayObjectContainer.call(this);
@@ -32,6 +33,7 @@ GAME.Countdown = function()
 GAME.Countdown.constructor = GAME.Countdown;
 GAME.Countdown.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 
+//开始读秒计数
 GAME.Countdown.prototype.startCountDown = function(onComplete)
 {
 	this.visible = true;
@@ -66,6 +68,7 @@ var time = 0.1;
 var time2 = 0.5;
 var delay = 0;
 
+//当读秒到3时的动作
 GAME.Countdown.prototype.onThreeShown = function()
 {   
     var that = this;

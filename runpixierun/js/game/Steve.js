@@ -1,5 +1,6 @@
 var GAME = GAME || {};
 
+//游戏角色的初始化
 GAME.Steve = function () {
 	this.position = new PIXI.Point();
 
@@ -58,6 +59,7 @@ GAME.Steve = function () {
 
 GAME.Steve.constructor = GAME.Steve;
 
+//游戏角色更新
 GAME.Steve.prototype.update = function () {
 	if (this.isDead) {
 		this.updateDieing();
@@ -67,6 +69,7 @@ GAME.Steve.prototype.update = function () {
 	}
 }
 
+//暴走模式
 GAME.Steve.prototype.joyrideMode = function () {
 	this.joyRiding = true;
 	FidoAudio.setVolume('runRegular', 0);
@@ -78,6 +81,7 @@ GAME.Steve.prototype.joyrideMode = function () {
 	this.realAnimationSpeed = 0.23 * 4
 }
 
+//标准模式
 GAME.Steve.prototype.normalMode = function () {
 	this.joyRiding = false;
 	FidoAudio.setVolume('runFast', 0);
@@ -89,6 +93,7 @@ GAME.Steve.prototype.normalMode = function () {
 	this.realAnimationSpeed = 0.23;
 }
 
+//更新运动状态
 GAME.Steve.prototype.updateRunning = function () {
 	this.view.animationSpeed = this.realAnimationSpeed * GAME.time.DELTA_TIME * this.level;
 
@@ -145,6 +150,7 @@ GAME.Steve.prototype.updateRunning = function () {
 	this.view.rotation += (this.speed.y * 0.05 - this.view.rotation) * 0.1;
 }
 
+//更新死亡状态
 GAME.Steve.prototype.updateDieing = function () {
 	this.speed.x *= 0.999;
 
@@ -171,6 +177,7 @@ GAME.Steve.prototype.updateDieing = function () {
 	}
 }
 
+//游戏角色跳
 GAME.Steve.prototype.jump = function () {
 	if (this.isDead) {
 		if (this.speed.x < 5) {
@@ -188,6 +195,7 @@ GAME.Steve.prototype.jump = function () {
 	}
 }
 
+//游戏角色死
 GAME.Steve.prototype.die = function () {
 	if (this.isDead) return;
 
@@ -215,7 +223,7 @@ GAME.Steve.prototype.die = function () {
 	this.view.stop();
 }
 
-
+//更新声音
 GAME.Steve.prototype.boil = function () {
 	if (this.isDead) return;
 

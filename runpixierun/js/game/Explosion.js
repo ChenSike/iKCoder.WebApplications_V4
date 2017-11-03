@@ -1,4 +1,6 @@
-GAME.Explosion = function()
+
+//初始化遇到障碍物后的爆炸场景
+GAME.Explosion = function ()
 {
 	PIXI.DisplayObjectContainer.call( this );
 	
@@ -46,6 +48,7 @@ GAME.Explosion.prototype.explode = function()
 	this.exploding = true;
 }
 
+//重置云和各个粒子
 GAME.Explosion.prototype.reset = function()
 {
 	for (var i=0; i < 5; i++) 
@@ -76,6 +79,7 @@ GAME.Explosion.prototype.reset = function()
 	}	
 }
 
+//更新云和各粒子的位置
 GAME.Explosion.prototype.updateTransform = function()
 {
 	if(this.exploding)
@@ -113,6 +117,7 @@ GAME.Explosion.prototype.updateTransform = function()
 	PIXI.DisplayObjectContainer.prototype.updateTransform.call( this );
 }
 
+//得到一个粒子
 ExplosionPartical = function(id)
 {
 	PIXI.Sprite.call(this, PIXI.Texture.fromFrame(id));

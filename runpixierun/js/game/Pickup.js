@@ -4,6 +4,7 @@ var enemyFrames;
 
 var pickupTextures;
 
+//初始化各个币对象
 GAME.Pickup = function () {
 	//pickup_03.png//
 	if (!pickupTextures) pickupTextures = ["pickup_01.png", "pickup_02.png", "pickup_03.png", "pickup_04.png", "pickup_05.png", "pickup_06.png", "pickup_07.png", "pickup_08.png"];
@@ -37,7 +38,7 @@ GAME.Pickup.prototype.reset = function () {
 
 }
 
-
+//更新
 GAME.Pickup.prototype.update = function () {
 	if (!this.isPickedUp) {
 		this.count += 0.1 * GAME.time.DELTA_TIME;
@@ -56,6 +57,5 @@ GAME.Pickup.prototype.update = function () {
 
 	this.view.position.x = this.position.x - GAME.camera.x;
 	this.view.position.y = this.position.y;
-
 }
 

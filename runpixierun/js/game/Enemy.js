@@ -2,6 +2,7 @@ var GAME = GAME || {};
 
 var enemyFrames;
 
+//初始化障碍物
 GAME.Enemy = function()
 {
 	this.position = new PIXI.Point();
@@ -15,6 +16,7 @@ GAME.Enemy = function()
 
 GAME.Enemy.constructor = GAME.Enemy;
 
+//障碍物重置
 GAME.Enemy.prototype.reset = function()
 {
 	if(this.explosion)
@@ -27,6 +29,7 @@ GAME.Enemy.prototype.reset = function()
 	this.view.width = 157;
 }
 
+//障碍物碰撞设置
 GAME.Enemy.prototype.hit = function()
 {   
     if(this.isHit) return;

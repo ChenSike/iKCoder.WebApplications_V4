@@ -2,6 +2,7 @@ var GAME = GAME || {};
 
 var laserCount = 0;
 
+//碰撞管理
 GAME.CollisionManager = function(engine)
 {
 	this.engine = engine;
@@ -10,6 +11,7 @@ GAME.CollisionManager = function(engine)
 // constructor
 GAME.CollisionManager.constructor = GAME.CollisionManager;
 
+//碰撞的场景更新。
 GAME.CollisionManager.prototype.update = function()
 {
 	//if(this.engine.isPlaying) 
@@ -18,6 +20,7 @@ GAME.CollisionManager.prototype.update = function()
 	this.playerVsFloor();
 }
 
+//玩家与障碍物之间的位置关系
 GAME.CollisionManager.prototype.playerVsBlock = function()
 {
 	var enemies = this.engine.enemyManager.enemies;
@@ -45,6 +48,7 @@ GAME.CollisionManager.prototype.playerVsBlock = function()
 	}
 }
 
+//玩家与游戏币之间的位置关系
 GAME.CollisionManager.prototype.playerVsPickup = function()
 {
 	
@@ -65,13 +69,14 @@ GAME.CollisionManager.prototype.playerVsPickup = function()
 			{
 				this.engine.pickupManager.removePickup(i);
 				this.engine.pickup();
-                
+           
 		//		i--;
 			}
 		}
 	}
 }
 
+//玩家与地板之间的位置关系
 GAME.CollisionManager.prototype.playerVsFloor = function()
 {
 	var floors = this.engine.floorManager.floors;

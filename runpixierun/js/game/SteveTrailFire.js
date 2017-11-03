@@ -1,4 +1,5 @@
 
+//角色拖影的火焰
 GAME.SteveTrailFire = function (stage)
 {
 	this.stage = stage;
@@ -18,6 +19,7 @@ GAME.SteveTrailFire = function (stage)
 // constructor
 GAME.SteveTrailFire.constructor = GAME.SteveTrailFire;
 
+//更新
 GAME.SteveTrailFire.prototype.update = function()
 {
 	//PIXI.Rope.prototype.updateTransform.call(this);

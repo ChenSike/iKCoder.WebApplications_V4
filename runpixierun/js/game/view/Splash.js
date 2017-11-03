@@ -1,6 +1,6 @@
 var GAME = GAME || {};
 
-
+//初始化飞溅点
 GAME.Splash = function(owner)
 {
 	this.textures = [PIXI.Texture.fromFrameId("lavaFrame_01.png"),
@@ -26,11 +26,10 @@ GAME.Splash = function(owner)
 	this.realPosition;
 }
 
-
-
 GAME.Splash.constructor = GAME.Splash;
 GAME.Splash.prototype = Object.create( PIXI.MovieClip.prototype );
 
+//设置飞溅点位置
 GAME.Splash.prototype.splash = function(position)
 {
 	this.realPosition = position.x;
@@ -41,6 +40,7 @@ GAME.Splash.prototype.splash = function(position)
 	this.visible = true;
 }
 
+//更新飞溅点的场景变化
 GAME.Splash.prototype.updateTransform = function()
 {
 	if(!this.visible)return;

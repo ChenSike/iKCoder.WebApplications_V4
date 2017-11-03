@@ -1,5 +1,6 @@
 var GAME = GAME || {};
 
+//初始化成绩
 GAME.Score = function () {
 	PIXI.DisplayObjectContainer.call(this);
 	this.ratio = 0;
@@ -34,6 +35,7 @@ GAME.Score = function () {
 GAME.Score.constructor = PIXI.Score;
 GAME.Score.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 
+//设置成绩
 GAME.Score.prototype.setScore = function (score) {
 	var split = formatScore(score).split("");
 	var position = 0;
@@ -59,6 +61,7 @@ GAME.Score.prototype.jump = function () {
 	this.ratio = 2.2;
 }
 
+//设置成绩格式（确定显示几位）
 function formatScore(n) {
 
 	var nArray = n.toString().split("");

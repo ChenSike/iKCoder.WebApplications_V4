@@ -1,6 +1,6 @@
 var GAME = GAME || {};
 
-
+//初始化能量条
 GAME.PowerBar = function(owner)
 {
 	PIXI.DisplayObjectContainer.call( this );
@@ -9,8 +9,6 @@ GAME.PowerBar = function(owner)
 	this.addChild(this.barBG);
 	this.barBG.position.x = 20;
 	this.barBG.position.y = 30;
-	
-	
 	
 	this.bar =  PIXI.Sprite.fromFrame("powerFillBar.png");
 	this.addChild(this.bar);
@@ -23,8 +21,6 @@ GAME.PowerBar = function(owner)
 	
 	//this.pixiText.position.x = 20;
 	//this.pixiText.position.y = 8//5;
-	
-	
 }
 
 GAME.PowerBar.constructor = GAME.PowerBar;

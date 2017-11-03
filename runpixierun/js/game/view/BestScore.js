@@ -1,6 +1,7 @@
 
 var GAME = GAME || {};
 
+//初始化成绩数字
 GAME.BestScore = function()
 {
 	PIXI.DisplayObjectContainer.call( this );
@@ -44,6 +45,7 @@ GAME.BestScore = function()
 GAME.BestScore.constructor = PIXI.Score;
 GAME.BestScore.prototype = Object.create( PIXI.DisplayObjectContainer.prototype );
 
+//设置成绩数字
 GAME.BestScore.prototype.setScore = function(score)
 {
 	var split = formatScore(score).split("");
@@ -83,8 +85,8 @@ GAME.BestScore.prototype.jump = function()
 	this.ratio = 2.2;
 }
 
+//更新最高得分
 GAME.BestScore.prototype.update = function()
 {
-    
     this.setScore(Math.round(parseInt(this.LocalStorage.get('highscore'))) || 0);
 }

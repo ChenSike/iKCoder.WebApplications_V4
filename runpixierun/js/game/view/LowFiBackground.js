@@ -1,5 +1,6 @@
 var GAME = GAME || {};
 
+//初始化最底层背景
 GAME.LowFiBackground = function()
 {
 	PIXI.DisplayObjectContainer.call( this );
@@ -15,6 +16,7 @@ GAME.LowFiBackground.constructor = GAME.LowFiBackground;
 
 GAME.LowFiBackground.prototype = Object.create( PIXI.DisplayObjectContainer.prototype );
 
+//更新底层背景转换场景的位置
 GAME.LowFiBackground.prototype.updateTransform = function()
 {
 	this.scrollPosition = GAME.camera.x + 4000// * GAME.time.DELTA_TIME;

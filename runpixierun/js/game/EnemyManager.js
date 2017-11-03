@@ -2,6 +2,7 @@ var GAME = GAME || {};
 
 var laserCount = 0;
 
+//障碍物管理
 GAME.EnemyManager = function(engine)
 {
 	this.engine = engine;
@@ -12,6 +13,7 @@ GAME.EnemyManager = function(engine)
 
 GAME.EnemyManager.constructor = GAME.EnemyManager;
 
+//场景里面障碍物的更新
 GAME.EnemyManager.prototype.update = function()
 {
 	for (var i = 0; i < this.enemies.length; i++) 
@@ -30,6 +32,7 @@ GAME.EnemyManager.prototype.update = function()
 	}
 }
 
+//加一个障碍物
 GAME.EnemyManager.prototype.addEnemy = function(x, y)
 {
 	var enemy = this.enemyPool.getObject();
@@ -39,6 +42,7 @@ GAME.EnemyManager.prototype.addEnemy = function(x, y)
 	this.engine.view.gameFront.addChild(enemy.view);
 }
 
+//消灭所有的障碍物
 GAME.EnemyManager.prototype.destroyAll = function()
 {
 	for (var i = 0; i < this.enemies.length; i++) 
@@ -52,6 +56,7 @@ GAME.EnemyManager.prototype.destroyAll = function()
 	this.enemies = [];
 }
 
+//消灭屏幕上的障碍物
 GAME.EnemyManager.prototype.destroyAllOffScreen = function()
 {
 	for (var i = 0; i < this.enemies.length; i++) 
