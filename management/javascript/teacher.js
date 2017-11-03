@@ -1370,58 +1370,74 @@ function loadHomeworkItemsById(homeworkId) {
     var data = [
         {
             id: '1',
-            content: 'Objective Questions 1',
+            content: '根据中文含义选出对应的单词: "计算机"',
             correct: ['1'],
             options: [
-                { id: '1', content: 'Option 1', selected: 6 },
-                { id: '2', content: 'Option 2', selected: 3 },
-                { id: '3', content: 'Option 3', selected: 4 }
+                { id: '1', content: 'Computer', selected: 6 },
+                { id: '2', content: 'Bug', selected: 3 },
+                { id: '3', content: 'Program', selected: 4 }
             ],
+            answer: [],
+            level: { id: '1', name: '初级' },
+            point: '计算机英语',
             right: 8,
             wrong: 0
         }, {
             id: '2',
-            content: 'Objective Questions 2',
-            correct: ['5', '6'],
+            content: '根据单词选出对应的中文含义: "Debugging"',
+            correct: ['5'],
             options: [
-                { id: '4', content: 'Option 4', selected: 1 },
-                { id: '5', content: 'Option 5', selected: 8 },
-                { id: '6', content: 'Option 6', selected: 7 }
+                { id: '4', content: '程序', selected: 1 },
+                { id: '5', content: '调试', selected: 8 },
+                { id: '6', content: '虫子', selected: 7 }
             ],
+            answer: [],
+            level: { id: '1', name: '初级' },
+            point: '计算机英语',
             right: 7,
             wrong: 1
         }, {
             id: '3',
-            content: 'Objective Questions 3',
+            content: '方向的一般辨别法为:',
             correct: ['25'],
             options: [
-                { id: '24', content: 'Option 24', selected: 1 },
-                { id: '25', content: 'Option 25', selected: 2 },
-                { id: '26', content: 'Option 26', selected: 8 }
+                { id: '24', content: '上北下南左东右西', selected: 1 },
+                { id: '25', content: '上北下南左西右东', selected: 2 },
+                { id: '26', content: '上南下北左东右西', selected: 8 }
             ],
+            answer: [],
+            level: { id: '1', name: '初级' },
+            point: '一般辨别法',
             right: 6,
             wrong: 2
         }, {
             id: '4',
-            content: 'Objective Questions 4',
-            correct: ['7', '8', '9', '10'],
+            content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+            correct: ['9'],
             options: [
-                { id: '7', content: 'Option 7', selected: 5 },
-                { id: '8', content: 'Option 8', selected: 5 },
-                { id: '9', content: 'Option 9', selected: 6 },
-                { id: '10', content: 'Option 10', selected: 8 }
+                { id: '7', content: '移动到了原位置的左侧', selected: 5 },
+                { id: '8', content: '移动到了原位置的右侧', selected: 5 },
+                { id: '9', content: '移动后回到原位置', selected: 8 },
+                { id: '10', content: '移动到了原位置的上方', selected: 6 },
+                { id: '110', content: '移动到了原位置的下方', selected: 1 }
             ],
+            answer: [],
+            level: { id: '1', name: '初级' },
+            point: '课件模块理解',
             right: 5,
-            wrong: 3
+            wrong: 5
         }, {
             id: '5',
-            content: 'Objective Questions 5',
-            correct: ['12'],
+            content: '本课实验使用的模块包含两个主要参数，它们是: ',
+            correct: ['11', '13'],
             options: [
-                { id: '11', content: 'Option 11', selected: 0 },
-                { id: '12', content: 'Option 12', selected: 8 },
-                { id: '13', content: 'Option 13', selected: 0 }
+                { id: '11', content: '步数', selected: 8 },
+                { id: '12', content: '角度', selected: 0 },
+                { id: '13', content: '方向', selected: 8 }
             ],
+            answer: [],
+            level: { id: '1', name: '初级' },
+            point: '课件模块理解',
             right: 8,
             wrong: 0
         }
@@ -1524,19 +1540,19 @@ function showHWClassifyMembers(classify, target) {
     var data = [];
     switch (classify) {
         case 'C':
-            data = ['已完成同学 1', '已完成同学 2', '已完成同学 3', '已完成同学 4', '已完成同学 5', '已完成同学 6', '已完成同学 7', '已完成同学 8'];
+            data = ['Tom', 'Alice', 'Timy', 'Jack', 'Alex', 'Kevin', 'Mark', 'Emily'];
             break;
         case 'U':
-            data = ['未完成同学 1', '未完成同学 2'];
+            data = ['Timy', 'Jack'];
             break;
         case 'R':
-            data = ['正确的同学 1', '正确的同学 2', '正确的同学 3', '正确的同学 4', '正确的同学 5', '正确的同学 6', '正确的同学 7', '正确的同学 8'];
+            data = ['Tom', 'Alice', 'Timy', 'Jack', 'Alex', 'Kevin', 'Mark', 'Emily'];
             break;
         case 'W':
-            data = ['错误的同学 1', '错误的同学 2'];
+            data = ['Alex', 'Kevin'];
             break;
         case 'S':
-            data = ['选择的同学 1', '选择的同学 2', '选择的同学 3', '选择的同学 4', '选择的同学 5'];
+            data = ['Tom', 'Alice', 'Timy', 'Jack', 'Alex'];
             break;
     }
 
@@ -1557,31 +1573,31 @@ function showHomeworkClassItemPopup(homeworkId) {
     var data = [
         {
             id: '1',
-            name: '学员 1',
+            name: 'Tom',
             right: 8,
             wrong: 0,
             uncomplete: 0
         }, {
             id: '2',
-            name: '学员 2',
+            name: 'Alice',
             right: 7,
             wrong: 0,
             uncomplete: 1
         }, {
             id: '3',
-            name: '学员 3',
+            name: 'Jack',
             right: 5,
             wrong: 3,
             uncomplete: 0
         }, {
             id: '4',
-            name: '学员 4',
+            name: 'Mark',
             right: 6,
             wrong: 1,
             uncomplete: 1
         }, {
             id: '5',
-            name: '学员 5',
+            name: 'Kevin',
             right: 0,
             wrong: 0,
             uncomplete: 8
@@ -1662,70 +1678,86 @@ function buildHomeworkClassItemPopup(data, homeworkId) {
 
 function loadHWItemsByStudentAndId(studentId, homeworkId, cardblock) {
     var data = [
-        {
-            id: '1',
-            content: 'Objective Questions 1',
-            correct: ['1'],
-            options: [
-                { id: '1', content: 'Option 1' },
-                { id: '2', content: 'Option 2' },
-                { id: '3', content: 'Option 3' }
-            ],
-            answer: ['1']
-        }, {
-            id: '2',
-            content: 'Objective Questions 2',
-            correct: ['5', '6'],
-            options: [
-                { id: '4', content: 'Option 4' },
-                { id: '5', content: 'Option 5' },
-                { id: '6', content: 'Option 6' }
-            ],
-            answer: ['5']
-        }, {
-            id: '3',
-            content: 'Objective Questions 3',
-            correct: ['25'],
-            options: [
-                { id: '24', content: 'Option 24' },
-                { id: '25', content: 'Option 25' },
-                { id: '26', content: 'Option 26' }
-            ],
-            answer: ['25']
-        }, {
-            id: '4',
-            content: 'Objective Questions 4',
-            correct: ['7', '8', '9', '10'],
-            options: [
-                { id: '7', content: 'Option 7' },
-                { id: '8', content: 'Option 8' },
-                { id: '9', content: 'Option 9' },
-                { id: '10', content: 'Option 10' }
-            ],
-            answer: []
-        }, {
-            id: '5',
-            content: 'Objective Questions 5',
-            correct: ['12'],
-            options: [
-                { id: '11', content: 'Option 11' },
-                { id: '12', content: 'Option 12' },
-                { id: '13', content: 'Option 13' }
-            ],
-            answer: []
-        }, {
-            id: '6',
-            content: 'Objective Questions 6',
-            correct: ['14', '16'],
-            options: [
-                { id: '14', content: 'Option 14' },
-                { id: '15', content: 'Option 15' },
-                { id: '16', content: 'Option 16' },
-                { id: '17', content: 'Option 17' }
-            ],
-            answer: []
-        }
+       {
+           id: '1',
+           content: '根据中文含义选出对应的单词: "计算机"',
+           correct: ['1'],
+           options: [
+               { id: '1', content: 'Computer' },
+               { id: '2', content: 'Bug' },
+               { id: '3', content: 'Program' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '计算机英语',
+           right: 8,
+           wrong: 0,
+           answer: ['1']
+       }, {
+           id: '2',
+           content: '根据单词选出对应的中文含义: "Debugging"',
+           correct: ['5'],
+           options: [
+               { id: '4', content: '程序' },
+               { id: '5', content: '调试' },
+               { id: '6', content: '虫子' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '计算机英语',
+           right: 7,
+           wrong: 1,
+           answer: ['4']
+       }, {
+           id: '3',
+           content: '方向的一般辨别法为:',
+           correct: ['25'],
+           options: [
+               { id: '24', content: '上北下南左东右西' },
+               { id: '25', content: '上北下南左西右东' },
+               { id: '26', content: '上南下北左东右西' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '一般辨别法',
+           right: 6,
+           wrong: 2,
+           answer: ['25']
+       }, {
+           id: '4',
+           content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+           correct: ['9'],
+           options: [
+               { id: '7', content: '移动到了原位置的左侧' },
+               { id: '8', content: '移动到了原位置的右侧' },
+               { id: '9', content: '移动后回到原位置' },
+               { id: '10', content: '移动到了原位置的上方' },
+               { id: '110', content: '移动到了原位置的下方' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '课件模块理解',
+           right: 5,
+           wrong: 5,
+           answer: ['9']
+       }, {
+           id: '5',
+           content: '本课实验使用的模块包含两个主要参数，它们是: ',
+           correct: ['11', '13'],
+           options: [
+               { id: '11', content: '步数' },
+               { id: '12', content: '角度' },
+               { id: '13', content: '方向' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '课件模块理解',
+           right: 8,
+           wrong: 0,
+           answer: ['11', '13']
+       }
     ];
+
     var tmpHTMLArr = [];
     var tHeader = '';
     var chkName = '';
@@ -2501,55 +2533,122 @@ function showAssignHWPopup(classId) {
     $('#modal_HW_Class_Assign_HW').modal('show');
 };
 
-function addHWSubjectToList() {
+function addHWSubjectToList(selIds) {
     var data = [
         {
             id: '1',
-            content: 'Objective Questions 1',
+            content: '根据中文含义选出对应的单词: "计算机"',
+            correct: ['1'],
+            options: [
+                { id: '1', content: 'Computer' },
+                { id: '2', content: 'Bug' },
+                { id: '3', content: 'Program' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '计算机英语'
+
         }, {
             id: '2',
-            content: 'Objective Questions 2',
+            content: '根据单词选出对应的中文含义: "Debugging"',
+            correct: ['5'],
+            options: [
+                { id: '4', content: '程序' },
+                { id: '5', content: '调试' },
+                { id: '6', content: '虫子' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '计算机英语'
         }, {
             id: '3',
-            content: 'Objective Questions 3',
+            content: '方向的一般辨别法为:',
+            correct: ['25'],
+            options: [
+                { id: '24', content: '上北下南左东右西' },
+                { id: '25', content: '上北下南左西右东' },
+                { id: '26', content: '上南下北左东右西' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '一般辨别法'
         }, {
             id: '4',
-            content: 'Objective Questions 4',
+            content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+            correct: ['9'],
+            options: [
+                { id: '7', content: '移动到了原位置的左侧' },
+                { id: '8', content: '移动到了原位置的右侧' },
+                { id: '9', content: '移动后回到原位置' },
+                { id: '10', content: '移动到了原位置的上方' },
+                { id: '110', content: '移动到了原位置的下方' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '课件模块理解'
         }, {
             id: '5',
-            content: 'Objective Questions 5',
+            content: '本课实验使用的模块包含两个主要参数，它们是: ',
+            correct: ['11', '13'],
+            options: [
+                { id: '11', content: '步数' },
+                { id: '12', content: '角度' },
+                { id: '13', content: '方向' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '课件模块理解'
         }
     ];
-
+    var tmpData = [];
     for (var i = 0; i < data.length; i++) {
-        var tmpHTMLStr = '<tr>' +
-        '   <th scope="row">' + (i + 1) + '</th>' +
-        '   <td style="text-align: center;">' +
-        '       <label class="custom-control custom-checkbox">' +
-        '           <input type="checkbox" class="custom-control-input chk-HW-assign-list-item">' +
-        '           <span class="custom-control-indicator"></span>' +
-        '       </label>' +
-        '   </td>' +
-        '   <td>' +
-        '       <button type="button" class="btn btn-sm btn-danger btn-HW-assign-list-item-delete">删除</button>' +
-        '       <button type="button" class="btn btn-sm btn-success btn-HW-assign-list-item-detail">详情</button>' +
-        '   </td>' +
-        '   <td>' + data[i].level.name + '</td>' +
-        '   <td>' + data[i].content + '</td>' +
-        '   <td>' + data[i].point + '</td>' +
-        '</tr>';
+        for (var j = 0; j < selIds.length; j++) {
+            if (selIds[j] == data[i].id) {
+                tmpData.push(data[i]);
+                break;
+            }
+        }
+    }
 
-        $('#tb_DataTable_Body_HW_Assign_ItemList').append($(tmpHTMLStr));
+    data = tmpData;
+    tmpData = [];
+    var tmpItems = $('.chk-HW-assign-list-item');
+    var tmpFlag = false;
+    for (var j = 0; j < data.length; j++) {
+        tmpFlag = false;
+        for (var i = 0; i < tmpItems.length; i++) {
+            if ($(tmpItems[i]).val() == data[j].id) {
+                tmpFlag = true;
+                break;
+            }
+        }
+
+        if (!tmpFlag) {
+            tmpData.push(data[j]);
+        }
+    }
+
+    data = tmpData;
+    var tmpHTMLStr = [];
+    for (var i = 0; i < data.length; i++) {
+        tmpHTMLStr = [];
+        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td style="text-align: center;">');
+        tmpHTMLStr.push('       <label class="custom-control custom-checkbox">');
+        tmpHTMLStr.push('           <input type="checkbox" class="custom-control-input chk-HW-assign-list-item" value="' + data[i].id + '">');
+        tmpHTMLStr.push('           <span class="custom-control-indicator"></span>');
+        tmpHTMLStr.push('       </label>');
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-danger btn-HW-assign-list-item-delete">删除</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-HW-assign-list-item-detail">详情</button>');
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td>' + data[i].level.name + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].content + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].point + '</td>');
+        tmpHTMLStr.push('</tr>');
+        $('#tb_DataTable_Body_HW_Assign_ItemList').append($(tmpHTMLStr.join('')));
     }
 
     $('.chk-HW-assign-list-item').on('click', function () {
@@ -2603,11 +2702,19 @@ function showHWManualSelectPopup() {
         tmpHTMLStr.push('                       <div class="row">');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
         tmpHTMLStr.push('                               <label for="txt_HW_Assign_SubjectSel_Level" class="col-form-label">难度</label>');
-        tmpHTMLStr.push('                               <select class="form-control form-control-sm" id="txt_HW_Assign_SubjectSel_Level"></select>');
+        tmpHTMLStr.push('                               <select class="form-control form-control-sm" id="txt_HW_Assign_SubjectSel_Level">');
+        tmpHTMLStr.push('                                   <option value="1">初级</option>');
+        tmpHTMLStr.push('                                   <option value="2">中级</option>');
+        tmpHTMLStr.push('                                   <option value="3">高级</option>');
+        tmpHTMLStr.push('                               </select>');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
         tmpHTMLStr.push('                               <label for="txt_HW_Assign_SubjectSel_Point" class="col-form-label">知识点</label>');
-        tmpHTMLStr.push('                               <select class="form-control  form-control-sm" id="txt_HW_Assign_SubjectSel_Point"></select>');
+        tmpHTMLStr.push('                               <select class="form-control  form-control-sm" id="txt_HW_Assign_SubjectSel_Point">');
+        tmpHTMLStr.push('                                   <option value="1">计算机英语</option>');
+        tmpHTMLStr.push('                                   <option value="2">一般辨别法</option>');
+        tmpHTMLStr.push('                                   <option value="3">课件模块理解</option>');
+        tmpHTMLStr.push('                               </select>');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
         tmpHTMLStr.push('                               <label for="txt_HW_Assign_SubjectSel_Keyword" class="col-form-label">关键字</label>');
@@ -2639,8 +2746,10 @@ function showHWManualSelectPopup() {
         tmpHTMLStr.push('                                                   <span class="custom-control-indicator"></span>');
         tmpHTMLStr.push('                                               </label>');
         tmpHTMLStr.push('                                           </th>');
-        tmpHTMLStr.push('                                           <th style="width: 120px;"><button type="button" class="btn btn-sm btn-danger" id="btn_HW_Assign_SubjectSel_DelSel">批量删除</button></th>');
-        tmpHTMLStr.push('                                           <th>难度</th>');
+        tmpHTMLStr.push('                                           <th style="width: 120px;">');
+        tmpHTMLStr.push('                                               <button type="button" class="btn btn-sm btn-danger" id="btn_HW_Assign_SubjectSel_DelSel">批量删除</button>');
+        tmpHTMLStr.push('                                           </th>');
+        tmpHTMLStr.push('                                           <th style="width: 50px;">难度</th>');
         tmpHTMLStr.push('                                           <th>内容</th>');
         tmpHTMLStr.push('                                           <th>知识点</th>');
         tmpHTMLStr.push('                                       </tr>');
@@ -2671,7 +2780,15 @@ function showHWManualSelectPopup() {
 
         $('#btn_HW_Assign_SubjectSel_SubmitSel').on('click', function () {
             $('#modal_HW_Class_Assign_HW_ManualSelect').modal('hide');
-            addHWSubjectToList();
+            var chkItems = $('.chk-HW-assign-subject-sel-result-item');
+            var selIds = [];
+            for (var i = 0; i < chkItems.length; i++) {
+                if ($(chkItems[i]).prop('checked')) {
+                    selIds.push($(chkItems[i]).val());
+                }
+            }
+
+            addHWSubjectToList(selIds);
             $('#modal_HW_Class_Assign_HW').modal('show');
         });
 
@@ -2694,6 +2811,7 @@ function showHWManualSelectPopup() {
     }
 
     $('#modal_HW_Class_Assign_HW_ManualSelect').modal('show');
+    $('#tb_DataTable_Body_HW_Assign_SubjectSel').empty();
 };
 
 var _gTSSubjectSearch;
@@ -2719,29 +2837,67 @@ function loadHWSubjectResult() {
     var data = [
         {
             id: '1',
-            content: 'Objective Questions 1',
+            content: '根据中文含义选出对应的单词: "计算机"',
+            correct: ['1'],
+            options: [
+                { id: '1', content: 'Computer' },
+                { id: '2', content: 'Bug' },
+                { id: '3', content: 'Program' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '计算机英语'
+
         }, {
             id: '2',
-            content: 'Objective Questions 2',
+            content: '根据单词选出对应的中文含义: "Debugging"',
+            correct: ['5'],
+            options: [
+                { id: '4', content: '程序' },
+                { id: '5', content: '调试' },
+                { id: '6', content: '虫子' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '计算机英语'
         }, {
             id: '3',
-            content: 'Objective Questions 3',
+            content: '方向的一般辨别法为:',
+            correct: ['25'],
+            options: [
+                { id: '24', content: '上北下南左东右西' },
+                { id: '25', content: '上北下南左西右东' },
+                { id: '26', content: '上南下北左东右西' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '一般辨别法'
         }, {
             id: '4',
-            content: 'Objective Questions 4',
+            content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+            correct: ['9'],
+            options: [
+                { id: '7', content: '移动到了原位置的左侧' },
+                { id: '8', content: '移动到了原位置的右侧' },
+                { id: '9', content: '移动后回到原位置' },
+                { id: '10', content: '移动到了原位置的上方' },
+                { id: '110', content: '移动到了原位置的下方' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '课件模块理解'
         }, {
             id: '5',
-            content: 'Objective Questions 5',
+            content: '本课实验使用的模块包含两个主要参数，它们是: ',
+            correct: ['11', '13'],
+            options: [
+                { id: '11', content: '步数' },
+                { id: '12', content: '角度' },
+                { id: '13', content: '方向' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '课件模块理解'
         }
     ];
 
@@ -2750,7 +2906,7 @@ function loadHWSubjectResult() {
         '   <th scope="row">' + (i + 1) + '</th>' +
         '   <td style="text-align: center;">' +
         '       <label class="custom-control custom-checkbox">' +
-        '           <input type="checkbox" class="custom-control-input chk-HW-assign-subject-sel-result-item">' +
+        '           <input type="checkbox" class="custom-control-input chk-HW-assign-subject-sel-result-item" value="' + data[i].id + '">' +
         '           <span class="custom-control-indicator"></span>' +
         '       </label>' +
         '   </td>' +
@@ -3039,63 +3195,84 @@ function loadExamListByClass(classId) {
 
 function loadExamItemsById(examId) {
     var data = [
-        {
-            id: '1',
-            content: 'Objective Questions 1',
-            correct: ['1'],
-            options: [
-                { id: '1', content: 'Option 1', selected: 6 },
-                { id: '2', content: 'Option 2', selected: 3 },
-                { id: '3', content: 'Option 3', selected: 4 }
-            ],
-            right: 8,
-            wrong: 0
-        }, {
-            id: '2',
-            content: 'Objective Questions 2',
-            correct: ['5', '6'],
-            options: [
-                { id: '4', content: 'Option 4', selected: 1 },
-                { id: '5', content: 'Option 5', selected: 8 },
-                { id: '6', content: 'Option 6', selected: 7 }
-            ],
-            right: 7,
-            wrong: 1
-        }, {
-            id: '3',
-            content: 'Objective Questions 3',
-            correct: ['25'],
-            options: [
-                { id: '24', content: 'Option 24', selected: 1 },
-                { id: '25', content: 'Option 25', selected: 2 },
-                { id: '26', content: 'Option 26', selected: 8 }
-            ],
-            right: 6,
-            wrong: 2
-        }, {
-            id: '4',
-            content: 'Objective Questions 4',
-            correct: ['7', '8', '9', '10'],
-            options: [
-                { id: '7', content: 'Option 7', selected: 5 },
-                { id: '8', content: 'Option 8', selected: 5 },
-                { id: '9', content: 'Option 9', selected: 6 },
-                { id: '10', content: 'Option 10', selected: 8 }
-            ],
-            right: 5,
-            wrong: 3
-        }, {
-            id: '5',
-            content: 'Objective Questions 5',
-            correct: ['12'],
-            options: [
-                { id: '11', content: 'Option 11', selected: 0 },
-                { id: '12', content: 'Option 12', selected: 8 },
-                { id: '13', content: 'Option 13', selected: 0 }
-            ],
-            right: 8,
-            wrong: 0
-        }
+       {
+           id: '1',
+           content: '根据中文含义选出对应的单词: "计算机"',
+           correct: ['1'],
+           options: [
+               { id: '1', content: 'Computer' },
+               { id: '2', content: 'Bug' },
+               { id: '3', content: 'Program' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '计算机英语',
+           right: 8,
+           wrong: 0,
+           answer: ['1']
+       }, {
+           id: '2',
+           content: '根据单词选出对应的中文含义: "Debugging"',
+           correct: ['5'],
+           options: [
+               { id: '4', content: '程序' },
+               { id: '5', content: '调试' },
+               { id: '6', content: '虫子' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '计算机英语',
+           right: 7,
+           wrong: 1,
+           answer: ['4']
+       }, {
+           id: '3',
+           content: '方向的一般辨别法为:',
+           correct: ['25'],
+           options: [
+               { id: '24', content: '上北下南左东右西' },
+               { id: '25', content: '上北下南左西右东' },
+               { id: '26', content: '上南下北左东右西' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '一般辨别法',
+           right: 6,
+           wrong: 2,
+           answer: ['25']
+       }, {
+           id: '4',
+           content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+           correct: ['9'],
+           options: [
+               { id: '7', content: '移动到了原位置的左侧' },
+               { id: '8', content: '移动到了原位置的右侧' },
+               { id: '9', content: '移动后回到原位置' },
+               { id: '10', content: '移动到了原位置的上方' },
+               { id: '110', content: '移动到了原位置的下方' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '课件模块理解',
+           right: 5,
+           wrong: 5,
+           answer: ['9']
+       }, {
+           id: '5',
+           content: '本课实验使用的模块包含两个主要参数，它们是: ',
+           correct: ['11', '13'],
+           options: [
+               { id: '11', content: '步数' },
+               { id: '12', content: '角度' },
+               { id: '13', content: '方向' }
+           ],
+           answer: [],
+           level: { id: '1', name: '初级' },
+           point: '课件模块理解',
+           right: 8,
+           wrong: 0,
+           answer: ['11', '13']
+       }
     ];
 
     $('#collapse_Exam_Class_Items_' + examId + ' .card-block').empty();
@@ -3203,19 +3380,19 @@ function showExamClassifyMembers(classify, target) {
     var data = [];
     switch (classify) {
         case 'C':
-            data = ['已完成同学 1', '已完成同学 2', '已完成同学 3', '已完成同学 4', '已完成同学 5', '已完成同学 6', '已完成同学 7', '已完成同学 8'];
+            data = ['Tom', 'Alice', 'Timy', 'Jack', 'Alex', 'Kevin', 'Mark', 'Emily'];
             break;
         case 'U':
-            data = ['未完成同学 1', '未完成同学 2'];
+            data = ['Timy', 'Jack'];
             break;
         case 'R':
-            data = ['正确的同学 1', '正确的同学 2', '正确的同学 3', '正确的同学 4', '正确的同学 5', '正确的同学 6', '正确的同学 7', '正确的同学 8'];
+            data = ['Tom', 'Alice', 'Timy', 'Jack', 'Alex', 'Kevin', 'Mark', 'Emily'];
             break;
         case 'W':
-            data = ['错误的同学 1', '错误的同学 2'];
+            data = ['Alex', 'Kevin'];
             break;
         case 'S':
-            data = ['选择的同学 1', '选择的同学 2', '选择的同学 3', '选择的同学 4', '选择的同学 5'];
+            data = ['Tom', 'Alice', 'Timy', 'Jack', 'Alex'];
             break;
     }
 
@@ -3236,31 +3413,31 @@ function showExamClassItemPopup(examId) {
     var data = [
         {
             id: '1',
-            name: '学员 1',
+            name: 'Tom',
             right: 8,
             wrong: 0,
             uncomplete: 0
         }, {
             id: '2',
-            name: '学员 2',
+            name: 'Alice',
             right: 7,
             wrong: 0,
             uncomplete: 1
         }, {
             id: '3',
-            name: '学员 3',
+            name: 'Jack',
             right: 5,
             wrong: 3,
             uncomplete: 0
         }, {
             id: '4',
-            name: '学员 4',
+            name: 'Emily',
             right: 6,
             wrong: 1,
             uncomplete: 1
         }, {
             id: '5',
-            name: '学员 5',
+            name: 'Kevin',
             right: 0,
             wrong: 0,
             uncomplete: 8
@@ -3341,71 +3518,85 @@ function buildExamClassItemPopup(data, examId) {
 
 function loadExamItemsByStudentAndId(studentId, examId, cardblock) {
     var data = [
-        {
-            id: '1',
-            content: 'Objective Questions 1',
-            correct: ['1'],
-            options: [
-                { id: '1', content: 'Option 1' },
-                { id: '2', content: 'Option 2' },
-                { id: '3', content: 'Option 3' }
-            ],
-            answer: ['1']
-        }, {
-            id: '2',
-            content: 'Objective Questions 2',
-            correct: ['5', '6'],
-            options: [
-                { id: '4', content: 'Option 4' },
-                { id: '5', content: 'Option 5' },
-                { id: '6', content: 'Option 6' }
-            ],
-            answer: ['5']
-        }, {
-            id: '3',
-            content: 'Objective Questions 3',
-            correct: ['25'],
-            options: [
-                { id: '24', content: 'Option 24' },
-                { id: '25', content: 'Option 25' },
-                { id: '26', content: 'Option 26' }
-            ],
-            answer: ['25']
-        }, {
-            id: '4',
-            content: 'Objective Questions 4',
-            correct: ['7', '8', '9', '10'],
-            options: [
-                { id: '7', content: 'Option 7' },
-                { id: '8', content: 'Option 8' },
-                { id: '9', content: 'Option 9' },
-                { id: '10', content: 'Option 10' }
-            ],
-            answer: []
-        }, {
-            id: '5',
-            content: 'Objective Questions 5',
-            correct: ['12'],
-            options: [
-                { id: '11', content: 'Option 11' },
-                { id: '12', content: 'Option 12' },
-                { id: '13', content: 'Option 13' }
-            ],
-            answer: []
-        }, {
-            id: '6',
-            content: 'Objective Questions 6',
-            correct: ['14', '16'],
-            options: [
-                { id: '14', content: 'Option 14' },
-                { id: '15', content: 'Option 15' },
-                { id: '16', content: 'Option 16' },
-                { id: '17', content: 'Option 17' }
-            ],
-            answer: []
-        }
-    ];
-    var tmpHTMLArr = [];
+           {
+               id: '1',
+               content: '根据中文含义选出对应的单词: "计算机"',
+               correct: ['1'],
+               options: [
+                   { id: '1', content: 'Computer' },
+                   { id: '2', content: 'Bug' },
+                   { id: '3', content: 'Program' }
+               ],
+               answer: [],
+               level: { id: '1', name: '初级' },
+               point: '计算机英语',
+               right: 8,
+               wrong: 0,
+               answer: ['1']
+           }, {
+               id: '2',
+               content: '根据单词选出对应的中文含义: "Debugging"',
+               correct: ['5'],
+               options: [
+                   { id: '4', content: '程序' },
+                   { id: '5', content: '调试' },
+                   { id: '6', content: '虫子' }
+               ],
+               answer: [],
+               level: { id: '1', name: '初级' },
+               point: '计算机英语',
+               right: 7,
+               wrong: 1,
+               answer: ['4']
+           }, {
+               id: '3',
+               content: '方向的一般辨别法为:',
+               correct: ['25'],
+               options: [
+                   { id: '24', content: '上北下南左东右西' },
+                   { id: '25', content: '上北下南左西右东' },
+                   { id: '26', content: '上南下北左东右西' }
+               ],
+               answer: [],
+               level: { id: '1', name: '初级' },
+               point: '一般辨别法',
+               right: 6,
+               wrong: 2,
+               answer: ['25']
+           }, {
+               id: '4',
+               content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+               correct: ['9'],
+               options: [
+                   { id: '7', content: '移动到了原位置的左侧' },
+                   { id: '8', content: '移动到了原位置的右侧' },
+                   { id: '9', content: '移动后回到原位置' },
+                   { id: '10', content: '移动到了原位置的上方' },
+                   { id: '110', content: '移动到了原位置的下方' }
+               ],
+               answer: [],
+               level: { id: '1', name: '初级' },
+               point: '课件模块理解',
+               right: 5,
+               wrong: 5,
+               answer: ['9']
+           }, {
+               id: '5',
+               content: '本课实验使用的模块包含两个主要参数，它们是: ',
+               correct: ['11', '13'],
+               options: [
+                   { id: '11', content: '步数' },
+                   { id: '12', content: '角度' },
+                   { id: '13', content: '方向' }
+               ],
+               answer: [],
+               level: { id: '1', name: '初级' },
+               point: '课件模块理解',
+               right: 8,
+               wrong: 0,
+               answer: ['11', '13']
+           }
+    ]; var tmpHTMLArr = [];
     var tHeader = '';
     var chkName = '';
     var chkId = '';
@@ -3625,42 +3816,108 @@ function showAssignExamPopup(classId) {
     $('#modal_Exam_Class_Assign').modal('show');
 };
 
-function addExamSubjectToList() {
+function addExamSubjectToList(selIds) {
     var data = [
         {
             id: '1',
-            content: 'Objective Questions 1',
+            content: '根据中文含义选出对应的单词: "计算机"',
+            correct: ['1'],
+            options: [
+                { id: '1', content: 'Computer' },
+                { id: '2', content: 'Bug' },
+                { id: '3', content: 'Program' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '计算机英语'
+
         }, {
             id: '2',
-            content: 'Objective Questions 2',
+            content: '根据单词选出对应的中文含义: "Debugging"',
+            correct: ['5'],
+            options: [
+                { id: '4', content: '程序' },
+                { id: '5', content: '调试' },
+                { id: '6', content: '虫子' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '计算机英语'
         }, {
             id: '3',
-            content: 'Objective Questions 3',
+            content: '方向的一般辨别法为:',
+            correct: ['25'],
+            options: [
+                { id: '24', content: '上北下南左东右西' },
+                { id: '25', content: '上北下南左西右东' },
+                { id: '26', content: '上南下北左东右西' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '一般辨别法'
         }, {
             id: '4',
-            content: 'Objective Questions 4',
+            content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+            correct: ['9'],
+            options: [
+                { id: '7', content: '移动到了原位置的左侧' },
+                { id: '8', content: '移动到了原位置的右侧' },
+                { id: '9', content: '移动后回到原位置' },
+                { id: '10', content: '移动到了原位置的上方' },
+                { id: '110', content: '移动到了原位置的下方' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '课件模块理解'
         }, {
             id: '5',
-            content: 'Objective Questions 5',
+            content: '本课实验使用的模块包含两个主要参数，它们是: ',
+            correct: ['11', '13'],
+            options: [
+                { id: '11', content: '步数' },
+                { id: '12', content: '角度' },
+                { id: '13', content: '方向' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '课件模块理解'
         }
     ];
+    var tmpData = [];
+    for (var i = 0; i < data.length; i++) {
+        for (var j = 0; j < selIds.length; j++) {
+            if (selIds[j] == data[i].id) {
+                tmpData.push(data[i]);
+                break;
+            }
+        }
+    }
 
+    data = tmpData;
+    tmpData = [];
+    var tmpItems = $('.chk-exam-assign-list-item');
+    var tmpFlag = false;
+    for (var j = 0; j < data.length; j++) {
+        tmpFlag = false;
+        for (var i = 0; i < tmpItems.length; i++) {
+            if ($(tmpItems[i]).val() == data[j].id) {
+                tmpFlag = true;
+                break;
+            }
+        }
+
+        if (!tmpFlag) {
+            tmpData.push(data[j]);
+        }
+    }
+
+    data = tmpData;
     for (var i = 0; i < data.length; i++) {
         var tmpHTMLStr = '<tr>' +
         '   <th scope="row">' + (i + 1) + '</th>' +
         '   <td style="text-align: center;">' +
         '       <label class="custom-control custom-checkbox">' +
-        '           <input type="checkbox" class="custom-control-input chk-exam-assign-list-item">' +
+        '           <input type="checkbox" class="custom-control-input chk-exam-assign-list-item" value="' + data[i].id + '">' +
         '           <span class="custom-control-indicator"></span>' +
         '       </label>' +
         '   </td>' +
@@ -3727,11 +3984,19 @@ function showExamManualSelectPopup() {
         tmpHTMLStr.push('                       <div class="row">');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
         tmpHTMLStr.push('                               <label for="txt_Exam_Assign_SubjectSel_Level" class="col-form-label">难度</label>');
-        tmpHTMLStr.push('                               <select class="form-control form-control-sm" id="txt_Exam_Assign_SubjectSel_Level"></select>');
+        tmpHTMLStr.push('                               <select class="form-control form-control-sm" id="txt_Exam_Assign_SubjectSel_Level">');
+        tmpHTMLStr.push('                                   <option value="1">初级</option>');
+        tmpHTMLStr.push('                                   <option value="2">中级</option>');
+        tmpHTMLStr.push('                                   <option value="3">高级</option>');
+        tmpHTMLStr.push('                               </select>');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
         tmpHTMLStr.push('                               <label for="txt_Exam_Assign_SubjectSel_Point" class="col-form-label">知识点</label>');
-        tmpHTMLStr.push('                               <select class="form-control  form-control-sm" id="txt_Exam_Assign_SubjectSel_Point"></select>');
+        tmpHTMLStr.push('                               <select class="form-control  form-control-sm" id="txt_Exam_Assign_SubjectSel_Point">');
+        tmpHTMLStr.push('                                   <option value="1">计算机英语</option>');
+        tmpHTMLStr.push('                                   <option value="2">一般辨别法</option>');
+        tmpHTMLStr.push('                                   <option value="3">课件模块理解</option>');
+        tmpHTMLStr.push('                               </select>');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
         tmpHTMLStr.push('                               <label for="txt_Exam_Assign_SubjectSel_Keyword" class="col-form-label">关键字</label>');
@@ -3790,12 +4055,21 @@ function showExamManualSelectPopup() {
             progress.attr('aria-valuenow', '0');
             progress.css('width', '0%');
             _gTimeoutExamSymbol = window.setTimeout('subjectProgress_Exam();', 500);
+            $('#tb_DataTable_Body_HW_Assign_SubjectSel').empty();
             searchExamSubject();
         });
 
         $('#btn_Exam_Assign_SubjectSel_SubmitSel').on('click', function () {
             $('#modal_Exam_Class_Assign_ManualSelect').modal('hide');
-            addExamSubjectToList();
+            var chkItems = $('.chk-exam-assign-subject-sel-result-item');
+            var selIds = [];
+            for (var i = 0; i < chkItems.length; i++) {
+                if ($(chkItems[i]).prop('checked')) {
+                    selIds.push($(chkItems[i]).val());
+                }
+            }
+
+            addExamSubjectToList(selIds);
             $('#modal_Exam_Class_Assign').modal('show');
         });
 
@@ -3843,29 +4117,67 @@ function loadExamSubjectResult() {
     var data = [
         {
             id: '1',
-            content: 'Objective Questions 1',
+            content: '根据中文含义选出对应的单词: "计算机"',
+            correct: ['1'],
+            options: [
+                { id: '1', content: 'Computer' },
+                { id: '2', content: 'Bug' },
+                { id: '3', content: 'Program' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '计算机英语'
+
         }, {
             id: '2',
-            content: 'Objective Questions 2',
+            content: '根据单词选出对应的中文含义: "Debugging"',
+            correct: ['5'],
+            options: [
+                { id: '4', content: '程序' },
+                { id: '5', content: '调试' },
+                { id: '6', content: '虫子' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '计算机英语'
         }, {
             id: '3',
-            content: 'Objective Questions 3',
+            content: '方向的一般辨别法为:',
+            correct: ['25'],
+            options: [
+                { id: '24', content: '上北下南左东右西' },
+                { id: '25', content: '上北下南左西右东' },
+                { id: '26', content: '上南下北左东右西' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '一般辨别法'
         }, {
             id: '4',
-            content: 'Objective Questions 4',
+            content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+            correct: ['9'],
+            options: [
+                { id: '7', content: '移动到了原位置的左侧' },
+                { id: '8', content: '移动到了原位置的右侧' },
+                { id: '9', content: '移动后回到原位置' },
+                { id: '10', content: '移动到了原位置的上方' },
+                { id: '110', content: '移动到了原位置的下方' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '课件模块理解'
         }, {
             id: '5',
-            content: 'Objective Questions 5',
+            content: '本课实验使用的模块包含两个主要参数，它们是: ',
+            correct: ['11', '13'],
+            options: [
+                { id: '11', content: '步数' },
+                { id: '12', content: '角度' },
+                { id: '13', content: '方向' }
+            ],
+            answer: [],
             level: { id: '1', name: '初级' },
-            point: 'knowledge point 1'
+            point: '课件模块理解'
         }
     ];
 
@@ -3874,13 +4186,13 @@ function loadExamSubjectResult() {
         '   <th scope="row">' + (i + 1) + '</th>' +
         '   <td style="text-align: center;">' +
         '       <label class="custom-control custom-checkbox">' +
-        '           <input type="checkbox" class="custom-control-input chk-HW-assign-subject-sel-result-item">' +
+        '           <input type="checkbox" class="custom-control-input chk-exam-assign-subject-sel-result-item" value="' + data[i].id + '">' +
         '           <span class="custom-control-indicator"></span>' +
         '       </label>' +
         '   </td>' +
         '   <td>' +
-        '       <button type="button" class="btn btn-sm btn-danger btn-HW-assign-subject-sel-result-item-delete">删除</button>' +
-        '       <button type="button" class="btn btn-sm btn-success btn-HW-assign-subject-sel-result-item-detail">详情</button>' +
+        '       <button type="button" class="btn btn-sm btn-danger btn-exam-assign-subject-sel-result-item-delete">删除</button>' +
+        '       <button type="button" class="btn btn-sm btn-success btn-exam-assign-subject-sel-result-item-detail">详情</button>' +
         '   </td>' +
         '   <td>' + data[i].level.name + '</td>' +
         '   <td>' + data[i].content + '</td>' +

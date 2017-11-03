@@ -2448,33 +2448,33 @@ function displayHomeworkByType(type) {
             id: '1',
             type: '1',
             date: '2017-10-1',
-            teacher: 'Teacher 1',
+            teacher: 'Teacher Zhang',
             status: '0',
             title: 'B-01-001: 模式识别',
-            total: 6,
-            correct: 2,
-            incorrect: 1
+            total: 5,
+            correct: 0,
+            incorrect: 0
         },
         {
             id: '2',
             type: '1',
             date: '2017-10-2',
-            teacher: 'Teacher 2',
-            status: '1',
+            teacher: 'Teacher Zhang',
+            status: '0',
             title: 'B-01-002: 路径识别',
             total: 5,
-            correct: 5,
+            correct: 0,
             incorrect: 0
         },
         {
             id: '3',
             type: '2',
-            date: '2017-10-2',
-            teacher: 'Teacher 2',
+            date: '2017-10-3',
+            teacher: 'Teacher Zhang',
             status: '',
             title: 'B-01-001: 模式识别',
-            content: 'Experimental topics 1, Content of experimental topics.',
-            attach: ['image/tankback.jpg', 'image/TrailBack.png', 'image/gaosiback.jpg', 'image/ikcoderkid.png'],
+            content: '想一想，试一试，如何让吃豆人运行到附件图中的位置.',
+            attach: ['image/Experimental/e_1.png', 'image/Experimental/e_2.png', 'image/Experimental/e_3.png'],
             correct: "",
             incorrect: ""
         }
@@ -2612,64 +2612,54 @@ function loadHomeworkById(itemId) {
     _currentHomeWorkItem = [
         {
             id: '1',
-            content: 'Objective Questions 1',
+            content: '根据中文含义选出对应的单词: "计算机"',
             correct: ['1'],
             options: [
-                { id: '1', content: 'Option 1' },
-                { id: '2', content: 'Option 2' },
-                { id: '3', content: 'Option 3' }
+                { id: '1', content: 'Computer' },
+                { id: '2', content: 'Bug' },
+                { id: '3', content: 'Program' }
             ],
-            answer: ['1']
+            answer: []
         }, {
             id: '2',
-            content: 'Objective Questions 2',
-            correct: ['5', '6'],
+            content: '根据单词选出对应的中文含义: "Debugging"',
+            correct: ['5'],
             options: [
-                { id: '4', content: 'Option 4' },
-                { id: '5', content: 'Option 5' },
-                { id: '6', content: 'Option 6' }
+                { id: '4', content: '程序' },
+                { id: '5', content: '调试' },
+                { id: '6', content: '虫子' }
             ],
-            answer: ['5']
+            answer: []
         }, {
             id: '3',
-            content: 'Objective Questions 3',
+            content: '方向的一般辨别法为:',
             correct: ['25'],
             options: [
-                { id: '24', content: 'Option 24' },
-                { id: '25', content: 'Option 25' },
-                { id: '26', content: 'Option 26' }
+                { id: '24', content: '上北下南左东右西' },
+                { id: '25', content: '上北下南左西右东' },
+                { id: '26', content: '上南下北左东右西' }
             ],
-            answer: ['25']
+            answer: []
         }, {
             id: '4',
-            content: 'Objective Questions 4',
-            correct: ['7', '8', '9', '10'],
+            content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+            correct: ['9'],
             options: [
-                { id: '7', content: 'Option 7' },
-                { id: '8', content: 'Option 8' },
-                { id: '9', content: 'Option 9' },
-                { id: '10', content: 'Option 10' }
+                { id: '7', content: '移动到了原位置的左侧' },
+                { id: '8', content: '移动到了原位置的右侧' },
+                { id: '9', content: '移动后回到原位置' },
+                { id: '10', content: '移动到了原位置的上方' },
+                { id: '110', content: '移动到了原位置的下方' }
             ],
             answer: []
         }, {
             id: '5',
-            content: 'Objective Questions 5',
-            correct: ['12'],
+            content: '本课实验使用的模块包含两个主要参数，它们是: ',
+            correct: ['11', '13'],
             options: [
-                { id: '11', content: 'Option 11' },
-                { id: '12', content: 'Option 12' },
-                { id: '13', content: 'Option 13' }
-            ],
-            answer: []
-        }, {
-            id: '6',
-            content: 'Objective Questions 6',
-            correct: ['14', '16'],
-            options: [
-                { id: '14', content: 'Option 14' },
-                { id: '15', content: 'Option 15' },
-                { id: '16', content: 'Option 16' },
-                { id: '17', content: 'Option 17' }
+                { id: '11', content: '步数' },
+                { id: '12', content: '角度' },
+                { id: '13', content: '方向' }
             ],
             answer: []
         }
@@ -2678,55 +2668,56 @@ function loadHomeworkById(itemId) {
         _currentHomeWorkItem = [
             {
                 id: '1',
-                content: 'Objective Questions 1',
+                content: '根据中文含义选出对应的单词: "计算机"',
                 correct: ['1'],
                 options: [
-                    { id: '1', content: 'Option 1' },
-                    { id: '2', content: 'Option 2' },
-                    { id: '3', content: 'Option 3' }
+                    { id: '1', content: 'Computer' },
+                    { id: '2', content: 'Bug' },
+                    { id: '3', content: 'Program' }
                 ],
-                answer: ['1']
+                answer: []
             }, {
                 id: '2',
-                content: 'Objective Questions 2',
-                correct: ['5', '6'],
+                content: '根据单词选出对应的中文含义: "Debugging"',
+                correct: ['5'],
                 options: [
-                    { id: '4', content: 'Option 4' },
-                    { id: '5', content: 'Option 5' },
-                    { id: '6', content: 'Option 6' }
+                    { id: '4', content: '程序' },
+                    { id: '5', content: '调试' },
+                    { id: '6', content: '虫子' }
                 ],
-                answer: ['5', '6'],
+                answer: []
             }, {
                 id: '3',
-                content: 'Objective Questions 3',
+                content: '方向的一般辨别法为:',
                 correct: ['25'],
                 options: [
-                    { id: '24', content: 'Option 24' },
-                    { id: '25', content: 'Option 25' },
-                    { id: '26', content: 'Option 26' }
+                    { id: '24', content: '上北下南左东右西' },
+                    { id: '25', content: '上北下南左西右东' },
+                    { id: '26', content: '上南下北左东右西' }
                 ],
-                answer: ['25']
+                answer: []
             }, {
                 id: '4',
-                content: 'Objective Questions 4',
-                correct: ['7', '8', '9', '10'],
+                content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+                correct: ['9'],
                 options: [
-                    { id: '7', content: 'Option 7' },
-                    { id: '8', content: 'Option 8' },
-                    { id: '9', content: 'Option 9' },
-                    { id: '10', content: 'Option 10' }
+                    { id: '7', content: '移动到了原位置的左侧' },
+                    { id: '8', content: '移动到了原位置的右侧' },
+                    { id: '9', content: '移动后回到原位置' },
+                    { id: '10', content: '移动到了原位置的上方' },
+                    { id: '110', content: '移动到了原位置的下方' }
                 ],
-                answer: ['7', '8', '9', '10']
+                answer: []
             }, {
                 id: '5',
-                content: 'Objective Questions 5',
-                correct: ['12'],
+                content: '本课实验使用的模块包含两个主要参数，它们是: ',
+                correct: ['11', '13'],
                 options: [
-                    { id: '11', content: 'Option 11' },
-                    { id: '12', content: 'Option 12' },
-                    { id: '13', content: 'Option 13' }
+                    { id: '11', content: '步数' },
+                    { id: '12', content: '角度' },
+                    { id: '13', content: '方向' }
                 ],
-                answer: ['12']
+                answer: []
             }
         ];
     }
@@ -2999,43 +2990,54 @@ function displayExamContent() {
         items: [
             {
                 id: '1',
-                content: 'Objective Questions 1',
+                content: '根据中文含义选出对应的单词: "计算机"',
                 correct: ['1'],
                 options: [
-                    { id: '1', content: 'Option 1' },
-                    { id: '2', content: 'Option 2' },
-                    { id: '3', content: 'Option 3' }
+                    { id: '1', content: 'Computer' },
+                    { id: '2', content: 'Bug' },
+                    { id: '3', content: 'Program' }
                 ],
                 answer: []
             }, {
                 id: '2',
-                content: 'Objective Questions 2',
-                correct: ['5', '6'],
+                content: '根据单词选出对应的中文含义: "Debugging"',
+                correct: ['5'],
                 options: [
-                    { id: '4', content: 'Option 4' },
-                    { id: '5', content: 'Option 5' },
-                    { id: '6', content: 'Option 6' }
+                    { id: '4', content: '程序' },
+                    { id: '5', content: '调试' },
+                    { id: '6', content: '虫子' }
                 ],
                 answer: []
             }, {
                 id: '3',
-                content: 'Objective Questions 3',
+                content: '方向的一般辨别法为:',
                 correct: ['25'],
                 options: [
-                    { id: '24', content: 'Option 24' },
-                    { id: '25', content: 'Option 25' },
-                    { id: '26', content: 'Option 26' }
+                    { id: '24', content: '上北下南左东右西' },
+                    { id: '25', content: '上北下南左西右东' },
+                    { id: '26', content: '上南下北左东右西' }
                 ],
                 answer: []
             }, {
                 id: '4',
-                content: 'Objective Questions 4',
-                correct: ['7', '8', '9', '10'],
+                content: '本课实验使用的模块每个模块使用一次后产生的效果是: ',
+                correct: ['9'],
                 options: [
-                    { id: '7', content: 'Option 7' },
-                    { id: '8', content: 'Option 8' },
-                    { id: '9', content: 'Option 9' },
-                    { id: '10', content: 'Option 10' }
+                    { id: '7', content: '移动到了原位置的左侧' },
+                    { id: '8', content: '移动到了原位置的右侧' },
+                    { id: '9', content: '移动后回到原位置' },
+                    { id: '10', content: '移动到了原位置的上方' },
+                    { id: '110', content: '移动到了原位置的下方' }
+                ],
+                answer: []
+            }, {
+                id: '5',
+                content: '本课实验使用的模块包含两个主要参数，它们是: ',
+                correct: ['11', '13'],
+                options: [
+                    { id: '11', content: '步数' },
+                    { id: '12', content: '角度' },
+                    { id: '13', content: '方向' }
                 ],
                 answer: []
             }
