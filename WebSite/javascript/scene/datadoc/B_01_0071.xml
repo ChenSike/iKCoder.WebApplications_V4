@@ -2,18 +2,22 @@
   <basic>
     <usr id="46" nickname="Alice"/>
   </basic>
-  <sence name="第二课：路径跟随" symbol="B_01_002" id="" totalstage="4" currentstage="3" finishstage="4" next="B_01_003"/>
+  <sence name="初级第三课：绘图基础" symbol="B_01_007" id="" totalstage="4" currentstage="1" finishstage="4" next="B_01_008"/>
   <tips>
     <item index="1">
-      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+      <content chinese="绘制一个完全覆盖灰色三角形的红色三角形。" english="" blocktype=""/>
     </item>
   </tips>
-  <toolbox src="B-01-002_3D/pacman/3/Blocks/blocks.JS">
+  <toolbox src="B-01-007_3D/3dBoard/1/Blocks/blocks.JS">
     <xml id="toolbox" style="display: none">
       <block type="event_start"></block>
-      <block type="turn_right"></block>
-      <block type="forloop"></block>
+      <block type="draw_triangle"></block>
       <block type="move_forward"></block>
+      <block type="positive_rotate_line"></block>
+      <block type="positive_rotate_triangle"></block>
+      <block type="draw_triangle_function"></block>
+      <block type="set_color"></block>
+      <block type="set_lineWidth"></block>
     </xml>
   </toolbox>
   <workspacestatus>
@@ -21,15 +25,15 @@
     <block type="event_start" id="f0Gt`~jczerKhI$;4tt`" colour="#5ba580" stroke="#000000" eventicon="" categoryicon="" maxcount="Infinity" x="248" y="26"/>
   </workspacestatus>
   <game>
-    <script src="Common/pacman.js"/>
-    <script src="B-01-002_3D/pacman/3/Scene/scene.JS"/>
+    <script src="Common/draw3d.js"/>
+    <script src="B-01-007_3D/3dBoard/1/Scene/scene.JS"/>
   </game>
   <message>
     <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>
     <suc msg="恭喜你，你已经完成了本课的学习目标."/>
   </message>
   <words>
-    <stage value="2">
+    <stage value="1">
       <word value="Algorithm" note="计算机英语" star="4">
         <soundmark/>
         <paraphrase>

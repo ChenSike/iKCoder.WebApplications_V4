@@ -874,3 +874,29 @@ function openWorkplatform() {
     var symbol = $(arguments[0].currentTarget).attr('data-target');
     window.open('/ikcoder/workplatform.html?scene=' + symbol + '&step=1', 'workplatform', "")
 };
+
+function formatForDateInput(sourceDate) {
+    if (sourceDate == null) {
+        sourceDate = new Date();
+    }
+
+    var year = sourceDate.getFullYear();
+    var month = sourceDate.getMonth() + 1;
+    var day = sourceDate.getDate();
+    month = (month < 10 ? '0' + month : month);
+    day = (day < 10 ? '0' + day : day);
+    return year + '-' + month + '-' + day;
+};
+
+function getDateByPeriod(sourceDate, period, periodType) {
+    if (sourceDate == null) {
+        sourceDate = new Date();
+    }
+
+    var year = sourceDate.getFullYear();
+    var month = sourceDate.getMonth() + 1;
+    var day = sourceDate.getDate();
+    month = (month < 10 ? '0' + month : month);
+    day = (day < 10 ? '0' + day : day);
+    return year + '-' + month + '-' + day;
+}

@@ -1090,7 +1090,7 @@ function buildCreateNewClassPopup(rspXML) {
     '                    <div class="form-group row">' +
     '                        <label for="txt_Start_Class_New" class="col-3 col-form-label class-create">开学时间</label>' +
     '                        <div class="col-9">' +
-    '                            <input class="form-control form-control-sm" type="date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '" id="txt_Start_Class_New">' +
+    '                            <input class="form-control form-control-sm" type="date" value="' + formatForDateInput(null) + '" id="txt_Start_Class_New">' +
     '                        </div>' +
     '                    </div>' +
     '                    <div class="form-group row">' +
@@ -3233,7 +3233,7 @@ function buildScheduleDetailByClass(classId) {
     tmpHTMLStr.push('                   <tr id="tr' + tmpId + '">');
     tmpHTMLStr.push('                       <td></td>');
     tmpHTMLStr.push('                       <td><button type="button" class="btn btn-sm btn-success" id="btn' + tmpId + 'Submit" data-target="' + classId + '">添加</button></td>');
-    tmpHTMLStr.push('                       <td><input class="form-control form-control-sm" type="date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '" id="txt' + tmpId + 'Date"></td>');
+    tmpHTMLStr.push('                       <td><input class="form-control form-control-sm" type="date" value="' + formatForDateInput(null) + '" id="txt' + tmpId + 'Date"></td>');
     tmpHTMLStr.push('                       <td>');
     tmpHTMLStr.push('                           <select class="form-control form-control-sm" id="select' + tmpId + 'Time">');
     for (var i = 0; i < gData['times'].items.length; i++) {
@@ -3443,11 +3443,11 @@ function buildDataTableHTML_DateView() {
     tmpHTMLStr.push('       <div class="col-2" style="line-height:30px;">选择时间段</div>');
     tmpHTMLStr.push('       <div class="col" style="line-height:30px;text-align:right;">从 : </div>');
     tmpHTMLStr.push('       <div class="col-3">');
-    tmpHTMLStr.push('           <input type="date" class="form-control form-control-sm" id="txt_Schedule_ViewDate_Start" value="2017-09-03">');
+    tmpHTMLStr.push('           <input type="date" class="form-control form-control-sm" id="txt_Schedule_ViewDate_Start" value="' + formatForDateInput(null) + '">');
     tmpHTMLStr.push('       </div>');
     tmpHTMLStr.push('       <div class="col" style="line-height:30px;text-align:right;">到 :</div>');
     tmpHTMLStr.push('       <div class="col-3">');
-    tmpHTMLStr.push('           <input type="date" class="form-control form-control-sm " id="txt_Schedule_ViewDate_End" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '">');
+    tmpHTMLStr.push('           <input type="date" class="form-control form-control-sm " id="txt_Schedule_ViewDate_End" value="' + formatForDateInput(null) + '">');
     tmpHTMLStr.push('       </div>');
     tmpHTMLStr.push('       <div class="col">');
     tmpHTMLStr.push('           <button type="submit" class="btn btn-sm btn-primary" id="btn_Schedule_ViewDate_Search">检索</button>');

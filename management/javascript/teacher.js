@@ -1935,7 +1935,7 @@ function showAssignHWExpPopup(classId) {
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
         tmpHTMLStr.push('                               <label for="txt_HW_Assign_Exp_Date" class="col-form-label">日期</label>');
-        tmpHTMLStr.push('                               <input type="date" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '">');
+        tmpHTMLStr.push('                               <input type="date" class="form-control  form-control-sm" id="txt_HW_Assign_Exp_Date" value="' + formatForDateInput(null) + '">');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                       </div>');
         tmpHTMLStr.push('                       <div class="row">');
@@ -2009,7 +2009,7 @@ function showAssignHWExpPopup(classId) {
     } else {
         $('#txt_HW_Assign_Exp_Class').val(data.name);
         $('#txt_HW_Assign_Exp_Type').val(data.level.name);
-        $('#txt_HW_Assign_Exp_Date').val((new Date()).toLocaleDateString().replace(/\//g, '-'));
+        $('#txt_HW_Assign_Exp_Date').val(formatForDateInput(null));
         $('#row_HW_Assign_HW_Exp_Creator').hide();
         $('#txt_HW_Assign_Exp_Creator').val("");
         $('#txt_HW_Assign_Exp_Title').val("");
@@ -2450,7 +2450,7 @@ function showAssignHWPopup(classId) {
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
         tmpHTMLStr.push('                               <label for="txt_HW_Assign_Date" class="col-form-label">日期</label>');
-        tmpHTMLStr.push('                               <input type="date" class="form-control  form-control-sm" id="txt_HW_Assign_Date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '">');
+        tmpHTMLStr.push('                               <input type="date" class="form-control  form-control-sm" id="txt_HW_Assign_Date" value="' + formatForDateInput(null) + '">');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                       </div>');
         tmpHTMLStr.push('                       <div class="row">');
@@ -3733,7 +3733,7 @@ function showAssignExamPopup(classId) {
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group col-md-4">');
         tmpHTMLStr.push('                               <label for="txt_Exam_Assign_Date" class="col-form-label">日期</label>');
-        tmpHTMLStr.push('                               <input type="date" class="form-control  form-control-sm" id="txt_Exam_Assign_Date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '">');
+        tmpHTMLStr.push('                               <input type="date" class="form-control  form-control-sm" id="txt_Exam_Assign_Date" value="' + formatForDateInput(null) + '">');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                       </div>');
         tmpHTMLStr.push('                       <div class="row">');

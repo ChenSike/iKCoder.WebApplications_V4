@@ -133,7 +133,7 @@ function buildCreateNewStudentPopup() {
     '                    <div class="form-group row">' +
     '                        <label for="txt_Birthday_Student_New" class="col-3 col-form-label class-create">生日</label>' +
     '                        <div class="col-9">' +
-    '                            <input class="form-control" type="date" value="' + (new Date()).toLocaleDateString().replace(/\//g, '-') + '" id="txt_Birthday_Student_New">' +
+    '                            <input class="form-control" type="date" value="' + formatForDateInput(null) + '" id="txt_Birthday_Student_New">' +
     '                        </div>' +
     '                    </div>' +
     '                    <div class="form-group row">' +
