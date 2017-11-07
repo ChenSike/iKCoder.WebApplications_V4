@@ -43,7 +43,7 @@ function initPage() {
         last: "2017-09-30 12:01:02"
     };
     buildUserInfoHTML(data);
-    buildDataHTML_Class();    
+    buildDataHTML_Class();
     initEvents();
 };
 
@@ -1008,11 +1008,9 @@ function loadClassItemInfoDetail_Teach(symbol, student) {
 function showCreateNewClassPopup() {
     if ($('#modal_Class_New').length <= 0) {
         buildCreateNewClassPopup(null);
-        $('#modal_Class_New').on('show.bs.modal', function (e) {
-            fillNewClassSymbol();
-            fillRoomList();
-            fillTeacherList();
-        });
+        fillNewClassSymbol();
+        fillRoomList();
+        fillTeacherList();
 
         $('#btn_NewRoom_Class_New').on('click', function () {
             $('#modal_Class_New').modal('hide');
@@ -1038,78 +1036,87 @@ function formatData_TeacherList(rspXML) {
 };
 
 function formatData_RoomList(rspXML) {
-    var data = [{ name: '教室 1', id: '1' }, { name: '教室 2', id: '2' }, { name: '教室 3', id: '3' }];
+    var data = [{ name: '教室 1', id: '1', max: 11 }, { name: '教室 2', id: '2', max: 22 }, { name: '教室 3', id: '3', max: 33 }];
     return data;
 };
 
 function buildCreateNewClassPopup(rspXML) {
-    var tmpHTMLStr = '<div class="modal fade" id="modal_Class_New" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
-    '    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">' +
-    '        <div class="modal-content">' +
-    '            <div class="modal-header">' +
-    '                <h5 class="modal-title" id="exampleModalLabel">创建班级</h5>' +
-    '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-    '                    <span aria-hidden="true">&times;</span>' +
-    '                </button>' +
-    '            </div>' +
-    '            <div class="modal-body">' +
-    '                <form>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="sel_Level_Class_New" class="col-3 col-form-label class-create">级别</label>' +
-    '                        <div class="col-9">' +
-    '                            <select class="form-control form-control-sm" id="sel_Level_Class_New">' +
-    '                                <option value="1">初级</option>' +
-    '                                <option value="2">中级</option>' +
-    '                                <option value="3">高级</option>' +
-    '                                <option value="4">拓展</option>' +
-    '                                <option value="5">课程包</option>' +
-    '                            </select>' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Symbol_Class_New" class="col-3 col-form-label class-create">编号</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control form-control-sm" type="text" value="" id="txt_Symbol_Class_New" readonly>' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Teacher_Class_New`" class="col-3 col-form-label class-create">教员</label>' +
-    '                        <div class="col-9">' +
-    '                            <select class="form-control form-control-sm" value="" id="sel_Teacher_Class_New"></select>' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Room_Class_New" class="col-3 col-form-label class-create">教室</label>' +
-    '                        <div class="col-6">' +
-    '                            <select class="form-control form-control-sm" value="" id="sel_Room_Class_New"></select>' +
-    '                        </div>' +
-    '                        <div class="col-2">' +
-    '                            <button class="btn btn-sm btn-primary" id="btn_NewRoom_Class_New" type="button">添加</button>' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Start_Class_New" class="col-3 col-form-label class-create">开学时间</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control form-control-sm" type="date" value="' + formatForDateInput(null) + '" id="txt_Start_Class_New">' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Amount_Class_New" class="col-3 col-form-label class-create">人数</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control form-control-sm" type="number" value="10" id="txt_Amount_Class_New">' +
-    '                        </div>' +
-    '                    </div>' +
-    '                </form>' +
-    '            </div>' +
-    '            <div class="modal-footer">' +
-    '                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>' +
-    '                <button type="button" class="btn btn-sm btn-primary">确定</button>' +
-    '            </div>' +
-    '        </div>' +
-    '    </div>' +
-    '</div>';
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('<div class="modal fade" id="modal_Class_New" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
+    tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">');
+    tmpHTMLStr.push('        <div class="modal-content">');
+    tmpHTMLStr.push('            <div class="modal-header">');
+    tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">创建班级</h5>');
+    tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+    tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+    tmpHTMLStr.push('                </button>');
+    tmpHTMLStr.push('            </div>');
+    tmpHTMLStr.push('            <div class="modal-body">');
+    tmpHTMLStr.push('                <form>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="sel_Level_Class_New" class="col-3 col-form-label class-create">级别</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <select class="form-control form-control-sm" id="sel_Level_Class_New">');
+    tmpHTMLStr.push('                                <option value="1">初级</option>');
+    tmpHTMLStr.push('                                <option value="2">中级</option>');
+    tmpHTMLStr.push('                                <option value="3">高级</option>');
+    tmpHTMLStr.push('                                <option value="4">拓展</option>');
+    tmpHTMLStr.push('                                <option value="5">课程包</option>');
+    tmpHTMLStr.push('                            </select>');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Symbol_Class_New" class="col-3 col-form-label class-create">编号</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="text" value="" id="txt_Symbol_Class_New" readonly>');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Teacher_Class_New`" class="col-3 col-form-label class-create">教员</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Teacher_Class_New"></select>');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Room_Class_New" class="col-3 col-form-label class-create">教室</label>');
+    tmpHTMLStr.push('                        <div class="col-6">');
+    tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Room_Class_New"></select>');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                        <div class="col-2">');
+    tmpHTMLStr.push('                            <button class="btn btn-sm btn-primary" id="btn_NewRoom_Class_New" type="button">添加</button>');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Start_Class_New" class="col-3 col-form-label class-create">开学时间</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="date" value="' + formatForDateInput(null) + '" id="txt_Start_Class_New">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Amount_Class_New" class="col-3 col-form-label class-create">人数</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="number" value="10" id="txt_Amount_Class_New">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                </form>');
+    tmpHTMLStr.push('            </div>');
+    tmpHTMLStr.push('            <div class="modal-footer">');
+    tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>');
+    tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-primary">确定</button>');
+    tmpHTMLStr.push('            </div>');
+    tmpHTMLStr.push('        </div>');
+    tmpHTMLStr.push('    </div>');
+    tmpHTMLStr.push('</div>');
 
-    $('body').append($(tmpHTMLStr));
+    $('body').append($(tmpHTMLStr.join('')));
+
+    $('#txt_Amount_Class_New').on('change', function () {
+        var amoutTxt = $(arguments[0].target);
+        var max = parseInt(amoutTxt.prop('max'));
+        if (parseInt(amoutTxt.val()) > max) {
+            amoutTxt.val(max);
+        }
+    });
 };
 
 function fillRoomList() {
@@ -1139,11 +1146,19 @@ function fillRoomList() {
     var data = formatData_RoomList(null);
     var tmpOptHTML = '';
     for (var i = 0; i < data.length; i++) {
-        tmpOptHTML += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+        tmpOptHTML += '<option value="' + data[i].id + '|' + data[i].max + '">' + data[i].name + '</option>';
     }
 
     $('#sel_Room_Class_New').empty();
     $('#sel_Room_Class_New').append($(tmpOptHTML));
+    $('#sel_Room_Class_New').on('change', function () {
+        var params = $(arguments[0].target).val().split('|');
+        var amoutTxt = $('#txt_Amount_Class_New');
+        amoutTxt.prop('max', params[1]);
+        if (parseInt(amoutTxt.val()) > parseInt(params[1])) {
+            amoutTxt.val(params[1]);
+        }
+    });
 }
 
 function fillTeacherList() {
@@ -1209,32 +1224,48 @@ function fillNewClassSymbol() {
 };
 
 function buildCreateNewRoomPopup() {
-    var tmpHTMLStr = '<div class="modal fade" id="modal_NewRoom" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
-    '    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">' +
-    '        <div class="modal-content">' +
-    '            <div class="modal-header">' +
-    '                <h5 class="modal-title" id="exampleModalLabel">添加教室</h5>' +
-    '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-    '                    <span aria-hidden="true">&times;</span>' +
-    '                </button>' +
-    '            </div>' +
-    '            <div class="modal-body">' +
-    '                <form>' +
-    '                    <div class="form-group">' +
-    '                        <label for="recipient-name" class="form-control-label">教室名称:</label>' +
-    '                        <input type="text" class="form-control form-control-sm" id="recipient-name">' +
-    '                    </div>' +
-    '                </form>' +
-    '            </div>' +
-    '            <div class="modal-footer">' +
-    '                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>' +
-    '                <button type="button" class="btn btn-sm btn-primary">添加</button>' +
-    '            </div>' +
-    '        </div>' +
-    '    </div>' +
-    '</div>';
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('<div class="modal fade" id="modal_NewRoom" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
+    tmpHTMLStr.push('   <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">');
+    tmpHTMLStr.push('       <div class="modal-content">');
+    tmpHTMLStr.push('           <div class="modal-header">');
+    tmpHTMLStr.push('               <h5 class="modal-title" id="exampleModalLabel">添加教室</h5>');
+    tmpHTMLStr.push('               <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+    tmpHTMLStr.push('                   <span aria-hidden="true">&times;</span>');
+    tmpHTMLStr.push('               </button>');
+    tmpHTMLStr.push('           </div>');
+    tmpHTMLStr.push('           <div class="modal-body">');
+    tmpHTMLStr.push('               <form>');
+    tmpHTMLStr.push('                   <div class="row">');
+    tmpHTMLStr.push('                       <div class="form-group  col-md-6">');
+    tmpHTMLStr.push('                           <label for="txt_Name_Create_New_Room" class="col-form-label">教室名称:</label>');
+    tmpHTMLStr.push('                           <input type="text" class="form-control form-control-sm" id="txt_Name_Create_New_Room">');
+    tmpHTMLStr.push('                       </div>');
+    tmpHTMLStr.push('                       <div class="form-group  col-md-6">');
+    tmpHTMLStr.push('                           <label for="txt_Max_Create_New_Room" class="col-form-label">最大容纳人数:</label>');
+    tmpHTMLStr.push('                           <input type="number" class="form-control form-control-sm" id="txt_Max_Create_New_Room">');
+    tmpHTMLStr.push('                       </div>');
+    tmpHTMLStr.push('                   </div>');
+    tmpHTMLStr.push('                </form>');
+    tmpHTMLStr.push('           </div>');
+    tmpHTMLStr.push('           <div class="modal-footer">');
+    tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>');
+    tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-primary" id="btn_OK_Create_New_Room">添加</button>');
+    tmpHTMLStr.push('           </div>');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('   </div>');
+    tmpHTMLStr.push('</div>');
 
-    $('body').append($(tmpHTMLStr));
+    $('body').append($(tmpHTMLStr.join('')));
+
+    $('#btn_OK_Create_New_Room').on('click', function (e) {
+        $('#modal_NewRoom').modal('hide');
+        var maxCount = $('#txt_Max_Create_New_Room').val();
+        $('#sel_Room_Class_New').append($('<option value="getnewroomid|' + maxCount + '">' + $('#txt_Name_Create_New_Room').val() + '</option>'));
+        $('#sel_Room_Class_New').val('getnewroomid|' + maxCount);
+        $('#txt_Amount_Class_New').prop('max', maxCount);
+    });
+
     $('#modal_NewRoom').on('hidden.bs.modal', function (e) {
         $('#modal_Class_New').modal('show');
     })
@@ -3023,7 +3054,23 @@ function buildDataTableHTML_Schedule(data) {
             room: {
                 id: '1',
                 name: '教室 1'
-            }
+            },
+            status: '0',
+            booked: '0'
+        }, {
+            id: '4',
+            symbol: 'B_01_002',
+            title: '初级 2 班',
+            teacher: {
+                id: '1',
+                name: '教员 1'
+            },
+            room: {
+                id: '1',
+                name: '教室 1'
+            },
+            status: '0',
+            booked: '1'
         }, {
             id: '2',
             symbol: 'B_02_002',
@@ -3035,7 +3082,9 @@ function buildDataTableHTML_Schedule(data) {
             room: {
                 id: '3',
                 name: '教室 3'
-            }
+            },
+            status: '1',
+            booked: '1'
         }, {
             id: '3',
             symbol: 'B_03_003',
@@ -3047,26 +3096,38 @@ function buildDataTableHTML_Schedule(data) {
             room: {
                 id: '2',
                 name: '教室 2'
-            }
+            },
+            status: '2',
+            booked: '1'
         }
     ];
 
-    var headerId, collapseId, cardblockId;
+    var headerId, collapseId, cardblockId, status, txtClass, btnBookId;
     var tmpHTMLStr = [];
     tmpHTMLStr.push('<div class="row">');
     tmpHTMLStr.push('   <div class="col" style="padding-top:10px;">');
     tmpHTMLStr.push('       <div class="accordion-white-bg" id="accordion_Schedule" style="font-size: 14px;" role="tablist">');
     for (var i = 0; i < data.length; i++) {
+        status = (data[i].status == '0' ? '未开课' : data[i].status == '1' ? '已开课' : '已结课');
+        txtClass = (data[i].status == '0' ? 'text-primary' : data[i].status == '1' ? 'text-success' : 'text-muted');
         headerId = 'hd_Student_Schedule_Item_' + data[i].id;
         collapseId = 'collapse_Schedule_Item_' + data[i].id;
         cardblockId = 'cardblock_Schedule_Item_' + data[i].id;
+        btnBookId = 'btn_Schedule_Item_NewBook' + data[i].id;
         tmpHTMLStr.push('<div class="card">');
         tmpHTMLStr.push('   <div class="card-header" style="padding:5px 0px; font-weight:normal;" role="tab" id="' + headerId + '">');
         tmpHTMLStr.push('       <div class="row">');
         tmpHTMLStr.push('           <div class="col-1" style="text-align:center;">' + (i + 1) + '</div>');
-        tmpHTMLStr.push('           <div class="col">');
+        tmpHTMLStr.push('           <div class="col-7">');
         tmpHTMLStr.push('               <a data-toggle="collapse" href="#' + collapseId + '" aria-expanded="true" aria-controls="' + collapseId + '">' + data[i].title + '(' + data[i].symbol + ')</a>');
         tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('           <div class="col" style="text-align:center;">');
+        if (data[i].booked == '0') {
+            tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-primary btn-schedule-item-new-schedule" id="' + btnBookId + '" data-target="' + data[i].id + '">新建课表</button>');
+        }
+
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('           <div class="col ' + txtClass + '" style="text-align:center;">' + status + '</div>');
         tmpHTMLStr.push('       </div>');
         tmpHTMLStr.push('   </div>');
         tmpHTMLStr.push('   <div id="' + collapseId + '" class="collapse collapse-schedule-item" role="tabpanel" aria-labelledby="' + headerId + '" data-parent="#accordion_Schedule" data-target="' + data[i].id + '">');
@@ -3081,8 +3142,121 @@ function buildDataTableHTML_Schedule(data) {
     $('#container_Datas').append($(tmpHTMLStr.join('')));
     $('.collapse-schedule-item').on('show.bs.collapse', function () {
         var classId = $(arguments[0].target).attr('data-target');
-        buildScheduleDetailByClass(classId);
+        var booked = '';
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].id == classId) {
+                booked = data[i].booked;
+                break;
+            }
+        }
+
+        if (booked != '0') {
+            buildScheduleDetailByClass(classId);
+        }
     });
+
+    $('.btn-schedule-item-new-schedule').on('click', function () {
+        showCreateNewSchedulePopup();
+    });
+};
+
+function showCreateNewSchedulePopup(classId) {
+    if ($('#modal_Schedule_New').length == 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_Schedule_New" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">');
+        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">新建课表</h5>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('                <form>');
+        tmpHTMLStr.push('                    <div class="form-group row">');
+        tmpHTMLStr.push('                        <label for="sel_Frequency_Schedule_New" class="col-3 col-form-label class-create">频率: </label>');
+        tmpHTMLStr.push('                        <div class="col-9">');
+        tmpHTMLStr.push('                            <select class="form-control form-control-sm" id="sel_Frequency_Schedule_New">');
+        tmpHTMLStr.push('                                <option value="1">按天数间隔</option>');
+        tmpHTMLStr.push('                                <option value="2">固定每周某天</option>');
+        tmpHTMLStr.push('                            </select>');
+        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                    </div>');
+        tmpHTMLStr.push('                    <div class="form-group row">');
+        tmpHTMLStr.push('                        <label for="" class="col-3 col-form-label class-create">调整: </label>');
+        tmpHTMLStr.push('                        <div class="col-9">');
+        tmpHTMLStr.push('                           <div class="form-group form-control-sm">');
+        tmpHTMLStr.push('                               <label class="custom-control custom-checkbox">');
+        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input">');
+        tmpHTMLStr.push('                                   <span class="custom-control-indicator"></span>');
+        tmpHTMLStr.push('                                   <span class="custom-control-description">法定节假日不排课</span>');
+        tmpHTMLStr.push('                               </label>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                           <div class="form-group form-control-sm">');
+        tmpHTMLStr.push('                               <label class="custom-control custom-checkbox">');
+        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input">');
+        tmpHTMLStr.push('                                   <span class="custom-control-indicator"></span>');
+        tmpHTMLStr.push('                                   <span class="custom-control-description">周末不排课</span>');
+        tmpHTMLStr.push('                               </label>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                    </div>');
+        tmpHTMLStr.push('                    <div class="form-group row" id="row_ByDays_Schedule_New">');
+        tmpHTMLStr.push('                        <label for="txt_Symbol_Class_New" class="col-3 col-form-label class-create">编号</label>');
+        tmpHTMLStr.push('                        <div class="col-9">');
+        tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="text" value="" id="txt_Symbol_Class_New" readonly>');
+        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                    </div>');
+        tmpHTMLStr.push('                    <div class="form-group row">');
+        tmpHTMLStr.push('                        <label for="txt_Teacher_Class_New`" class="col-3 col-form-label class-create">教员</label>');
+        tmpHTMLStr.push('                        <div class="col-9">');
+        tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Teacher_Class_New"></select>');
+        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                    </div>');
+        tmpHTMLStr.push('                    <div class="form-group row">');
+        tmpHTMLStr.push('                        <label for="txt_Room_Class_New" class="col-3 col-form-label class-create">教室</label>');
+        tmpHTMLStr.push('                        <div class="col-6">');
+        tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Room_Class_New"></select>');
+        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                        <div class="col-2">');
+        tmpHTMLStr.push('                            <button class="btn btn-sm btn-primary" id="btn_NewRoom_Class_New" type="button">添加</button>');
+        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                    </div>');
+        tmpHTMLStr.push('                    <div class="form-group row">');
+        tmpHTMLStr.push('                        <label for="txt_Start_Class_New" class="col-3 col-form-label class-create">开学时间</label>');
+        tmpHTMLStr.push('                        <div class="col-9">');
+        tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="date" value="' + formatForDateInput(null) + '" id="txt_Start_Class_New">');
+        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                    </div>');
+        tmpHTMLStr.push('                    <div class="form-group row">');
+        tmpHTMLStr.push('                        <label for="txt_Amount_Class_New" class="col-3 col-form-label class-create">人数</label>');
+        tmpHTMLStr.push('                        <div class="col-9">');
+        tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="number" value="10" id="txt_Amount_Class_New">');
+        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                    </div>');
+        tmpHTMLStr.push('                </form>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-primary">确定</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+
+        $('#txt_Amount_Class_New').on('change', function () {
+            var amoutTxt = $(arguments[0].target);
+            var max = parseInt(amoutTxt.prop('max'));
+            if (parseInt(amoutTxt.val()) > max) {
+                amoutTxt.val(max);
+            }
+        });
+    }
+
+    $('#modal_Schedule_New').modal('show');
 };
 
 function buildScheduleDetailByClass(classId) {
@@ -3098,7 +3272,6 @@ function buildScheduleDetailByClass(classId) {
         { id: '9', date: '2017-09-21', time: '16:30', symbol: 'B-03-001', content: '课程 3-01', teacher: '教员 1', room: '教室 1(20)', status: 0 },
         { id: '10', date: '2017-09-23', time: '16:30', symbol: 'B-03-002', content: '课程 3-02', teacher: '教员 1', room: '教室 3(22)', status: 0 }
     ];
-
     var gData = {
         times: {
             name: '统一设置时间',
@@ -3168,6 +3341,7 @@ function buildScheduleDetailByClass(classId) {
     var container = $('#cardblock_Schedule_Item_' + classId);
     container.empty();
     var tmpHTMLStr = [];
+
     tmpHTMLStr.push('<div class="container-fluid" style="height:100%;">');
     tmpHTMLStr.push('   <div class="row">');
     tmpHTMLStr.push('       <div class="col-3" style="padding-top:10px; line-height:30px;font-weight:bold;color:rgb(41,85,206);">统一更改配置</div>');
@@ -3505,24 +3679,15 @@ function loadScheduleByPeriod() {
         var retRows, retDSC, retMSC, retMEC, retDEC;
         var tmpMonth = newDate.getMonth();
         var tmpYear = newDate.getFullYear();
-        var tmpDays = 31;
-        if (tmpMonth == 1) {
-            if ((tmpYear % 100 != 0 && tmpYear % 4 == 0) || (tmpYear % 100 == 0 && tmpYear % 400 == 0)) {
-                tmpDays = 29;
-            } else {
-                tmpDays = 28;
-            }
-        } else if (tmpMonth == 3 || tmpMonth == 5 || tmpMonth == 8 || tmpMonth == 10) {
-            tmpDays = 30;
-        }
-
+        var tmpDays = getDaysOfMonth(newDate);
+        //the start column of the 1st. of month
         retMSC = newDate.getDay();
         if (parseInt(startDay) > 1) {
             retDSC = (new Date([tmpYear, tmpMonth + 1, startDay].join('-'))).getDay();
         } else {
             retDSC = retMSC;
         }
-
+        //the end column of the 1st. of month
         retMEC = (new Date([tmpYear, tmpMonth + 1, tmpDays].join('-'))).getDay();
         if (parseInt(endDay) > 0 && parseInt(endDay) != tmpDays) {
             retDEC = (new Date([tmpYear, tmpMonth + 1, endDay].join('-'))).getDay();
@@ -3547,6 +3712,7 @@ function loadScheduleByPeriod() {
 
         return { r: retRows, msc: retMSC, mec: retMEC, dsc: retDSC, dec: retDEC, days: tmpDays };
     };
+
     var findStatus = function (year, month, day) {
 
     };
@@ -3692,4 +3858,4 @@ function showDateCourseDetail(symbol) {
     $('#modal_Class_Item_Detail .modal-dialog').css("max-width", "fit-content");
     $('#modal_Class_Item_Detail .modal-body').append($(tmpHTMLStr.join('')));
     $('#modal_Class_Item_Detail').modal('show');
-}
+};

@@ -875,6 +875,32 @@ function openWorkplatform() {
     window.open('/ikcoder/workplatform.html?scene=' + symbol + '&step=1', 'workplatform', "")
 };
 
+/*Date Time*/
+function isLeapYear(year) {
+    if ((tmpYear % 100 != 0 && tmpYear % 4 == 0) || (tmpYear % 100 == 0 && tmpYear % 400 == 0)) {
+        return true;
+    }
+
+    return false;
+};
+
+function getDaysOfMonth(date) {
+    var tmpDays = 31;
+    var tmpYear = date.getFullYear();
+    var tmpMonth = date.getMonth();
+    if (tmpMonth == 1) {
+        if (isLeapYear(tmpYear)) {
+            tmpDays = 29;
+        } else {
+            tmpDays = 28;
+        }
+    } else if (tmpMonth == 3 || tmpMonth == 5 || tmpMonth == 8 || tmpMonth == 10) {
+        tmpDays = 30;
+    }
+
+    return tmpDays;
+}
+
 function formatForDateInput(sourceDate) {
     if (sourceDate == null) {
         sourceDate = new Date();
@@ -893,10 +919,36 @@ function getDateByPeriod(sourceDate, period, periodType) {
         sourceDate = new Date();
     }
 
-    var year = sourceDate.getFullYear();
-    var month = sourceDate.getMonth() + 1;
-    var day = sourceDate.getDate();
-    month = (month < 10 ? '0' + month : month);
-    day = (day < 10 ? '0' + day : day);
-    return year + '-' + month + '-' + day;
-}
+    var retVal = null;
+    if (periodType == 's') {
+        retVal = new Date(sourceDate.valueOf() + period * 1000);
+    } else if (periodType == 'm') {
+        retVal = new Date(sourceDate.valueOf() + period * 60 * 1000);
+    } else if (periodType == 'h') {
+        retVal = new Date(sourceDate.valueOf() + period * 60 * 60 * 1000);
+    } else if (periodType == 'D') {
+        retVal = new Date(sourceDate.valueOf() + period * 24 * 60 * 60 * 1000);
+    } else {
+        var tmpYear = sourceDate.getFullYear();
+        var tmpMonth = sourceDate.getMonth();
+        var tmpDay = sourceDate.getDate();
+        if (periodType == 'M') {
+            retVal = new Date(new Date(sourceDate.setDate(1)).setMonth(tmpMonth + period));
+            var totalDays = getDaysOfMonth(retVal);
+            if (tmpDay < totalDays) {
+                retVal = new Date(retVal.setDate(tmpDay));
+            } else {
+                retVal = new Date(retVal.setDate(totalDays));
+            }
+        } else if (periodType == 'Y') {
+            if (isLeapYear(tmpYear) && tmpMonth == 1 && tmpDay == getDaysOfMonth(sourceDate)) {
+                retVal = new Date(new Date(sourceDate.setDate(1)).setFullYear(tmpYear + period));
+                retVal = new Date(retVal.setDate(getDaysOfMonth(retVal)));
+            } else {
+                retVal = new Date(sourceDate.setFullYear(tmpYear + period));
+            }
+        }
+    }
+
+    return retVal;
+};
