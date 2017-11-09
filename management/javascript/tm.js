@@ -80,6 +80,10 @@ function initEvents() {
         buildDataHTML_Schedule();
     });
 
+    $('#menu_Certification').on('click', function () {
+        buildDataHTML_Certificat();
+    });
+
     $('#menu_UpdatePWD').on('click', function () {
         _showChgPWDPopup();
     });
@@ -109,6 +113,7 @@ function initEvents() {
     $('#btn_Student_Detail_ResetPWD').on('click', function () {
         _showGlobalMessage('重置密码成功!', 'warning', 'alert_Student_Reset_PWD');
     });
+    /**/
 };
 
 function buildUserInfoHTML(data) {
@@ -1057,6 +1062,7 @@ function buildCreateNewClassPopup(rspXML) {
     tmpHTMLStr.push('                        <label for="sel_Level_Class_New" class="col-3 col-form-label class-create">级别</label>');
     tmpHTMLStr.push('                        <div class="col-9">');
     tmpHTMLStr.push('                            <select class="form-control form-control-sm" id="sel_Level_Class_New">');
+    tmpHTMLStr.push('                                <option value="-1">请选择级别</option>');
     tmpHTMLStr.push('                                <option value="1">初级</option>');
     tmpHTMLStr.push('                                <option value="2">中级</option>');
     tmpHTMLStr.push('                                <option value="3">高级</option>');
@@ -1072,19 +1078,25 @@ function buildCreateNewClassPopup(rspXML) {
     tmpHTMLStr.push('                        </div>');
     tmpHTMLStr.push('                    </div>');
     tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Name_Class_New" class="col-3 col-form-label class-create">名称</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="text" value="" id="txt_Name_Class_New">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
     tmpHTMLStr.push('                        <label for="txt_Teacher_Class_New`" class="col-3 col-form-label class-create">教员</label>');
     tmpHTMLStr.push('                        <div class="col-9">');
-    tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Teacher_Class_New"></select>');
+    tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Teacher_Class_New" disabled></select>');
     tmpHTMLStr.push('                        </div>');
     tmpHTMLStr.push('                    </div>');
     tmpHTMLStr.push('                    <div class="form-group row">');
     tmpHTMLStr.push('                        <label for="txt_Room_Class_New" class="col-3 col-form-label class-create">教室</label>');
-    tmpHTMLStr.push('                        <div class="col-6">');
-    tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Room_Class_New"></select>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Room_Class_New" disabled></select>');
     tmpHTMLStr.push('                        </div>');
-    tmpHTMLStr.push('                        <div class="col-2">');
-    tmpHTMLStr.push('                            <button class="btn btn-sm btn-primary" id="btn_NewRoom_Class_New" type="button">添加</button>');
-    tmpHTMLStr.push('                        </div>');
+    //tmpHTMLStr.push('                        <div class="col-2">');
+    //tmpHTMLStr.push('                            <button class="btn btn-sm btn-primary" id="btn_NewRoom_Class_New" type="button">添加</button>');
+    //tmpHTMLStr.push('                        </div>');
     tmpHTMLStr.push('                    </div>');
     tmpHTMLStr.push('                    <div class="form-group row">');
     tmpHTMLStr.push('                        <label for="txt_Start_Class_New" class="col-3 col-form-label class-create">开学时间</label>');
@@ -1117,6 +1129,17 @@ function buildCreateNewClassPopup(rspXML) {
             amoutTxt.val(max);
         }
     });
+
+    $('#sel_Level_Class_New').on('change', function () {
+        var currVal = $(arguments[0].target).val();
+        if (currVal == '-1') {
+            $('#sel_Teacher_Class_New').prop('disabled', true);
+            $('#sel_Room_Class_New').prop('disabled', true);
+        } else {
+            $('#sel_Teacher_Class_New').prop('disabled', false);
+            $('#sel_Room_Class_New').prop('disabled', false);
+        }
+    });
 };
 
 function fillRoomList() {
@@ -1143,15 +1166,16 @@ function fillRoomList() {
     //    error: function () {
     //    }
     //});
+    var selCmp = $('#sel_Room_Class_New');
+    selCmp.empty();
+    selCmp.append($('<option value="-1">请选择教室</option>'));
     var data = formatData_RoomList(null);
     var tmpOptHTML = '';
     for (var i = 0; i < data.length; i++) {
-        tmpOptHTML += '<option value="' + data[i].id + '|' + data[i].max + '">' + data[i].name + '</option>';
+        selCmp.append($('<option value="' + data[i].id + '|' + data[i].max + '">' + data[i].name + ' (最多容纳' + data[i].max + '人)</option>'));
     }
 
-    $('#sel_Room_Class_New').empty();
-    $('#sel_Room_Class_New').append($(tmpOptHTML));
-    $('#sel_Room_Class_New').on('change', function () {
+    selCmp.on('change', function () {
         var params = $(arguments[0].target).val().split('|');
         var amoutTxt = $('#txt_Amount_Class_New');
         amoutTxt.prop('max', params[1]);
@@ -1185,14 +1209,14 @@ function fillTeacherList() {
     //    error: function () {
     //    }
     //});
+    var selCmp = $('#sel_Teacher_Class_New');
+    selCmp.empty();
+    selCmp.append($('<option value="-1">请选择教员</option>'));
     var data = formatData_TeacherList(null);
     var tmpOptHTML = '';
     for (var i = 0; i < data.length; i++) {
-        tmpOptHTML += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+        selCmp.append($('<option value="' + data[i].id + '">' + data[i].name + '</option>'));
     }
-
-    $('#sel_Teacher_Class_New').empty();
-    $('#sel_Teacher_Class_New').append($(tmpOptHTML));
 };
 
 function fillNewClassSymbol() {
@@ -3123,7 +3147,7 @@ function buildDataTableHTML_Schedule(data) {
         tmpHTMLStr.push('           </div>');
         tmpHTMLStr.push('           <div class="col" style="text-align:center;">');
         if (data[i].booked == '0') {
-            tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-primary btn-schedule-item-new-schedule" id="' + btnBookId + '" data-target="' + data[i].id + '">新建课表</button>');
+            tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-primary btn-schedule-item-new-schedule" id="' + btnBookId + '" style="line-height: 15px;" data-target="' + data[i].id + '">新建课表</button>');
         }
 
         tmpHTMLStr.push('           </div>');
@@ -3162,12 +3186,23 @@ function buildDataTableHTML_Schedule(data) {
 
 function showCreateNewSchedulePopup(classId) {
     if ($('#modal_Schedule_New').length == 0) {
+        var data = {
+            id: '1',
+            name: '初级 1 班',
+            lessons: 15,
+            amount: 15,
+            startDate: '2017-12-1'
+        };
+
         var tmpHTMLStr = [];
         tmpHTMLStr.push('<div class="modal fade" id="modal_Schedule_New" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
         tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">');
         tmpHTMLStr.push('        <div class="modal-content">');
         tmpHTMLStr.push('            <div class="modal-header">');
-        tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">新建课表</h5>');
+        tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">');
+        tmpHTMLStr.push('                   新建课表');
+        tmpHTMLStr.push('                   <span style="padding-left:10px; font-size:14px;">' + data.name + ' ' + data.amount + '人 ' + data.startDate + '<span>');
+        tmpHTMLStr.push('                </h5>');
         tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
         tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
         tmpHTMLStr.push('                </button>');
@@ -3175,71 +3210,86 @@ function showCreateNewSchedulePopup(classId) {
         tmpHTMLStr.push('            <div class="modal-body">');
         tmpHTMLStr.push('                <form>');
         tmpHTMLStr.push('                    <div class="form-group row">');
-        tmpHTMLStr.push('                        <label for="sel_Frequency_Schedule_New" class="col-3 col-form-label class-create">频率: </label>');
-        tmpHTMLStr.push('                        <div class="col-9">');
-        tmpHTMLStr.push('                            <select class="form-control form-control-sm" id="sel_Frequency_Schedule_New">');
-        tmpHTMLStr.push('                                <option value="1">按天数间隔</option>');
-        tmpHTMLStr.push('                                <option value="2">固定每周某天</option>');
-        tmpHTMLStr.push('                            </select>');
-        tmpHTMLStr.push('                        </div>');
-        tmpHTMLStr.push('                    </div>');
-        tmpHTMLStr.push('                    <div class="form-group row">');
-        tmpHTMLStr.push('                        <label for="" class="col-3 col-form-label class-create">调整: </label>');
-        tmpHTMLStr.push('                        <div class="col-9">');
+        tmpHTMLStr.push('                        <label for="chk_Create_Schedule_New" class="col-3 col-form-label class-create">课程频率</label>');
+        tmpHTMLStr.push('                        <div class="col-3">');
         tmpHTMLStr.push('                           <div class="form-group form-control-sm">');
         tmpHTMLStr.push('                               <label class="custom-control custom-checkbox">');
-        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input">');
+        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input chk-schedule-create-new" value="0">');
         tmpHTMLStr.push('                                   <span class="custom-control-indicator"></span>');
-        tmpHTMLStr.push('                                   <span class="custom-control-description">法定节假日不排课</span>');
+        tmpHTMLStr.push('                                   <span class="custom-control-description">每周日</span>');
         tmpHTMLStr.push('                               </label>');
         tmpHTMLStr.push('                           </div>');
         tmpHTMLStr.push('                           <div class="form-group form-control-sm">');
         tmpHTMLStr.push('                               <label class="custom-control custom-checkbox">');
-        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input">');
+        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input chk-schedule-create-new" value="3">');
         tmpHTMLStr.push('                                   <span class="custom-control-indicator"></span>');
-        tmpHTMLStr.push('                                   <span class="custom-control-description">周末不排课</span>');
+        tmpHTMLStr.push('                                   <span class="custom-control-description">每周三</span>');
         tmpHTMLStr.push('                               </label>');
         tmpHTMLStr.push('                           </div>');
-        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                           <div class="form-group form-control-sm">');
+        tmpHTMLStr.push('                               <label class="custom-control custom-checkbox">');
+        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input chk-schedule-create-new" value="6">');
+        tmpHTMLStr.push('                                   <span class="custom-control-indicator"></span>');
+        tmpHTMLStr.push('                                   <span class="custom-control-description">每周六</span>');
+        tmpHTMLStr.push('                               </label>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                        <div class="col-3">');
+        tmpHTMLStr.push('                           <div class="form-group form-control-sm">');
+        tmpHTMLStr.push('                               <label class="custom-control custom-checkbox">');
+        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input chk-schedule-create-new" value="1">');
+        tmpHTMLStr.push('                                   <span class="custom-control-indicator"></span>');
+        tmpHTMLStr.push('                                   <span class="custom-control-description">每周一</span>');
+        tmpHTMLStr.push('                               </label>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                           <div class="form-group form-control-sm">');
+        tmpHTMLStr.push('                               <label class="custom-control custom-checkbox">');
+        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input chk-schedule-create-new" value="4">');
+        tmpHTMLStr.push('                                   <span class="custom-control-indicator"></span>');
+        tmpHTMLStr.push('                                   <span class="custom-control-description">每周四</span>');
+        tmpHTMLStr.push('                               </label>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
+        tmpHTMLStr.push('                        <div class="col-3">');
+        tmpHTMLStr.push('                           <div class="form-group form-control-sm">');
+        tmpHTMLStr.push('                               <label class="custom-control custom-checkbox">');
+        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input chk-schedule-create-new" value="2">');
+        tmpHTMLStr.push('                                   <span class="custom-control-indicator"></span>');
+        tmpHTMLStr.push('                                   <span class="custom-control-description">每周二</span>');
+        tmpHTMLStr.push('                               </label>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                           <div class="form-group form-control-sm">');
+        tmpHTMLStr.push('                               <label class="custom-control custom-checkbox">');
+        tmpHTMLStr.push('                                   <input type="checkbox" class="custom-control-input chk-schedule-create-new" value="5">');
+        tmpHTMLStr.push('                                   <span class="custom-control-indicator"></span>');
+        tmpHTMLStr.push('                                   <span class="custom-control-description">每周五</span>');
+        tmpHTMLStr.push('                               </label>');
+        tmpHTMLStr.push('                           </div>');
+        tmpHTMLStr.push('                       </div>');
         tmpHTMLStr.push('                    </div>');
-        tmpHTMLStr.push('                    <div class="form-group row" id="row_ByDays_Schedule_New">');
-        tmpHTMLStr.push('                        <label for="txt_Symbol_Class_New" class="col-3 col-form-label class-create">编号</label>');
+        tmpHTMLStr.push('                    <div class="form-group row">');
+        tmpHTMLStr.push('                        <label for="sel_Room_Schedule_New" class="col-3 col-form-label class-create">授课教室</label>');
         tmpHTMLStr.push('                        <div class="col-9">');
-        tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="text" value="" id="txt_Symbol_Class_New" readonly>');
+        tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Room_Schedule_New"></select>');
         tmpHTMLStr.push('                        </div>');
         tmpHTMLStr.push('                    </div>');
         tmpHTMLStr.push('                    <div class="form-group row">');
-        tmpHTMLStr.push('                        <label for="txt_Teacher_Class_New`" class="col-3 col-form-label class-create">教员</label>');
+        tmpHTMLStr.push('                        <label for="sel_Time_Schedule_New" class="col-3 col-form-label class-create">上课时间</label>');
         tmpHTMLStr.push('                        <div class="col-9">');
-        tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Teacher_Class_New"></select>');
+        tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Time_Schedule_New"></select>');
         tmpHTMLStr.push('                        </div>');
         tmpHTMLStr.push('                    </div>');
         tmpHTMLStr.push('                    <div class="form-group row">');
-        tmpHTMLStr.push('                        <label for="txt_Room_Class_New" class="col-3 col-form-label class-create">教室</label>');
-        tmpHTMLStr.push('                        <div class="col-6">');
-        tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Room_Class_New"></select>');
-        tmpHTMLStr.push('                        </div>');
-        tmpHTMLStr.push('                        <div class="col-2">');
-        tmpHTMLStr.push('                            <button class="btn btn-sm btn-primary" id="btn_NewRoom_Class_New" type="button">添加</button>');
-        tmpHTMLStr.push('                        </div>');
-        tmpHTMLStr.push('                    </div>');
-        tmpHTMLStr.push('                    <div class="form-group row">');
-        tmpHTMLStr.push('                        <label for="txt_Start_Class_New" class="col-3 col-form-label class-create">开学时间</label>');
+        tmpHTMLStr.push('                        <label for="txt_LessonCount_Schedule_New" class="col-3 col-form-label class-create">总课时数</label>');
         tmpHTMLStr.push('                        <div class="col-9">');
-        tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="date" value="' + formatForDateInput(null) + '" id="txt_Start_Class_New">');
-        tmpHTMLStr.push('                        </div>');
-        tmpHTMLStr.push('                    </div>');
-        tmpHTMLStr.push('                    <div class="form-group row">');
-        tmpHTMLStr.push('                        <label for="txt_Amount_Class_New" class="col-3 col-form-label class-create">人数</label>');
-        tmpHTMLStr.push('                        <div class="col-9">');
-        tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="number" value="10" id="txt_Amount_Class_New">');
+        tmpHTMLStr.push('                            <input class="form-control form-control-sm" id="txt_LessonCount_Schedule_New" type="number" value="' + data.lessons + '" readonly>');
         tmpHTMLStr.push('                        </div>');
         tmpHTMLStr.push('                    </div>');
         tmpHTMLStr.push('                </form>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('            <div class="modal-footer">');
         tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>');
-        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-primary">确定</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-primary" id="btn_OK_Schedule_New">确定</button>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('        </div>');
         tmpHTMLStr.push('    </div>');
@@ -3247,17 +3297,96 @@ function showCreateNewSchedulePopup(classId) {
 
         $('body').append($(tmpHTMLStr.join('')));
 
-        $('#txt_Amount_Class_New').on('change', function () {
-            var amoutTxt = $(arguments[0].target);
-            var max = parseInt(amoutTxt.prop('max'));
-            if (parseInt(amoutTxt.val()) > max) {
-                amoutTxt.val(max);
+        //_registerRemoteServer();
+        //$.ajax({
+        //    type: 'GET',
+        //    async: true,
+        //    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
+        //    data: '<root></root>',
+        //    success: function (response, status) {
+        //        if ($(response).find('err').length > 0) {
+        //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
+        //            return;
+        //        }
+        //        var data = initData(response);
+        //        buildUserInfoHTML(data);
+        //        buildMenuHTML(data);
+        //        buildDataHTML(data);
+        //    },
+        //    dataType: 'xml',
+        //    xhrFields: {
+        //        withCredentials: true
+        //    },
+        //    error: function () {
+        //    }
+        //});
+        var rooms = [{ name: '教室 1', id: '1', max: 11 }, { name: '教室 2', id: '2', max: 22 }, { name: '教室 3', id: '3', max: 33 }];
+        var tmpOptHTML = '';
+        for (var i = 0; i < rooms.length; i++) {
+            if (parseInt(rooms[i].max) >= parseInt(data.amount)) {
+                tmpOptHTML += '<option value="' + rooms[i].id + '|' + rooms[i].max + '">' + rooms[i].name + '</option>';
             }
+        }
+
+        $('#sel_Room_Schedule_New').empty();
+        $('#sel_Room_Schedule_New').append($(tmpOptHTML));
+        var times = [{ id: '1', name: '09:30' }, { id: '2', name: '10:30' }, { id: '3', name: '11:30' }, { id: '4', name: '14:30' }, { id: '5', name: '15:30' }, { id: '6', name: '16:30' }, { id: '7', name: '19:30' }];
+        var tmpOptHTML = '';
+        for (var i = 0; i < times.length; i++) {
+            tmpOptHTML += '<option value="' + times[i].id + '">' + times[i].name + '</option>';
+        }
+        $('#sel_Time_Schedule_New').empty();
+        $('#sel_Time_Schedule_New').append($(tmpOptHTML));
+
+        $('#btn_OK_Schedule_New').on('click', function () {
+            var chks = $('.chk-schedule-create-new');
+            var days = [];
+            for (var i = 0; i < chks.length; i++) {
+                if ($(chks[i]).prop('checked')) {
+                    days.push(parseInt($(chks[i]).val()));
+                }
+            }
+
+            var lessons = parseInt($('#txt_LessonCount_Schedule_New').val());
+            var timeId = $('#sel_Time_Schedule_New').val();
+            var roomId = $('#sel_Room_Schedule_New').val().split('|')[0];
+            buildLessonSchedule(days, timeId, roomId, lessons, data.id, data.startDate);
         });
     }
 
     $('#modal_Schedule_New').modal('show');
 };
+
+function buildLessonSchedule(days, timeId, roomId, lessons, clsaaId, startDate) {
+    var firstDate = new Date(startDate);
+    var firstDay = firstDate.getDay();
+    if (firstDay < days[0]) {
+        firstDate = new Date(firstDate.valueOf() + (days[0] - firstDay) * 24 * 60 * 60 * 1000);
+    } else if (firstDay > days[0]) {
+        firstDate = new Date(firstDate.valueOf() + (7 - firstDay) * 24 * 60 * 60 * 1000);
+    }
+
+    var firstDates = [firstDate];
+    for (var j = 1; j < days.length; j++) {
+        firstDates.push(new Date(firstDates[j - 1].valueOf() + (days[j] - days[j - 1]) * 24 * 60 * 60 * 1000));
+    }
+
+    var schedules = [];
+    var constVal = 7 * 24 * 60 * 60 * 1000;
+    var weeks = Math.ceil(lessons / days.length);
+    var total = 0;
+    for (var i = 0; i < weeks; i++) {
+        for (var j = 0; j < days.length; j++) {
+            if (total < lessons) {
+                schedules.push(new Date(firstDates[j].valueOf() + constVal * i));
+            }
+
+            total++;
+        }
+    }
+
+    var aaa = 0;
+}
 
 function buildScheduleDetailByClass(classId) {
     var data = [
@@ -3859,3 +3988,91 @@ function showDateCourseDetail(symbol) {
     $('#modal_Class_Item_Detail .modal-body').append($(tmpHTMLStr.join('')));
     $('#modal_Class_Item_Detail').modal('show');
 };
+
+/*Certification*/
+function buildDataHTML_Certificat() {
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'GET',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
+    //    data: '<root></root>',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
+    //            return;
+    //        }
+    //        var data = initData(response);
+    //        buildUserInfoHTML(data);
+    //        buildMenuHTML(data);
+    //        buildDataHTML(data);
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    var rspXML = "";
+    $('#container_Datas').empty();
+    buildDataTopHTML();
+    buildDataHeaderHTML_Certificat();
+    buildDataTableHTML_Certificat();
+};
+
+function buildDataHeaderHTML_Certificat() {
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('<div class="row" style="padding:5px 10px;">');
+    tmpHTMLStr.push('    <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">');
+    tmpHTMLStr.push('        <div class="container-fluid">');
+    tmpHTMLStr.push('        <div class="container-fluid">');
+    tmpHTMLStr.push('            <div class="row justify-content-around">');
+    tmpHTMLStr.push('               <div class="col-2 data-panel-title" style="line-height:40px;">认证测试</div>');
+    tmpHTMLStr.push('               <div class="col" id="container_DataHeader_Button" style="padding-top:5px"></div>');
+    tmpHTMLStr.push('            </div>');
+    tmpHTMLStr.push('        </div>');
+    tmpHTMLStr.push('    </div>');
+    tmpHTMLStr.push('</div>');
+    $('#container_Datas').append($(tmpHTMLStr.join('')));
+};
+
+function buildDataTableHTML_Certificat(data) {
+    var data = [
+        { id: '1', symbol: 'C_01_001', name: '初级 1 班', level: '初级', amount: 15, status: 2 },
+        { id: '2', symbol: 'C_01_002', name: '初级 2 班', level: '初级', amount: 25, status: 1 },
+        { id: '3', symbol: 'C_01_003', name: '初级 3班', level: '初级', amount: 35, status: 0 },
+    ];
+
+    var headerId, collapseId, cardblockId, status, txtClass, btnBookId;
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('<form>');
+    tmpHTMLStr.push('   <div class="row">');
+    tmpHTMLStr.push('       <div class="form-group col-3">');
+    tmpHTMLStr.push('           <label for="sel_Certification_Search_Class" class="col-form-label col-form-label-sm">按班级</label>');
+    tmpHTMLStr.push('           <select id="sel_Certification_Search_Class" class="form-control form-control-sm">');
+    tmpHTMLStr.push('           </select>');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('       <div class="form-group col-3">');
+    tmpHTMLStr.push('           <label for="txt_Certification_Search_Name" class="col-form-label col-form-label-sm">按姓名</label>');
+    tmpHTMLStr.push('           <input type="text" class="form-control form-control-sm" id="txt_Certification_Search_Name">');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('       <div class="form-group col-3">');
+    tmpHTMLStr.push('           <label for="txt_Certification_Search_IDCardNumber" class="col-form-label col-form-label-sm">按身份证号</label>');
+    tmpHTMLStr.push('           <input type="text" class="form-control form-control-sm" id="txt_Certification_Search_IDCardNumber">');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('       <div class="form-group col-2">');
+    tmpHTMLStr.push('           <label for="inputZip" class="col-form-label col-form-label-sm"></label>');
+    tmpHTMLStr.push('           <button type="button" class="btn btn-sm btn-success form-control" id="btn_Certification_Search">查询</button>');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('   </div>');
+    tmpHTMLStr.push('</form>');
+    $('#container_Datas').append($(tmpHTMLStr.join('')));
+    $('#btn_Certification_Search').on('click', function () {
+        var classId = $('#sel_Certification_Search_Class').val();
+        var name = $('#sel_Certification_Search_Class').val();
+        var idCardNum = $('#txt_Certification_Search_IDCardNumber').val();
+
+    });
+};
+
