@@ -81,7 +81,7 @@ function initEvents() {
     });
 
     $('#menu_Certification').on('click', function () {
-        buildDataHTML_Certificat();
+        buildDataHTML_Certificate();
     });
 
     $('#menu_UpdatePWD').on('click', function () {
@@ -3990,7 +3990,7 @@ function showDateCourseDetail(symbol) {
 };
 
 /*Certification*/
-function buildDataHTML_Certificat() {
+function buildDataHTML_Certificate() {
     //_registerRemoteServer();
     //$.ajax({
     //    type: 'GET',
@@ -4017,11 +4017,11 @@ function buildDataHTML_Certificat() {
     var rspXML = "";
     $('#container_Datas').empty();
     buildDataTopHTML();
-    buildDataHeaderHTML_Certificat();
-    buildDataTableHTML_Certificat();
+    buildDataHeaderHTML_Certificate();
+    buildDataTableHTML_Certificate();
 };
 
-function buildDataHeaderHTML_Certificat() {
+function buildDataHeaderHTML_Certificate() {
     var tmpHTMLStr = [];
     tmpHTMLStr.push('<div class="row" style="padding:5px 10px;">');
     tmpHTMLStr.push('    <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">');
@@ -4037,20 +4037,26 @@ function buildDataHeaderHTML_Certificat() {
     $('#container_Datas').append($(tmpHTMLStr.join('')));
 };
 
-function buildDataTableHTML_Certificat(data) {
+function buildDataTableHTML_Certificate(data) {
     var data = [
         { id: '1', symbol: 'C_01_001', name: '初级 1 班', level: '初级', amount: 15, status: 2 },
         { id: '2', symbol: 'C_01_002', name: '初级 2 班', level: '初级', amount: 25, status: 1 },
-        { id: '3', symbol: 'C_01_003', name: '初级 3班', level: '初级', amount: 35, status: 0 },
+        { id: '3', symbol: 'C_01_003', name: '初级 3 班', level: '初级', amount: 35, status: 0 },
     ];
 
-    var headerId, collapseId, cardblockId, status, txtClass, btnBookId;
+    var txtClass;
     var tmpHTMLStr = [];
     tmpHTMLStr.push('<form>');
     tmpHTMLStr.push('   <div class="row">');
     tmpHTMLStr.push('       <div class="form-group col-3">');
     tmpHTMLStr.push('           <label for="sel_Certification_Search_Class" class="col-form-label col-form-label-sm">按班级</label>');
     tmpHTMLStr.push('           <select id="sel_Certification_Search_Class" class="form-control form-control-sm">');
+    tmpHTMLStr.push('               <option value="-1">请选择班级</option>');
+    for (var i = 0; i < data.length; i++) {
+        txtClass = (data[i].status == '0' ? 'text-info' : data[i].status == '1' ? 'text-primary' : 'text-success');
+        tmpHTMLStr.push('               <option class="' + txtClass + '" value="' + data[i].id + '">' + data[i].name + ' (' + data[i].symbol + ') ' + data[i].level + '</option>');
+    }
+
     tmpHTMLStr.push('           </select>');
     tmpHTMLStr.push('       </div>');
     tmpHTMLStr.push('       <div class="form-group col-3">');
@@ -4067,12 +4073,231 @@ function buildDataTableHTML_Certificat(data) {
     tmpHTMLStr.push('       </div>');
     tmpHTMLStr.push('   </div>');
     tmpHTMLStr.push('</form>');
+    tmpHTMLStr.push('<div class="row" id="row_Certification_Search_Result">');
+    tmpHTMLStr.push('</div>');
     $('#container_Datas').append($(tmpHTMLStr.join('')));
     $('#btn_Certification_Search').on('click', function () {
         var classId = $('#sel_Certification_Search_Class').val();
         var name = $('#sel_Certification_Search_Class').val();
         var idCardNum = $('#txt_Certification_Search_IDCardNumber').val();
-
+        loadSearchResult_Certificate();
     });
 };
 
+function loadSearchResult_Certificate() {
+    var data = [
+        {
+            id: '1',
+            name: 'Tom',
+            gender: '男',
+            level: { id: '1', name: '初级' },
+            grade: { id: '1', name: 'C-01-001' },
+            age: 14,
+            status: '0',
+            certificate: ['1', '0', '0']
+        }, {
+            id: '2',
+            name: 'Alice',
+            gender: '女',
+            level: { id: '2', name: '中级' },
+            grade: { id: '2', name: 'C-02-003' },
+            age: 13,
+            status: '1',
+            certificate: ['3', '2', '0']
+        }, {
+            id: '3',
+            name: 'Jack',
+            gender: '男',
+            level: { id: '3', name: '高级' },
+            grade: { id: '3', name: 'C-03-002' },
+            age: 15,
+            status: '2',
+            certificate: ['3', '5', '0']
+        }, {
+            id: '4',
+            name: 'Kevin',
+            gender: '男',
+            level: { id: '2', name: '中级' },
+            grade: { id: '2', name: 'C-02-003' },
+            age: 15,
+            status: '2',
+            certificate: ['4', '0', '0']
+        }, {
+            id: '5',
+            name: 'Kitty',
+            gender: '女',
+            level: { id: '2', name: '高级' },
+            grade: { id: '2', name: 'C-02-003' },
+            age: 15,
+            status: '2',
+            certificate: ['3', '3', '2']
+        }
+    ];
+
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('    <div class="col" style="padding-top:10px;">');
+    tmpHTMLStr.push('        <table class="table table-striped">');
+    tmpHTMLStr.push('            <thead>');
+    tmpHTMLStr.push('                <tr id="container_DataTable_Header">');
+    tmpHTMLStr.push('                   <th style="width: 50px;"></th>');
+    tmpHTMLStr.push('                   <th style="width: 60px; text-align:center;"></th>');
+    tmpHTMLStr.push('                   <th style="width: 60px; text-align:center;">初级</th>');
+    tmpHTMLStr.push('                   <th style="width: 60px; text-align:center;">中级</th>');
+    tmpHTMLStr.push('                   <th style="width: 60px; text-align:center;">高级</th>');
+    tmpHTMLStr.push('                   <th>姓名</th>');
+    tmpHTMLStr.push('                   <th>班级</th>');
+    tmpHTMLStr.push('                   <th>级别</th>');
+    tmpHTMLStr.push('                   <th>性别</th>');
+    tmpHTMLStr.push('                   <th>年龄</th>');
+    tmpHTMLStr.push('                   <th>状态</th>');
+    tmpHTMLStr.push('               </tr>');
+    tmpHTMLStr.push('            </thead>');
+    tmpHTMLStr.push('            <tbody>');
+    var status, btnCls, btnSymbol, btnText, btnDis;
+    for (var i = 0; i < data.length; i++) {
+        tmpHTMLStr.push('               <tr id="tr_Student_New_Assign_' + data[i].id + '">');
+        tmpHTMLStr.push('                   <td>' + (i + 1) + '</td>');
+        tmpHTMLStr.push('                   <td>');
+        tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-info btn-certificate-search-item-detail" data-target="' + data[i].id + '">详情</button>');
+        tmpHTMLStr.push('                   </td>');
+        //for (var j = 0; j < 3; j++) {
+        //    btnDis = '';
+        //    switch (data[i].certificate[j]) {
+        //        case '0':
+        //            btnCls = ' btn-secondary ';
+        //            btnSymbol = 'btn-certificate-search-item-unavailable';
+        //            btnText = '不可申请';
+        //            btnDis = 'disabled';
+        //            break;
+        //        case '1':
+        //            btnCls = ' btn-primary ';
+        //            btnSymbol = 'btn-certificate-search-item-applyfor';
+        //            btnText = '申请认证';
+        //            break;
+        //        case '2':
+        //            btnCls = ' btn-success ';
+        //            btnSymbol = 'btn-certificate-search-item-applied';
+        //            btnText = '待审核';
+        //            btnDis = 'disabled';
+        //            break;
+        //        case '3':
+        //            btnCls = ' btn-success ';
+        //            btnSymbol = 'btn-certificate-search-item-passed';
+        //            btnText = '认证通过';
+        //            btnDis = 'disabled';
+        //            break;
+        //        case '4':
+        //            btnCls = ' btn-warning ';
+        //            btnSymbol = 'btn-certificate-search-item-notpass';
+        //            btnText = '认证未通过';
+        //            break;
+        //        default:
+        //            btnCls = ' btn-success ';
+        //            btnSymbol = 'btn-certificate-search-item-watting';
+        //            btnText = data[i].certificate[j];
+        //            break;
+        //    }
+        //    tmpHTMLStr.push('                   <td>');
+        //    tmpHTMLStr.push('                       <button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '" ' + btnDis + ' style="width:90px;">' + btnText + '</button>');
+        //    tmpHTMLStr.push('                   </td>');
+        //}
+
+        status = "";
+        for (var j = 0; j < 3; j++) {
+            tmpHTMLStr.push('                   <td>');
+            switch (data[i].certificate[j]) {
+                case '0':
+                    tmpHTMLStr.push('<span class="text-muted font-weight-bold">不可用<span>');
+                    break;
+                case '1':
+                    btnCls = ' btn-primary ';
+                    btnSymbol = 'btn-certificate-search-item-applyfor';
+                    tmpHTMLStr.push('<button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '|' + data[i].certificate[j] + '">申请</button>');
+                    status = "可申请";
+                    break;
+                case '2':
+                    btnCls = ' btn-warning ';
+                    btnSymbol = 'btn-certificate-search-item-applied';
+                    tmpHTMLStr.push('<button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '|' + data[i].certificate[j] + '">取消</button>');
+                    status = "待审核";
+                    break;
+                case '3':
+                    tmpHTMLStr.push('<span class="text-success font-weight-bold font-italic">已通过<span>');
+                    status = "已通过";
+                    break;
+                case '4':
+                    btnCls = ' btn-primary ';
+                    btnSymbol = 'btn-certificate-search-item-notpass';
+                    tmpHTMLStr.push('<button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '|' + data[i].certificate[j] + '">申请</button>');
+                    status = '<span class="text-danger font-weight-bold">未通过<span>';
+                    break;
+                case '5':
+                    btnCls = ' btn-warning ';
+                    btnSymbol = 'btn-certificate-search-item-waiting';
+                    tmpHTMLStr.push('<button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '|' + data[i].certificate[j] + '">取消</button>');
+                    status = '<button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '">准考信息</button>';
+                    break;
+            }
+
+            tmpHTMLStr.push('                   </td>');
+        }
+
+
+        tmpHTMLStr.push('                   <td>' + data[i].name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].grade.name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].level.name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].gender + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].age + '</td>');
+        tmpHTMLStr.push('                   <td>' + status + '</td>');
+        tmpHTMLStr.push('               </tr>');
+    }
+
+    tmpHTMLStr.push('            </tbody>');
+    tmpHTMLStr.push('        </table>');
+    tmpHTMLStr.push('    </div>');
+    $('#row_Certification_Search_Result').empty();
+    $('#row_Certification_Search_Result').append($(tmpHTMLStr.join('')));
+
+    $('.btn-certificate-search-item-detail').on('click', function () {
+        //showCertificateDetailPopup($(arguments[0].target).attr('data-target'));
+    });
+
+    $('.btn-certificate-search-item-applyfor').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        btnStatusAdjust(currBtn);
+        currBtn.parent().parent().chile
+    });
+
+    $('.btn-certificate-search-item-notpass').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        btnStatusAdjust(currBtn)
+    });
+
+    $('.btn-certificate-search-item-applied').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        btnStatusAdjust(currBtn)
+    });
+
+
+    $('.btn-certificate-search-item-waiting').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        btnStatusAdjust(currBtn)
+    });
+};
+
+function btnStatusAdjust(btn) {
+    var params = btn.attr('data-target').split('|');
+    if (btn.hasClass('btn-primary')) {
+        btn.removeClass('btn-primary');
+        btn.addClass('btn-warning');
+        btn.text('取消');
+        btn.parent().parent().children().last().text('待审核');
+    } else {
+        btn.removeClass('btn-warning');
+        btn.addClass('btn-primary');
+        btn.text('申请');
+        if (params[2] == '4') {
+            btn.parent().parent().children().last().html('<span class="text-danger font-weight-bold">未通过<span>');
+        }
+    }
+};
