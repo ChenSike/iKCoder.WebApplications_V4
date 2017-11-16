@@ -465,7 +465,8 @@ function _showGlobalMessage(msg, type, id) {
         $('body').append($('<div class="alert-mask-custom"></div>'));
     }
     $('.alert-mask-custom').show();
-    $('.alert-mask-custom').height($('body')[0].scrollHeight);
+    //$('.alert-mask-custom').height($('body')[0].scrollHeight);
+    $('.alert-mask-custom').height($('html').height());
     $('body').append($('<div class="alert alert-' + type + '  alert-dismissable custom-global-alert" id="' + id + '"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + msg + '</div>'));
     $('#' + id).bind('close.bs.alert', function () {
         $('.alert-mask-custom').hide();

@@ -1,0 +1,340 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>深圳市龙岗区依山郡小学</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <script src="javascript/jquery-3.2.1.min.js"></script>
+    <script src="javascript/tether.min.js"></script>
+    <script src="javascript/bootstrap.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/xmloperator.js"></script>
+    <style>
+        div.custom-global-alert {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            text-align: center;
+            z-index: 19999;
+        }
+
+        div.alert-mask-custom {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 19998;
+            background-color: rgb(0,0,0);
+            opacity: 0.5;
+            display: none;
+        }
+    </style>
+</head>
+<body style="font-family:微软雅黑;">
+    <div class="container-fluid text-center" id="wrap_All">
+        <div class="row">
+            <div class="col-sm-12 mt-4 mb-4">
+                <h4><i class="fa fa-american-sign-language-interpreting" style="padding-right:10px;" aria-hidden="true"></i>依小家校通</h4>
+            </div>
+        </div>
+        <div class="row" id="row_SignIn_1">
+            <div class="col-sm-12">
+                <div class="card text-center">
+                    <div class="card-header"><b>Sign In</b></div>
+                    <div class="card-block">
+                        <form>
+                            <div class="form-group text-left">
+                                <label for="txt_SignIn_Number">手机号码</label>
+                                <input type="number" class="form-control" id="txt_SignIn_Number" aria-describedby="" placeholder="请输入手机号码">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button type="button" class="btn btn-primary" id="btn_SignIn_Next">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="row_SignIn_2" style="display:none;">
+            <div class="col-sm-12">
+                <div class="card text-center">
+                    <div class="card-header"><b>Sign In</b></div>
+                    <div class="card-block">
+                        <form>
+                            <div class="form-group text-left">
+                                <label for="txt_SignIn_PWD">登录密码</label>
+                                <input type="password" class="form-control" id="txt_SignIn_PWD" aria-describedby="" placeholder="请输入登录密码">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button type="button" class="btn btn-secondary" id="btn_SignIn_ForgetPWD">忘记密码</button>
+                        <button type="button" class="btn btn-primary" id="btn_SignIn_OK">&nbsp;&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;&nbsp;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="row_FindPWD" style="display:none;">
+            <div class="col-sm-12">
+                <div class="card text-center">
+                    <div class="card-header"><b>Sign In</b></div>
+                    <div class="card-block">
+                        <form>
+                            <div class="form-group text-left">
+                                <label for="txt_FindPWD_Number">手机号码</label>
+                                <input type="number" class="form-control" id="txt_FindPWD_Number" aria-describedby="" placeholder="请输入手机号码">
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="txt_FindPWD_IDNumber">身份证后六位</label>
+                                <input type="password" class="form-control" id="txt_FindPWD_IDNumber" aria-describedby="" placeholder="请输入身份证后六位">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button type="button" class="btn btn-primary" id="btn_FindPWD_OK">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="row_SignUp" style="display:none;">
+            <div class="col-sm-12">
+                <div class="card text-center">
+                    <div class="card-header" id="header_All"><b>Sign In</b></div>
+                    <div class="card-block">
+                        <form>
+                            <div class="form-group text-left">
+                                <label for="txt_SignUp_Number">手机号码</label>
+                                <input type="number" class="form-control" id="txt_SignUp_Number" aria-describedby="" readonly>
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="txt_SignUp_StudentName">学生姓名</label>
+                                <input type="text" class="form-control" id="txt_SignUp_StudentName" aria-describedby="" placeholder="请输入学生姓名">
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="txt_SignUp_ParentName">家长姓名</label>
+                                <input type="text" class="form-control" id="txt_SignUp_ParentName" aria-describedby="" placeholder="请输入家长姓名">
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="sel_SignUp_Class">所在班级</label>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <select id="sel_SignUp_Class_Grade" class="form-control">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                    <label for="sel_SignUp_Class_Grade" class="col-2 col-form-label">年</label>
+                                    <div class="col-4">
+                                        <select id="sel_SignUp_Class_Class" class="form-control">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                    <label for="sel_SignUp_Class_Class" class="col-2 col-form-label">班</label>
+                                </div>
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="txt_SignUp_PWD">登录密码</label>
+                                <input type="password" class="form-control" id="txt_SignUp_PWD" aria-describedby="" placeholder="请输入至少长度为6的登录密码">
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="txt_SignUp_ConfirmPWD">确认密码</label>
+                                <input type="password" class="form-control" id="txt_SignUp_ConfirmPWD" aria-describedby="" placeholder="请再次输入登录密码">
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="txt_SignUp_IdNuimber">身份证后六位</label>
+                                <input type="password" class="form-control" id="txt_SignUp_IdNuimber" aria-describedby="" placeholder="请输入身份证后六位用于找回密码">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button type="button" class="btn btn-info" id="btn_SignUp_Back">返回</button>
+                        <button type="button" class="btn btn-primary" id="btn_SignUp_OK">注册</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer" style="height:25px;">
+        <div class="footer-txt">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-sm-12">
+                        <span style="line-height:25px; font-size:14px; color:#cccccc;">
+                            深圳市龙岗区依山郡小学
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        $(document).ready(function () {
+            $("#btn_SignIn_Next").on('click', function () {
+                var tmpVal = $("#txt_SignIn_Number").val().trim();
+                if (tmpVal.length != 11 || parseInt(tmpVal) + '' != tmpVal || !(/^1(3|4|5|7|8)\d{9}$/.test(tmpVal))) {
+                    showAlert('您输入了非法的手机号码, 请重新输入');
+                } else {
+
+                }
+
+                //showInputPWD();
+                showSignUp();
+            });
+
+            $("#btn_SignIn_ForgetPWD").on('click', function () {
+                showFindPWD();
+            });
+
+            $("#btn_SignIn_OK").on('click', function () {
+                if ($("#txt_SignIn_PWD").val().length == 0) {
+                    showAlert('请输入登录密码');
+                } else {
+
+                    flag = false;
+                    if (!flag) {
+                        showAlert('登录密码与用户手机号码不匹配, 请重新输入登录密码');
+                    }
+                }
+            });
+
+            $("#btn_SignUp_Back").on('click', function () {
+                adjustRowStatus(0);
+            });
+
+            $("#btn_SignUp_OK").on('click', function () {
+            });
+
+            adjustRowStatus(0);
+        });
+
+        function showInputPWD() {
+            adjustRowStatus(1);
+        };
+
+        function showSignUp() {
+            $("#txt_SignUp_Number").val($('#txt_SignIn_Number').val());
+            adjustRowStatus(2);
+        };
+
+        function showFindPWD() {
+            adjustRowStatus(3);
+        };
+
+        function signIn() {
+        };
+
+        function signUp() {
+            var tmpNumber = $("#txt_SignUp_Number").val().trim();
+            var tmpStdName = $("#txt_SignUp_StudentName").val().trim();
+            var tmpParName = $("#txt_SignUp_ParentName").val().trim();
+            var tmpClass = $("#sel_SignUp_Class_Class").val().trim();
+            var tmpGrade = $("#sel_SignUp_Class_Grade").val().trim();
+            var tmpPwd = $("#txt_SignUp_PWD").val().trim();
+            var tmpCfmPWD = $("#txt_SignUp_ConfirmPWD").val().trim();
+            var tmpIDNumber = $("#txt_SignUp_IdNuimber").val().trim();
+            if (tmpStdName.length == 0) {
+                showAlert('请输入学生姓名');
+                return;
+            }
+            
+            if (tmpParName.length == 0) {
+                showAlert('请输入家长姓名');
+                return;
+            }
+
+            if (tmpStdName.length == 0) {
+                showAlert('请输入学生姓名');
+                return;
+            }
+
+            if (tmpPwd.length < 6) {
+                showAlert('请输入至少长度为6的登录密码');
+                return;
+            }
+
+            if (tmpCfmPWD.length == 0) {
+                showAlert('请确认登录密码');
+                return;
+            }
+
+            if (tmpIDNumber.length == 0) {
+                showAlert('请输入身份证后六位用于找回密码');
+                return;
+            }
+            
+            if (tmpPwd != tmpCfmPWD) {
+                showAlert('两次输入的密码不同, 请重新输入');
+                return;
+            }
+        }
+
+        function adjustRowStatus(type) {
+            $("#header_All").text('Sign In');
+            $("#row_SignIn_1").hide();
+            $("#row_SignIn_2").hide();
+            $("#row_SignUp").hide();
+            $("#row_FindPWD").hide();
+            switch (type) {
+                case 0:
+                    $("#row_SignIn_1").show();
+                    break;
+                case 1:
+                    $("#row_SignIn_2").show();
+                    break;
+                case 2:
+                    $("#header_All").text('Sign Up');
+                    $("#row_SignUp").show();
+                    break;
+                case 3:
+                    $("#header_All").text('Find Password');
+                    $("#row_FindPWD").show();
+                    break;
+            }
+
+            adjustHeight();
+        };
+
+        function adjustHeight() {
+            var windowHeight = window.screen.availHeight;
+            var containerHeight = $('#wrap_All').height();
+            var footerHeight = $('footer').height();
+            var bodyHeihgt = containerHeight + footerHeight;
+            if (windowHeight >= bodyHeihgt) {
+                $('body').height(windowHeight);
+                $('footer').css('margin-top', windowHeight - containerHeight - footerHeight);
+            } else {
+                $('body').css('height', 'auto');
+                $('footer').css('margin-top', 0);
+            }
+        };
+
+        function showAlert(text) {
+            if ($('.alert-mask-custom').length == 0) {
+                $('body').append($('<div class="alert-mask-custom"></div>'));
+            }
+
+            $('.alert-mask-custom').show();
+            $('body').append($('<div class="alert alert-warning alert-dismissable custom-global-alert" id="alert_All"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span>' + text + '</span></div>'));
+            $('#alert_All').alert();
+            $('#alert_All').bind('close.bs.alert', function () {
+                $('.alert-mask-custom').hide();
+            });
+        }
+    </script>
+</body>
+</html>

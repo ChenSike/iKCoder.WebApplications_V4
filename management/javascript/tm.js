@@ -59,6 +59,10 @@ function initEvents() {
     $('#menu_Student_Old').on('click', function () {
         buildDataHTML_StdOld();
     });
+    
+    $('#menu_Schedule').on('click', function () {
+        buildDataHTML_Schedule();
+    });
 
     $('#menu_Teacher_All').on('click', function () {
         buildDataHTML_Teacher();
@@ -76,12 +80,16 @@ function initEvents() {
         buildDataHTML_Scene();
     });
 
-    $('#menu_Schedule').on('click', function () {
-        buildDataHTML_Schedule();
-    });
-
     $('#menu_Certification').on('click', function () {
         buildDataHTML_Certificate();
+    });
+
+    $('#menu_Feedback').on('click', function () {
+        
+    });    
+
+    $('#menu_Team_Suit').on('click', function () {
+        window.open("/ikcoder/teamsuit.html");
     });
 
     $('#menu_UpdatePWD').on('click', function () {
@@ -108,6 +116,10 @@ function initEvents() {
 
     $('#btn_Student_Detail_Exam').on('click', function () {
         showStudentExamDetail($(arguments[0].target).attr('data-target'));
+    });
+
+    $('#btn_Student_Detail_Certificate').on('click', function () {
+        showStudentCertificateDetail($(arguments[0].target).attr('data-target'));
     });
 
     $('#btn_Student_Detail_ResetPWD').on('click', function () {
@@ -1560,6 +1572,13 @@ function showStudentDetailPopup(studentId, type) {
     $('#txt_School_Student_Detail').val(stdData.school);
     $('#txt_Contect_Student_Detail').val(stdData.contact);
     $('#txt_PhoneNumber_Student_Detail').val(stdData.number);
+
+    $('#sel_Level_Student_Detail').prop('disabled', type == 3 ? true : false);
+    $('#txt_Address_Student_Detail').prop('readonly', type == 3 ? true : false);
+    $('#txt_School_Student_Detail').prop('readonly', type == 3 ? true : false);
+    $('#txt_Contect_Student_Detail').prop('readonly', type == 3 ? true : false);
+    $('#txt_PhoneNumber_Student_Detail').prop('readonly', type == 3 ? true : false);
+
     $('#modal_Student_Detail').modal('show');
 };
 
@@ -1956,6 +1975,90 @@ function showStudentExamDetail(studentId) {
             tmpHTMLStr.push('   <td></td>');
         }
 
+        tmpHTMLStr.push('</tr>');
+    }
+
+    tmpHTMLStr.push('   </tbody>');
+    tmpHTMLStr.push('</table>');
+    container.append($(tmpHTMLStr.join('')));
+    $('#modal_Student_Detail').modal('hide');
+    $('#modal_Student_Detail_Info').modal('show');
+};
+
+function showStudentCertificateDetail(studentId) {
+    var data = {
+        id: '1',
+        name: 'Alice',
+        items: [
+            { date: '2017-09-21', status: '4', level: '初级', accuracy: 50, time: 630 },
+            { date: '2017-09-21', status: '3', level: '初级', accuracy: 80, time: 450 },
+            { date: '2017-09-23', status: '1', level: '中级', accuracy: 0, time: 0 },
+            { date: '2017-09-23', status: '2', level: '中级', accuracy: 0, time: 0 },
+            { date: '2017-09-27', status: '5', level: '高级', accuracy: 0, time: 0 },
+            { date: '2017-09-27', status: '0', level: '高级', accuracy: 0, time: 0 }
+        ]
+    };
+
+    var formatTime = function (second) {
+        return parseInt(second / 60) + '分' + (second % 60) + '秒';
+    };
+
+    var container = $('#modal_Student_Detail_Info .modal-body');
+    container.empty();
+    $('#modal_Student_Detail_Info .modal-title').text('认证情况 - ' + data.name);
+    var tmpHTMLStr = [];
+    var tmpStatus, txtCls;
+    tmpHTMLStr.push('<table class="table table-striped" style="text-align:center;">');
+    tmpHTMLStr.push('   <thead>');
+    tmpHTMLStr.push('       <tr>');
+    tmpHTMLStr.push('           <th style="border:none;text-align:center;width: 50px;"></th>');
+    tmpHTMLStr.push('           <th style="border:none;text-align:center;">日期</th>');
+    tmpHTMLStr.push('           <th style="border:none;text-align:center;">状态</th>');
+    tmpHTMLStr.push('           <th style="border:none;text-align:center;">认证次数</th>');
+    tmpHTMLStr.push('           <th style="border:none;text-align:center;">准确率(%)</th>');
+    tmpHTMLStr.push('           <th style="border:none;text-align:center;">用时</th>');
+    tmpHTMLStr.push('       </tr>');
+    tmpHTMLStr.push('   </thead>');
+    tmpHTMLStr.push('   <tbody>');
+    for (var i = 0; i < data.items.length; i++) {
+        tmpHTMLStr.push('<tr>');
+        tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
+        tmpHTMLStr.push('   <td>' + data.items[i].date + '</td>');
+        tmpStatus = '';
+        switch (data.items[i].status) {
+            case '0':
+                txtCls = 'text-muted';
+                tmpStatus = "不可用";
+                break;
+            case '1':
+                txtCls = 'text-primary';
+                tmpStatus = "可申请";
+                break;
+            case '2':
+                txtCls = 'text-warning';
+                tmpStatus = "待审核";
+                break;
+            case '3':
+                txtCls = 'text-success';
+                tmpStatus = "已通过";
+                break;
+            case '4':
+                txtCls = 'text-danger';
+                tmpStatus = "未通过";
+                break;
+            case '5':
+                txtCls = 'text-info';
+                tmpStatus = "待测试";
+                break;
+        }
+
+
+        tmpHTMLStr.push('   <td>');
+        tmpHTMLStr.push('       <b class="' + txtCls + '">' + tmpStatus + '</b>');
+        tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td>' + data.items[i].level + '</td>');
+        tmpHTMLStr.push('   <td>' + (data.items[i].time == 0 ? '' : data.items[i].accuracy) + '</td>');
+        tmpHTMLStr.push('   <td>' + (data.items[i].time == 0 ? '' : formatTime(data.items[i].time)) + '</td>');
         tmpHTMLStr.push('</tr>');
     }
 
@@ -4213,13 +4316,13 @@ function loadSearchResult_Certificate() {
                     btnCls = ' btn-primary ';
                     btnSymbol = 'btn-certificate-search-item-applyfor';
                     tmpHTMLStr.push('<button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '|' + data[i].certificate[j] + '">申请</button>');
-                    status = "可申请";
+                    status = '<span class="text-primary font-weight-bold">可申请<span>';
                     break;
                 case '2':
                     btnCls = ' btn-warning ';
                     btnSymbol = 'btn-certificate-search-item-applied';
                     tmpHTMLStr.push('<button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '|' + data[i].certificate[j] + '">取消</button>');
-                    status = "待审核";
+                    status = '<span class="text-warning font-weight-bold">待审核<span>';
                     break;
                 case '3':
                     tmpHTMLStr.push('<span class="text-success font-weight-bold font-italic">已通过<span>');
@@ -4234,8 +4337,9 @@ function loadSearchResult_Certificate() {
                 case '5':
                     btnCls = ' btn-warning ';
                     btnSymbol = 'btn-certificate-search-item-waiting';
+                    var tmpBtnSymb = 'btn-certificate-search-item-admission';
                     tmpHTMLStr.push('<button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '|' + data[i].certificate[j] + '">取消</button>');
-                    status = '<button type="button" class="btn btn-sm ' + btnCls + btnSymbol + '" data-target="' + data[i].id + '|' + (j + 1) + '">准考信息</button>';
+                    status = '<button type="button" class="btn btn-sm btn-success ' + tmpBtnSymb + '" data-target="' + data[i].id + '">准考信息</button>';
                     break;
             }
 
@@ -4259,7 +4363,7 @@ function loadSearchResult_Certificate() {
     $('#row_Certification_Search_Result').append($(tmpHTMLStr.join('')));
 
     $('.btn-certificate-search-item-detail').on('click', function () {
-        //showCertificateDetailPopup($(arguments[0].target).attr('data-target'));
+        showStudentDetailPopup($(arguments[0].target).attr('data-target'), 3);
     });
 
     $('.btn-certificate-search-item-applyfor').on('click', function () {
@@ -4283,6 +4387,11 @@ function loadSearchResult_Certificate() {
         var currBtn = $(arguments[0].target);
         btnStatusAdjust(currBtn)
     });
+
+    $('.btn-certificate-search-item-admission').on('click', function () {
+        var stdId = $(arguments[0].target).attr('data-target');
+        showAppliedInfo(stdId)
+    });
 };
 
 function btnStatusAdjust(btn) {
@@ -4291,13 +4400,115 @@ function btnStatusAdjust(btn) {
         btn.removeClass('btn-primary');
         btn.addClass('btn-warning');
         btn.text('取消');
-        btn.parent().parent().children().last().text('待审核');
+        btn.parent().parent().children().last().html('<span class="text-warning font-weight-bold">待审核<span>');
     } else {
+        if (params[2] == '4') {
+            btn.parent().parent().children().last().html('<span class="text-danger font-weight-bold">未通过<span>');
+        } else {
+            if (params[2] == '5') {
+                showApplyCancelConfirm(btn);
+                return;
+            }
+
+            btn.parent().parent().children().last().html('<span class="text-primary font-weight-bold">可申请<span>');
+        }
+
         btn.removeClass('btn-warning');
         btn.addClass('btn-primary');
         btn.text('申请');
-        if (params[2] == '4') {
-            btn.parent().parent().children().last().html('<span class="text-danger font-weight-bold">未通过<span>');
-        }
     }
 };
+
+function showApplyCancelConfirm(sourceBtn) {
+    var params = sourceBtn.attr('data-target').split('|');
+    var data = { id: '1', name: 'Tom' };
+    if ($('#modal_Certification_Cancel_Confirm').length <= 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_Certification_Cancel_Confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">');
+        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h6 class="modal-title" id="exampleModalLabel">取消认证申请</h6>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('               <p></p>');
+        tmpHTMLStr.push('               <p>');
+        tmpHTMLStr.push('                   <b class="text-primary" id="lb_Certification_Cancel_Confirm_Name">' + data.name + '</b>');
+        tmpHTMLStr.push('                    的认证测试申请已经通过并已获得准考资格。</br>');
+        tmpHTMLStr.push('                   <b class="text-warning">取消后再次申请将需要重新审核并再次收取认证费用。</b></br>');
+        tmpHTMLStr.push('                   <b class="">确认取消吗？</b>');
+        tmpHTMLStr.push('               </p>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-primary" id="btn_Certification_Cancel_Confirm_OK" data-target="' + data.id + '">确定</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+        $('#btn_Certification_Cancel_Confirm_OK').on('click', function () {
+            $('#modal_Certification_Cancel_Confirm').modal('hide');
+            sourceBtn.parent().parent().children().last().html('<span class="text-primary font-weight-bold">可申请<span>');
+            sourceBtn.removeClass('btn-warning');
+            sourceBtn.addClass('btn-primary');
+            sourceBtn.text('申请');
+        });
+    }
+
+    $('#btn_Certification_Cancel_Confirm_OK').attr('data-target', data.id);
+    $('#lb_Certification_Cancel_Confirm_Name').html(data.name);
+    $('#modal_Certification_Cancel_Confirm').modal('show');
+};
+
+function showAppliedInfo(studentId) {
+    var data = { id: '1', name: 'Tom', code: '2145698567412', examroom: '考场一', date: '2018-01-01', time: '9:30' };
+    if ($('#modal_Certification_Cancel_Confirm').length <= 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_Certification_Cancel_Confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">');
+        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h6 class="modal-title" id="exampleModalLabel">准考信息</h6>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('               <p></p>');
+        tmpHTMLStr.push('               <p>');
+        tmpHTMLStr.push('                   <b class="text-primary" id="lb_Certification_Cancel_Confirm_Name">' + data.name + '</b>');
+        tmpHTMLStr.push('                    的认证测试申请已经通过并已获得准考资格。</br>');
+        tmpHTMLStr.push('                   <b>考号: ' + data.code + '</b></br>');
+        tmpHTMLStr.push('                   <b>考场: ' + data.examroom + '</b></br>');
+        tmpHTMLStr.push('                   <b>日期: ' + data.date + '</b></br>');
+        tmpHTMLStr.push('                   <b>时间: ' + data.time + '</b></br>');
+        tmpHTMLStr.push('                   <b>请做好考试准备</b>');
+        tmpHTMLStr.push('               </p>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-primary" id="btn_Certification_Cancel_Confirm_OK" data-target="' + data.id + '">确定</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+        $('#btn_Certification_Cancel_Confirm_OK').on('click', function () {
+            $('#modal_Certification_Cancel_Confirm').modal('hide');
+            sourceBtn.parent().parent().children().last().html('<span class="text-primary font-weight-bold">可申请<span>');
+            sourceBtn.removeClass('btn-warning');
+            sourceBtn.addClass('btn-primary');
+            sourceBtn.text('申请');
+        });
+    }
+
+    $('#btn_Certification_Cancel_Confirm_OK').attr('data-target', data.id);
+    $('#lb_Certification_Cancel_Confirm_Name').html(data.name);
+    $('#modal_Certification_Cancel_Confirm').modal('show');
+}

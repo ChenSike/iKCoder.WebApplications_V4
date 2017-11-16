@@ -80,108 +80,116 @@ function createNewStudent() {
 }
 
 function buildCreateNewStudentPopup() {
-    var tmpHTMLStr = '<div class="modal fade" id="modal_Student_New" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
-    '    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">' +
-    '        <div class="modal-content">' +
-    '            <div class="modal-header">' +
-    '                <h5 class="modal-title" id="exampleModalLabel">新建学员档案</h5>' +
-    '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-    '                    <span aria-hidden="true">&times;</span>' +
-    '                </button>' +
-    '            </div>' +
-    '            <div class="modal-body">' +
-    '                <form>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="sel_Level_Student_New" class="col-3 col-form-label class-create">课程级别</label>' +
-    '                        <div class="col-9">' +
-    '                            <select class="form-control" id="sel_Level_Student_New">' +
-    '                                <option value="1">初级</option>' +
-    '                                <option value="2">中级</option>' +
-    '                                <option value="3">高级</option>' +
-    '                                <option value="4">拓展</option>' +
-    '                                <option value="5">课程包</option>' +
-    '                            </select>' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Symbol_Student_New" class="col-3 col-form-label class-create">编号</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control" type="text" value="" id="txt_Symbol_Student_New" readonly>' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Name_Student_New" class="col-3 col-form-label class-create">姓名</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control" type="text" value="" id="txt_Name_Student_New">' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Gender_Student_New" class="col-3 col-form-label class-create">性别</label>' +
-    '                        <div class="col-9">' +
-    '                           <div class="form-check form-check-inline">' +
-    '                               <label class="form-check-label">' +
-    '                                   <input class="form-check-input" type="radio" name="newStudentGenderRadios" id="rb_Gender_Student_New_1" value="1" checked>男' +
-    '                               </label>' +
-    '                           </div>' +
-    '                           <div class="form-check form-check-inline">' +
-    '                               <label class="form-check-label">' +
-    '                                   <input class="form-check-input" type="radio" name="newStudentGenderRadios" id="rb_Gender_Student_New_2" value="2">女' +
-    '                               </label>' +
-    '                           </div>' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Birthday_Student_New" class="col-3 col-form-label class-create">生日</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control" type="date" value="' + formatForDateInput(null) + '" id="txt_Birthday_Student_New">' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                       <label for="txt_City_Student_New" class="col-3 col-form-label class-create">所在城市</label>' +
-    '                       <div class="col-3" style="padding-right:0px;">' +
-    '                           <select class="form-control" id="select_City_Province_Student_New"></select>' +
-    '                       </div>' +
-    '                       <label class="col-2 col-form-label class-create" id="title_City_Province_Student_New" style="padding:5px;">市</label>' +
-    '                       <div class="col-3" style="padding:0px;">' +
-    '                           <select class="form-control" id="select_City_City_Student_New"></select>' +
-    '                       </div>' +
-    '                       <label class="col-1 col-form-label class-create" id="title_City_City_Student_New" style="padding:5px;">区</label>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_Address_Student_New" class="col-3 col-form-label class-create">联系地址</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control" type="text" value="" id="txt_Address_Student_New">' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_School_Student_New" class="col-3 col-form-label class-create">就读学校</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control" type="text" value="" id="txt_School_Student_New">' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_School_Student_New" class="col-3 col-form-label class-create">联系人</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control" type="text" value="" id="txt_School_Student_New">' +
-    '                        </div>' +
-    '                    </div>' +
-    '                    <div class="form-group row">' +
-    '                        <label for="txt_School_Student_New" class="col-3 col-form-label class-create">联系电话</label>' +
-    '                        <div class="col-9">' +
-    '                            <input class="form-control" type="text" value="" id="txt_School_Student_New">' +
-    '                        </div>' +
-    '                    </div>' +
-    '                </form>' +
-    '            </div>' +
-    '            <div class="modal-footer">' +
-    '                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>' +
-    '                <button type="button" class="btn btn-primary">确定</button>' +
-    '            </div>' +
-    '        </div>' +
-    '    </div>' +
-    '</div>';
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('<div class="modal fade" id="modal_Student_New" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
+    tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">');
+    tmpHTMLStr.push('        <div class="modal-content">');
+    tmpHTMLStr.push('            <div class="modal-header">');
+    tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">新建学员档案</h5>');
+    tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+    tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+    tmpHTMLStr.push('                </button>');
+    tmpHTMLStr.push('            </div>');
+    tmpHTMLStr.push('            <div class="modal-body">');
+    tmpHTMLStr.push('                <form>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="sel_Level_Student_New" class="col-3 col-form-label class-create">课程级别</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <select class="form-control" id="sel_Level_Student_New">');
+    tmpHTMLStr.push('                                <option value="1">初级</option>');
+    tmpHTMLStr.push('                                <option value="2">中级</option>');
+    tmpHTMLStr.push('                                <option value="3">高级</option>');
+    tmpHTMLStr.push('                                <option value="4">拓展</option>');
+    tmpHTMLStr.push('                                <option value="5">课程包</option>');
+    tmpHTMLStr.push('                            </select>');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Symbol_Student_New" class="col-3 col-form-label class-create">编号</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_Symbol_Student_New" readonly>');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Name_Student_New" class="col-3 col-form-label class-create">姓名</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_Name_Student_New">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Gender_Student_New" class="col-3 col-form-label class-create">性别</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                           <div class="form-check form-check-inline">');
+    tmpHTMLStr.push('                               <label class="form-check-label">');
+    tmpHTMLStr.push('                                   <input class="form-check-input" type="radio" name="newStudentGenderRadios" id="rb_Gender_Student_New_1" value="1" checked>男');
+    tmpHTMLStr.push('                               </label>');
+    tmpHTMLStr.push('                           </div>');
+    tmpHTMLStr.push('                           <div class="form-check form-check-inline">');
+    tmpHTMLStr.push('                               <label class="form-check-label">');
+    tmpHTMLStr.push('                                   <input class="form-check-input" type="radio" name="newStudentGenderRadios" id="rb_Gender_Student_New_2" value="2">女');
+    tmpHTMLStr.push('                               </label>');
+    tmpHTMLStr.push('                           </div>');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Birthday_Student_New" class="col-3 col-form-label class-create">生日</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control" type="date" value="' + formatForDateInput(null) + '" id="txt_Birthday_Student_New">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                       <label for="txt_City_Student_New" class="col-3 col-form-label class-create">所在城市</label>');
+    tmpHTMLStr.push('                       <div class="col-3" style="padding-right:0px;">');
+    tmpHTMLStr.push('                           <select class="form-control" id="select_City_Province_Student_New"></select>');
+    tmpHTMLStr.push('                       </div>');
+    tmpHTMLStr.push('                       <label class="col-2 col-form-label class-create" id="title_City_Province_Student_New" style="padding:5px;">市</label>');
+    tmpHTMLStr.push('                       <div class="col-3" style="padding:0px;">');
+    tmpHTMLStr.push('                           <select class="form-control" id="select_City_City_Student_New"></select>');
+    tmpHTMLStr.push('                       </div>');
+    tmpHTMLStr.push('                       <label class="col-1 col-form-label class-create" id="title_City_City_Student_New" style="padding:5px;">区</label>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Email_Student_New" class="col-3 col-form-label class-create">E-Mail</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control" type="email" value="" id="txt_Email_Student_New" placeholder="请输入有效的E-Mai地址, 以便接收学习报告">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_Address_Student_New" class="col-3 col-form-label class-create">联系地址</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_Address_Student_New" placeholder="请输入有效的联系地址">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_School_Student_New" class="col-3 col-form-label class-create">就读学校</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_School_Student_New">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_School_Student_New" class="col-3 col-form-label class-create">联系人</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_School_Student_New" placeholder="请输入有效的联系人姓名">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                    <div class="form-group row">');
+    tmpHTMLStr.push('                        <label for="txt_School_Student_New" class="col-3 col-form-label class-create">联系电话</label>');
+    tmpHTMLStr.push('                        <div class="col-9">');
+    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_School_Student_New" placeholder="请输入有效的联系人电话">');
+    tmpHTMLStr.push('                        </div>');
+    tmpHTMLStr.push('                    </div>');
+    tmpHTMLStr.push('                </form>');
+    tmpHTMLStr.push('            </div>');
+    tmpHTMLStr.push('            <div class="modal-footer">');
+    tmpHTMLStr.push('                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>');
+    tmpHTMLStr.push('                <button type="button" class="btn btn-primary">确定</button>');
+    tmpHTMLStr.push('            </div>');
+    tmpHTMLStr.push('        </div>');
+    tmpHTMLStr.push('    </div>');
+    tmpHTMLStr.push(
+        '</div>');
 
-    $('body').append($(tmpHTMLStr));
+    $('body').append($(tmpHTMLStr.join('')));
     var tmpHTMLArr = [];
     for (var i = 0; i < _gCitys.length; i++) {
         tmpHTMLArr.push('<option value="' + _gCitys[i].p + '">' + _gCitys[i].p + '</option>');
