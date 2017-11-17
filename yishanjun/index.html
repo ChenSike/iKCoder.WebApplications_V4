@@ -37,7 +37,7 @@
     </style>
 </head>
 <body style="font-family:微软雅黑;">
-    <div class="container-fluid text-center" id="wrap_All">
+    <div class="container-fluid text-center" id="wrap_Sign">
         <div class="row">
             <div class="col-sm-12 mt-4 mb-4">
                 <h4><i class="fa fa-american-sign-language-interpreting" style="padding-right:10px;" aria-hidden="true"></i>依小家校通</h4>
@@ -73,7 +73,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="card-footer text-muted">
+                    <div class="card-footer">
                         <button type="button" class="btn btn-secondary" id="btn_SignIn_ForgetPWD">忘记密码</button>
                         <button type="button" class="btn btn-primary" id="btn_SignIn_OK">&nbsp;&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;&nbsp;</button>
                     </div>
@@ -83,7 +83,7 @@
         <div class="row" id="row_FindPWD" style="display:none;">
             <div class="col-sm-12">
                 <div class="card text-center">
-                    <div class="card-header"><b>Sign In</b></div>
+                    <div class="card-header"><b>Find Password</b></div>
                     <div class="card-block">
                         <form>
                             <div class="form-group text-left">
@@ -105,7 +105,7 @@
         <div class="row" id="row_SignUp" style="display:none;">
             <div class="col-sm-12">
                 <div class="card text-center">
-                    <div class="card-header" id="header_All"><b>Sign In</b></div>
+                    <div class="card-header"><b>Sign Up</b></div>
                     <div class="card-block">
                         <form>
                             <div class="form-group text-left">
@@ -168,12 +168,69 @@
                 </div>
             </div>
         </div>
+        <div class="row" id="row_ResetPWD" style="display:none;">
+            <div class="col-sm-12">
+                <div class="card text-center">
+                    <div class="card-header"><b>Reset Password</b></div>
+                    <div class="card-block">
+                        <form>
+                            <div class="form-group text-left">
+                                <label for="txt_Reset_PWD">新密码</label>
+                                <input type="password" class="form-control" id="txt_Reset_PWD" aria-describedby="" placeholder="请输入至少长度为6的新登录密码">
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="txt_Reset_ConfirmPWD">确认新密码</label>
+                                <input type="password" class="form-control" id="txt_Reset_ConfirmPWD" aria-describedby="" placeholder="请再次输入新登录密码">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button type="button" class="btn btn-primary" id="btn_Reset_OK">重置</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="wrap_Confirm">
+        <div class="row" id="row_Confirm_None">
+            <div class="col mt-4 text-center">
+                <b>目前没有需确认的事项.</b>
+            </div>
+        </div>
+        <div class="row" id="row_Confirm_Message">
+            <div class="col-sm-12">
+                <div class="card mt-4">
+                    <div class="card-header text-center">
+                        <b>待确认签名的事项</b></br>
+                        <b>签名截止时间: <span id="lb_Confirm_EndDate">2018-01-01</span></b>
+                    </div>
+                    <div class="card-block">
+                        <ul id="list_Confirm_Items"></ul>
+                        <div>签名确认后表明您已完全知悉此事项的细则, 并完全同意.</div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="button" class="btn btn-primary" id="btn_Confirm_Sign">签名确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5" id="row_Confirm_Success">
+            <div class="col-sm-12 mt-5 text-center">
+                <b>确认签名成功, 感谢您的参与</b>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="wrap_Management">
+        <div class="row" id="row_Management">
+            <div class="col mt-4 text-center">
+            </div>
+        </div>
     </div>
     <footer id="footer" style="height:25px;">
         <div class="footer-txt">
             <div class="container-fluid">
                 <div class="row justify-content-center">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 text-center">
                         <span style="line-height:25px; font-size:14px; color:#cccccc;">
                             深圳市龙岗区依山郡小学
                         </span>
@@ -184,42 +241,78 @@
     </footer>
     <script>
         $(document).ready(function () {
-            $("#btn_SignIn_Next").on('click', function () {
-                var tmpVal = $("#txt_SignIn_Number").val().trim();
-                if (tmpVal.length != 11 || parseInt(tmpVal) + '' != tmpVal || !(/^1(3|4|5|7|8)\d{9}$/.test(tmpVal))) {
-                    showAlert('您输入了非法的手机号码, 请重新输入');
-                } else {
-
-                }
-
-                //showInputPWD();
-                showSignUp();
-            });
-
-            $("#btn_SignIn_ForgetPWD").on('click', function () {
-                showFindPWD();
-            });
-
-            $("#btn_SignIn_OK").on('click', function () {
-                if ($("#txt_SignIn_PWD").val().length == 0) {
-                    showAlert('请输入登录密码');
-                } else {
-
-                    flag = false;
-                    if (!flag) {
-                        showAlert('登录密码与用户手机号码不匹配, 请重新输入登录密码');
+            var type = _getQueryString('type');
+            if (type == 'm') {
+                $("#wrap_Sign").hide();
+                $("#wrap_Confirm").hide();
+                $("#wrap_Management").show();
+                ajaxFunction(_getRequestURL('api/users/Set_Login.aspx', null), '<root></root>', function (response) {
+                    var msg = $(responseData).find('msg');
+                    if (msg.length > 0) {
+                        loadFullData(responseData);
                     }
-                }
-            });
+                });
+            } else {
+                $("#wrap_Confirm").hide();
+                $("#wrap_Management").hide();
 
-            $("#btn_SignUp_Back").on('click', function () {
+                $("#btn_SignIn_Next").on('click', function () {
+                    var tmpVal = $("#txt_SignIn_Number").val().trim();
+                    if (tmpVal.length != 11 || parseInt(tmpVal) + '' != tmpVal || !(/^1(3|4|5|7|8)\d{9}$/.test(tmpVal))) {
+                        showAlert('您输入了非法的手机号码, 请重新输入');
+                    } else {
+                        ajaxFunction(_getRequestURL('api/users/Set_CheckUserExisted.aspx', { symbol, tmpVal }), '<root></root>', function(response) {
+                            var msg = $(responseData).find('msg');
+                            if (msg.length > 0 && $(msg[0]).attr('result') == 'true') {
+                                showInputPWD();
+                            } else {
+                                showSignUp();
+                            }
+                        });
+                    }
+                });
+
+                $("#btn_SignIn_ForgetPWD").on('click', function () {
+                    showFindPWD();
+                });
+
+                $("#btn_SignIn_OK").on('click', function () {
+                    if ($("#txt_SignIn_PWD").val().length == 0) {
+                        showAlert('请输入登录密码');
+                    } else {
+                        flag = true;
+                        if (!flag) {
+                            showAlert('登录密码与用户手机号码不匹配, 请重新输入登录密码');
+                        } else {
+                            signIn();
+                        }
+                    }
+                });
+
+                $("#btn_SignUp_Back").on('click', function () {
+                    adjustRowStatus(0);
+                });
+
+                $("#btn_SignUp_OK").on('click', function () {
+                    signUp();
+                });
+
+                $("#btn_FindPWD_OK").on('click', function () {
+                    findPWD();
+                });
+
+                $("#btn_Reset_OK").on('click', function () {
+                    resetPWD();
+                });
+
+                $("#btn_Confirm_Sign").on('click', function () {
+                    $("#row_Confirm_None").hide();
+                    $("#row_Confirm_Message").hide();
+                    $("#row_Confirm_Success").show();
+                });
+
                 adjustRowStatus(0);
-            });
-
-            $("#btn_SignUp_OK").on('click', function () {
-            });
-
-            adjustRowStatus(0);
+            }
         });
 
         function showInputPWD() {
@@ -233,9 +326,26 @@
 
         function showFindPWD() {
             adjustRowStatus(3);
+            $("#txt_FindPWD_Number").val($("#txt_SignIn_Number").val().trim());
+        };
+
+        function showResetPWD() {
+            adjustRowStatus(4);
         };
 
         function signIn() {
+            if ($('#txt_SignIn_PWD').val().trim().length == 0) {
+                showAlert('请输入登录密码');
+                return;
+            };
+
+            var tmpData = '<root><symbol>' + $('#txt_SignIn_Number').val().trim() + '</symbol><pwd>' + $('#txt_SignIn_PWD').val().trim() + '</pwd></root>';
+            ajaxFunction(_getRequestURL('api/users/Set_Login.aspx', null), tmpData, function (response) {
+                var msg = $(responseData).find('msg');
+                if (msg.length > 0) {
+                    adjustConfirmWrap({});
+                }
+            });
         };
 
         function signUp() {
@@ -251,7 +361,7 @@
                 showAlert('请输入学生姓名');
                 return;
             }
-            
+
             if (tmpParName.length == 0) {
                 showAlert('请输入家长姓名');
                 return;
@@ -276,19 +386,96 @@
                 showAlert('请输入身份证后六位用于找回密码');
                 return;
             }
-            
+
             if (tmpPwd != tmpCfmPWD) {
                 showAlert('两次输入的密码不同, 请重新输入');
                 return;
             }
+
+            var tmpData = '<root>' +
+                '<symbol>' + tmpNumber + '</symbol>' +
+                '<pwd>' + tmpPwd + '</pwd>' +
+                '<pid>' + tmpIDNumber + '</pid>' +
+                '<student_name>' + tmpStdName + '</student_name>' +
+                '<name>' + tmpParName + '</name>' +
+                '<grade>' + tmpGrade + '</grade>' +
+                '<class>' + tmpClass + '</class>' +
+                '</root>';
+            ajaxFunction(_getRequestURL('api/users/Set_Reg.aspx.aspx', null), tmpData, function (response) {
+                var msg = $(responseData).find('msg');
+                if (msg.length > 0) {
+                    adjustConfirmWrap({});
+                }
+            });
+        };
+
+        function adjustConfirmWrap(msgObj) {
+            msgObj.items = [1, 2, 3, 4, 5, 6, 7];
+            msgObj.date = new Date();
+            $("#wrap_Sign").hide();
+            $("#wrap_Confirm").show();
+            if (msgObj.items.length == 0) {
+                $("#row_Confirm_None").show();
+                $("#row_Confirm_Message").hide();
+                $("#row_Confirm_Success").hide();
+            } else {
+                $("#row_Confirm_None").hide();
+                $("#row_Confirm_Message").show();
+                $("#row_Confirm_Success").hide();
+                $("#lb_Confirm_EndDate").text(msgObj.date.toLocaleDateString());
+                var ulWrap = $('#list_Confirm_Items');
+                for (var i = 0; i < msgObj.items.length; i++) {
+                    ulWrap.append('<li>' + msgObj.items[i] + '</li>');
+                }
+            }
         }
 
+        function findPWD() {
+            var tmpNumber = $("#txt_FindPWD_Number").val().trim();
+            var tmpIDNumber = $("#txt_FindPWD_IDNumber").val().trim();
+            if (tmpNumber.length == 0) {
+                showAlert('请输入手机号码');
+                return;
+            }
+
+            if (tmpIDNumber.length == 0) {
+                showAlert('请输入身份证后六位');
+                return;
+            }
+
+            if (tmpNumber.length != 11 || parseInt(tmpNumber) + '' != tmpNumber || !(/^1(3|4|5|7|8)\d{9}$/.test(tmpNumber))) {
+                showAlert('您输入了非法的手机号码, 请重新输入');
+                return;
+            }
+
+            showResetPWD();
+        };
+
+        function resetPWD() {
+            var tmpPwd = $("#txt_Reset_PWD").val().trim();
+            var tmpCfmPWD = $("#txt_Reset_ConfirmPWD").val().trim();
+            if (tmpPwd.length < 6) {
+                showAlert('请输入至少长度为6的登录密码');
+                return;
+            }
+
+            if (tmpCfmPWD.length == 0) {
+                showAlert('请确认登录密码');
+                return;
+            }
+
+            if (tmpPwd != tmpCfmPWD) {
+                showAlert('两次输入的密码不同, 请重新输入');
+                return;
+            }
+        };
+
         function adjustRowStatus(type) {
-            $("#header_All").text('Sign In');
             $("#row_SignIn_1").hide();
             $("#row_SignIn_2").hide();
             $("#row_SignUp").hide();
             $("#row_FindPWD").hide();
+            $("#row_ResetPWD").hide();
             switch (type) {
                 case 0:
                     $("#row_SignIn_1").show();
@@ -297,12 +484,13 @@
                     $("#row_SignIn_2").show();
                     break;
                 case 2:
-                    $("#header_All").text('Sign Up');
                     $("#row_SignUp").show();
                     break;
                 case 3:
-                    $("#header_All").text('Find Password');
                     $("#row_FindPWD").show();
+                    break;
+                case 4:
+                    $("#row_ResetPWD").show();
                     break;
             }
 
@@ -311,7 +499,7 @@
 
         function adjustHeight() {
             var windowHeight = window.screen.availHeight;
-            var containerHeight = $('#wrap_All').height();
+            var containerHeight = $('#wrap_Sign').height();
             var footerHeight = $('footer').height();
             var bodyHeihgt = containerHeight + footerHeight;
             if (windowHeight >= bodyHeihgt) {
@@ -334,7 +522,74 @@
             $('#alert_All').bind('close.bs.alert', function () {
                 $('.alert-mask-custom').hide();
             });
+        };
+
+        function loadFullData(responseData) {
+
         }
+
+        function ajaxFunction(url, data, callback) {
+            _registerRemoteServer();
+            $.ajax({
+                type: 'POST',
+                async: true,
+                url: _gHostName + url + '?rnd=' + Date.now(),
+                data: data,
+                success: function (response, status) {
+                    if ($(response).find('err').length > 0) {
+                        showAlert('服务器出现错误, 请稍后再试');
+                    } else {
+                        callback(response);
+                    }
+                },
+                dataType: 'xml',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+                    showAlert('服务器出现错误, 请稍后再试');
+                }
+            });
+        };
+
+        function _registerRemoteServer() {
+            return true;
+            $.ajax({
+                type: 'GET',
+                async: true,
+                data: '<root></root>',
+                url: _getRequestURL(_gURLMapping.server.reg, { domain: window.location.origin }),
+                success: function (xml, status) {
+                },
+                dataType: 'xml',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+                }
+            });
+        };
+
+        function _getRequestURL(page, params) {
+            var url = page + '?rnd=' + Date.now();
+            if (params) {
+                for (var key in params) {
+                    url += '&' + key + '=' + params[key];
+                }
+            }
+
+            return url;
+        };
+
+        function _getQueryString(key) {
+            var tempArr = window.location.search.substr(1).split('&');
+            for (var i = 0; i < tempArr.length; i++) {
+                var strArr = tempArr[i].split('=');
+                if (strArr[0] == key) {
+                    return strArr[1];
+                }
+            }
+        };
     </script>
 </body>
 </html>
