@@ -144,7 +144,7 @@ footer {
 }
 
     .footer-tool-item.selected {
-        line-height: 58px;
+        line-height: 56px;
         border: none;
         border-top: solid 2px rgb(97,208,121);
         color: rgb(97,208,121);
@@ -152,6 +152,7 @@ footer {
 
     .footer-tool-item:hover {
         border-top: solid 2px rgb(110,158,245);
+        line-height: 56px;
         color: rgb(110,158,245);
     }
 
@@ -919,4 +920,16 @@ textarea {
     position: relative;
     margin-top: -1px;
     margin-left: -1px;
+}
+
+.siderbar-content .list-group {
+    list-style-type: circle;
+    list-style-position:inside;
+}
+
+.siderbar-content .list-group .list-group-item {
+    background-color: rgb(181,181,181);
+    padding: 5px 10px;
+    font-size: 14px;
+    display: list-item;
 }

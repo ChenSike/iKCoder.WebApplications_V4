@@ -1,0 +1,18 @@
+<root>
+  <session name="iKCoderDB" dbserver="Zo47r8731xFO5lDsnjuOvDVuMdNNcciL" uidname="przihxI7bvvjEfO2wySRfA==" password="XsABSDuVw00z6wGRm8t2q+ui8aLJMA6wXtU9NT5OAU4=" db="r7UmN2vPmapdGwOTH+URNwILIXcAEDJU" dbtype="qwl7WTwq9gz6b64FiKHZeQ==">
+  </session>
+  <session name="RSDomain">
+    <item name="carlhome" domain="http://ikcoder.vicp.io:20596">
+    </item>
+    <item name="sikehome" domain="192.168.199.233">
+    </item>
+    <item name="hotel" domain="http://10.111.0.81">
+    </item>
+    <item name="carloffice" domain="http://ikcoder.ikcoder.com">
+    </item>
+    <item name="localhost" domain="http://localhost">
+    </item>
+    <item name="carlipad" domain="http://10.86.18.168">
+    </item>
+  </session>
+</root>

@@ -1,0 +1,32 @@
+﻿<root>
+  <group type="labels">
+  </group>
+  <group type="message">
+    <item code="Empty_Param_Reg_Symbol" chinese="手机号码不可为空." english=""></item>
+    <item code="Empty_Param_Reg_Password" chinese="您的密码不可为空." english=""></item>
+    <item code="Empty_Param_Reg_Checkcode" chinese="您的身份证号码后六位不可为空." english=""></item>
+    <item code="Empty_Param_Reg_StudentName" chinese="学生姓名不可为空." english=""></item>
+    <item code="Equal_Param_Reg_Code" chinese="验证码不匹配，请检查." english=""></item>
+    <item code="Empty_Param_Sign_Symbol" chinese="手机号码不可为空." english=""></item>
+    <item code="Empty_Param_Sign_Password" chinese="您的密码不可为空." english=""></item>
+    <item code="SC_Param_Changed_Password" chinese="您已经成功修改了密码." english=""></item>
+    <item code="SC_Param_Changed_Profiles" chinese="您已经成功更新了您的个人信息." english=""></item>
+    <item code="SC_Param_Reg_Account" chinese="已经成功创建账户，欢迎您使用依山郡小学家校通." english=""></item>
+    <item code="ERR_Param_Reg_Account" chinese="非常抱歉，创建账户出错，您可以稍后再试或者联系我们." english=""></item>
+    <item code="ERR_Param_Reg_AccountExisted" chinese="您选择的手机号码已经存在，请更换您的账户名称后重试." english=""></item>
+    <item code="ERR_Param_Sign_NoMsgNode" chinese="非常抱歉，无法联系到中央服务器，请稍后再试." english=""></item>
+    <item code="ERR_Param_Sign_UnSigned" chinese="登录失败,请输入正确的账户或者密码." english=""></item>
+    <item code="ERR_NO_DATA" chinese="当前没有激活事项." english=""></item>
+    <item code="ERR_NO_GRADEDATA" chinese="系统出错，没有获得年级数据，请稍后再试." english=""></item>
+    <item code="ERR_NO_CLASSDATA" chinese="系统出错，没有获得班级数据，请稍后再试." english=""></item>
+    <item code="ERR_Msg_Signed" chinese="您已经签名通过。." english=""></item>
+    <item code="ERR_Msg_Unsigned" chinese="请先登录." english=""></item>
+    <item code="SC_Msg_Workspace_Save" chinese="您已经成功保存了工作区." english=""></item>
+    <item code="SC_Param_Accepted" chinese="已经成功确认事项，您的确认事项已经被系统记录，谢谢." english=""></item>
+    <item code="ERR_Msg_Workspace_Save" chinese="非常抱歉，保存工作区失败，请联系客户服务中心解决." english=""></item>
+    <item code="ERR_Msg_Workspace_Load" chinese="非常抱歉，加载工作区失败，请联系客户服务中心解决." english=""></item>
+    <item code="ERR_Msg_Changed_Password" chinese="非常抱歉，修改密码失败，请联系客户服务中心解决." english=""></item>
+    <item code="ERR_Msg_Workspce_Coding" chinese="非常抱歉，您的工作出现错误，请检查后继续运行." english=""></item>
+    <item code="Empty_Account" chinese="非常抱歉，您提供的账户不存在，请检查后重试." english=""></item>
+  </group>
+</root>
