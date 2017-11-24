@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="codedebug.aspx.vb" Inherits="codedebug" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" %>
 
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
@@ -21,7 +21,7 @@
 <body>
     <script type="text/javascript">
         <%
-        Response.Write(Request.Form("field_Code_Debug"))
+        Response.Write(Request.Form["field_Code_Debug"].ToString());
         %>
     </script>
 </body>
