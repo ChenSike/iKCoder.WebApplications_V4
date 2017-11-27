@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <title>iKCoder・中国青少年编程教育创导者</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/ikcoderlib/pixi.js"></script>
+    <script src="javascript/ikcoderlib/ikcoder.js"></script>
+</head>
+<body>
+    <div id="tmp" style="width:800px; height:600px; background-color:palevioletred;">
+
+    </div>
+    <script>
+        var config = {
+            width: 800,
+            height: 600,
+            containerId: 'tmp',
+            bgColor: '0xff0000',
+            transparent: true,
+            resources: {
+                a1: { path: "image/logo-new-black.png" },
+                a2: { path: "image/logo-new-black.png" },
+                a3: { path: "image/logo-new-black.png" },
+                a4: { path: "image/logo-new-black.png" },
+                a5: { path: "image/logo-new-black.png" },
+                a6: { path: "image/logo-new-black.png" },
+                a7: { path: "image/logo-new-black.png" },
+                a8: { path: "image/logo-new-black.png" },
+                a9: { path: "image/logo-new-black.png" },
+                a10: { path: "image/logo-new-black.png" }
+            },
+            ticker: null,
+            loading: {
+                bg: { path: 'image/tankback.jpg', w:, h:,anchor: 0 },
+                barWrap: { path: 'image/testPixiLoadingWrap.png', barX: 30, barY: 33 },
+                bar: { path: 'image/testPixiLoadingBar.png', anchor: null }
+            }
+        };
+
+        $(document).ready(function () {
+            initEnvironment(config);
+        });
+
+    </script>
+</body>
+</html>
