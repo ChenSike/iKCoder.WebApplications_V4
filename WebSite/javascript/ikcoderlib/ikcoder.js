@@ -3,14 +3,13 @@
 var _gApplication = null;
 var _gWidth = 800;
 var _gHeight = 600;
-var _gLoadingRes = {};
+var _gLoadingRes = { bg: null, barFill: null, barFrame: null, bar: null };
 var _gStage = [];
 var _gResource = {};
 var _gContainer = null;
 var _gConfig = { containerId: '', bgColor: '', transparent: null, resources: null, ticker: null, loading: null };
 var _gLoadedCount = 0;
-var _gTotalCount = 0;
-
+var _gResTotalCount = 0;
 
 function initEnvironment(config) {
     _gConfig = parseConfig(config);
@@ -29,35 +28,46 @@ function initEnvironment(config) {
     });
 
     _gStage = _gApplication.stage;
-    _gLoadingRes = initLoading();
+    showLoadingScreen();
     _gResource = loadResource(_gConfig.resources);
 };
 
-function initLoading() {
-    var loadingRes = { bg: {}, bar: {}, barWrap: {} };
-    loadingRes.bg.sprite = createSprite(config.loading.bg);
-    loadingRes.bg.sprite.width = _gWidth;
-    loadingRes.bg.sprite.height = _gHeight;
-    _gStage.addChild(loadingRes.bg.sprite);
+//if you want to custom the loading screen, please override the showLoadingScreen;
+function showLoadingScreen() {
+    _gLoadingRes = { bg: null, barFill: null, barFrame: null, bar: null };
+    _gLoadingRes.bg = createResourceObj(_gConfig.loading.bg);
+    _gLoadingRes.bg.sprite.width = +_gWidth;
+    _gLoadingRes.bg.sprite.height = _gHeight;
+    _gStage.addChild(_gLoadingRes.bg.sprite);
 
-    loadingRes.barWrap.sprite = createSprite(config.loading.barWrap);    
-    loadingRes.barWrap.sprite.x = _gWidth/2;
-    loadingRes.barWrap.sprite.y = _gHeight/2;
-    _gStage.addChild(loadingRes.barWrap.sprite);
+    _gLoadingRes.barFrame = createResourceObj(_gConfig.loading.barFrame);
+    _gLoadingRes.barFrame.sprite.position.set(_gWidth / 2, _gHeight / 2);
+    _gStage.addChild(_gLoadingRes.barFrame.sprite);
 
-    loadingRes.bar.sprite = createSprite(config.loading.bar);
-    loadingRes.bar.sprite.x = wrapPosX - loadingRes.barWrap.sprite.width / 2;
-    loadingRes.bar.sprite.y = wrapPosY;
-    loadingRes.bar.sprite.width = 20;
-    //loadingRes.bar.sprite.anchor.set(0.5);
-    _gStage.addChild(loadingRes.bar.sprite);
+    _gLoadingRes.bar = createResourceObj(_gConfig.loading.bar);
+    _gLoadingRes.bar.sprite.position.set(_gWidth / 2, _gHeight / 2);
+    _gStage.addChild(_gLoadingRes.bar.sprite);
 
-    return loadingRes;
-}
+    //_gLoadingRes.barFill = createResourceObj(_gConfig.loading.bar);
+    //var tmpX = (_gWidth - _gLoadingRes.bar.sourceSize.w) / 2 + _gLoadingRes.bar.barX + _gLoadingRes.bar.barMin / 2;
+    //var tmpY = (_gHeight - _gLoadingRes.bar.sourceSize.h) / 2 + _gLoadingRes.bar.barY + _gLoadingRes.bar.sourceSize.h / 2;
+    //_gLoadingRes.barFill.sprite.position.set(tmpX, tmpY);
+    //_gLoadingRes.barFill.sprite.width = _gLoadingRes.bar.barMin;
+    //_gStage.addChild(_gLoadingRes.barFill.sprite);
+};
 
-function loadingFunction() {
-    //_gLoadingRes.bar.sprite.width += 20;
-}
+//if you want to custom the loading process screen, please override the loadingProcess;
+function loadingProcess() {
+    if (_gLoadingRes && _gLoadingRes.bg && _gLoadingRes.barFill && _gLoadingRes.barFrame && _gLoadingRes.bar) {
+        var step = (_gLoadingRes.barFrame.barMax - _gLoadingRes.barFrame.barMin) / _gResTotalCount;
+        _gLoadingRes.barFill.sprite.width += _gLoadingRes.barFill.step;
+        _gLoadingRes.barFill.sprite.position.set(_gLoadingRes.barFill.sprite.position.x + _gLoadingRes.barFill.step / 2, _gLoadingRes.barFill.sprite.position.y);
+    }
+
+    if (_gLoadedCount == _gResTotalCount) {
+        //showStartScreen();
+    }
+};
 
 function parseConfig(config) {
     if (typeof (config) == "string") {
@@ -90,7 +100,7 @@ function parseConfig(config) {
     }
 
     return newConfig;
-}
+};
 
 function getResourceCount(resources) {
     var retVal = 0;
@@ -103,50 +113,124 @@ function getResourceCount(resources) {
     }
 
     return retVal;
-}
+};
 
 function loadResource(resources) {
-    _gTotalCount = getResourceCount(resources);
+    _gResTotalCount = getResourceCount(resources);
+    _gLoadingRes.barFill.step = (_gLoadingRes.barFrame.barMax - _gLoadingRes.barFrame.barMin) / _gResTotalCount;
     return loadResourceDo(resources);
-}
+};
 
 function loadResourceDo(resources, resourceCount) {
     var retVal = {};
     for (var key in resources) {
         retVal[key] = {};
-        if (typeof (resources[key].path) == "string") {
-            retVal[key].sprite = createSprite(resources[key]);
+        retVal[key] = createResourceObj(resources[key]);
+        if (typeof (resources[key].path) == "string" && resources[key].path != "") {
             retVal[key].children = [];
             _gLoadedCount++;
-            loadingFunction();
+            loadingProcess();
         } else {
-            retVal[key].sprite = null;
             retVal[key].children = loadResourceDo(resources[key]);
-            retVal[key].anchor = (typeof (resources[key].anchor) != 'undefined' && resources[key].anchor ? resources[key].anchor : 1);
-            retVal[key].x = (typeof (resources[key].x) != 'undefined' && resources[key].x ? resources[key].x : 0);
-            retVal[key].y = (typeof (resources[key].y) != 'undefined' && resources[key].y ? resources[key].y : 0);
         }
     }
 
     return retVal;
 };
 
-function createSprite(resourceObj) {
-    var texture = PIXI.Texture.fromImage(resourceObj.path);
-    var sprite = new PIXI.Sprite(texture);
+function createResourceObj(resourceObj) {
+    var retObj = {
+        sprite: null,
+        anchor: { x: 0, y: 0 },
+        frame: { x: 0, y: 0, w: 0, h: 0 },
+        rotated: false,
+        trimmed: false,
+        sourceSize: { w: 0, h: 0 },
+        position: { x: 0, y: 0 },
+        pivot: { x: 0, y: 0 }
+    };
+
+    retObj = jQuery.extend(true, retObj, resourceObj);
+
     if (typeof (resourceObj.anchor) == 'number') {
-        sprite.anchor.set(resourceObj.anchor);
+        retObj.anchor = { x: resourceObj.anchor, y: resourceObj.anchor };
     } else if (typeof (resourceObj.anchor) == 'object') {
         if (resourceObj.anchor != null && typeof (resourceObj.anchor.x) == 'number' && typeof (resourceObj.anchor.y) == 'number') {
-            sprite.anchor.set(resourceObj.anchor.x, resourceObj.anchor.y);
+            retObj.anchor = { x: resourceObj.anchor.x, y: resourceObj.anchor.y };
         }
-    } else if (typeof (resourceObj.anchor) == 'undefined') {
-        sprite.anchor.set(0.5);
     }
 
-    sprite.x = (typeof (resourceObj.x) != 'undefined' && resourceObj.x ? resourceObj.x : 0);
-    sprite.y = (typeof (resourceObj.y) != 'undefined' && resourceObj.y ? resourceObj.y : 0);
-    return sprite;
+    if (typeof (resourceObj.frame) == 'object') {
+        if (typeof (resourceObj.frame.x) == 'number') {
+            retObj.frame.x = resourceObj.frame.x;
+        }
+
+        if (typeof (resourceObj.frame.y) == 'number') {
+            retObj.frame.y = resourceObj.frame.y;
+        }
+
+        if (typeof (resourceObj.frame.w) == 'number') {
+            retObj.frame.w = resourceObj.frame.w;
+        }
+
+        if (typeof (resourceObj.frame.h) == 'number') {
+            retObj.frame.h = resourceObj.frame.h;
+        }
+    }
+
+    if (typeof (resourceObj.sourceSize) == 'object') {
+        if (typeof (resourceObj.sourceSize.w) == 'number') {
+            retObj.sourceSize.w = resourceObj.sourceSize.w;
+        }
+
+        if (typeof (resourceObj.sourceSize.h) == 'number') {
+            retObj.sourceSize.h = resourceObj.sourceSize.h;
+        }
+    }
+
+    if (typeof (resourceObj.position) == 'object') {
+        if (typeof (resourceObj.position.x) == 'number') {
+            retObj.position.x = resourceObj.position.x;
+        }
+
+        if (typeof (resourceObj.position.y) == 'number') {
+            retObj.position.y = resourceObj.position.y;
+        }
+    }
+
+    if (typeof (resourceObj.pivot) == 'object') {
+        if (typeof (resourceObj.pivot.x) == 'number') {
+            retObj.pivot.x = resourceObj.pivot.x;
+        }
+
+        if (typeof (resourceObj.pivot.y) == 'number') {
+            retObj.pivot.y = resourceObj.pivot.y;
+        }
+    } else {
+        retObj.pivot.x = retObj.sourceSize.w / 2;
+        retObj.pivot.y = retObj.sourceSize.h / 2;
+    }
+
+    if (resourceObj.rotated === true) {
+        retObj.rotated = true;
+    }
+
+    if (resourceObj.trimmed === true) {
+        retObj.trimmed = true;
+    }
+
+    if (typeof (resourceObj.path) == "string" && resourceObj.path != "") {
+        var texture = PIXI.Texture.fromImage(resourceObj.path);
+        var sprite = new PIXI.Sprite(texture);
+        sprite.anchor.set(retObj.anchor.x, retObj.anchor.y);
+        sprite.position.set(retObj.position.x, retObj.position.y);
+        sprite.pivot.set(retObj.pivot.x, retObj.pivot.y);
+        retObj.sprite = sprite;
+    } else {
+        retObj.sprite = null;
+    }
+
+    return retObj;
 };
 
 function addResourceToStage(resources, container) {
@@ -171,4 +255,11 @@ function loadNewStage(config) {
     _gConfig = parseConfig(config);
     _gResource = loadResource(_gConfig.resources);
     addResourceToStage(_gResource, _gStage);
+};
+
+//if you want to custom the start screen, please override the showStartScreen;
+function showStartScreen() {
+    _gApplication.stage.removeAllListeners();
+    _gApplication.stage.removeChildren();
+
 };
