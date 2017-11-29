@@ -48,18 +48,17 @@ function showLoadingScreen() {
     _gLoadingRes.bar.sprite.position.set(_gWidth / 2, _gHeight / 2);
     _gStage.addChild(_gLoadingRes.bar.sprite);
 
-    //_gLoadingRes.barFill = createResourceObj(_gConfig.loading.bar);
-    //var tmpX = (_gWidth - _gLoadingRes.bar.sourceSize.w) / 2 + _gLoadingRes.bar.barX + _gLoadingRes.bar.barMin / 2;
-    //var tmpY = (_gHeight - _gLoadingRes.bar.sourceSize.h) / 2 + _gLoadingRes.bar.barY + _gLoadingRes.bar.sourceSize.h / 2;
-    //_gLoadingRes.barFill.sprite.position.set(tmpX, tmpY);
-    //_gLoadingRes.barFill.sprite.width = _gLoadingRes.bar.barMin;
-    //_gStage.addChild(_gLoadingRes.barFill.sprite);
+    _gLoadingRes.barFill = createResourceObj(_gConfig.loading.barFill);
+    var tmpX = (_gWidth - _gLoadingRes.bar.sourceSize.w) / 2;
+    var tmpY = (_gHeight - _gLoadingRes.bar.sourceSize.h + _gLoadingRes.barFill.sourceSize.h) / 2;
+    _gLoadingRes.barFill.sprite.position.set(tmpX, tmpY);
+    _gLoadingRes.barFill.sprite.width = _gLoadingRes.bar.barMin;
+    _gStage.addChild(_gLoadingRes.barFill.sprite);
 };
 
 //if you want to custom the loading process screen, please override the loadingProcess;
 function loadingProcess() {
     if (_gLoadingRes && _gLoadingRes.bg && _gLoadingRes.barFill && _gLoadingRes.barFrame && _gLoadingRes.bar) {
-        var step = (_gLoadingRes.barFrame.barMax - _gLoadingRes.barFrame.barMin) / _gResTotalCount;
         _gLoadingRes.barFill.sprite.width += _gLoadingRes.barFill.step;
         _gLoadingRes.barFill.sprite.position.set(_gLoadingRes.barFill.sprite.position.x + _gLoadingRes.barFill.step / 2, _gLoadingRes.barFill.sprite.position.y);
     }
@@ -117,7 +116,7 @@ function getResourceCount(resources) {
 
 function loadResource(resources) {
     _gResTotalCount = getResourceCount(resources);
-    _gLoadingRes.barFill.step = (_gLoadingRes.barFrame.barMax - _gLoadingRes.barFrame.barMin) / _gResTotalCount;
+    _gLoadingRes.barFill.step = (_gLoadingRes.bar.barMax - _gLoadingRes.bar.barMin) / _gResTotalCount;
     return loadResourceDo(resources);
 };
 
