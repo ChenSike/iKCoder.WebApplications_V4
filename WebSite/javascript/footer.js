@@ -29,6 +29,9 @@ function BuildFooterHTML() {
     tmpHtmlStrArr.push('                        <span style="color: #f39700; cursor: default; font-style: italic; font-weight: bold; padding-left:10px;">');
     tmpHtmlStrArr.push('                        Demo Version');
     tmpHtmlStrArr.push('                        </span>');
+    tmpHtmlStrArr.push('                        <span style="color: #ffffff; cursor: default; italic; font-weight: bold; padding-left:10px;">');
+    tmpHtmlStrArr.push('                            <a href="http://www.miibeian.gov.cn" target="_blank" style="display:inline-block;">粤ICP备17152880号</a>');
+    tmpHtmlStrArr.push('                        </span>');
     tmpHtmlStrArr.push('                    </p>');
     if (navigator.userAgent.toLowerCase().indexOf("ipad") < 0) {
         tmpHtmlStrArr.push('                    <div class="socials">');
