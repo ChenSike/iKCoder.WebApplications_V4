@@ -58,14 +58,16 @@ function showLoadingScreen() {
 
 //if you want to custom the loading process screen, please override the loadingProcess;
 function loadingProcess() {
-    if (_gLoadingRes && _gLoadingRes.bg && _gLoadingRes.barFill && _gLoadingRes.barFrame && _gLoadingRes.bar) {
-        _gLoadingRes.barFill.sprite.width += _gLoadingRes.barFill.step;
-        _gLoadingRes.barFill.sprite.position.set(_gLoadingRes.barFill.sprite.position.x + _gLoadingRes.barFill.step / 2, _gLoadingRes.barFill.sprite.position.y);
-    }
-
-    if (_gLoadedCount == _gResTotalCount) {
+    if (_gLoadedCount < _gResTotalCount) {
+        if (_gLoadingRes && _gLoadingRes.bg && _gLoadingRes.barFill && _gLoadingRes.barFrame && _gLoadingRes.bar) {
+            _gLoadingRes.barFill.sprite.width += _gLoadingRes.barFill.step;
+            _gLoadingRes.barFill.sprite.position.set(_gLoadingRes.barFill.sprite.position.x + _gLoadingRes.barFill.step / 2, _gLoadingRes.barFill.sprite.position.y);
+        }
+    } else {
         //showStartScreen();
     }
+
+    _gLoadedCount++;
 };
 
 function parseConfig(config) {
@@ -127,7 +129,6 @@ function loadResourceDo(resources, resourceCount) {
         retVal[key] = createResourceObj(resources[key]);
         if (typeof (resources[key].path) == "string" && resources[key].path != "") {
             retVal[key].children = [];
-            _gLoadedCount++;
             loadingProcess();
         } else {
             retVal[key].children = loadResourceDo(resources[key]);

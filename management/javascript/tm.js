@@ -3,8 +3,7 @@
 var _gClassInfoMap = {
     signin: '签到情况',
     homework: '作业情况',
-    exam: '测试情况',
-    teacher: '教员情况'
+    exam: '测试情况'
 }
 
 function initPage() {
@@ -56,10 +55,24 @@ function initEvents() {
         buildDataHTML_StdNew();
     });
 
-    $('#menu_Student_Old').on('click', function () {
-        buildDataHTML_StdOld();
+    $('#menu_Student_Current').on('click', function () {
+        buildDataHTML_StdCurrent();
     });
-    
+    $('#menu_Student_Careers').on('click', function () {
+        buildDataHTML_StdCareers();
+    });
+
+    $('#menu_Student_Quit').on('click', function () {
+        buildDataHTML_StdQuit();
+    });
+
+    $('#menu_Student_Transfer').on('click', function () {
+        buildDataHTML_StdTransfer();
+    });
+
+    $('#menu_Student_Search').on('click', function () {
+    });
+
     $('#menu_Schedule').on('click', function () {
         buildDataHTML_Schedule();
     });
@@ -85,8 +98,8 @@ function initEvents() {
     });
 
     $('#menu_Feedback').on('click', function () {
-        
-    });    
+
+    });
 
     $('#menu_Team_Suit').on('click', function () {
         window.open("/ikcoder/teamsuit.html");
@@ -166,6 +179,7 @@ function formatData_Class() {
             amount: '10',
             max: 10,
             status: 0,
+            transfer: 1
         }, {
             id: '2',
             symbol: 'B_02_002',
@@ -185,7 +199,8 @@ function formatData_Class() {
             startdate: '2017/12/12 ',
             amount: '12',
             max: 15,
-            status: 1
+            status: 1,
+            transfer: 2
         }, {
             id: '3',
             symbol: 'B_03_003',
@@ -205,7 +220,8 @@ function formatData_Class() {
             startdate: '2017/11/11 ',
             amount: '13',
             max: 15,
-            status: 0
+            status: 0,
+            transfer: 1
         }
     ];
 
@@ -1317,7 +1333,8 @@ function formatData_Student() {
             level: { id: '1', name: '初级' },
             declare: { id: '1', name: 'C-01-001' },
             age: 14,
-            from: ''
+            from: '',
+            finance: 0
         }, {
             id: '2',
             name: 'Alice',
@@ -1325,7 +1342,8 @@ function formatData_Student() {
             level: { id: '2', name: '中级' },
             declare: { id: '1', name: 'C-02-003' },
             age: 13,
-            from: '升学'
+            from: '升学',
+            finance: 1
         }, {
             id: '3',
             name: 'Jack',
@@ -1333,7 +1351,8 @@ function formatData_Student() {
             level: { id: '3', name: '高级' },
             declare: { id: '1', name: 'C-03-002' },
             age: 15,
-            from: ''
+            from: '',
+            finance: 0
         }
     ];
 
@@ -1582,7 +1601,7 @@ function showStudentDetailPopup(studentId, type) {
     $('#modal_Student_Detail').modal('show');
 };
 
-function buildDataHTML_StdOld() {
+function buildDataHTML_StdCurrent() {
     //_registerRemoteServer();
     //$.ajax({
     //    type: 'GET',
@@ -1625,11 +1644,11 @@ function buildDataHTML_StdOld() {
     var rspXML = "";
     $('#container_Datas').empty();
     buildDataTopHTML();
-    buildDataHeaderHTML_StdOld();
-    buildDataTableHTML_StdOld(data);
+    buildDataHeaderHTML_StdCurrent();
+    buildDataTableHTML_StdCurrent(data);
 };
 
-function buildDataHeaderHTML_StdOld() {
+function buildDataHeaderHTML_StdCurrent() {
     var tmpHTMLStr = '<div class="row" style="padding:5px 10px;">' +
     '    <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">' +
     '        <div class="container-fluid">' +
@@ -1646,7 +1665,7 @@ function buildDataHeaderHTML_StdOld() {
     $('#container_Datas').append($(tmpHTMLStr));
 };
 
-function buildDataTableHTML_StdOld(data) {
+function buildDataTableHTML_StdCurrent(data) {
     var headerId, collapseId, cardblockId;
     var tmpHTMLStr = [];
     tmpHTMLStr.push('<div class="row">');
@@ -1679,11 +1698,11 @@ function buildDataTableHTML_StdOld(data) {
 
     $('.collapse-student-old-class-item').on('show.bs.collapse', function () {
         var classId = $(arguments[0].target).attr('data-target');
-        buildClassStdListOld(classId);
+        buildClassStdListCurrent(classId);
     });
 };
 
-function buildClassStdListOld(classId) {
+function buildClassStdListCurrent(classId) {
     var data = formatData_Student('');
     var container = $('#cardblock_Student_Old_Class_Item_' + classId);
     container.empty();
@@ -1692,7 +1711,7 @@ function buildClassStdListOld(classId) {
     tmpHTMLStr.push('   <thead>');
     tmpHTMLStr.push('       <tr id="container_DataTable_Header">');
     tmpHTMLStr.push('           <th style="width: 50px;"></th>');
-    tmpHTMLStr.push('           <th style="width: 200px;"></th>');
+    tmpHTMLStr.push('           <th style="width: 220px;"></th>');
     tmpHTMLStr.push('           <th>姓名</th>');
     tmpHTMLStr.push('           <th>性别</th>');
     tmpHTMLStr.push('           <th>级别</th>');
@@ -1704,9 +1723,10 @@ function buildClassStdListOld(classId) {
         tmpHTMLStr.push('       <tr id="tr_Student_Old_' + data[i].id + '">');
         tmpHTMLStr.push('           <td>' + (i + 1) + '</th>');
         tmpHTMLStr.push('           <td>');
-        tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-info btn-student-old-item-detail" data-target="' + data[i].id + '">详情</button>');
-        tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-primary btn-student-old-item-assign" data-target="' + data[i].id + '|' + classId + '">调整班级</button>');
+        tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-primary btn-student-old-item-assign" data-target="' + data[i].id + '|' + classId + '">转班</button>');
+        tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-warning btn-student-old-item-transfer" data-target="' + data[i].id + '|' + classId + '">转学</button>');
         tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-danger btn-student-old-item-dropout" data-target="' + data[i].id + '|' + data[i].name + '">退学</button>');
+        tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-info btn-student-old-item-detail" data-target="' + data[i].id + '">详情</button>');
         tmpHTMLStr.push('           </th>');
         tmpHTMLStr.push('           <td>' + data[i].name + '</th>');
         tmpHTMLStr.push('           <td>' + data[i].gender + '</th>');
@@ -1729,6 +1749,10 @@ function buildClassStdListOld(classId) {
     $('.btn-student-old-item-dropout').on('click', function () {
         showStudentDropOut($(arguments[0].target).attr('data-target'));
     });
+
+    $('.btn-student-old-item-transfer').on('click', function () {
+        //showStudentDropOut($(arguments[0].target).attr('data-target'));
+    });
 };
 
 function showStudentDropOut(studentInfo) {
@@ -1747,6 +1771,9 @@ function showStudentDropOut(studentInfo) {
         tmpHTMLStr.push('           <div class="modal-body" style="padding: 0px 15px;">');
         tmpHTMLStr.push('               <p style="padding-top:15px;">确认将学员 : ');
         tmpHTMLStr.push('                   <span style="padding:0 10px; color: red; font-weight:bold;">' + studentInfo[1] + '</span>退学吗?');
+        tmpHTMLStr.push('               </p>');
+        tmpHTMLStr.push('               <p class="text-warning" style="padding-top:15px;">');
+        tmpHTMLStr.push('                   确认后学员信息将转入待退学学员并开始审核');
         tmpHTMLStr.push('               </p>');
         tmpHTMLStr.push('           </div>');
         tmpHTMLStr.push('           <div class="modal-footer" style="padding: 5px 15px;">');
@@ -1767,6 +1794,362 @@ function showStudentDropOut(studentInfo) {
     $('#modal_Student_Old_DropOut .modal-body p span').text(studentInfo[1]);
     $('#modal_Student_Old_DropOut .btn-primary').attr('data-target', studentInfo[0]);
 };
+
+function buildDataHTML_StdCareers() {
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'GET',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
+    //    data: '<root></root>',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
+    //            return;
+    //        }
+    //        var data = initData(response);
+    //        buildUserInfoHTML(data);
+    //        buildMenuHTML(data);
+    //        buildDataHTML(data);
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    var rspXML = "";
+    var data = formatData_Student(rspXML);
+    $('#container_Datas').empty();
+    buildDataTopHTML();
+    buildDataHeaderHTML_StdCareers();
+    buildDataTableHTML_StdCareers(data);
+};
+
+function buildDataHeaderHTML_StdCareers() {
+    var tmpHTMLStr = '<div class="row" style="padding:5px 10px;">' +
+    '    <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">' +
+    '        <div class="container-fluid">' +
+    '            <div class="row justify-content-around">' +
+    '                <div class="col-2 data-panel-title" style="line-height:40px;">待升学学员</div>' +
+    '                <div class="col" id="container_DataHeader_Button" style="padding-top:5px"></div>' +
+    '                <div class="col" id="container_DataHeader_Fields" style="padding-top:5px">' +
+    '                </div>' +
+    '            </div>' +
+    '        </div>' +
+    '    </div>' +
+    '</div>';
+
+    $('#container_Datas').append($(tmpHTMLStr));
+};
+
+function buildDataTableHTML_StdCareers(data) {
+    var tmpHTMLStr = [];
+    var tmpDisabled, temStatus;
+    tmpHTMLStr.push('<div class="row">');
+    tmpHTMLStr.push('    <div class="col" style="padding-top:10px;">');
+    tmpHTMLStr.push('        <table class="table table-striped">');
+    tmpHTMLStr.push('            <thead>');
+    tmpHTMLStr.push('                <tr id="container_DataTable_Header">');
+    tmpHTMLStr.push('                   <th style="width: 50px;"></th>');
+    tmpHTMLStr.push('                   <th style="width: 200px;"></th>');
+    tmpHTMLStr.push('                   <th>姓名</th>');
+    tmpHTMLStr.push('                   <th>性别</th>');
+    tmpHTMLStr.push('                   <th>级别</th>');
+    tmpHTMLStr.push('                   <th>年龄</th>');
+    tmpHTMLStr.push('                   <th>状态</th>');
+    tmpHTMLStr.push('               </tr>');
+    tmpHTMLStr.push('            </thead>');
+    tmpHTMLStr.push('            <tbody>');
+    for (var i = 0; i < data.length; i++) {
+        tmpDisabled = (data[i].finance == 1 ? 'disabled' : '');
+        temStatus = (data[i].finance == 1 ? '待审核' : '');
+        tmpHTMLStr.push('               <tr id="tr_Student_New_Assign_' + data[i].id + '">');
+        tmpHTMLStr.push('                   <td>' + (i + 1) + '</td>');
+        tmpHTMLStr.push('                   <td>');
+        tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-primary btn-student-careers-item-careers ' + tmpDisabled + '" data-target="' + data[i].id + '">升学</button>');
+        tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-warning btn-student-careers-item-finish" data-target="' + data[i].id + '">结业</button>');
+        tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-info btn-student-careers-item-detail" data-target="' + data[i].id + '">详情</button>');
+        tmpHTMLStr.push('                   </td>');
+        tmpHTMLStr.push('                   <td>' + data[i].name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].gender + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].level.name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].age + '</td>');
+        tmpHTMLStr.push('                   <td>' + temStatus + '</td>');
+        tmpHTMLStr.push('               </tr>');
+    }
+
+    tmpHTMLStr.push('            </tbody>');
+    tmpHTMLStr.push('        </table>');
+    tmpHTMLStr.push('    </div>');
+    tmpHTMLStr.push('</div>');
+    $('#container_Datas').append($(tmpHTMLStr.join('')));
+    $('.btn-student-careers-item-careers').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        currBtn.addClass('disabled');
+        $(currBtn.parent().parent().children()[6]).text('待审核');
+    });
+
+    $('.btn-student-careers-item-finish').on('click', function () {
+        showFinishConfirm($(arguments[0].target));
+    });
+
+    $('.btn-student-careers-item-detail').on('click', function () {
+        showStudentDetailPopup($(arguments[0].target).attr('data-target'), 2);
+    });
+};
+
+function showFinishConfirm(sourceBtn) {
+    var params = sourceBtn.attr('data-target').split('|');
+    var data = { id: '1', name: 'Tom' };
+    if ($('#modal_Student_Finish_Confirm').length <= 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_Student_Finish_Confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;">');
+        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h6 class="modal-title" id="exampleModalLabel">结业确认</h6>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('               <p></p>');
+        tmpHTMLStr.push('               <p>');
+        tmpHTMLStr.push('                   <b class="text-primary" id="lb_Student_Finish_Confirm_Name">' + data.name + '</b>');
+        tmpHTMLStr.push('                   立即结业而不升学吗？</br>');
+        tmpHTMLStr.push('                   <b class="text-warning">结业后学员资料将转至市场专员。</b></br>');
+        tmpHTMLStr.push('               </p>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-sm btn-primary" id="btn_Student_Finish_Confirm_OK" data-target="' + data.id + '">确定</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+        $('#btn_Student_Finish_Confirm_OK').on('click', function () {
+            $('#modal_Student_Finish_Confirm').modal('hide');
+            sourceBtn.parent().parent().remove();
+        });
+    }
+
+    $('#btn_Student_Finish_Confirm_OK').attr('data-target', data.id);
+    $('#lb_Student_Finish_Confirm_Name').html(data.name);
+    $('#modal_Student_Finish_Confirm').modal('show');
+};
+
+function buildDataHTML_StdQuit() {
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'GET',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
+    //    data: '<root></root>',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
+    //            return;
+    //        }
+    //        var data = initData(response);
+    //        buildUserInfoHTML(data);
+    //        buildMenuHTML(data);
+    //        buildDataHTML(data);
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    var rspXML = "";
+    var data = formatData_Student(rspXML);
+    $('#container_Datas').empty();
+    buildDataTopHTML();
+    buildDataHeaderHTML_StdQuit();
+    buildDataTableHTML_StdQuit(data);
+};
+
+function buildDataHeaderHTML_StdQuit() {
+    var tmpHTMLStr = '<div class="row" style="padding:5px 10px;">' +
+    '    <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">' +
+    '        <div class="container-fluid">' +
+    '            <div class="row justify-content-around">' +
+    '                <div class="col-2 data-panel-title" style="line-height:40px;">待退学学员</div>' +
+    '                <div class="col" id="container_DataHeader_Button" style="padding-top:5px"></div>' +
+    '                <div class="col" id="container_DataHeader_Fields" style="padding-top:5px">' +
+    '                </div>' +
+    '            </div>' +
+    '        </div>' +
+    '    </div>' +
+    '</div>';
+
+    $('#container_Datas').append($(tmpHTMLStr));
+};
+
+function buildDataTableHTML_StdQuit(data) {
+    var tmpHTMLStr = [];
+    var temStatus;
+    tmpHTMLStr.push('<div class="row">');
+    tmpHTMLStr.push('    <div class="col" style="padding-top:10px;">');
+    tmpHTMLStr.push('        <table class="table table-striped">');
+    tmpHTMLStr.push('            <thead>');
+    tmpHTMLStr.push('                <tr id="container_DataTable_Header">');
+    tmpHTMLStr.push('                   <th style="width: 50px;"></th>');
+    tmpHTMLStr.push('                   <th style="width: 200px;"></th>');
+    tmpHTMLStr.push('                   <th>姓名</th>');
+    tmpHTMLStr.push('                   <th>性别</th>');
+    tmpHTMLStr.push('                   <th>级别</th>');
+    tmpHTMLStr.push('                   <th>年龄</th>');
+    tmpHTMLStr.push('               </tr>');
+    tmpHTMLStr.push('            </thead>');
+    tmpHTMLStr.push('            <tbody>');
+    for (var i = 0; i < data.length; i++) {
+        tmpHTMLStr.push('               <tr id="tr_Student_New_Assign_' + data[i].id + '">');
+        tmpHTMLStr.push('                   <td>' + (i + 1) + '</td>');
+        tmpHTMLStr.push('                   <td>');
+        tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-primary btn-student-quit-item-cancel" data-target="' + data[i].id + '">撤销</button>');
+        tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-info btn-student-quit-item-detail" data-target="' + data[i].id + '">详情</button>');
+        tmpHTMLStr.push('                   </td>');
+        tmpHTMLStr.push('                   <td>' + data[i].name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].gender + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].level.name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].age + '</td>');
+        tmpHTMLStr.push('               </tr>');
+    }
+
+    tmpHTMLStr.push('            </tbody>');
+    tmpHTMLStr.push('        </table>');
+    tmpHTMLStr.push('    </div>');
+    tmpHTMLStr.push('</div>');
+    $('#container_Datas').append($(tmpHTMLStr.join('')));
+
+    $('.btn-student-quit-item-cancel').on('click', function () {
+        $(arguments[0].target).parent().parent().remove();
+    });
+
+    $('.btn-student-quit-item-detail').on('click', function () {
+        showStudentDetailPopup($(arguments[0].target).attr('data-target'), 2);
+    });
+};
+
+function buildDataHTML_StdTransfer() {
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'GET',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
+    //    data: '<root></root>',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
+    //            return;
+    //        }
+    //        var data = initData(response);
+    //        buildUserInfoHTML(data);
+    //        buildMenuHTML(data);
+    //        buildDataHTML(data);
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    var rspXML = "";
+    var data = formatData_Student(rspXML);
+    $('#container_Datas').empty();
+    buildDataTopHTML();
+    buildDataHeaderHTML_StdTransfer();
+    buildDataTableHTML_StdTransfer(data);
+};
+
+function buildDataHeaderHTML_StdTransfer() {
+    var tmpHTMLStr = '<div class="row" style="padding:5px 10px;">' +
+    '    <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">' +
+    '        <div class="container-fluid">' +
+    '            <div class="row justify-content-around">' +
+    '                <div class="col-2 data-panel-title" style="line-height:40px;">待转学学员</div>' +
+    '                <div class="col" id="container_DataHeader_Button" style="padding-top:5px"></div>' +
+    '                <div class="col" id="container_DataHeader_Fields" style="padding-top:5px">' +
+    '                </div>' +
+    '            </div>' +
+    '        </div>' +
+    '    </div>' +
+    '</div>';
+
+    $('#container_Datas').append($(tmpHTMLStr));
+};
+
+function buildDataTableHTML_StdTransfer(data) {
+    var tmpHTMLStr = [];
+    var tmpFlag, temStatus;
+    tmpHTMLStr.push('<div class="row">');
+    tmpHTMLStr.push('    <div class="col" style="padding-top:10px;">');
+    tmpHTMLStr.push('        <table class="table table-striped">');
+    tmpHTMLStr.push('            <thead>');
+    tmpHTMLStr.push('                <tr id="container_DataTable_Header">');
+    tmpHTMLStr.push('                   <th style="width: 50px;"></th>');
+    tmpHTMLStr.push('                   <th style="width: 200px;"></th>');
+    tmpHTMLStr.push('                   <th>姓名</th>');
+    tmpHTMLStr.push('                   <th>性别</th>');
+    tmpHTMLStr.push('                   <th>级别</th>');
+    tmpHTMLStr.push('                   <th>年龄</th>');
+    tmpHTMLStr.push('                   <th>状态</th>');
+    tmpHTMLStr.push('               </tr>');
+    tmpHTMLStr.push('            </thead>');
+    tmpHTMLStr.push('            <tbody>');
+    for (var i = 0; i < data.length; i++) {
+
+        tmpDisabled = (data[i].finance == 1 ? 'disabled' : '');
+        temStatus = (data[i].finance == 1 ? '待审核' : '');
+        tmpHTMLStr.push('               <tr id="tr_Student_New_Assign_' + data[i].id + '">');
+        tmpHTMLStr.push('                   <td>' + (i + 1) + '</td>');
+        tmpHTMLStr.push('                   <td>');
+        if (tmpFlag == 2) {
+            tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-primary btn-student-transfer-item-out' + tmpDisabled + '" data-target="' + data[i].id + '">升学</button>');
+        } else {
+            tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-warning btn-student-transfer-item-into" data-target="' + data[i].id + '">结业</button>');
+        }
+
+        tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-info btn-student-transfer-item-detail" data-target="' + data[i].id + '">详情</button>');
+        tmpHTMLStr.push('                   </td>');
+        tmpHTMLStr.push('                   <td>' + data[i].name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].gender + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].level.name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].age + '</td>');
+        tmpHTMLStr.push('                   <td>' + temStatus + '</td>');
+        tmpHTMLStr.push('               </tr>');
+    }
+
+    tmpHTMLStr.push('            </tbody>');
+    tmpHTMLStr.push('        </table>');
+    tmpHTMLStr.push('    </div>');
+    tmpHTMLStr.push('</div>');
+    $('#container_Datas').append($(tmpHTMLStr.join('')));
+    $('.btn-student-transfer-item-careers').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        currBtn.addClass('disabled');
+        $(currBtn.parent().parent().children()[6]).text('待审核');
+    });
+
+    $('.btn-student-transfer-item-finish').on('click', function () {
+        showFinishConfirm($(arguments[0].target));
+    });
+
+    $('.btn-student-transfer-item-detail').on('click', function () {
+        showStudentDetailPopup($(arguments[0].target).attr('data-target'), 2);
+    });
+};
+
+
+
+
 
 function showStudentSignInDetail(studentId) {
     var data = {
