@@ -71,6 +71,7 @@ function initEvents() {
     });
 
     $('#menu_Student_Search').on('click', function () {
+        buildDataHTML_StdSearch();
     });
 
     $('#menu_Schedule').on('click', function () {
@@ -178,8 +179,7 @@ function formatData_Class() {
             startdate: '2017/10/10 ',
             amount: '10',
             max: 10,
-            status: 0,
-            transfer: 1
+            status: 0
         }, {
             id: '2',
             symbol: 'B_02_002',
@@ -199,8 +199,7 @@ function formatData_Class() {
             startdate: '2017/12/12 ',
             amount: '12',
             max: 15,
-            status: 1,
-            transfer: 2
+            status: 1
         }, {
             id: '3',
             symbol: 'B_03_003',
@@ -220,8 +219,7 @@ function formatData_Class() {
             startdate: '2017/11/11 ',
             amount: '13',
             max: 15,
-            status: 0,
-            transfer: 1
+            status: 0
         }
     ];
 
@@ -1334,7 +1332,8 @@ function formatData_Student() {
             declare: { id: '1', name: 'C-01-001' },
             age: 14,
             from: '',
-            finance: 0
+            finance: 0,
+            transfer: 1
         }, {
             id: '2',
             name: 'Alice',
@@ -1343,7 +1342,8 @@ function formatData_Student() {
             declare: { id: '1', name: 'C-02-003' },
             age: 13,
             from: '升学',
-            finance: 1
+            finance: 1,
+            transfer: 2
         }, {
             id: '3',
             name: 'Jack',
@@ -1352,7 +1352,8 @@ function formatData_Student() {
             declare: { id: '1', name: 'C-03-002' },
             age: 15,
             from: '',
-            finance: 0
+            finance: 0,
+            transfer: 1
         }
     ];
 
@@ -1724,7 +1725,7 @@ function buildClassStdListCurrent(classId) {
         tmpHTMLStr.push('           <td>' + (i + 1) + '</th>');
         tmpHTMLStr.push('           <td>');
         tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-primary btn-student-old-item-assign" data-target="' + data[i].id + '|' + classId + '">转班</button>');
-        tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-warning btn-student-old-item-transfer" data-target="' + data[i].id + '|' + classId + '">转学</button>');
+        tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-warning btn-student-old-item-transfer" data-target="' + data[i].id + '|' + data[i].name + '">转学</button>');
         tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-danger btn-student-old-item-dropout" data-target="' + data[i].id + '|' + data[i].name + '">退学</button>');
         tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-info btn-student-old-item-detail" data-target="' + data[i].id + '">详情</button>');
         tmpHTMLStr.push('           </th>');
@@ -1747,16 +1748,16 @@ function buildClassStdListCurrent(classId) {
     });
 
     $('.btn-student-old-item-dropout').on('click', function () {
-        showStudentDropOut($(arguments[0].target).attr('data-target'));
+        showStudentDropOut($(arguments[0].target));
     });
 
     $('.btn-student-old-item-transfer').on('click', function () {
-        //showStudentDropOut($(arguments[0].target).attr('data-target'));
+        showStudentTransfer($(arguments[0].target));
     });
 };
 
-function showStudentDropOut(studentInfo) {
-    studentInfo = studentInfo.split('|');
+function showStudentDropOut(sourceBtn) {
+    var studentInfo = sourceBtn.attr('data-target').split('|');
     if ($('#modal_Student_Old_DropOut').length == 0) {
         var tmpHTMLStr = [];
         tmpHTMLStr.push('<div class="modal fade" id="modal_Student_Old_DropOut" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">');
@@ -1786,13 +1787,53 @@ function showStudentDropOut(studentInfo) {
         $('body').append($(tmpHTMLStr.join('')));
 
         $('#modal_Student_Old_DropOut .btn-primary').on('click', function () {
-            $('#tr_Student_Old_' + $(arguments[0].target).attr('data-target')).remove();
+            sourceBtn.parent().parent().remove();
         });
     }
 
     $('#modal_Student_Old_DropOut').modal('show');
     $('#modal_Student_Old_DropOut .modal-body p span').text(studentInfo[1]);
     $('#modal_Student_Old_DropOut .btn-primary').attr('data-target', studentInfo[0]);
+};
+
+function showStudentTransfer(sourceBtn) {
+    var studentInfo = sourceBtn.attr('data-target').split('|');
+    if ($('#modal_Student_Transfer').length == 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_Student_Transfer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">');
+        tmpHTMLStr.push('   <div class="modal-dialog" role="document">');
+        tmpHTMLStr.push('       <div class="modal-content">');
+        tmpHTMLStr.push('           <div class="modal-header" style="padding: 5px 15px;">');
+        tmpHTMLStr.push('               <h5 class="modal-title" id="exampleModalLabel">退学确认</h5>');
+        tmpHTMLStr.push('               <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                   <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('               </button>');
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('           <div class="modal-body" style="padding: 0px 15px;">');
+        tmpHTMLStr.push('               <p style="padding-top:15px;">确认学员 : ');
+        tmpHTMLStr.push('                   <span style="padding:0 10px; color: red; font-weight:bold;">' + studentInfo[1] + '</span>提交转学申请吗?');
+        tmpHTMLStr.push('               </p>');
+        tmpHTMLStr.push('               <p class="text-warning" style="padding-top:15px;">');
+        tmpHTMLStr.push('                   确认后学员信息将转入待转学学员并开始审核');
+        tmpHTMLStr.push('               </p>');
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('           <div class="modal-footer" style="padding: 5px 15px;">');
+        tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">取消</button>');
+        tmpHTMLStr.push('               <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">确认</button>');
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('       </div>');
+        tmpHTMLStr.push('   </div>');
+        tmpHTMLStr.push('</div>');
+        $('body').append($(tmpHTMLStr.join('')));
+
+        $('#modal_Student_Transfer .btn-primary').on('click', function () {
+            sourceBtn.parent().parent().remove();
+        });
+    }
+
+    $('#modal_Student_Transfer').modal('show');
+    $('#modal_Student_Transfer .modal-body p span').text(studentInfo[1]);
+    $('#modal_Student_Transfer .btn-primary').attr('data-target', studentInfo[0]);
 };
 
 function buildDataHTML_StdCareers() {
@@ -2105,16 +2146,15 @@ function buildDataTableHTML_StdTransfer(data) {
     tmpHTMLStr.push('            </thead>');
     tmpHTMLStr.push('            <tbody>');
     for (var i = 0; i < data.length; i++) {
-
-        tmpDisabled = (data[i].finance == 1 ? 'disabled' : '');
         temStatus = (data[i].finance == 1 ? '待审核' : '');
+        tmpFlag = data[i].transfer;
         tmpHTMLStr.push('               <tr id="tr_Student_New_Assign_' + data[i].id + '">');
         tmpHTMLStr.push('                   <td>' + (i + 1) + '</td>');
         tmpHTMLStr.push('                   <td>');
         if (tmpFlag == 2) {
-            tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-primary btn-student-transfer-item-out' + tmpDisabled + '" data-target="' + data[i].id + '">升学</button>');
+            tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-warning btn-student-transfer-item-cancel' + '" data-target="' + data[i].id + '">撤销</button>');
         } else {
-            tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-warning btn-student-transfer-item-into" data-target="' + data[i].id + '">结业</button>');
+            tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-danger btn-student-transfer-item-reject" data-target="' + data[i].id + '">拒绝</button>');
         }
 
         tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-info btn-student-transfer-item-detail" data-target="' + data[i].id + '">详情</button>');
@@ -2132,14 +2172,12 @@ function buildDataTableHTML_StdTransfer(data) {
     tmpHTMLStr.push('    </div>');
     tmpHTMLStr.push('</div>');
     $('#container_Datas').append($(tmpHTMLStr.join('')));
-    $('.btn-student-transfer-item-careers').on('click', function () {
-        var currBtn = $(arguments[0].target);
-        currBtn.addClass('disabled');
-        $(currBtn.parent().parent().children()[6]).text('待审核');
+    $('.btn-student-transfer-item-cancel').on('click', function () {
+        $(arguments[0].target).parent().parent().remove();
     });
 
-    $('.btn-student-transfer-item-finish').on('click', function () {
-        showFinishConfirm($(arguments[0].target));
+    $('.btn-student-transfer-item-reject').on('click', function () {
+        $(arguments[0].target).parent().parent().remove();
     });
 
     $('.btn-student-transfer-item-detail').on('click', function () {
@@ -2147,9 +2185,175 @@ function buildDataTableHTML_StdTransfer(data) {
     });
 };
 
+function buildDataHTML_StdSearch() {
+    //_registerRemoteServer();
+    //$.ajax({
+    //    type: 'GET',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
+    //    data: '<root></root>',
+    //    success: function (response, status) {
+    //        if ($(response).find('err').length > 0) {
+    //            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
+    //            return;
+    //        }
+    //        var data = initData(response);
+    //        buildUserInfoHTML(data);
+    //        buildMenuHTML(data);
+    //        buildDataHTML(data);
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //    }
+    //});
+    var rspXML = "";
+    var data = formatData_Student(rspXML);
+    $('#container_Datas').empty();
+    buildDataTopHTML();
+    buildDataHeaderHTML_StdSearch();
+    buildDataTableHTML_StdSearch();
+};
 
+function buildDataHeaderHTML_StdSearch() {
+    var tmpHTMLStr = '<div class="row" style="padding:5px 10px;">' +
+    '    <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">' +
+    '        <div class="container-fluid">' +
+    '            <div class="row justify-content-around">' +
+    '                <div class="col-2 data-panel-title" style="line-height:40px;">学员查询</div>' +
+    '                <div class="col" id="container_DataHeader_Button" style="padding-top:5px"></div>' +
+    '                <div class="col" id="container_DataHeader_Fields" style="padding-top:5px">' +
+    '                </div>' +
+    '            </div>' +
+    '        </div>' +
+    '    </div>' +
+    '</div>';
 
+    $('#container_Datas').append($(tmpHTMLStr));
+};
 
+function buildDataTableHTML_StdSearch() {
+    var data = [
+        { id: '1', symbol: 'C_01_001', name: '初级 1 班', level: '初级', amount: 15, status: 2 },
+        { id: '2', symbol: 'C_01_002', name: '初级 2 班', level: '初级', amount: 25, status: 1 },
+        { id: '3', symbol: 'C_01_003', name: '初级 3 班', level: '初级', amount: 35, status: 0 },
+    ];
+
+    var status = {
+        1: '在读',
+        2: '请假',
+        3: '退学',
+        4: '申请退学',
+        5: '申请转入',
+        6: '申请转出'
+    };
+
+    var txtClass;
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('<form>');
+    tmpHTMLStr.push('   <div class="row">');
+    tmpHTMLStr.push('       <div class="form-group col-3">');
+    tmpHTMLStr.push('           <label for="sel_Student_Search_Class" class="col-form-label col-form-label-sm">按班级</label>');
+    tmpHTMLStr.push('           <select id="sel_Student_Search_Class" class="form-control form-control-sm">');
+    tmpHTMLStr.push('               <option value="-1">请选择班级</option>');
+    for (var i = 0; i < data.length; i++) {
+        txtClass = (data[i].status == '0' ? 'text-info' : data[i].status == '1' ? 'text-primary' : 'text-success');
+        tmpHTMLStr.push('               <option class="' + txtClass + '" value="' + data[i].id + '">' + data[i].name + ' (' + data[i].symbol + ') ' + data[i].level + '</option>');
+    }
+
+    tmpHTMLStr.push('           </select>');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('       <div class="form-group col-3">');
+    tmpHTMLStr.push('           <label for="txt_Student_Search_Name" class="col-form-label col-form-label-sm">按姓名</label>');
+    tmpHTMLStr.push('           <input type="text" class="form-control form-control-sm" id="txt_Student_Search_Name">');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('       <div class="form-group col-3">');
+    tmpHTMLStr.push('           <label for="txt_Student_Search_IDCardNumber" class="col-form-label col-form-label-sm">按身份证号</label>');
+    tmpHTMLStr.push('           <input type="text" class="form-control form-control-sm" id="txt_Student_Search_IDCardNumber">');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('   </div>');
+    tmpHTMLStr.push('   <div class="row">');
+    tmpHTMLStr.push('       <div class="form-group col-3">');
+    tmpHTMLStr.push('           <label for="txt_Student_Search_Start" class="col-form-label col-form-label-sm">按开学时间</label>');
+    tmpHTMLStr.push('           <input type="date" class="form-control form-control-sm" id="txt_Student_Search_Start">');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('       <div class="form-group col-3">');
+    tmpHTMLStr.push('           <label for="txt_Student_Search_Finish" class="col-form-label col-form-label-sm">按结课时间</label>');
+    tmpHTMLStr.push('           <input type="date" class="form-control form-control-sm" id="txt_Student_Search_Finish">');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('       <div class="form-group col-3">');
+    tmpHTMLStr.push('           <label for="sel_Student_Search_Status" class="col-form-label col-form-label-sm">按学员状态</label>');
+    tmpHTMLStr.push('           <select id="sel_Student_Search_Status" class="form-control form-control-sm">');
+    tmpHTMLStr.push('               <option value="-1">请选择学员状态</option>');
+    for (var key in status) {
+        tmpHTMLStr.push('               <option value="' + key + '">' + status[key] + '</option>');
+    }
+
+    tmpHTMLStr.push('           </select>');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('       <div class="form-group col-2">');
+    tmpHTMLStr.push('           <label for="inputZip" class="col-form-label col-form-label-sm"></label>');
+    tmpHTMLStr.push('           <button type="button" class="btn btn-sm btn-success form-control" id="btn_Student_Search">查询</button>');
+    tmpHTMLStr.push('       </div>');
+    tmpHTMLStr.push('   </div>');
+    tmpHTMLStr.push('</form>');
+    tmpHTMLStr.push('<div class="row" id="row_Student_Search_Result">');
+    tmpHTMLStr.push('</div>');
+    $('#container_Datas').append($(tmpHTMLStr.join('')));
+    $('#btn_Student_Search').on('click', function () {
+        var classId = $('#sel_Student_Search_Class').val();
+        var name = $('#txt_Student_Search_Name').val();
+        var idCardNum = $('#txt_Student_Search_IDCardNumber').val();
+        loadSearchResult_Student();
+    });
+};
+
+function loadSearchResult_Student() {
+    $('#row_Student_Search_Result').empty();
+    var data = formatData_Student("");
+    var tmpHTMLStr = [];
+    tmpHTMLStr.push('<div class="container-fluid">');
+    tmpHTMLStr.push('<div class="row">');
+    tmpHTMLStr.push('    <div class="col" style="padding-top:10px;">');
+    tmpHTMLStr.push('        <table class="table table-striped">');
+    tmpHTMLStr.push('            <thead>');
+    tmpHTMLStr.push('                <tr id="container_DataTable_Header">');
+    tmpHTMLStr.push('                   <th style="width: 50px;"></th>');
+    tmpHTMLStr.push('                   <th style="width: 80px;"></th>');
+    tmpHTMLStr.push('                   <th>姓名</th>');
+    tmpHTMLStr.push('                   <th>性别</th>');
+    tmpHTMLStr.push('                   <th>级别</th>');
+    tmpHTMLStr.push('                   <th>年龄</th>');
+    tmpHTMLStr.push('                   <th>状态</th>');
+    tmpHTMLStr.push('               </tr>');
+    tmpHTMLStr.push('            </thead>');
+    tmpHTMLStr.push('            <tbody>');
+    for (var i = 0; i < data.length; i++) {
+        tmpHTMLStr.push('               <tr id="tr_Student_New_Assign_' + data[i].id + '">');
+        tmpHTMLStr.push('                   <td>' + (i + 1) + '</td>');
+        tmpHTMLStr.push('                   <td>');
+        tmpHTMLStr.push('                       <button type="button" class="btn btn-sm btn-info btn-student-transfer-item-detail" data-target="' + data[i].id + '">详情</button>');
+        tmpHTMLStr.push('                   </td>');
+        tmpHTMLStr.push('                   <td>' + data[i].name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].gender + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].level.name + '</td>');
+        tmpHTMLStr.push('                   <td>' + data[i].age + '</td>');
+        tmpHTMLStr.push('                   <td>' + "" + '</td>');
+        tmpHTMLStr.push('               </tr>');
+    }
+
+    tmpHTMLStr.push('            </tbody>');
+    tmpHTMLStr.push('        </table>');
+    tmpHTMLStr.push('    </div>');
+    tmpHTMLStr.push('</div>');
+    tmpHTMLStr.push('</div>');
+    $('#row_Student_Search_Result').append($(tmpHTMLStr.join('')));
+    $('.btn-student-transfer-item-detail').on('click', function () {
+        showStudentDetailPopup($(arguments[0].target).attr('data-target'), 2);
+    });
+}
 
 function showStudentSignInDetail(studentId) {
     var data = {
