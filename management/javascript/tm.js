@@ -219,7 +219,7 @@ function formatData_Class() {
             startdate: '2017/11/11 ',
             amount: '13',
             max: 15,
-            status: 0
+            status: 2
         }
     ];
 
@@ -311,7 +311,7 @@ function buildDataTableHTML_Class(data) {
     tmpHTMLStr.push('        <table class="table">');
     tmpHTMLStr.push('            <thead>');
     tmpHTMLStr.push('                <tr id="container_DataTable_Header">');
-    tmpHTMLStr.push('                   <th style="width: 80px;"></th>');
+    tmpHTMLStr.push('                   <th style="width: 120px;"></th>');
     tmpHTMLStr.push('                   <th style="width: 120px;">编号</th>');
     tmpHTMLStr.push('                   <th style="width: 120px;"></th>');
     tmpHTMLStr.push('                   <th style="width: 100px;">级别</th>');
@@ -335,6 +335,7 @@ function buildDataTableHTML_Class(data) {
 
 function buildDataTableDataRowsHTML_Class(data) {
     var accordionId = 'accordion_Classes';
+    var cardId = '';
     var headerId = '';
     var collapseId = '';
     var cardblockId = '';
@@ -345,19 +346,24 @@ function buildDataTableDataRowsHTML_Class(data) {
     var tmpHTMLStr = ['<div class="accordion-white-bg" id="' + accordionId + '" role="tablist">'];
     for (var i = 0; i < data.length; i++) {
         subAccordionId = 'accordion_Classes_Item_' + data[i].id;
+        cardId = 'card_Classes_Item_' + data[i].id;
         headerId = 'hd_Classes_Item_' + data[i].id;
         collapseId = 'collapse_Classes_Item_' + data[i].id;
         cardblockId = 'cardblock_Classes_Item_' + data[i].id;
-        tmpHTMLStr.push('   <div class="card">');
+        tmpHTMLStr.push('   <div class="card" id="' + cardId + '">');
         tmpHTMLStr.push('       <div class="card-header" style="padding:5px 0px; font-weight:normal;" role="tab" id="' + headerId + '">');
         tmpHTMLStr.push('           <table class="table" style="margin:0px;">');
         tmpHTMLStr.push('               <thead>');
         tmpHTMLStr.push('                   <tr>');
-        tmpHTMLStr.push('                       <th style="line-height: 30px;width: 80px;">');
-        if (data[i].status == 0) {
-            tmpHTMLStr.push('                           <button type="button" class="btn btn-sm btn-primary btn-classes-item-finish">&nbsp;结&nbsp;&nbsp;课&nbsp;</button>');
+        tmpHTMLStr.push('                       <th style="line-height: 30px;width: 120px;">');
+        if (data[i].status == 1) {
+            tmpHTMLStr.push('                           <button type="button" class="btn btn-sm btn-primary btn-classes-item-finish" data-target="' + data[i].id + '">结课</button>');
+        }
+        else if (data[i].status == 2) {
+            tmpHTMLStr.push('                           <button type="button" class="btn btn-sm btn-secondary" disabled>结课</button>');
         } else {
-            tmpHTMLStr.push('                           <button type="button" class="btn btn-sm btn-secondary" disabled>已结课</button>');
+            tmpHTMLStr.push('                           <button type="button" class="btn btn-sm btn-warning btn-classes-item-edit" data-target="' + data[i].id + '">编辑</button>');
+            tmpHTMLStr.push('                           <button type="button" class="btn btn-sm btn-danger btn-classes-item-delete" data-target="' + data[i].id + '">删除</button>');
         }
 
         tmpHTMLStr.push('                       </th>');
@@ -421,6 +427,25 @@ function buildDataTableDataRowsHTML_Class(data) {
                 loadClassItemInfo_Teach(symbol[0]);
                 break;
         }
+    });
+
+    $('.btn-classes-item-finish').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        var symbol = currBtn.attr('data-target');
+        currBtn.removeClass('btn-primary');
+        currBtn.addClass('btn-secondary');
+        currBtn.prop('disabled', true);
+    });
+
+    $('.btn-classes-item-edit').on('click', function () {
+        var symbol = $(arguments[0].target).attr('data-target');
+        showCreateNewClassPopup(symbol);
+    });
+
+    $('.btn-classes-item-delete').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        var symbol = currBtn.attr('data-target');
+        $('#card_Classes_Item_' + symbol).remove();
     });
 };
 
@@ -1036,7 +1061,7 @@ function loadClassItemInfoDetail_Teach(symbol, student) {
     $('#modal_Class_Item_Detail').modal('show');
 };
 
-function showCreateNewClassPopup() {
+function showCreateNewClassPopup(classId) {
     if ($('#modal_Class_New').length <= 0) {
         buildCreateNewClassPopup(null);
         fillNewClassSymbol();
@@ -1052,8 +1077,13 @@ function showCreateNewClassPopup() {
             $('#modal_NewRoom').modal('show');
         });
     }
-
     $('#modal_Class_New').modal('show');
+
+    if (typeof (classId) == "string") {
+        $('#modal_Class_New #exampleModalLabel').text('修改班级信息');
+        loadClassInfoForEdit(classId);
+    }
+
 };
 
 function formatData_TeacherList(rspXML) {
@@ -1110,13 +1140,13 @@ function buildCreateNewClassPopup(rspXML) {
     tmpHTMLStr.push('                        </div>');
     tmpHTMLStr.push('                    </div>');
     tmpHTMLStr.push('                    <div class="form-group row">');
-    tmpHTMLStr.push('                        <label for="txt_Teacher_Class_New`" class="col-3 col-form-label class-create">教员</label>');
+    tmpHTMLStr.push('                        <label for="sel_Teacher_Class_New`" class="col-3 col-form-label class-create">教员</label>');
     tmpHTMLStr.push('                        <div class="col-9">');
     tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Teacher_Class_New" disabled></select>');
     tmpHTMLStr.push('                        </div>');
     tmpHTMLStr.push('                    </div>');
     tmpHTMLStr.push('                    <div class="form-group row">');
-    tmpHTMLStr.push('                        <label for="txt_Room_Class_New" class="col-3 col-form-label class-create">教室</label>');
+    tmpHTMLStr.push('                        <label for="sel_Room_Class_New" class="col-3 col-form-label class-create">教室</label>');
     tmpHTMLStr.push('                        <div class="col-9">');
     tmpHTMLStr.push('                            <select class="form-control form-control-sm" value="" id="sel_Room_Class_New" disabled></select>');
     tmpHTMLStr.push('                        </div>');
@@ -1166,6 +1196,49 @@ function buildCreateNewClassPopup(rspXML) {
             $('#sel_Room_Class_New').prop('disabled', false);
         }
     });
+};
+
+function loadClassInfoForEdit(classId) {
+    var data = {
+        id: '1',
+        symbol: 'B_01_001',
+        title: '初级 1 班',
+        level: {
+            id: '1',
+            name: '初级'
+        },
+        teacher: {
+            id: '1',
+            name: '教员 1'
+        },
+        room: {
+            id: '1',
+            name: '教室 1'
+        },
+        startdate: '2017-10-10',
+        amount: '10',
+        max: 10,
+        status: 0
+    };
+
+    $('#modal_Class_New #sel_Level_Class_New').val(data.level.id);
+    $('#modal_Class_New #txt_Symbol_Class_New').val(data.symbol);
+    $('#modal_Class_New #txt_Name_Class_New').val(data.title);
+    $('#modal_Class_New #sel_Teacher_Class_New').val(data.teacher.id);
+    var roomSel = $('#modal_Class_New #sel_Room_Class_New');
+    var options = $('#modal_Class_New #sel_Room_Class_New option');
+    for(var i=0;i<options.length;i++){
+        if ($(options[i]).attr('value').split('|')[0] == data.room.id) {
+            roomSel.val($(options[i]).attr('value'));
+            break;
+        }
+    }
+    
+    $('#modal_Class_New #txt_Start_Class_New').val(data.startdate);
+    $('#modal_Class_New #txt_Amount_Class_New').val(data.amount);
+
+    $('#modal_Class_New #sel_Teacher_Class_New').prop('disabled', false);
+    $('#modal_Class_New #sel_Room_Class_New').prop('disabled', false);
 };
 
 function fillRoomList() {
@@ -3972,7 +4045,7 @@ function showCreateNewSchedulePopup(classId) {
         tmpHTMLStr.push('                    <div class="form-group row">');
         tmpHTMLStr.push('                        <label for="txt_LessonCount_Schedule_New" class="col-3 col-form-label class-create">总课时数</label>');
         tmpHTMLStr.push('                        <div class="col-9">');
-        tmpHTMLStr.push('                            <input class="form-control form-control-sm" id="txt_LessonCount_Schedule_New" type="number" value="' + data.lessons + '" readonly>');
+        tmpHTMLStr.push('                            <input class="form-control form-control-sm" id="txt_LessonCount_Schedule_New" type="number" value="' + data.lessons + '">');
         tmpHTMLStr.push('                        </div>');
         tmpHTMLStr.push('                    </div>');
         tmpHTMLStr.push('                </form>');
