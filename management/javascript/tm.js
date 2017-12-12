@@ -1155,7 +1155,7 @@ function buildCreateNewClassPopup(rspXML) {
     //tmpHTMLStr.push('                        </div>');
     tmpHTMLStr.push('                    </div>');
     tmpHTMLStr.push('                    <div class="form-group row">');
-    tmpHTMLStr.push('                        <label for="txt_Start_Class_New" class="col-3 col-form-label class-create">开学时间</label>');
+    tmpHTMLStr.push('                        <label for="txt_Start_Class_New" class="col-3 col-form-label class-create">预计开学时间</label>');
     tmpHTMLStr.push('                        <div class="col-9">');
     tmpHTMLStr.push('                            <input class="form-control form-control-sm" type="date" value="' + formatForDateInput(null) + '" id="txt_Start_Class_New">');
     tmpHTMLStr.push('                        </div>');
@@ -1227,13 +1227,13 @@ function loadClassInfoForEdit(classId) {
     $('#modal_Class_New #sel_Teacher_Class_New').val(data.teacher.id);
     var roomSel = $('#modal_Class_New #sel_Room_Class_New');
     var options = $('#modal_Class_New #sel_Room_Class_New option');
-    for(var i=0;i<options.length;i++){
+    for (var i = 0; i < options.length; i++) {
         if ($(options[i]).attr('value').split('|')[0] == data.room.id) {
             roomSel.val($(options[i]).attr('value'));
             break;
         }
     }
-    
+
     $('#modal_Class_New #txt_Start_Class_New').val(data.startdate);
     $('#modal_Class_New #txt_Amount_Class_New').val(data.amount);
 
@@ -3954,7 +3954,7 @@ function showCreateNewSchedulePopup(classId) {
             name: '初级 1 班',
             lessons: 15,
             amount: 15,
-            startDate: '2017-12-1'
+            startDate: '2017-12-01'
         };
 
         var tmpHTMLStr = [];
@@ -3964,7 +3964,7 @@ function showCreateNewSchedulePopup(classId) {
         tmpHTMLStr.push('            <div class="modal-header">');
         tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">');
         tmpHTMLStr.push('                   新建课表');
-        tmpHTMLStr.push('                   <span style="padding-left:10px; font-size:14px;">' + data.name + ' ' + data.amount + '人 ' + data.startDate + '<span>');
+        tmpHTMLStr.push('                   <span style="padding-left:10px; font-size:14px;">' + data.name + ' (' + data.amount + '人)<span>');
         tmpHTMLStr.push('                </h5>');
         tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
         tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
@@ -3972,6 +3972,12 @@ function showCreateNewSchedulePopup(classId) {
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('            <div class="modal-body">');
         tmpHTMLStr.push('                <form>');
+        tmpHTMLStr.push('                    <div class="form-group row">');
+        tmpHTMLStr.push('                        <label for="txt_StartDate_Schedule_New" class="col-3 col-form-label class-create">开课日期</label>');
+        tmpHTMLStr.push('                        <div class="col-9">');
+        tmpHTMLStr.push('                            <input  type="date" class="form-control form-control-sm" id="txt_StartDate_Schedule_New" value="' + data.startDate + '"/>');
+        tmpHTMLStr.push('                        </div>');
+        tmpHTMLStr.push('                    </div>');
         tmpHTMLStr.push('                    <div class="form-group row">');
         tmpHTMLStr.push('                        <label for="chk_Create_Schedule_New" class="col-3 col-form-label class-create">课程频率</label>');
         tmpHTMLStr.push('                        <div class="col-3">');
