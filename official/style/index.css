@@ -1,3 +1,17 @@
 ﻿.text-5BC0DE {
     color: #5BC0DE;
 }
+
+.wrap-section-1-item-tip {
+    position: absolute;
+    display: none;
+}
+
+    .wrap-section-1-item-tip .image-tip {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+    }

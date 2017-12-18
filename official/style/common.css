@@ -11,7 +11,15 @@
     margin: 0px;
 }
 
-.full-wrap{
+.marginTop-30 {
+    margin-top: 30px;
+}
+
+ .marginBottom-50{
+     margin-bottom:50px;
+ }
+
+.full-wrap {
     padding: 0px;
     margin: 0px;
 }

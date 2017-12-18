@@ -14,7 +14,8 @@ var _gSections = [
 ];
 
 function initPage() {
-    buildHTMLSection_1();
+    prevLoadTipImg();
+    initPageEvent();
 };
 
 function buildHTMLSection_1() {
@@ -35,5 +36,35 @@ function buildHTMLSection_1() {
         tmpStrArr.push('    </div>');
         tmpStrArr.push('</div>');
         $('#wrap_Section_1').append($(tmpStrArr.join('')));
+    }
+
+    $('#wrap_Section_1 .feature-item').on('mouseenter', function () {
+        var wrap = $('.wrap-section-1-item-tip');
+        $('.wrap-section-1-item-tip .image-tip').attr('src', 'image/tips/' + $(arguments[0].target).attr('data-target') + '.png');
+        wrap.css('top', $(arguments[0].target).offset().top - wrap.height() + 'px');
+        wrap.css('left', $(arguments[0].target).offset().left + $(arguments[0].target).width() / 2 - wrap.width() / 2 + 'px');
+        wrap.fadeIn();
+    });
+
+    $('#wrap_Section_1 .feature-item').on('mouseleave', function () {
+        $('.wrap-section-1-item-tip').fadeOut();
+    });
+
+    _adjustPageSize();
+};
+
+function initPageEvent() {
+    $('#btn_ShowDetail').on('click', function () {
+    });
+};
+
+function prevLoadTipImg() {
+    var items = _gSections[0];
+    for (var i = 0; i < items.length; i++) {
+        if (i == items.length - 1) {
+            _loadIMG('image/tips/' + items[i].img + '.png', buildHTMLSection_1);
+        } else {
+            _loadIMG('image/tips/' + items[i].img + '.png');
+        }
     }
 };
