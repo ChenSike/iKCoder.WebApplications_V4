@@ -16,30 +16,54 @@
     <script src="javascript/common/bootstrap.js"></script>
     <script src="javascript/common/common.js"></script>
     <script src="javascript/common/xmloperator.js"></script>
-    <script src="javascript/common.js"></script>
+    <script src="javascript/common/common.js"></script>
     <script src="javascript/header.js"></script>
     <script src="javascript/footer.js"></script>
     <script src="javascript/index.js"></script>
 </head>
 <body style="height:100%">
-    <header>
-        aaa
-    </header>
-    <div class="container-fluid" id="wrap_main">
-        <div class="row">
-            <div class="col-12"></div>
+    <header></header>
+    <div class="container-fluid full-wrap" id="wrap_Main" style="position:absolute;">
+        <div class="row full-wrap">
+            <div class="col full-wrap" id="col_Wrap_Main">
+                <img class="d-block w-100" src="image/header.jpg" alt="First slide">
+            </div>
+        </div>
+        <div class="row full-wrap">
+            <div class="col full-wrap">
+                <div class="container" id="section_1" style="padding-top:50px;">
+                    <div class="row justify-content-center">
+                        <div class="col my-5">
+                            <h2 class="text-center">化繁为简, 适合中国孩子的启蒙式教育平台</h2>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <div class="container" style="margin-top:20px;">
+                                <div class="row text-center" id="wrap_Section_1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-5 justify-content-center">
+                            <form class="form-inline justify-content-center">
+                                <button type="button" class="btn btn-outline-info" id="btn_ShowDetail">查看详细介绍&gt;</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <footer>
-        dddd
+    <footer style="position:absolute; width:100%;">
     </footer>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();
-            //initHeader(true);
-            //initFooter();
+            initHeader();
+            setCurrentMenuItem('home_Main_Menu');
+            initFooter();            
+            initPage();
             _adjustPageSize();
-            //initPage();
         });
     </script>
 </body>
