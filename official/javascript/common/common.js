@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+var _gIsMobile = false;
 var _gExpires = 15;
 var _gLabelMap = {};
 var _gHostName = 'http://119.23.233.224/ikcoderapi';
@@ -768,7 +769,7 @@ function StringToXML(str) {
 
 /*page base*/
 function _adjustPageSize(reset) {
-    $('#wrap_Main').css('top', $('header').height() + 'px');
+    $('#wrap_Main').css('top', $('#wrap_Header').height() + 'px');
     if (reset) {
         $('#col_Wrap_Main').height('auto');
     }
@@ -777,7 +778,7 @@ function _adjustPageSize(reset) {
     var wrapTop = $('#wrap_Main').position().top;
     var bodyHeight = $('body').height();
     if (wrapHeight < bodyHeight) {
-        $('#col_Wrap_Main').height(bodyHeight - $('header').height() - $('footer').height());
+        $('#col_Wrap_Main').height(bodyHeight - $('#wrap_Header').height() - $('footer').height());
     }
 
     $('footer').css('top', (wrapTop + $('#wrap_Main').height()) + 'px');
@@ -787,7 +788,20 @@ function _adjustPageSize(reset) {
     } else {
         $('footer .socials').show();
     }
+};
+
+function _browserRedirect() {
+    var sUserAgent = navigator.userAgent.toLowerCase();
+    var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+    var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+    var bIsAndroid = sUserAgent.match(/android/i) == "android";
+    var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+    if (bIsIpad || bIsIphoneOs || bIsAndroid || bIsWM) {
+        _gIsMobile = true;
+    }
 }
+
+_browserRedirect();
 
 window.onresize = function () {
     _adjustPageSize(true);

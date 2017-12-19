@@ -1,6 +1,7 @@
 ﻿body {
     font-family: 微软雅黑;
     font-size: 14px;
+    height: 100%;
 }
 
 .no-padding {
@@ -15,19 +16,67 @@
     margin-top: 30px;
 }
 
- .marginBottom-50{
-     margin-bottom:50px;
- }
+.marginBottom-50 {
+    margin-bottom: 50px;
+}
 
 .full-wrap {
     padding: 0px;
     margin: 0px;
 }
 
+.bg-trans {
+    background-image: none;
+    background-color: transparent;
+}
+
 /*Header*/
-header .nav-link {
-    font-size: 16px;
-    color: rgba(0, 0, 0, 0.5);
+header {
+    position: absolute;
+    top: 0px;
+    z-index: 1000;
+    width: 100%;
+}
+
+    header .nav-item {
+        padding: 0px 5px;
+    }
+
+    header .nav-link {
+        font-size: 16px;
+    }
+
+.navbar-expand-lg .navbar-nav {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 1);
+}
+
+    .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+        color: rgba(255, 255, 255, 1);
+    }
+
+@media (min-width: 992px) {
+    .navbar-expand-lg {
+        -webkit-box-orient: initial;
+        -webkit-box-direction: initial;
+        -webkit-flex-direction: initial;
+        -ms-flex-direction: initial;
+        flex-direction: initial;
+        -webkit-flex-wrap: initial;
+        -ms-flex-wrap: initial;
+        flex-wrap: initial;
+        -webkit-box-pack: initial;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: initial;
+        justify-content: space-between;
+    }
 }
 
 /*Footer*/
