@@ -4,10 +4,10 @@ var _gCurrentMenuItem = null;
 var _gPageMapping = {
     home: { page: 'index.html', text: '首页' },
     product: { page: 'product.html', text: '产品' },
-    certificate: { page: 'index.html', text: '证书' },
+    certificate: { page: 'certificate.html', text: '证书' },
     cooperation: { page: 'cooperation.html', text: '合作' },
-    contact: { page: 'index.html', text: '联系我们' },
-    about: { page: 'index.html', text: '关于' },
+    contact: { page: 'contact.html', text: '联系我们' },
+    about: { page: 'about.html', text: '关于' },
     center: { page: 'index.html', text: '学员中心' }
 };
 

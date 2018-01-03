@@ -23,7 +23,7 @@
 </head>
 <body>
     <header></header>
-    <div class="container-fluid full-wrap" id="wrap_Main" style="position:absolute;">
+    <div class="container-fluid full-wrap" id="wrap_Main">
         <div class="row full-wrap">
             <div class="col full-wrap" id="col_Wrap_Main">
                 <img class="d-block w-100" src="image/background/header.jpg" alt="First slide">
@@ -31,7 +31,7 @@
         </div>
         <div class="row full-wrap">
             <div class="col full-wrap">
-                <div class="container" id="section_1" style="padding-top:50px;">
+                <div class="container" id="section_1" style="padding:50px 0px;">
                     <div class="row justify-content-center">
                         <div class="col my-5">
                             <h2 class="text-center">化繁为简, 适合中国孩子的启蒙式教育平台</h2>
@@ -43,11 +43,6 @@
                                 <div class="row text-center" id="wrap_Section_1">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 my-5 justify-content-center">
-                            <form class="form-inline justify-content-center">
-                                <button type="button" class="btn btn-outline-info" id="btn_ShowDetail">查看详细介绍&nbsp;&gt;&gt;</button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -123,12 +118,34 @@
                 </div>
             </div>
         </div>
+        <div class="row full-wrap">
+            <div class="col full-wrap">
+                <div class="container-fluid" id="section_5" style="padding-top:50px; background-color:rgb(255,255,255);">
+                    <div class="row  justify-content-center">
+                        <div class="col my-5">
+                            <div class="container">
+                                <div class="row justify-content-center marginBottom-50">
+                                    <div class="col">
+                                        <h2 class="text-left">同国内外教育和科研机构紧密同步</h2>
+                                        <h2 class="text-left">以合作, 让教育更美好</h2>
+                                    </div>
+                                </div>
+                                <div class="row marginBottom-50  justify-content-center">
+                                    <div class="col-12 col-sm-6 col-md-3 text-center">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="wrap-section-1-item-tip" style="top: 421.946px; left: 92.8408px; display: none;">
         <img src="image/tips/circle.png" width="265" height="295">
         <img class="image-tip" src="" width="255" height="255">
     </div>
-    <footer style="position:absolute; width:100%;"></footer>
+    <footer style="position:absolute; width:100%;">    </footer>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();
@@ -136,7 +153,8 @@
             setCurrentMenuItem('home_Main_Menu');
             initFooter();
             initPage();
-            //_adjustPageSize();            
+            _adjustPageSize(false);
+
         });
     </script>
 </body>

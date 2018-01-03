@@ -36,6 +36,7 @@ header {
     top: 0px;
     z-index: 1000;
     width: 100%;
+    background-color:rgba(0,0,0,0.7);
 }
 
     header .nav-item {
@@ -81,7 +82,9 @@ header {
 
 /*Footer*/
 footer {
-    background-color: rgb(23,23,23);
+    background-color: #F2F2F2;
+    color: #333;
+    font-size: 10px;
 }
 
     footer .socials {
@@ -89,9 +92,31 @@ footer {
     }
 
     footer .copyright-txt {
+        color: #888;
+        font-weight: bolder;
+    }
+
+    footer .alinks-section {
+        padding: 30px 0px;
+    }
+
+        footer .alinks-section .alink-title {
+            color: rgb(51, 51, 51);
+            line-height: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        footer .alinks-section a {
+            color: rgb(85, 85, 85);
+            line-height: 20px;
+            font-size: 11px;
+            font-weight: 300;
+        }
+
+    footer .icp-txt {
         color: rgb(172,172,172);
         float: left;
-        font-size: 13px;
         font-weight: 300;
         padding: 5px 0px;
         margin: 0px;
@@ -114,3 +139,8 @@ footer {
             color: #5BC0DE;
             background-color: rgb(255,255,255);
         }
+
+#wrap_Main {
+    position: absolute;
+    top: 0px;
+}
