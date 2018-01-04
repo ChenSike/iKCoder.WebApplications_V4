@@ -68,3 +68,20 @@ function prevLoadTipImg() {
         }
     }
 };
+
+function _adjustPageSize(setHeight) {
+    $('#wrap_Main').css('top', '0px');
+    $('#col_Wrap_Main').height('auto');
+    if (typeof setHeight == 'boolean' && setHeight == true) {
+        var wrapHeight = $('#wrap_Main').height();
+        var bodyHeight = $('body').height();
+        if (wrapHeight < bodyHeight) {
+            $('#col_Wrap_Main').height(bodyHeight - $('footer').height());
+        } else {
+            $('#col_Wrap_Main').height("auto");
+        }
+    }
+
+    $('footer').css('top', $('#wrap_Main').height() + 'px');
+    $('header').css('background-color', 'transparent');
+};

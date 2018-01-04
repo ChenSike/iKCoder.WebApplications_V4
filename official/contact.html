@@ -19,30 +19,32 @@
     <script src="javascript/header.js"></script>
     <script src="javascript/footer.js"></script>
     <script src="javascript/contact.js"></script>
+    <style>
+        .wrap-information{
+            position:absolute;
+            top:10%;
+            right:10%;
+        }
+    </style>
 </head>
 <body>
     <header></header>
-    <div class="container-fluid full-wrap" id="wrap_Main" style="position:absolute;">
-        <div class="row full-wrap">
+    <div class="container-fluid full-wrap" id="wrap_Main">
+        <div class="row full-wrap justify-content-md-center">
             <div class="col full-wrap" id="col_Wrap_Main">
-                <img class="d-block w-100" src="image/background/header.jpg" alt="First slide">
-            </div>
-        </div>
-        <div class="row full-wrap">
-            <div class="col full-wrap">
-                <div class="container" id="section_1" style="padding-top:50px;">
-                    <div class="row justify-content-center">
-                        <div class="col my-5">
-                            <h2 class="text-center">联系我们</h2>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12 my-5 justify-content-center">
-                            深圳市鹏博教育科技有限公司<br />
-                            深圳市福田区华强北路 群星广场A座33层<br />
-                            邮编：518057<br />
-                            Tel：(86-755)8891-7769   (86)185-6577-5930<br />
-                            Email：Partnership@iKCoder.com<br />
+                <img class="d-block w-100" src="image/background/contact_1.png" alt="First slide">
+                <div class="container float-lg-right wrap-information">
+                    <div class="row">
+                        <div class="col-4 offset-8" style="padding-top:50px;">
+                            <h4 class="my-3">联系我们</h4>
+                            <p>
+                                深圳市鹏博教育科技有限公司<br />
+                                深圳市福田区华强北路 群星广场A座33层<br />
+                                邮编：518057<br />
+                                Tel：(86-755)8891-7769 <br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(86)185-6577-5930<br />
+                                Email：Partnership@iKCoder.com<br />
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -57,7 +59,7 @@
             setCurrentMenuItem('contact_Main_Menu');
             initFooter();
             initPage();
-            _adjustPageSize();            
+            _adjustPageSize(true);            
         });
     </script>
 </body>

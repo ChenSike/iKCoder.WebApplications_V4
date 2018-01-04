@@ -6,3 +6,7 @@ function initPage() {
 
 function initPageEvent() {
 };
+
+function adjustFormPos() {
+
+}
