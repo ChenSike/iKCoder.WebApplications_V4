@@ -13,8 +13,10 @@ var _gSections = [
     ]
 ];
 
+var _gImages = [];
+
 function initPage() {
-    prevLoadTipImg();
+    prevInitTipImg();
     initPageEvent();
 };
 
@@ -58,30 +60,20 @@ function initPageEvent() {
     });
 };
 
-function prevLoadTipImg() {
+function prevInitTipImg() {
     var items = _gSections[0];
+    _gImages = [];
+    _gLoadImgCallBack = buildHTMLSection_1;
     for (var i = 0; i < items.length; i++) {
-        if (i == items.length - 1) {
-            _loadIMG('image/tips/' + items[i].img + '.png', buildHTMLSection_1);
-        } else {
-            _loadIMG('image/tips/' + items[i].img + '.png');
-        }
+        _gImages.push('image/tips/' + items[i].img + '.png');
     }
+
+    _loadImages();
 };
 
-function _adjustPageSize(setHeight) {
+function _adjustPageSize() {
     $('#wrap_Main').css('top', '0px');
     $('#col_Wrap_Main').height('auto');
-    if (typeof setHeight == 'boolean' && setHeight == true) {
-        var wrapHeight = $('#wrap_Main').height();
-        var bodyHeight = $('body').height();
-        if (wrapHeight < bodyHeight) {
-            $('#col_Wrap_Main').height(bodyHeight - $('footer').height());
-        } else {
-            $('#col_Wrap_Main').height("auto");
-        }
-    }
-
     $('footer').css('top', $('#wrap_Main').height() + 'px');
     $('header').css('background-color', 'transparent');
 };

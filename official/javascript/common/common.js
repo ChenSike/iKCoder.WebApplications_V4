@@ -306,7 +306,18 @@ function _getLabel(key) {
     return _gLabelMap[key] ? _gLabelMap[key] : key;
 };
 
-function _loadIMG(src, callback) {
+var _gLoadImgCallBack = _adjustPageSize;
+function _loadImages() {
+    if (_gImages.length == 1) {
+        _loadImage(_gImages[0], _gLoadImgCallBack);
+    } else {
+        var tmpSrc = _gImages[0];
+        _gImages.shift();
+        _loadImage(tmpSrc, _loadImages);
+    }
+};
+
+function _loadImage(src, callback) {
     var img = new Image();
     img.src = src;
     img.onload = function () {
