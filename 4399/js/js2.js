@@ -1,11 +1,5 @@
-﻿function globalWrapFn (t) {
-    function e(t) {
-        var e = document.getElementsByTagName("head")[0],
-            i = document.createElement("script");
-        i.type = "text/javascript", i.charset = "utf-8", i.src = p.p + "" + t + "." + x + ".hot-update.js", e.appendChild(i);
-        console.log(i.src);
-    }
-
+﻿var _gloablObj = null;
+function globalWrapFn(t) {
     function i(t) {
         if ("undefined" == typeof XMLHttpRequest) return t(new Error("No browser support"));
         try {
@@ -98,7 +92,7 @@
                 var i = e._disposeHandlers.indexOf(t);
                 i >= 0 && e._disposeHandlers.splice(i, 1)
             },
-            check: a,
+            check: function () { },
             apply: u,
             status: function (t) {
                 return t ? void S.push(t) : T
@@ -123,21 +117,6 @@
     function s(t) {
         var e = +t + "" === t;
         return e ? +t : t
-    }
-
-    function a(t, e) {
-        if ("idle" !== T) throw new Error("check() is only allowed in idle status");
-        "function" == typeof t ? (_ = !1, e = t) : (_ = t, e = e || function (t) {
-            if (t) throw t
-        }), o("check"), i(function (t, i) {
-            if (t) return e(t);
-            if (!i) return o("idle"), void e(null, null);
-            C = {}, L = {}, A = {};
-            for (var n = 0; n < i.c.length; n++) L[i.c[n]] = !0;
-            y = i.h, o("prepare"), g = e, v = {};
-            var r = 0;
-            l(r), "prepare" === T && 0 === E && 0 === M && c()
-        })
     }
 
     function h(t, e) {

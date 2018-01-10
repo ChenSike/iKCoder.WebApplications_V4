@@ -25194,736 +25194,7 @@
             }, n.exports = o
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
-    function (t, e, i) {
-        var n;
-        n = function (t, e, n) {
-            var r = i(8),
-                o = (i(32), i(40)),
-                s = (i(41), i(44)),
-                a = i(48),
-                h = i(24),
-                l = i(49),
-                c = i(34),
-                u = i(37),
-                p = u.Translation,
-                d = i(51),
-                f = i(52),
-                m = i(50),
-                g = m.CharacterData,
-                v = i(18),
-                y = i(54),
-                _ = function (t) {
-                    r.Container.call(this), this.app = t, this.transition = new y(t), this.party = new f(1136, 800, 1), this.addChild(this.party), this.bg = new r.Container, this.addChild(this.bg);
-                    var e = v.getJson("config").config.LOCALE;
-                    this.local = e, this.logo = r.Sprite.from(ASSET_URL + p.title_screen.logo), this.logo.anchor.set(.5, .5), this.playButton = new s("quickplay-normal.png", "quickplay-hover.png", "quickplay-hover.png", p.title_screen.quick_play, 1.1), this.playButton.defaultScale = 1, this.playButton.onPress.add(this.onPlayButtonPressed, this), this.addChild(this.playButton), this.tournamentButton = new s("tournament-normal.png", "tournament-hover.png", "tournament-hover.png", p.title_screen.tournament, 1.1), this.tournamentButton.defaultScale = 1, this.tournamentButton.onPress.add(this.onTournamentButtonPressed, this), this.addChild(this.tournamentButton), this.leaderboardButton = new s("leaderboard-normal.png", "leaderboard-hover.png", "leaderboard-hover.png", p.title_screen.leaderboard, 1.1), this.leaderboardButton.defaultScale = 1, this.leaderboardButton.onPress.add(this.onLeaderboardButtonPressed, this), this.addChild(this.leaderboardButton), this.flash = new d, this.characters = [];
-                    for (var i = ["_uk"].indexOf(e) !== -1, n = layouts[e] || layouts.defualt, o = 0; o < n.length; o++) {
-                        4 == o && this.bg.addChild(this.logo);
-                        var h = n[o],
-                            l = r.Sprite.from(h.id);
-                        l.anchor.set(.5), l.scale.set(0), l.home = h.pos, l.count = a.random(-30, 30), l.wobbleSpeed = a.random(.05, .1), l.scaleWobble = h.scaleWobble, l.moveSpeed = a.random(.05, .2), l.yRange = h.yRange, l.moveCount = a.random(-30, 30), this.characters.push(l), this.bg.addChild(l)
-                    }
-                    this.ball = r.Sprite.fromFrame("logo_ball.png"), this.ball.anchor.set(.5, .5), this.ball.position.set(-86, -23), this.ballShadow = r.Sprite.fromFrame("logo_ball_shadow.png"), this.ballShadow.anchor.set(.5, .5), this.ballShadow.position.set(-86, -23), i && (this.logo.addChild(this.ball), this.logo.addChild(this.ballShadow)), this.ballAnim(), this.pos = new r.Point, this.chars = new r.Container, this.chars.addChild((new r.Graphics).beginFill(16777215).drawRect(-1e3, -1e3, 2e3, 2e3));
-                    var c = 0;
-                    for (var o in g) {
-                        var u = g[o],
-                            m = "blue",
-                            _ = u.spriteSheet.replace("%COLOR%", m),
-                            x = v.getJson("character-animation")[_],
-                            b = new r.Sprite.from(x.stand[0]);
-                        this.chars.addChild(b), b.anchor.x = 0, b.anchor.y = .87;
-                        b.texture;
-                        c++, b.x = 50 * c, b.y = 300
-                    }
-                    if (!window.WEBGL) {
-                        this.removeChild(this.playButton), this.removeChild(this.tournamentButton), this.removeChild(this.leaderboardButton);
-                        var w = new r.Text(p.title_screen.updateBrowser, {
-                            fill: "white",
-                            fontSize: 28,
-                            fontFamily: window.MAIN_FONT,
-                            stroke: !0,
-                            strokeThickness: 8,
-                            lineJoin: "round"
-                        });
-                        w.anchor.set(.5, .5), this.label = w, this.addChild(w)
-                    }
-                };
-            _.prototype = Object.create(r.Container.prototype), _.prototype.ballAnim = function () {
-                this.ball.rotation = Math.PI / 180, TweenLite.to(this.ball, 2, {
-                    rotation: 360 * Math.PI / 180,
-                    ease: Linear.easeNone,
-                    onComplete: this.ballAnim,
-                    onCompleteScope: this
-                })
-            }, _.prototype.goBackToMainSite = function () { }, _.prototype.onPlayButtonPressed = function () {
-                this.startGame(!1)
-            }, _.prototype.onTournamentButtonPressed = function () {
-                this.startGame(!0)
-            }, _.prototype.onLeaderboardButtonPressed = function () {
-                this.screenManager.gotoScreenByID(c.SCREEN_ID.LEADERBOARD), this.transition.reverse = !1
-            }, _.prototype.startGame = function (t) {
-                h.instance.android && (document.body.mozRequestFullScreen ? document.body.mozRequestFullScreen() : document.body.webkitRequestFullScreen && document.body.webkitRequestFullScreen()), this.app.breadcrumb.show(), this.app.breadcrumb.reset(), l.difficulty = 0, l.isTournament = t === !0, this.screenManager.gotoScreenByID(c.SCREEN_ID.COUNTRY_SELECT)
-            }, _.prototype.onHide = function () {
-                this.animating = !1
-            }, _.prototype.onShow = function () {
-                var t = this;
-                TweenLite.to(this.app.background, .4, {
-                    alpha: 1
-                }), this.app.spotLights.show(), o.play("menumusic2"), this.party.visible = !1, this.logo.scale.set(0), this.playButton.scale.set(0), this.tournamentButton.scale.set(0), this.leaderboardButton.scale.set(0), this.app.topMenu.setState("home"), this.app.breadcrumb.hide();
-                for (var e = 0; e < this.bg.children.length; e++)
-                    if (4 != e) {
-                        var i = this.bg.children[e];
-                        TweenLite.to(i.scale, 1, {
-                            x: 1,
-                            y: 1,
-                            ease: Elastic.easeOut,
-                            delay: .4 + .01 * e
-                        }), TweenLite.to(i.position, 1, {
-                            x: i.home.x,
-                            y: i.home.y,
-                            ease: Elastic.easeOut,
-                            delay: .4 + .01 * e
-                        })
-                    }
-                setTimeout(function () {
-                    t.animating = !0;
-                    for (var e = 0; e < t.characters.length; e++) {
-                        var i = t.characters[e];
-                        i.moveCount = 0;
-                        var n = i.yRange;
-                        i.yRange = 0, TweenLite.to(i, .8, {
-                            yRange: n
-                        })
-                    }
-                }, 1400), TweenLite.delayedCall(.4, function () {
-                    this.flash.flash(.2, 1), this.playButton.scale.set(.5), this.tournamentButton.scale.set(.5), this.leaderboardButton.scale.set(.5), this.party.visible = !0
-                }.bind(this));
-                var n = "_ru" === this.local ? 1.5 : 1;
-                TweenLite.to(this.logo.scale, 1, {
-                    x: n,
-                    y: n,
-                    ease: Elastic.easeOut,
-                    delay: .2
-                }), TweenLite.to(this.playButton.scale, 1, {
-                    x: 1,
-                    y: 1,
-                    ease: Elastic.easeOut,
-                    delay: .4
-                }), TweenLite.to(this.tournamentButton.scale, 1, {
-                    x: 1,
-                    y: 1,
-                    ease: Elastic.easeOut,
-                    delay: .4
-                }), TweenLite.to(this.leaderboardButton.scale, 1, {
-                    x: 1,
-                    y: 1,
-                    ease: Elastic.easeOut,
-                    delay: .4
-                })
-            }, _.prototype.updateTransform = function () {
-                if (this.party.update(this.pos), this.containerUpdateTransform(), this.animating)
-                    for (var t = 0; t < this.characters.length; t++) {
-                        var e = this.characters[t];
-                        e.count += e.wobbleSpeed, e.moveCount += e.moveSpeed, e.y = e.home.y + Math.sin(e.moveCount) * e.yRange
-                    }
-            }, _.prototype.resize = function (t, e) {
-                this.position.y = e / 2 - 372.5 - 40, h.instance.isMobile ? (this.bg.position.set(t / 2, 400), this.playButton.position.set(250, 610), this.tournamentButton.position.set(t / 2, 610), this.leaderboardButton.position.set(t - 250, 610), this.label && this.label.position.set(t / 2, 625)) : (this.bg.position.set(t / 2, 400), this.playButton.position.set(250, 675), this.tournamentButton.position.set(t / 2, 675), this.leaderboardButton.position.set(t - 250, 675), this.label && this.label.position.set(t / 2, 675)), this.flash.resize(t, e)
-            };
-            var x = [{
-                id: "title_mojo.png",
-                pos: {
-                    x: -225,
-                    y: -171
-                },
-                scaleWobble: .025,
-                yRange: 5
-            }, {
-                id: "title_xlr8.png",
-                pos: {
-                    x: 252,
-                    y: -99
-                },
-                scaleWobble: .025,
-                yRange: 5
-            }, {
-                id: "title_grup.png",
-                pos: {
-                    x: 27,
-                    y: -216
-                },
-                scaleWobble: .05,
-                yRange: 10
-            }, {
-                id: "title_bears.png",
-                pos: {
-                    x: -58.5,
-                    y: -63
-                },
-                scaleWobble: .05,
-                yRange: 10
-            }, {
-                id: "title_blossom.png",
-                pos: {
-                    x: 198,
-                    y: -108
-                },
-                scaleWobble: .025,
-                yRange: 5
-            }, {
-                id: "title_ben.png",
-                pos: {
-                    x: -399,
-                    y: -126
-                },
-                scaleWobble: .025,
-                yRange: 5
-            }, {
-                id: "title_buttercup.png",
-                pos: {
-                    x: -337.25,
-                    y: -85.5
-                },
-                scaleWobble: .025,
-                yRange: 5
-            }, {
-                id: "title_finn.png",
-                pos: {
-                    x: -283.5,
-                    y: 90
-                },
-                scaleWobble: .015,
-                yRange: 5
-            }, {
-                id: "title_gumball.png",
-                pos: {
-                    x: 247.5,
-                    y: 27
-                },
-                scaleWobble: .01,
-                yRange: 5
-            }],
-                b = [{
-                    id: "title_mojo.png",
-                    pos: {
-                        x: -225,
-                        y: -171
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_xlr8.png",
-                    pos: {
-                        x: 252,
-                        y: -99
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_grup.png",
-                    pos: {
-                        x: 27,
-                        y: -216
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_bears.png",
-                    pos: {
-                        x: -58.5,
-                        y: -63
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_blossom.png",
-                    pos: {
-                        x: 270,
-                        y: -108
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_ben.png",
-                    pos: {
-                        x: -399,
-                        y: -126
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_buttercup.png",
-                    pos: {
-                        x: -337.25,
-                        y: -85.5
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_finn.png",
-                    pos: {
-                        x: -283.5,
-                        y: 90
-                    },
-                    scaleWobble: .015,
-                    yRange: 5
-                }, {
-                    id: "title_gumball.png",
-                    pos: {
-                        x: 310.5,
-                        y: 27
-                    },
-                    scaleWobble: .01,
-                    yRange: 5
-                }],
-                w = [{
-                    id: "title_mojo.png",
-                    pos: {
-                        x: -225,
-                        y: -171
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_xlr8.png",
-                    pos: {
-                        x: 252,
-                        y: -99
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_grup.png",
-                    pos: {
-                        x: 27,
-                        y: -216
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_bears.png",
-                    pos: {
-                        x: -58.5,
-                        y: -81
-                    },
-                    scaleWobble: .05,
-                    yRange: 4
-                }, {
-                    id: "title_blossom.png",
-                    pos: {
-                        x: 207,
-                        y: -108
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_ben.png",
-                    pos: {
-                        x: -399,
-                        y: -126
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_buttercup.png",
-                    pos: {
-                        x: -337.25,
-                        y: -85.5
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_finn.png",
-                    pos: {
-                        x: -283.5,
-                        y: 90
-                    },
-                    scaleWobble: .015,
-                    yRange: 5
-                }, {
-                    id: "title_gumball.png",
-                    pos: {
-                        x: 301.5,
-                        y: 27
-                    },
-                    scaleWobble: .01,
-                    yRange: 5
-                }],
-                S = [{
-                    id: "title_mojo.png",
-                    pos: {
-                        x: -225,
-                        y: -171
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_xlr8.png",
-                    pos: {
-                        x: 252,
-                        y: -99
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_grup.png",
-                    pos: {
-                        x: 27,
-                        y: -216
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_bears.png",
-                    pos: {
-                        x: 22.5,
-                        y: -81
-                    },
-                    scaleWobble: .05,
-                    yRange: 4
-                }, {
-                    id: "title_blossom.png",
-                    pos: {
-                        x: 202.5,
-                        y: -63
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_ben.png",
-                    pos: {
-                        x: -399,
-                        y: -126
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_buttercup.png",
-                    pos: {
-                        x: -289.75,
-                        y: -85.5
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_finn.png",
-                    pos: {
-                        x: -283.5,
-                        y: 90
-                    },
-                    scaleWobble: .015,
-                    yRange: 5
-                }, {
-                    id: "title_gumball.png",
-                    pos: {
-                        x: 315,
-                        y: 27
-                    },
-                    scaleWobble: .01,
-                    yRange: 5
-                }],
-                T = [{
-                    id: "title_mojo.png",
-                    pos: {
-                        x: -225,
-                        y: -171
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_xlr8.png",
-                    pos: {
-                        x: 252,
-                        y: -99
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_grup.png",
-                    pos: {
-                        x: 27,
-                        y: -216
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_bears.png",
-                    pos: {
-                        x: -76.5,
-                        y: -99
-                    },
-                    scaleWobble: .05,
-                    yRange: 4
-                }, {
-                    id: "title_blossom.png",
-                    pos: {
-                        x: 216,
-                        y: -63
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_ben.png",
-                    pos: {
-                        x: -399,
-                        y: -126
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_buttercup.png",
-                    pos: {
-                        x: -337.25,
-                        y: -85.5
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_finn.png",
-                    pos: {
-                        x: -283.5,
-                        y: 90
-                    },
-                    scaleWobble: .015,
-                    yRange: 5
-                }, {
-                    id: "title_gumball.png",
-                    pos: {
-                        x: 297,
-                        y: 63
-                    },
-                    scaleWobble: .01,
-                    yRange: 5
-                }],
-                M = [{
-                    id: "title_mojo.png",
-                    pos: {
-                        x: -225,
-                        y: -171
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_xlr8.png",
-                    pos: {
-                        x: 252,
-                        y: -99
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_grup.png",
-                    pos: {
-                        x: 27,
-                        y: -216
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_bears.png",
-                    pos: {
-                        x: 58.5,
-                        y: -63
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_blossom.png",
-                    pos: {
-                        x: 234,
-                        y: -72
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_ben.png",
-                    pos: {
-                        x: -399,
-                        y: -126
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_buttercup.png",
-                    pos: {
-                        x: -232.75,
-                        y: -112.5
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_finn.png",
-                    pos: {
-                        x: -283.5,
-                        y: 90
-                    },
-                    scaleWobble: .015,
-                    yRange: 5
-                }, {
-                    id: "title_gumball.png",
-                    pos: {
-                        x: 337.5,
-                        y: 27
-                    },
-                    scaleWobble: .01,
-                    yRange: 5
-                }],
-                E = [{
-                    id: "title_mojo.png",
-                    pos: {
-                        x: -225,
-                        y: -171
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_xlr8.png",
-                    pos: {
-                        x: 252,
-                        y: -99
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_grup.png",
-                    pos: {
-                        x: 27,
-                        y: -216
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_bears.png",
-                    pos: {
-                        x: -58.5,
-                        y: -72
-                    },
-                    scaleWobble: .05,
-                    yRange: 4
-                }, {
-                    id: "title_blossom.png",
-                    pos: {
-                        x: 207,
-                        y: -135
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_ben.png",
-                    pos: {
-                        x: -399,
-                        y: -126
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_buttercup.png",
-                    pos: {
-                        x: -337.25,
-                        y: -85.5
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_finn.png",
-                    pos: {
-                        x: -283.5,
-                        y: 90
-                    },
-                    scaleWobble: .015,
-                    yRange: 5
-                }, {
-                    id: "title_gumball.png",
-                    pos: {
-                        x: 310.5,
-                        y: 27
-                    },
-                    scaleWobble: .01,
-                    yRange: 5
-                }],
-                A = [{
-                    id: "title_mojo.png",
-                    pos: {
-                        x: -225,
-                        y: -171
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_xlr8.png",
-                    pos: {
-                        x: 252,
-                        y: -99
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_grup.png",
-                    pos: {
-                        x: 27,
-                        y: -216
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_bears.png",
-                    pos: {
-                        x: -58.5,
-                        y: -108
-                    },
-                    scaleWobble: .05,
-                    yRange: 10
-                }, {
-                    id: "title_blossom.png",
-                    pos: {
-                        x: 234,
-                        y: -108
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_ben.png",
-                    pos: {
-                        x: -399,
-                        y: -126
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_buttercup.png",
-                    pos: {
-                        x: -337.25,
-                        y: -85.5
-                    },
-                    scaleWobble: .025,
-                    yRange: 5
-                }, {
-                    id: "title_finn.png",
-                    pos: {
-                        x: -283.5,
-                        y: 90
-                    },
-                    scaleWobble: .015,
-                    yRange: 5
-                }, {
-                    id: "title_gumball.png",
-                    pos: {
-                        x: 301.5,
-                        y: 27
-                    },
-                    scaleWobble: .01,
-                    yRange: 5
-                }];
-            layouts = {
-                defualt: x,
-                _tr: b,
-                _ru: w,
-                _ro: S,
-                _pt: T,
-                _pl: M,
-                _es: A,
-                _hu: E
-            }, n.exports = _
-        }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
-    },
+    titleScreenFn,
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -27312,129 +26583,7 @@
             })
         }, t.exports = i
     },
-    function (t, e, i) {
-        "use strict";
-
-        function n(t) {
-            return t && t.__esModule ? t : {
-                "default": t
-            }
-        }
-
-        function r(t) {
-            if (t && t.__esModule) return t;
-            var e = {};
-            if (null != t)
-                for (var i in t) Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
-            return e["default"] = t, e
-        }
-
-        function o(t, e) {
-            if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function")
-        }
-
-        function s(t, e) {
-            if (!t) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-            return !e || "object" != typeof e && "function" != typeof e ? t : e
-        }
-
-        function a(t, e) {
-            if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-            t.prototype = Object.create(e && e.prototype, {
-                constructor: {
-                    value: t,
-                    enumerable: !1,
-                    writable: !0,
-                    configurable: !0
-                }
-            }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(t, e) : t.__proto__ = e)
-        }
-        e.__esModule = !0;
-        var h = i(8),
-            l = r(h),
-            c = i(41),
-            u = n(c),
-            p = i(65),
-            d = n(p),
-            f = i(66),
-            m = n(f),
-            g = i(57),
-            v = n(g),
-            y = i(38),
-            _ = (n(y), i(49)),
-            x = n(_),
-            b = i(24),
-            w = n(b),
-            S = i(34),
-            T = n(S),
-            M = i(37),
-            E = i(61),
-            A = n(E),
-            C = i(67),
-            L = (n(C), function (t) {
-                function e(i) {
-                    o(this, e);
-                    var n = s(this, t.call(this));
-                    n.app = i, n.ranking = [], n.scaleRatio = .8, n.blocked = !1, n.bg = l.Sprite.from(ASSET_URL + "img/ui/country-select-panel.png"), n.bg.anchor.set(.5, .5), n.addChild(n.bg), n.title = v["default"].h1(M.Translation.country_select_screen.title), n.title.anchor.set(.5, .5), n.addChild(n.title), n.flagsContainer = new l.Container, n.flagsContainer.scale.set(n.scaleRatio), n.bg.addChild(n.flagsContainer), n.countries = (0, M.getCountries)(), n.buttonList = [];
-                    for (var r, a, h = 0, h = 0, c = 0, p = 6, f = 0, g = 0; g < n.countries.length; g++) r = n.countries[g], a = u["default"].country(r.FLAG), a.onHover2.add(n.onCountryButtonHover, n), w["default"].instance.isMobile ? a.onPress.add(n.onCountryButtonHover, n) : a.onPress.add(n.onCountryButtonPressed, n), a.onMouseOut.add(n.onCountryButtonMouseOut, n), n.buttonList.push(a), g < 4 || g > n.countries.length - 5 ? (c = a.width + T["default"].COUNTRY_SELECT.MARGIN, p = 4, f = 0, g > n.countries.length - 5 && (f = 6)) : (f = 4, c = 0, p = 6), (g - f) % p === 0 && 0 !== g && h++, a.position.x = (a.width + T["default"].COUNTRY_SELECT.MARGIN) * (g % p) + c, a.position.y = (a.height + T["default"].COUNTRY_SELECT.MARGIN) * h, a.id = r.ID, n.flagsContainer.addChild(a);
-                    return n.bgc = new l.Graphics, n.bgc.beginFill(4095 * Math.random()), n.bgc.drawRect(0, 0, n.flagsContainer.width, n.flagsContainer.height), n.flagsContainer.position.set(-n.flagsContainer.width / 2 + a.width / 2 - T["default"].COUNTRY_SELECT.MARGIN / 2, -n.flagsContainer.height / 2 + a.height / 2 - T["default"].COUNTRY_SELECT.MARGIN / 2), n.countryGroup = new d["default"](n.buttonList, 1), n.toolTip = new m["default"], n.bg.addChild(n.toolTip), n.toolTip.onDown.add(n.onCountryButtonPressed.bind(n)), n.hoverDebounce = 0, n
-                }
-                return a(e, t), e.prototype.onCountryButtonPressed = function (t) {
-                    if ((t.selected || this.currentButton) && 0 == this.blocked) {
-                        var e = M.Translation.countries[t.id || this.currentButton.id];
-                        this.blocked = !0, x["default"].countryID = e, this.app.breadcrumb.currentItem.updateTexture(e.FLAG), this.app.breadcrumb.next()
-                    }
-                }, e.prototype.updateTransform = function () {
-                    t.prototype.updateTransform.call(this), this.currentTime = Date.now()
-                }, e.prototype.onCountryButtonHover = function (t) {
-                    this.currentButton === t && this.onCountryButtonPressed(t), w["default"].instance.isMobile && (this.currentButton = t), this.hoverDebounce++;
-                    var e = {
-                        name: M.Translation.countries[t.id].NAME,
-                        label: M.Translation.country_select_screen.toolTip,
-                        ranking: this.getRank(M.Translation.countries[t.id].SCORE_ID)
-                    },
-                        i = {
-                            x: t.position.x * this.scaleRatio + this.flagsContainer.position.x,
-                            y: (t.position.y + t.height / 2) * this.scaleRatio + this.flagsContainer.position.y
-                        };
-                    TweenLite.to(this.toolTip.position, .25, {
-                        x: i.x,
-                        y: i.y,
-                        ease: Linear.None
-                    }), this.toolTip.show(e)
-                }, e.prototype.onCountryButtonMouseOut = function (t) {
-                    this.hoverDebounce < 2 && this.toolTip.hide(), this.hoverDebounce = 0
-                }, e.prototype.getRank = function (t) {
-                    var e = 0;
-                    for (var i in this.ranking)
-                        if (Number(this.ranking[i].id) == t) return e = this.ranking[i].rank;
-                    return e
-                }, e.prototype.onShow = function () {
-                    this.toolTip.hide(), this.blocked = !1, A["default"].getScores(function (t) {
-                        this.ranking = t
-                    }.bind(this), !0), this.currentButton = null, this.bg.scale.set(0), this.app.breadcrumb.hidden && (this.app.breadcrumb.show(), this.app.breadcrumb.reset()), this.app.topMenu.prevScreen = T["default"].SCREEN_ID.TITLE, this.app.topMenu.nextScreen = T["default"].SCREEN_ID.CAPTAIN_SELECT, this.app.breadcrumb.steps[0].hasBeenActivate || (this.countryGroup.reset(), this.app.breadcrumb.steps[0].activate()), this.app.breadcrumb.maxStepIndexRiched < 1 ? this.app.topMenu.setState("prev") : this.app.topMenu.setState("prevnext"), TweenLite.to(this.bg.scale, 1, {
-                        x: w["default"].instance.isMobile ? .9 : 1,
-                        y: w["default"].instance.isMobile ? .9 : 1,
-                        ease: Elastic.easeOut,
-                        delay: .2
-                    }), this.title.scale.set(0), TweenLite.to(this.title.scale, 1, {
-                        x: 1,
-                        y: 1,
-                        ease: Elastic.easeOut,
-                        delay: .2
-                    })
-                }, e.prototype.onShown = function () {
-                    for (var t = void 0, e = void 0, i = 0; i < this.app.stage.children.length; i++) {
-                        var n = this.app.stage.children[i];
-                        "breabcrumb" === n.name && (t = n), "screenmanager" === n.name && (e = n)
-                    }
-                    this.app.stage.children[2] = t, this.app.stage.children[3] = e
-                }, e.prototype.resize = function (t, e) {
-                    this.bg.position.set(t / 2, e / 2), this.title.position.y = T["default"].MARGIN.TITLE_TOP, this.title.position.x = t / 2
-                }, e
-            }(l.Container));
-        e["default"] = L, t.exports = e["default"]
-    },
+    countrySelectScreenFn,
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -28335,189 +27484,7 @@
             }(h["default"]);
         e["default"] = m, t.exports = e["default"]
     },
-    function (t, e, i) {
-        "use strict";
-
-        function n(t) {
-            return t && t.__esModule ? t : {
-                "default": t
-            }
-        }
-
-        function r(t) {
-            if (t && t.__esModule) return t;
-            var e = {};
-            if (null != t)
-                for (var i in t) Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
-            return e["default"] = t, e
-        }
-
-        function o(t, e) {
-            if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function")
-        }
-
-        function s(t, e) {
-            if (!t) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-            return !e || "object" != typeof e && "function" != typeof e ? t : e
-        }
-
-        function a(t, e) {
-            if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-            t.prototype = Object.create(e && e.prototype, {
-                constructor: {
-                    value: t,
-                    enumerable: !1,
-                    writable: !0,
-                    configurable: !0
-                }
-            }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(t, e) : t.__proto__ = e)
-        }
-        e.__esModule = !0;
-        var h = i(8),
-            l = r(h),
-            c = i(49),
-            u = n(c),
-            p = i(34),
-            d = n(p),
-            f = i(37),
-            m = i(50),
-            g = i(60),
-            v = n(g),
-            y = i(57),
-            _ = n(y),
-            x = i(67),
-            b = n(x),
-            w = i(48),
-            S = n(w),
-            T = i(32),
-            M = n(T),
-            E = function (t) {
-                function e(i) {
-                    o(this, e);
-                    var n = s(this, t.call(this));
-                    window.teamr = n, n.app = i, n.transition = new b["default"](n.app), n.cams = [];
-                    for (var r = 0; r < 20; r++) {
-                        var a = new l.Sprite.from("camera-flash.png");
-                        n.cams.push(a)
-                    }
-                    n.title = _["default"].h1(f.Translation.review_screen.title), n.title.anchor.set(.5, .5), n.captain = new l.Sprite, n.captain.anchor.set(.5, 1), n.captain.offset = {
-                        x: 0,
-                        y: 0
-                    }, n.firstTeamMember = new l.Sprite, n.firstTeamMember.anchor.set(.5, 1), n.firstTeamMember.offset = {
-                        x: 0,
-                        y: 0
-                    }, n.secondTeamMember = new l.Sprite, n.secondTeamMember.anchor.set(.5, 1), n.secondTeamMember.offset = {
-                        x: 0,
-                        y: 0
-                    };
-                    for (var r = 0; r < n.cams.length / 2; r++) n.addChild(n.cams[r]);
-                    n.addChild(n.firstTeamMember), n.addChild(n.secondTeamMember), n.addChild(n.captain);
-                    for (var r = n.cams.length / 2; r < n.cams.length; r++) n.addChild(n.cams[r]);
-                    n.flash = new l.Graphics, n.flash.beginFill(16777215), n.flash.drawRect(0, 0, 100, 100), n.flash.alpha = 0, n.addChild(n.flash), n.tick = 0, n.rand = {
-                        c: S["default"].random(-.6, .6),
-                        f: S["default"].random(-.6, .6),
-                        s: S["default"].random(-.6, .6)
-                    }, n.playButton = new l.Sprite.from("play_text_button.png"), n.playButton.interactive = !0, n.playButton.buttonMode = !0, n.playButton.anchor.x = .5, n.playButton.anchor.y = .5;
-                    var h = new l.Texture.fromImage("breadcrumb-play-til-on.png");
-                    return n.pbg = new l.extras.TilingSprite(h, n.playButton.width - 24, n.playButton.height - 24), n.pbg.anchor.x = .5, n.pbg.anchor.y = .5, n.pbg.position.x = -3, n.pbg.position.y = -3, n.playButton.addChild(n.pbg), n.pbtext = new _["default"].h1(translations.STR_PLAY_BUTTON), n.pbtext.anchor.x = .5, n.pbtext.anchor.y = .5, n.playButton.addChild(n.pbtext), n.playButton.mouseover = function () {
-                        TweenLite.to(this.playButton.scale, .3, {
-                            x: 1.1,
-                            y: 1.1
-                        })
-                    }.bind(n), n.playButton.mouseout = function () {
-                        TweenLite.to(this.playButton.scale, .3, {
-                            x: 1,
-                            y: 1
-                        })
-                    }.bind(n), n.playButton.mouseup = n.playButton.touchend = function () {
-                        M["default"].sfx.play("button_press"), TweenLite.to(this.playButton.scale, .3, {
-                            x: .7,
-                            y: .7,
-                            ease: Expo.easeOut
-                        }), TweenLite.to(this.playButton, .4, {
-                            alpha: 0,
-                            ease: Expo.easeOut
-                        }), u["default"].isTournament ? this.app.screenManager.gotoScreenByID(d["default"].SCREEN_ID.TOURNAMENT) : (this.app.screenManager.gotoScreenByID(d["default"].SCREEN_ID.GAME), this.app.breadcrumb.hide()), this.app.spotLights.hide()
-                    }.bind(n), n.addChild(n.playButton), n.addChild(n.title), n
-                }
-                return a(e, t), e.prototype.updateTransform = function () {
-                    t.prototype.updateTransform.call(this), this.tick += .1, this.pbg.tilePosition.x -= 1.2, this.pbtext.rotation = Math.PI / 180 * 5 * Math.sin(2 * this.tick), this.captain.position.x = this.w / 2 + this.captain.offset.x + 3 * Math.cos(this.tick * this.rand.c), this.captain.position.y = this.h / 1.3 + this.captain.offset.y + 3 * Math.sin(this.tick * this.rand.c), this.firstTeamMember.position.x = this.w / 4 + this.firstTeamMember.offset.x + 2 * Math.cos(this.tick * this.rand.f), this.firstTeamMember.position.y = this.h / 1.3 + this.firstTeamMember.offset.y + 2 * Math.sin(this.tick * this.rand.f), this.secondTeamMember.position.x = this.w / 2 + this.w / 4 + this.secondTeamMember.offset.x + 2 * Math.cos(this.tick * this.rand.s), this.secondTeamMember.position.y = this.h / 1.3 + this.secondTeamMember.offset.y + 2 * Math.sin(this.tick * this.rand.s)
-                }, e.prototype.onHide = function () {
-                    this.stop = !0, TweenLite.to(this.captain.offset, 2, {
-                        y: 500,
-                        ease: Quad.easeOut
-                    }), TweenLite.to(this.firstTeamMember.offset, 2, {
-                        y: 500,
-                        ease: Quad.easeOut
-                    }), TweenLite.to(this.secondTeamMember.offset, 2, {
-                        y: 500,
-                        ease: Quad.easeOut
-                    })
-                }, e.prototype.onShow = function () {
-                    this.stop = !1, this.epilepsy(), this.app.spotLights.show(), this.app.breadcrumb.show(!0), this.app.topMenu.prevScreen = d["default"].SCREEN_ID.PLAYER_SELECT_2, this.captain.texture = new l.Texture.fromImage(u["default"].teamA[0].profile), this.firstTeamMember.texture = new l.Texture.fromImage(u["default"].teamA[1].profile), this.secondTeamMember.texture = new l.Texture.fromImage(u["default"].teamA[2].profile), this.captain.offset.x = u["default"].teamA[0].offsetReview && u["default"].teamA[0].offsetReview.x ? u["default"].teamA[0].offsetReview.x : 0, this.captain.offset.y = u["default"].teamA[0].offsetReview && u["default"].teamA[0].offsetReview.y ? u["default"].teamA[0].offsetReview.y : 0, this.firstTeamMember.offset.x = u["default"].teamA[1].offsetReview && u["default"].teamA[1].offsetReview.x ? u["default"].teamA[1].offsetReview.x : 0, this.firstTeamMember.offset.y = u["default"].teamA[1].offsetReview && u["default"].teamA[1].offsetReview.y ? u["default"].teamA[1].offsetReview.y : 0, this.secondTeamMember.offset.x = u["default"].teamA[2].offsetReview && u["default"].teamA[2].offsetReview.x ? u["default"].teamA[2].offsetReview.x : 0, this.secondTeamMember.offset.y = u["default"].teamA[2].offsetReview && u["default"].teamA[2].offsetReview.y ? u["default"].teamA[2].offsetReview.y : 0, this.buildTeam(), this.captain.scale.set(0), TweenLite.to(this.captain.scale, 1, {
-                        x: Device.instance.isMobile ? .9 : 1.2,
-                        y: Device.instance.isMobile ? .9 : 1.2,
-                        ease: Elastic.easeOut,
-                        delay: .2
-                    }), this.playButton.alpha = 1, this.playButton.scale.set(0), TweenLite.to(this.playButton.scale, 1, {
-                        x: Device.instance.isMobile ? .9 : 1,
-                        y: Device.instance.isMobile ? .9 : 1,
-                        ease: Elastic.easeOut,
-                        delay: .3
-                    }), this.firstTeamMember.scale.set(0), TweenLite.to(this.firstTeamMember.scale, 1, {
-                        x: Device.instance.isMobile ? .9 : 1.2,
-                        y: Device.instance.isMobile ? .9 : 1.2,
-                        ease: Elastic.easeOut,
-                        delay: .2
-                    }), this.secondTeamMember.scale.set(0), TweenLite.to(this.secondTeamMember.scale, 1, {
-                        x: Device.instance.isMobile ? .9 : 1.2,
-                        y: Device.instance.isMobile ? .9 : 1.2,
-                        ease: Elastic.easeOut,
-                        delay: .2
-                    }), this.title.scale.set(0), TweenLite.to(this.title.scale, 1, {
-                        x: 1,
-                        y: 1,
-                        ease: Elastic.easeOut,
-                        delay: .2
-                    })
-                }, e.prototype.buildTeam = function () {
-                    u["default"].tournamentData.quarter = [], u["default"].tournamentData.semi = [], u["default"].tournamentData["final"] = [], u["default"].tournamentData.winner = [], u["default"].matchResult.goalsA = u["default"].matchResult.goalsB = -1;
-                    var t = [];
-                    for (var e in m.CharacterData) t.push(m.CharacterData[e]);
-                    for (var e = 0; e < u["default"].teamA.length; e++) {
-                        var i = t.indexOf(u["default"].teamA[e]);
-                        i !== -1 && t.splice(i, 1)
-                    }
-                    v["default"].shuffle(t), u["default"].teamB = t.slice(0, 3);
-                    var n = [];
-                    for (e in f.Translation.countries) {
-                        var r = f.Translation.countries[e];
-                        u["default"].countryID !== r && n.push(r)
-                    }
-                    if (v["default"].shuffle(n), n = n.slice(0, 7), u["default"].isTournament) {
-                        n.push(u["default"].countryID), v["default"].shuffle(n);
-                        var o = [],
-                            s = 2;
-                        for (e = 0; e < n.length; e += s) o.push(n.slice(e, e + s));
-                        u["default"].tournamentData.quarter = o.slice()
-                    } else u["default"].opponentID = n[0]
-                }, e.prototype.onShown = function () { }, e.prototype.epilepsy = function () {
-                    var t = this;
-                    setTimeout(function () {
-                        t.stop || t.epilepsy()
-                    }, 1500 * Math.random() + 300), this.flash.alpha = 1, TweenLite.to(this.flash, .5 * Math.random() + .3, {
-                        alpha: 0,
-                        ease: Elastic.easeOut
-                    });
-                    for (var e = 0; e < this.cams.length; e++) this.cams[e].position.x = Math.random() * this.w, this.cams[e].position.y = this.h / 2 + 200 * Math.random() - 100, this.cams[e].alpha = 1, this.cams[e].scale.set(S["default"].random(.1, 2)), TweenLite.to(this.cams[e], Math.random() + .3, {
-                        alpha: 0
-                    })
-                }, e.prototype.resize = function (t, e) {
-                    this.w = t, this.h = e, this.flash.width = t, this.flash.height = e, this.title.position.y = d["default"].MARGIN.TITLE_TOP, this.title.position.x = t / 2, this.playButton.position.x = t / 2, this.playButton.position.y = e / 1.3, this.captain.position.x = t / 2 + this.captain.offset.x, this.captain.position.y = e / 1.3 + this.captain.offset.y, this.firstTeamMember.position.x = t / 4 + this.firstTeamMember.offset.x, this.firstTeamMember.position.y = e / 1.3 + this.firstTeamMember.offset.x, this.secondTeamMember.position.x = t / 2 + t / 4 + this.secondTeamMember.offset.x, this.secondTeamMember.position.y = e / 1.3 + this.secondTeamMember.offset.x
-                }, e
-            }(l.Container);
-        e["default"] = E, t.exports = e["default"]
-    },
+    teamReviewScreenFn,
     function (t, e, i) {
         "use strict";
 
@@ -29140,59 +28107,9 @@
             }, n.exports = a
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    gameOverScreenFn,
     function (t, e, i) {
-        var n;
-        n = function (t, e, n) {
-            var r = i(8),
-                o = (i(32), i(41)),
-                s = (i(38), i(57)),
-                a = i(34),
-                h = i(49),
-                l = i(37),
-                c = l.Translation;
-            GameoverScreen = function (t) {
-                r.Container.call(this), this.app = t, this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-various-paused-bg.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg), this.title = new s.h1(c.gameover_screen.title), this.title.anchor.set(.5), this.title.position.set(0, -this.bg.height / 2 - 35), this.bg.addChild(this.title), this.flag = null, this.flag2 = null;
-                var e = {
-                    fill: "white",
-                    fontSize: 20,
-                    fontFamily: window.MAIN_FONT,
-                    stroke: !0,
-                    strokeThickness: 8,
-                    lineJoin: "round",
-                    align: "center"
-                };
-                this.labelCountry = new r.Text("", e), this.labelCountry.anchor.set(.5), this.labelCountry.position.set(-125, 0), this.bg.addChild(this.labelCountry), this.labelCountry2 = new r.Text("", e), this.labelCountry2.anchor.set(.5), this.labelCountry2.position.set(125, 0), this.bg.addChild(this.labelCountry2), e = {
-                    fill: "white",
-                    fontSize: 100,
-                    fontFamily: window.MAIN_FONT,
-                    stroke: !0,
-                    strokeThickness: 8,
-                    lineJoin: "round",
-                    align: "center"
-                }, this.labelScore = new r.Text("", e), this.labelScore.anchor.set(.5), this.labelScore.position.set(-125, 75), this.bg.addChild(this.labelScore), this.labelVs = new r.Text("-", e), this.labelVs.anchor.set(.5), this.labelVs.position.set(0, 75), this.bg.addChild(this.labelVs), this.labelScore2 = new r.Text("", e), this.labelScore2.anchor.set(.5), this.labelScore2.position.set(125, 75), this.bg.addChild(this.labelScore2), this.restartButton = o.big("icon-back.png"), this.restartButton.position.set(-425, 290), this.restartButton.onPress.add(this.onRestartButtonPressed, this), this.nextButton = o.big("icon-back.png"), this.nextButton.position.set(380, 200), this.nextButton.icon.rotation = Math.PI, this.nextButton.onPress.add(this.onNextButtonPressed, this), this.bg.addChild(this.nextButton)
-            }, GameoverScreen.prototype = Object.create(r.Container.prototype), GameoverScreen.prototype.onRestartButtonPressed = function () {
-                this.screenManager.gotoScreenByID(a.SCREEN_ID.GAME)
-            }, GameoverScreen.prototype.onNextButtonPressed = function () {
-                this.screenManager.gotoScreenByID(a.SCREEN_ID.TITLE)
-            }, GameoverScreen.prototype.updateContent = function () {
-                null !== this.flag && (this.bg.removeChild(this.flag), this.bg.removeChild(this.flag2));
-                var t = h.countryID,
-                    e = h.opponentID;
-                this.flag = new r.Sprite.fromFrame(t.FLAG), this.flag.anchor.set(.5, .5), this.flag.scale.set(.9), this.flag.position.set(-125, -75), this.bg.addChild(this.flag), this.flag2 = new r.Sprite.fromFrame(e.FLAG), this.flag2.anchor.set(.5, .5), this.flag2.scale.set(.9), this.flag2.position.set(125, -75), this.bg.addChild(this.flag2), this.labelCountry.text = c.countries[t.ID].NAME, this.labelCountry2.text = c.countries[e.ID].NAME, this.labelScore.text = "" + this.app.game.goalsA, this.labelScore2.text = "" + this.app.game.goalsB
-            }, GameoverScreen.prototype.onShow = function () {
-                this.updateContent(), this.bg.scale.set(0), this.app.topMenu.setState("home"), TweenLite.to(this.bg.scale, 1, {
-                    x: 1,
-                    y: 1,
-                    ease: Elastic.easeOut,
-                    delay: .2
-                })
-            }, GameoverScreen.prototype.onShown = function () { }, GameoverScreen.prototype.resize = function (t, e) {
-                this.position.y = e / 2 - 372.5 - 40, this.bg.position.set(t / 2, 440)
-            }, n.exports = GameoverScreen
-        }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
-    },
-    function (t, e, i) {
-        var n;
+        var n = null;
         n = function (t, e, n) {
             var r = i(8),
                 o = (i(32), i(40), i(92)),
@@ -29201,33 +28118,60 @@
                 h = i(49),
                 l = i(61),
                 c = function (t) {
-                    r.Container.call(this), this.app = t, this.game = new o, this.game.onGameover.add(this.onGameover, this), this.addChild(this.game.view), this.app.game = this.game, this.transition = new s
+                    r.Container.call(this),
+                    this.app = t,
+                    this.game = new o,
+                    this.game.onGameover.add(this.onGameover, this),
+                    this.addChild(this.game.view),
+                    this.app.game = this.game,
+                    this.transition = new s
+                    _gloablObj = this;
                 };
-            c.prototype = Object.create(r.Container.prototype), c.prototype.onShow = function () {
+            c.prototype = Object.create(r.Container.prototype),
+            c.prototype.onShow = function () {
                 TweenLite.to(this.app.background, .4, {
                     alpha: 0,
                     delay: .4
-                }), this.game.start(), this.app.overlayManager.onShow.add(this.onOverlayShow, this), this.app.overlayManager.onHide.add(this.onOverlayHide, this), this.app.topMenu.setState("game")
-            }, c.prototype.quit = function () {
+                }),
+                this.game.start(),
+                this.app.overlayManager.onShow.add(this.onOverlayShow, this),
+                this.app.overlayManager.onHide.add(this.onOverlayHide, this),
+                this.app.topMenu.setState("game")
+            },
+            c.prototype.quit = function () {
                 this.screenManager.gotoScreenByID(a.SCREEN_ID.TITLE)
-            }, c.prototype.onGameover = function () {
+            },
+            c.prototype.onGameover = function () {
                 var t = h.matchResult.goalsA - h.matchResult.goalsB,
                     e = h.countryID.SCORE_ID;
-                l.sendScore(e, t), h.isTournament === !0 ? this.screenManager.gotoScreenByID(a.SCREEN_ID.TOURNAMENT) : this.screenManager.gotoScreenByID(a.SCREEN_ID.GAMEOVER)
-            }, c.prototype.onShown = function () { }, c.prototype.onHide = function () {
+                l.sendScore(e, t),
+                h.isTournament === !0 ? this.screenManager.gotoScreenByID(a.SCREEN_ID.TOURNAMENT) : this.screenManager.gotoScreenByID(a.SCREEN_ID.GAMEOVER)
+            },
+            c.prototype.onShown = function () { },
+            c.prototype.onHide = function () {
                 TweenLite.to(this.app.background, .4, {
                     alpha: 1
-                }), this.game.pause(), this.app.overlayManager.onShow.remove(this.onOverlayShow, this), this.app.overlayManager.onHide.remove(this.onOverlayHide, this), app.view.style["-webkit-filter"] = null
-            }, c.prototype.onHidden = function () {
+                }),
+                this.game.pause(),
+                this.app.overlayManager.onShow.remove(this.onOverlayShow, this),
+                this.app.overlayManager.onHide.remove(this.onOverlayHide, this),
+                app.view.style["-webkit-filter"] = null
+            },
+            c.prototype.onHidden = function () {
                 this.game.pause(), this.app.topMenu.setState("home")
-            }, c.prototype.onOverlayShow = function () {
+            },
+            c.prototype.onOverlayShow = function () {
                 this.game.pause()
-            }, c.prototype.onOverlayHide = function () {
+            },
+            c.prototype.onOverlayHide = function () {
                 this.game.isGameover ? (this.game.reset(), this.game.resume()) : this.game.resume()
-            }, c.prototype.resize = function (t, e) {
+            },
+            c.prototype.resize = function (t, e) {
                 this.game.resize(t, e), this.position.x = 0, this.position.y = 0
-            }, n.exports = c
-        }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
+            },
+            n.exports = c;
+        }.call(e, i, e, t),
+        !(void 0 !== n && (t.exports = n))
     },
     function (t, e, i) {
         var n;
@@ -29693,36 +28637,60 @@
                 l = (i(49), i(34), i(24), i(37)),
                 c = l.Translation,
                 u = function (t) {
-                    r.Container.call(this), this.game = t, this.scorePanel = new r.Container, this.addChild(this.scorePanel), this.score = new r.Text("0 - 0", {
+                    r.Container.call(this),
+                    this.game = t,
+                    this.scorePanel = new r.Container,
+                    this.addChild(this.scorePanel),
+                    this.score = new r.Text("0 - 0", {
                         fill: "white",
                         fontSize: 32,
                         fontFamily: window.MAIN_FONT,
                         stroke: !0,
                         strokeThickness: 8,
                         lineJoin: "round"
-                    }), this.score.anchor.set(.5, .5), this.scorePanel.addChild(this.score), this.time = new r.Text("00:00", {
+                    }),
+                    this.score.anchor.set(.5, .5),
+                    this.scorePanel.addChild(this.score),
+                    this.time = new r.Text("00:00", {
                         fill: "#ffd800",
                         fontSize: 20,
                         fontFamily: window.MAIN_FONT,
                         stroke: !0,
                         strokeThickness: 8,
                         lineJoin: "round"
-                    }), this.time.position.set(0, 20), this.time.anchor.x = .5, this.scorePanel.addChild(this.time), this.detailPool = new s(o), this.message = new a(this.game), this.addChild(this.message), this.party = new h(null, null, 1), this.party.visible = !1, this.pos = new r.Point
+                    }),
+                    this.time.position.set(0, 20),
+                    this.time.anchor.x = .5,
+                    this.scorePanel.addChild(this.time),
+                    this.detailPool = new s(o),
+                    this.message = new a(this.game),
+                    this.addChild(this.message),
+                    this.party = new h(null, null, 1),
+                    this.party.visible = !1,
+                    this.pos = new r.Point
                 };
-            u.prototype = Object.create(r.Container.prototype), u.prototype.setData = function (t, e) {
+            u.prototype = Object.create(r.Container.prototype),
+            u.prototype.setData = function (t, e) {
                 t && e && (this.scorePanel.removeChild(this.flag), this.flag = new r.Sprite.fromFrame(t.FLAG), this.flag.anchor.set(.5, .5), this.flag.scale.set(.5), this.flag.position.set(-75, 2), this.scorePanel.addChild(this.flag), this.scorePanel.removeChild(this.flag2), this.flag2 = new r.Sprite.fromFrame(e.FLAG), this.flag2.anchor.set(.5, .5), this.flag2.scale.set(.5), this.flag2.position.set(75, 2), this.scorePanel.addChild(this.flag2))
-            }, u.prototype.reset = function () {
+            }, 
+            u.prototype.reset = function () {
                 this.score.text = this.game.score, this.message.reset()
-            }, u.prototype.updateScore = function (t, e) { }, u.prototype.update = function () {
+            },
+            u.prototype.updateScore = function (t, e) { },
+            u.prototype.update = function () {
                 var t = this.game.goalsA + " : " + this.game.goalsB;
                 this.score.text = t, this.pos.x = this.game.world.view3d.camera.position.x, this.party.update(this.pos), this.game.goldenGoal ? this.time.text = c.game_screen.goldenGoal : this.time.text = this.formatTime(Math.floor(this.game.timer.getSecondsLeft()))
-            }, u.prototype.formatTime = function (t) {
+            },
+            u.prototype.formatTime = function (t) {
                 var e = Math.max(Math.floor(t / 60), 0),
                     i = Math.max(t % 60, 0);
                 return (e < 10 ? "0" : "") + e + ":" + (i < 10 ? "0" : "") + i
-            }, u.prototype.showGameover = function () { }, u.prototype.resize = function (t, e) {
+            },
+            u.prototype.showGameover = function () { },
+            u.prototype.resize = function (t, e) {
                 this.message.x = t / 2, this.message.y = e / 2, this.scorePanel.position.y = 55, this.scorePanel.position.x = t / 2
-            }, n.exports = u
+            },
+            n.exports = u
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     function (t, e, i) {
@@ -32317,48 +31285,7 @@
             }, n.exports = l
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
-    function (t, e) {
-        "use strict";
-        t.exports = {
-            GAME: {
-                TIME: 2
-            },
-            PLAYER_STATE: {
-                IDLE: 0,
-                RUN: 1,
-                FREE_RUN: 2,
-                WIN: 3,
-                LOSE: 4,
-                TACKLE: 5,
-                FALL: 6,
-                KICK_CHARGE: 7,
-                KICK: 8,
-                HIDE: 9,
-                SHOW: 10
-            },
-            KEEPER_STATE: {
-                IDLE: 0,
-                DIVE: 1,
-                CLOSING_DOWN: 2
-            },
-            TEAM_STATE: {
-                ATTACKING: 0,
-                DEFENDING: 1,
-                ATTACK_IDLE: 2,
-                KICK_OFF: 3,
-                DEFEND_IDLE: 4,
-                SCORED: 5,
-                LOST: 6,
-                TUTORIAL_TACKLE: 7,
-                TUTORIAL_IDLE: 8
-            },
-            END_STATE: {
-                WIN: 0,
-                LOSE: 1,
-                DRAW: 2
-            }
-        }
-    },
+    getGlobalSettingFn,
     function (t, e, i) {
         "use strict";
 
@@ -33891,9 +32818,30 @@
                 this.game = t, this.active = !1
             };
         a.prototype.run = function (t) {
-            this.active = !0, t === n.END_STATE.LOSE ? (this.game.teamManagerA.sad(), this.game.teamManagerB.happy(), this.game.hud.message.show("lose :/")) : t === n.END_STATE.WIN ? (this.game.teamManagerA.happy(), this.game.teamManagerB.sad(), this.game.hud.message.show("WIN!!"), this.game.flash.flash(), this.game.hud.party.visible = !0, this.game.world.view3d.camera.shake(30)) : t === n.END_STATE.DRAW && (this.game.teamManagerA.sad(), this.game.teamManagerB.happy(), this.game.hud.message.show("DRAW!!")), r.matchResult.goalsA = this.game.goalsA, r.matchResult.goalsB = this.game.goalsB, this.game.world.view3d.camera.endMode = !0, this.game.ball.body.velocity.x *= .1, this.game.ball.body.velocity.y *= .1, this.game.ball.setActive(!1), this.game.hud.message.show(o.MESSAGE_ID.WHISTLE), TweenLite.delayedCall(.5, function () {
+            this.active = !0,
+            t === n.END_STATE.LOSE ? (
+                this.game.teamManagerA.sad(),
+                this.game.teamManagerB.happy(),
+                this.game.hud.message.show("lose :/")
+            ) : t === n.END_STATE.WIN ? (
+                this.game.teamManagerA.happy(),
+                this.game.teamManagerB.sad(),
+                this.game.hud.message.show("WIN!!"),
+                this.game.flash.flash(),
+                this.game.hud.party.visible = !0,
+                this.game.world.view3d.camera.shake(30)
+            ) : t === n.END_STATE.DRAW && (this.game.teamManagerA.sad(), this.game.teamManagerB.happy(), this.game.hud.message.show("DRAW!!")),
+            r.matchResult.goalsA = this.game.goalsA,
+            r.matchResult.goalsB = this.game.goalsB,
+            this.game.world.view3d.camera.endMode = !0,
+            this.game.ball.body.velocity.x *= .1,
+            this.game.ball.body.velocity.y *= .1, 
+            this.game.ball.setActive(!1),
+            this.game.hud.message.show(o.MESSAGE_ID.WHISTLE), 
+            TweenLite.delayedCall(.5, function () {
                 this.active && s.sfx.play("whistle_full_time")
-            }.bind(this)), TweenLite.to(this.game.black, .3, {
+            }.bind(this)),
+            TweenLite.to(this.game.black, .3, {
                 delay: 6,
                 alpha: 1,
                 ease: Sine.easeOut,
@@ -33934,23 +32882,32 @@
                 };
             s.prototype.setDuration = function (t) {
                 this.duration = 60 * t
-            }, s.prototype.getDuration = function () {
+            },
+            s.prototype.getDuration = function () {
                 return this.duration / 60
-            }, s.prototype.start = function (t) {
+            }, 
+            s.prototype.start = function (t) {
                 this.isOn || (this.ticker.add(this.update, this), this.isOn = !0), t || (this.count = 0)
-            }, s.prototype.stop = function () {
+            },
+            s.prototype.stop = function () {
                 this.isOn = !1, this.ticker.remove(this.update, this)
-            }, s.prototype.reset = function () {
+            },
+            s.prototype.reset = function () {
                 this.stop(), this.count = 0
-            }, s.prototype.getRatio = function () {
+            },
+            s.prototype.getRatio = function () {
                 return this.count / this.duration
-            }, s.prototype.getSeconds = function () {
+            },
+            s.prototype.getSeconds = function () {
                 return this.count / 60
-            }, s.prototype.getSecondsLeft = function () {
+            },
+            s.prototype.getSecondsLeft = function () {
                 return (this.duration - this.count) / 60
-            }, s.prototype.update = function () {
+            }, 
+            s.prototype.update = function () {
                 this.count += this.ticker.deltaTime, this.count > this.duration && (this.onComplete.dispatch(), this.stop())
-            }, n.exports = s
+            },
+            n.exports = s
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     function (t, e, i) {
@@ -35068,13 +34025,33 @@
                 p = i(37),
                 d = p.Translation,
                 f = function (t) {
-                    r.Container.call(this), this.app = t, this.characters = [], this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-various-paused-bg.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg), this.title = new s.h1(d.fail_screen.title), this.title.anchor.set(.5, .5), this.title.position.set(0, -this.bg.height / 2 - 35), this.bg.addChild(this.title), this.restartButton = o.validate("icon-tick.png"), this.restartButton.position.set(-65, 0), this.restartButton.onPress.add(this.onRestartButtonPressed, this), this.bg.addChild(this.restartButton), this.quitButton = o.cancel("icon-cross.png"), this.quitButton.position.set(65, 0), this.quitButton.onPress.add(this.onQuitButtonPressed, this), this.bg.addChild(this.quitButton)
+                    r.Container.call(this),
+                    this.app = t,
+                    this.characters = [],
+                    this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-various-paused-bg.png"),
+                    this.bg.anchor.set(.5, .5),
+                    this.addChild(this.bg),
+                    this.title = new s.h1(d.fail_screen.title),
+                    this.title.anchor.set(.5, .5),
+                    this.title.position.set(0, -this.bg.height / 2 - 35),
+                    this.bg.addChild(this.title),
+                    this.restartButton = o.validate("icon-tick.png"),
+                    this.restartButton.position.set(-65, 0), 
+                    this.restartButton.onPress.add(this.onRestartButtonPressed, this),
+                    this.bg.addChild(this.restartButton),
+                    this.quitButton = o.cancel("icon-cross.png"), 
+                    this.quitButton.position.set(65, 0), 
+                    this.quitButton.onPress.add(this.onQuitButtonPressed, this),
+                    this.bg.addChild(this.quitButton)
                 };
-            f.prototype = Object.create(r.Container.prototype), f.prototype.onRestartButtonPressed = function () {
+            f.prototype = Object.create(r.Container.prototype),
+            f.prototype.onRestartButtonPressed = function () {
                 this.screenManager.gotoScreenByID(l.SCREEN_ID.COUNTRY_SELECT), a.reset()
-            }, f.prototype.onQuitButtonPressed = function () {
+            },
+            f.prototype.onQuitButtonPressed = function () {
                 this.screenManager.gotoScreenByID(l.SCREEN_ID.LEADERBOARD), a.reset()
-            }, f.prototype.setContent = function () {
+            },
+            f.prototype.setContent = function () {
                 for (var t = [{
                     x: -250,
                     y: 400
@@ -35092,16 +34069,20 @@
                 var n, o, s, h, i;
                 for (e = 0; e < a.teamA.length; e++) n = t[e], o = a.teamA[e], s = o.spriteSheet.replace("%COLOR%", "red"), h = c.getJson("character-animation")[s], i = new r.extras.MovieClip(u.getTexturesFromFrames(h.lose)), i.anchor.set(.5, 1), i.position.set(n.x, n.y), i.animationSpeed = .3, i.loop = !1, i.play(), this.bg.addChild(i), this.characters.push(i);
                 for (e = 0; e < a.teamB.length; e++) n = t[e], o = a.teamB[e], s = o.spriteSheet.replace("%COLOR%", "blue"), h = c.getJson("character-animation")[s], i = new r.extras.MovieClip(u.getTexturesFromFrames(h.win)), i.anchor.set(.5, 1), i.position.set(-n.x, n.y), i.scale.x = -1, i.animationSpeed = .3, i.play(), this.bg.addChild(i), this.characters.push(i)
-            }, f.prototype.onShow = function () {
+            }, 
+            f.prototype.onShow = function () {
                 this.setContent(), this.bg.scale.set(0), this.app.topMenu.setState("home"), TweenLite.to(this.bg.scale, 1, {
                     x: 1,
                     y: 1,
                     ease: Elastic.easeOut,
                     delay: .2
                 })
-            }, f.prototype.onShown = function () { }, f.prototype.resize = function (t, e) {
+            },
+            f.prototype.onShown = function () { },
+            f.prototype.resize = function (t, e) {
                 this.bg.position.set(t / 2, 250)
-            }, n.exports = f
+            }, 
+            n.exports = f
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     function (t, e, i) {
@@ -35701,4 +34682,4 @@
             }(a.Container));
         e["default"] = l, t.exports = e["default"]
     }
-]
+];

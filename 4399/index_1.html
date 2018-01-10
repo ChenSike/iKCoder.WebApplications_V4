@@ -20,12 +20,29 @@
     </div>
     <div id="fallbackBg"></div>
     <div id="fallbackMessageNoJS"></div>
+    <script src="./js/getGlobalSettingFn.js"></script>
+    <script src="./js/titleScreenFn.js"></script>
+    <script src="./js/countrySelectScreenFn.js"></script>
+    <script src="./js/teamReviewScreenFn.js"></script>
+    <script src="./js/gameOverScreenFn.js"></script>    
     <script src="./js/js1.js"></script>
     <script src="./js/js2.js"></script>
     <script>
         var ENV = window.ENV = {};
         window.ENV = {};
         globalWrapFn(argumentFn);
+        window.setTimeout(startGame, 500);
+        function startGame() {
+            if (_gloablObj && _gloablObj.app) {
+                _gloablObj.app.breadcrumb.next();
+                _gloablObj.app.breadcrumb.next();
+                _gloablObj.app.breadcrumb.next();
+                _gloablObj.app.breadcrumb.next();
+                _gloablObj.app.teamReviewScreen.playButton.mouseup();
+            } else {
+                window.setTimeout(startGame, 500);
+            }
+        }
     </script>
 </body>
 </html>

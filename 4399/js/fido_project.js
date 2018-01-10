@@ -1,4 +1,4 @@
-! function (t) {
+﻿! function (t) {
     function e(t) {
         var e = document.getElementsByTagName("head")[0],
             i = document.createElement("script");
@@ -29521,30 +29521,40 @@
                 c = function (t) {
                     r.Container.call(this), this.app = t, this.game = new o, this.game.onGameover.add(this.onGameover, this), this.addChild(this.game.view), this.app.game = this.game, this.transition = new s
                 };
-            c.prototype = Object.create(r.Container.prototype), c.prototype.onShow = function () {
+            c.prototype = Object.create(r.Container.prototype),
+            c.prototype.onShow = function () {
                 TweenLite.to(this.app.background, .4, {
                     alpha: 0,
                     delay: .4
                 }), this.game.start(), this.app.overlayManager.onShow.add(this.onOverlayShow, this), this.app.overlayManager.onHide.add(this.onOverlayHide, this), this.app.topMenu.setState("game")
-            }, c.prototype.quit = function () {
+            },
+            c.prototype.quit = function () {
                 this.screenManager.gotoScreenByID(a.SCREEN_ID.TITLE)
-            }, c.prototype.onGameover = function () {
+            },
+            c.prototype.onGameover = function () {
                 var t = h.matchResult.goalsA - h.matchResult.goalsB,
                     e = h.countryID.SCORE_ID;
                 l.sendScore(e, t), h.isTournament === !0 ? this.screenManager.gotoScreenByID(a.SCREEN_ID.TOURNAMENT) : this.screenManager.gotoScreenByID(a.SCREEN_ID.GAMEOVER)
-            }, c.prototype.onShown = function () { }, c.prototype.onHide = function () {
+            },
+            c.prototype.onShown = function () { },
+            c.prototype.onHide = function () {
                 TweenLite.to(this.app.background, .4, {
                     alpha: 1
                 }), this.game.pause(), this.app.overlayManager.onShow.remove(this.onOverlayShow, this), this.app.overlayManager.onHide.remove(this.onOverlayHide, this), app.view.style["-webkit-filter"] = null
-            }, c.prototype.onHidden = function () {
+            },
+            c.prototype.onHidden = function () {
                 this.game.pause(), this.app.topMenu.setState("home")
-            }, c.prototype.onOverlayShow = function () {
+            },
+            c.prototype.onOverlayShow = function () {
                 this.game.pause()
-            }, c.prototype.onOverlayHide = function () {
+            },
+            c.prototype.onOverlayHide = function () {
                 this.game.isGameover ? (this.game.reset(), this.game.resume()) : this.game.resume()
-            }, c.prototype.resize = function (t, e) {
+            }, 
+            c.prototype.resize = function (t, e) {
                 this.game.resize(t, e), this.position.x = 0, this.position.y = 0
-            }, n.exports = c
+            },
+            n.exports = c
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     function (t, e, i) {
