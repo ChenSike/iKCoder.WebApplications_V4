@@ -21,13 +21,15 @@
     <div id="fallbackBg"></div>
     <div id="fallbackMessageNoJS"></div>
     <script src="./js/getGlobalSettingFn.js"></script>
+    <script src="./js/loaderScreenFn.js"></script>
     <script src="./js/titleScreenFn.js"></script>
     <script src="./js/countrySelectScreenFn.js"></script>
     <script src="./js/teamReviewScreenFn.js"></script>
     <script src="./js/gameScreenFn.js"></script>
     <script src="./js/gameOverScreenFn.js"></script>    
-    <script src="./js/js1.js"></script>
-    <script src="./js/js2.js"></script>
+    <script src="./js/globalSettingForControl.js"></script>
+    <script src="./js/argumentFns.js"></script>
+    <script src="./js/entryFn.js"></script>
     <script>
         var ENV = window.ENV = {};
         window.ENV = {};
@@ -35,6 +37,7 @@
         window.setTimeout(startGame, 500);
         function startGame() {
             if (_gloablObj && _gloablObj.app) {
+                ////_gloablObj.app.titleScreen.alpha = 0
                 _gloablObj.app.breadcrumb.next();
                 _gloablObj.app.breadcrumb.next();
                 _gloablObj.app.breadcrumb.next();

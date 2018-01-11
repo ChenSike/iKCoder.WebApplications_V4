@@ -63,8 +63,8 @@
             this.nextButton = o.big("icon-back.png"),
             this.nextButton.position.set(380, 200),
             this.nextButton.icon.rotation = Math.PI,
-            this.nextButton.onPress.add(this.onNextButtonPressed, this),
-            this.bg.addChild(this.nextButton)
+            this.nextButton.onPress.add(this.onNextButtonPressed, this)
+            //this.bg.addChild(this.nextButton)
         },
         GameoverScreen.prototype = Object.create(r.Container.prototype),
         GameoverScreen.prototype.onRestartButtonPressed = function () {

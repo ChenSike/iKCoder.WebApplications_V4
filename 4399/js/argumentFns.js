@@ -23110,7 +23110,53 @@
                 }, n.maxSize = {
                     width: 1136,
                     height: 745
-                }, n.preloader.addPixiAssets([ASSET_URL + "img/ui/menu-background.jpg", ASSET_URL + "img/ui/background-platform.png", ASSET_URL + "img/loader/loader-bar.png", ASSET_URL + "img/loader/loader-fill.png", ASSET_URL + "img/loader/loading_logo_cn.png", ASSET_URL + "img/localisation/loader-logo-small.png"]), n.loader.addPixiAssets([ASSET_URL + "img/ring.png", ASSET_URL + "img/game/main_info_panel.png", ASSET_URL + "img/game/panelDivider.png", ASSET_URL + "img/game/toon_pitch_full.jpg", ASSET_URL + "img/game/leaderboard.json", ASSET_URL + "img/ui/title.json", ASSET_URL + "img/game/game.json", ASSET_URL + "img/game/referee.json", ASSET_URL + "img/game/shoot_arrow.png", ASSET_URL + "img/game/runnoff.png", ASSET_URL + "img/sponsor/board1.png", ASSET_URL + "img/sponsor/board2.png", ASSET_URL + "img/sponsor/pitch-logo.png", ASSET_URL + "img/sponsor/main-menu-sponsor.jpg", ASSET_URL + "img/game/front_crowd.png", ASSET_URL + "img/game/shield_bubble.png", ASSET_URL + "img/game/overlays.json", ASSET_URL + "img/game/shop.json", ASSET_URL + "img/game/game_objects/ball-shadow.png", ASSET_URL + "img/ui/buttons.json", ASSET_URL + "img/ui/breadcrumb.json", ASSET_URL + "img/player/playercard.json", ASSET_URL + "img/player/character.json", ASSET_URL + "img/ui/panels.json", ASSET_URL + "img/ui/menu-background.jpg", ASSET_URL + "img/ui/country-select-panel.png", ASSET_URL + "img/ui/panel-player-select-and-tournament.png", ASSET_URL + "img/ui/diagram.png", ASSET_URL + "img/ui/vs-panel.png", ASSET_URL + "img/ui/panel-various-paused-bg.png", ASSET_URL + "img/ui/overlay-background.png", ASSET_URL + "img/ui/instructions-panel.png", ASSET_URL + "img/ui/panel-final-score-background.png", ASSET_URL + "img/smoke_mixed.png"]), n.loader.addCSS(ASSET_URL + "css/fonts.css"), n.loader.addJson(ASSET_URL + "json/shopData.json", "shopData"), n.loader.addJson(ASSET_URL + "json/strings.json", "strings"), n.loader.addJson(ASSET_URL + "json/character-animation.json", "character-animation"), n.loader.addCSS(ASSET_URL + "css/fonts.css"), n.loader.addFonts(["lubalin", "fredburger"]);
+                }, n.preloader.addPixiAssets([
+                    ASSET_URL + "img/ui/menu-background.jpg",
+                    ASSET_URL + "img/ui/background-platform.png",
+                    ASSET_URL + "img/loader/loader-bar.png",
+                    ASSET_URL + "img/loader/loader-fill.png",
+                    ASSET_URL + "img/loader/loading_logo_cn.png",
+                    ASSET_URL + "img/localisation/loader-logo-small.png"]),
+                n.loader.addPixiAssets([
+                    ASSET_URL + "img/ring.png",
+                    ASSET_URL + "img/game/main_info_panel.png",
+                    ASSET_URL + "img/game/panelDivider.png",
+                    ASSET_URL + _gSettings.background_game,
+                    ASSET_URL + "img/game/leaderboard.json",
+                    ASSET_URL + "img/ui/title.json",
+                    ASSET_URL + "img/game/game.json",
+                    ASSET_URL + "img/game/referee.json",
+                    ASSET_URL + "img/game/shoot_arrow.png",
+                    ASSET_URL + "img/game/runnoff.png",
+                    ASSET_URL + "img/sponsor/board1.png",
+                    ASSET_URL + "img/sponsor/board2.png",
+                    ASSET_URL + "img/sponsor/pitch-logo.png",
+                    ASSET_URL + "img/sponsor/main-menu-sponsor.jpg",
+                    ASSET_URL + "img/game/front_crowd.png",
+                    ASSET_URL + "img/game/shield_bubble.png",
+                    ASSET_URL + "img/game/overlays.json",
+                    ASSET_URL + "img/game/shop.json",
+                    ASSET_URL + "img/game/game_objects/ball-shadow.png",
+                    ASSET_URL + "img/ui/buttons.json",
+                    ASSET_URL + "img/ui/breadcrumb.json",
+                    ASSET_URL + "img/player/playercard.json",
+                    ASSET_URL + "img/player/character.json",
+                    ASSET_URL + "img/ui/panels.json",
+                    ASSET_URL + "img/ui/menu-background.jpg",
+                    ASSET_URL + "img/ui/country-select-panel.png",
+                    ASSET_URL + "img/ui/panel-player-select-and-tournament.png",
+                    ASSET_URL + "img/ui/diagram.png",
+                    ASSET_URL + "img/ui/vs-panel.png",
+                    ASSET_URL + "img/ui/panel-various-paused-bg.png",
+                    ASSET_URL + "img/ui/overlay-background.png",
+                    ASSET_URL + "img/ui/instructions-panel.png",
+                    ASSET_URL + "img/ui/panel-final-score-background.png",
+                    ASSET_URL + "img/smoke_mixed.png"]),
+                n.loader.addCSS(ASSET_URL + "css/fonts.css"),
+                n.loader.addJson(ASSET_URL + "json/shopData.json", "shopData"),
+                n.loader.addJson(ASSET_URL + "json/strings.json", "strings"),
+                n.loader.addJson(ASSET_URL + "json/character-animation.json", "character-animation"),
+                n.loader.addCSS(ASSET_URL + "css/fonts.css"), n.loader.addFonts(["lubalin", "fredburger"]);
                 for (var s = [], a = 0; a < 40; a++) {
                     var h = a;
                     h < 10 && (h = "0" + h), s[a] = ASSET_URL + "img/game/shield/shield_" + h + ".png"
@@ -24718,93 +24764,7 @@
             }
         }
     },
-    function (t, e, i) {
-        var n;
-        n = function (t, e, n) {
-            var r = i(8),
-                o = i(23),
-                s = (i(24), i(26)),
-                a = (i(36), i(16)),
-                h = i(37),
-                l = h.Translation,
-                c = i(38),
-                u = i(21),
-                p = i(18),
-                d = function (t) {
-                    r.Container.call(this), this.app = t, this.count = 0, t.loader.onProgress.add(this.onProgress, this), this.easeLoad = 0, this.targetLoad = 0, this.onReady = new a, this.onComplete = new a, this.transition = new u, this.onAssetsLoaded()
-                };
-            d.prototype = Object.create(r.Container.prototype), d.prototype.constructor = d, d.prototype.onShown = function () { }, d.prototype.onAssetsLoaded = function () {
-                this.container = new r.Container,
-                this.container.position.x = this.app.safeSize.width / 2,
-                this.container.position.y = this.app.safeSize.height / 2;
-                var t = (p.getJson("config").config.LOCALE, !1);
-                this.logoContainer = new r.Container,
-                    t || (
-                        this.logo = new r.Sprite.fromImage(ASSET_URL + "img/localisation/loader-logo-small.png"),
-                        this.logo.anchor.set(.5, .5),
-                        this.logoContainer.addChild(this.logo)
-                    ),
-                    this.cnLogo = new r.Sprite.fromImage(ASSET_URL + "img/loader/loading_logo_cn.png"),
-                    this.cnLogo.anchor.set(.5, .5),
-                    t || (
-                        this.cnLogo.position.x = this.logo.width + 40),
-                        this.logoContainer.addChild(this.cnLogo),
-                        t || (
-                            this.logoContainer.position.x = -this.logoContainer.width / 4 - 20
-                        ),
-                        this.barBg = new r.Sprite.fromImage(ASSET_URL + "img/loader/loader-bar.png"),
-                        this.barBg.anchor.set(.5, .5),
-                        this.barFill = new r.Sprite.fromImage(ASSET_URL + "img/loader/loader-fill.png"),
-                        this.barFill.anchor.set(.5, .5),
-                        this.barW = 494,
-                        this.barH = 70,
-                        this.barMask = new r.Graphics,
-                        this.barMask.lineStyle(0),
-                        this.barMask.beginFill(16711680, 1),
-                        this.barMask.moveTo(0, 0),
-                        this.barMask.lineTo(this.barW - 12, 0),
-                        this.barMask.lineTo(this.barW - 12, this.barH - 12),
-                        this.barMask.lineTo(0, this.barH - 12),
-                        this.barMask.scale.x = 0,
-                        this.barFill.mask = this.barMask,
-                        this.barFrame = new r.Sprite.fromImage(ASSET_URL + "img/loader/loader-frame.png"),
-                        this.barFrame.anchor.set(.5, .5),
-                        this.label = new c,
-                        this.barBg.position.set(0, this.logoContainer.height + 20),
-                        this.barFill.position.set(0, this.barBg.position.y),
-                        this.barMask.position.set(-this.barW / 2, this.barBg.position.y - this.barH / 2),
-                        this.barFrame.position.set(0, this.barBg.position.y),
-                        this.container.addChild(this.barBg),
-                        this.container.addChild(this.barFrame),
-                        this.container.addChild(this.barFill),
-                        this.container.addChild(this.barMask),
-                        this.container.addChild(this.logoContainer),
-                        this.container.addChild(this.label),
-                        o.instance.add(this.update, this),
-                        this.addChild(this.container),
-                        this.resize(this.w, this.h),
-                        s.wait(this.showLoader.bind(this)
-                    )
-            }, d.prototype.showLoader = function () {
-                TweenLite.to(this.app.background, .6, {
-                    alpha: 1,
-                    ease: Sine.easeOut
-                }), this.app.resize(this.app.w, this.app.h), this.app.loader.load()
-            }, d.prototype.update = function () {
-                this.count += .02,
-                this.easeLoad += .3 * (this.targetLoad - this.easeLoad),
-                this.barMask.scale.x = this.easeLoad,
-                this.label.setText(l.loader.loading.replace("##", Math.ceil(100 * this.easeLoad))),
-                this.easeLoad > .99 && (o.instance.remove(this.update, this), this.onComplete.dispatch())
-            }, d.prototype.onProgress = function (t) {
-                this.targetLoad = t
-            }, d.prototype.onShow = function () { }, d.prototype.onHide = function () {
-                o.instance.remove(this.update, this)
-            }, d.prototype.resize = function (t, e) {
-                this.w = t, this.h = e
-            }, n.exports = d
-        }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
-    },
+    loaderScreenFn,
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -28567,7 +28527,7 @@
             u.prototype = Object.create(r.Container.prototype),
             u.prototype.setData = function (t, e) {
                 t && e && (this.scorePanel.removeChild(this.flag), this.flag = new r.Sprite.fromFrame(t.FLAG), this.flag.anchor.set(.5, .5), this.flag.scale.set(.5), this.flag.position.set(-75, 2), this.scorePanel.addChild(this.flag), this.scorePanel.removeChild(this.flag2), this.flag2 = new r.Sprite.fromFrame(e.FLAG), this.flag2.anchor.set(.5, .5), this.flag2.scale.set(.5), this.flag2.position.set(75, 2), this.scorePanel.addChild(this.flag2))
-            }, 
+            },
             u.prototype.reset = function () {
                 this.score.text = this.game.score, this.message.reset()
             },
@@ -32232,12 +32192,12 @@
                 s = i(126),
                 a = (i(128), i(117)),
                 h = (i(118), function () {
-                    for (var t = r.Sprite.from(ASSET_URL + "img/game/toon_pitch_full.jpg"), e = new o.PlaneGeometry(1800, 1100), i = new r.Container, n = 0; n < 8; n++) {
+                    for (var t = r.Sprite.from(ASSET_URL + _gSettings.background_game), e = new o.PlaneGeometry(1800, 1100), i = new r.Container, n = 0; n < 8; n++) {
                         var h = r.Sprite.from(ASSET_URL + "img/sponsor/board" + (n % 2 + 1) + ".png");
                         h.x = 305 * n, i.addChild(h)
                     }
                     this.loader = new o.TextureLoader;
-                    var l = this.loader.load(ASSET_URL + "img/game/toon_pitch_full.jpg"),
+                    var l = this.loader.load(ASSET_URL + _gSettings.background_game),
                         c = new o.MeshBasicMaterial({
                             map: l
                         });
@@ -32730,9 +32690,9 @@
             r.matchResult.goalsB = this.game.goalsB,
             this.game.world.view3d.camera.endMode = !0,
             this.game.ball.body.velocity.x *= .1,
-            this.game.ball.body.velocity.y *= .1, 
+            this.game.ball.body.velocity.y *= .1,
             this.game.ball.setActive(!1),
-            this.game.hud.message.show(o.MESSAGE_ID.WHISTLE), 
+            this.game.hud.message.show(o.MESSAGE_ID.WHISTLE),
             TweenLite.delayedCall(.5, function () {
                 this.active && s.sfx.play("whistle_full_time")
             }.bind(this)),
@@ -32780,7 +32740,7 @@
             },
             s.prototype.getDuration = function () {
                 return this.duration / 60
-            }, 
+            },
             s.prototype.start = function (t) {
                 this.isOn || (this.ticker.add(this.update, this), this.isOn = !0), t || (this.count = 0)
             },
@@ -32798,7 +32758,7 @@
             },
             s.prototype.getSecondsLeft = function () {
                 return (this.duration - this.count) / 60
-            }, 
+            },
             s.prototype.update = function () {
                 this.count += this.ticker.deltaTime, this.count > this.duration && (this.onComplete.dispatch(), this.stop())
             },
@@ -33931,11 +33891,11 @@
                     this.title.position.set(0, -this.bg.height / 2 - 35),
                     this.bg.addChild(this.title),
                     this.restartButton = o.validate("icon-tick.png"),
-                    this.restartButton.position.set(-65, 0), 
+                    this.restartButton.position.set(-65, 0),
                     this.restartButton.onPress.add(this.onRestartButtonPressed, this),
                     this.bg.addChild(this.restartButton),
-                    this.quitButton = o.cancel("icon-cross.png"), 
-                    this.quitButton.position.set(65, 0), 
+                    this.quitButton = o.cancel("icon-cross.png"),
+                    this.quitButton.position.set(65, 0),
                     this.quitButton.onPress.add(this.onQuitButtonPressed, this),
                     this.bg.addChild(this.quitButton)
                 };
@@ -33964,7 +33924,7 @@
                 var n, o, s, h, i;
                 for (e = 0; e < a.teamA.length; e++) n = t[e], o = a.teamA[e], s = o.spriteSheet.replace("%COLOR%", "red"), h = c.getJson("character-animation")[s], i = new r.extras.MovieClip(u.getTexturesFromFrames(h.lose)), i.anchor.set(.5, 1), i.position.set(n.x, n.y), i.animationSpeed = .3, i.loop = !1, i.play(), this.bg.addChild(i), this.characters.push(i);
                 for (e = 0; e < a.teamB.length; e++) n = t[e], o = a.teamB[e], s = o.spriteSheet.replace("%COLOR%", "blue"), h = c.getJson("character-animation")[s], i = new r.extras.MovieClip(u.getTexturesFromFrames(h.win)), i.anchor.set(.5, 1), i.position.set(-n.x, n.y), i.scale.x = -1, i.animationSpeed = .3, i.play(), this.bg.addChild(i), this.characters.push(i)
-            }, 
+            },
             f.prototype.onShow = function () {
                 this.setContent(), this.bg.scale.set(0), this.app.topMenu.setState("home"), TweenLite.to(this.bg.scale, 1, {
                     x: 1,
@@ -33976,7 +33936,7 @@
             f.prototype.onShown = function () { },
             f.prototype.resize = function (t, e) {
                 this.bg.position.set(t / 2, 250)
-            }, 
+            },
             n.exports = f
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
@@ -34488,14 +34448,27 @@
                 a = i(37);
             a.Translation, i(49);
             InstructionsScreen = function (t) {
-                r.Container.call(this), this.app = t, this.hasClose = !1, this.content = new o, this.content.onNextButton.add(this.onNextButtonPressed, this), this.content.onPreviousButton.add(this.onPreviousButtonPressed, this), this.addChild(this.content), this.content.nextButton.visible = !1
-            }, InstructionsScreen.prototype = Object.create(r.Container.prototype), InstructionsScreen.prototype.onShow = function () { }, InstructionsScreen.prototype.onPreviousButtonPressed = function () {
+                r.Container.call(this),
+                this.app = t,
+                this.hasClose = !1,
+                this.content = new o,
+                this.content.onNextButton.add(this.onNextButtonPressed, this),
+                this.content.onPreviousButton.add(this.onPreviousButtonPressed, this),
+                this.addChild(this.content),
+                this.content.nextButton.visible = !1
+            },
+            InstructionsScreen.prototype = Object.create(r.Container.prototype),
+            InstructionsScreen.prototype.onShow = function () { },
+            InstructionsScreen.prototype.onPreviousButtonPressed = function () {
                 this.app.overlayManager.show(s.OVERLAY_ID.PAUSE)
-            }, InstructionsScreen.prototype.onNextButtonPressed = function () {
+            },
+            InstructionsScreen.prototype.onNextButtonPressed = function () {
                 this.app.overlayManager.show(s.OVERLAY_ID.PAUSE)
-            }, InstructionsScreen.prototype.resize = function (t, e) {
+            },
+            InstructionsScreen.prototype.resize = function (t, e) {
                 this.x = t / 2, this.y = e / 2
-            }, n.exports = InstructionsScreen
+            },
+            n.exports = InstructionsScreen
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     function (t, e, i) {

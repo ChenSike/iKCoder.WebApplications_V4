@@ -31,17 +31,20 @@
                 this.playButton = new s("quickplay-normal.png", "quickplay-hover.png", "quickplay-hover.png", p.title_screen.quick_play, 1.1),
                 this.playButton.defaultScale = 1,
                 this.playButton.onPress.add(this.onPlayButtonPressed, this),
-                this.addChild(this.playButton),
+                //this.addChild(this.playButton),
                 this.tournamentButton = new s("tournament-normal.png", "tournament-hover.png", "tournament-hover.png", p.title_screen.tournament, 1.1),
                 this.tournamentButton.defaultScale = 1,
                 this.tournamentButton.onPress.add(this.onTournamentButtonPressed, this),
-                this.addChild(this.tournamentButton),
+                //this.addChild(this.tournamentButton),
                 this.leaderboardButton = new s("leaderboard-normal.png", "leaderboard-hover.png", "leaderboard-hover.png", p.title_screen.leaderboard, 1.1),
                 this.leaderboardButton.defaultScale = 1,
                 this.leaderboardButton.onPress.add(this.onLeaderboardButtonPressed, this),
-                this.addChild(this.leaderboardButton), this.flash = new d, this.characters = [];
+                //this.addChild(this.leaderboardButton),
+                this.flash = new d,
+                this.characters = [];
                 for (var i = ["_uk"].indexOf(e) !== -1, n = layouts[e] || layouts.defualt, o = 0; o < n.length; o++) {
-                    4 == o && this.bg.addChild(this.logo);
+                    //4 == o && this.bg.addChild(this.logo);
+                    4 == o;
                     var h = n[o],
                         l = r.Sprite.from(h.id);
                     l.anchor.set(.5),
