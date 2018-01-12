@@ -201,9 +201,10 @@ Scene.resetSize = function () {
 Scene.move = function (steps) {
 	Scene.addModuelPath('pacman', 'm', steps);
 
-	var curX = Scene.getPlayer().coord.x;
-	var curY = Scene.getPlayer().coord.y;
 	var curOrientation = 0;
+	var curX = Scene.getPlayer().coord.x + (curOrientation == 0 ? 1 : -1) * steps;
+	var curY = Scene.getPlayer().coord.y;
+	
 
 	if (Scene._CALCMOVEPATH.length > 0) {
 		curOrientation = Scene._CALCMOVEPATH[Scene._CALCMOVEPATH.length - 1].orientation;
