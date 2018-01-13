@@ -133,6 +133,17 @@ footer {
     padding: 0px;
 }
 
+.left-sidebar-wrap {
+    padding: 0px;
+}
+
+    .left-sidebar-wrap .user-infors {
+        padding: 20px 0px;
+    }
+
+#txt_NickName_Profile_Title {
+    padding-top: 20px;
+}
 
 
 
