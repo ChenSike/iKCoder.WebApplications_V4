@@ -10,11 +10,7 @@ var _distributionMap = {
 };
 
 function initPage() {
-    $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
-    //$('.img-header-logo').attr('src', 'image/logo-new-gray.png');
-    //$('#sideBar_Page_Left').height($('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height());
-    $('.container-fluid.main-content-wrap').height($('body').height() - $('nav').height() - $('footer').height());
-    $('.row.justify-content-start.main-content-row').height($('.container-fluid.main-content-wrap').height());
+    adjustMainHeight();
     loadHeaderImg();
     loadSiderbarData();
     //getUnreadMsgCount();
@@ -24,6 +20,15 @@ function initPage() {
     rebuildContent('overview');
     getUnreadMsgCount();
 };
+
+function adjustMainHeight() {
+    $('.main-container .main-container-col').height($('.main-container').height() - 85);
+    var mainHeight = $('.main-content-wrap').height();
+    $('.main-content-row').height(mainHeight);
+    $('#sideBar_Page_Left').height(mainHeight);
+    $('#wrap_Category_Title').height(mainHeight);
+    $('#wrap_Category_Content').height(mainHeight);
+}
 
 function loadSiderbarData() {
     var mapping = [
@@ -227,13 +232,20 @@ function rebuildContent(symbol) {
 };
 
 window.onresize = function () {
-    $('.container-fluid.main-content-wrap').height($('body').height() - $('nav').height() - $('footer').height());
+    //$('.container-fluid.main-content-wrap').height($('body').height() - $('nav').height() - $('footer').height());
     $('.row.justify-content-start.main-content-row').height($('.container-fluid.main-content-wrap').height());
 }
 
 /*Overview panel*/
 function rebuildOverviewPanel(contentHeight) {
     var tmpHeight = calcOverviewItemheight(contentHeight);
+
+    var data = formatOverviewData(null);
+    rebuildOverviewTitles(data, contentHeight, tmpHeight);
+    rebuildOverviewContents(data, contentHeight, tmpHeight);
+    hideLoadingMask();
+    return;
+
     _registerRemoteServer();
     _ajaxObj = $.ajax({
         type: 'GET',
@@ -263,153 +275,153 @@ function rebuildOverviewPanel(contentHeight) {
 
 var _courseListOverview = null;
 function formatOverviewData(response) {
-    var data = {
-        honor: [],
-        course: [],
-        experience: { distribution: [], level: {} },
-        codetimes: { over: 0, times: [] }
-    };
-
-    var tmpNodes = $(response).find('honor').find('item');
-    for (var i = 0; i < tmpNodes.length; i++) {
-        var tmpObj = $(tmpNodes[i]);
-        data.honor.push({ id: i + 1, title: tmpObj.attr('name'), img: 'image/honor/' + tmpObj.attr('image') });
-    }
-
-    tmpNodes = $(response).find('course').find('item');
-    var courseMap = [
-        { color: 'rgb(86,181,34)', symbol: 'A' },
-        { color: 'rgb(100,124,185)', symbol: 'B' },
-        { color: 'rgb(43,93,126)', symbol: 'C' },
-        { color: 'rgb(228,88,76)', symbol: 'D' },
-        { color: 'rgb(228,88,76)', symbol: 'E' }
-    ];
-    _courseListOverview = {};
-    for (var i = 0; i < tmpNodes.length; i++) {
-        var tmpObj = $(tmpNodes[i]);
-        var newItemObj = {};
-        newItemObj.id = tmpObj.attr('id');
-        newItemObj.title = tmpObj.attr('title');
-        newItemObj.total = parseInt(tmpObj.attr('total'));
-        newItemObj.complete = parseInt(tmpObj.attr('complete'));
-        newItemObj.img = 'image/course/course_' + (i + 1) + '.png';
-        newItemObj.color = courseMap[i].color;
-        newItemObj.symbol = courseMap[i].symbol;
-        data.course.push(newItemObj);
-        var lessonNodes = $(tmpNodes[i]).find('symbollst').find('lesson');
-        var tmpLessonArr = [];
-        for (var j = 0; j < lessonNodes.length; j++) {
-            tmpObj = $(lessonNodes[j]);
-            tmpLessonArr.push({
-                symbol: tmpObj.attr('symbol'),
-                title: tmpObj.attr('title'),
-                finish: tmpObj.attr('finish'),
-                enable: tmpObj.attr('enable'),
-                unit: tmpObj.attr('unit')
-            });
-        }
-
-        var tmpUnitStr = '';
-        for (var j = 0; j < tmpLessonArr.length; j++) {
-            if (tmpUnitStr.indexOf(tmpLessonArr[j].unit) < 0) {
-                tmpUnitStr += tmpLessonArr[j].unit + '|';
-            }
-        }
-
-        var tmpUnitArr = tmpUnitStr.split('|');
-        _courseListOverview[newItemObj.id] = [];
-        for (var j = 0; j < tmpUnitArr.length; j++) {
-            if (tmpUnitArr[j] && tmpUnitArr[j] != '') {
-                var tmpUnitLessonArr = [];
-                for (var k = 0; k < tmpLessonArr.length; k++) {
-                    if (tmpLessonArr[k].unit == tmpUnitArr[j]) {
-                        tmpUnitLessonArr.push(tmpLessonArr[k]);
-                    }
-                }
-
-                _courseListOverview[newItemObj.id].push(tmpUnitLessonArr);
-            }
-        }
-    }
-
-    tmpNodes = $(response).find('distributio').find('item');
-    for (var i = 0; i < tmpNodes.length; i++) {
-        var tmpObj = $(tmpNodes[i]);
-        var tmpItem = _distributionMap[tmpObj.attr('id')];
-        data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
-    }
-
-    if (data.experience.distribution.length == 0) {
-        for (var key in _distributionMap) {
-            data.experience.distribution.push({ id: key, name: _distributionMap[key].name, color: _distributionMap[key].color, value: 0 });
-        }
-    }
-
-    tmpNodes = $(response).find('level').find('item');
-    var level = {};
-    for (var i = 0; i < tmpNodes.length; i++) {
-        var tmpObj = $(tmpNodes[i]);
-        level[tmpObj.attr('id')] = {
-            name: tmpObj.attr('name'),
-            id: tmpObj.attr('id'),
-            value: parseInt(tmpObj.attr('value'))
-        };
-    }
-
-    data.experience.total = parseInt($(response).find('level').attr('total'));
-    data.experience.level = level;
-
-    var tmpNode = $(response).find('codetimes');
-    data.codetimes.over = parseInt($(tmpNode[0]).attr('over'));
-    data.codetimes.total = new Number(parseInt($(tmpNode[0]).attr('totaltime')) / 60).toFixed(2);
-    tmpNodes = $(response).find('codetimes').find('item');
-    for (var i = 0; i < tmpNodes.length; i++) {
-        var tmpObj = $(tmpNodes[i]);
-        var tmpValue = new Number(parseFloat(tmpObj.attr('value'))).toFixed(2);
-        data.codetimes.times.push({ date: tmpObj.attr('date'), time: (isNaN(tmpValue) ? 0 : tmpValue) });
-    }
-
     //var data = {
-    //    honor: [
-    //        { id: 1, title: '算法小达人', img: 'image/honor/copper.png' },
-    //        { id: 2, title: '计算机小专家', img: 'image/honor/gold.png' },
-    //        { id: 3, title: '语言大师', img: 'image/honor/silver.png' },
-    //        { id: 4, title: '小画家', img: 'image/honor/copper.png' },
-    //        { id: 5, title: '小小数学家', img: 'image/honor/gold.png' },
-    //        { id: 6, title: '音乐家', img: 'image/honor/silver.png' },
-    //        { id: 7, title: '科学智多星', img: 'image/honor/copper.png' },
-    //        { id: 8, title: '分享达人', img: 'image/honor/gold.png' },
-    //        { id: 9, title: '无人机小飞手', img: 'image/honor/silver.png' }
-    //    ],
-    //    course: [
-    //        { id: 'enlighten', title: '启蒙课程', total: 32, complete: 4, img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'A' },
-    //        { id: 'primary', title: '初级课程', total: 32, complete: 3, img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B' },
-    //        { id: 'middle', title: '中级课程', total: 32, complete: 2, img: 'image/course/course_3.png', color: 'rgb(43,93,126)', symbol: 'C' },
-    //        { id: 'advance', title: '高级课程', total: 32, complete: 1, img: 'image/course/course_4.png', color: 'rgb(228,88,76)', symbol: 'D' }
-    //    ],
-    //    experience: {
-    //        distribution: [
-    //            { id: "science", name: "科学", value: 250, color: "rgb(36,90,186)" },
-    //            { id: "skill", name: "技术", value: 400, color: "rgb(236,15,33)" },
-    //            { id: "engineering", name: "工程", value: 550, color: "rgb(165,165,165)" },
-    //            { id: "math", name: "数学", value: 700, color: "rgb(255,191,0)" },
-    //            { id: "language", name: "语言", value: 700, color: "rgb(71,143,208)" }
-    //        ],
-    //        level: {
-    //            primary: { name: "初级课程", id: "Primary", value: 85 },
-    //            middle: { name: "中级课程", id: "Middle", value: 11 },
-    //            advance: { name: "高级课程", id: "Advance", value: 5 }
+    //    honor: [],
+    //    course: [],
+    //    experience: { distribution: [], level: {} },
+    //    codetimes: { over: 0, times: [] }
+    //};
+
+    //var tmpNodes = $(response).find('honor').find('item');
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    data.honor.push({ id: i + 1, title: tmpObj.attr('name'), img: 'image/honor/' + tmpObj.attr('image') });
+    //}
+
+    //tmpNodes = $(response).find('course').find('item');
+    //var courseMap = [
+    //    { color: 'rgb(86,181,34)', symbol: 'A' },
+    //    { color: 'rgb(100,124,185)', symbol: 'B' },
+    //    { color: 'rgb(43,93,126)', symbol: 'C' },
+    //    { color: 'rgb(228,88,76)', symbol: 'D' },
+    //    { color: 'rgb(228,88,76)', symbol: 'E' }
+    //];
+    //_courseListOverview = {};
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    var newItemObj = {};
+    //    newItemObj.id = tmpObj.attr('id');
+    //    newItemObj.title = tmpObj.attr('title');
+    //    newItemObj.total = parseInt(tmpObj.attr('total'));
+    //    newItemObj.complete = parseInt(tmpObj.attr('complete'));
+    //    newItemObj.img = 'image/course/course_' + (i + 1) + '.png';
+    //    newItemObj.color = courseMap[i].color;
+    //    newItemObj.symbol = courseMap[i].symbol;
+    //    data.course.push(newItemObj);
+    //    var lessonNodes = $(tmpNodes[i]).find('symbollst').find('lesson');
+    //    var tmpLessonArr = [];
+    //    for (var j = 0; j < lessonNodes.length; j++) {
+    //        tmpObj = $(lessonNodes[j]);
+    //        tmpLessonArr.push({
+    //            symbol: tmpObj.attr('symbol'),
+    //            title: tmpObj.attr('title'),
+    //            finish: tmpObj.attr('finish'),
+    //            enable: tmpObj.attr('enable'),
+    //            unit: tmpObj.attr('unit')
+    //        });
+    //    }
+
+    //    var tmpUnitStr = '';
+    //    for (var j = 0; j < tmpLessonArr.length; j++) {
+    //        if (tmpUnitStr.indexOf(tmpLessonArr[j].unit) < 0) {
+    //            tmpUnitStr += tmpLessonArr[j].unit + '|';
     //        }
-    //    },
-    //    codetimes: {
-    //        over: 95,
-    //        times: [
-    //            { date: "2017-1-1", time: 3 },
-    //            { date: "2017-1-2", time: 2 },
-    //            { date: "2017-1-3", time: 4 }
-    //        ]
+    //    }
+
+    //    var tmpUnitArr = tmpUnitStr.split('|');
+    //    _courseListOverview[newItemObj.id] = [];
+    //    for (var j = 0; j < tmpUnitArr.length; j++) {
+    //        if (tmpUnitArr[j] && tmpUnitArr[j] != '') {
+    //            var tmpUnitLessonArr = [];
+    //            for (var k = 0; k < tmpLessonArr.length; k++) {
+    //                if (tmpLessonArr[k].unit == tmpUnitArr[j]) {
+    //                    tmpUnitLessonArr.push(tmpLessonArr[k]);
+    //                }
+    //            }
+
+    //            _courseListOverview[newItemObj.id].push(tmpUnitLessonArr);
+    //        }
     //    }
     //}
+
+    //tmpNodes = $(response).find('distributio').find('item');
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    var tmpItem = _distributionMap[tmpObj.attr('id')];
+    //    data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
+    //}
+
+    //if (data.experience.distribution.length == 0) {
+    //    for (var key in _distributionMap) {
+    //        data.experience.distribution.push({ id: key, name: _distributionMap[key].name, color: _distributionMap[key].color, value: 0 });
+    //    }
+    //}
+
+    //tmpNodes = $(response).find('level').find('item');
+    //var level = {};
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    level[tmpObj.attr('id')] = {
+    //        name: tmpObj.attr('name'),
+    //        id: tmpObj.attr('id'),
+    //        value: parseInt(tmpObj.attr('value'))
+    //    };
+    //}
+
+    //data.experience.total = parseInt($(response).find('level').attr('total'));
+    //data.experience.level = level;
+
+    //var tmpNode = $(response).find('codetimes');
+    //data.codetimes.over = parseInt($(tmpNode[0]).attr('over'));
+    //data.codetimes.total = new Number(parseInt($(tmpNode[0]).attr('totaltime')) / 60).toFixed(2);
+    //tmpNodes = $(response).find('codetimes').find('item');
+    //for (var i = 0; i < tmpNodes.length; i++) {
+    //    var tmpObj = $(tmpNodes[i]);
+    //    var tmpValue = new Number(parseFloat(tmpObj.attr('value'))).toFixed(2);
+    //    data.codetimes.times.push({ date: tmpObj.attr('date'), time: (isNaN(tmpValue) ? 0 : tmpValue) });
+    //}
+
+    var data = {
+        honor: [
+            { id: 1, title: '算法小达人', img: 'image/honor/copper.png' },
+            { id: 2, title: '计算机小专家', img: 'image/honor/gold.png' },
+            { id: 3, title: '语言大师', img: 'image/honor/silver.png' },
+            { id: 4, title: '小画家', img: 'image/honor/copper.png' },
+            { id: 5, title: '小小数学家', img: 'image/honor/gold.png' },
+            { id: 6, title: '音乐家', img: 'image/honor/silver.png' },
+            { id: 7, title: '科学智多星', img: 'image/honor/copper.png' },
+            { id: 8, title: '分享达人', img: 'image/honor/gold.png' },
+            { id: 9, title: '无人机小飞手', img: 'image/honor/silver.png' }
+        ],
+        course: [
+            { id: 'enlighten', title: '启蒙课程', total: 32, complete: 4, img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'A' },
+            { id: 'primary', title: '初级课程', total: 32, complete: 3, img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B' },
+            { id: 'middle', title: '中级课程', total: 32, complete: 2, img: 'image/course/course_3.png', color: 'rgb(43,93,126)', symbol: 'C' },
+            { id: 'advance', title: '高级课程', total: 32, complete: 1, img: 'image/course/course_4.png', color: 'rgb(228,88,76)', symbol: 'D' }
+        ],
+        experience: {
+            distribution: [
+                { id: "science", name: "科学", value: 250, color: "rgb(36,90,186)" },
+                { id: "skill", name: "技术", value: 400, color: "rgb(236,15,33)" },
+                { id: "engineering", name: "工程", value: 550, color: "rgb(165,165,165)" },
+                { id: "math", name: "数学", value: 700, color: "rgb(255,191,0)" },
+                { id: "language", name: "语言", value: 700, color: "rgb(71,143,208)" }
+            ],
+            level: {
+                primary: { name: "初级课程", id: "Primary", value: 85 },
+                middle: { name: "中级课程", id: "Middle", value: 11 },
+                advance: { name: "高级课程", id: "Advance", value: 5 }
+            }
+        },
+        codetimes: {
+            over: 95,
+            times: [
+                { date: "2017-1-1", time: 3 },
+                { date: "2017-1-2", time: 2 },
+                { date: "2017-1-3", time: 4 }
+            ]
+        }
+    }
 
     return data;
 }

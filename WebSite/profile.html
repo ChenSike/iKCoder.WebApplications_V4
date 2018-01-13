@@ -295,8 +295,6 @@
     <script src="javascript/common/common.js"></script>
     <script src="javascript/common/xmloperator.js"></script>
     <script src="javascript/common.js"></script>
-    <script src="javascript/header.js"></script>
-    <script src="javascript/footer.js"></script>
     <script src="javascript/profile.js"></script>
 </head>
 <body style="height:100%;">
@@ -325,98 +323,187 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid main-content-wrap">
-        <div class="row justify-content-start main-content-row" style="background-color:rgb(38,50,56); overflow: auto;">
-            <div class="col-1" id="sideBar_Page_Left" style="min-width:160px; max-width:200px; background-color:rgb(38,50,56); color:rgb(255,255,255); padding: 0px;">
-                <div class="container-fluid left-sidebar-wrap" style="padding: 0px;">
-                    <div class="row justify-content-center">
-                        <div class="col-12 text-center" style="padding: 20px 0px;">
-                            <img class="img-fluid" id="img_Profile_Title" src="image/circles.svg" />
-                            <p id="txt_NickName_Profile_Title" style="padding-top:20px;">可乐</p>
-                            <p id="txt_Title_Profile_Title">实习工程师</p>
+    <div class="container-fluid main-container">
+        <div class="row no-wrap">
+            <div class="col-12 no-wrap">
+                <header>
+                    <nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header">
+                        <a class="navbar-brand" href="#">
+                            <img src="image/logo-new-black.png" width="255" height="35" class="d-inline-block align-top img-header-logo" alt="">
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="container-fluid" style="padding-right: 5px;">
+                            <div class="row w-100 justify-content-end">
+                                <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container">
+                                    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                                        <ul class="navbar-nav" id="ul_NavBar_Container">
+                                            <li class="nav-item">
+                                                <button type="button" class="btn btn-sm btn-primary" id="btn_Student_SignIn">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-circle-o-notch fa-spin fa-stack-2x fa-fw"></i>
+                                                        <i class="fa fa-bell fa-stack-1x"></i>
+                                                    </span>
+                                                    <span class="nav-bar-signin-text">点击签到</span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <div class="btn-group mood-group" data-toggle="buttons">
+                                                    <label class="btn btn-primary active">
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-circle-o-notch fa-spin fa-stack-2x fa-fw"></i>
+                                                            <i class="fa fa-heartbeat fa-stack-1x"></i>
+                                                        </span>
+                                                        <span class="mood-text">心情日记</span>
+                                                    </label>
+                                                    <label class="btn btn-success mood-button">
+                                                        <i class="fa fa-smile-o fa-lg"></i>
+                                                    </label>
+                                                    <label class="btn btn-warning mood-button">
+                                                        <i class="fa fa-meh-o fa-lg"></i>
+                                                    </label>
+                                                    <label class="btn btn-danger mood-button mood-last">
+                                                        <i class="fa fa-frown-o fa-lg"></i>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="overview" style="background-color:rgb(46,60,66)">
-                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                            <i class="fa fa-tachometer" aria-hidden="true" style="font-size:24px;"></i>
+                    </nav>
+                </header>
+            </div>
+        </div>
+        <div class="row no-wrap">
+            <div class="col-12 no-wrap main-container-col">
+                <div class="container-fluid main-content-wrap">
+                    <div class="row justify-content-start main-content-row">
+                        <div class="col-1" id="sideBar_Page_Left">
+                            <div class="container-fluid left-sidebar-wrap" style="padding: 0px;">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 text-center" style="padding: 20px 0px;">
+                                        <img class="img-fluid" id="img_Profile_Title" src="image/circles.svg" />
+                                        <p id="txt_NickName_Profile_Title" style="padding-top:20px;">可乐</p>
+                                        <p id="txt_Title_Profile_Title">实习工程师</p>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="overview" style="background-color:rgb(46,60,66)">
+                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                                        <i class="fa fa-tachometer" aria-hidden="true" style="font-size:24px;"></i>
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        课程
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="homework">
+                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                                        <i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        作业
+                                        <div class="left-bar-homework-count" style="margin-left:5px;">New</div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="exam">
+                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                                        <i class="fa fa-superscript" aria-hidden="true" style="font-size:24px;"></i>
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        测试
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="message">
+                                    <div class="col-3 text-center " style="height:60px; line-height:60px;">
+                                        <i class="fa fa-envelope-o" aria-hidden="true" style="font-size:24px;"></i>
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        消息
+                                        <div class="left-bar-message-count" style="margin-left:5px;">3</div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="report">
+                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                                        <i class="fa fa-bar-chart" aria-hidden="true" style="font-size:24px;"></i>
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        报表
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="settings">
+                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                                        <i class="fa fa-cogs" aria-hidden="true" style="font-size:24px;"></i>
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        设定
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="workplatform">
+                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                                        <i class="fa fa-anchor" aria-hidden="true" style="font-size:24px;"></i>
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        App Studio
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="appshop">
+                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                                        <i class="fa fa-shopping-cart" aria-hidden="true" style="font-size:24px;"></i>
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        App Shop
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="teamsuit">
+                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
+                                        <i class="fa fa-users" aria-hidden="true" style="font-size:24px;"></i>
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        Team Suit
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-9 text-left">
-                            课程
-                        </div>
-                    </div>
-                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="homework">
-                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                            <i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>
-                        </div>
-                        <div class="col-9 text-left">
-                            作业
-                            <div class="left-bar-homework-count" style="margin-left:5px;">New</div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="exam">
-                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                            <i class="fa fa-superscript" aria-hidden="true" style="font-size:24px;"></i>
-                        </div>
-                        <div class="col-9 text-left">
-                            测试
-                        </div>
-                    </div>
-                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="message">
-                        <div class="col-3 text-center " style="height:60px; line-height:60px;">
-                            <i class="fa fa-envelope-o" aria-hidden="true" style="font-size:24px;"></i>
-                        </div>
-                        <div class="col-9 text-left">
-                            消息
-                            <div class="left-bar-message-count" style="margin-left:5px;">3</div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="report">
-                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                            <i class="fa fa-bar-chart" aria-hidden="true" style="font-size:24px;"></i>
-                        </div>
-                        <div class="col-9 text-left">
-                            报表
-                        </div>
-                    </div>
-                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="settings">
-                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                            <i class="fa fa-cogs" aria-hidden="true" style="font-size:24px;"></i>
-                        </div>
-                        <div class="col-9 text-left">
-                            设定
-                        </div>
-                    </div>
-                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="workplatform">
-                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                            <i class="fa fa-anchor" aria-hidden="true" style="font-size:24px;"></i>
-                        </div>
-                        <div class="col-9 text-left">
-                            App Studio
-                        </div>
-                    </div>
-                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="appshop">
-                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                            <i class="fa fa-shopping-cart" aria-hidden="true" style="font-size:24px;"></i>
-                        </div>
-                        <div class="col-9 text-left">
-                            App Shop
-                        </div>
-                    </div>
-                    <div class="row justify-content-start align-items-center left-bar-category-item" data-target="teamsuit">
-                        <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                            <i class="fa fa-users" aria-hidden="true" style="font-size:24px;"></i>
-                        </div>
-                        <div class="col-9 text-left">
-                            Team Suit
-                        </div>
+                        <div class="col-2" id="wrap_Category_Title" style="min-width:150px; max-width:150px; background-color:rgb(248,250,251); padding: 0px;"></div>
+                        <div class="col-9" id="wrap_Category_Content" style="padding:0px;"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-2" id="wrap_Category_Title" style="min-width:150px; max-width:150px; background-color:rgb(248,250,251); padding: 0px;"></div>
-            <div class="col-9" id="wrap_Category_Content" style="padding:0px;"></div>
+        </div>
+        <div class="row no-wrap">
+            <div class="col-12 no-wrap">
+                <footer id="footer">
+                    <div class="footer-txt">
+                        <div class="container w-100">
+                            <div class="row justify-content-center">
+                                <div class="col-11">
+                                    <p class="copyright-txt">
+                                        <span>
+                                            深圳市鹏博教育科技有限公司
+                                        </span>
+                                        <span class="split-line">
+                                            |
+                                        </span>
+                                        <span class="normal-text">
+                                            Powered by
+                                        </span>
+                                        <span>
+                                            iKCoder.Co (ShenZhen)
+                                        </span>
+                                        <span class="reference-text">
+                                            <a href="http://www.miibeian.gov.cn" target="_blank" style="display:inline-block;">粤ICP备17152880号</a>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
         </div>
     </div>
-    <footer id="footer"></footer>
     <div class="modal fade" id="mWindow_customHeaderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" id="mWindow_CustomHeader_Dialog" style="max-width:600px;" role="document">
             <div class="modal-content">
@@ -501,6 +588,14 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
+    <div class="tooltip tooltip-bottom course-list-overview" id="list_Overview_Course" role="tooltip">
+        <div class="tooltip-arrow"></div>
+        <div class="tooltip-inner">
+            <div class="container-fluid" id="content_List_Overview_Course" style="padding: 0px;">
+
+            </div>
+        </div>
+    </div>
     <div style="display:none;">
         <form target="iFrame_Upload" name="uploadForm" id="form_Upload" action="" method="post" enctype="multipart/form-data">
             <input name="file_Upload" type="file" id="file_Upload" />
@@ -508,22 +603,13 @@
         </form>
         <iframe name="iFrame_Upload"></iframe>
     </div>
-    <div class="tooltip tooltip-bottom course-list-overview" id="list_Overview_Course" role="tooltip">
-        <div class="tooltip-arrow"></div>
-        <div class="tooltip-inner">
-            <div class="container-fluid" id="content_List_Overview_Course" style="padding: 0px;">
-                
-            </div>
-        </div>
-    </div>
     <script type="text/javascript">
         $(document).ready(function () {
             _loadLabels();
-            initHeader();
-            initFooter();
             initPage();
             //_startCheckState();
         });
     </script>
 </body>
+
 </html>

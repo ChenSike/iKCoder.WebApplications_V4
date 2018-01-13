@@ -2,6 +2,36 @@
     font-family: 微软雅黑;
 }
 
+.no-wrap {
+    margin: 0px;
+    padding: 0px;
+}
+
+.main-container {
+    min-height: 800px;
+    min-width: 1150px;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+header {
+    height: 55px;
+    width: 100%;
+    position: static;
+}
+
+.navbar.navbar-expand-lg.navbar-light {
+    background-color: rgb(246,246,246);
+    z-index: 1040;
+    padding: 10px 5px;
+}
+
+    .navbar.navbar-expand-lg.navbar-light .navbar-brand {
+        padding: 0px 20px;
+    }
+
 .navbar-light .navbar-nav .nav-link {
     color: rgb(102,102,120);
 }
@@ -10,6 +40,101 @@
         color: rgb(67,166,239);
         font-weight: bold;
     }
+
+#btn_Student_SignIn {
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.nav-bar-signin-text {
+    line-height: 24px;
+}
+
+nav-ul-container {
+    padding-right: 0px;
+}
+
+#btn_Student_SignIn span.fa-stack {
+    color: rgb( 255,255,0);
+    font-size: 12px;
+}
+
+.mood-group .btn.btn-primary.active {
+    margin-left: 10px;
+    padding: 4px 8px;
+    line-height: 25px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.mood-group .mood-text {
+    font-size: 14px;
+}
+
+.mood-group span.fa-stack {
+    color: rgb(240,140,140);
+    font-size: 12px;
+}
+
+.mood-group .mood-button {
+    padding: 4px 8px;
+    line-height: 25px;
+    cursor: pointer;
+}
+
+    .mood-group .mood-button.mood-last {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+footer {
+    height: 30px;
+    width: 100%;
+}
+
+    footer .footer-txt {
+        background-color: rgb(23,23,23);
+    }
+
+    footer .copyright-txt span {
+        font-weight: bold;
+    }
+
+    footer .copyright-txt .split-line {
+        padding: 0px 10px;
+    }
+
+    footer .copyright-txt .normal-text {
+        font-weight: normal;
+    }
+
+    footer .copyright-txt .reference-text {
+        color: #ffffff;
+        cursor: default;
+        font-style: italic;
+        font-weight: bold;
+        padding-left: 50px;
+    }
+
+.main-content-wrap {
+    height: 100%;
+}
+
+    .main-content-wrap .main-content-row {
+        background-color: rgb(38,50,56);
+        overflow: auto;
+    }
+
+#sideBar_Page_Left {
+    min-width: 160px;
+    max-width: 200px;
+    background-color: rgb(38,50,56);
+    color: rgb(255,255,255);
+    padding: 0px;
+}
+
+
+
 
 #img_Profile_Title {
     width: 100px;
