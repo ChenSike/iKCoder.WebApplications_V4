@@ -11,6 +11,7 @@ var _distributionMap = {
 
 function initPage() {
     $('.navbar.navbar-expand-lg.navbar-light').css('background-color', 'rgb(246,246,246)');
+    //$('.img-header-logo').attr('src', 'image/logo-new-gray.png');
     //$('#sideBar_Page_Left').height($('body').height() - $('.navbar.navbar-expand-lg.navbar-light').height() - 16 - $('footer').height());
     $('.container-fluid.main-content-wrap').height($('body').height() - $('nav').height() - $('footer').height());
     $('.row.justify-content-start.main-content-row').height($('.container-fluid.main-content-wrap').height());
@@ -25,15 +26,92 @@ function initPage() {
 };
 
 function loadSiderbarData() {
-    $('#txt_NickName_Profile_Title').text('Alice');
-    $('#txt_Title_Profile_Title').text('Level  1');
+    var mapping = [
+        { n: 'name', path: '/root/usrbasic/usr_nickname', html: '#txt_NickName_Profile_Title' },
+        { n: 'title', path: '/root/usrbasic/usr_title', html: '#txt_Title_Profile_Title' }
+    ];
+
+    var postData = '<root><select>';
+    for (var i = 0; i < mapping.length; i++) {
+        postData += '<items value="' + mapping[i].path + '"></items>';
+    }
+
+    postData += '</select></root>';
+    _registerRemoteServer();
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.util),
+        data: postData,
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetBasicInfo_Error');
+                return;
+            } else {
+                var tmpNodes = $(responseData).find('msg');
+                var data = { name: '', title: '' };
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    var tmpNode = $(tmpNodes[i]);
+                    if (tmpNode.attr('xpath')) {
+                        for (var j = 0; j < mapping.length; j++) {
+                            if (mapping[j].path == tmpNode.attr('xpath')) {
+                                var tmpValue = tmpNode.attr('value');
+                                if (mapping[j].n == 'name') {
+                                    tmpValue = (tmpValue == '' ? $.cookie('logined_user_nickname') : tmpValue)
+                                }
+
+                                $(mapping[j].html).text(tmpValue);
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取用户信息，请联系技术支持！', 'danger', 'alert_GetBasicInfo_Error');
+        }
+    });
 };
 
 function getUnreadMsgCount() {
-    var count = '3';
-    $('.left-bar-message-count').text(count);
-    $('.left-bar-message-count').css('background-color', 'rgb(236,64,122)');
-    window.setTimeout(getUnreadMsgCount, 15000);
+    _registerRemoteServer();
+    $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.bus.getunreadmsgcount),
+        data: '<root></root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetUnReadsMsgCount_Error');
+                return;
+            } else {
+                var count = 0;
+                var tmpNodes = $(responseData).find('msg');
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    if ($(tmpNodes[i]).attr('type') != '1') {
+                        count = parseInt($(tmpNodes[i]).attr('msg'));
+                        break;
+                    }
+                }
+
+                count = (isNaN(count) ? '0' : count > 99 ? '99+' : count);
+                $('.left-bar-message-count').text(count);
+                $('.left-bar-message-count').css('background-color', (count == 0 ? 'rgb(185,185,185)' : 'rgb(236,64,122)'));
+                window.setTimeout(getUnreadMsgCount, 15000);
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取未读消息的数量！', 'danger', 'alert_GetUnReadsMsgCount_Error');
+        }
+    });
 }
 
 function initEvents() {
@@ -156,56 +234,182 @@ window.onresize = function () {
 /*Overview panel*/
 function rebuildOverviewPanel(contentHeight) {
     var tmpHeight = calcOverviewItemheight(contentHeight);
-    var data = formatOverviewData("");
-    rebuildOverviewTitles(data, contentHeight, tmpHeight);
-    rebuildOverviewContents(data, contentHeight, tmpHeight);
-    hideLoadingMask();
+    _registerRemoteServer();
+    _ajaxObj = $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.bus.getcenterinfo),
+        data: '',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
+                return;
+            } else {
+                var data = formatOverviewData(responseData);
+                rebuildOverviewTitles(data, contentHeight, tmpHeight);
+                rebuildOverviewContents(data, contentHeight, tmpHeight);
+                hideLoadingMask();
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
+        }
+    });
 };
 
 var _courseListOverview = null;
 function formatOverviewData(response) {
     var data = {
-        honor: [
-            { id: 1, title: '算法专家', img: 'image/honor/a.png' },
-            { id: 2, title: '语言大师', img: 'image/honor/b.png' },
-            { id: 3, title: '空间大师', img: 'image/honor/c.png' },
-            { id: 4, title: '数学大师', img: 'image/honor/a.png' }
-        ],
-        course: [
-            { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
-            { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' }
-        ],
-        experience: {
-            distribution: [
-                { id: "science", name: "科学", value: 250, color: "rgb(36,90,186)" },
-                { id: "skill", name: "技术", value: 400, color: "rgb(236,15,33)" },
-                { id: "engineering", name: "工程", value: 550, color: "rgb(165,165,165)" },
-                { id: "math", name: "数学", value: 700, color: "rgb(255,191,0)" },
-                { id: "language", name: "语言", value: 700, color: "rgb(71,143,208)" }
-            ],
-            level: {
-                primary: { name: "初级课程", id: "Primary", value: 2.5 },
-                middle: { name: "中级课程", id: "Middle", value: 0 },
-                advance: { name: "高级课程", id: "Advance", value: 0 },
-                plus: { name: "拓展课程", id: "plus", value: 0 }
+        honor: [],
+        course: [],
+        experience: { distribution: [], level: {} },
+        codetimes: { over: 0, times: [] }
+    };
+
+    var tmpNodes = $(response).find('honor').find('item');
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        data.honor.push({ id: i + 1, title: tmpObj.attr('name'), img: 'image/honor/' + tmpObj.attr('image') });
+    }
+
+    tmpNodes = $(response).find('course').find('item');
+    var courseMap = [
+        { color: 'rgb(86,181,34)', symbol: 'A' },
+        { color: 'rgb(100,124,185)', symbol: 'B' },
+        { color: 'rgb(43,93,126)', symbol: 'C' },
+        { color: 'rgb(228,88,76)', symbol: 'D' },
+        { color: 'rgb(228,88,76)', symbol: 'E' }
+    ];
+    _courseListOverview = {};
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        var newItemObj = {};
+        newItemObj.id = tmpObj.attr('id');
+        newItemObj.title = tmpObj.attr('title');
+        newItemObj.total = parseInt(tmpObj.attr('total'));
+        newItemObj.complete = parseInt(tmpObj.attr('complete'));
+        newItemObj.img = 'image/course/course_' + (i + 1) + '.png';
+        newItemObj.color = courseMap[i].color;
+        newItemObj.symbol = courseMap[i].symbol;
+        data.course.push(newItemObj);
+        var lessonNodes = $(tmpNodes[i]).find('symbollst').find('lesson');
+        var tmpLessonArr = [];
+        for (var j = 0; j < lessonNodes.length; j++) {
+            tmpObj = $(lessonNodes[j]);
+            tmpLessonArr.push({
+                symbol: tmpObj.attr('symbol'),
+                title: tmpObj.attr('title'),
+                finish: tmpObj.attr('finish'),
+                enable: tmpObj.attr('enable'),
+                unit: tmpObj.attr('unit')
+            });
+        }
+
+        var tmpUnitStr = '';
+        for (var j = 0; j < tmpLessonArr.length; j++) {
+            if (tmpUnitStr.indexOf(tmpLessonArr[j].unit) < 0) {
+                tmpUnitStr += tmpLessonArr[j].unit + '|';
             }
-        },
-        codetimes: {
-            total: 21,
-            over: 62,
-            times: [
-                { date: "2017-10-1", time: 1 },
-                { date: "2017-10-2", time: 2 },
-                { date: "2017-10-3", time: 1 },
-                { date: "2017-10-4", time: 3 },
-                { date: "2017-10-5", time: 2 },
-                { date: "2017-10-6", time: 2 },
-                { date: "2017-10-7", time: 1 },
-                { date: "2017-10-8", time: 2 },
-                { date: "2017-10-9", time: 1 }
-            ]
+        }
+
+        var tmpUnitArr = tmpUnitStr.split('|');
+        _courseListOverview[newItemObj.id] = [];
+        for (var j = 0; j < tmpUnitArr.length; j++) {
+            if (tmpUnitArr[j] && tmpUnitArr[j] != '') {
+                var tmpUnitLessonArr = [];
+                for (var k = 0; k < tmpLessonArr.length; k++) {
+                    if (tmpLessonArr[k].unit == tmpUnitArr[j]) {
+                        tmpUnitLessonArr.push(tmpLessonArr[k]);
+                    }
+                }
+
+                _courseListOverview[newItemObj.id].push(tmpUnitLessonArr);
+            }
         }
     }
+
+    tmpNodes = $(response).find('distributio').find('item');
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        var tmpItem = _distributionMap[tmpObj.attr('id')];
+        data.experience.distribution.push({ id: tmpObj.attr('id'), name: tmpItem.name, color: tmpItem.color, value: parseInt(tmpObj.attr('value')) });
+    }
+
+    if (data.experience.distribution.length == 0) {
+        for (var key in _distributionMap) {
+            data.experience.distribution.push({ id: key, name: _distributionMap[key].name, color: _distributionMap[key].color, value: 0 });
+        }
+    }
+
+    tmpNodes = $(response).find('level').find('item');
+    var level = {};
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        level[tmpObj.attr('id')] = {
+            name: tmpObj.attr('name'),
+            id: tmpObj.attr('id'),
+            value: parseInt(tmpObj.attr('value'))
+        };
+    }
+
+    data.experience.total = parseInt($(response).find('level').attr('total'));
+    data.experience.level = level;
+
+    var tmpNode = $(response).find('codetimes');
+    data.codetimes.over = parseInt($(tmpNode[0]).attr('over'));
+    data.codetimes.total = new Number(parseInt($(tmpNode[0]).attr('totaltime')) / 60).toFixed(2);
+    tmpNodes = $(response).find('codetimes').find('item');
+    for (var i = 0; i < tmpNodes.length; i++) {
+        var tmpObj = $(tmpNodes[i]);
+        var tmpValue = new Number(parseFloat(tmpObj.attr('value'))).toFixed(2);
+        data.codetimes.times.push({ date: tmpObj.attr('date'), time: (isNaN(tmpValue) ? 0 : tmpValue) });
+    }
+
+    //var data = {
+    //    honor: [
+    //        { id: 1, title: '算法小达人', img: 'image/honor/copper.png' },
+    //        { id: 2, title: '计算机小专家', img: 'image/honor/gold.png' },
+    //        { id: 3, title: '语言大师', img: 'image/honor/silver.png' },
+    //        { id: 4, title: '小画家', img: 'image/honor/copper.png' },
+    //        { id: 5, title: '小小数学家', img: 'image/honor/gold.png' },
+    //        { id: 6, title: '音乐家', img: 'image/honor/silver.png' },
+    //        { id: 7, title: '科学智多星', img: 'image/honor/copper.png' },
+    //        { id: 8, title: '分享达人', img: 'image/honor/gold.png' },
+    //        { id: 9, title: '无人机小飞手', img: 'image/honor/silver.png' }
+    //    ],
+    //    course: [
+    //        { id: 'enlighten', title: '启蒙课程', total: 32, complete: 4, img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'A' },
+    //        { id: 'primary', title: '初级课程', total: 32, complete: 3, img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B' },
+    //        { id: 'middle', title: '中级课程', total: 32, complete: 2, img: 'image/course/course_3.png', color: 'rgb(43,93,126)', symbol: 'C' },
+    //        { id: 'advance', title: '高级课程', total: 32, complete: 1, img: 'image/course/course_4.png', color: 'rgb(228,88,76)', symbol: 'D' }
+    //    ],
+    //    experience: {
+    //        distribution: [
+    //            { id: "science", name: "科学", value: 250, color: "rgb(36,90,186)" },
+    //            { id: "skill", name: "技术", value: 400, color: "rgb(236,15,33)" },
+    //            { id: "engineering", name: "工程", value: 550, color: "rgb(165,165,165)" },
+    //            { id: "math", name: "数学", value: 700, color: "rgb(255,191,0)" },
+    //            { id: "language", name: "语言", value: 700, color: "rgb(71,143,208)" }
+    //        ],
+    //        level: {
+    //            primary: { name: "初级课程", id: "Primary", value: 85 },
+    //            middle: { name: "中级课程", id: "Middle", value: 11 },
+    //            advance: { name: "高级课程", id: "Advance", value: 5 }
+    //        }
+    //    },
+    //    codetimes: {
+    //        over: 95,
+    //        times: [
+    //            { date: "2017-1-1", time: 3 },
+    //            { date: "2017-1-2", time: 2 },
+    //            { date: "2017-1-3", time: 4 }
+    //        ]
+    //    }
+    //}
 
     return data;
 }
@@ -328,14 +532,16 @@ function buildOverviewCourse(datas, containerHeight) {
     for (var i = 0; i < itemCount; i++) {
         tmpHTMLArr.push('<div class="text-center" style="display: inline-block; height:100%; padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;">');
         tmpHTMLArr.push('    <div class="d-flex align-items-center" style="height:100%;">');
-        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;" data-target="' + datas[i].symbol + '">');
+        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;" data-target="' + datas[i].id + '">');
         tmpHTMLArr.push('            <div class="row" style="margin:0px;">');
         tmpHTMLArr.push('                <div class="col-12" style="padding:0px;">');
         tmpHTMLArr.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="height:' + imgHeight + 'px;" />');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
         tmpHTMLArr.push('            <div class="row" style="margin:0px;">');
-        tmpHTMLArr.push('                <div class="col no-padding">');
+        tmpHTMLArr.push('                <div class="col no-padding" style="width:' + ((width - progWidth) / 2) + 'px">');
+        tmpHTMLArr.push('                </div>');
+        tmpHTMLArr.push('                <div class="col no-padding" style="width:' + progWidth + 'px">');
         tmpHTMLArr.push('                   <div class="container-fluid no-padding">');
         tmpHTMLArr.push('                       <div class="row no-margin">');
         tmpHTMLArr.push('                           <div class="col-12 no-padding">');
@@ -343,11 +549,21 @@ function buildOverviewCourse(datas, containerHeight) {
         tmpHTMLArr.push('                           </div>');
         tmpHTMLArr.push('                       </div>');
         tmpHTMLArr.push('                       <div class="row no-margin">');
-        tmpHTMLArr.push('                           <div class="col-12 no-padding">');
-        tmpHTMLArr.push('                               <p class="text-center profile-overview-course-item-title" style="color:' + datas[i].color + '; font-size:14px;padding: 0px;" title="' + datas[i].course + '">' + datas[i].course + '</p>');
+        tmpHTMLArr.push('                           <div class="col-12 no-padding d-flex justify-content-center">');
+        tmpHTMLArr.push('                               <div style="width:' + progWidth + 'px; height:' + progHeight + 'px; background-color:rgb(216,216,216);">');
+        tmpHTMLArr.push('                                   <div style="height:' + progHeight + 'px; background-color:rgb(73,175,79); width:' + (datas[i].complete / (datas[i].total == 0 ? 1 : datas[i].total) * 100) + '%;"></div>');
+        tmpHTMLArr.push('                               </div>');
+        tmpHTMLArr.push('                           </div>');
+        tmpHTMLArr.push('                       </div>');
+        tmpHTMLArr.push('                       <div class="row no-margin">');
+        tmpHTMLArr.push('                           <div class="col-12  no-padding" style="padding-top:5px;color:rgb(73,175,79);">');
+        tmpHTMLArr.push('                               <p class="text-center profile-overview-course-item-title" style="font-size:' + progTextSize + 'px">已学习' + datas[i].complete + '/' + datas[i].total + '课时</p>');
         tmpHTMLArr.push('                           </div>');
         tmpHTMLArr.push('                       </div>');
         tmpHTMLArr.push('                   </div>');
+        tmpHTMLArr.push('                </div>');
+        tmpHTMLArr.push('                <div class="col no-padding" style="width:' + ((width - progWidth) / 2) + 'px">');
+        tmpHTMLArr.push('                   <div class="profile-overview-course-item-symbol" style="right:' + progHeight + 'px; font-size:' + symbolSize + 'px;line-height: ' + symbolSize + 'px;">' + datas[i].symbol + '</div>');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
         tmpHTMLArr.push('        </div>');
@@ -378,10 +594,82 @@ function buildOverviewCourse(datas, containerHeight) {
     $('.overview-course-item-wrap').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
         var tipWrap = $('#list_Overview_Course');
-        if (target.attr('data-target') != '') {
-            window.location.href = "workplatform.html?scene=" + target.attr('data-target') + '&step=1';
+        if (tipWrap.css('display') == 'block' && tipWrap.attr('data-target') == target.attr('data-target')) {
+            displayCourseListContent(false);
+        } else {
+            displayCourseListContent(target);
+            buildCourseListContent(target);
+            tipWrap.attr('data-target', target.attr('data-target'));
         }
     });
+};
+
+function displayCourseListContent(target) {
+    var tipWrap = $('#list_Overview_Course');
+    if (target === false) {
+        tipWrap.hide();
+    } else {
+        var wrapContainer = $('#wrap_Overview_Course_Items');
+        var width = wrapContainer.width();
+        var height = Math.floor(wrapContainer.height() * 2 / 3);
+        var offset = wrapContainer.offset();
+        if (width != tipWrap.width() || height != tipWrap.height()) {
+            var tipArrow = $('#list_Overview_Course .tooltip-arrow')
+            var tipInner = $('#list_Overview_Course .tooltip-inner');
+            tipWrap.width(width);
+            tipWrap.height(height);
+            tipInner.width(width);
+            tipInner.height(height);
+            var x = offset.left;
+            var y = offset.top + wrapContainer.height() - 20;
+            tipInner.css('max-width', 'none');
+            tipWrap.css('left', x + 'px');
+            tipWrap.css('top', y + 'px');
+            tipWrap.css('opacity', '0.9');
+            tipWrap.attr('data-target', target.attr('data-target'));
+        }
+
+        CreateNewStyleRule('.tooltip.tooltip-bottom .tooltip-inner::before', 'left:' + (target.offset().left - offset.left + target.width() / 2) + 'px;');
+        tipWrap.show();
+    }
+};
+
+function buildCourseListContent(target) {
+    var symbol = target.attr('data-target');
+    if (_courseListOverview[symbol]) {
+        var tmpHTMLStrArr = [];
+        var unitArr = _courseListOverview[symbol];
+        var lessonArr, icon, state, disabled, courseSymbol;
+        for (var i = 0; i < unitArr.length; i++) {
+            tmpHTMLStrArr.push('<div class="row justify-content-start" style="padding: 15px;">');
+            tmpHTMLStrArr.push('    <div class="col  text-left">');
+            lessonArr = unitArr[i];
+            for (var j = 0; j < lessonArr.length; j++) {
+                icon = (lessonArr[j].finish == '0' ? 'arrow-circle-o-right' : 'check-circle-o');
+                state = (lessonArr[j].finish == '0' ? '' : 'finished');
+                disabled = (lessonArr[j].enable == '0' ? ' disabled' : '');
+                courseSymbol = (lessonArr[j].enable == '0' ? '' : lessonArr[j].symbol);
+                tmpHTMLStrArr.push('<i class="fa fa-' + icon + ' lesson-title-course-overview ' + state + disabled + '" aria-hidden="true" data-target="' + courseSymbol + '"><span style="padding-left:5px;">' + lessonArr[j].title + '</span></i>');
+            }
+
+            tmpHTMLStrArr.push('    </div>');
+            tmpHTMLStrArr.push('</div>');
+            if (i < unitArr.length - 1) {
+                tmpHTMLStrArr.push('<div class="row justify-content-center" style="padding:0px 30px;">');
+                tmpHTMLStrArr.push('    <div class="col-12" style="border-bottom:solid 1px rgb(255,255,255);">');
+                tmpHTMLStrArr.push('    </div>');
+                tmpHTMLStrArr.push('</div>');
+            }
+        }
+
+        $('#content_List_Overview_Course').empty();
+        $('#content_List_Overview_Course').append(tmpHTMLStrArr.join(''));
+        $('.lesson-title-course-overview').on('click', function (eventObj) {
+            if ($(eventObj.currentTarget).attr('data-target') != '') {
+                window.location.href = "workplatform.html?scene=" + $(eventObj.currentTarget).attr('data-target') + '&rnd=' + Date.now();
+            }
+        });
+    }
 };
 
 function buildOverviewExperience(data, height) {
@@ -535,14 +823,14 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
             height: itemHeight.l,
             bgColor: 'rgb(248,250,251)', color: 'rgb(117,180,76)',
             icon: 'gamepad',
-            text: '<p class="overview-title-item-text">已完成</p><p class="overview-title-item-data">1/40</ｐ><p class="overview-title-item-text">个课程</p>'
+            text: '<p class="overview-title-item-text">已完成</p><p class="overview-title-item-data">' + completeCourse + '/' + totalCourse + '</ｐ><p class="overview-title-item-text">个课程</p>'
         }, {
             id: 'Experience',
             height: itemHeight.l,
             bgColor: 'rgb(236,239,241)',
             color: 'rgb(77,208,225)',
             icon: 'star',
-            text: '<p class="overview-title-item-text"><span class="overview-title-item-data">50</span></p><p class="overview-title-item-text">经验值</p>'
+            text: '<p class="overview-title-item-text"><span class="overview-title-item-data">' + totalExp + '</span></p><p class="overview-title-item-text">经验值</p>'
         }, {
             id: 'Times',
             height: itemHeight.e,
@@ -702,18 +990,66 @@ function rebuildSettingsPanel(contentHeight) {
     ];
     contentHeight = $('#sideBar_Page_Left').height() - 1;
     var tmpHeight = calcSettingsItemheight(contentHeight);
-    var data = {
-        header: 'image/tmpheader.jpg',
-        name: 'Alice',
-        gender: '1',
-        birthday: '2006-08-08',
-        province: '广东',
-        city: '深圳',
-        school: '深圳市竹园小学'
-    };
-    rebuildSettingsTitles(tmpHeight);
-    rebuildSettingsContents(data, tmpHeight);
-    hideLoadingMask();
+    _registerRemoteServer();
+    _ajaxObj = $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.util),
+        data: '<root>' +
+                '<select>' +
+                '<items value="/root/usrbasic/usr_nickname"></items>' +
+                '<items value="/root/usrbasic/sex"></items>' +
+                '<items value="/root/usrbasic/birthday"></items>' +
+                '<items value="/root/usrbasic/state"></items>' +
+                '<items value="/root/usrbasic/city"></items>' +
+                '<items value="/root/usrbasic/school"></items>' +
+                '</select>' +
+                '</root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
+                return;
+            } else {
+                var tmpNodes = $(responseData).find('msg');
+                var data = { profile: {} };
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    var tmpNode = $(tmpNodes[i]);
+                    if (tmpNode.attr('xpath')) {
+                        for (var j = 0; j < mapping.length; j++) {
+                            if (mapping[j].p == tmpNode.attr('xpath')) {
+                                data.profile[mapping[j].n] = tmpNode.attr('value');
+                            }
+                        }
+                    }
+                }
+
+                rebuildSettingsTitles(tmpHeight);
+                rebuildSettingsContents(data, tmpHeight);
+                hideLoadingMask()
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
+        }
+    });
+    //var data = {
+    //    profile: {
+    //        header: _getRequestURL(_gURLMapping.account.getheader, {}),
+    //        name: 'Terry',
+    //        gender: '1',
+    //        birthday: '2009-10-01',
+    //        province: '广东',
+    //        city: '深圳',
+    //        school: '深圳实验小学'
+    //    }
+    //}
+
+    //rebuildSettingsTitles(tmpHeight);
+    //rebuildSettingsContents(data, tmpHeight);
 };
 
 function calcSettingsItemheight(contentHeight) {
@@ -825,7 +1161,7 @@ function buildSettingsProfile(data, tmpHeight) {
 
 function updateProfileValue(data) {
     var headerImg = new Image();
-    headerImg.src = 'image/tmpheader.jpg';
+    headerImg.src = _getRequestURL(_gURLMapping.account.getheader, {});
     headerImg.onload = function () {
         $('#img_Settings_Profile_Header').attr('src', headerImg.src);
     }
@@ -989,8 +1325,8 @@ function initSettingsEvents() {
             $('#progress_HeaderUpload').show();
             _registerRemoteServer();
             var fileType = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
-            //$('#form_Upload').attr('action', _getRequestURL(_gURLMapping.account.updateheader, { sumitdata: 1, }));
-            //$('#form_Upload').submit();
+            $('#form_Upload').attr('action', _getRequestURL(_gURLMapping.account.updateheader, { sumitdata: 1, }));
+            $('#form_Upload').submit();
             var timeout = 2000;
             if (this.files[0].size / 1024 > 3072) {
                 timeout = 8000;
@@ -1000,13 +1336,45 @@ function initSettingsEvents() {
                 timeout = 3000;
             }
 
-            //_UploadHeaderHandle = setTimeout('initCustomHeaderImg()', timeout);
+            _UploadHeaderHandle = setTimeout('initCustomHeaderImg()', timeout);
             $('#btn_Form_File_Upload').click();
         }
     });
 
     $('#btn_CustomHeader_Save').on('click', function () {
-        _showGlobalMessage('功能演示版本，不支持数据修改！', 'warning', 'alert_ForgetPWD_Success');
+        var tmpStr = $('#btn_CustomHeader_Save').attr('data-content');
+        var tmpParams = tmpStr.split(',');
+        if (tmpStr != '' && tmpParams.length == 4) {
+            tmpParams = {
+                startx: tmpParams[0],
+                starty: tmpParams[1],
+                width: tmpParams[2],
+                height: tmpParams[3]
+            };
+            _registerRemoteServer();
+            $.ajax({
+                type: 'POST',
+                async: true,
+                url: _getRequestURL(_gURLMapping.account.clipheaderimg, tmpParams),
+                data: '',
+                success: function (data, status) {
+                    if ($(data).find('err').length > 0) {
+                        _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_Save_CustHead_Error');
+                        return;
+                    } else {
+                        $('#mWindow_customHeaderModal').modal('hide');
+                        loadHeaderImg();
+                    }
+                },
+                dataType: 'xml',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+
+                }
+            });
+        }
     });
 
     $("#btn_Settings_Profile_Save_Profile").click(function () {
@@ -1019,7 +1387,55 @@ function initSettingsEvents() {
 };
 
 function updateProfile() {
-    _showGlobalMessage('功能演示版本，不支持数据修改！', 'warning', 'alert_ForgetPWD_Success');
+    var tSex = '1';
+    $('[name="settings_profile_user_gender"]').each(function () {
+        if ($(this).is(':checked')) {
+            tSex = $(this).val();
+        }
+    });
+
+    _registerRemoteServer();
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.updateutil),
+        data: '<root>' +
+            '<parent>/root/usrbasic</parent>' +
+            '<newnodes>' +
+            '<item name="usr_nickname" value="' + $('#txt_Settings_Profile_User_Name').val() + '" ></item>' +
+            '<item name="sex" value="' + tSex + '" ></item>' +
+            '<item name="birthday" value="' + $('#datetime_Settings_Profile_User_Birthday').val() + '" ></item>' +
+            '<item name="state" value="' + $('#select_Settings_Profile_User_City_Province').val() + '" ></item>' +
+            '<item name="city" value="' + $('#select_Settings_Profile_User_City_City').val() + '" ></item>' +
+            '<item name="school" value="' + $('#txt_Settings_Profile_User_School').val() + '" ></item>' +
+            '</newnodes>' +
+            '</root>',
+        success: function (data, status) {
+            if ($(data).find('err').length > 0) {
+                _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_ForgetPWD_Error');
+            } else if ($(data).find('msg').length > 0) {
+                var tmpNodes = $(data).find('msg');
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    if (!$(tmpNodes[i]).attr('type') || $(tmpNodes[i]).attr('type') != '1') {
+                        //$('body').append($('<div class="alert alert-success" role="alert"  data-dismiss="alert"><strong>' + $(tmpNodes[i]).attr('msg') + '</strong></div>'));
+                        _showGlobalMessage($(tmpNodes[i]).attr('msg'), 'success', 'alert_ForgetPWD_Success');
+                        $.cookie('logined_user_nickname', $('#txt_Settings_Profile_User_Name').val());
+                        $('#txt_NickName_Profile_Title').text($.cookie('logined_user_nickname'));
+                        updateUserInfor();
+                    }
+                }
+            } else {
+                _showGlobalMessage('发生未知的错误, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('修改密码失败, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
+        }
+    });
 }
 
 function updatePWD() {
@@ -1044,7 +1460,32 @@ function updatePWD() {
         return;
     }
 
-    _showGlobalMessage('功能演示版本，不支持数据修改！', 'warning', 'alert_ForgetPWD_Success');
+    _registerRemoteServer();
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.updatepwd),
+        data: '<root>' +
+            '<oldpassword>' + $("#txt_Settings_PWD_Old_PWD").val() + '</oldpassword>' +
+            '<newpassword>' + $("#txt_Settings_PWD_New_PWD").val() + '</newpassword>' +
+            '</root>',
+        success: function (data, status) {
+            if ($(data).find('err').length > 0) {
+                _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_ForgetPWD_Error');
+            } else if ($(data).find('msg').length > 0) {
+
+            } else {
+                _showGlobalMessage('发生未知的错误, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('修改密码失败, 请联系客服!', 'danger', 'alert_ForgetPWD_Error');
+        }
+    });
 }
 
 var _currentHeaderImageSrc = '';
@@ -1055,12 +1496,12 @@ function initCustomHeaderImg(uploadType) {
     ctx.clearRect(0, 0, 320, 320);
     var image = new Image();
     if (!uploadType && _currentHeaderImageSrc == '') {
-        image.src = 'image/tmpheader.jpg';
+        image.src = _getRequestURL(_gURLMapping.account.getheader);
     } else if (typeof uploadType == 'string' && uploadType != '') {
-        image.src = 'image/tmpheader.jpg';
+        image.src = _getRequestURL(_gURLMapping.account.getheader, {});
         //image.src = "images/head/head_11.jpg";
     } else {
-        image.src = _currentHeaderImageSrc;
+        image.src = _currentHeaderImageSrc + "&rnd=" + Date.now();
     }
 
     image.onload = function () {
@@ -1277,10 +1718,10 @@ function showSampleImage(image, left, top, width, height, newSize) {
 };
 
 function rebuildSettingsContents(data, tmpHeight) {
-    buildSettingsProfile(data, tmpHeight.p);
+    buildSettingsProfile(data.profile, tmpHeight.p);
     buildSettingsChangePWD(tmpHeight.c - 1);
     initSettingsEvents();
-    updateProfileValue(data);
+    updateProfileValue(data.profile);
 };
 
 function rebuildSettingsTitles(tmpHeight) {
@@ -1319,69 +1760,95 @@ function rebuildSettingsTitles(tmpHeight) {
 
 /*Report panel*/
 function rebuildReportPanel() {
-    var data = {
-        user: {
-            header: 'image/tmpheader.jpg',
-            name: 'Alice',
-            title: 'Level 1',
-            exp: 2.5,
-            over: 65,
-            course: 1,
-            date: '2017-10-20',
-            qr: 'image/qr_wechat.png'
+    //_registerRemoteServer();
+    _ajaxObj = $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.bus.gethtmlreport),
+        data: '<root></root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetReport_Error');
+                return;
+            } else {
+                var tmpNodes = $(responseData).find('msg');
+                var data = formatReportData(responseData);
+                rebuildReportTitles();
+                rebuildReportContents(data);
+                hideLoadingMask()
+            }
         },
-        achieve: [
-            { id: 1, title: '初步接触编程', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' },
-            { id: 2, title: '分享小达人', content: '分享了18个已完成作品， 这些作品已被565人次浏览；' },
-            { id: 3, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' }
-        ],
-        ability: {
-            type: [
-                { name: '科学', value: 700 },
-                { name: '技术', value: 400 },
-                { name: '工程', value: 550 },
-                { name: '数学', value: 700 },
-                { name: '语言', value: 450 }
-            ],
-            course: 1,
-            time: 21,
-            items: [
-                '模式设别'
-            ]
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
         },
-        time: {
-            over: 0,
-            total: 21,
-            times: [
-                { date: "2017-10-1", time: 1 },
-                { date: "2017-10-2", time: 2 },
-                { date: "2017-10-3", time: 1 },
-                { date: "2017-10-4", time: 3 },
-                { date: "2017-10-5", time: 2 },
-                { date: "2017-10-6", time: 2 },
-                { date: "2017-10-7", time: 1 },
-                { date: "2017-10-8", time: 2 },
-                { date: "2017-10-9", time: 1 }
-            ],
-            course: [
-                { id: '1', rate: 2.5, name: '初级课程' },
-                { id: '２', rate: 0, name: '中级课程' },
-                { id: '３', rate: 0, name: '高级课程' },
-                { id: '4', rate: 0, name: '拓展课程' }
-            ]
-        },
-        potential: [
-            { name: '科学', value: 100 },
-            { name: '数学', value: 80 },
-            { name: '技术', value: 55 },
-            { name: '工程', value: 20 },
-            { name: '语言', value: 10 }
-        ]
-    }
+        error: function () {
+            _showGlobalMessage('无法获取报告，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
+        }
+    });
+    //var data = {
+    //    user: {
+    //        header: _getRequestURL(_gURLMapping.account.getheader, {}),
+    //        name: 'Terry',
+    //        title: '高级工程师',
+    //        exp: 55,
+    //        over: 88,
+    //        course: 18,
+    //        date: '2017-5-1',
+    //        qr: 'image/qr_wechat.png'
+    //    },
+    //    achieve: [
+    //        { id: 1, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' },
+    //        { id: 2, title: '分享小达人', content: '分享了18个已完成作品， 这些作品已被565人次浏览；' },
+    //        { id: 3, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' }
+    //    ],
+    //    ability: {
+    //        type: [
+    //            { name: '科学', value: 700 },
+    //            { name: '技术', value: 400 },
+    //            { name: '工程', value: 550 },
+    //            { name: '数学', value: 700 },
+    //            { name: '语言', value: 450 }
+    //        ],
+    //        course: 25,
+    //        time: 125,
+    //        items: [
+    //            '计算机原理',
+    //            '空间概念和有序移动',
+    //            '基础数据结构',
+    //            '键盘及鼠标控制',
+    //            '数学输入与输出',
+    //            '条件循环',
+    //            '条件判断语句',
+    //            '音乐播放原理',
+    //            '基本绘图指令'
+    //        ]
+    //    },
+    //    time: {
+    //        over: 95,
+    //        times: [
+    //            { date: '20070-01-01', time: 2 },
+    //            { date: '20070-01-02', time: 6 },
+    //            { date: '20070-01-03', time: 3 }
+    //        ],
+    //        course: [
+    //            { id: '1', rate: 85, name: '初级课程' },
+    //            { id: '２', rate: 45, name: '中级课程' },
+    //            { id: '３', rate: 15, name: '高级课程' }
+    //        ]
+    //    },
+    //    potential: [
+    //        { name: '科学', value: 100 },
+    //        { name: '数学', value: 80 },
+    //        { name: '技术', value: 55 },
+    //        { name: '工程', value: 20 },
+    //        { name: '语言', value: 10 }
+    //    ]
+    //}
 
-    rebuildReportTitles();
-    rebuildReportContents(data);
-    hideLoadingMask();
+    //rebuildReportTitles();
+    //rebuildReportContents(data);
+    //hideLoadingMask();
 };
 
 function formatReportData(response) {
@@ -2275,24 +2742,84 @@ function rebuildMessageTitles(contentHeight) {
 };
 
 function displayMessageByType(type) {
-    var data = [
-            { id: '1', top: 1, type: '1', content: '系统消息: 欢迎来到iKCoder的编程世界！', time: '2017-10-1', answer: null },
-            { id: '2', top: 1, type: '1', content: '系统消息: 课件版本已更新至最新版本！', time: '2017-10-20', answer: null },
-            { id: '3', top: 1, type: '2', content: '提问: 如果在代码状态进行参数修改是否有效？', time: '2017-10-7', answer: { id: '4', type: '21', content: '解答: 你好，Alice，在代码状态进行参数修改是有效的。', time: '2017-10-8', owner: '1' } }
-    ];
+    _registerRemoteServer();
+    _ajaxObj = $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(type == '' ? _gURLMapping.bus.getallmsglist : type == '1' ? _gURLMapping.bus.getsysmsglist : _gURLMapping.bus.getqamsglist),
+        data: '<root></root>',
+        success: function (responseData, status) {
+            if ($(responseData).find('err').length > 0) {
+                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetMessages_Error');
+                return;
+            } else {
+                var tmpNodes = $(responseData).find('msg');
+                var tmpDatasObj = {};
+                for (var i = 0; i < tmpNodes.length; i++) {
+                    var tmpNode = $(tmpNodes[i]);
+                    if (tmpNode.attr('type') != '1') {
+                        tmpDatasObj[tmpNode.attr('index')] = {
+                            id: tmpNode.attr('messageid'),
+                            top: tmpNode.attr('istop'),
+                            type: tmpNode.attr('messagetype'),
+                            content: tmpNode.attr('message'),
+                            time: tmpNode.attr('datetime'),
+                            answer: '',
+                            username: tmpNode.attr('username'),
+                            isread: tmpNode.attr('isread'),
+                            optid: tmpNode.attr('operationid')
+                        }
+                    }
+                }
 
-    var tmpDatas = data;
-    if (type != '') {
-        tmpDatas = [];
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].type == type) {
-                tmpDatas.push(data[i]);
+                var indexArr = [];
+                for (var key in tmpDatasObj) {
+                    indexArr.push(key);
+                }
+
+                indexArr.sort(function (a, b) {
+                    return a - b
+                });
+
+                var datas = [];
+                for (var i = 0; i < indexArr.length; i++) {
+                    datas.push(tmpDatasObj[indexArr[i]]);
+                }
+
+                rebuildMessageContents(datas);
+                hideLoadingMask()
             }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法获取消息，请联系技术支持！', 'danger', 'alert_GetMessages_Error');
         }
-    }
+    });
+    //var data = [
+    //        { id: '1', top: 1, type: '1', content: 'System Message, Test 1, ID=1, 2017-5-2System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1', time: '2017-5-2', answer: null },
+    //        { id: '2', top: 1, type: '1', content: 'System Message, Test 2, ID=1, 2017-5-1', time: '2017-5-1', answer: null },
+    //        { id: '3', top: 1, type: '2', content: 'Questions and Answers, Test 1, ID=3, 2017-5-1', time: '2017-5-1', answer: { id: '8', type: '21', content: 'Answers, Test 1, ID=8, 2017-5-8', time: '2017-5-8', owner: '1' } },
+    //        { id: '4', top: 0, type: '1', content: 'System Message, Test 3, ID=4, 2017-5-4', time: '2017-5-4', answer: null },
+    //        { id: '5', top: 0, type: '1', content: 'System Message, Test 4, ID=5, 2017-5-3', time: '2017-5-3', answer: null },
+    //        { id: '6', top: 0, type: '2', content: 'Questions and Answers, Test 2, ID=6, 2017-5-3', time: '2017-5-3', answer: null },
+    //        { id: '7', top: 0, type: '2', content: 'Questions and Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-2', answer: { id: '9', type: '21', content: 'Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-9', owner: '1' } }
+    //];
 
-    rebuildMessageContents(tmpDatas, type);
-    hideLoadingMask();
+    //var tmpDatas = data;
+    //if (type != '') {
+    //    tmpDatas = [];
+    //    for (var i = 0; i < data.length; i++) {
+    //        if (data[i].type == type) {
+    //            tmpDatas.push(data[i]);
+    //        }
+    //    }
+    //}
+
+    //rebuildMessageContents(tmpDatas);
+    //hideLoadingMask();
 };
 
 function rebuildMessageContents(data, type) {
@@ -2384,9 +2911,6 @@ function rebuildMessageContents(data, type) {
                 _showGlobalMessage('无法删除消息，请联系技术支持！', 'danger', 'alert_RemoveMessages_Error');
             }
         });
-    });
-    $('#btn_Message_QA_Input').on('click', function () {
-        _showGlobalMessage('功能演示版本，不支持数据修改！', 'warning', 'alert_ForgetPWD_Success');
     });
 };
 

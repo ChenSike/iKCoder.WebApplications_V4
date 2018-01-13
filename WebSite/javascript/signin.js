@@ -79,21 +79,65 @@ function doSignIn() {
         return;
     }
 
-    if ($("#txt_SignIn_PhoneNumber").val().trim() != 'Alice' || $("#txt_SignIn_Password").val().trim() != '888888') {
-        _showGlobalMessage('请输入正确的用户名和密码！', 'danger', 'alert_SignIn_CannotSignIn');
-        return;
-    }
+    _registerRemoteServer();
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.signwithcode),
+        data: '<root>' +
+            '<symbol>' + $("#txt_SignIn_PhoneNumber").val() + '</symbol>' +
+            '<password>' + $("#txt_SignIn_Password").val() + '</password>' +
+            '<codename>signincode</codename>' +
+            '<codevalue>' + $("#txt_SignIn_CheckCode").val() + '</codevalue>' +
+            '</root>',
+        success: function (data, status) {
+            if ($(data).find('err').length > 0) {
+                _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_SignIn_CannotSignIn');
+                return;
+            }
 
-    if ($("#txt_SignIn_CheckCode").val().trim() != '2732') {
-        _showGlobalMessage('请输入正确的识别码！', 'danger', 'alert_SignIn_CannotSignIn');
-        return;
-    }
+            var userName = $($(data).find('msg')[0]).attr('logined_user_name');
+            var nickname = $($(data).find('msg')[0]).attr('logined_user_nickname');
+            if (typeof nickname != 'string' || nickname == '') {
+                nickname = $($(data).find('msg')[0]).attr('logined_nickname');
+            }
 
-    var userName = 'Alice';
-    var nickname = 'Alice';
-    $.cookie('logined_user_name', userName);
-    $.cookie('logined_user_nickname', nickname);
-    window.location.href = 'profile.html?rnd=' + Date.now();
+            if (typeof nickname != 'string' || nickname == '') {
+                nickname = userName;
+            }
+
+            $.cookie('logined_user_name', userName);
+            $.cookie('logined_user_nickname', nickname);
+            var needcheckstate = '&needcheckstate=1';
+            //if (window.history.length == 0) {
+            //    window.location.href = "index.html?rnd=" + Date.now() + needcheckstate;
+            //} else {
+            //    var referrer = document.referrer.toLowerCase();
+            //    if (referrer.indexOf('sign.html')) {
+            //        referrer = 'index.html?rnd=' + Date.now();
+            //    } else {
+            //        if (referrer.indexOf('rnd') > 0) {
+            //            referrer.replace('rnd=', 'rnd=0');
+            //        } else {
+            //            if (referrer.indexOf('?') < 0) {
+            //                referrer += '?';
+            //            }
+
+            //            referrer += 'rnd=' + Date.now();
+            //        }
+            //    }
+            //}
+            //    window.location.href = referrer + needcheckstate;
+            window.location.href = 'profile.html?rnd=' + Date.now() + needcheckstate;
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            _showGlobalMessage('无法登录, 请联系客服!', 'danger', 'alert_SignIn_CannotSignIn');
+        }
+    });
 
     if ($('#chk_SignIn_Remember').is(':checked')) {
         if ($('#iframe_for_autocomplete').length <= 0) {
@@ -102,6 +146,7 @@ function doSignIn() {
 
         $('#btn_AutoComplete').click();
     }
+};
 };
 
 function adjustPositions() {

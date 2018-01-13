@@ -16,21 +16,119 @@ var _messages = {
 };
 
 function initPage() {
-    var sceneSymbol = getQueryString('scene').toUpperCase();
-    var sceneStep = getQueryString('step').toUpperCase();
-    var dataXML = LoadXMLFile('javascript/scene/datadoc/' + sceneSymbol + sceneStep + '.xml');
-    var data = initData(dataXML);
-    _wordsData = data.course.words;
-    _knowledgeData = data.course.kps;
-    _workspaceCfg = data.blockly;
-    buildStageHTML(data.course);
-    updateUserInfo(data.user);
-    adjustWorkSpaceType(data);
-    LoadSceneLib(data.blockly);
-    $('#mask_Page_Loading').hide();
-    $('#mask_Page_Loading').css('visibility', 'hidden');
-    window.setTimeout('adjustAfterSiderBarResize();', 2000);
-    window.setTimeout('WorkScene.saveStatus(true);', 60000);
+    _registerRemoteServer();
+    $.ajax({
+        type: 'GET',
+        async: true,
+        url: _getRequestURL(_gURLMapping.account.signstatus),
+        data: '<root></root>',
+        success: function (data_1, status) {
+            if ($(data_1).find('err').length > 0) {
+                window.location.href = "signin.html?rnd=" + Date.now();
+                return;
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
+                    data: '<root></root>',
+                    success: function (response, status) {
+                        if ($(response).find('err').length > 0) {
+                            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
+                            return;
+                        }
+
+                        var data = initData(response);
+                        _wordsData = data.course.words;
+                        _knowledgeData = data.course.kps;
+                        _workspaceCfg = data.blockly;
+                        buildStageHTML(data.course);
+                        updateUserInfo(data.user);
+                        adjustWorkSpaceType(data);
+                        //$("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });                        
+                        LoadSceneLib(data.blockly);
+                        $('#mask_Page_Loading').hide();
+                        $('#mask_Page_Loading').css('visibility', 'hidden');
+                        window.setTimeout('adjustAfterSiderBarResize();', 2000);
+                        window.setTimeout('WorkScene.saveStatus(true);', 60000);
+                    },
+                    dataType: 'xml',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    error: function () {
+                    }
+                });
+            }
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            window.location.href = "signin.html?rnd=" + Date.now();
+        }
+    });
+    //var dataXML = Blockly.Xml.textToDom('<root>'+
+    //    '   <basic>'+
+    //    '		<usr id="42" nickname=""/>'+
+    //    '	</basic>'+
+    //    '	<sence name="初级第一课：模式设别" symbol="b_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="b_01_002"/>'+
+    //    '	<tips>'+
+    //    '		<item index="1">'+
+    //    '			<content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>'+
+    //    '		</item>'+
+    //    '	</tips>'+
+    //    '	<toolbox src="B-01-001/pacman/1/Blocks/blocks.JS">'+
+    //    '		<xml id="toolbox" style="display: none">'+
+    //    '			<block type="event_start"/>'+
+    //    '			<block type="move_onestep_up"/>'+
+    //    '			<block type="move_onestep_down"/>'+
+    //    '			<block type="move_onestep_left"/>'+
+    //    '			<block type="move_onestep_right"/>'+
+    //    '		</xml>'+
+    //    '	</toolbox>'+
+    //    '	<workspacestatus>'+
+    //    '		<xml xmlns="http://www.w3.org/1999/xhtml"/>'+
+    //    '	</workspacestatus>'+
+    //    '	<game>'+
+    //    '		<script src="B-01-001/pacman/1/Engine/game_engine.JS"/>'+
+    //    '		<script src="B-01-001/pacman/1/Scene/scene.JS"/>'+
+    //    '	</game>'+
+    //    '	<message>'+
+    //    '		<faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>'+
+    //    '		<suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>'+
+    //    '	</message>'+
+    //    '	<words>'+
+    //    '		<stage value="1">'+
+    //    '			<word value="move" note="儿童英语/CET4/计算机英语" star="4">'+
+    //    '				<soundmark>'+
+    //    '					<item type="us" value="美 [kəm"pjutɚ]" sound="sound_word_computer_us"/>'+
+    //    '					<item type="uk" value="英 [kəm"pjuːtə]" sound="sound_word_computer_uk"/>'+
+    //    '				</soundmark>'+
+    //    '				<paraphrase>'+
+    //    '					<item>v.移动</item>'+
+    //    '				</paraphrase>'+
+    //    '				<variant>'+
+    //    '				<item name="复数" value="computers"/>'+
+    //    '				</variant>'+
+    //    '			</word>'+
+    //    '		</stage>'+
+    //    '	</words>'+
+    //    '</root>');
+    //var data = initData(dataXML);
+    //_wordsData = data.course.words;
+    //_knowledgeData = data.course.kps;
+    //_workspaceCfg = data.blockly;
+    //buildStageHTML(data.course);
+    //updateUserInfo(data.user);
+    //adjustWorkSpaceType(data);
+    //adjustAfterSiderBarResize();
+    //$("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });
+    //LoadSceneLib(data.blockly);
+    //$('#mask_Page_Loading').hide();
+    //$('#mask_Page_Loading').css('visibility', 'hidden');
+    //window.setTimeout('WorkScene.saveStatus(true);', 60000);
 
     initEvents();
     var playBtn = $('.workspace-tool-item.workspace-play-button.fa.fa-play');
@@ -151,11 +249,6 @@ function initEvents() {
         adjustModelPanelSize('#panel_ViewMode', '#iframe_CodeViewer');
     });
 
-    $('#btn_Eval_Panel_ViewMode').on('click', function (e) {
-        _showGlobalMessage('功能演示版本不提供执行功能！', 'warning', 'alert_Finish_CurrentStep');
-        $('#panel_ViewMode').modal('hide');
-    });
-
     $('.word-panel-header-close').on('click', function (e) {
         //$('#panel_WordMode').css('display', 'none');
         $('#panel_WordMode').hide("slow");
@@ -216,14 +309,70 @@ function initEvents() {
     });
 
     $('#btn_Step_GoNext').on('click', function (e) {
-        var tmpParam = '&scene=';
-        if (_currentStep == _totalSteps) {
-            tmpParam += _nextStage + '&step=1';
-        } else {
-            tmpParam += _currentStage + '&step=' + (parseInt(_currentStep) + 1);
-        }
+        _registerRemoteServer();
+        $.ajax({
+            type: 'GET',
+            async: true,
+            url: _getRequestURL(_gURLMapping.bus.setfinishstep, { symbol: _currentStage }),
+            data: '',
+            success: function (response, status) {
+                if ($(response).find('err').length > 0) {
+                    _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Finish_CurrentStep');
+                    return;
+                }
 
-        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: _nextStep, symbol: _currentStage }),
+                    data: '<root></root>',
+                    success: function (response, status) {
+                        if ($(response).find('err').length > 0) {
+                            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Set_CurrentStep');
+                            return;
+                        }
+
+                        if (_currentStep == _totalSteps) {
+                            $.ajax({
+                                type: 'GET',
+                                async: true,
+                                url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
+                                data: '',
+                                success: function (response, status) {
+                                },
+                                dataType: 'xml',
+                                xhrFields: {
+                                    withCredentials: true
+                                },
+                                error: function () {
+                                }
+                            });
+                        }
+
+                        var tmpParam = '&scene=';
+                        if (_currentStep == _totalSteps) {
+                            tmpParam += _nextStage;
+                        } else {
+                            tmpParam += _currentStage;
+                        }
+
+                        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
+                    },
+                    dataType: 'xml',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    error: function () {
+                    }
+                });
+            },
+            dataType: 'xml',
+            xhrFields: {
+                withCredentials: true
+            },
+            error: function () {
+            }
+        });
     });
 
     $('#btn_Step_FindError').on('click', function (e) {
@@ -545,26 +694,38 @@ function initData(response) {
         }
     }
 
-    var tmpPaths = $(response).find("game").find('script');
-    var include3D = false;
-    for (var i = 0; i < tmpPaths.length ; i++) {
-        if ($(tmpPaths[i]).attr('src').toLowerCase().indexOf('_3d') >= 0) {
-            include3D = true;
-            break;
+    if (_currentStage.toLowerCase().indexOf('a_01_00') >= 0) {
+        if (_currentStage.toLowerCase().indexOf('3') >= 0) {
+            data.blockly.lib.push('javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js');
+            data.blockly.toolbox = XMLToString(LoadXMLFile('javascript/scene/a-01-003/intrcourse/1/toolbox.xml'));
         }
-    }
 
-    if (include3D) {
-        data.blockly.lib.push('javascript/common/three.min.js');
-        data.blockly.lib.push('javascript/common/TweenMax.min.js');
-        data.blockly.lib.push('javascript/common/threeengine.js');
+        var tmpSymbol = _currentStage.replace('_', "-").replace('_', "-");
+        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/konvas.js');
+        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/components.js');
+        data.blockly.lib.push('javascript/scene/' + tmpSymbol + '/intrcourse/1/level1.js');
     } else {
-        data.blockly.lib.push('javascript/common/pixi.js');
-    }
+        var tmpPaths = $(response).find("game").find('script');
+        var include3D = false;
+        for (var i = 0; i < tmpPaths.length ; i++) {
+            if ($(tmpPaths[i]).attr('src').toLowerCase().indexOf('_3d') >= 0) {
+                include3D = true;
+                break;
+            }
+        }
 
-    addLibPath($($(response).find("toolbox")[0]));
-    for (var i = 0; i < tmpPaths.length ; i++) {
-        addLibPath($(tmpPaths[i]));
+        if (include3D) {
+            data.blockly.lib.push('javascript/common/three.min.js');
+            data.blockly.lib.push('javascript/common/TweenMax.min.js');
+            data.blockly.lib.push('javascript/common/threeengine.js');
+        } else {
+            data.blockly.lib.push('javascript/common/pixi.js');
+        }
+
+        addLibPath($($(response).find("toolbox")[0]));
+        for (var i = 0; i < tmpPaths.length ; i++) {
+            addLibPath($(tmpPaths[i]));
+        }
     }
 
     _messages.success = $($(response).find("message").find('suc')[0]).attr('msg');
@@ -573,7 +734,7 @@ function initData(response) {
 };
 
 function updateUserInfo(data) {
-    $('.header-user-image').attr('src', 'image/tmpheader.jpg');
+    $('.header-user-image').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
     $('.header-user-name-text').text(data.name);
     $('.header-user-name-text').text(data.name);
 };
@@ -610,8 +771,6 @@ function showCodeViewerPanel(e) {
         $('.footer-tool-item').removeClass('selected');
         $('#btn_Footer_CreateMode').addClass('selected');
     }
-
-    loadScriptText('blocks');
 };
 
 var _wordPanelInit = false;
@@ -874,24 +1033,13 @@ function gotoSpecialStep(step) {
 };
 
 function showCompleteAlert() {
-    if (_currentStep < _totalSteps) {
-        var tmpParam = '&scene=';
-        if (_currentStep == _totalSteps) {
-            tmpParam += _nextStage + '&step=1';
-        } else {
-            tmpParam += _currentStage + '&step=' + (parseInt(_currentStep) + 1);
-        }
-
-        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
-    } else {
-        $('.wrap-workstatus-alert').show();
-        $('.wrap-complete-alert').show();
-        $('.wrap-faild-alert').hide();
-        $('#title_StepComplete').html(_messages.success);
-        $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '挑战下一课' : '挑战下一步'));
-        $('#btn_Step_Restart').text((_currentStep == _totalSteps ? '返回个人中心' : '重新开始'));
-        WorkScene.saveStatus();
-    }
+    $('.wrap-workstatus-alert').show();
+    $('.wrap-complete-alert').show();
+    $('.wrap-faild-alert').hide();
+    $('#title_StepComplete').html(_messages.success);
+    $('#btn_Step_GoNext').text((_currentStep == _totalSteps ? '挑战下一课' : '挑战下一步'));
+    $('#btn_Step_Restart').text((_currentStep == _totalSteps ? '返回个人中心' : '重新开始'));
+    WorkScene.saveStatus();
 };
 
 function showFaildAlert() {

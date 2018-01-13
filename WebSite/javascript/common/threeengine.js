@@ -64,7 +64,7 @@ Engine.params = {
         px: 0,
         py: 160,
         pz: 30,
-        vector: { x: 0, y: 0, z: 0 },        
+        vector: { x: 0, y: 0, z: 0 }
     },
     /*
       antialias: true/false是否开启反锯齿
