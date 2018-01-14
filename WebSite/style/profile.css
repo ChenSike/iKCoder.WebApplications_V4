@@ -7,6 +7,10 @@
     padding: 0px;
 }
 
+.no-padding {
+    padding: 0px;
+}
+
 .main-container {
     min-height: 800px;
     min-width: 1150px;
@@ -128,6 +132,7 @@ footer {
 #sideBar_Page_Left {
     min-width: 160px;
     max-width: 200px;
+    min-height: 760px;
     background-color: rgb(38,50,56);
     color: rgb(255,255,255);
     padding: 0px;
@@ -145,8 +150,6 @@ footer {
     padding-top: 20px;
 }
 
-
-
 #img_Profile_Title {
     width: 100px;
     height: 100px;
@@ -158,10 +161,36 @@ footer {
 .left-bar-category-item {
     margin: 0px;
     cursor: pointer;
+    /*color: rgb(85,103,110);*/
+    color: rgb(255,255,255);
+    background-color: rgb(38, 50, 56);
 }
+
+    .left-bar-category-item .text-center {
+        height: 60px;
+        line-height: 60px;
+        color: rgb(85,103,110);
+    }
+
+        .left-bar-category-item .text-center div {
+            margin-left: 5px;
+        }
+
+    .left-bar-category-item i.fa {
+        font-size: 24px;
+    }
+
+    .left-bar-category-item.active-item {
+        background-color: rgb(46,60,66);
+    }
+
+        .left-bar-category-item.active-item i.fa {
+            color: rgb(236,64,122);
+        }
 
 .left-bar-message-count, .left-bar-homework-count {
     width: 40px;
+    margin-left: 10px;
     display: inline-block;
     text-align: center;
     font-size: 16px;
@@ -176,6 +205,15 @@ footer {
     font-size: 14px;
     line-height: 24px;
 }
+
+#wrap_Category_Title {
+    min-width: 150px;
+    max-width: 150px;
+    background-color: rgb(248, 250, 251);
+    padding: 0px;
+}
+
+
 
 .overview-title-item-data {
     font-size: 1.6rem;

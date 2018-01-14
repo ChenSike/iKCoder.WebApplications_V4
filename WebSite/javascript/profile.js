@@ -1,6 +1,17 @@
 ﻿'use strict';
 
 var _ajaxObj = null;
+var _gCategory = [
+    { id: 'overview', icon: 'fa-tachometer', text: '课程', atta: '' },
+    { id: 'homework', icon: 'fa-home', text: '作业', atta: 'bool' },
+    { id: 'exam', icon: 'fa-superscript', text: '测试', atta: '' },
+    { id: 'message', icon: 'fa-envelope-o', text: '消息', atta: 'number' },
+    { id: 'report', icon: 'fa-bar-chart', text: '报表', atta: '' },
+    { id: 'settings', icon: 'fa-cogs', text: '设定', atta: '' },
+    { id: 'workplatform', icon: 'fa-anchor', text: 'App Studio', atta: '' },
+    { id: 'appshop', icon: 'fa-shopping-cart', text: 'App Shop', atta: '' },
+    { id: 'teamsuit', icon: 'fa-users', text: 'Team Suit', atta: '' }
+];
 var _distributionMap = {
     S: { name: '科学', color: 'rgb(36,90,186)' },
     T: { name: '技术', color: 'rgb(236,15,33)' },
@@ -13,8 +24,9 @@ function initPage() {
     adjustMainHeight();
     loadHeaderImg();
     loadSiderbarData();
-    //getUnreadMsgCount();
-    //getUncompleteCount();
+    buildCategoryPanel();
+    getUnreadMsgCount();
+    getUncompleteCount();
     initEvents();
     $('#wrap_Category_Title').show();
     rebuildContent('overview');
@@ -30,13 +42,17 @@ function adjustMainHeight() {
     $('#wrap_Category_Title').height(mainHeight);
     $('#wrap_Category_Content').height(mainHeight);
     $('#wrap_Category_Content').width(mianWidth - $('#wrap_Category_Title').width() - $('#wrap_Category_Content').width());
-}
+};
 
 window.onresize = function () {
     adjustMainHeight();
-}
+};
 
 function loadSiderbarData() {
+    $('#txt_NickName_Profile_Title').text('Alice');
+    $('#txt_Title_Profile_Title').text('初级工程师');
+    return;
+
     var mapping = [
         { n: 'name', path: '/root/usrbasic/usr_nickname', html: '#txt_NickName_Profile_Title' },
         { n: 'title', path: '/root/usrbasic/usr_title', html: '#txt_Title_Profile_Title' }
@@ -88,7 +104,34 @@ function loadSiderbarData() {
     });
 };
 
+function buildCategoryPanel() {
+    var tmpHTMLArr = [];
+    var activeCls = '';
+    for (var i = 0; i < _gCategory.length; i++) {
+        activeCls = (i == 0 ? 'active-item' : '');
+        tmpHTMLArr = [];
+        tmpHTMLArr.push('<div class="row justify-content-start align-items-center left-bar-category-item ' + activeCls + '" data-target="' + _gCategory[i].id + '">');
+        tmpHTMLArr.push('   <div class="col-3 text-center">');
+        tmpHTMLArr.push('      <i class="fa ' + _gCategory[i].icon + '" aria-hidden="true"></i>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div class="col-9 text-left">');
+        tmpHTMLArr.push(_gCategory[i].text);
+        if (_gCategory[i].atta != '') {
+            tmpHTMLArr.push('       <div class="left-bar-' + _gCategory[i].id + '-count"></div>');
+        }
+
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
+        $('.left-sidebar-wrap').append($(tmpHTMLArr.join('')));
+    }
+};
+
 function getUnreadMsgCount() {
+    var count = 3;
+    $('.left-bar-message-count').text(count);
+    $('.left-bar-message-count').css('background-color', (count == 0 ? 'rgb(185,185,185)' : 'rgb(236,64,122)'));
+    return;
+
     _registerRemoteServer();
     $.ajax({
         type: 'GET',
@@ -123,28 +166,57 @@ function getUnreadMsgCount() {
             _showGlobalMessage('无法获取未读消息的数量！', 'danger', 'alert_GetUnReadsMsgCount_Error');
         }
     });
+};
+
+function getUncompleteCount() {
+    var count = 1;
+    $('.left-bar-homework-count').text('New');
+    if (count > 0) {
+        $('.left-bar-homework-count').show();
+    } else {
+        $('.left-bar-homework-count').hide();
+    }
+
+    return;
 }
 
 function initEvents() {
     $('.left-bar-category-item').on('click', function () {
-        resetCategoryItemCSS($(arguments[0].currentTarget));
-        rebuildContent($(arguments[0].currentTarget).attr('data-target'));
+        var symbol = $(arguments[0].currentTarget).attr('data-target')
+        if (symbol == 'workplatform' || symbol == 'appshop' || symbol == 'teamsuit') {
+            switch (symbol) {
+                case 'workplatform':
+                    window.open("appstudio/index.html");
+                    break;
+                case 'appshop':
+                    window.open("appshop.html");
+                    break;
+                case 'teamsuit':
+                    window.open("teamsuit.html");
+                    break;
+            }
+        } else {
+            resetCategoryItemCSS($(arguments[0].currentTarget));
+            rebuildContent(symbol);
+        }
     })
 };
 
 function resetCategoryItemCSS(current) {
-    $('.left-bar-category-item').css('background-color', 'rgb(38,50,56)');
-    $($('.left-bar-category-item').find('div').find('i')).css('color', 'rgb(85,103,110)');
-    current.css('background-color', 'rgb(46,60,66)');
-    $(current.find('div').find('i')[0]).css('color', 'rgb(236,64,122)');
+    $('.left-bar-category-item').removeClass('active-item');
+    $(current).addClass('active-item');
 };
 
 function showLoadingMask() {
     var mask = $('#mask_Page_Loading');
-    mask.css('top', $('#wrap_Category_Title').offset().top);
-    mask.css('left', $('#wrap_Category_Title').offset().left);
-    mask.height($('body').height() - $('#wrap_Category_Title').offset().top);
-    mask.width(Math.min($('body').width(), $('body')[0].scrollWidth) - $('#wrap_Category_Title').offset().left);
+    //mask.css('top', $('#wrap_Category_Title').offset().top);
+    //mask.css('left', $('#wrap_Category_Title').offset().left);
+    //mask.height($('body').height() - $('#wrap_Category_Title').offset().top);
+    //mask.width(Math.min($('body').width(), $('body')[0].scrollWidth) - $('#wrap_Category_Title').offset().left);
+    mask.css('top', '0px');
+    mask.css('left', ($('#sideBar_Page_Left').width() + 14) + 'px');
+    mask.height($('#sideBar_Page_Left').height());
+    mask.width($('.main-content-row').width() - $('#sideBar_Page_Left').width());
     mask.show();
     mask.css('diaplay', 'flex !important');
     mask.css('visibility', 'visible');
@@ -160,27 +232,9 @@ function hideLoadingMask() {
 }
 
 function rebuildContent(symbol) {
-    if (symbol == 'workplatform' || symbol == 'appshop' || symbol == 'teamsuit') {
-        switch (symbol) {
-            case 'workplatform':
-                window.open("appstudio/index.html");
-                break;
-            case 'appshop':
-                window.open("appshop.html");
-                break;
-            case 'teamsuit':
-                window.open("teamsuit.html");
-                break;
-        }
-
-        return;
-    }
-
     showLoadingMask();
     $('.row.justify-content-start.main-content-row')[0].scrollTop = 0;
-    //var contentHeight = $('body').height() - $('nav').height() - 16 - $('footer').height();
-    //var contentHeight = $('#sideBar_Page_Left .container-fluid.left-sidebar-wrap').height();
-    var contentHeight = Math.max($('#sideBar_Page_Left').height(), $('.container-fluid.left-sidebar-wrap').height());
+    var contentHeight = $('#sideBar_Page_Left').height();
     $('#wrap_Category_Title').empty();
     $('#wrap_Category_Title').show();
     var contertWrap = $('#wrap_Category_Content');
@@ -240,7 +294,6 @@ function rebuildContent(symbol) {
 /*Overview panel*/
 function rebuildOverviewPanel(contentHeight) {
     var tmpHeight = calcOverviewItemheight(contentHeight);
-
     var data = formatOverviewData(null);
     rebuildOverviewTitles(data, contentHeight, tmpHeight);
     rebuildOverviewContents(data, contentHeight, tmpHeight);
@@ -272,6 +325,18 @@ function rebuildOverviewPanel(contentHeight) {
             _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
         }
     });
+};
+
+function calcOverviewItemheight(contentHeight) {
+    var minHeight = Math.floor(150 / 1200 * contentHeight);
+    var bigHeight = Math.floor(350 / 1200 * contentHeight);
+    var tmpHeightArr = [];
+    if (minHeight < 115) {
+        minHeight = 115;
+    }
+
+    bigHeight = Math.floor((contentHeight - minHeight) / 3);
+    return { s: minHeight, l: bigHeight, e: contentHeight - minHeight - bigHeight * 3 + bigHeight };    
 };
 
 var _courseListOverview = null;
@@ -384,15 +449,15 @@ function formatOverviewData(response) {
 
     var data = {
         honor: [
-            { id: 1, title: '算法小达人', img: 'image/honor/copper.png' },
-            { id: 2, title: '计算机小专家', img: 'image/honor/gold.png' },
-            { id: 3, title: '语言大师', img: 'image/honor/silver.png' },
-            { id: 4, title: '小画家', img: 'image/honor/copper.png' },
-            { id: 5, title: '小小数学家', img: 'image/honor/gold.png' },
-            { id: 6, title: '音乐家', img: 'image/honor/silver.png' },
-            { id: 7, title: '科学智多星', img: 'image/honor/copper.png' },
-            { id: 8, title: '分享达人', img: 'image/honor/gold.png' },
-            { id: 9, title: '无人机小飞手', img: 'image/honor/silver.png' }
+            { id: 1, title: '算法小达人', img: 'image/honor/c.png' },
+            { id: 2, title: '计算机小专家', img: 'image/honor/a.png' },
+            { id: 3, title: '语言大师', img: 'image/honor/b.png' },
+            { id: 4, title: '小画家', img: 'image/honor/c.png' },
+            { id: 5, title: '小小数学家', img: 'image/honor/a.png' },
+            { id: 6, title: '音乐家', img: 'image/honor/b.png' },
+            { id: 7, title: '科学智多星', img: 'image/honor/c.png' },
+            { id: 8, title: '分享达人', img: 'image/honor/a.png' },
+            { id: 9, title: '无人机小飞手', img: 'image/honor/b.png' }
         ],
         course: [
             { id: 'enlighten', title: '启蒙课程', total: 32, complete: 4, img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'A' },
@@ -426,19 +491,6 @@ function formatOverviewData(response) {
 
     return data;
 }
-
-function calcOverviewItemheight(contentHeight) {
-    var minHeight = Math.floor(150 / 1200 * contentHeight);
-    var bigHeight = Math.floor(350 / 1200 * contentHeight);
-    var tmpHeightArr = [];
-    if (minHeight < 115) {
-        minHeight = 115;
-    }
-
-    bigHeight = Math.floor((contentHeight - minHeight) / 3);
-    //return { s: minHeight, l: bigHeight, e: contentHeight - minHeight - bigHeight * 3 + bigHeight };
-    return { s: 150, l: 350, e: 350 };
-};
 
 function buildOverviewHonor(datas, height) {
     var itemCount = datas.length;

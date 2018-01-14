@@ -298,31 +298,6 @@
     <script src="javascript/profile.js"></script>
 </head>
 <body style="height:100%;">
-    <div id="mask_Page_Loading">
-        <div class="loader">
-            <div class="loader_overlay"></div>
-            <div class="loader_cogs">
-                <div class="loader_cogs__top">
-                    <div class="top_part"></div>
-                    <div class="top_part"></div>
-                    <div class="top_part"></div>
-                    <div class="top_hole"></div>
-                </div>
-                <div class="loader_cogs__left">
-                    <div class="left_part"></div>
-                    <div class="left_part"></div>
-                    <div class="left_part"></div>
-                    <div class="left_hole"></div>
-                </div>
-                <div class="loader_cogs__bottom">
-                    <div class="bottom_part"></div>
-                    <div class="bottom_part"></div>
-                    <div class="bottom_part"></div>
-                    <div class="bottom_hole"></div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container-fluid main-container">
         <div class="row no-wrap">
             <div class="col-12 no-wrap">
@@ -390,84 +365,35 @@
                                         <p id="txt_Title_Profile_Title"></p>
                                     </div>
                                 </div>
-                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="overview" style="background-color:rgb(46,60,66)">
-                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                                        <i class="fa fa-tachometer" aria-hidden="true" style="font-size:24px;"></i>
+                            </div>
+                        </div>
+                        <div class="col" id="wrap_Category_Title"></div>
+                        <div class="col no-padding" id="wrap_Category_Content"></div>
+                        <div id="mask_Page_Loading">
+                            <div class="loader">
+                                <div class="loader_overlay"></div>
+                                <div class="loader_cogs">
+                                    <div class="loader_cogs__top">
+                                        <div class="top_part"></div>
+                                        <div class="top_part"></div>
+                                        <div class="top_part"></div>
+                                        <div class="top_hole"></div>
                                     </div>
-                                    <div class="col-9 text-left">
-                                        课程
+                                    <div class="loader_cogs__left">
+                                        <div class="left_part"></div>
+                                        <div class="left_part"></div>
+                                        <div class="left_part"></div>
+                                        <div class="left_hole"></div>
                                     </div>
-                                </div>
-                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="homework">
-                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                                        <i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>
-                                    </div>
-                                    <div class="col-9 text-left">
-                                        作业
-                                        <div class="left-bar-homework-count" style="margin-left:5px;">New</div>
-                                    </div>
-                                </div>
-                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="exam">
-                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                                        <i class="fa fa-superscript" aria-hidden="true" style="font-size:24px;"></i>
-                                    </div>
-                                    <div class="col-9 text-left">
-                                        测试
-                                    </div>
-                                </div>
-                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="message">
-                                    <div class="col-3 text-center " style="height:60px; line-height:60px;">
-                                        <i class="fa fa-envelope-o" aria-hidden="true" style="font-size:24px;"></i>
-                                    </div>
-                                    <div class="col-9 text-left">
-                                        消息
-                                        <div class="left-bar-message-count" style="margin-left:5px;">3</div>
-                                    </div>
-                                </div>
-                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="report">
-                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                                        <i class="fa fa-bar-chart" aria-hidden="true" style="font-size:24px;"></i>
-                                    </div>
-                                    <div class="col-9 text-left">
-                                        报表
-                                    </div>
-                                </div>
-                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="settings">
-                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                                        <i class="fa fa-cogs" aria-hidden="true" style="font-size:24px;"></i>
-                                    </div>
-                                    <div class="col-9 text-left">
-                                        设定
-                                    </div>
-                                </div>
-                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="workplatform">
-                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                                        <i class="fa fa-anchor" aria-hidden="true" style="font-size:24px;"></i>
-                                    </div>
-                                    <div class="col-9 text-left">
-                                        App Studio
-                                    </div>
-                                </div>
-                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="appshop">
-                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                                        <i class="fa fa-shopping-cart" aria-hidden="true" style="font-size:24px;"></i>
-                                    </div>
-                                    <div class="col-9 text-left">
-                                        App Shop
-                                    </div>
-                                </div>
-                                <div class="row justify-content-start align-items-center left-bar-category-item" data-target="teamsuit">
-                                    <div class="col-3 text-center" style="height:60px; line-height:60px;">
-                                        <i class="fa fa-users" aria-hidden="true" style="font-size:24px;"></i>
-                                    </div>
-                                    <div class="col-9 text-left">
-                                        Team Suit
+                                    <div class="loader_cogs__bottom">
+                                        <div class="bottom_part"></div>
+                                        <div class="bottom_part"></div>
+                                        <div class="bottom_part"></div>
+                                        <div class="bottom_hole"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col" id="wrap_Category_Title" style="min-width:150px; max-width:150px; background-color:rgb(248,250,251); padding: 0px;"></div>
-                        <div class="col" id="wrap_Category_Content" style="padding:0px;"></div>
                     </div>
                 </div>
             </div>
@@ -591,7 +517,7 @@
     <div class="tooltip tooltip-bottom course-list-overview" id="list_Overview_Course" role="tooltip">
         <div class="tooltip-arrow"></div>
         <div class="tooltip-inner">
-            <div class="container-fluid" id="content_List_Overview_Course" style="padding: 0px;">
+            <div class="container-fluid no-padding" id="content_List_Overview_Course">
 
             </div>
         </div>
