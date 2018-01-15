@@ -11,6 +11,10 @@
     padding: 0px;
 }
 
+.no-margin {
+    margin: 0px;
+}
+
 .main-container {
     min-height: 800px;
     min-width: 1150px;
@@ -213,6 +217,47 @@ footer {
     padding: 0px;
 }
 
+#Content_Overview_Course {
+    background-color: rgb(255,255,255);
+    border-bottom: solid 1px rgb(236,239,241);
+}
+
+#wrap_Overview_Course_Items {
+    height: 100%;
+    overflow: hidden;
+}
+
+.overview-course-item {
+    display: inline-block;
+    height: 100%;
+}
+
+.overview-course-item-wrap {
+    padding: 0px;
+    border: solid 1px rgb(237,240,242);
+    box-shadow: 1px 1px 5px rgb(188,188,188);
+}
+
+.profile-overview-course-item-symbol {
+    padding: 5px 0px;
+    color: rgb(73,175,79);
+    color: rgb(119,118,123);
+    font-weight: bold;
+}
+
+.profile-overview-course-item-title {
+    font-weight: bold;
+    padding-top: 5px;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+#Content_Overview_Experience {
+    background-color: rgb(255,255,255);
+    border-bottom: solid 1px rgb(236,239,241);
+}
+
 
 
 .overview-title-item-data {
@@ -245,25 +290,7 @@ footer {
         color: rgb(68,191,160);
     }
 
-.overview-course-item-wrap {
-    padding: 0px;
-    border: solid 1px rgb(237,240,242);
-    box-shadow: 1px 1px 5px rgb(188,188,188);
-}
 
-.profile-overview-course-item-symbol {
-    position: absolute;
-    right: 10px;
-    bottom: 0px;
-    color: rgb(119,118,123);
-    font-weight: bold;
-}
-
-.profile-overview-course-item-title {
-    text-overflow: ellipsis;
-    overflow-x: hidden;
-    white-space: nowrap;
-}
 
 .overview-list-arrow {
     cursor: pointer;

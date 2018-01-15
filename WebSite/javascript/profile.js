@@ -336,7 +336,7 @@ function calcOverviewItemheight(contentHeight) {
     }
 
     bigHeight = Math.floor((contentHeight - minHeight) / 3);
-    return { s: minHeight, l: bigHeight, e: contentHeight - minHeight - bigHeight * 3 + bigHeight };    
+    return { s: minHeight, l: bigHeight, e: contentHeight - minHeight - bigHeight * 3 + bigHeight };
 };
 
 var _courseListOverview = null;
@@ -541,92 +541,42 @@ function buildOverviewCourse(datas, containerHeight) {
     var orgWidth = 215;
     var orgImgHeight = 190;
     var orgSpace = 90;
-    var orgProgWidth = 130;
-    var orgProgHeight = 10;
-    var orgProgTextWidth = 100;
-    var orgTitleWidth = 90;
-
     var padding = Math.floor(orgPaddingTop / orgContainerHeight * containerHeight);
     var scale = padding / orgPaddingTop;
-    var itemCount = datas.length;
+    var space = Math.floor(scale * orgSpace);
     var height = Math.floor(scale * orgHeight);
     var width = Math.floor(scale * orgWidth);
     var imgHeight = Math.floor(scale * orgImgHeight);
-    var progWidth = Math.floor(scale * orgProgWidth);
-    var progHeight = Math.floor(scale * orgProgHeight);
-    var progTextWidth = Math.floor(scale * orgProgTextWidth);
-    var progTextSize = 10;
-    for (var i = progTextSize; i < 50; i++) {
-        if (testTextWidth('已学习99/99课时', i + 'px', 'normal', '微软雅黑') >= progTextWidth - 5) {
-            progTextSize = i;
-            break;
-        }
-    }
-
-    var titleWidth = Math.floor(scale * orgTitleWidth);
-    var titleSize = 10;
-    for (var i = titleSize; i < 50; i++) {
-        if (testTextWidth('启蒙课程', i + 'px', 'normal', '微软雅黑') >= titleWidth - 5) {
-            titleSize = i;
-            break;
-        }
-    }
-
-    var symbolWidth = (width - progWidth) / 2 - progHeight;
-    var symbolSize = 10;
-    for (var i = symbolSize; i < 50; i++) {
-        if (testTextWidth('A', i + 'px', 'normal', '微软雅黑') >= symbolWidth - 3) {
-            symbolSize = i;
-            break;
-        }
-    }
-
-    var space = Math.floor(scale * orgSpace);
+    var itemCount = 2;
+    var titleSize = (height - imgHeight) / 2 - 15;
+    var symbolSize = (height - imgHeight) / 2 - 20;
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Course" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">');
+    tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Course">');
     tmpHTMLArr.push('    <div class="row align-items-center" style="height:' + (containerHeight - 1) + 'px;">');
     tmpHTMLArr.push('        <div class="col-1 text-center">');
     tmpHTMLArr.push('           <div class="overview-list-arrow course" id="arrow_Overview_Course_Left">');
     tmpHTMLArr.push('               <i class="fa fa-chevron-left"></i>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-10" id="wrap_Overview_Course_Items" style="height:100%; overflow: hidden;">');
-    tmpHTMLArr.push('            <div id="container_Overview_Course_Items" style="height:100%;">');
+    tmpHTMLArr.push('        <div class="col-10" id="wrap_Overview_Course_Items">');
+    tmpHTMLArr.push('            <div class="h-100" id="container_Overview_Course_Items">');
     for (var i = 0; i < itemCount; i++) {
-        tmpHTMLArr.push('<div class="text-center" style="display: inline-block; height:100%; padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;">');
-        tmpHTMLArr.push('    <div class="d-flex align-items-center" style="height:100%;">');
-        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;" data-target="' + datas[i].id + '">');
-        tmpHTMLArr.push('            <div class="row" style="margin:0px;">');
-        tmpHTMLArr.push('                <div class="col-12" style="padding:0px;">');
+        tmpHTMLArr.push('<div class="text-center overview-course-item" style="padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;" title="' + datas[i].title + '">');
+        tmpHTMLArr.push('    <div class="d-flex align-items-center h-100">');
+        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;" data-target="' + datas[i].symbol + '">');
+        tmpHTMLArr.push('            <div class="row no-margin">');
+        tmpHTMLArr.push('                <div class="col-12 no-padding">');
         tmpHTMLArr.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="height:' + imgHeight + 'px;" />');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
-        tmpHTMLArr.push('            <div class="row" style="margin:0px;">');
-        tmpHTMLArr.push('                <div class="col no-padding" style="width:' + ((width - progWidth) / 2) + 'px">');
+        tmpHTMLArr.push('            <div class="row no-margin">');
+        tmpHTMLArr.push('                <div class="col no-padding">');
+        tmpHTMLArr.push('                   <p class="text-center profile-overview-course-item-title" style="color:' + datas[i].color + '; font-size:' + titleSize + 'px;">' + datas[i].title + '</p>');
         tmpHTMLArr.push('                </div>');
-        tmpHTMLArr.push('                <div class="col no-padding" style="width:' + progWidth + 'px">');
-        tmpHTMLArr.push('                   <div class="container-fluid no-padding">');
-        tmpHTMLArr.push('                       <div class="row no-margin">');
-        tmpHTMLArr.push('                           <div class="col-12 no-padding">');
-        tmpHTMLArr.push('                               <p class="text-center profile-overview-course-item-title" style="color:' + datas[i].color + '; font-size:' + titleSize + 'px;padding:' + progHeight + 'px 0px;" title="' + datas[i].title + '">' + datas[i].title + '</p>');
-        tmpHTMLArr.push('                           </div>');
-        tmpHTMLArr.push('                       </div>');
-        tmpHTMLArr.push('                       <div class="row no-margin">');
-        tmpHTMLArr.push('                           <div class="col-12 no-padding d-flex justify-content-center">');
-        tmpHTMLArr.push('                               <div style="width:' + progWidth + 'px; height:' + progHeight + 'px; background-color:rgb(216,216,216);">');
-        tmpHTMLArr.push('                                   <div style="height:' + progHeight + 'px; background-color:rgb(73,175,79); width:' + (datas[i].complete / (datas[i].total == 0 ? 1 : datas[i].total) * 100) + '%;"></div>');
-        tmpHTMLArr.push('                               </div>');
-        tmpHTMLArr.push('                           </div>');
-        tmpHTMLArr.push('                       </div>');
-        tmpHTMLArr.push('                       <div class="row no-margin">');
-        tmpHTMLArr.push('                           <div class="col-12  no-padding" style="padding-top:5px;color:rgb(73,175,79);">');
-        tmpHTMLArr.push('                               <p class="text-center profile-overview-course-item-title" style="font-size:' + progTextSize + 'px">已学习' + datas[i].complete + '/' + datas[i].total + '课时</p>');
-        tmpHTMLArr.push('                           </div>');
-        tmpHTMLArr.push('                       </div>');
-        tmpHTMLArr.push('                   </div>');
-        tmpHTMLArr.push('                </div>');
-        tmpHTMLArr.push('                <div class="col no-padding" style="width:' + ((width - progWidth) / 2) + 'px">');
-        tmpHTMLArr.push('                   <div class="profile-overview-course-item-symbol" style="right:' + progHeight + 'px; font-size:' + symbolSize + 'px;line-height: ' + symbolSize + 'px;">' + datas[i].symbol + '</div>');
+        tmpHTMLArr.push('            </div>');
+        tmpHTMLArr.push('            <div class="row no-margin">');
+        tmpHTMLArr.push('                <div class="col-12 no-padding">');
+        tmpHTMLArr.push('                   <p class="text-center profile-overview-course-item-symbol" style="font-size:' + symbolSize + 'px">' + datas[i].symbol + '</p>');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
         tmpHTMLArr.push('        </div>');
@@ -656,14 +606,7 @@ function buildOverviewCourse(datas, containerHeight) {
 
     $('.overview-course-item-wrap').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
-        var tipWrap = $('#list_Overview_Course');
-        if (tipWrap.css('display') == 'block' && tipWrap.attr('data-target') == target.attr('data-target')) {
-            displayCourseListContent(false);
-        } else {
-            displayCourseListContent(target);
-            buildCourseListContent(target);
-            tipWrap.attr('data-target', target.attr('data-target'));
-        }
+        window.open("workplatform.html?scene=" + target.attr('data-target'));
     });
 };
 
@@ -679,30 +622,35 @@ function buildOverviewExperience(data, height) {
     var spaceWidth = Math.floor(padding / 40 * 40);
     var disWidth = Math.max(width, data.distribution.length * 35);
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Experience" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">');
+    tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Experience">');
     tmpHTMLArr.push('    <div class="row align-items-center" id="" style="height:' + (height - 1) + 'px;">');
     tmpHTMLArr.push('        <div class="col-1 text-center">');
     tmpHTMLArr.push('            <div class="overview-list-arrow experience" id="arrow_Overview_Experience_Left">');
     tmpHTMLArr.push('                <i class="fa fa-chevron-left"></i>');
     tmpHTMLArr.push('            </div>');
     tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-10 align-items-center" id="wrap_Overview_Experience_Items" style="height:100%; overflow: hidden;">');
-    tmpHTMLArr.push('            <div id="container_Overview_Experience_Items" style="height:100%;">');
+    tmpHTMLArr.push('        <div class="col-10 align-items-center h-100" id="wrap_Overview_Experience_Items" style="overflow: hidden;">');
+    tmpHTMLArr.push('            <div class="h-100" id="container_Overview_Experience_Items">');
+    tmpHTMLArr.push('               <table>');
+    tmpHTMLArr.push('                   <tr>');
     for (var i = 0; i < itemCount; i++) {
-        tmpHTMLArr.push('<div class="text-center" style="display: inline-block; height:100%; padding-right:' + (i == itemCount - 1 ? 0 : spaceWidth) + 'px;">');
-        tmpHTMLArr.push('   <div id="size_parent_canvas_' + idArr[i] + '" style="height:100%; padding:' + padding + 'px 0px;">');
-        var tmpWidth = (idArr[i] == 'Distribution' ? disWidth : width);
-        tmpHTMLArr.push('       <div class="container-fluid overview-experience-item-wrap" style="padding:0px; width:' + (tmpWidth - 2) + 'px;">');
-        tmpHTMLArr.push('           <div class="row" style="margin:0px;">');
-        tmpHTMLArr.push('               <div class="col-12" style="padding:0px; ">');
+        tmpHTMLArr.push('                   <td>');
+        tmpHTMLArr.push('<div class="text-center h-100" style="padding-right:' + (i == itemCount - 1 ? 0 : spaceWidth) + 'px;">');
+        tmpHTMLArr.push('   <div class="h-100" id="size_parent_canvas_' + idArr[i] + '" style="padding:' + padding + 'px 0px;">');
+        tmpHTMLArr.push('       <div class="container-fluid overview-experience-item-wrap no-padding" style="width:' + ((idArr[i] == 'Distribution' ? disWidth : width) - 2) + 'px;">');
+        tmpHTMLArr.push('           <div class="row no-margin">');
+        tmpHTMLArr.push('               <div class="col-12 no-padding">');
         tmpHTMLArr.push('                   <canvas id="canvas_Overview_Experience_' + idArr[i] + '"></canvavs>');
         tmpHTMLArr.push('               </div>');
         tmpHTMLArr.push('           </div>');
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('    </div>');
         tmpHTMLArr.push('</div>');
+        tmpHTMLArr.push('                   </td>');
     }
 
+    tmpHTMLArr.push('                   </tr>');
+    tmpHTMLArr.push('               </table>');    
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('       <div class="col-1 text-center">');
@@ -858,7 +806,7 @@ function drawExpDistributionGraph(canvasId, datas) {
     //var parent = $($('.overview-experience-item-wrap').parent());
     var parent = $('#size_parent_canvas_' + canvasId);
     var width = parent.width();
-    var height = parent.height();
+    var height = parent.height() - parseInt(parent.css('padding-top')) * 2;
     canvas.attr('height', height);
     canvas.attr('width', width);
     canvas[0].width = width;
