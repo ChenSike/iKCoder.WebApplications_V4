@@ -460,10 +460,8 @@ function formatOverviewData(response) {
             { id: 9, title: '无人机小飞手', img: 'image/honor/b.png' }
         ],
         course: [
-            { id: 'enlighten', title: '启蒙课程', total: 32, complete: 4, img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'A' },
-            { id: 'primary', title: '初级课程', total: 32, complete: 3, img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B' },
-            { id: 'middle', title: '中级课程', total: 32, complete: 2, img: 'image/course/course_3.png', color: 'rgb(43,93,126)', symbol: 'C' },
-            { id: 'advance', title: '高级课程', total: 32, complete: 1, img: 'image/course/course_4.png', color: 'rgb(228,88,76)', symbol: 'D' }
+            { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
+            { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' }
         ],
         experience: {
             distribution: [
@@ -667,74 +665,6 @@ function buildOverviewCourse(datas, containerHeight) {
             tipWrap.attr('data-target', target.attr('data-target'));
         }
     });
-};
-
-function displayCourseListContent(target) {
-    var tipWrap = $('#list_Overview_Course');
-    if (target === false) {
-        tipWrap.hide();
-    } else {
-        var wrapContainer = $('#wrap_Overview_Course_Items');
-        var width = wrapContainer.width();
-        var height = Math.floor(wrapContainer.height() * 2 / 3);
-        var offset = wrapContainer.offset();
-        if (width != tipWrap.width() || height != tipWrap.height()) {
-            var tipArrow = $('#list_Overview_Course .tooltip-arrow')
-            var tipInner = $('#list_Overview_Course .tooltip-inner');
-            tipWrap.width(width);
-            tipWrap.height(height);
-            tipInner.width(width);
-            tipInner.height(height);
-            var x = offset.left;
-            var y = offset.top + wrapContainer.height() - 20;
-            tipInner.css('max-width', 'none');
-            tipWrap.css('left', x + 'px');
-            tipWrap.css('top', y + 'px');
-            tipWrap.css('opacity', '0.9');
-            tipWrap.attr('data-target', target.attr('data-target'));
-        }
-
-        CreateNewStyleRule('.tooltip.tooltip-bottom .tooltip-inner::before', 'left:' + (target.offset().left - offset.left + target.width() / 2) + 'px;');
-        tipWrap.show();
-    }
-};
-
-function buildCourseListContent(target) {
-    var symbol = target.attr('data-target');
-    if (_courseListOverview[symbol]) {
-        var tmpHTMLStrArr = [];
-        var unitArr = _courseListOverview[symbol];
-        var lessonArr, icon, state, disabled, courseSymbol;
-        for (var i = 0; i < unitArr.length; i++) {
-            tmpHTMLStrArr.push('<div class="row justify-content-start" style="padding: 15px;">');
-            tmpHTMLStrArr.push('    <div class="col  text-left">');
-            lessonArr = unitArr[i];
-            for (var j = 0; j < lessonArr.length; j++) {
-                icon = (lessonArr[j].finish == '0' ? 'arrow-circle-o-right' : 'check-circle-o');
-                state = (lessonArr[j].finish == '0' ? '' : 'finished');
-                disabled = (lessonArr[j].enable == '0' ? ' disabled' : '');
-                courseSymbol = (lessonArr[j].enable == '0' ? '' : lessonArr[j].symbol);
-                tmpHTMLStrArr.push('<i class="fa fa-' + icon + ' lesson-title-course-overview ' + state + disabled + '" aria-hidden="true" data-target="' + courseSymbol + '"><span style="padding-left:5px;">' + lessonArr[j].title + '</span></i>');
-            }
-
-            tmpHTMLStrArr.push('    </div>');
-            tmpHTMLStrArr.push('</div>');
-            if (i < unitArr.length - 1) {
-                tmpHTMLStrArr.push('<div class="row justify-content-center" style="padding:0px 30px;">');
-                tmpHTMLStrArr.push('    <div class="col-12" style="border-bottom:solid 1px rgb(255,255,255);">');
-                tmpHTMLStrArr.push('    </div>');
-                tmpHTMLStrArr.push('</div>');
-            }
-        }
-
-        $('#content_List_Overview_Course').empty();
-        $('#content_List_Overview_Course').append(tmpHTMLStrArr.join(''));
-        $('.lesson-title-course-overview').on('click', function (eventObj) {
-            if ($(eventObj.currentTarget).attr('data-target') != '') {
-                window.location.href = "workplatform.html?scene=" + $(eventObj.currentTarget).attr('data-target') + '&rnd=' + Date.now();
-            }
-        });
-    }
 };
 
 function buildOverviewExperience(data, height) {
