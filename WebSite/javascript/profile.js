@@ -214,7 +214,7 @@ function showLoadingMask() {
     //mask.height($('body').height() - $('#wrap_Category_Title').offset().top);
     //mask.width(Math.min($('body').width(), $('body')[0].scrollWidth) - $('#wrap_Category_Title').offset().left);
     mask.css('top', '0px');
-    mask.css('left', ($('#sideBar_Page_Left').width() + 14) + 'px');
+    mask.css('left', ($('#sideBar_Page_Left').width()) + 'px');
     mask.height($('#sideBar_Page_Left').height());
     mask.width($('.main-content-row').width() - $('#sideBar_Page_Left').width());
     mask.show();
