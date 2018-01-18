@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 var _ajaxObj = null;
+var _gCurrentCategory = 'overview';
 var _gCategory = [
     { id: 'overview', icon: 'fa-tachometer', text: '课程', atta: '' },
     { id: 'homework', icon: 'fa-home', text: '作业', atta: 'bool' },
@@ -29,7 +30,7 @@ function initPage() {
     getUncompleteCount();
     initEvents();
     $('#wrap_Category_Title').show();
-    rebuildContent('overview');
+    rebuildContent(_gCurrentCategory);
     getUnreadMsgCount();
 };
 
@@ -46,6 +47,7 @@ function adjustMainHeight() {
 
 window.onresize = function () {
     adjustMainHeight();
+    rebuildContent(_gCurrentCategory);
 };
 
 function loadSiderbarData() {
@@ -289,6 +291,7 @@ function rebuildContent(symbol) {
     }
 
     resetCategoryItemCSS(currentItem);
+    _gCurrentCategory = symbol;
 };
 
 /*Overview panel*/
@@ -336,7 +339,7 @@ function calcOverviewItemheight(contentHeight) {
     }
 
     bigHeight = Math.floor((contentHeight - minHeight) / 3);
-    return { s: minHeight, l: bigHeight, e: contentHeight - minHeight - bigHeight * 3 + bigHeight };
+    return { s: minHeight, l: bigHeight, e: contentHeight - minHeight - bigHeight * 2 };
 };
 
 var _courseListOverview = null;
@@ -459,10 +462,14 @@ function formatOverviewData(response) {
             { id: 8, title: '分享达人', img: 'image/honor/a.png' },
             { id: 9, title: '无人机小飞手', img: 'image/honor/b.png' }
         ],
-        course: [
-            { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
-            { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' }
-        ],
+        course: {
+            items: [
+                { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
+                { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' }
+            ],
+            total: 40,
+            completed: 1
+        },
         experience: {
             distribution: [
                 { id: "science", name: "科学", value: 250, color: "rgb(36,90,186)" },
@@ -475,14 +482,21 @@ function formatOverviewData(response) {
                 primary: { name: "初级课程", id: "Primary", value: 85 },
                 middle: { name: "中级课程", id: "Middle", value: 11 },
                 advance: { name: "高级课程", id: "Advance", value: 5 }
-            }
+            },
+            total: 235
         },
         codetimes: {
-            over: 95,
+            total: 21,
             times: [
-                { date: "2017-1-1", time: 3 },
-                { date: "2017-1-2", time: 2 },
-                { date: "2017-1-3", time: 4 }
+                { date: "2018-01-1", time: 1 },
+                { date: "2018-01-2", time: 2 },
+                { date: "2018-01-3", time: 1 },
+                { date: "2018-01-4", time: 3 },
+                { date: "2018-01-5", time: 2 },
+                { date: "2018-01-6", time: 2 },
+                { date: "2018-01-7", time: 1 },
+                { date: "2018-01-8", time: 2 },
+                { date: "2018-01-9", time: 1 }
             ]
         }
     }
@@ -504,10 +518,10 @@ function buildOverviewHonor(datas, height) {
     tmpHTMLArr.push('        <div class="col-10 align-items-center" id="wrap_Overview_Honor_Items" style="height:100%; overflow: hidden;">');
     tmpHTMLArr.push('            <div id="container_Overview_Honor_Items" style="height:100%;">');
     for (var i = 0; i < itemCount; i++) {
-        tmpHTMLArr.push('                <div class="text-center profile-overview-honor-item" style="' + (i == itemCount - 1 ? '' : 'padding-right:10px;') + '">');
+        tmpHTMLArr.push('                <div class="text-center overview-honor-item" style="' + (i == itemCount - 1 ? '' : 'padding-right:10px;') + '">');
         tmpHTMLArr.push('                    <div style="height:100%; padding:' + padding + 'px 0px; min-width:140px;">');
         tmpHTMLArr.push('                        <img src="' + datas[i].img + '" style="height: calc(100% - 30px);" />');
-        tmpHTMLArr.push('                        <p class="overview-honor-item-text active-item">' + datas[i].title + '</p>');
+        tmpHTMLArr.push('                        <p class="profile-overview-honor-item-text active-item">' + datas[i].title + '</p>');
         tmpHTMLArr.push('                    </div>');
         tmpHTMLArr.push('                </div>');
     }
@@ -551,6 +565,7 @@ function buildOverviewCourse(datas, containerHeight) {
     var titleSize = (height - imgHeight) / 2 - 15;
     var symbolSize = (height - imgHeight) / 2 - 20;
     var tmpHTMLArr = [];
+    var tmpStyle = '';
     tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Course">');
     tmpHTMLArr.push('    <div class="row align-items-center" style="height:' + (containerHeight - 1) + 'px;">');
     tmpHTMLArr.push('        <div class="col-1 text-center">');
@@ -561,22 +576,27 @@ function buildOverviewCourse(datas, containerHeight) {
     tmpHTMLArr.push('        <div class="col-10" id="wrap_Overview_Course_Items">');
     tmpHTMLArr.push('            <div class="h-100" id="container_Overview_Course_Items">');
     for (var i = 0; i < itemCount; i++) {
-        tmpHTMLArr.push('<div class="text-center overview-course-item" style="padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;" title="' + datas[i].title + '">');
+        tmpStyle = 'padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;';
+        tmpHTMLArr.push('<div class="text-center overview-course-item" style="' + tmpStyle + '" title="' + datas[i].title + '">');
         tmpHTMLArr.push('    <div class="d-flex align-items-center h-100">');
-        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;" data-target="' + datas[i].symbol + '">');
+        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
+        tmpHTMLArr.push('        <div class="container-fluid overview-course-item-wrap" style="' + tmpStyle + '" data-target="' + datas[i].symbol + '">');
         tmpHTMLArr.push('            <div class="row no-margin">');
         tmpHTMLArr.push('                <div class="col-12 no-padding">');
-        tmpHTMLArr.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="height:' + imgHeight + 'px;" />');
+        tmpStyle = 'height:' + imgHeight + 'px;';
+        tmpHTMLArr.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="' + tmpStyle + '" />');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
         tmpHTMLArr.push('            <div class="row no-margin">');
         tmpHTMLArr.push('                <div class="col no-padding">');
-        tmpHTMLArr.push('                   <p class="text-center profile-overview-course-item-title" style="color:' + datas[i].color + '; font-size:' + titleSize + 'px;">' + datas[i].title + '</p>');
+        tmpStyle = 'color:' + datas[i].color + '; font-size:' + titleSize + 'px;';
+        tmpHTMLArr.push('                   <p class="text-center overview-course-item-title" style="' + tmpStyle + '">' + datas[i].title + '</p>');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
         tmpHTMLArr.push('            <div class="row no-margin">');
         tmpHTMLArr.push('                <div class="col-12 no-padding">');
-        tmpHTMLArr.push('                   <p class="text-center profile-overview-course-item-symbol" style="font-size:' + symbolSize + 'px">' + datas[i].symbol + '</p>');
+        tmpStyle = 'color:' + datas[i].color + ';font-size:' + symbolSize + 'px';
+        tmpHTMLArr.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
         tmpHTMLArr.push('        </div>');
@@ -620,7 +640,8 @@ function buildOverviewExperience(data, height) {
     var padding = Math.floor(40 / 350 * height);
     var width = Math.floor(padding / 40 * 225);
     var spaceWidth = Math.floor(padding / 40 * 40);
-    var disWidth = Math.max(width, data.distribution.length * 35);
+    var disLegendItemWidth = 35
+    var disWidth = Math.max(width, data.distribution.length * disLegendItemWidth);
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Experience">');
     tmpHTMLArr.push('    <div class="row align-items-center" id="" style="height:' + (height - 1) + 'px;">');
@@ -634,23 +655,17 @@ function buildOverviewExperience(data, height) {
     tmpHTMLArr.push('               <table>');
     tmpHTMLArr.push('                   <tr>');
     for (var i = 0; i < itemCount; i++) {
-        tmpHTMLArr.push('                   <td>');
-        tmpHTMLArr.push('<div class="text-center h-100" style="padding-right:' + (i == itemCount - 1 ? 0 : spaceWidth) + 'px;">');
-        tmpHTMLArr.push('   <div class="h-100" id="size_parent_canvas_' + idArr[i] + '" style="padding:' + padding + 'px 0px;">');
-        tmpHTMLArr.push('       <div class="container-fluid overview-experience-item-wrap no-padding" style="width:' + ((idArr[i] == 'Distribution' ? disWidth : width) - 2) + 'px;">');
-        tmpHTMLArr.push('           <div class="row no-margin">');
-        tmpHTMLArr.push('               <div class="col-12 no-padding">');
-        tmpHTMLArr.push('                   <canvas id="canvas_Overview_Experience_' + idArr[i] + '"></canvavs>');
-        tmpHTMLArr.push('               </div>');
-        tmpHTMLArr.push('           </div>');
-        tmpHTMLArr.push('       </div>');
-        tmpHTMLArr.push('    </div>');
-        tmpHTMLArr.push('</div>');
-        tmpHTMLArr.push('                   </td>');
+        var tpr = (i == itemCount - 1 ? 0 : spaceWidth);
+        var tw = ((idArr[i] == 'Distribution' ? disWidth : width) - 2) + tpr;
+        tmpHTMLArr.push('<td style="height:' + (height - 1) + 'px;">');
+        tmpHTMLArr.push('   <div class="h-100" id="size_parent_canvas_' + idArr[i] + '" style="padding:' + padding + 'px 0px;padding-right:' + tpr + 'px; width:' + tw + 'px;">');
+        tmpHTMLArr.push('       <canvas id="canvas_Overview_Experience_' + idArr[i] + '"></canvavs>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</td>');
     }
 
     tmpHTMLArr.push('                   </tr>');
-    tmpHTMLArr.push('               </table>');    
+    tmpHTMLArr.push('               </table>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('       <div class="col-1 text-center">');
@@ -713,7 +728,7 @@ function buildOverviewTimes(data, height) {
 
 function rebuildOverviewContents(data, contentHeight, itemHeight) {
     buildOverviewHonor(data.honor, itemHeight.s);
-    buildOverviewCourse(data.course, itemHeight.l);
+    buildOverviewCourse(data.course.items, itemHeight.l);
     buildOverviewExperience(data.experience, itemHeight.l);
     drawExpDistributionGraph('Distribution', data.experience.distribution);
     for (var key in data.experience.level) {
@@ -735,24 +750,8 @@ function rebuildOverviewContents(data, contentHeight, itemHeight) {
 };
 
 function rebuildOverviewTitles(data, contentHeight, itemHeight) {
-    var totalCourse = 0;
-    var completeCourse = 0;
-    for (var i = 0; i < data.course.length; i++) {
-        completeCourse += data.course[i].complete;
-        totalCourse += data.course[i].total;
-    }
-
     var totalExp = data.experience.total;
-    //for (var i = 0; i < data.experience.distribution.length; i++) {
-    //    totalExp += data.experience.distribution[i].value;
-    //}
-
     var totalTime = (isNaN(data.codetimes.total) ? 0 : data.codetimes.total);
-    //for (var i = 0; i < data.codetimes.times.length; i++) {
-    //    totalTime += data.codetimes.times[i].time;
-    //}
-
-    //totalTime = Math.round(totalTime * 100) / 100;
     var constArr = [
         {
             id: 'Honor',
@@ -764,9 +763,10 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
         }, {
             id: 'Course',
             height: itemHeight.l,
-            bgColor: 'rgb(248,250,251)', color: 'rgb(117,180,76)',
+            bgColor: 'rgb(248,250,251)',
+            color: 'rgb(117,180,76)',
             icon: 'gamepad',
-            text: '<p class="overview-title-item-text">已完成</p><p class="overview-title-item-data">' + completeCourse + '/' + totalCourse + '</ｐ><p class="overview-title-item-text">个课程</p>'
+            text: '<p class="overview-title-item-text">已完成</p><p class="overview-title-item-data">' + data.course.completed + '/' + data.course.total + '</ｐ><p class="overview-title-item-text">个课程</p>'
         }, {
             id: 'Experience',
             height: itemHeight.l,
@@ -780,9 +780,7 @@ function rebuildOverviewTitles(data, contentHeight, itemHeight) {
             bgColor: 'rgb(248,250,251)',
             color: 'rgb(124,77,255)',
             icon: 'clock-o',
-            text: '<p class="overview-title-item-text">编程<span class="overview-title-item-data">' +
-                 totalTime +
-                '</span>小时</p>'
+            text: '<p class="overview-title-item-text">编程<span class="overview-title-item-data">' + totalTime + '</span>小时</p>'
         }
     ];
 
@@ -805,7 +803,7 @@ function drawExpDistributionGraph(canvasId, datas) {
     var canvas = $('#canvas_Overview_Experience_' + canvasId);
     //var parent = $($('.overview-experience-item-wrap').parent());
     var parent = $('#size_parent_canvas_' + canvasId);
-    var width = parent.width();
+    var width = parent.width() - parseInt(parent.css('padding-right'));
     var height = parent.height() - parseInt(parent.css('padding-top')) * 2;
     canvas.attr('height', height);
     canvas.attr('width', width);
@@ -813,8 +811,8 @@ function drawExpDistributionGraph(canvasId, datas) {
     canvas[0].height = height;
     var context = canvas[0].getContext('2d');
     context.clearRect(0, 0, width, height);
-    //var lineWidth = width / 215 * 30;
-    var lineWidth = 30;
+    var lineWidth = width / 215 * 30;
+    //var lineWidth = 30;
     var tmpWidth = width;
     if (width / height > 210 / 250) {
         tmpWidth = Math.floor(210 / 250 * height);
@@ -833,11 +831,18 @@ function drawExpDistributionGraph(canvasId, datas) {
     var tmpRadian = 0;
     var tmpX = 0;
     var tmpY = 0;
-    var legendItemWidth = Math.floor(width / datas.length);
-    //var legendItemWidth = 35;
-    var legendWidth = width / 215 * 8;
-    var fontSize = 10;
+    var legendItemWidth = Math.max(35, Math.floor(width / datas.length));
+    var legendWidth = width / 215 * 10;
+    var fontSize = 8;
+    for (var i = 8; i < 20; i++) {
+        var tmpTxtWidth = testTextWidth('科学', i, '', '', '');
+        if (tmpTxtWidth > legendItemWidth - legendWidth - 5) {
+            fontSize = i;
+            break;
+        }
+    }
 
+    var fontStyle = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
     for (var i = 0; i < datas.length; i++) {
         startRadian = endRadian;
         if (total != 0) {
@@ -854,22 +859,22 @@ function drawExpDistributionGraph(canvasId, datas) {
         context.stroke();
         context.closePath();
 
-        tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - 8;
-        tmpY = centerY + radius * Math.sin(startRadian + tmpRadian / 2);
-        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
+        tmpX = centerX + radius * Math.cos(startRadian + tmpRadian / 2) - 9;
+        tmpY = centerY + radius * Math.sin(startRadian + tmpRadian / 2) + 1;
+        context.font = fontStyle;
         context.fillStyle = "rgb(255,255,255)";
         context.fillText(datas[i].value, tmpX, tmpY);
 
         tmpX = legendItemWidth * i;
         //tmpY = (radius + lineWidth / 2) * 2 + 20;
-        tmpY = tmpWidth + 15;
+        tmpY = tmpWidth + 10;
         context.beginPath();
-        context.rect(tmpX, tmpY, legendWidth, legendWidth);
+        context.rect(tmpX, tmpY + 1, legendWidth, legendWidth);
         context.fillStyle = datas[i].color;
         context.fill();
         context.closePath();
 
-        context.font = 'normal normal normal ' + fontSize + 'px \"微软雅黑\"';
+        context.font = fontStyle;
         context.fillStyle = "rgb(71,71,71)";
         context.fillText(datas[i].name, tmpX + legendWidth + 2, tmpY + 9);
     }
@@ -879,7 +884,7 @@ function drawExpCourseLevelGraph(canvasId, data) {
     var canvas = $('#canvas_Overview_Experience_' + canvasId);
     //var parent = $($('.overview-experience-item-wrap').parent());
     var parent = $('#size_parent_canvas_' + canvasId);
-    var width = parent.width();
+    var width = parent.parent().width() - parseInt(parent.css('padding-right'));
     var height = parent.height();
     canvas.attr('height', height);
     canvas.attr('width', width);
@@ -2808,14 +2813,14 @@ function rebuildMessageContents(data, type) {
         tmpHTMLArr.push('                               <tr>');
         tmpHTMLArr.push('                                   <th>' + tHeader + '</th>');
         tmpHTMLArr.push('                                   <td class="' + contentCss + '">' + data[i].content + '</td>');
-        tmpHTMLArr.push('                                   <td class="profile-message-date-text">' + data[i].time + '</td>');
+        tmpHTMLArr.push('                                   <td class="minW-100">' + data[i].time + '</td>');
         tmpHTMLArr.push('                                   <td class="profile-message-remove-button" data-msgid="' + data[i].id + '" data-optid="' + data[i].optid + '"><i class="fa fa-remove"></i></td>');
         tmpHTMLArr.push('                               </tr>');
         if (data[i].type == '2' && data[i].answer) {
             tmpHTMLArr.push('                               <tr>');
             tmpHTMLArr.push('                                   <th></th>');
             tmpHTMLArr.push('                                   <td class="profile-message-answer-text" style="padding-left:50px;">' + data[i].answer.content + '</td>');
-            tmpHTMLArr.push('                                   <td class="profile-message-date-text">' + data[i].answer.time + '</td>');
+            tmpHTMLArr.push('                                   <td class="minW-100">' + data[i].answer.time + '</td>');
             tmpHTMLArr.push('                                   <td></td>');
             tmpHTMLArr.push('                               </tr>');
         }
@@ -2887,25 +2892,22 @@ function rebuildHomeworkTitles(contentHeight) {
         var id = 'title_Homework_' + homeworkTypeMap[i].id + '_Title';
         var bgColor = (i == 0 ? 'rgb(237,87,138)' : 'rgb(130, 138, 142)');
         var tmpHTMLArr = [];
-        tmpHTMLArr.push('<div class="container profile-homework-title" id="' + id + '" style="background-color:' + bgColor + ';" data-target="' + homeworkTypeMap[i].type + '">');
+        tmpHTMLArr.push('<div class="container homework-title" id="' + id + '" style="background-color:' + bgColor + ';" data-target="' + homeworkTypeMap[i].type + '">');
         tmpHTMLArr.push('   <div class="row align-items-center" id="' + id + '_Row" style="height:' + height + 'px;">');
         tmpHTMLArr.push('       <div class="col-12 text-center">');
-        tmpHTMLArr.push('           <i class="fa fa-' + homeworkTypeMap[i].icon + '" aria-hidden="true" style="font-size:48px; cursor: pointer; color:rgb(255,255,255);"></i>');
-        tmpHTMLArr.push('           <p class="overview-title-item-text" style="color:rgb(255,255,255);">' + homeworkTypeMap[i].name + '</p>');
+        tmpHTMLArr.push('           <i class="fa fa-' + homeworkTypeMap[i].icon + '" aria-hidden="true"></i>');
+        tmpHTMLArr.push('           <p class="overview-title-item-text color-white">' + homeworkTypeMap[i].name + '</p>');
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('</div>');
         $('#wrap_Category_Title').append($(tmpHTMLArr.join('')));
     }
 
-    $('.profile-homework-title').on('click', function (eventObj) {
-        var titleItems = $('.profile-homework-title');
-        for (var i = 0; i < titleItems.length; i++) {
-            $(titleItems[i]).css('background-color', 'rgb(130,138,142)');
-        }
-
+    $('.homework-title').on('click', function (eventObj) {
+        $('.homework-title').css('background-color', 'rgb(130,138,142)');
         $(eventObj.currentTarget).css('background-color', 'rgb(237,87,138)');
         displayHomeworkByType($(eventObj.currentTarget).attr('data-target'));
+        adjustHomeworkTitleSize();
     });
 };
 
@@ -2963,10 +2965,10 @@ function rebuildHomeworkContents(data, type) {
     var tmpHTMLArr = [];
     var tHeader = '';
     var blockPadding = 10;
-    tmpHTMLArr.push('<div class="container-fluid wrap-homework-section" style="background-color:rgb(255,255,255); height:100%; border-left: solid 5px rgb(237,87,138);">');
+    tmpHTMLArr.push('<div class="container-fluid wrap-homework-section">');
     tmpHTMLArr.push('    <div class="row">');
     tmpHTMLArr.push('        <div class="col-12 no-padding">');
-    tmpHTMLArr.push('           <div class="container-fluid wrap-homework-items no-padding" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('           <div class="container-fluid wrap-homework-items no-padding">');
     tmpHTMLArr.push('               <div class="row no-margin">');
     tmpHTMLArr.push('                   <div class="col-12 no-padding" id="wrap_col_profile_homework_items" style="overflow:auto;">');
     tmpHTMLArr.push('                       <div id="accordion" role="tablist">');
@@ -2983,18 +2985,18 @@ function rebuildHomeworkContents(data, type) {
         }
 
         tmpHTMLArr.push('<div class="card" style="border-radius: 0px;">');
-        tmpHTMLArr.push('   <div class="card-header" role="tab" id="heading_' + data[i].id + '" style="padding:0px;">');
+        tmpHTMLArr.push('   <div class="card-header no-padding" role="tab" id="heading_' + data[i].id + '">');
         tmpHTMLArr.push('       <table class="table table-striped" style="margin-bottom: 0px;">');
         tmpHTMLArr.push('           <tbody>');
         tmpHTMLArr.push('               <tr>');
         tmpHTMLArr.push('                   <th>' + tHeader + '</th>');
         tmpHTMLArr.push('                   <td><a data-toggle="collapse" href="#collapse_' + data[i].id + '" aria-expanded="true" aria-controls="collapse_' + data[i].id + '">' + data[i].title + '</a></td>');
-        tmpHTMLArr.push('                   <td class="profile-message-date-text">' + data[i].date + '</td>');
-        tmpHTMLArr.push('                   <td class="profile-message-date-text">' + data[i].teacher + '</td>');
+        tmpHTMLArr.push('                   <td class="minW-100">' + data[i].date + '</td>');
+        tmpHTMLArr.push('                   <td class="minW-100">' + data[i].teacher + '</td>');
         if (type == '1') {
-            tmpHTMLArr.push('                   <td class="profile-message-date-text homework-item-correct-count-' + data[i].id + '" style="min-width:20px; color: rgb(34,139,34);"><i class="fa fa-check"></i><span>' + data[i].correct + '</span></td>');
-            tmpHTMLArr.push('                   <td class="profile-message-date-text homework-item-question-count-' + data[i].id + '" style="min-width:20px; color: rgb(243,151,0);"><i class="fa fa-question"></i><span>' + (data[i].total - data[i].incorrect - data[i].correct) + '</span</td>');
-            tmpHTMLArr.push('                   <td class="profile-message-date-text homework-item-incorrect-count-' + data[i].id + '" style="min-width:20px; color: rgb(255,0,0);"><i class="fa fa-remove"></i><span>' + data[i].incorrect + '</span</td>');
+            tmpHTMLArr.push('                   <td class="minW-100 homework-item-correct-count" data-target="' + data[i].id + '"><i class="fa fa-check"></i><span>' + data[i].correct + '</span></td>');
+            tmpHTMLArr.push('                   <td class="minW-100 homework-item-question-count" data-target="' + data[i].id + '"><i class="fa fa-question"></i><span>' + (data[i].total - data[i].incorrect - data[i].correct) + '</span</td>');
+            tmpHTMLArr.push('                   <td class="minW-100 homework-item-incorrect-count" data-target="' + data[i].id + '"><i class="fa fa-remove"></i><span>' + data[i].incorrect + '</span</td>');
         }
 
         tmpHTMLArr.push('               </tr>');
@@ -3002,22 +3004,23 @@ function rebuildHomeworkContents(data, type) {
         tmpHTMLArr.push('       </table>');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('   <div id="collapse_' + data[i].id + '" class="collapse profile-homework-item" role="tabpanel" aria-labelledby="heading_' + data[i].id + '" data-parent="#accordion" data-target="' + type + '|' + data[i].id + '">');
-        tmpHTMLArr.push('       <div class="card-block" id="wrap_profile_homework_card_block_' + data[i].id + '" style="padding:' + blockPadding + 'px; border: solid 2px rgb(188, 188, 188);;">');
+        tmpHTMLArr.push('       <div class="card-block" id="wrap_profile_homework_card_block_' + data[i].id + '" style="padding:' + blockPadding + 'px;">');
         if (type == '2') {
-            tmpHTMLArr.push('       <table class="table table-sm" style="margin-bottom: 0px;font-size: 14px;">');
+            tmpHTMLArr.push('       <table class="table table-sm">');
             tmpHTMLArr.push('           <tbody>');
             if (data[i].attach.length > 0) {
                 tmpHTMLArr.push('               <tr>');
-                tmpHTMLArr.push('                   <td class="profile-message-date-text" style="font-weight:bold; border: none;background-color: orange;border-radius: 10px; padding-left: 20px;">');
+                tmpHTMLArr.push('                   <td class="minW-100 homework-exp-atta-title">');
                 tmpHTMLArr.push('                       <a href="#" id="lbtn_profile_homework_attach" data-target="' + data[i].id + '">共有' + data[i].attach.length + '个附件，点击查看。</a>');
                 tmpHTMLArr.push('                   </td>');
                 tmpHTMLArr.push('               <tr>');
             }
+
             tmpHTMLArr.push('               <tr>');
-            tmpHTMLArr.push('                   <td class="profile-message-date-text" style="border: none;">' + data[i].content + '</td>');
+            tmpHTMLArr.push('                   <td class="minW-100 no-border">' + data[i].content + '</td>');
             tmpHTMLArr.push('               <tr>');
             tmpHTMLArr.push('           <tbody>');
-            tmpHTMLArr.push('       <table class="table" style="margin-bottom: 0px;">');
+            tmpHTMLArr.push('       </table>');
         }
 
         tmpHTMLArr.push('       </div>');
@@ -3033,15 +3036,15 @@ function rebuildHomeworkContents(data, type) {
     tmpHTMLArr.push('</div>');
 
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
-    //$('#wrap_col_profile_exam_items').height($('#sideBar_Page_Left').height() + 16);
     var wrapSection = $('.container-fluid.wrap-homework-section');
     var wrapItems = $('.container-fluid.wrap-homework-items');
+    var objTitleRow = $('#title_Homework_objective_Title_Row');
     var expTitleRow = $('#title_Homework_experimental_Title_Row');
-    var tmpHeight = $('.container-fluid.left-sidebar-wrap').height();
+    var tmpHeight = $('#sideBar_Page_Left').height();
     if (wrapSection.height() < tmpHeight) {
         wrapSection.height(tmpHeight);
     }
-    //$('#wrap_col_profile_homework_items').height($('.container-fluid.wrap-homework-section').height());
+
     $('#lbtn_profile_homework_attach').on('click', function () {
         var dataId = $(arguments[0].target).attr('data-target');
         var attachs = [];
@@ -3054,26 +3057,34 @@ function rebuildHomeworkContents(data, type) {
         showHomeworkAttachs(attachs);
     });
 
-    if (type == '1') {
-        var tmpItem = $('.collapse.profile-homework-item');
-        tmpItem.on('show.bs.collapse', function () {
-            var itemDetail = $(arguments[0].target).attr('data-target').split('|');
-            if (itemDetail[0] == '1') {
-                loadHomeworkById(itemDetail[1]);
-            }
-        });
+    var tmpItem = $('.collapse.profile-homework-item');
+    tmpItem.on('show.bs.collapse', function () {
+        var itemDetail = $(arguments[0].target).attr('data-target').split('|');
+        if (itemDetail[0] == '1') {
+            loadHomeworkById(itemDetail[1]);
+        }
+    });
 
-        tmpItem.on('shown.bs.collapse', function () {
-            wrapSection.height(Math.max(wrapItems.height(), tmpHeight));
-            expTitleRow.height(expTitleRow.height() + Math.abs(wrapItems.height() - tmpHeight));
-        });
+    tmpItem.on('shown.bs.collapse', function () {
+        wrapSection.height(Math.max(wrapItems.height(), tmpHeight));
+        expTitleRow.height(Math.max(wrapItems.height() - objTitleRow.height(), tmpHeight / 2));
+    });
 
-        tmpItem.on('hidden.bs.collapse', function () {
-            wrapSection.height(Math.max(wrapItems.height(), tmpHeight));
-            expTitleRow.height(tmpHeight / 2);
-        });
-    }
+    tmpItem.on('hidden.bs.collapse', function () {
+        wrapSection.height(Math.max(wrapItems.height(), tmpHeight));
+        expTitleRow.height(tmpHeight / 2);
+    });
 };
+
+function adjustHomeworkTitleSize() {
+    var sideBarHeight = $('#sideBar_Page_Left').height();
+    var wrapItemsHeight = $('.container-fluid.wrap-homework-items').height();
+    var objTitleRow = $('#title_Homework_objective_Title_Row');
+    var expTitleRow = $('#title_Homework_experimental_Title_Row');
+    $('.container-fluid.wrap-homework-section').height(Math.max(wrapItemsHeight, sideBarHeight));
+    objTitleRow.height(sideBarHeight / 2);
+    expTitleRow.height(Math.max(wrapItemsHeight - sideBarHeight / 2, sideBarHeight / 2));
+}
 
 function loadHomeworkById(itemId) {
     _currentHomeWorkItem = [
@@ -3220,30 +3231,30 @@ function loadHomeworkById(itemId) {
         }
 
         tmpHTMLArr.push('<tr>');
-        tmpHTMLArr.push('   <td style="padding: 5px 10px;">');
-        tmpHTMLArr.push('       <table style="border: none; width:100%;">');
-        tmpHTMLArr.push('           <tbody style="border: none;">');
-        tmpHTMLArr.push('               <tr style="border: none;background-color: transparent;">');
-        tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none; width:50px; ">' + (i + 1) + '</th>');
-        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; font-size:15px;">' + data[i].content + '</td>');
-        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; width:50px;">' + tHeader + '</td>');
-        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; width:80px;">' + tButton + '</td>');
+        tmpHTMLArr.push('   <td class="homework-contents-table-cell">');
+        tmpHTMLArr.push('       <table class="no-border w-100">');
+        tmpHTMLArr.push('           <tbody class="no-border">');
+        tmpHTMLArr.push('               <tr class="no-border bg-trans hw-contents-item-row">');
+        tmpHTMLArr.push('                   <th class="title-cell sequence">' + (i + 1) + '</th>');
+        tmpHTMLArr.push('                   <td class="title-cell content">' + data[i].content + '</td>');
+        tmpHTMLArr.push('                   <td class="title-cell sequence">' + tHeader + '</td>');
+        tmpHTMLArr.push('                   <td class="title-cell button">' + tButton + '</td>');
         tmpHTMLArr.push('               </tr>');
-        tmpHTMLArr.push('               <tr style="border: none;">');
-        tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none;"></th>');
-        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none;" col-spac="3">');
+        tmpHTMLArr.push('               <tr class="no-border hw-contents-item-row">');
+        tmpHTMLArr.push('                   <th class="title-cell"></th>');
+        tmpHTMLArr.push('                   <td class="title-cell" col-spac="3">');
         tmpHTMLArr.push('                       <form>');
         if (checkAnswer) {
-            tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_homework_item_' + itemId + '_' + data[i].id + '" style="margin:0px;" disabled>');
+            tmpHTMLArr.push('                           <fieldset class="form-group no-margin" id="fs_homework_item_' + itemId + '_' + data[i].id + '" disabled>');
         } else {
-            tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_homework_item_' + itemId + '_' + data[i].id + '" style="margin:0px;">');
+            tmpHTMLArr.push('                           <fieldset class="form-group no-margin" id="fs_homework_item_' + itemId + '_' + data[i].id + '">');
         }
 
         for (var j = 0; j < data[i].options.length; j++) {
             chkName = 'chk-homework-item-' + itemId + '-' + data[i].id;
             chkId = 'chk_Homework_Item_' + itemId + '_' + data[i].id + '_' + j;
-            tmpHTMLArr.push('                           <div class="form-check" style="margin:0px;">');
-            tmpHTMLArr.push('                               <label class="form-check-label" style="font-size:14px;">');
+            tmpHTMLArr.push('                           <div class="form-check no-margin">');
+            tmpHTMLArr.push('                               <label class="form-check-label font-14">');
             tmpChecked = false;
             for (var k = 0; k < data[i].answer.length; k++) {
                 if (data[i].answer[k] == data[i].options[j].id) {
@@ -3329,23 +3340,31 @@ function resetHWCmpsStatus(itemId, subId, checkResult) {
 };
 
 function resetHWStatusCounts(itemId) {
-    var cCount = 0;
-    var iCount = 0;
+    var countObj = { correct: 0, question: _currentHomeWorkItem.length, incorrect: 0 };
     for (var i = 0; i < _currentHomeWorkItem.length; i++) {
         if (_currentHomeWorkItem[i].answer.length > 0) {
             if (checkAnswersDo(_currentHomeWorkItem[i].answer, _currentHomeWorkItem[i].correct)) {
-                cCount++;
+                countObj.correct++;
             } else {
-                iCount++;
+                countObj.incorrect++;
+            }
+
+            countObj.question--;
+        }
+    }
+
+    var tmpItems, tmpItem;
+    for (var key in countObj) {
+        tmpItems = $('.homework-item-' + key + '-count');
+        for (var i = 0; i < tmpItems.length; i++) {
+            tmpItem = $(tmpItems[i]);
+            if (tmpItem.attr('data-target') == itemId) {
+                $(tmpItem.find('span')[0]).text(countObj[key]);
             }
         }
     }
 
-    $('.profile-message-date-text.homework-item-correct-count-' + itemId + ' span').text(cCount);
-    $('.profile-message-date-text.homework-item-question-count-' + itemId + ' span').text(_currentHomeWorkItem.length - cCount - iCount);
-    $('.profile-message-date-text.homework-item-incorrect-count-' + itemId + ' span').text(iCount);
-
-    if (cCount == _currentHomeWorkItem.length) {
+    if (countObj.correct == _currentHomeWorkItem.length) {
         var tmpHeaderIcon = $('#icon_Homework_Item_Header_' + data[i].id);
         tmpHeaderIcon.removeClass('pause');
         tmpHeaderIcon.addClass('check');
@@ -3374,15 +3393,14 @@ function checkAnswersDo(answer, correct) {
 
 function clearUncompleteState() {
     $('.left-bar-homework-count').css('background-color', 'rgb(185,185,185)');
-    //$('.left-bar-homework-count').hide();
 };
 
 function showHomeworkAttachs(attachs) {
     if ($('#modal_Profile_HW_Attachs').length == 0) {
         var tmpHTMLStr = [];
         tmpHTMLStr.push('<div class="modal fade" id="modal_Profile_HW_Attachs" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
-        tmpHTMLStr.push('    <div class="modal-dialog" role="document" style="font-family: 微软雅黑; font-size: 14px;max-width: 70%; max-height: 70%;">');
-        tmpHTMLStr.push('        <div class="modal-content">');
+        tmpHTMLStr.push('    <div class="modal-dialog" role="document">');
+        tmpHTMLStr.push('        <div class="modal-content h-100">');
         tmpHTMLStr.push('            <div class="modal-header">');
         tmpHTMLStr.push('                <h5 class="modal-title" id="exampleModalLabel">题目附件</h5>');
         tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
@@ -3390,8 +3408,8 @@ function showHomeworkAttachs(attachs) {
         tmpHTMLStr.push('                </button>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('            <div class="modal-body">');
-        tmpHTMLStr.push('                <div id="carousel_Profile_HW_Attachs" class="carousel slide" data-ride="carousel" data-interval="90000" data-keyboard="true" data-wrap="false" data-ride="true">');
-        tmpHTMLStr.push('                    <div class="carousel-inner">');
+        tmpHTMLStr.push('                <div id="carousel_Profile_HW_Attachs" class="carousel slide h-100" data-ride="carousel" data-interval="90000" data-keyboard="true" data-wrap="false" data-ride="true">');
+        tmpHTMLStr.push('                    <div class="carousel-inner h-100">');
         tmpHTMLStr.push('                    </div>');
         tmpHTMLStr.push('                    <a class="carousel-control-prev" href="#carousel_Profile_HW_Attachs" role="button" data-slide="prev">');
         tmpHTMLStr.push('                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>');
@@ -3404,7 +3422,7 @@ function showHomeworkAttachs(attachs) {
         tmpHTMLStr.push('                </div>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('            <div class="modal-footer">');
-        tmpHTMLStr.push('                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">关闭</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">关闭</button>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('        </div>');
         tmpHTMLStr.push('    </div>');
@@ -3414,17 +3432,12 @@ function showHomeworkAttachs(attachs) {
         $('#carousel_Profile_HW_Attachs .carousel-inner').empty();
         var tmpItemStr = '';
         for (var i = 0; i < attachs.length; i++) {
-            if (i == 0) {
-                tmpItemStr += '<div class="carousel-item active">';
-            } else {
-                tmpItemStr += '<div class="carousel-item">';
-            }
-
-            tmpItemStr += '<img class="d-block w-100" src="' + attachs[i] + '" alt="Second slide">';
+            tmpItemStr += '<div class=" h-100 carousel-item ' + (i == 0 ? 'active' : '') + '">';
+            tmpItemStr += '   <img class="d-block h-100" src="' + attachs[i] + '" style="margin: auto;">';
             tmpItemStr += '</div>';
         }
-        $('#carousel_Profile_HW_Attachs .carousel-inner').append($(tmpItemStr));
 
+        $('#carousel_Profile_HW_Attachs .carousel-inner').append($(tmpItemStr));
     }
 
     $('#modal_Profile_HW_Attachs').modal('show');
@@ -3521,32 +3534,32 @@ function rebuildExamContents() {
     var tHeader = '';
     var data = _currentExamItem;
     var blockPadding = 10;
-    tmpHTMLArr.push('<div class="container-fluid wrap-exam-section" style="background-color:rgb(255,255,255); height:100%;">');
+    tmpHTMLArr.push('<div class="container-fluid wrap-exam-section h-100 bg-white">');
     tmpHTMLArr.push('    <div class="row">');
     tmpHTMLArr.push('        <div class="col-12 no-padding">');
-    tmpHTMLArr.push('           <div class="container-fluid wrap-exam-items no-padding" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('           <div class="container-fluid wrap-exam-items no-padding bg-white">');
     tmpHTMLArr.push('               <div class="row no-margin">');
     tmpHTMLArr.push('                   <div class="col-12 no-padding" id="wrap_col_profile_exam_items" style="overflow:auto;">');
     tmpHTMLArr.push('                       <div class="card" style="border-radius: 0px;">');
-    tmpHTMLArr.push('                           <div class="card-header" role="tab" id="heading_' + data.id + '" style="padding:0px;">');
-    tmpHTMLArr.push('                               <table class="table table-striped" style="margin-bottom: 0px;">');
+    tmpHTMLArr.push('                           <div class="card-header no-padding" role="tab" id="heading_' + data.id + '">');
+    tmpHTMLArr.push('                               <table class="table table-striped wrap-exam-items-title-table">');
     tmpHTMLArr.push('                                   <tbody>');
     tmpHTMLArr.push('                                       <tr>');
-    tmpHTMLArr.push('                                           <th style="width: 50px; padding-left:20px;line-height: 20px;">');
+    tmpHTMLArr.push('                                           <th class="icon-cell">');
     tmpHTMLArr.push('                                               <i class="fa fa-lg fa-superscript profile-homework-top-symbol complete"></i>');
     tmpHTMLArr.push('                                           </th>');
-    tmpHTMLArr.push('                                           <td><p style="font-weight:bold; color: rgb(47, 168, 225)">' + data.title + '</p></td>');
+    tmpHTMLArr.push('                                           <td class="title-cell"><p>' + data.title + '</p></td>');
     tmpHTMLArr.push('                                           <td class="profile-exam-date-text">' + data.date + '</td>');
     tmpHTMLArr.push('                                           <td class="profile-exam-date-text" id="td_Profile_Exam_Timer">');
     tmpHTMLArr.push('                                               <button type="button" class="btn btn-sm btn-success" id="btn_Profile_Exam_Begin">开始测试</button>');
     tmpHTMLArr.push('                                           </td>');
-    tmpHTMLArr.push('                                           <td class="profile-exam-date-text" style="width: 100px;">');
+    tmpHTMLArr.push('                                           <td class="profile-exam-date-text complete-cell">');
     tmpHTMLArr.push('                                               <button type="button" class="btn btn-sm btn-warning" id="btn_Profile_Exam_Submit" style="display:none;">完成测试</button>');
     tmpHTMLArr.push('                                           </td>');
-    tmpHTMLArr.push('                                           <td class="profile-exam-date-text" style="min-width:20px; color: rgb(34,139,34); display:none;">');
+    tmpHTMLArr.push('                                           <td class="profile-exam-date-text correcct-cell">');
     tmpHTMLArr.push('                                               <i class="fa fa-check"></i><span class="exam-item-correct-count"></span>');
     tmpHTMLArr.push('                                           </td>');
-    tmpHTMLArr.push('                                           <td class="profile-exam-date-text" style="min-width:20px; color: rgb(255,0,0);display:none;">');
+    tmpHTMLArr.push('                                           <td class="profile-exam-date-text incorrect-cell">');
     tmpHTMLArr.push('                                               <i class="fa fa-remove"></i><span class="exam-item-incorrect-count"></span>');
     tmpHTMLArr.push('                                           </td>');
     tmpHTMLArr.push('                                       </tr>');
@@ -3620,15 +3633,8 @@ function beginExam(startTime, collapseId) {
         $('#btn_Profile_Exam_Submit').show();
         $('#' + collapseId).addClass('show');
         $('#btn_Profile_Exam_Submit').on('click', function () {
-            var text = formatTimeForTiming(startTime * 60, 3).text;
-            var tmpAlertStr = [];
-            tmpAlertStr.push('<div class="alert alert-warning" id="alert_Profile_Exam_MoreTimeLeft" role="alert">');
-            tmpAlertStr.push('  <strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.');
-            tmpAlertStr.push('  <button type="button" class="btn btn-primary">Primary</button>');
-            tmpAlertStr.push('  <button type="button" class="btn btn-success">success</button>');
-            tmpAlertStr.push('</div>');
-            $('body').append(tmpAlertStr.join(''));
-            completeExam(startTime * 60);
+            window.clearTimeout(_gTimeoutSymbol);
+            buildExamAlertMsg(startTime);
         });
     }
 
@@ -3640,7 +3646,35 @@ function beginExam(startTime, collapseId) {
     } else {
         _gTimeoutSymbol = window.setTimeout('beginExam();', 1000);
     }
-}
+};
+
+function buildExamAlertMsg(startTime) {
+    if ($('#alert_Profile_Exam_MoreTimeLeft').length == 0) {
+        var text = formatTimeForTiming(startTime * 60, 3).text;
+        var tmpAlertStr = [];
+        tmpAlertStr.push('<div class="alert alert-warning" id="alert_Profile_Exam_MoreTimeLeft" role="alert">');
+        tmpAlertStr.push('  <p>你的测试时间还剩余<strong class="text-primary">' + text + '</strong>, 是否现在就结束测试？');
+        tmpAlertStr.push('  <button type="button" class="btn btn-sm btn-primary btn-exam-complete-OK">确定</button>');
+        tmpAlertStr.push('  <button type="button" class="btn btn-sm btn-secondary btn-exam-complete-Cancel">取消</button></p>');
+        tmpAlertStr.push('</div>');
+        $('body').append(tmpAlertStr.join(''));
+        $('body').append('<div class="alert-warning-mask"></div>');
+        $('.btn-exam-complete-OK').on('click', function () {
+            $('.alert-warning-mask').hide();
+            $('#alert_Profile_Exam_MoreTimeLeft').alert('close');
+            completeExam(startTime * 60);
+        });
+
+        $('.btn-exam-complete-Cancel').on('click', function () {
+            $('.alert-warning-mask').hide();
+            $('#alert_Profile_Exam_MoreTimeLeft').alert('close');
+            _gTimeoutSymbol = window.setTimeout('beginExam();', 1000);
+        });
+    }
+
+    $('.alert-warning-mask').show();
+    $('#alert_Profile_Exam_MoreTimeLeft').show();
+};
 
 function completeExam(totalTime) {
     window.clearTimeout(_gTimeoutSymbol);
@@ -3652,7 +3686,7 @@ function completeExam(totalTime) {
     $('#td_Profile_Exam_Timer').empty();
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<i class="fa fa-clock-o fa-pulse fa-lg fa-fw timer-profile-exam-progress" style="color:rgb(34,139,34);"></i>');
-    tmpHTMLArr.push('<span id="span_Profile_Exam_Time_Cost" style="padding-left:10px;">共用时:' + timerObj.text + '</span>');
+    tmpHTMLArr.push('<span id="span_Profile_Exam_Time_Cost" style="padding-left:10px;">共用时: ' + timerObj.text + '</span>');
     $('#td_Profile_Exam_Timer').append($(tmpHTMLArr.join('')));
 
     var answerFileds = $('#form_Profile_Exam fieldset');
@@ -3686,8 +3720,7 @@ function completeExam(totalTime) {
     $('span.exam-item-correct-count').parent().show();
     $('span.exam-item-incorrect-count').text(retTotal - retCorrect);
     $('span.exam-item-incorrect-count').parent().show();
-    //$('#btn_Profile_Exam_Submit').parent().append('<span>共用时: ' + timerObj.text + '</span>');
-}
+};
 
 function loadExamItems(tmpHTMLArr) {
     var data = _currentExamItem.items;
@@ -3702,20 +3735,20 @@ function loadExamItems(tmpHTMLArr) {
     for (var i = 0; i < data.length; i++) {
         tmpHTMLArr.push('<tr>');
         tmpHTMLArr.push('   <td style="padding: 5px 10px;">');
-        tmpHTMLArr.push('       <table style="border: none; width:100%;">');
-        tmpHTMLArr.push('           <tbody style="border: none;">');
-        tmpHTMLArr.push('               <tr style="border: none;background-color: transparent;">');
-        tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none; width:50px; ">' + (i + 1) + '</th>');
-        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none; font-size:15px;">' + data[i].content + '</td>');
+        tmpHTMLArr.push('       <table class="no-border w-100">');
+        tmpHTMLArr.push('           <tbody class="no-border">');
+        tmpHTMLArr.push('               <tr class="no-border bg-trans">');
+        tmpHTMLArr.push('                   <th class="no-border padding-5-10" style="width:50px; ">' + (i + 1) + '</th>');
+        tmpHTMLArr.push('                   <td class="no-border padding-5-10" style="font-size:15px;">' + data[i].content + '</td>');
         tmpHTMLArr.push('               </tr>');
-        tmpHTMLArr.push('               <tr style="border: none;">');
-        tmpHTMLArr.push('                   <th style="padding: 5px 10px;border: none;"></th>');
-        tmpHTMLArr.push('                   <td style="padding: 5px 10px;border: none;">');
-        tmpHTMLArr.push('                           <fieldset class="form-group" id="fs_exam_item_' + itemId + '_' + data[i].id + '" style="margin:0px;" data-target="' + data[i].id + '">');
+        tmpHTMLArr.push('               <tr class="no-border">');
+        tmpHTMLArr.push('                   <th class="no-border padding-5-10"></th>');
+        tmpHTMLArr.push('                   <td class="no-border padding-5-10">');
+        tmpHTMLArr.push('                           <fieldset class="form-group no-margin" id="fs_exam_item_' + itemId + '_' + data[i].id + '" data-target="' + data[i].id + '">');
         for (var j = 0; j < data[i].options.length; j++) {
             chkName = 'chk-exam-item-' + itemId + '-' + data[i].id;
             chkId = 'chk_Exam_Item_' + itemId + '_' + data[i].id + '_' + j;
-            tmpHTMLArr.push('                           <div class="form-check" style="margin:0px;">');
+            tmpHTMLArr.push('                           <div class="form-check no-margin">');
             tmpHTMLArr.push('                               <label class="form-check-label" style="font-size:14px;">');
             tmpHTMLArr.push('                                   <input type="checkbox" class="form-check-input" name="' + chkName + '" id="' + chkId + '" value="' + data[i].options[j].id + '">');
             tmpHTMLArr.push('                                   <span style="padding-left:10px;">' + data[i].options[j].content + '</span>');

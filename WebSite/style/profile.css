@@ -11,8 +11,28 @@
     padding: 0px;
 }
 
+.padding-5-10 {
+    padding: 5px 10px;
+}
+
 .no-margin {
     margin: 0px;
+}
+
+no-border {
+    border: none;
+}
+
+bg-trans {
+    background-color: transparent;
+}
+
+.font-14 {
+    font-size: 14px;
+}
+
+minW-100 {
+    min-width: 100px;
 }
 
 .main-container {
@@ -238,14 +258,13 @@ footer {
     box-shadow: 1px 1px 5px rgb(188,188,188);
 }
 
-.profile-overview-course-item-symbol {
+.overview-course-item-symbol {
     padding: 5px 0px;
     color: rgb(73,175,79);
     color: rgb(119,118,123);
-    font-weight: bold;
 }
 
-.profile-overview-course-item-title {
+.overview-course-item-title {
     font-weight: bold;
     padding-top: 5px;
     text-overflow: ellipsis;
@@ -257,8 +276,6 @@ footer {
     background-color: rgb(255,255,255);
     border-bottom: solid 1px rgb(236,239,241);
 }
-
-
 
 .overview-title-item-data {
     font-size: 1.6rem;
@@ -272,7 +289,7 @@ footer {
     color: rgb(107,129,140);
 }
 
-.profile-overview-honor-item {
+.overview-honor-item {
     display: inline-block;
     height: 100%;
     padding-right: 10px;
@@ -289,8 +306,6 @@ footer {
     .overview-honor-item-text.active-item {
         color: rgb(68,191,160);
     }
-
-
 
 .overview-list-arrow {
     cursor: pointer;
@@ -316,6 +331,157 @@ footer {
 #wrap_Settings_Profile form label {
     color: rgb(56,56,56);
 }
+
+.container-fluid.wrap-homework-section {
+    background-color: rgb(255,255,255);
+    border-left: solid 5px rgb(237,87,138);
+}
+
+.container-fluid.wrap-homework-items {
+    background-color: rgb(255,255,255);
+}
+
+.homework-title i.fa {
+    font-size: 48px;
+    cursor: pointer;
+    color: rgb(255,255,255);
+}
+
+.homework-item-correct-count {
+    min-width: 20px;
+    color: rgb(34,139,34);
+}
+
+.homework-item-question-count {
+    min-width: 20px;
+    color: rgb(243,151,0);
+}
+
+.homework-item-incorrect-count {
+    min-width: 20px;
+    color: rgb(255,0,0);
+}
+
+.collapse.profile-homework-item .card-block {
+    border: solid 2px rgb(188, 188, 188);
+}
+
+    .collapse.profile-homework-item .card-block .table.table-sm {
+        margin-bottom: 0px;
+        font-size: 14px;
+    }
+
+.homework-exp-atta-title {
+    font-weight: bold;
+    border: none;
+    background-color: orange;
+    border-radius: 10px;
+    padding-left: 20px;
+}
+
+.homework-contents-table-cell {
+    padding: 5px 10px;
+}
+
+    .homework-contents-table-cell .hw-contents-item-row .title-cell {
+        padding: 5px 10px;
+        border: none;
+    }
+
+        .homework-contents-table-cell .hw-contents-item-row .title-cell.sequence {
+            width: 50px;
+        }
+
+        .homework-contents-table-cell .hw-contents-item-row .title-cell.content {
+            font-size: 15px;
+        }
+
+        .homework-contents-table-cell .hw-contents-item-row .title-cell.button {
+            width: 80px;
+        }
+
+#modal_Profile_HW_Attachs .modal-body {
+    background-color: #d3d3d3;
+}
+
+#modal_Profile_HW_Attachs .modal-dialog {
+    font-family: 微软雅黑;
+    font-size: 14px;
+    width: 70%;
+    height: 70%;
+    max-width: 70%;
+    max-height: 70%;
+}
+
+#modal_Profile_HW_Attachs .modal-body {
+    height: calc(100% - 100px);
+}
+
+#carousel_Profile_HW_Attachs .carousel-control-prev, #carousel_Profile_HW_Attachs .carousel-control-next {
+    width: 50px;
+}
+
+.wrap-exam-items .wrap-exam-items-title-table {
+    margin-bottom: 0px;
+}
+
+    .wrap-exam-items .wrap-exam-items-title-table .icon-cell {
+        width: 50px;
+        padding-left: 20px;
+        line-height: 20px;
+    }
+
+    .wrap-exam-items .wrap-exam-items-title-table .title-cell {
+        font-weight: bold;
+        color: rgb(47, 168, 225);
+    }
+
+    .wrap-exam-items .wrap-exam-items-title-table .complete-cell {
+        min-width: 100px;
+    }
+
+    .wrap-exam-items .wrap-exam-items-title-table .correcct-cell {
+        min-width: 20px;
+        color: rgb(34,139,34);
+        display: none;
+    }
+
+    .wrap-exam-items .wrap-exam-items-title-table .incorrect-cell {
+        min-width: 20px;
+        color: rgb(255,0,0);
+        display: none;
+    }
+
+.alert-warning-mask {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+}
+
+#alert_Profile_Exam_MoreTimeLeft {
+    z-index: 10000;
+}
+
+    #alert_Profile_Exam_MoreTimeLeft button {
+        margin-left: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #alert_Profile_Exam_MoreTimeLeft strong {
+        padding: 0px 10px;
+    }
+
+
+
+
+
+
+
 
 
 
@@ -770,10 +936,6 @@ footer {
     cursor: pointer;
 }
 
-.profile-message-date-text {
-    min-width: 100px;
-}
-
 .profile-message-answer-text {
     padding-left: 20px;
 }
@@ -782,22 +944,14 @@ footer {
     cursor: pointer;
 }
 
-.course-list-overview {
-    display: none;
+
+
+
+
+.color-white {
+    color: rgb(255,255,255);
 }
 
-.lesson-title-course-overview {
-    font-size: 14px;
-    padding-right: 20px;
-    font-weight: bold;
-    cursor: pointer;
+.bg-white {
+    background-color: rgb(255,255,255);
 }
-
-    .lesson-title-course-overview.finished {
-        color: rgb(114,174,75);
-    }
-
-    .lesson-title-course-overview.disabled {
-        color: rgb(185, 185, 185);
-        cursor: default;
-    }

@@ -178,6 +178,22 @@ function testTextWidthFromEl(source) {
     return testTextWidth(source.text(), source.css('font-size'), source.css('font-weight'), source.css('font-family'), source.css('letter-spacing'));
 };
 
+function testTextHeight(text, fontSize, fontWeight, fontFamily, letterSpaceing){
+    var testDiv = $("#div_test_text_width");
+    if (!testDiv || testDiv.length == 0) {
+        $('body').append($('<div id="div_test_text_width" style="position:absolute;left:-10000px; top:-10000px;width:auto;"></div>'));
+        testDiv = $("#div_test_text_width");
+    }
+
+    testDiv.css('font-size', fontSize);
+    testDiv.css('font-weight', fontWeight == '' ? 'normal' : fontWeight);
+    testDiv.css('font-family', fontFamily == '' ? '微软雅黑' : fontFamily);
+    testDiv.css('letter-spacing', letterSpaceing == '' ? 'normal' : letterSpaceing);
+    testDiv.text(text);
+
+    return testDiv.height();
+}
+
 function randomInt(minVal, maxVal) {
     var rand = parseInt(Math.random() * (maxVal - minVal + 1) + minVal);
     return rand;
