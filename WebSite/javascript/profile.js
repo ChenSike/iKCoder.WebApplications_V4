@@ -465,7 +465,7 @@ function formatOverviewData(response) {
         course: {
             items: [
                 { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
-                { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' }
+                { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别模式识别模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' }
             ],
             total: 40,
             completed: 1
@@ -562,8 +562,34 @@ function buildOverviewCourse(datas, containerHeight) {
     var width = Math.floor(scale * orgWidth);
     var imgHeight = Math.floor(scale * orgImgHeight);
     var itemCount = 2;
-    var titleSize = (height - imgHeight) / 2 - 15;
-    var symbolSize = (height - imgHeight) / 2 - 20;
+    var titleSize;
+    for (var j = 7; j < 100; j++) {
+        if (testTextWidth("当前课程", j, '', '', '') >= (width - 30)) {
+            titleSize = Math.min(titleSize, j);
+            break;
+        }
+    }
+
+    for (var j = 7; j < 100; j++) {
+        if (testTextHeight("当前课程", j, '', '', '') >= (height - imgHeight) / 3) {
+            titleSize = j;
+            break;
+        }
+    }
+
+    var minSymbolSize = 10, tmpSymbolSize;
+    for (var i = 0; i < itemCount; i++) {
+        for (var j = 7; j < 100; j++) {
+            var tsfw = testTextWidth(datas[i].course, j, '', '', '');
+            if (tsfw >= width - 20) {
+                tmpSymbolSize = j;
+                break;
+            }
+        }
+
+        minSymbolSize = Math.min(minSymbolSize, tmpSymbolSize);
+    }
+
     var tmpHTMLArr = [];
     var tmpStyle = '';
     tmpHTMLArr.push('<div class="container-fluid" id="Content_Overview_Course">');
@@ -595,7 +621,7 @@ function buildOverviewCourse(datas, containerHeight) {
         tmpHTMLArr.push('            </div>');
         tmpHTMLArr.push('            <div class="row no-margin">');
         tmpHTMLArr.push('                <div class="col-12 no-padding">');
-        tmpStyle = 'color:' + datas[i].color + ';font-size:' + symbolSize + 'px';
+        tmpStyle = 'color:' + datas[i].color + ';font-size:' + minSymbolSize + 'px';
         tmpHTMLArr.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
@@ -1709,94 +1735,94 @@ function rebuildSettingsTitles(tmpHeight) {
 /*Report panel*/
 function rebuildReportPanel() {
     //_registerRemoteServer();
-    _ajaxObj = $.ajax({
-        type: 'POST',
-        async: true,
-        url: _getRequestURL(_gURLMapping.bus.gethtmlreport),
-        data: '<root></root>',
-        success: function (responseData, status) {
-            if ($(responseData).find('err').length > 0) {
-                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetReport_Error');
-                return;
-            } else {
-                var tmpNodes = $(responseData).find('msg');
-                var data = formatReportData(responseData);
-                rebuildReportTitles();
-                rebuildReportContents(data);
-                hideLoadingMask()
-            }
+    //_ajaxObj = $.ajax({
+    //    type: 'POST',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.bus.gethtmlreport),
+    //    data: '<root></root>',
+    //    success: function (responseData, status) {
+    //        if ($(responseData).find('err').length > 0) {
+    //            _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetReport_Error');
+    //            return;
+    //        } else {
+    //            var tmpNodes = $(responseData).find('msg');
+    //            var data = formatReportData(responseData);
+    //            rebuildReportTitles();
+    //            rebuildReportContents(data);
+    //            hideLoadingMask()
+    //        }
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //        _showGlobalMessage('无法获取报告，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
+    //    }
+    //});
+    var data = {
+        user: {
+            header: 'image/tmpheader.jpg',
+            name: 'Alice',
+            title: 'Level 1',
+            exp: 2.5,
+            over: 25,
+            course: 1,
+            date: '2017-10-20',
+            qr: 'image/qr_wechat.png'
         },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
+        achieve: [
+            { id: 1, title: '初步接触编程', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' },
+            { id: 2, title: '分享小达人', content: '分享了18个已完成作品， 这些作品已被565人次浏览；' },
+            { id: 3, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' }
+        ],
+        ability: {
+            type: [
+                { name: '科学', value: 700 },
+                { name: '技术', value: 400 },
+                { name: '工程', value: 550 },
+                { name: '数学', value: 700 },
+                { name: '语言', value: 450 }
+            ],
+            course: 1,
+            time: 21,
+            items: [
+                '模式设别'
+            ]
         },
-        error: function () {
-            _showGlobalMessage('无法获取报告，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
-        }
-    });
-    //var data = {
-    //    user: {
-    //        header: _getRequestURL(_gURLMapping.account.getheader, {}),
-    //        name: 'Terry',
-    //        title: '高级工程师',
-    //        exp: 55,
-    //        over: 88,
-    //        course: 18,
-    //        date: '2017-5-1',
-    //        qr: 'image/qr_wechat.png'
-    //    },
-    //    achieve: [
-    //        { id: 1, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' },
-    //        { id: 2, title: '分享小达人', content: '分享了18个已完成作品， 这些作品已被565人次浏览；' },
-    //        { id: 3, title: '计算机小专家', content: '顺利完成了计算机原理的所有基础课程，对现代计算机的系统组成，运行方式和编程原理有了系统性的认知；' }
-    //    ],
-    //    ability: {
-    //        type: [
-    //            { name: '科学', value: 700 },
-    //            { name: '技术', value: 400 },
-    //            { name: '工程', value: 550 },
-    //            { name: '数学', value: 700 },
-    //            { name: '语言', value: 450 }
-    //        ],
-    //        course: 25,
-    //        time: 125,
-    //        items: [
-    //            '计算机原理',
-    //            '空间概念和有序移动',
-    //            '基础数据结构',
-    //            '键盘及鼠标控制',
-    //            '数学输入与输出',
-    //            '条件循环',
-    //            '条件判断语句',
-    //            '音乐播放原理',
-    //            '基本绘图指令'
-    //        ]
-    //    },
-    //    time: {
-    //        over: 95,
-    //        times: [
-    //            { date: '20070-01-01', time: 2 },
-    //            { date: '20070-01-02', time: 6 },
-    //            { date: '20070-01-03', time: 3 }
-    //        ],
-    //        course: [
-    //            { id: '1', rate: 85, name: '初级课程' },
-    //            { id: '２', rate: 45, name: '中级课程' },
-    //            { id: '３', rate: 15, name: '高级课程' }
-    //        ]
-    //    },
-    //    potential: [
-    //        { name: '科学', value: 100 },
-    //        { name: '数学', value: 80 },
-    //        { name: '技术', value: 55 },
-    //        { name: '工程', value: 20 },
-    //        { name: '语言', value: 10 }
-    //    ]
-    //}
+        time: {
+            over: 0,
+            total: 21,
+            times: [
+                { date: "2017-10-1", time: 1 },
+                { date: "2017-10-2", time: 2 },
+                { date: "2017-10-3", time: 1 },
+                { date: "2017-10-4", time: 3 },
+                { date: "2017-10-5", time: 2 },
+                { date: "2017-10-6", time: 2 },
+                { date: "2017-10-7", time: 1 },
+                { date: "2017-10-8", time: 2 },
+                { date: "2017-10-9", time: 1 }
+            ],
+            course: [
+                { id: '1', rate: 2.5, name: '初级课程' },
+                { id: '２', rate: 0, name: '中级课程' },
+                { id: '３', rate: 0, name: '高级课程' },
+                { id: '4', rate: 0, name: '拓展课程' }
+            ]
+        },
+        potential: [
+            { name: '科学', value: 100 },
+            { name: '数学', value: 80 },
+            { name: '技术', value: 55 },
+            { name: '工程', value: 20 },
+            { name: '语言', value: 10 }
+        ]
+    }
 
-    //rebuildReportTitles();
-    //rebuildReportContents(data);
-    //hideLoadingMask();
+    rebuildReportTitles();
+    rebuildReportContents(data);
+    hideLoadingMask();
 };
 
 function formatReportData(response) {
@@ -1887,22 +1913,14 @@ function rebuildReportTitles() {
 };
 
 function rebuildReportContents(data) {
-    var minWidth = $('#sideBar_Page_Left').width() + 800;
-    if ($('body').width < minWidth) {
-        $('body').width = minWidth;
-    }
-
-    $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width() - 18);
+    $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width());
     buildReportOverviewPanel(data.user);
     buildReportAchievePanel(data.achieve);
     buildReportAbilityPanel(data.ability);
     buildReportTimePanel(data.time);
-    //buildReportPotentialPanel(data.potential);
-    //buildReportWorksPanel(data.works);
     buildReportAttentionPanel(data.user);
     drawAbilityGraph(data.ability.type);
     drawTimeGraph(data.time);
-    //drawPotentialGraph(data.potential);
     adjustAttentionImg();
     _loadIMG(data.user.header, function () {
         $('.report-overview-header').attr('src', data.user.header);
@@ -1911,143 +1929,139 @@ function rebuildReportContents(data) {
 };
 
 function buildReportOverviewPanel(data) {
-    var tmpCount = Math.round(data.over / 5);
-    var width_1 = (33 - 0.4) * tmpCount;
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
-    tmpHTMLArr.push('    <div class="row" style="padding-top:15px;">');
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section bg-white">');
+    tmpHTMLArr.push('    <div class="row">');
     tmpHTMLArr.push('        <div class="col-12 text-right">');
     tmpHTMLArr.push('            <p class="text-size-11 text-color-smart">报告生成日期: ' + data.date + '</p>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('    <div class="row profile-report-section-row">');
     tmpHTMLArr.push('        <div class="col-12 text-left">');
     tmpHTMLArr.push('            <h2 class="report-section-title">概览</h2>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
-    tmpHTMLArr.push('        <div class="col-10 offset-1">');
-    tmpHTMLArr.push('            <div class="container-fluid">');
-    tmpHTMLArr.push('                <div class="row">');
-    tmpHTMLArr.push('                    <div class="col-12">');
-    tmpHTMLArr.push('                        <div class="d-flex align-items-center" id="report_overview_userinfor" style="position: relative; left: 269px; width: 420px;">');
-    tmpHTMLArr.push('                            <div class="text-size-13 text-right">');
-    tmpHTMLArr.push('                                超越<span class="text-size-21 text-color-data">' + data.over + '%</span>的全国学员');
-    tmpHTMLArr.push('                            </div>');
-    tmpHTMLArr.push('                            <div style="padding:10px 20px;">');
-    tmpHTMLArr.push('                                <img class="report-overview-header" src="image/circles.svg"  />');
-    tmpHTMLArr.push('                            </div>');
-    tmpHTMLArr.push('                            <div>');
-    tmpHTMLArr.push('                                <div class="container-fluid no-padding">');
-    tmpHTMLArr.push('                                    <div class="row no-margin">');
-    tmpHTMLArr.push('                                        <div class="col-12 no-padding">');
-    tmpHTMLArr.push('                                            <p class="text-size-10">' + data.name + ',' + data.title + '</p>');
-    tmpHTMLArr.push('                                            <p class="text-size-10" style="min-width: 120px;">当前课程经验值: <span class="text-size-12 text-color-data">' + data.exp + '%</span></p>');
-    tmpHTMLArr.push('                                            <hr style="height:2px; color:rgb(239,239,239); margin: 5px 0px;" />');
-    tmpHTMLArr.push('                                        </div>');
-    tmpHTMLArr.push('                                    </div>');
-    tmpHTMLArr.push('                                    <div class="row no-margin">');
-    //tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
-    //tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.work + '</p>');
-    //tmpHTMLArr.push('                                        </div>');
-    //tmpHTMLArr.push('                                        <div class="col-4 no-padding">');
-    //tmpHTMLArr.push('                                            <p class="text-size-12 text-color-data text-center">' + data.friend + '</p>');
-    //tmpHTMLArr.push('                                        </div>');
-    //tmpHTMLArr.push('                                    </div>');
-    //tmpHTMLArr.push('                                    <div class="row no-margin">');
-    //tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
-    //tmpHTMLArr.push('                                            <p class="text-size-10">作品</p>');
-    //tmpHTMLArr.push('                                        </div>');
-    tmpHTMLArr.push('                                        <div class="col-10 no-padding text-left">');
-    tmpHTMLArr.push('                                            <p class="text-size-10">已经完成的课程:</p>');
-    tmpHTMLArr.push('                                        </div>');
-    tmpHTMLArr.push('                                        <div class="col-2 no-padding">');
-    tmpHTMLArr.push('                                            <p class="text-size-10 text-color-data text-center">' + data.course + '</p>');
-    tmpHTMLArr.push('                                        </div>');
-    //tmpHTMLArr.push('                                        <div class="col-4 no-padding text-center">');
-    //tmpHTMLArr.push('                                            <p class="text-size-10">小伙伴</p>');
-    //tmpHTMLArr.push('                                        </div>');
-    tmpHTMLArr.push('                                    </div>');
-    tmpHTMLArr.push('                                </div>');
-    tmpHTMLArr.push('                            </div>');
-    tmpHTMLArr.push('                        </div>');
-    tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                </div>');
-    tmpHTMLArr.push('                <div class="row justify-content-center">');
-    tmpHTMLArr.push('                    <div class="col" style="width:677px; max-width:677px;">');
-    tmpHTMLArr.push('                        <div class="d-flex align-items-baseline">');
-    tmpHTMLArr.push('                            <div class="report-overview-rank-part-1" style="width:' + width_1 + 'px;max-width:' + width_1 + 'px;min-width:' + width_1 + 'px;">');
-    tmpHTMLArr.push('                                <div style="background-image:url(image/smlperson.png); background-size:33px 77px; height:77px; width:100%;"></div>');
-    tmpHTMLArr.push('                            </div>');
-    tmpHTMLArr.push('                            <div class="report-overview-rank-part-2">');
-    tmpHTMLArr.push('                                <div style="background-image:url(image/smlperson.png); height:115px; width:50px;"></div>');
-    tmpHTMLArr.push('                            </div>');
-    var width_2 = (33 - 0.4) * (19 - tmpCount);
-    tmpHTMLArr.push('                            <div class="report-overview-rank-part-3" style="width: ' + width_2 + 'px; max-width: ' + width_2 + 'px; min-width: ' + width_2 + 'px;">');
-    tmpHTMLArr.push('                                <div style="background-image:url(image/smlperson.png); background-size:33px 77px; height:77px; width:100%;"></div>');
-    tmpHTMLArr.push('                            </div>');
-    tmpHTMLArr.push('                        </div>');
-    tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                </div>');
-    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('        <div class="col report-overview-graph-cell">');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
-    var left = $('.report-overview-rank-part-1').parent().parent().position().left + width_1 + 25;
-    var tmpPos = $('.report-overview-header').position().left + $('.report-overview-header').width() / 2 + 20;
-    left = left - tmpPos;
-    $('#report_overview_userinfor').css('left', left + 'px');
+
+
+    var wrapWidth = $('.report-overview-graph-cell').width() - 250;
+    tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container" style="width:' + wrapWidth + 'px; max-width:' + wrapWidth + 'px;">');
+    tmpHTMLArr.push('   <div class="row" style="height:105px;">');
+    buildReportOverviewHeader(data, tmpHTMLArr);
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="row justify-content-center">');
+    var retObj = buildReportOverviewGraph(data, tmpHTMLArr);
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+    $('.report-overview-graph-cell').append($(tmpHTMLArr.join('')));
+    var left = $('.report-overview-rank-part-1').parent().parent().parent().position().left + retObj.pw_1 + retObj.sw / 2;
+    var tmpPos = $('.report-overview-header').position().left + $('.report-overview-header').width() / 2;
+    $('#report_overview_userinfor').css('left', (left - tmpPos - 7.5) + 'px');
 };
+
+function buildReportOverviewHeader(data, tmpHTMLArr) {
+    tmpHTMLArr.push('<div class="d-flex align-items-center" id="report_overview_userinfor">');
+    tmpHTMLArr.push('   <div class="text-size-13 text-right">');
+    tmpHTMLArr.push('       超越<span class="text-size-21 text-color-data">' + data.over + '%</span>的全国学员');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div style="padding:10px;">');
+    tmpHTMLArr.push('       <img class="report-overview-header" src="image/circles.svg"  />');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div>');
+    tmpHTMLArr.push('       <div class="container-fluid no-padding">');
+    tmpHTMLArr.push('           <div class="row no-margin">');
+    tmpHTMLArr.push('               <div class="col-12 no-padding">');
+    tmpHTMLArr.push('                   <p class="text-size-10">' + data.name + ',' + data.title + '</p>');
+    tmpHTMLArr.push('                   <p class="text-size-10" style="min-width: 120px;">');
+    tmpHTMLArr.push('                       当前课程经验值: ');
+    tmpHTMLArr.push('                       <span class="text-size-12 text-color-data">' + data.exp + '%</span>');
+    tmpHTMLArr.push('                   </p>');
+    tmpHTMLArr.push('                   <hr class="report-overview-userinfo-hr"/>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row no-margin">');
+    tmpHTMLArr.push('               <div class="col-10 no-padding text-left">');
+    tmpHTMLArr.push('                   <p class="text-size-10">已经完成的课程:</p>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('               <div class="col-2 no-padding">');
+    tmpHTMLArr.push('                   <p class="text-size-10 text-color-data text-center">' + data.course + '</p>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+};
+
+function buildReportOverviewGraph(data, tmpHTMLArr) {
+    var wrapWidth = $('.report-overview-graph-cell').width() - 300;
+    var orgSize = { w: 33, h: 76, sw: 50, sh: 115, sp: 0.2 };
+    //nw = 33 / 50 * nsw;
+    var newSize = { w: 33, h: 76, sw: 50, sh: 115, sp: 0.3 };
+    newSize.sw = (wrapWidth) / (19 * (orgSize.w - orgSize.sp) / orgSize.sw + 1);
+    newSize.sh = orgSize.sh / orgSize.sw * newSize.sw;
+    newSize.w = orgSize.w / orgSize.sw * newSize.sw;
+    newSize.h = orgSize.h / orgSize.w * newSize.w;
+    newSize.sp = newSize.w / orgSize.w * newSize.sp;
+    var tmpCount = Math.round(data.over / 5);
+    var tmpWidth = (newSize.w - newSize.sp) * tmpCount;
+    var retObj = { pw_1: tmpWidth, sw: newSize.sw };
+    tmpHTMLArr.push('<div class="col">');
+    tmpHTMLArr.push('   <div class="d-flex align-items-baseline">');
+    var tmpWidth = 'width:' + tmpWidth + 'px;max-width:' + tmpWidth + 'px;min-width:' + tmpWidth + 'px';
+    var bgSize = 'background-size:' + newSize.w + 'px ' + newSize.h + 'px; height:' + newSize.h + 'px;';
+    tmpHTMLArr.push('       <div class="report-overview-rank-part-1" style="' + tmpWidth + '">');
+    tmpHTMLArr.push('           <div class="report-overview-rank-part-div" style="' + bgSize + '"></div>');
+    tmpHTMLArr.push('       </div>');
+    tmpWidth = 'width:' + newSize.sw + 'px;max-width:' + newSize.sw + 'px;min-width:' + newSize.sw + 'px; height: ' + newSize.sh + 'px;';
+    bgSize = 'background-size:' + newSize.sw + 'px ' + newSize.sh + 'px; height:' + newSize.sh + 'px';
+    tmpHTMLArr.push('       <div class="report-overview-rank-part-2" style="' + tmpWidth + '">');
+    tmpHTMLArr.push('           <div class="report-overview-rank-part-div" style="' + bgSize + '"></div>');
+    tmpHTMLArr.push('       </div>');
+    tmpWidth = (newSize.w - newSize.sp) * (19 - tmpCount);
+    tmpWidth = 'width:' + tmpWidth + 'px;max-width:' + tmpWidth + 'px;min-width:' + tmpWidth + 'px';
+    tmpHTMLArr.push('       <div class="report-overview-rank-part-3" style="' + tmpWidth + '">');
+    bgSize = 'background-size:' + newSize.w + 'px ' + newSize.h + 'px; height:' + newSize.h + 'px';
+    tmpHTMLArr.push('           <div class="report-overview-rank-part-div" style="' + bgSize + '"></div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+    return retObj;
+}
 
 function buildReportAchievePanel(data) {
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
-    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section bg-white">');
+    tmpHTMLArr.push('    <div class="row profile-report-section-row">');
     tmpHTMLArr.push('        <div class="col-12 text-left">');
     tmpHTMLArr.push('            <h2 class="report-section-title">成就</h2>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    //for (var i = 0; i < data.length; i += 2) {
-    //    var tmpId = (data[i].id < 10 ? '0' + data[i].id : data[i].id);
-    //    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
-    //    tmpHTMLArr.push('        <div class="col-5 offset-1">');
-    //    tmpHTMLArr.push('            <div class="container-fluid">');
-    //    tmpHTMLArr.push('                <div class="row">');
-    //    tmpHTMLArr.push('                    <div class="col-3 text-size-75 text-color-index">' + tmpId + '</div>');
-    //    tmpHTMLArr.push('                    <div class="col-8">');
-    //    tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">' + data[i].title + '</p>');
-    //    tmpHTMLArr.push('                        <p class="text-size-10">' + data[i].content + '</p>');
-    //    tmpHTMLArr.push('                    </div>');
-    //    tmpHTMLArr.push('                </div>');
-    //    tmpHTMLArr.push('            </div>');
-    //    tmpHTMLArr.push('        </div>');
-    //    if (i + 1 < data.length) {
-    //        tmpId = (data[i + 1].id < 10 ? '0' + data[i + 1].id : data[i + 1].id);
-    //        tmpHTMLArr.push('        <div class="col-5">');
-    //        tmpHTMLArr.push('            <div class="container-fluid">');
-    //        tmpHTMLArr.push('                <div class="row">');
-    //        tmpHTMLArr.push('                    <div class="col-3 text-size-75 text-color-index">' + tmpId + '</div>');
-    //        tmpHTMLArr.push('                    <div class="col-8">');
-    //        tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">' + data[i + 1].title + '</p>');
-    //        tmpHTMLArr.push('                        <p class="text-size-10">' + data[i + 1].content + '</p>');
-    //        tmpHTMLArr.push('                    </div>');
-    //        tmpHTMLArr.push('                </div>');
-    //        tmpHTMLArr.push('            </div>');
-    //        tmpHTMLArr.push('        </div>');
-    //        tmpHTMLArr.push('    </div>');
-    //    }
-    //}
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
+    tmpHTMLArr.push('    <div class="row">');
+    var tmpItemWidth = ($('#wrap_Category_Content').width() - 100) / 3 - 30;
+    var tmpIdxWidth = tmpItemWidth / 12 * 4;
+    var idxFontStyle = '';
+    for (var i = 150; i > 50; i--) {
+        if (testTextWidth("99", i + 'px', 'bolder', '微软雅黑', '') < tmpIdxWidth) {
+            idxFontStyle = 'font-size:' + i + 'px; line-height:' + i + 'px; font-weight:bolder;';
+            break;
+        }
+    }
+
     for (var i = 0; i < data.length; i++) {
         var tmpId = (data[i].id < 10 ? '0' + data[i].id : data[i].id);
-        tmpHTMLArr.push('        <div class="col-4 ">');
+        tmpHTMLArr.push('        <div class="col-4">');
         tmpHTMLArr.push('            <div class="container-fluid no-padding">');
-        tmpHTMLArr.push('                <div class="row">');
-        tmpHTMLArr.push('                    <div class="col-3 no-padding text-size-75 text-color-index">' + tmpId + '</div>');
-        tmpHTMLArr.push('                    <div class="col-7 no-padding">');
-        tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart" style="padding-left: 10px;">' + data[i].title + '</p>');
-        tmpHTMLArr.push('                        <p class="text-size-10" style="padding-left: 10px;">' + data[i].content + '</p>');
+        tmpHTMLArr.push('                <div class="row no-margin">');
+        tmpHTMLArr.push('                    <div class="col-4 no-padding text-color-index" style="' + idxFontStyle + '">' + tmpId + '</div>');
+        tmpHTMLArr.push('                    <div class="col-8">');
+        tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">' + data[i].title + '</p>');
+        tmpHTMLArr.push('                        <p class="text-size-10">' + data[i].content + '</p>');
         tmpHTMLArr.push('                    </div>');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
@@ -2060,26 +2074,26 @@ function buildReportAchievePanel(data) {
 
 function buildReportAbilityPanel(data) {
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
-    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section bg-white">');
+    tmpHTMLArr.push('    <div class="row profile-report-section-row">');
     tmpHTMLArr.push('        <div class="col-12 text-left">');
     tmpHTMLArr.push('            <h2 class="report-section-title">能力</h2>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
+    tmpHTMLArr.push('    <div class="row">');
     tmpHTMLArr.push('        <div class="col-7">');
     tmpHTMLArr.push('            <div class="container-fluid">');
-    tmpHTMLArr.push('                <div class="row" style="padding-bottom:50px;">');
+    tmpHTMLArr.push('                <div class="row">');
     tmpHTMLArr.push('                    <div class="col-12">');
     tmpHTMLArr.push('                        <p class="text-size-10">');
     tmpHTMLArr.push('                            基于艾酷为中国孩子开发的STEML课程体系，目前您的孩子已经进行了');
-    tmpHTMLArr.push('<span>' + data.type.length + '</span>');
-    tmpHTMLArr.push('大类，');
-    tmpHTMLArr.push('<span>' + data.course + '</span>');
-    tmpHTMLArr.push('个课程');
-    tmpHTMLArr.push('，');
-    tmpHTMLArr.push('<span>' + data.time + '</span>');
-    tmpHTMLArr.push('个课时的学习；在');
+    tmpHTMLArr.push('                               <span>' + data.type.length + '</span>');
+    tmpHTMLArr.push('                                   大类，');
+    tmpHTMLArr.push('                               <span>' + data.course + '</span>');
+    tmpHTMLArr.push('                               个课程');
+    tmpHTMLArr.push('                               ，');
+    tmpHTMLArr.push('                               <span>' + data.time + '</span>');
+    tmpHTMLArr.push('                               个课时的学习；在');
     var tmpStr = [];
     for (var i = 0; i < data.type.length - 1; i++) {
         tmpStr.push(data.type[i].name);
@@ -2097,7 +2111,7 @@ function buildReportAbilityPanel(data) {
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="row">');
     tmpHTMLArr.push('                    <div class="col-12">');
-    tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart">已完成课程列表</p>');
+    tmpHTMLArr.push('                        <p class="text-size-13 text-color-smart" style="padding-top:50px;">已完成课程列表</p>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="row">');
@@ -2122,19 +2136,18 @@ function buildReportAbilityPanel(data) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
-
 };
 
 function buildReportTimePanel(data) {
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
-    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section bg-white">');
+    tmpHTMLArr.push('    <div class="row profile-report-section-row">');
     tmpHTMLArr.push('        <div class="col-12 text-left">');
     tmpHTMLArr.push('            <h2 class="report-section-title">时间</h2>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
-    tmpHTMLArr.push('        <div class="col-12" style="padding-left:30px;">');
+    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('        <div class="col offset-1">');
     tmpHTMLArr.push('            <p class="text-size-10">');
     tmpHTMLArr.push('               到今天为止，您的孩子已经累计学习编程 ');
     tmpHTMLArr.push('               <span class="text-size-16 text-color-data">' + data.total + '</span>');
@@ -2142,13 +2155,13 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('            </p>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
+    tmpHTMLArr.push('    <div class="row" style="padding:30px 0px;">');
     tmpHTMLArr.push('        <div class="col-12 text-center text-size-13 text-color-smart">');
     tmpHTMLArr.push('            本月学习时间及趋势');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
-    tmpHTMLArr.push('        <div class="col-12" style="height:210px; padding-left:30px;">');
+    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('        <div class="col report-time-canvas-wrap">');
     tmpHTMLArr.push('           <div class="container-fluid no-padding">');
     tmpHTMLArr.push('               <div class="row align-items-center">');
     tmpHTMLArr.push('                   <div class="col-1 no-padding">');
@@ -2157,7 +2170,7 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('                   <div class="col-10 no-padding" style="height:210px;">');
-    tmpHTMLArr.push('                       <div id="container_Report_Time_Graph" style="height:100%; overflow: hidden;">');
+    tmpHTMLArr.push('                       <div id="container_Report_Time_Graph">');
     tmpHTMLArr.push('                           <canvas id="canvas_Report_Time_Time"></canvas>');
     tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                   </div>');
@@ -2170,13 +2183,13 @@ function buildReportTimePanel(data) {
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>')
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:30px;">');
+    tmpHTMLArr.push('    <div class="row" style="padding:30px 0px;">');
     tmpHTMLArr.push('        <div class="col-12 text-center text-size-13 text-color-smart">');
     tmpHTMLArr.push('            各级课程完成率');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
-    tmpHTMLArr.push('        <div class="col-12" style="height:210px; padding-left:30px;">');
+    tmpHTMLArr.push('    <div class="row">');
+    tmpHTMLArr.push('        <div class="col report-time-canvas-wrap">');
     tmpHTMLArr.push('           <canvas id="canvas_Report_Time_Course"></canvas>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
@@ -2184,132 +2197,33 @@ function buildReportTimePanel(data) {
     $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
 };
 
-function buildReportPotentialPanel(data) {
-    var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
-    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
-    tmpHTMLArr.push('        <div class="col-12 text-left">');
-    tmpHTMLArr.push('            <h2 class="report-section-title">潜力</h2>');
-    tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:60px;">');
-    tmpHTMLArr.push('        <div class="col-4">');
-    tmpHTMLArr.push('            <div class="container-fluid">');
-    tmpHTMLArr.push('                <div class="row" style="padding-bottom:100px;">');
-    tmpHTMLArr.push('                    <div class="col-12 text-center">');
-    tmpHTMLArr.push('                        <p class="text-size-10">');
-    tmpHTMLArr.push('                            通过目前已经完成的课程，您的孩子在');
-    tmpHTMLArr.push('                        </p>');
-    tmpHTMLArr.push('                        <p class="text-size-16 text-color-data">');
-    tmpHTMLArr.push(data[0].name);
-    tmpHTMLArr.push('                            <span class="text-size-10 text-color-text">以及</span>');
-    tmpHTMLArr.push(data[1].name);
-    tmpHTMLArr.push('                        </p>');
-    tmpHTMLArr.push('                        <p class="text-size-10">');
-    tmpHTMLArr.push('                            这两个领域体现出了过人的潜力。');
-    tmpHTMLArr.push('                        </p>');
-    tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                </div>');
-    tmpHTMLArr.push('                <div class="row">');
-    tmpHTMLArr.push('                    <div class="col-12">');
-    tmpHTMLArr.push('                        <p class="text-size-10">');
-    tmpHTMLArr.push('                            【1】分析结果基于艾酷PTAS潜力感知模型计算得出，模型计算准确率与孩子的课程参与数据量成正比；');
-    tmpHTMLArr.push('                        </p>');
-    tmpHTMLArr.push('                        <p class="text-size-10">');
-    tmpHTMLArr.push('                            【2】潜力分析结果可能随孩子年龄和知识结构变化而改变，因此谨供参考。');
-    tmpHTMLArr.push('                        </p>');
-    tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                </div>');
-    tmpHTMLArr.push('            </div>');
-    tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-8" style="padding-right:30px;">');
-    tmpHTMLArr.push('            <canvas id="canvas_Report_Potential"></canvas>');
-    tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('</div>');
-    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
-};
-
-function buildReportWorksPanel(data) {
-    var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255);">');
-    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
-    tmpHTMLArr.push('        <div class="col-12 text-left">');
-    tmpHTMLArr.push('            <h2 class="report-section-title">作品</h2>');
-    tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:40px;">');
-    tmpHTMLArr.push('        <div class="col-12 text-left" style="padding-left:30px;">');
-    tmpHTMLArr.push('            <p class="text-size-10"><span class="text-size-13 text-color-smart">只要有梦想，谁都可以创造非凡。</span>您的孩子在学习期间创造出了许多有趣的作品。</p>');
-    tmpHTMLArr.push('            <p class="text-size-10">这些作品背后体现了您孩子独一无二的创造力、理解力，以及在艾酷教育所学到的编程知识。和您一样，我们为孩子的成就而感到无比骄傲。</p>');
-    tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('    <div class="row" style="padding-bottom:40px; padding-left:30px;">');
-    for (var i = 0; i < data.length; i++) {
-        tmpHTMLArr.push('        <div class="col-4 wrap-report-works-item">');
-        tmpHTMLArr.push('           <div class="container-fluid container-report-works-item">');
-        tmpHTMLArr.push('               <div class="row">');
-        tmpHTMLArr.push('                   <div class="col-12 no-padding" style="height:125px">');
-        tmpHTMLArr.push('                       <img src="' + data[i].img + '"/>');
-        tmpHTMLArr.push('                       <div class="report-works-item-hits">' + data[i].hits + '</div>');
-        tmpHTMLArr.push('                       <div class="d-flex align-items-center justify-content-center report-works-item-mask">');
-        //tmpHTMLArr.push('                       <div class="report-works-item-button"><i class="fa fa-play" aria-hidden="true" title="运行"></i></div>');
-        //tmpHTMLArr.push('                       <div class="report-works-item-button"><i class="fa fa-share-alt" aria-hidden="true" title="运行"></i></div>');
-        tmpHTMLArr.push('                           <i class="report-works-item-button fa fa-play" aria-hidden="true" title="运行"></i>');
-        tmpHTMLArr.push('                           <i class="report-works-item-button fa fa-share-alt" aria-hidden="true" title="分享"></i>');
-        tmpHTMLArr.push('                       </div>');
-        tmpHTMLArr.push('                   </div>');
-        tmpHTMLArr.push('               </div>');
-        tmpHTMLArr.push('               <div class="row" style="background-color:rgb(21,21,21);">');
-        tmpHTMLArr.push('                   <div class="col-12" style="height:25px">');
-        tmpHTMLArr.push('                       <p class="text-size-10 text-bold text-color-white">' + data[i].title + '</p>');
-        tmpHTMLArr.push('                   </div>');
-        tmpHTMLArr.push('               </div>');
-        tmpHTMLArr.push('           </div>');
-        tmpHTMLArr.push('        </div>');
-    }
-
-    tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('</div>');
-    $('#wrap_Category_Content').append($(tmpHTMLArr.join('')));
-    $('.container-report-works-item').mouseenter(function () {
-        $(this).find('.report-works-item-mask').show();
-        $(this).find('.report-works-item-mask').css('visibility', 'visible');
-    });
-
-    $('.container-report-works-item').mouseleave(function () {
-        $(this).find('.report-works-item-mask').hide();
-        $(this).find('.report-works-item-mask').css('visibility', 'hidden');
-    });
-};
-
 function buildReportAttentionPanel(data) {
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section" style="background-color:rgb(255,255,255); border:none;">');
-    tmpHTMLArr.push('    <div class="row" style="padding-top:40px; padding-bottom:40px;">');
+    tmpHTMLArr.push('<div class="container-fluid wrap-profile-report-section bg-white" style="border:none; padding-bottom:0px;">');
+    tmpHTMLArr.push('    <div class="row profile-report-section-row">');
     tmpHTMLArr.push('        <div class="col-12 text-left">');
     tmpHTMLArr.push('            <h2 class="report-section-title">关注</h2>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('    <div class="row">');
     tmpHTMLArr.push('        <div class="col-6 text-left" style="padding-left:30px;">');
-    tmpHTMLArr.push('            <p class="text-size-10" style="padding-bottom:20px;">');
+    tmpHTMLArr.push('            <p class="text-size-10">');
     tmpHTMLArr.push('               感谢您阅读');
     tmpHTMLArr.push('               的艾酷学习报告。我们为您孩子的进步和成就感到同样骄傲。</p>');
-    tmpHTMLArr.push('            <p class="text-size-10" style="padding-bottom:30px;">您可以通过点击下面的链接下载本报告全文。</p>');
+    tmpHTMLArr.push('            <p class="text-size-10" style="padding:20px 0px;">您可以通过点击下面的链接下载本报告全文。</p>');
     tmpHTMLArr.push('            <p class="text-center">');
     tmpHTMLArr.push('               <img src="image/pdf.png" class="report-attention-pdf-button" width="60" height="80" />');
     tmpHTMLArr.push('            </p>');
-    tmpHTMLArr.push('            <p class="text-size-10 text-center report-attention-pdf-button" style="padding-bottom:40px;">');
+    tmpHTMLArr.push('            <p class="text-size-10 text-center report-attention-pdf-button">');
     tmpHTMLArr.push(data.name + '的艾酷学习报告');
     tmpHTMLArr.push('            </p>');
-    tmpHTMLArr.push('            <p class="text-center text-size-10" style="padding-bottom:40px;">');
+    tmpHTMLArr.push('            <p class="text-center text-size-10" style="padding:30px 0px;">');
     tmpHTMLArr.push('                或者，您可以扫描添加艾酷微信号，让我们可以第一时间把孩子的信息推送到您的指尖。');
     tmpHTMLArr.push('            </p>');
     tmpHTMLArr.push('            <p class="text-center">');
     tmpHTMLArr.push('                <img src="' + data.qr + '" width="100" height="100" />');
     tmpHTMLArr.push('            </p>');
-    tmpHTMLArr.push('            <p class="text-center text-size-10 text-color-smart" style="padding-bottom:40px;">艾酷教育，为中国孩子学习编程而生</p>');
+    tmpHTMLArr.push('            <p class="text-center text-size-10 text-color-smart">艾酷教育，为中国孩子学习编程而生</p>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('        <div class="col-6" style="padding-left:30px;">');
     tmpHTMLArr.push('            <img src="image/iphone7.png" class="img-fluid  report-attention-bakcground" />');
@@ -2557,70 +2471,6 @@ function drawTimeCompleteRate(datas) {
     }
 };
 
-function drawPotentialGraph(datas) {
-    var shadowStyles = ['rgb(158,163,168)', 'rgb(178,182,186)', 'rgb(194,196,199)', 'rgb(209,211,213)', 'rgb(244,244,244)'];
-    var titleFontSize = 14;
-    var valueFontSize = 12;
-    var shadowHeight = 2;
-    var barCount = datas.length;
-    var canvas = document.getElementById('canvas_Report_Potential');
-    var parent = $($(canvas).parent());
-    var width = parent.width();
-    var height = parent.height();
-    var barHeight = Math.max(parseInt((height - shadowHeight * barCount) / barCount), 45);
-    height = barHeight * barCount;
-    var maxWidth = Math.max((405 / 45) * barHeight, width - shadowHeight - 20 - titleFontSize * 2);
-    canvas.width = width;
-    canvas.height = height;
-    var context = canvas.getContext('2d');
-    context.clearRect(0, 0, width, height);
-    var startX = 10 + titleFontSize * 2 + 10;
-    var barUnit = maxWidth / datas[0].value;
-    context.textBaseline = "middle";
-    var titleX, titleY, lineStartX, lineStartY, lineEndX, tmpBarWidth;
-    for (var i = 0; i < datas.length; i++) {
-        //draw title
-        titleX = 10;
-        titleY = (barHeight) * i + barHeight / 2 + shadowHeight;
-        context.fillStyle = "rgb(74,74,74)";
-        context.font = 'normal normal bolder ' + titleFontSize + "px '微软雅黑'";
-        context.fillText(datas[i].name, titleX, titleY);
-        context.restore();
-        //draw bar
-        tmpBarWidth = barUnit * datas[i].value;
-        lineStartX = startX + (maxWidth - tmpBarWidth) / 2;
-        lineStartY = (barHeight + shadowHeight) * i + barHeight / 2;
-        lineEndX = lineStartX + tmpBarWidth;
-        context.beginPath();
-        context.lineWidth = barHeight;
-        context.strokeStyle = 'rgb(91,155,213)';
-        context.shadowColor = "rgb(195,195,195)";
-        context.shadowBlur = 10;
-        context.shadowOffsetX = 3;
-        context.shadowOffsetY = 3;
-        context.moveTo(lineStartX, lineStartY);
-        context.lineTo(lineEndX, lineStartY);
-        context.closePath();
-        context.stroke();
-        //draw Value
-        titleX = startX + maxWidth / 2;
-        titleX -= (datas[i].value < 10 ? valueFontSize * 0.5 : valueFontSize * 1);
-        context.fillStyle = (i == 0 ? 'rgb(252,136,35)' : "rgb(255,255,255)");
-        context.font = 'normal normal bolder ' + valueFontSize + "px '微软雅黑'";
-        context.fillText(datas[i].value + '%', titleX, titleY);
-        context.restore();
-    }
-
-    //draw Y Line
-    context.beginPath();
-    context.lineWidth = 1;
-    context.strokeStyle = 'rgb(241,241,241)';
-    context.moveTo(startX, 0);
-    context.lineTo(startX, (barHeight + shadowHeight) * datas.length);
-    context.closePath();
-    context.stroke();
-};
-
 function adjustAttentionImg() {
     var currWidth = $('.report-attention-bakcground').parent().width();
     var position = $('.report-attention-bakcground').position();
@@ -2656,7 +2506,7 @@ function rebuildMessageTitles(contentHeight) {
         { type: '1', id: 'system', name: '系统消息', icon: 'desktop' },
         { type: '2', id: 'q_a', name: '问答消息', icon: 'question', }
     ];
-    var height = contentHeight / messageTypeMap.length;
+    var height = parseInt(contentHeight / messageTypeMap.length);
     var minWidth = $('#sideBar_Page_Left').width() + 550;
     if ($('body').width < minWidth) {
         $('body').width = minWidth;
@@ -2665,13 +2515,14 @@ function rebuildMessageTitles(contentHeight) {
     $('#wrap_Category_Content').width($('body').width() - $('#sideBar_Page_Left').width() - 18);
     for (var i = 0; i < messageTypeMap.length; i++) {
         var id = 'title_Message_' + messageTypeMap[i].id + '_Title';
-        var bgColor = (i == 0 ? 'rgb(237,87,138)' : 'rgb(130, 138, 142)');
+        var active = (i == 0 ? 'active' : '');
+        height = (i == messageTypeMap.length - 1 ? contentHeight - (messageTypeMap.length - 1) * height : height);
         var tmpHTMLArr = [];
-        tmpHTMLArr.push('<div class="container profile-message-title" id="' + id + '" style="background-color:' + bgColor + ';" data-target="' + messageTypeMap[i].type + '">');
+        tmpHTMLArr.push('<div class="container profile-message-title ' + active + '" id="' + id + '" data-target="' + messageTypeMap[i].type + '">');
         tmpHTMLArr.push('   <div class="row align-items-center" id="' + id + '_Row" style="height:' + height + 'px;">');
         tmpHTMLArr.push('       <div class="col-12 text-center">');
-        tmpHTMLArr.push('           <i class="fa fa-' + messageTypeMap[i].icon + '" aria-hidden="true" style="font-size:48px; cursor: pointer; color:rgb(255,255,255);"></i>');
-        tmpHTMLArr.push('           <p class="overview-title-item-text" style="color:rgb(255,255,255);">' + messageTypeMap[i].name + '</p>');
+        tmpHTMLArr.push('           <i class="fa fa-' + messageTypeMap[i].icon + '" aria-hidden="true"></i>');
+        tmpHTMLArr.push('           <p class="overview-title-item-text color-white">' + messageTypeMap[i].name + '</p>');
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('</div>');
@@ -2679,106 +2530,97 @@ function rebuildMessageTitles(contentHeight) {
     }
 
     $('.profile-message-title').on('click', function (eventObj) {
-        var titleItems = $('.profile-message-title');
-        for (var i = 0; i < titleItems.length; i++) {
-            $(titleItems[i]).css('background-color', 'rgb(130,138,142)');
-        }
-
-        $(eventObj.currentTarget).css('background-color', 'rgb(237,87,138)');
+        var titleItems = $('.profile-message-title').removeClass('active');
+        $(eventObj.currentTarget).addClass('active');
         displayMessageByType($(eventObj.currentTarget).attr('data-target'));
     });
 };
 
 function displayMessageByType(type) {
-    _registerRemoteServer();
-    _ajaxObj = $.ajax({
-        type: 'GET',
-        async: true,
-        url: _getRequestURL(type == '' ? _gURLMapping.bus.getallmsglist : type == '1' ? _gURLMapping.bus.getsysmsglist : _gURLMapping.bus.getqamsglist),
-        data: '<root></root>',
-        success: function (responseData, status) {
-            if ($(responseData).find('err').length > 0) {
-                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetMessages_Error');
-                return;
-            } else {
-                var tmpNodes = $(responseData).find('msg');
-                var tmpDatasObj = {};
-                for (var i = 0; i < tmpNodes.length; i++) {
-                    var tmpNode = $(tmpNodes[i]);
-                    if (tmpNode.attr('type') != '1') {
-                        tmpDatasObj[tmpNode.attr('index')] = {
-                            id: tmpNode.attr('messageid'),
-                            top: tmpNode.attr('istop'),
-                            type: tmpNode.attr('messagetype'),
-                            content: tmpNode.attr('message'),
-                            time: tmpNode.attr('datetime'),
-                            answer: '',
-                            username: tmpNode.attr('username'),
-                            isread: tmpNode.attr('isread'),
-                            optid: tmpNode.attr('operationid')
-                        }
-                    }
-                }
+    //_registerRemoteServer();
+    //_ajaxObj = $.ajax({
+    //    type: 'GET',
+    //    async: true,
+    //    url: _getRequestURL(type == '' ? _gURLMapping.bus.getallmsglist : type == '1' ? _gURLMapping.bus.getsysmsglist : _gURLMapping.bus.getqamsglist),
+    //    data: '<root></root>',
+    //    success: function (responseData, status) {
+    //        if ($(responseData).find('err').length > 0) {
+    //            _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetMessages_Error');
+    //            return;
+    //        } else {
+    //            var tmpNodes = $(responseData).find('msg');
+    //            var tmpDatasObj = {};
+    //            for (var i = 0; i < tmpNodes.length; i++) {
+    //                var tmpNode = $(tmpNodes[i]);
+    //                if (tmpNode.attr('type') != '1') {
+    //                    tmpDatasObj[tmpNode.attr('index')] = {
+    //                        id: tmpNode.attr('messageid'),
+    //                        top: tmpNode.attr('istop'),
+    //                        type: tmpNode.attr('messagetype'),
+    //                        content: tmpNode.attr('message'),
+    //                        time: tmpNode.attr('datetime'),
+    //                        answer: '',
+    //                        username: tmpNode.attr('username'),
+    //                        isread: tmpNode.attr('isread'),
+    //                        optid: tmpNode.attr('operationid')
+    //                    }
+    //                }
+    //            }
 
-                var indexArr = [];
-                for (var key in tmpDatasObj) {
-                    indexArr.push(key);
-                }
+    //            var indexArr = [];
+    //            for (var key in tmpDatasObj) {
+    //                indexArr.push(key);
+    //            }
 
-                indexArr.sort(function (a, b) {
-                    return a - b
-                });
+    //            indexArr.sort(function (a, b) {
+    //                return a - b
+    //            });
 
-                var datas = [];
-                for (var i = 0; i < indexArr.length; i++) {
-                    datas.push(tmpDatasObj[indexArr[i]]);
-                }
+    //            var datas = [];
+    //            for (var i = 0; i < indexArr.length; i++) {
+    //                datas.push(tmpDatasObj[indexArr[i]]);
+    //            }
 
-                rebuildMessageContents(datas);
-                hideLoadingMask()
-            }
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-            _showGlobalMessage('无法获取消息，请联系技术支持！', 'danger', 'alert_GetMessages_Error');
-        }
-    });
-    //var data = [
-    //        { id: '1', top: 1, type: '1', content: 'System Message, Test 1, ID=1, 2017-5-2System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1System Message, Test 1, ID=1, 2017-5-1', time: '2017-5-2', answer: null },
-    //        { id: '2', top: 1, type: '1', content: 'System Message, Test 2, ID=1, 2017-5-1', time: '2017-5-1', answer: null },
-    //        { id: '3', top: 1, type: '2', content: 'Questions and Answers, Test 1, ID=3, 2017-5-1', time: '2017-5-1', answer: { id: '8', type: '21', content: 'Answers, Test 1, ID=8, 2017-5-8', time: '2017-5-8', owner: '1' } },
-    //        { id: '4', top: 0, type: '1', content: 'System Message, Test 3, ID=4, 2017-5-4', time: '2017-5-4', answer: null },
-    //        { id: '5', top: 0, type: '1', content: 'System Message, Test 4, ID=5, 2017-5-3', time: '2017-5-3', answer: null },
-    //        { id: '6', top: 0, type: '2', content: 'Questions and Answers, Test 2, ID=6, 2017-5-3', time: '2017-5-3', answer: null },
-    //        { id: '7', top: 0, type: '2', content: 'Questions and Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-2', answer: { id: '9', type: '21', content: 'Answers, Test 3, ID=7, 2017-5-2', time: '2017-5-9', owner: '1' } }
-    //];
-
-    //var tmpDatas = data;
-    //if (type != '') {
-    //    tmpDatas = [];
-    //    for (var i = 0; i < data.length; i++) {
-    //        if (data[i].type == type) {
-    //            tmpDatas.push(data[i]);
+    //            rebuildMessageContents(datas);
+    //            hideLoadingMask()
     //        }
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //        _showGlobalMessage('无法获取消息，请联系技术支持！', 'danger', 'alert_GetMessages_Error');
     //    }
-    //}
+    //});
+    var data = [
+        { id: '1', top: 1, type: '1', content: '系统消息: 欢迎来到iKCoder的编程世界！', time: '2017-10-1', answer: null },
+        { id: '2', top: 1, type: '1', content: '系统消息: 课件版本已更新至最新版本！', time: '2017-10-20', answer: null },
+        { id: '3', top: 1, type: '2', content: '提问: 如果在代码状态进行参数修改是否有效？', time: '2017-10-7', answer: { id: '4', type: '21', content: '解答: 你好，Alice，在代码状态进行参数修改是有效的。', time: '2017-10-8', owner: '1' } }
+    ];
 
-    //rebuildMessageContents(tmpDatas);
-    //hideLoadingMask();
+    var tmpDatas = data;
+    if (type != '') {
+        tmpDatas = [];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].type == type) {
+                tmpDatas.push(data[i]);
+            }
+        }
+    }
+
+    rebuildMessageContents(tmpDatas, type);
+    hideLoadingMask();
 };
 
 function rebuildMessageContents(data, type) {
-    //var tmpHeight = $('.container-fluid.left-sidebar-wrap').height();
     var tmpHeight = Math.max($('#sideBar_Page_Left').height(), $('.container-fluid.left-sidebar-wrap').height());
     $('#wrap_Category_Content').empty();
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-message-section" style="background-color:rgb(255,255,255); border-left: solid 5px rgb(237,87,138); height: ' + tmpHeight + 'px;">');
+    tmpHTMLArr.push('<div class="container-fluid wrap-message-section" style="height: ' + tmpHeight + 'px;">');
     tmpHTMLArr.push('    <div class="row">');
     tmpHTMLArr.push('        <div class="col-12 no-padding">');
-    tmpHTMLArr.push('           <div class="container-fluid wrap-message-items no-padding" style="background-color:rgb(255,255,255);">');
+    tmpHTMLArr.push('           <div class="container-fluid wrap-message-items no-padding bg-white">');
     tmpHTMLArr.push('               <div class="row no-margin">');
     tmpHTMLArr.push('                   <div class="col-12 no-padding">');
     tmpHTMLArr.push('                       <table class="table table-striped">');
@@ -2786,16 +2628,18 @@ function rebuildMessageContents(data, type) {
     if (type == '2') {
         tmpHTMLArr.push('                               <tr>');
         tmpHTMLArr.push('                                   <th></th>');
-        tmpHTMLArr.push('                                   <td class="" colspan="2" style="padding:5px;vertical-align:middle;">');
-        tmpHTMLArr.push('            <form>');
-        tmpHTMLArr.push('                <div class="form-group row" style="margin:0px;">');
-        tmpHTMLArr.push('                    <div class="col-12">');
-        tmpHTMLArr.push('                        <input type="text" class="form-control" id="txt_Message_QA_Input" placeholder="请输入问题">');
-        tmpHTMLArr.push('                    </div>');
-        tmpHTMLArr.push('                </div>');
-        tmpHTMLArr.push('            </form>');
+        tmpHTMLArr.push('                                   <td class="portfolio-message-qa-question-cell" colspan="2">');
+        tmpHTMLArr.push('                                       <form>');
+        tmpHTMLArr.push('                                           <div class="form-group row no-margin">');
+        tmpHTMLArr.push('                                               <div class="col-12">');
+        tmpHTMLArr.push('                                                   <input type="text" class="form-control form-control-sm" id="txt_Message_QA_Input" placeholder="请输入问题">');
+        tmpHTMLArr.push('                                               </div>');
+        tmpHTMLArr.push('                                           </div>');
+        tmpHTMLArr.push('                                       </form>');
         tmpHTMLArr.push('                                   </td>');
-        tmpHTMLArr.push('                                   <td class="profile-message-remove-button"><button type="button" class="btn btn-primary" id="btn_Message_QA_Input">提问</button></td>');
+        tmpHTMLArr.push('                                   <td class="profile-message-remove-button">');
+        tmpHTMLArr.push('                                       <button type="button" class="btn btn-sm btn-primary" id="btn_Message_QA_Input">提问</button>');
+        tmpHTMLArr.push('                                   </td>');
         tmpHTMLArr.push('                               </tr>');
     }
 
@@ -2814,12 +2658,14 @@ function rebuildMessageContents(data, type) {
         tmpHTMLArr.push('                                   <th>' + tHeader + '</th>');
         tmpHTMLArr.push('                                   <td class="' + contentCss + '">' + data[i].content + '</td>');
         tmpHTMLArr.push('                                   <td class="minW-100">' + data[i].time + '</td>');
-        tmpHTMLArr.push('                                   <td class="profile-message-remove-button" data-msgid="' + data[i].id + '" data-optid="' + data[i].optid + '"><i class="fa fa-remove"></i></td>');
+        tmpHTMLArr.push('                                   <td class="profile-message-remove-button" data-msgid="' + data[i].id + '" data-optid="' + data[i].optid + '">');
+        tmpHTMLArr.push('                                       <i class="fa fa-remove"></i>');
+        tmpHTMLArr.push('                                   </td>');
         tmpHTMLArr.push('                               </tr>');
         if (data[i].type == '2' && data[i].answer) {
             tmpHTMLArr.push('                               <tr>');
             tmpHTMLArr.push('                                   <th></th>');
-            tmpHTMLArr.push('                                   <td class="profile-message-answer-text" style="padding-left:50px;">' + data[i].answer.content + '</td>');
+            tmpHTMLArr.push('                                   <td style="padding-left: 50px;">' + data[i].answer.content + '</td>');
             tmpHTMLArr.push('                                   <td class="minW-100">' + data[i].answer.time + '</td>');
             tmpHTMLArr.push('                                   <td></td>');
             tmpHTMLArr.push('                               </tr>');
@@ -2864,7 +2710,6 @@ function rebuildMessageContents(data, type) {
 
 function clearUnreadState() {
     $('.left-bar-message-count').text('0');
-    //$('.left-bar-message-count').hide();
     $('.left-bar-message-count').css('background-color', 'rgb(185,185,185)');
 };
 
