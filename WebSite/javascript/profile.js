@@ -964,66 +964,67 @@ function rebuildSettingsPanel(contentHeight) {
     ];
     contentHeight = $('#sideBar_Page_Left').height() - 1;
     var tmpHeight = calcSettingsItemheight(contentHeight);
-    _registerRemoteServer();
-    _ajaxObj = $.ajax({
-        type: 'POST',
-        async: true,
-        url: _getRequestURL(_gURLMapping.account.util),
-        data: '<root>' +
-                '<select>' +
-                '<items value="/root/usrbasic/usr_nickname"></items>' +
-                '<items value="/root/usrbasic/sex"></items>' +
-                '<items value="/root/usrbasic/birthday"></items>' +
-                '<items value="/root/usrbasic/state"></items>' +
-                '<items value="/root/usrbasic/city"></items>' +
-                '<items value="/root/usrbasic/school"></items>' +
-                '</select>' +
-                '</root>',
-        success: function (responseData, status) {
-            if ($(responseData).find('err').length > 0) {
-                _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
-                return;
-            } else {
-                var tmpNodes = $(responseData).find('msg');
-                var data = { profile: {} };
-                for (var i = 0; i < tmpNodes.length; i++) {
-                    var tmpNode = $(tmpNodes[i]);
-                    if (tmpNode.attr('xpath')) {
-                        for (var j = 0; j < mapping.length; j++) {
-                            if (mapping[j].p == tmpNode.attr('xpath')) {
-                                data.profile[mapping[j].n] = tmpNode.attr('value');
-                            }
-                        }
-                    }
-                }
+    //_registerRemoteServer();
+    //_ajaxObj = $.ajax({
+    //    type: 'POST',
+    //    async: true,
+    //    url: _getRequestURL(_gURLMapping.account.util),
+    //    data: '<root>' +
+    //            '<select>' +
+    //            '<items value="/root/usrbasic/usr_nickname"></items>' +
+    //            '<items value="/root/usrbasic/sex"></items>' +
+    //            '<items value="/root/usrbasic/birthday"></items>' +
+    //            '<items value="/root/usrbasic/state"></items>' +
+    //            '<items value="/root/usrbasic/city"></items>' +
+    //            '<items value="/root/usrbasic/school"></items>' +
+    //            '</select>' +
+    //            '</root>',
+    //    success: function (responseData, status) {
+    //        if ($(responseData).find('err').length > 0) {
+    //            _showGlobalMessage($(responseData).find('err').attr('msg'), 'danger', 'alert_GetOverviewInfo_Error');
+    //            return;
+    //        } else {
+    //            var tmpNodes = $(responseData).find('msg');
+    //            var data = { profile: {} };
+    //            for (var i = 0; i < tmpNodes.length; i++) {
+    //                var tmpNode = $(tmpNodes[i]);
+    //                if (tmpNode.attr('xpath')) {
+    //                    for (var j = 0; j < mapping.length; j++) {
+    //                        if (mapping[j].p == tmpNode.attr('xpath')) {
+    //                            data.profile[mapping[j].n] = tmpNode.attr('value');
+    //                        }
+    //                    }
+    //                }
+    //            }
 
-                rebuildSettingsTitles(tmpHeight);
-                rebuildSettingsContents(data, tmpHeight);
-                hideLoadingMask()
-            }
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-            _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
-        }
-    });
-    //var data = {
-    //    profile: {
-    //        header: _getRequestURL(_gURLMapping.account.getheader, {}),
-    //        name: 'Terry',
-    //        gender: '1',
-    //        birthday: '2009-10-01',
-    //        province: '广东',
-    //        city: '深圳',
-    //        school: '深圳实验小学'
+    //            rebuildSettingsTitles(tmpHeight);
+    //            rebuildSettingsContents(data, tmpHeight);
+    //            hideLoadingMask()
+    //        }
+    //    },
+    //    dataType: 'xml',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    error: function () {
+    //        _showGlobalMessage('无法获取信息，请联系技术支持！', 'danger', 'alert_GetOverviewInfo_Error');
     //    }
-    //}
+    //});
+    var data = {
+        profile: {
+            header: _getRequestURL(_gURLMapping.account.getheader, {}),
+            name: 'Terry',
+            gender: '1',
+            birthday: '2009-10-01',
+            province: '广东',
+            city: '深圳',
+            school: '深圳实验小学'
+        }
+    }
 
-    //rebuildSettingsTitles(tmpHeight);
-    //rebuildSettingsContents(data, tmpHeight);
+    rebuildSettingsTitles(tmpHeight);
+    rebuildSettingsContents(data, tmpHeight);
+    hideLoadingMask();
 };
 
 function calcSettingsItemheight(contentHeight) {
@@ -1054,7 +1055,7 @@ function calcSettingsItemheight(contentHeight) {
 
 function buildSettingsProfile(data, tmpHeight) {
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid" id="wrap_Settings_Profile" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">');
+    tmpHTMLArr.push('<div class="container-fluid" id="wrap_Settings_Profile">');
     tmpHTMLArr.push('    <div class="row justify-content-start align-items-center" style="height:' + tmpHeight + 'px">');
     tmpHTMLArr.push('        <div class="col-10 offset-1">');
     tmpHTMLArr.push('            <form class="my-3">');
@@ -1062,8 +1063,8 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                    <label for="img_Settings_Profile_Header" class="col-2 col-form-label">头像</label>');
     tmpHTMLArr.push('                    <div class="col-7">');
     //tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" style="width: 100px; height: 100px;">');
-    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="image/circles.svg" style="width: 100px; height: 100px; background-color:rgb(76,76,76)">');
-    tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" style="margin-left:20px;margin-bottom: -60px;" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
+    tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="image/circles.svg">');
+    tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
@@ -1096,7 +1097,7 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
-    tmpHTMLArr.push('                    <label class="col-2" style="line-height: 38px;">所在城市</label>');
+    tmpHTMLArr.push('                    <label class="col-2 lh-38">所在城市</label>');
     tmpHTMLArr.push('                    <div class="col-3">');
     tmpHTMLArr.push('                        <select class="form-control" id="select_Settings_Profile_User_City_Province" disabled>');
     for (var i = 0; i < _gCitys.length; i++) {
@@ -1105,15 +1106,15 @@ function buildSettingsProfile(data, tmpHeight) {
 
     tmpHTMLArr.push('                        </select>');
     tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                    <label class="col-1" id="title_Settings_Profile_User_City_Province" style="line-height: 38px;">市</label>');
-    tmpHTMLArr.push('                    <div class="col-3" style="padding: 0px;">');
+    tmpHTMLArr.push('                    <label class="col-1 lh-38" id="title_Settings_Profile_User_City_Province">市</label>');
+    tmpHTMLArr.push('                    <div class="col-3 no-padding">');
     tmpHTMLArr.push('                        <select class="form-control" id="select_Settings_Profile_User_City_City" disabled>');
     for (var i = 0; i < _gCitys[0].c.length; i++) {
         tmpHTMLArr.push('                            <option value="' + _gCitys[0].c[i] + '">' + _gCitys[0].c[i] + '</option>');
     }
     tmpHTMLArr.push('                        </select>');
     tmpHTMLArr.push('                    </div>');
-    tmpHTMLArr.push('                    <label class="col-1" id="title_Settings_Profile_User_City_City" style="line-height: 38px;">区</label>');
+    tmpHTMLArr.push('                    <label class="col-1 lh-38" id="title_Settings_Profile_User_City_City">区</label>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
     tmpHTMLArr.push('                    <label for="txt_Settings_Profile_User_School" class="col-2 col-form-label">就读学校</label>');
@@ -1162,40 +1163,40 @@ function updateProfileValue(data) {
 
 function buildSettingsChangePWD(tmpHeight) {
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid" id="wrap_Settings_PWD" style="background-color:rgb(255,255,255); border-bottom:solid 1px rgb(236,239,241);">');
+    tmpHTMLArr.push('<div class="container-fluid" id="wrap_Settings_PWD">');
     tmpHTMLArr.push('    <div class="row justify-content-start align-items-center" style="height:' + tmpHeight + 'px">');
     tmpHTMLArr.push('        <div class="col-10 offset-1">');
     tmpHTMLArr.push('            <form class="my-3">');
     tmpHTMLArr.push('                <div class="form-group row">');
-    tmpHTMLArr.push('                    <h4 style="color:rgb(107,129,140);">密码修改</h4>');
+    tmpHTMLArr.push('                    <h4>密码修改</h4>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-inline row">');
-    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_Old_PWD" class="col-3 col-form-label" style="justify-content: flex-start;">旧密码</label>');
+    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_Old_PWD" class="col-3 col-form-label">旧密码</label>');
     tmpHTMLArr.push('                    <div class="input-group col-5">');
     tmpHTMLArr.push('                       <input class="form-control js-password-settings-control" id="txt_Settings_PWD_Old_PWD" name="settings_old_password" type="password" placeholder="请输入旧密码">');
     tmpHTMLArr.push('                       <div class="input-group-addon js-password-settings-btn">');
     tmpHTMLArr.push('                           <i class="label-pwd-intension" id="lb_Settings_Old_Pwd_Intension">&nbsp;&nbsp;&nbsp;&nbsp;</i>');
-    tmpHTMLArr.push('                           <i class="fa fa-eye-slash" name="btn_Settings_Show_Hide_Pwd" style="width:15px; height:15px;"></i>');
+    tmpHTMLArr.push('                           <i class="fa fa-eye-slash" name="btn_Settings_Show_Hide_Pwd"></i>');
     tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-inline row my-2">');
-    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_New_PWD" class="col-3 col-form-label" style="justify-content: flex-start;">新密码</label>');
+    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_New_PWD" class="col-3 col-form-label">新密码</label>');
     tmpHTMLArr.push('                    <div class="input-group col-5">');
     tmpHTMLArr.push('                       <input class="form-control js-password-settings-control" id="txt_Settings_PWD_New_PWD" name="settings_new_password" type="password" placeholder="请输入新密码">');
     tmpHTMLArr.push('                       <div class="input-group-addon js-password-settings-btn">');
     tmpHTMLArr.push('                           <i class="label-pwd-intension" id="lb_Settings_New_Pwd_Intension">&nbsp;&nbsp;&nbsp;&nbsp;</i>');
-    tmpHTMLArr.push('                           <i class="fa fa-eye-slash" name="btn_Settings_Show_Hide_Pwd" style="width:15px; height:15px;"></i>');
+    tmpHTMLArr.push('                           <i class="fa fa-eye-slash" name="btn_Settings_Show_Hide_Pwd"></i>');
     tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-inline row">');
-    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_Confirm_PWD" class="col-3 col-form-label" style="justify-content: flex-start;">确认新密码</label>');
+    tmpHTMLArr.push('                    <label for="txt_Settings_PWD_Confirm_PWD" class="col-3 col-form-label">确认新密码</label>');
     tmpHTMLArr.push('                    <div class="input-group col-5">');
     tmpHTMLArr.push('                       <input class="form-control js-password-settings-control" id="txt_Settings_PWD_Confirm_PWD" name="settings_confirm_password" type="password" placeholder="请确认新密码">');
     tmpHTMLArr.push('                       <div class="input-group-addon js-password-settings-btn">');
     tmpHTMLArr.push('                           <i class="label-pwd-intension" id="lb_SignUp_Pwd_Intension">&nbsp;&nbsp;&nbsp;&nbsp;</i>');
-    tmpHTMLArr.push('                           <i class="fa fa-eye-slash" name="btn_Settings_Show_Hide_Pwd" style="width:15px; height:15px;"></i>');
+    tmpHTMLArr.push('                           <i class="fa fa-eye-slash" name="btn_Settings_Show_Hide_Pwd"></i>');
     tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');

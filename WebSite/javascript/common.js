@@ -637,3 +637,26 @@ function getQueryString(key) {
         }
     }
 };
+
+function ajaxFn(type, url, data, success, failed) {
+    _registerRemoteServer();
+    $.ajax({
+        type: type,
+        async: true,
+        url: url,
+        data: data,
+        success: function (response, status) {
+            success(response);
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            failed();
+        }
+    });
+};
+
+function emptyFn() {
+};

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html style="height:100%">
+<html>
 <head>
     <title></title>
     <meta charset="utf-8">
@@ -289,7 +289,7 @@
     <link rel="stylesheet" href="style/font-awesome.min.css">
     <link rel="stylesheet" href="style/common.css">
     <link rel="stylesheet" href="style/workplatform.css">
-    <link rel="stylesheet" href="style/workspace.css">
+    <!--<link rel="stylesheet" href="style/workspace.css">-->
     <script src="javascript/common/jquery-3.2.1.min.js"></script>
     <script src="javascript/common/jquery-ui.min.js"></script>
     <script src="javascript/common/tether.min.js"></script>
@@ -339,40 +339,44 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid no-padding" style="height:60px; background-color:rgb(41,49,67);">
-        <div class="row no-margin">
-            <div class="col-3 no-padding text-center" id="wrap_Head_Course_Name" style="padding-top:15px;">
-                <span class="head-course-name"></span>
-            </div>
-            <div class="col-6 no-padding">
-                <div class="container-fluid no-padding">
-                    <div class="row no-margin" style="padding-top:15px;">
-                        <div class="col-12 text-center" id="Course_Stage_Container" style="height: 30px;">
-                            <div class="head-stage-background">
-                                <div class="head-stage-space"></div>
-                            </div>
-                            <div class="wrap-head-stage-steps d-flex align-items-center">
+    <div class="container-fluid wrap-container">
+        <div class="row no-wrap">
+            <div class="col no-wrap">
+                <div class="container-fluid no-wrap header-container">
+                    <div class="row no-wrap">
+                        <div class="col-3 no-wrap text-center" id="wrap_Head_Course_Name">
+                            <p class="header-course-name"></p>
+                        </div>
+                        <div class="col-6 no-padding">
+                            <div class="container-fluid no-padding">
+                                <div class="row no-margin" style="padding-top:15px;">
+                                    <div class="col-12 text-center" id="Course_Stage_Container" style="height: 30px;">
+                                        <div class="head-stage-background">
+                                            <div class="head-stage-space"></div>
+                                        </div>
+                                        <div class="wrap-head-stage-steps d-flex align-items-center">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3 no-padding">
-                <div class="container">
-                    <div class="row justify-content-end" style="padding-top:7px; padding-bottom:8px; text-align:center;text-align:-webkit-center;">
-                        <div class="col-12 text-center">
-                            <img class="header-user-image" src="" width="45" height="45" />
-                            <span class="header-user-name-text" style="padding-left:20px;"></span>
-                            <img class="goto-profile-image-button" src="image/exit.svg" width="25" height="25" title="进入个人中心" />
+                        <div class="col-3 no-padding">
+                            <div class="container">
+                                <div class="row justify-content-end header-user-info-container">
+                                    <div class="col text-center">
+                                        <img class="header-user-info-image" src="image/tmpheader.jpg" width="40" height="40" />
+                                        <span class="header-user-info-name"></span>
+                                        <img class="sign-out-button" src="image/exit.svg" width="25" height="25" title="退出登录" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container-fluid" style="height:95px; border-left:solid 1px rgb(245,245,245); background-color: rgb(223,228,231);">
-        <div class="row">
-            <div class="col-2 col-sm-2 justify-content-center" style="padding: 0px; padding-top: 20px; width:70px;">
+        <div class="row no-wrap course-tip-container-row">
+            <div class="col-2 justify-content-center no-wrap course-tip-loading-col">
                 <div id="loading">
                     <div id="loading-center">
                         <div id="loading-center-absolute">
@@ -384,270 +388,128 @@
                     </div>
                 </div>
             </div>
-            <div class="col-9 col-sm-9 text-left">
+            <div class="col text-left">
                 <p class="course-stage-note"></p>
             </div>
         </div>
-    </div>
-    <div class="container-fluid" style="height:35px;background-color:rgb(26,164,216);border-top: solid 2px rgb(245,245,245);">
-        <div class="row align-items-center" style="height: 100%;padding-left:15px;">
-            <div class="col" style="max-width:150px; min-width:150px;">
-                <div class="wrap-workspace-toolbox">
-                    工具箱
-                </div>
+        <div class="row no-wrap toolbar-container-row">
+            <div class="col no-wrap toolbar-toolbox-col">
+                <span class="toolbar-toolbox-label">工具箱</span>
             </div>
-            <div class="col no-padding" style="font-size: 13px; font-weight: bolder; color:rgb(255,255,255);">
-                <div class="container-fluid" id="wrap_Workspace_Toolbar" style="min-width:290px;">
+            <div class="col no-wrap text-center toolbar-workspace-label">
+                <span>工作区域</span>
+            </div>
+            <div class="col toolbar-buttons-col">
+                <div class="container-fluid">
                     <div class="row">
-                        <div class="col text-center">
-                            <span>工作区域</span>
+                        <div class="col-3">
+                            <i class="toolbar-buttons-item toolbar-button-play fa fa-play" aria-hidden="true" title="运行"></i>
                         </div>
-                        <div class="col" style="min-width:200px; max-width:200px;">
-                            <div class="container-fluid">
-                                <div class="row" style="height: 23px;">
-                                    <div class="col-3">
-                                        <i class="workspace-tool-item workspace-play-button fa fa-play" aria-hidden="true" title="运行"></i>
-                                    </div>
-                                    <div class="col-3">
-                                        <i class="workspace-tool-item workspace-share-button fa fa-share-alt" aria-hidden="true" title="分享"></i>
-                                    </div>
-                                    <div class="col-3">
-                                        <i class="workspace-tool-item workspace-fullscreen-button fa fa-arrows-alt" aria-hidden="true" title="全屏"></i>
-                                    </div>
-                                    <div class="col-3">
-                                        <i class="workspace-tool-item workspace-referesh-button fa fa-repeat" aria-hidden="true" title="重置"></i>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col-3">
+                            <i class="toolbar-buttons-item toolbar-button-share fa fa-share-alt" aria-hidden="true" title="分享"></i>
+                        </div>
+                        <div class="col-3">
+                            <i class="toolbar-buttons-item toolbar-button-fullscreen fa fa-arrows-alt" aria-hidden="true" title="全屏"></i>
+                        </div>
+                        <div class="col-3">
+                            <i class="toolbar-buttons-item toolbar-button-referesh fa fa-repeat" aria-hidden="true" title="重置"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container-fluid" id="wrap_Workspace_Blockly" style="padding:0px;">
-        <div class="row" style="margin:0px;">
-            <div class="col-12" style="padding:0px;">
-                <div class="blockly-workspace-wrap" id="wrap_WorkSpace">
-                    <div id="content_WorkSpace"></div>
+        <div class="row no-wrap">
+            <div class="col no-wrap main-container-col">
+                <div class="container-fluid no-wrap h-100" id="wrap_Workspace_Blockly">
+                    <div class="row no-wrap h-100">
+                        <div class="col no-wrap h-100">
+                            <div class="workspace-wrap-blockly">
+                                <div id="content_WorkSpace"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid" id="wrap_Workspace_Static" style="padding:0px;">
-        <div class="row h-100">
-            <div class="col-12 h-100">
-                <div class="wrap-static-canvas h-100" id="container_Static_Stage">
-                </div>
-            </div>
-        </div>
-    </div>
-    <footer class="footer" id="footer">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-2">
-                    <img id="btn_Footer_Logo" src="image/logo-new-white.png" width="100" height="35">
-                </div>
-                <div class="col-4 offset-2">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-2">
-                                <div class="footer-tool-item selected" id="btn_Footer_CreateMode" data-tip="创作模式">
-                                    <i class="fa fa-gamepad fa-lg"></i>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="footer-tool-item" id="btn_Footer_KnowledgeMode" data-tip="查看知识点">
-                                    <i class="fa fa-book fa-lg"></i>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="footer-tool-item" id="btn_Footer_CodeMode" data-tip="代码模式">
-                                    <i class="fa fa-code fa-lg"></i>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="footer-tool-item" id="btn_Footer_WordMode" data-tip="词汇术语">
-                                    <i class="fa fa-language fa-lg"></i>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="footer-tool-item" id="btn_Footer_ViewMode" data-tip="核心代码">
-                                    <i class="fa fa-file-code-o fa-lg"></i>
-                                </div>
+                <div class="container-fluid no-wrap" id="wrap_Workspace_Static">
+                    <div class="row no-wrap h-100">
+                        <div class="col no-wrap h-100">
+                            <div class="wrap-static-canvas h-100" id="container_Static_Stage">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
-    <div class="siderbar-wrap expanded">
-        <div class="siderbar-expand" id="btn_SiderBar_Expand">
-            <i class="fa fa-angle-double-right fa-2x" id="icon_SiderBar_Expand" style="line-height:50px;" aria-hidden="true"></i>
-        </div>
-        <div class="siderbar-drag expanded"></div>
-        <div class="sidebar-content-wrap">
-            <div class="siderbar-content">
-                <div id="game_container" style="text-align: center; padding:0px 10px;">
-                    <i class="fa fa-play-circle-o run-scene-fullscreen-play-button" title="开始运行"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="siderbar-drag-proxy"></div>
-    <div class="modle-tip">创作模式</div>
-    <!--<div class="code-panel" id="panel_CodeMode">
-        <div class="code-panel-header">
-            <div class="code-panel-header-close"><i class="fa fa-times-circle-o"></i></div>
-        </div>
-        <div class="code-panel-content">
-            <textarea type="text" class="code-text-content" id="txt_Code_Content" spellcheck="false"></textarea>
-        </div>
-    </div>-->
-    <div class="modal fade" id="panel_CodeMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="max-width: 830px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Code Editor</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <iframe id="iframe_CodeEditor" src="codeeditor.html" width="800" height="600" frameborder="1" scrolling="auto" style="border: none;"></iframe>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="panel_ViewMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="max-width: 830px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Code Viewer</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid" style="padding: 0px;">
-                        <div class="row">
-                            <div class="col-12" style="padding-bottom:10px;">
-                                <button id="btn_Viewer_Block" type="button" class="btn btn-outline-primary">模块</button>
-                                <button id="btn_Viewer_Scene" type="button" class="btn btn-outline-primary">场景</button>
-                                <button id="btn_Viewer_Core" type="button" class="btn btn-outline-primary">核心</button>
-                            </div>
+        <div class="row no-wrap align-items-center bottom-toolbar-container-row">
+            <div class="col-4 offset-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-gamepad fa-lg active" title="创作模式"></i>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <iframe id="iframe_CodeViewer" src="codeviewer.html" width="800" height="600" frameborder="1" scrolling="auto" style="border: none;"></iframe>
-                            </div>
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-book fa-lg" title="查看知识点"></i>
+                        </div>
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-code fa-lg" title="代码模式"></i>
+                        </div>
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-language fa-lg" title="词汇术语"></i>
+                        </div>
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-file-code-o fa-lg" title="核心代码"></i>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btn_Eval_Panel_ViewMode">执行</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                </div>
             </div>
         </div>
-    </div>
-    <div class="word-panel" id="panel_WordMode">
-        <div class="word-panel-header">
-            <div class="word-panel-header-close"><i class="fa fa-times-circle-o"></i></div>
-        </div>
-        <div class="word-panel-content container"></div>
-    </div>
-    <div class="knowledge-panel" id="panel_KnowledgeMode">
-        <div class="knowledge-panel-header">
-            <div class="knowledge-panel-header-close"><i class="fa fa-times-circle-o"></i></div>
-        </div>
-        <div class="knowledge-panel-content container"></div>
-    </div>
-    <div class="run-scene-fullscreen">
-        <i class="fa fa-times-circle-o run-scene-fullscreen-close-button"></i>
-    </div>
-    <div style="display:none">
-        <audio id="audio_Soundmark"></audio>
-    </div>
-    <div class="wrap-workstatus-alert">
-        <div class="wrap-complete-alert" style="display: block;">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-8 text-center" style="padding: 30px 0px; color:rgb(255,255,2555);">
-                        <i class="fa fa-check-circle-o fa-5x" aria-hidden="true"></i>
-                        <div class="step-complete-title" id="title_StepComplete"></div>
+        <div class="row no-wrap">
+            <div class="col no-wrap">
+                <footer id="footer">
+                    <div class="footer-txt">
+                        <div class="container w-100">
+                            <div class="row justify-content-center">
+                                <div class="col-1" style="padding: 2px 10px;">
+                                    <img id="btn_Footer_Logo" src="image/logo-new-white.png" width="60" height="21">
+                                </div>
+                                <div class="col">
+                                    <p class="copyright-txt">
+                                        <span>
+                                            深圳市鹏博教育科技有限公司
+                                        </span>
+                                        <span class="split-line">
+                                            |
+                                        </span>
+                                        <span class="normal-text">
+                                            Powered by
+                                        </span>
+                                        <span>
+                                            iKCoder.Co (ShenZhen)
+                                        </span>
+                                        <span class="reference-text">
+                                            <a href="http://www.miibeian.gov.cn" target="_blank" style="display:inline-block;">粤ICP备17152880号</a>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="row justify-content-center my-3">
-                    <div class="col-2 text-center">
-                        <div class="step-complete-button" id="btn_Step_Restart"><span class="glyphicon glyphicon-repeat" style="padding-right:10px;"></span>重新开始</div>
-                    </div>
-                    <div class="col-2">
-                        <div class="step-complete-button" id="btn_Step_GoNext"><span class="glyphicon glyphicon-hand-right" style="padding-right:10px;"></span>挑战下一步</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 text-center margin-top20 step-evaluate-wrap" style="border-top:solid 2px rgb(255,255,255); padding-top:20px">
-                        <span>喜欢这个课程吗?</span>
-                        <span class="fa fa-thumbs-o-up step-evaluate-button" style="padding-left:20px;" data-target="1"></span>
-                        <span class="fa fa-thumbs-o-down step-evaluate-button" style="padding-left:20px;" data-target="0"></span>
-                    </div>
-                </div>
+                </footer>
             </div>
         </div>
-        <div class="wrap-complete-alert wrap-faild-alert my-5" style="display: block;">
-            <div class="container" style="padding-top: 50px;">
-                <div class="row justify-content-center">
-                    <div class="col-6 text-center" style="padding: 30px 0px; color:rgb(255,255,2555);">
-                        <i class="fa fa-exclamation-circle fa-5x" aria-hidden="true"></i>
-                        <div class="step-complete-title" id="title_StepFaild">非常抱歉，您的工作出现错误，请检查后继续运行.</div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-4 text-center">
-                        <div class="step-complete-button" id="btn_Step_FindError"><span class="glyphicon glyphicon-hand-right" style="padding-right:10px;"></span>查找问题</div>
+        <div class="siderbar-wrap expanded">
+            <div class="siderbar-expand-button">
+                <i class="fa fa-angle-double-right" id="icon_SiderBar_Expand" aria-hidden="true"></i>
+            </div>
+            <div class="siderbar-drag expanded"></div>
+            <div class="sidebar-content-wrap">
+                <div class="siderbar-content">
+                    <div id="game_container" style="text-align: center; padding:0px 10px;">
+                        <i class="fa fa-play-circle-o siderbar-button-run" title="开始运行"></i>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="workplatform-msg-alert-wrap" id="wrap_WorkPlatform_Msg">
-        <div class="workplatform-msg-alert-container" id="container_WorkPlatform_Msg">
-            <div class="container-fluid">
-                <div class="row justify-content-end">
-                    <div class="col-1">
-                        <i class="fa fa-close" id="btn_WorkPlatform_Msg_Close" style="cursor:pointer;" title="Close"></i>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <p id="title_WorkPlatform_Msg" style="text-align:center; font-family:微软雅黑;"></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <p id="content_WorkPlatform_Msg" style="text-align:center; font-family:微软雅黑; font-size:16px;">
-
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <button type="button" class="btn btn-success" id="btn_Close_WorkPlatform_Msg">我知道了</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="workplatform-msg-alert-logo-wrap" id="wrap_WorkPlatform_Msg_Logo">
-        </div>
-        <div class="workplatform-msg-alert-logo-continer" id="container_WorkPlatform_Msg_Logo">
-            <canvas class="workplatform-msg-alert-logo" id="logo_WorkPlatform_Msg" />
-        </div>
-        <canvas id="logo_WorkPlatform_Msg_Copy" style="display: none; width: 100px; height: 100px;" />
+        <div class="siderbar-drag-proxy"></div>
     </div>
     <script type="text/javascript">
         $(document).ready(function () {

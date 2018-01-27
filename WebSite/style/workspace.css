@@ -30,8 +30,8 @@
     /*border-left: 10px solid;*/
     cursor: pointer;
     color: rgb(255,255,255);
-    background-color: rgb(41,49,65);  
-    padding-left: 8px;  
+    background-color: rgb(41,49,65);
+    padding-left: 8px;
 }
 
 .blocklyTreeRow {
@@ -70,13 +70,3 @@
     height: 23px;
     margin: 0 3px;
 }
-
-/*
-category_Loops
-category_Math
-category_Text
-category_Lists
-category_Colour
-category_Variables
-category_Functions
-blockLibCategory*/

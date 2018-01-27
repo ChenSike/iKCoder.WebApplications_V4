@@ -3,11 +3,20 @@
 var currSceneSymbol = '';
 var _globalLibs = [];
 
-function LoadSceneLib(data) {
-    if (data.lib.length > 0) {
-        $.getScript(data.lib[0], function () {
-            data.lib.shift();
-            LoadSceneLib(data);
+function loadSceneLib() {
+    var tmpArr = [];
+    for (var i = 0; i < _gStageData.blockly.lib.length; i++) {
+        tmpArr.push(_gStageData.blockly.lib[i]);
+    }
+
+    loadSceneLib_Do(tmpArr);
+}
+
+function loadSceneLib_Do(libArr) {
+    if (libArr.length > 0) {
+        $.getScript(libArr[0], function () {
+            libArr.shift();
+            loadSceneLib_Do(libArr);
         });
     } else {
         WorkScene.init();

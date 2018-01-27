@@ -1,22 +1,10 @@
-﻿body {
-    font-family: 微软雅黑;
-}
-
-.no-wrap {
+﻿.no-wrap {
     margin: 0px;
-    padding: 0px;
-}
-
-.no-padding {
     padding: 0px;
 }
 
 .padding-5-10 {
     padding: 5px 10px;
-}
-
-.no-margin {
-    margin: 0px;
 }
 
 no-border {
@@ -29,6 +17,10 @@ bg-trans {
 
 .font-14 {
     font-size: 14px;
+}
+
+.lh-38 {
+    line-height: 38px;
 }
 
 .minW-100 {
@@ -113,35 +105,6 @@ nav-ul-container {
     .mood-group .mood-button.mood-last {
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
-    }
-
-footer {
-    height: 30px;
-    width: 100%;
-}
-
-    footer .footer-txt {
-        background-color: rgb(23,23,23);
-    }
-
-    footer .copyright-txt span {
-        font-weight: bold;
-    }
-
-    footer .copyright-txt .split-line {
-        padding: 0px 10px;
-    }
-
-    footer .copyright-txt .normal-text {
-        font-weight: normal;
-    }
-
-    footer .copyright-txt .reference-text {
-        color: #ffffff;
-        cursor: default;
-        font-style: italic;
-        font-weight: bold;
-        padding-left: 50px;
     }
 
 .main-content-wrap {
@@ -259,7 +222,7 @@ footer {
 }
 
 .overview-course-item-symbol {
-    padding:  0px 5px;
+    padding: 0px 5px;
     color: rgb(73,175,79);
     color: rgb(119,118,123);
 }
@@ -314,23 +277,6 @@ footer {
     .overview-list-arrow:hover {
         font-size: 20px;
     }
-
-#img_Settings_Profile_Header {
-    width: 100px;
-    height: 100px;
-    padding: 0px;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
-}
-
-#wrap_Settings_PWD form label {
-    color: rgb(128,128,128);
-}
-
-#wrap_Settings_Profile form label {
-    color: rgb(56,56,56);
-}
 
 .container-fluid.wrap-homework-section {
     background-color: rgb(255,255,255);
@@ -669,9 +615,50 @@ footer {
     cursor: pointer;
 }
 
+#img_Settings_Profile_Header {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(76,76,76);
+    padding: 0px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
 
+#btn_Settings_Profile_Upload_Header {
+    margin-left: 20px;
+    margin-bottom: -60px;
+}
 
+#wrap_Settings_PWD form label {
+    color: rgb(128,128,128);
+}
 
+#wrap_Settings_Profile {
+    background-color: rgb(255,255,255);
+    border-bottom: solid 1px rgb(236,239,241);
+}
+
+    #wrap_Settings_Profile form label {
+        color: rgb(56,56,56);
+    }
+
+#wrap_Settings_PWD {
+    background-color: rgb(255,255,255);
+    border-bottom: solid 1px rgb(236,239,241);
+}
+
+#wrap_Settings_PWD .fa.fa-eye-slash{
+    width:15px; height:15px;
+}
+
+#wrap_Settings_PWD h4{
+    color:rgb(107,129,140);
+}
+
+#wrap_Settings_PWD label{
+    justify-content: flex-start;
+}
 
 
 /*Profile-User Information & Upload header Image*/

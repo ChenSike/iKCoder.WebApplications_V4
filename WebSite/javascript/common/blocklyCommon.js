@@ -51,10 +51,8 @@ WorkScene.init = function () {
     var container = document.getElementById('wrap_WorkSpace');
     var onresize = function (e) {
         var el = $('#content_WorkSpace');
-        var body = $('body');
-        var footer = $('footer');
-        el.height(body.height() - el.offset().top - footer.height() - 20);
-        el.width = (body.width() - 5);
+        el.height("100%");
+        el.width = ("100%");
     };
 
     window.addEventListener('resize', onresize, false);
@@ -125,7 +123,7 @@ WorkScene.init = function () {
             Scene.resetSize();
             var fontSize = parseInt($('.run-scene-fullscreen-play-button').css('font-size'));
             //$('.run-scene-fullscreen-play-button').css('top', (($('#game_container').find('canvas').height() - fontSize) / 2) + 'px');
-            $('.run-scene-fullscreen-play-button').css('top', (($('#game_container').find('canvas').height() - fontSize - 10)) + 'px');
+            //$('.run-scene-fullscreen-play-button').css('top', (($('#game_container').find('canvas').height() - fontSize - 10)) + 'px');
             //$('.run-scene-fullscreen-play-button').css('left', ((fontSize + 10)) + 'px');
         }
     } else {
