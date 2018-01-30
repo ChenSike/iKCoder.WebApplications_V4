@@ -733,9 +733,8 @@ function initData(response) {
     return data;
 };
 
-function updateUserInfo(data) {
+function updateUserInfo() {
     $('.header-user-image').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
-    $('.header-user-name-text').text(data.name);
     $('.header-user-name-text').text(data.name);
 };
 

@@ -352,6 +352,13 @@ function _startCheckState() {
     });
 };
 
+function _signOut() {
+    alert('building');
+}
+
+function _gEmptyFn() {
+};
+
 function _refereshCheckCode(checkCodeId, notClear) {
     return;
     if (typeof notClear == 'undefined' || notClear != '1') {
@@ -579,11 +586,11 @@ function _isIE() {
             }
 
             return (document.cookie = [
-				encode(key), '=', stringifyCookieValue(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '',
-				options.path ? '; path=' + options.path : '',
-				options.domain ? '; domain=' + options.domain : '',
-				options.secure ? '; secure' : ''
+                encode(key), '=', stringifyCookieValue(value),
+                options.expires ? '; expires=' + options.expires.toUTCString() : '',
+                options.path ? '; path=' + options.path : '',
+                options.domain ? '; domain=' + options.domain : '',
+                options.secure ? '; secure' : ''
             ].join(''));
         }
 
@@ -658,5 +665,43 @@ function ajaxFn(type, url, data, success, failed) {
     });
 };
 
-function emptyFn() {
+/*XML Operation*/
+function LoadXMLFile(fileName) {
+    var xmlDom = null;
+    if (window.ActiveXObject) {
+        xmlDom = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDom.async = "false";
+        xmlDom.load(fileName);
+    } else if (document.implementation && document.implementation.createDocument) {
+        var xmlhttp = new window.XMLHttpRequest();
+        xmlhttp.open("GET", fileName, false);
+        xmlhttp.send(null);
+        xmlDom = xmlhttp.responseXML;
+    } else {
+        xmlDom = null;
+    }
+    return xmlDom;
 };
+
+function XMLToString(xmlDoc) {
+    if (window.ActiveXObject) {
+        return xmlDoc.xml;
+    } else {
+        return (new XMLSerializer()).serializeToString(xmlDoc);
+    }
+};
+
+function StringToXML(str) {
+    if (window.ActiveXObject) {
+        var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDom.loadXML(str);
+        return xmlDom;
+    } else {
+        var retDoc = new DOMParser().parseFromString(str, "text/xml");
+        if (XMLToString(retDoc) != str) {
+            retDoc = null;
+        }
+
+        return retDoc;
+    }
+}
