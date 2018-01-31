@@ -318,8 +318,7 @@ function showCompleteAlert() {
     $('.wrap-alert-content.completed').show();
     $('.wrap-alert-content.failed').hide();
     $('.wrap-alert-content.completed .step-status-title').html(_gStageData.course.msg.success);
-    $('.wrap-alert-content.completed .step-status-button.next span').text((_gStageData.course.current == _gStageData.course._totalSteps ? '去挑战下一课' : '去挑战下一步'));
-    $('.wrap-alert-content.completed .step-status-button.restart span').text((_gStageData.course.current == _gStageData.course._totalSteps ? '重新开始本课' : '重新开始本步'));
+    $('.wrap-alert-content.completed .step-status-button.next span').text((_gStageData.course.current == _gStageData.course._totalSteps ? '挑战下一课' : '挑战下一步'));
     WorkScene.saveStatus();
 };
 
@@ -383,101 +382,120 @@ function buildStatusAlertWindow() {
         tmppHTMLStr.push('    </div>');
         tmppHTMLStr.push('</div>');
         $('body').append($(tmppHTMLStr.join('')));
+        initStatusAlertEvents();
     }
 };
+
+function initStatusAlertEvents() {
+    $('.step-status-button.restart').on('click', function (e) {
+        WorkScene.reset(true);
+        $('.wrap-workstatus-alert').hide();
+    });
+
+    $('.step-status-button.next').on('click', function (e) {
+        var url = _getRequestURL(_gURLMapping.bus.setfinishstep, { symbol: _gStageData.course.id });
+        var successFn = function (response, status) {
+            if ($(response).find('err').length > 0) {
+                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Finish_CurrentStep');
+            } else {
+                var tmpURL = _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: _gStageData.course.next, symbol: _gStageData.course.id });
+                var tmpSuccessFn = function (response1, status1) {
+                    if ($(response1).find('err').length > 0) {
+                        _showGlobalMessage($(response1).find('err').attr('msg'), 'danger', 'alert_Set_CurrentStep');
+                    } else {
+                        if (_gStageData.isLastScene()) {
+                            var tURL = _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _gStageData.course.id });
+                            ajaxFn('GET', tURL, '<root></root>', _gEmptyFn, _gEmptyFn);
+                        }
+
+                        var tmpParam = '&scene=' + (_gStageData.isLastScene() ? _gStageData.course.nextid : _gStageData.course.id);
+                        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
+                    }
+                };
+
+                ajaxFn('POST', tmpURL, '<root></root>', tmpSuccessFn, _gEmptyFn);
+            }
+        };
+
+        ajaxFn('GET', url, '<root></root>', successFn, _gEmptyFn);
+    });
+
+    $('.step-status-button.find-error').on('click', function (e) {
+        $('.wrap-workstatus-alert').hide();
+    });
+
+    $('.step-evaluate-button').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        if (currBtn.hasClass('yes')) {
+
+        } else {
+
+        }
+    });
+}
 
 function showCourseMsg(titleText, contentText) {
-    $('#title_WorkPlatform_Msg').text(titleText);
-    $('#content_WorkPlatform_Msg').text(contentText);
-    $('#wrap_WorkPlatform_Msg').show();
-    adjustCourseMsgSize(titleText);
-    drawMsgAlertLogo();
-    var container = $('#container_WorkPlatform_Msg');
-    var title = $('#title_WorkPlatform_Msg');
-    var content = $('#content_WorkPlatform_Msg');
-    var button = $('#btn_Close_WorkPlatform_Msg');
-    var trBtn = $('#btn_WorkPlatform_Msg_Close');
-    var tmpHeight = container.height() - (trBtn.parent().parent().height() + title.parent().parent().height() + button.parent().parent().height() + 30);
-    content.height(tmpHeight);
+    buildCourseMsgWindow();
+    $('.course-msg-alert-title').text(titleText);
+    $('.course-msg-alert-content').text(contentText);
+    $('.mask-course-msg-alert').show();
+    adjustCourseMsgSize();
 };
 
-function adjustCourseMsgSize(titleText) {
-    var bodyWidth = $('body').width();
-    var bodyHeight = $('body').height();
-    var ratioRateH = bodyWidth / 1920;
-    var ratioRateV = bodyHeight / 1080;
-    var wrap = $('#wrap_WorkPlatform_Msg');
-    var orgWrapWidth = 525;
-    var orgWrapHeight = 315;
-    wrap.width(orgWrapWidth * ratioRateH);
-    wrap.height(orgWrapHeight * ratioRateV);
-    var container = $('#container_WorkPlatform_Msg');
-    var orgContainerWidth = 485;
-    var orgContainerHeight = 270;
-    container.width(orgContainerWidth * ratioRateH);
-    container.height(orgContainerHeight * ratioRateV);
-    wrap.css('top', (bodyHeight - wrap.height()) / 2 + 'px');
-    wrap.css('left', ((bodyWidth - wrap.width()) / 2 - (wrap.width() - container.width())) + 'px');
-    var logoContainer = $('#container_WorkPlatform_Msg_Logo');
-    var orgLogoContainerSize = 120;
-    logoContainer.width(orgLogoContainerSize * (ratioRateV > ratioRateH ? ratioRateH : ratioRateV));
-    logoContainer.height(orgLogoContainerSize * (ratioRateV > ratioRateH ? ratioRateH : ratioRateV));
-    var logoWrap = $('#wrap_WorkPlatform_Msg_Logo');
-    logoWrap.width(logoContainer.width() + 2);
-    logoWrap.height(logoContainer.width() + 2);
-    var logo = $('#logo_WorkPlatform_Msg');
-    var orgLogoWidth = 63;
-    var orgLogoHeight = 58;
-    var logoWidth = orgLogoWidth * ratioRateH;
-    var logoHeight = orgLogoHeight * ratioRateV;
-    var shadowX = 3 * ratioRateH;
-    var shadowY = 6 * ratioRateV;
-    logo.width(logoWidth + shadowX);
-    logo.height(logoHeight + shadowY);
-    logo.css('top', (logoContainer.height() - logo.height()) / 2 + 'px');
-    logo.css('left', (logoContainer.width() - logo.width()) / 2 + 'px');
-    logo.attr('width', logo.width());
-    logo.attr('height', logo.height());
-    var logoCopy = $('#logo_WorkPlatform_Msg_Copy');
-    logoCopy.width(logoWidth);
-    logoCopy.height(logoHeight);
-    logoCopy.attr('width', logoWidth);
-    logoCopy.attr('height', logoHeight);
-    var title = $('#title_WorkPlatform_Msg');
-    var titlePadding = 75 * ratioRateH;
-    title.css('padding', '0px ' + titlePadding + 'px');
-    var titleWidth = container.width() - 30 - titlePadding * 2;
-    var fontSize = 10;
-    while (testTextWidth(titleText, fontSize, '', '', '') < titleWidth && fontSize < 30) {
-        fontSize++;
-    }
-
-    title.css('font-size', fontSize + 'px');
-};
-
-function drawMsgAlertLogo() {
-    var tmpImg = new Image();
-    tmpImg.src = "image/logotop.png";
-    tmpImg.onload = function () {
-        var logo = $('#logo_WorkPlatform_Msg');
-        var logoCopy = $('#logo_WorkPlatform_Msg_Copy');
-        var copyCtx = logoCopy[0].getContext('2d');
-        var logoCtx = logo[0].getContext('2d');
-        copyCtx.drawImage(tmpImg, 0, 0, tmpImg.width, tmpImg.height, 0, 0, logoCopy.width(), logoCopy.height());
-        var copyImg = new Image();
-        copyImg.src = logoCopy[0].toDataURL("image/png");
-        copyImg.onload = function () {
-            logoCtx.shadowBlur = 3;
-            logoCtx.shadowOffsetX = 3 * $('body').width() / 1920;
-            logoCtx.shadowOffsetY = 5 * $('body').height() / 1080;
-            logoCtx.shadowColor = "rgb(213,169,114)";
-            var ptrn = logoCtx.createPattern(copyImg, 'no-repeat');
-            logoCtx.fillStyle = ptrn;
-            logoCtx.fillRect(0, 0, logo.width(), logo.height());
-        }
-    }
-
-    tmpImg.onerror = function () {
-        tmpImg.src = "image/logotop.png?rnd=" + Date.now();
+function buildCourseMsgWindow() {
+    if ($('.mask-course-msg-alert').length <= 0) {
+        var tmppHTMLStr = [];
+        tmppHTMLStr.push('<div class="mask-course-msg-alert">');
+        tmppHTMLStr.push('  <div class="wrap-course-msg-alert">');
+        tmppHTMLStr.push('    <div class="back-course-msg-alert-logo"></div>');
+        tmppHTMLStr.push('    <div class="container-course-msg-alert">');
+        tmppHTMLStr.push('        <div class="container-fluid h-100">');
+        tmppHTMLStr.push('            <div class="row justify-content-end">');
+        tmppHTMLStr.push('                <div class="col text-right no-padding">');
+        tmppHTMLStr.push('                    <i class="fa fa-close course-msg-alert-btn close" title="Close"></i>');
+        tmppHTMLStr.push('                </div>');
+        tmppHTMLStr.push('            </div>');
+        tmppHTMLStr.push('            <div class="row">');
+        tmppHTMLStr.push('                <div class="col">');
+        tmppHTMLStr.push('                    <p class="text-center course-msg-alert-title"></p>');
+        tmppHTMLStr.push('                </div>');
+        tmppHTMLStr.push('            </div>');
+        tmppHTMLStr.push('            <div class="row course-msg-alert-content-row">');
+        tmppHTMLStr.push('                <div class="col">');
+        tmppHTMLStr.push('                    <p class="text-center course-msg-alert-content"></p>');
+        tmppHTMLStr.push('                </div>');
+        tmppHTMLStr.push('            </div>');
+        tmppHTMLStr.push('            <div class="row course-msg-alert-footer-row">');
+        tmppHTMLStr.push('                <div class="col text-center">');
+        tmppHTMLStr.push('                    <button type="button" class="btn btn-sm btn-success course-msg-alert-btn ok">我知道了</button>');
+        tmppHTMLStr.push('                </div>');
+        tmppHTMLStr.push('            </div>');
+        tmppHTMLStr.push('        </div>');
+        tmppHTMLStr.push('    </div>');
+        tmppHTMLStr.push('    <div class="front-course-msg-alert-logo">');
+        tmppHTMLStr.push('      <img src="image/logotop.png">');
+        tmppHTMLStr.push('    </div>');
+        tmppHTMLStr.push('  </div>');
+        tmppHTMLStr.push('</div>');
+        $('body').append($(tmppHTMLStr.join('')));
+        $('.course-msg-alert-btn').on('click', function () {
+            $('.mask-course-msg-alert').hide();
+        });
     }
 };
+
+function adjustCourseMsgSize() {
+    var sizeRate = 55 / 1160;
+    var hwRate = 51 / 55;
+    var offsetRate = -25 / 1160;
+    var imgWidth = $('body').width() * sizeRate;
+    var imgHeight = imgWidth * hwRate;
+    $('.front-course-msg-alert-logo img').attr('width', imgWidth);
+    var offset = $('body').width() * offsetRate;
+    $('.back-course-msg-alert-logo').width(imgWidth + 22);
+    $('.back-course-msg-alert-logo').height(imgHeight + 22);
+    $('.front-course-msg-alert-logo').css('top', offset + 'px');
+    $('.front-course-msg-alert-logo').css('left', offset + 'px');
+    $('.back-course-msg-alert-logo').css('top', offset - 1 + 'px');
+    $('.back-course-msg-alert-logo').css('left', offset - 1 + 'px');
+};    

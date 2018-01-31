@@ -723,7 +723,7 @@ body {
 
             .wrap-workstatus-alert .wrap-alert-content .step-status-button:hover {
                 font-weight: bold;
-                border-width: 2px;
+                border: solid 2px rgba(255,255,255,0.8);
                 color: rgba(162,202,92, 1);
                 background-color: rgba(255,255,255,0.8);
             }
@@ -749,54 +749,91 @@ body {
                     font-size: 20px;
                 }
 
-
-.workplatform-msg-alert-wrap {
+.mask-course-msg-alert {
     position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(215,215,215,0.9);
     z-index: 20000;
     display: none;
 }
 
-.workplatform-msg-alert-container {
-    background-color: rgb(255,255,255);
-    border: solid 1px rgb(193,192,194);
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+.wrap-course-msg-alert {
     position: absolute;
-    bottom: 0px;
-    right: 0px;
-    z-index: 20;
+    top: 35%;
+    left: 35%;
+    width: 30%;
+    height: 30%;
 }
 
-.workplatform-msg-alert-logo-wrap {
-    background-color: rgb(193,192,194);
-    border-radius: 50%;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 10;
-}
+    .wrap-course-msg-alert .container-course-msg-alert {
+        background-color: rgb(255,255,255);
+        border: solid 1px rgb(193,192,194);
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
 
-.workplatform-msg-alert-logo-continer {
-    background-color: rgb(247,213,166);
-    border-radius: 50%;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    position: relative;
-    top: 1px;
-    left: 1px;
-    z-index: 30;
-}
+        .wrap-course-msg-alert .container-course-msg-alert p {
+            margin-bottom: 5px;
+        }
 
-.workplatform-msg-alert-logo {
-    position: relative;
-    margin-top: -1px;
-    margin-left: -1px;
-}
+        .wrap-course-msg-alert .container-course-msg-alert .course-msg-alert-btn.close {
+            line-height:25px;
+            cursor: pointer;
+            margin-right: 6px;
+        }
+
+            .wrap-course-msg-alert .container-course-msg-alert .course-msg-alert-btn.close:hover {
+                font-size: 18px;
+            }
 
 
+        .wrap-course-msg-alert .container-course-msg-alert .course-msg-alert-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .wrap-course-msg-alert .container-course-msg-alert .course-msg-alert-content-row {
+            height: calc(100% - 105px);
+            overflow: auto;
+        }
+
+        .wrap-course-msg-alert .container-course-msg-alert .course-msg-alert-content {
+            font-size: 16px;
+        }
+
+        .wrap-course-msg-alert .container-course-msg-alert .course-msg-alert-footer-row {
+            height: 45px;
+        }
+
+        .wrap-course-msg-alert .container-course-msg-alert .course-msg-alert-btn.ok {
+            margin-top: 10px;
+        }
+
+    .wrap-course-msg-alert .back-course-msg-alert-logo {
+        background-color: rgb(193,192,194);
+        position: absolute;
+        border: none;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+    }
+
+    .wrap-course-msg-alert .front-course-msg-alert-logo {
+        background-color: rgb(247,213,166);
+        padding: 10px;
+        position: absolute;
+        border: none;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+    }
 
 [role=treeitem] {
     background: rgb(245,245,245);

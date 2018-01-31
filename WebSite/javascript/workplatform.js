@@ -4,7 +4,10 @@ var _useFullContainer = false;
 var _gStageData = {
     user: { id: '', name: '', img: '' },
     course: { id: '', nextid: '', name: '', total: 0, current: 0, next: 0, complete: 0, note: [], words: [], kps: [], msg: {} },
-    blockly: { toolbox: '', workspace: '', lib: [] }
+    blockly: { toolbox: '', workspace: '', lib: [] },
+    isLastScene: function () {
+        return this.course.current == this.course.total;
+    }
 };
 var _workspaceCfg = {};
 
@@ -169,7 +172,7 @@ function initEvents() {
     initSiderBarEvents();
     initDetailPanelsEvents();
     $(window).resize(function () {
-        onWindowResize();
+        adjustMainSize();
     });
 
     $(window).on('beforeunload', function () {
@@ -840,6 +843,7 @@ function showCodeEditorWin(e) {
     $('.detail-panel').hide("slow");
     $('#win_CoreCode').hide('show');
     $('#win_CodeEditor').modal('show');
+    WorkScene.outputCode();
 };
 
 function showCoreCodeWin() {
@@ -911,104 +915,6 @@ function loadCodeText(symbol) {
             $('#iframe_CoreCode')[0].contentWindow.editor.setValue(data, -1);
         });
     }
-}
-
-function initCompleteMsgEvents() {
-
-    $('#btn_Step_Restart').on('click', function (e) {
-        if (_currentStep == _totalSteps) {
-            WorkScene.saveStatus();
-            window.location.href = "profile.html?rnd=" + Date.now();
-        } else {
-            WorkScene.reset(true);
-            resetPlayBtn('P');
-            $('.wrap-workstatus-alert').hide();
-        }
-    });
-
-    $('#btn_Step_GoNext').on('click', function (e) {
-        _registerRemoteServer();
-        $.ajax({
-            type: 'GET',
-            async: true,
-            url: _getRequestURL(_gURLMapping.bus.setfinishstep, { symbol: _currentStage }),
-            data: '',
-            success: function (response, status) {
-                if ($(response).find('err').length > 0) {
-                    _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Finish_CurrentStep');
-                    return;
-                }
-
-                $.ajax({
-                    type: 'POST',
-                    async: true,
-                    url: _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: _nextStep, symbol: _currentStage }),
-                    data: '<root></root>',
-                    success: function (response, status) {
-                        if ($(response).find('err').length > 0) {
-                            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Set_CurrentStep');
-                            return;
-                        }
-
-                        if (_currentStep == _totalSteps) {
-                            $.ajax({
-                                type: 'GET',
-                                async: true,
-                                url: _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _currentStage }),
-                                data: '',
-                                success: function (response, status) {
-                                },
-                                dataType: 'xml',
-                                xhrFields: {
-                                    withCredentials: true
-                                },
-                                error: function () {
-                                }
-                            });
-                        }
-
-                        var tmpParam = '&scene=';
-                        if (_currentStep == _totalSteps) {
-                            tmpParam += _nextStage;
-                        } else {
-                            tmpParam += _currentStage;
-                        }
-
-                        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
-                    },
-                    dataType: 'xml',
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    error: function () {
-                    }
-                });
-            },
-            dataType: 'xml',
-            xhrFields: {
-                withCredentials: true
-            },
-            error: function () {
-            }
-        });
-    });
-
-    $('#btn_Step_FindError').on('click', function (e) {
-        $('.wrap-workstatus-alert').hide();
-    });
-
-    $('#btn_Close_WorkPlatform_Msg').on('click', function (e) {
-        $('#wrap_WorkPlatform_Msg').hide();
-        $('#title_WorkPlatform_Msg').text('');
-        $('#content_WorkPlatform_Msg').text('');
-    });
-
-    $('#btn_WorkPlatform_Msg_Close').on('click', function (e) {
-        $('#wrap_WorkPlatform_Msg').hide();
-        $('#title_WorkPlatform_Msg').text('');
-        $('#content_WorkPlatform_Msg').text('');
-
-    });
 };
 
 /*course note highlight*/
