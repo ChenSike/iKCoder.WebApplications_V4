@@ -15,59 +15,34 @@ function initPage() {
     $('#mask_Page_Loading').hide();
     $('#mask_Page_Loading').css('visibility', 'hidden');
     adjustMainSize();
-
-    //_registerRemoteServer();
-    //$.ajax({
-    //    type: 'GET',
-    //    async: true,
-    //    url: _getRequestURL(_gURLMapping.account.signstatus),
-    //    data: '<root></root>',
-    //    success: function (data_1, status) {
-    //        if ($(data_1).find('err').length > 0) {
-    //            window.location.href = "signin.html?rnd=" + Date.now();
-    //            return;
-    //        } else {
-    //            $.ajax({
-    //                type: 'POST',
-    //                async: true,
-    //                url: _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString() }),
-    //                data: '<root></root>',
-    //                success: function (response, status) {
-    //                    if ($(response).find('err').length > 0) {
-    //                        _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');
-    //                        return;
-    //                    }
-    //                    var data = initData(response);
-    //                    _wordsData = data.course.words;
-    //                    _knowledgeData = data.course.kps;
-    //                    _workspaceCfg = data.blockly;
-    //                    buildStageHTML(data.course);
-    //                    updateUserInfo(data.user);
-    //                    adjustWorkSpaceType(data);
-    //                    //$("#txt_Code_Content").setTextareaCount({ color: "rgb(176,188,177)", });                        
-    //                    LoadSceneLib(data.blockly);
-    //                    $('#mask_Page_Loading').hide();
-    //                    $('#mask_Page_Loading').css('visibility', 'hidden');
-    //                    window.setTimeout('adjustAfterSiderBarResize();', 2000);
-    //                    window.setTimeout('WorkScene.saveStatus(true);', 60000);
-    //                },
-    //                dataType: 'xml',
-    //                xhrFields: {
-    //                    withCredentials: true
-    //                },
-    //                error: function () {
-    //                }
-    //            });
-    //        }
-    //    },
-    //    dataType: 'xml',
-    //    xhrFields: {
-    //        withCredentials: true
-    //    },
-    //    error: function () {
+    //var url = _getRequestURL(_gURLMapping.account.signstatus);
+    //var successFn = function (response, status) {
+    //    if ($(response).find('err').length > 0) {
     //        window.location.href = "signin.html?rnd=" + Date.now();
+    //        return;
+    //    } else {
+    //        var tmpURL = _getRequestURL(_gURLMapping.bus.getworkspace, { symbol: getQueryString('scene') });
+    //        var tmpSuccessFn = function (tmpResponse, tmpStatus) {
+    //            if ($(tmpResponse).find('err').length > 0) {
+    //                _showGlobalMessage($(tmpResponse).find('err').attr('msg'), 'danger', 'alert_Input_OldPWD');                    
+    //            } else {
+    //                initData(dataXML);
+    //                buildHeaderHTML();
+    //                buildCourseTips();
+    //                hideLoadingMask();
+    //                resetWorkSpace();
+    //                loadSceneLib();
+    //                initEvents();
+    //                //window.setTimeout('WorkScene.saveStatus(true);', 60000);
+    //            }
+    //        };
+    //        ajaxFn('POST', tmpURL, '<root></root>', tmpSuccessFn, _gEmptyFn);
     //    }
-    //});
+    //};
+    //var failedFn = function () {
+    //    window.location.href = "signin.html?rnd=" + Date.now();
+    //};
+    //ajaxFn('GET', url, '<root></root>', successFn, failedFn);
 
     var dataXML = Blockly.Xml.textToDom('<root>' +
         '   <basic>' +
