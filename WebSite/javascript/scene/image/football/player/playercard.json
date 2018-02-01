@@ -1,0 +1,93 @@
+{"frames": {
+
+"player-card-bar-back.png":
+{
+	"frame": {"x":1,"y":440,"w":229,"h":30},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":229,"h":30},
+	"sourceSize": {"w":229,"h":30},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"player-card-bar-fill-blue.png":
+{
+	"frame": {"x":1,"y":472,"w":229,"h":30},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":229,"h":30},
+	"sourceSize": {"w":229,"h":30},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"player-card-bar-fill-pink.png":
+{
+	"frame": {"x":232,"y":440,"w":229,"h":30},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":229,"h":30},
+	"sourceSize": {"w":229,"h":30},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"player-card-bar-fill-yellow.png":
+{
+	"frame": {"x":232,"y":472,"w":229,"h":30},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":229,"h":30},
+	"sourceSize": {"w":229,"h":30},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"player-card-middle-1.png":
+{
+	"frame": {"x":463,"y":286,"w":259,"h":195},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":259,"h":195},
+	"sourceSize": {"w":259,"h":195},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"player-card-middle-2.png":
+{
+	"frame": {"x":530,"y":1,"w":259,"h":195},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":259,"h":195},
+	"sourceSize": {"w":259,"h":195},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"player-card-top.png":
+{
+	"frame": {"x":309,"y":1,"w":283,"h":219},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":283,"h":219},
+	"sourceSize": {"w":283,"h":219},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"player-card.png":
+{
+	"frame": {"x":1,"y":1,"w":306,"h":437},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":306,"h":437},
+	"sourceSize": {"w":306,"h":437},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"select_tick.png":
+{
+	"frame": {"x":309,"y":286,"w":94,"h":94},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":94},
+	"sourceSize": {"w":94,"h":94},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "playercard.png",
+	"format": "RGBA8888",
+	"size": {"w":726,"h":503},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e558ca40bc147168d713790ad66a2326:d1afd60eba2ecfaa8807054f0ac5b3ff:0a028f61e00768eefe71327d5fcd22c5$"
+}
+}

@@ -1,0 +1,132 @@
+{
+  "strings": {
+
+    "STR_BROWSER_SUPPORT" : "Sorry, your browser is not supported. Try a different browser.",
+
+    "STR_L_HTML5": "This game uses HTML5. If it loads but does not run, please update your web browser.",
+
+    "STR_LOADER_LOADING" : "LOADING...##%",
+    "STR_TITLE_QUICKPLAY" : "QUICK PLAY",
+    "STR_TITLE_TOURNAMENT" : "TOURNAMENT",
+    "STR_TITLE_LEADERBOARD" : "LEADERBOARD",
+
+    "STR_COUNTRY_SELECT_TITLE" : "Choose Country",
+    "STR_COUNTRY_RANKING" : "RANK",
+
+    "STR_INSTRUCTIONS_TITLE" : "INSTRUCTIONS",
+    "STR_INSTRUCTIONS_MOVEMENT" : "MOVEMENT",
+    "STR_INSTRUCTIONS_TACKLE" : "TACKLE / PASS",
+    "STR_INSTRUCTIONS_PASS" : "SHORT PASS",
+    "STR_INSTRUCTIONS_SHOT" : "POWER SHOT",
+
+    "STR_CAPTAIN_SELECT_TITLE" : "Choose Captain",
+    "STR_PLAYER1_SELECT_TITLE" : "Choose 1st Team member",
+    "STR_PLAYER2_SELECT_TITLE" : "Choose 2nd Team member",
+    "STR_REVIEW_TITLE" : "Your Team",
+
+    "STR_TEAM_SELECT_TITLE" : "TEAM SELECT",
+    "STR_TEAM_SELECT_CAPTAIN" : "CAPTAIN",
+    "STR_TEAM_SELECT_PLAYERS" : "PLAYERS",
+
+    "STR_TOURNAMENT_TITLE" : "TOON CUP 2017",
+    "STR_READY_BUTTON" : "Ready !",
+    "STR_PLAY_BUTTON" : "Play !",
+    "STR_TOURNAMENT_END_BUTTON" : "OK !",
+    "STR_TOURNAMENT_QUARTERS" : "QUARTER FINALS",
+    "STR_TOURNAMENT_SEMI" : "SEMI FINALS",
+    "STR_TOURNAMENT_FINALS" : "FINAL",
+    "STR_TOURNAMENT_WINNER" : "WINNER",
+
+
+    "STR_GAMEOVER_TITLE" : "FINAL SCORE",
+    "STR_LEADERBOARD_TITLE" : "LEADERBOARD",
+
+    "STR_GAME_GOAL" : "GOAL!!!",
+    "STR_GAME_GOLDEN_GOAL" : "GOLDEN GOAL",
+    "STR_GAME_WIN" : "YOU WIN!",
+    "STR_GAME_FAIL" : "TRY AGAIN",
+    "STR_PAUSED" : "PAUSED",
+    "STR_QUIT" : "QUIT GAME",
+
+
+    "STR_COUNTRY_AFRICA" : "AFRICA\nALL STARS",
+    "STR_COUNTRY_EUR" : "EUROPE\nALL STARS",
+    "STR_COUNTRY_MEA" : "MIDDLE EAST\nALL STARS",
+    "STR_COUNTRY_WRD" : "WORLD\nALL STARS",
+    "STR_COUNTRY_BULGARIA" : "BULGARIA",
+    "STR_COUNTRY_DENMARK" : "DENMARK",
+    "STR_COUNTRY_EGYPT" : "EGYPT",
+    "STR_COUNTRY_FRANCE" : "FRANCE",
+    "STR_COUNTRY_GERMANY" : "GERMANY",
+    "STR_COUNTRY_ALGERIA" : "ALGERIA",
+    "STR_COUNTRY_HUNGARY" : "HUNGARY",
+    "STR_COUNTRY_ITALY" : "ITALY",
+    "STR_COUNTRY_NETHERLANDS" : "NETHERLANDS",
+    "STR_COUNTRY_NORWAY" : "NORWAY",
+    "STR_COUNTRY_POLAND" : "POLAND",
+    "STR_COUNTRY_PORTUGAL" : "PORTUGAL",
+    "STR_COUNTRY_ROMANIA" : "ROMANIA",
+    "STR_COUNTRY_RUSSIA" : "RUSSIA",
+    "STR_COUNTRY_SAUDI_ARABIA" : "SAUDI\nARABIA",
+    "STR_COUNTRY_SOUTH_AFRICA" : "SOUTH\nAFRICA",
+    "STR_COUNTRY_SPAIN" : "SPAIN",
+    "STR_COUNTRY_SWEDEN" : "SWEDEN",
+    "STR_COUNTRY_TURKEY" : "TURKEY",
+    "STR_COUNTRY_EMIRATES" : "UNITED\nARAB EMIRATES",
+    "STR_COUNTRY_UNITED_KINGDOM" : "UNITED\nKINGDOM",
+    "STR_COUNTRY_IRAQ" : "IRAQ",
+    "STR_COUNTRY_CZECH": "CZECH REPUBLIC",
+
+    "STR_WINS" : "Wins",
+    "STR_LOSES" : "Loses",
+    "STR_GOAL_DIFFERENCE" : "Goal Difference",
+    "STR_POINTS" : "Points",
+
+
+    "STR_KICK_OFF" : "KICK OFF",
+    "STR_TUTORIAL_PICKUPBALL" : "Move to get the ball!",
+    "STR_TUTORIAL_PASS" : "Tap 'Space' to pass to a player!",
+    "STR_TUTORIAL_IATACKLE" : "Boom! You got tackled!",
+    "STR_TUTORIAL_HUMANTACKLE" : "Tap 'Space' to tackle!",
+    "STR_TUTORIAL_HUMANSHOOT" : "Press and hold 'Space' to charge a shot!",
+    "STR_TUTORIAL_KICK_CHARGE" : "Release to shoot!!!",
+    "STR_TUTORIAL_GOAL" : "GOOOAAAALLLLLL!!!!!!",
+
+    "STR_MOBILE_TUTORIAL_PICKUPBALL" : "Move to get the ball!",
+    "STR_MOBILE_TUTORIAL_PASS" : "Press the action button to pass to a player!",
+    "STR_MOBILE_TUTORIAL_IATACKLE" : "Boom! You got tackled!",
+    "STR_MOBILE_TUTORIAL_HUMANTACKLE" : "Press the action button to tackle!",
+    "STR_MOBILE_TUTORIAL_HUMANSHOOT" : "Press and hold the action button to charge a shot!",
+    "STR_MOBILE_TUTORIAL_KICK_CHARGE" : "Release to shoot!!!",
+    "STR_MOBILE_TUTORIAL_GOAL" : "GOOOAAAALLLLLL!!!!!!",
+
+    "STR_CHAR_BEN" : "Ben",
+    "STR_CHAR_XLR8" : "XLR8",
+    "STR_CHAR_FOUR_ARMS" : "Four Arms",
+    "STR_CHAR_PROHYAS" : "Prohyas",
+    "STR_CHAR_VAMBRE" : "Vambre",
+    "STR_CHAR_GRUP" : "Grup",
+    "STR_CHAR_BLOSSOM" : "Blossom",
+    "STR_CHAR_BUTTERCUP" : "Buttercup",
+    "STR_CHAR_BUBBLES" : "Bubbles",
+    "STR_CHAR_MOJO" : "Mojo",
+    "STR_CHAR_FINN" : "Finn",
+    "STR_CHAR_BMO" : "BMO",
+    "STR_CHAR_JAKE" : "Jake",
+    "STR_CHAR_BUBBLEGUM" : "Bubblegum",
+    "STR_CHAR_MARCELLINE" : "Marcelline",
+    "STR_CHAR_GUMBALL" : "Gumball",
+    "STR_CHAR_ANAIS" : "Anais",
+    "STR_CHAR_RICHARD" : "Richard",
+    "STR_CHAR_DARWIN" : "Darwin",
+    "STR_CHAR_MORDECAI" : "Mordecai",
+    "STR_CHAR_RIGBY" : "Rigby",
+    "STR_CHAR_ICE_BEAR" : "Ice Bear",
+    "STR_CHAR_PANDA" : "Panda",
+    "STR_CHAR_GRIZZ" : "Grizz"
+
+
+
+
+  }
+}
