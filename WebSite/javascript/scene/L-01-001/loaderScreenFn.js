@@ -20,11 +20,11 @@
             var t = (p.getJson("config").config.LOCALE, !1);
             this.logoContainer = new r.Container,
                 t || (
-                    this.logo = new r.Sprite.fromImage(ASSET_URL + "img/localisation/loader-logo-small.png"),
+                    this.logo = new r.Sprite.fromImage(URL_HEADER.IMAGE + "localisation/loader-logo-small.png"),
                     this.logo.anchor.set(.5, .5)
                     //this.logoContainer.addChild(this.logo)
                 ),
-                this.cnLogo = new r.Sprite.fromImage(ASSET_URL + "img/loader/loading_logo_cn.png"),
+                this.cnLogo = new r.Sprite.fromImage(URL_HEADER.IMAGE + "loader/loading_logo_cn.png"),
                 this.cnLogo.anchor.set(.5, .5),
                 t || (
                     this.cnLogo.position.x = this.logo.width + 40),
@@ -32,9 +32,9 @@
                     t || (
                         this.logoContainer.position.x = -this.logoContainer.width / 4 - 20
                     ),
-                    this.barBg = new r.Sprite.fromImage(ASSET_URL + "img/loader/loader-bar.png"),
+                    this.barBg = new r.Sprite.fromImage(URL_HEADER.IMAGE + "loader/loader-bar.png"),
                     this.barBg.anchor.set(.5, .5),
-                    this.barFill = new r.Sprite.fromImage(ASSET_URL + "img/loader/loader-fill.png"),
+                    this.barFill = new r.Sprite.fromImage(URL_HEADER.IMAGE + "loader/loader-fill.png"),
                     this.barFill.anchor.set(.5, .5),
                     this.barW = 494,
                     this.barH = 70,
@@ -47,7 +47,7 @@
                     this.barMask.lineTo(0, this.barH - 12),
                     this.barMask.scale.x = 0,
                     this.barFill.mask = this.barMask,
-                    this.barFrame = new r.Sprite.fromImage(ASSET_URL + "img/loader/loader-frame.png"),
+                    this.barFrame = new r.Sprite.fromImage(URL_HEADER.IMAGE + "loader/loader-frame.png"),
                     this.barFrame.anchor.set(.5, .5),
                     this.label = new c,
                     this.barBg.position.set(0, this.logoContainer.height + 20),

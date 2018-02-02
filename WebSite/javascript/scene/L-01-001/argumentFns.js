@@ -9,20 +9,49 @@
             var t = document.createElement("canvas");
             return !(!t.getContext || !t.getContext("2d"))
         }
-        if (window.ASSET_URL = "assets/", window.config = {
-            app: "com/football/app/FootballApp"
-        }, window.console || (window.console = {
-            log: function (t) { }
-        }), window.console.log || (window.console.log = function (t) { }), window.DEVICE_SCALE = window.devicePixelRatio || 1, n()) {
+        if (
+            //window.ASSET_URL = "assets/",
+            window.ASSET_URL = "",
+            window.config = {
+                app: "com/football/app/FootballApp"
+            },
+            window.console || (window.console = {
+                log: function (t) { }
+            }),
+            window.console.log || (window.console.log = function (t) { }),
+            window.DEVICE_SCALE = window.devicePixelRatio || 1, n()
+        ) {
             var r, o, s, a, h, l, c, u, p, d;
             ! function () {
                 var t = function () {
-                    document.getElementById("container");
-                    window.scrollTo(0, 0), p.resize(window.innerWidth, window.innerHeight)
+                    //document.getElementById("container");
+                    document.getElementById("game_container");
+                    window.scrollTo(0, 0), p.resize(window.innerWidth, window.innerHeight);
                 };
-                r = i(3), o = i(4), s = i(5), a = i(6), h = i(8), l = i(12), window.THREE = l, c = i(13), u = i(24), p = new c, window.app = p, d = document.getElementById("container"), document.body.appendChild(p.view), d.style.background = "black", p.view.style.position = "absolute", p.view.style.top = 0, p.view.style.left = 0, window.addEventListener("resize", function () {
+                r = i(3),
+                o = i(4),
+                s = i(5),
+                a = i(6),
+                h = i(8),
+                l = i(12),
+                window.THREE = l,
+                c = i(13),
+                u = i(24),
+                p = new c,
+                window.app = p,
+                //d=document.getElementById("container");
+                d = document.getElementById("game_container"),
+                //document.body.appendChild(p.view),
+                $('body').append($(p.view)),
+                //d.style.background = "black",
+                $(d).css('background', "black"),
+                p.view.style.position = "absolute",
+                p.view.style.top = 0,
+                p.view.style.left = 0,
+                window.addEventListener("resize", function () {
                     t()
-                }), t()
+                }),
+                t()
             }()
         } else {
             var f = i(2);
@@ -47,20 +76,20 @@
                 checkDevice: function (t) {
                     for (var e = [/(Mobile\/8C148)/, /(Mobile\/8C148a)/, /(Mobile\/8A293)/, /(Mobile\/8A306)/, /(Mobile\/8A400)/, /(Mobile\/8B117)/, /(Mobile\/8E128)/, /(Mobile\/8E200)/, /(Mobile\/8E303)/, /(Mobile\/8E401)/, /(Mobile\/8E600)/, /(Mobile\/8E501)/, /(Mobile\/8G4)/, /(Mobile\/8H7)/, /(Mobile\/8J2)/, /(Mobile\/8K2)/, /(Mobile\/8L1)/, /(Mobile\/9A334)/, /(Mobile\/10A523)/, /(Mobile\/9A405)/], i = 0; i < e.length; i++)
                         if (t.match(e[i])) {
-                            var n = ASSET_URL + "img/unsupported.jpg";
+                            var n = URL_HEADER.IMAGE + "unsupported.jpg";
                             return this.createBigImage(n), !1
                         }
                     if (/iP[ao]d|iPhone/i.test(t)) {
                         var r = parseFloat(("" + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0, ""])[1]).replace("undefined", "3_2").replace("_", ".").replace("_", "")) || !1;
                         if (r < 6) {
-                            var n = ASSET_URL + "img/unsupported.jpg";
+                            var n = URL_HEADER.IMAGE + "unsupported.jpg";
                             return this.createBigImage(n), !1
                         }
                     }
                 },
                 checkCanvas: function () {
                     if (!this.hasCanvasSupport()) {
-                        var t = ASSET_URL + "img/unsupported.jpg";
+                        var t = URL_HEADER.IMAGE + "unsupported.jpg";
                         return this.createBigImage(t), !1
                     }
                     return !0
@@ -71,7 +100,7 @@
                 },
                 checkCookies: function () {
                     if (!this.cookiesEnabled()) {
-                        var t = ASSET_URL + "img/cookies.jpg";
+                        var t = URL_HEADER.IMAGE + "cookies.jpg";
                         this.createBigImage(t)
                     }
                 },
@@ -23099,7 +23128,7 @@
             function e() {
                 r(this, e);
                 var i = {
-                    config: ASSET_URL + "json/config.json",
+                    config: URL_HEADER.DATA + "json/config.json",
                     loaderScreen: v["default"],
                     backgroundColor: 0
                 },
@@ -23111,55 +23140,58 @@
                     width: 1136,
                     height: 745
                 }, n.preloader.addPixiAssets([
-                    ASSET_URL + "img/ui/menu-background.jpg",
-                    ASSET_URL + "img/ui/background-platform.png",
-                    ASSET_URL + "img/loader/loader-bar.png",
-                    ASSET_URL + "img/loader/loader-fill.png",
-                    ASSET_URL + "img/loader/loading_logo_cn.png",
-                    ASSET_URL + "img/localisation/loader-logo-small.png"]),
+                    URL_HEADER.IMAGE + "ui/menu-background.jpg",
+                    URL_HEADER.IMAGE + "ui/background-platform.png",
+                    URL_HEADER.IMAGE + "loader/loader-bar.png",
+                    URL_HEADER.IMAGE + "loader/loader-fill.png",
+                    URL_HEADER.IMAGE + "loader/loading_logo_cn.png",
+                    URL_HEADER.IMAGE + "localisation/loader-logo-small.png"]),
                 n.loader.addPixiAssets([
-                    ASSET_URL + "img/ring.png",
-                    ASSET_URL + "img/game/main_info_panel.png",
-                    ASSET_URL + "img/game/panelDivider.png",
-                    ASSET_URL + _gSettings.background_game,
-                    ASSET_URL + "img/game/leaderboard.json",
-                    ASSET_URL + "img/ui/title.json",
-                    ASSET_URL + "img/game/game.json",
-                    ASSET_URL + "img/game/referee.json",
-                    ASSET_URL + "img/game/shoot_arrow.png",
-                    ASSET_URL + "img/game/runnoff.png",
-                    ASSET_URL + "img/sponsor/board1.png",
-                    ASSET_URL + "img/sponsor/board2.png",
-                    ASSET_URL + "img/sponsor/pitch-logo.png",
-                    ASSET_URL + "img/sponsor/main-menu-sponsor.jpg",
-                    ASSET_URL + "img/game/front_crowd.png",
-                    ASSET_URL + "img/game/shield_bubble.png",
-                    ASSET_URL + "img/game/overlays.json",
-                    ASSET_URL + "img/game/shop.json",
-                    ASSET_URL + "img/game/game_objects/ball-shadow.png",
-                    ASSET_URL + "img/ui/buttons.json",
-                    ASSET_URL + "img/ui/breadcrumb.json",
-                    ASSET_URL + "img/player/playercard.json",
-                    ASSET_URL + "img/player/character.json",
-                    ASSET_URL + "img/ui/panels.json",
-                    ASSET_URL + "img/ui/menu-background.jpg",
-                    ASSET_URL + "img/ui/country-select-panel.png",
-                    ASSET_URL + "img/ui/panel-player-select-and-tournament.png",
-                    ASSET_URL + "img/ui/diagram.png",
-                    ASSET_URL + "img/ui/vs-panel.png",
-                    ASSET_URL + "img/ui/panel-various-paused-bg.png",
-                    ASSET_URL + "img/ui/overlay-background.png",
-                    ASSET_URL + "img/ui/instructions-panel.png",
-                    ASSET_URL + "img/ui/panel-final-score-background.png",
-                    ASSET_URL + "img/smoke_mixed.png"]),
-                n.loader.addCSS(ASSET_URL + "css/fonts.css"),
-                n.loader.addJson(ASSET_URL + "json/shopData.json", "shopData"),
-                n.loader.addJson(ASSET_URL + "json/strings.json", "strings"),
-                n.loader.addJson(ASSET_URL + "json/character-animation.json", "character-animation"),
-                n.loader.addCSS(ASSET_URL + "css/fonts.css"), n.loader.addFonts(["lubalin", "fredburger"]);
+                    URL_HEADER.IMAGE + "ring.png",
+                    URL_HEADER.IMAGE + "game/main_info_panel.png",
+                    URL_HEADER.IMAGE + "game/panelDivider.png",
+                    URL_HEADER.IMAGE + _gSettings.background_game,
+                    URL_HEADER.IMAGE + "game/leaderboard.json",
+                    URL_HEADER.IMAGE + "ui/title.json",
+                    URL_HEADER.IMAGE + "game/game.json",
+                    URL_HEADER.IMAGE + "game/referee.json",
+                    URL_HEADER.IMAGE + "game/shoot_arrow.png",
+                    URL_HEADER.IMAGE + "game/runnoff.png",
+                    URL_HEADER.IMAGE + "sponsor/board1.png",
+                    URL_HEADER.IMAGE + "sponsor/board2.png",
+                    URL_HEADER.IMAGE + "sponsor/pitch-logo.png",
+                    URL_HEADER.IMAGE + "sponsor/main-menu-sponsor.jpg",
+                    URL_HEADER.IMAGE + "game/front_crowd.png",
+                    URL_HEADER.IMAGE + "game/shield_bubble.png",
+                    URL_HEADER.IMAGE + "game/overlays.json",
+                    URL_HEADER.IMAGE + "game/shop.json",
+                    URL_HEADER.IMAGE + "game/game_objects/ball-shadow.png",
+                    URL_HEADER.IMAGE + "ui/buttons.json",
+                    URL_HEADER.IMAGE + "ui/breadcrumb.json",
+                    URL_HEADER.IMAGE + "player/playercard.json",
+                    URL_HEADER.IMAGE + "player/character.json",
+                    URL_HEADER.IMAGE + "ui/panels.json",
+                    URL_HEADER.IMAGE + "ui/menu-background.jpg",
+                    URL_HEADER.IMAGE + "ui/country-select-panel.png",
+                    URL_HEADER.IMAGE + "ui/panel-player-select-and-tournament.png",
+                    URL_HEADER.IMAGE + "ui/diagram.png",
+                    URL_HEADER.IMAGE + "ui/vs-panel.png",
+                    URL_HEADER.IMAGE + "ui/panel-various-paused-bg.png",
+                    URL_HEADER.IMAGE + "ui/overlay-background.png",
+                    URL_HEADER.IMAGE + "ui/instructions-panel.png",
+                    URL_HEADER.IMAGE + "ui/panel-final-score-background.png",
+                    URL_HEADER.IMAGE + "smoke_mixed.png"]),                
+                //n.loader.addCSS(ASSET_URL + "css/fonts.css"),
+                n.loader.addCSS(URL_HEADER.CSS +"leading-course-fonts.css"),
+                n.loader.addJson(URL_HEADER.DATA + "json/shopData.json", "shopData"),
+                n.loader.addJson(URL_HEADER.DATA + "json/strings.json", "strings"),
+                n.loader.addJson(URL_HEADER.DATA + "json/character-animation.json", "character-animation"),
+                //n.loader.addCSS(ASSET_URL + "css/fonts.css"),
+                n.loader.addCSS(URL_HEADER.CSS + "leading-course-fonts.css"),
+                n.loader.addFonts(["lubalin", "fredburger"]);
                 for (var s = [], a = 0; a < 40; a++) {
                     var h = a;
-                    h < 10 && (h = "0" + h), s[a] = ASSET_URL + "img/game/shield/shield_" + h + ".png"
+                    h < 10 && (h = "0" + h), s[a] = URL_HEADER.IMAGE + "game/shield/shield_" + h + ".png"
                 }
                 n.loader.addPixiAssets(s), n.loadSounds();
                 var l = {};
@@ -23167,7 +23199,7 @@
                     var c = st.CharacterData[a].spriteSheet,
                         u = c.replace("%COLOR%", "blue"),
                         p = c.replace("%COLOR%", "red");
-                    l[u] || (l[u] = !0, n.loader.addPixiAssets([ASSET_URL + "img/game/characters/" + p, ASSET_URL + "img/game/characters/" + u]))
+                    l[u] || (l[u] = !0, n.loader.addPixiAssets([URL_HEADER.IMAGE + "game/characters/" + p, URL_HEADER.IMAGE + "game/characters/" + u]))
                 }
                 return n.onReady.add(function () {
                     setTimeout(function () {
@@ -23178,7 +23210,15 @@
             return s(e, t), e.prototype.onPreload = function () {
                 var t = $["default"].getJson("config").config.LOCALE,
                     e = ["_ru"].indexOf(t) !== -1;
-                window.MAIN_FONT = e ? "fredburger" : "lubalin", this.background = dt.Sprite.from(ASSET_URL + "img/ui/menu-background.jpg"), this.stage.addChildAt(this.background, 0), this.background.alpha = 0, this.front = new dt.Container, this.platform = dt.Sprite.from(ASSET_URL + "img/ui/background-platform.png"), this.front.addChild(this.platform), this.stage.addChildAt(this.front, 1), this.platform.alpha = 0
+                window.MAIN_FONT = e ? "fredburger" : "lubalin",
+                this.background = dt.Sprite.from(URL_HEADER.IMAGE + "/ui/menu-background.jpg"),
+                this.stage.addChildAt(this.background, 0),
+                this.background.alpha = 0,
+                this.front = new dt.Container,
+                this.platform = dt.Sprite.from(URL_HEADER.IMAGE + "ui/background-platform.png"),
+                this.front.addChild(this.platform),
+                this.stage.addChildAt(this.front, 1),
+                this.platform.alpha = 0
             }, e.prototype.loadSounds = function () {
                 (0, d["default"])()
             }, e.prototype.onAppReady = function () {
@@ -23322,7 +23362,10 @@
                 return this.pixiAssetsToLoad = this.pixiAssetsToLoad.concat(t), this
             }, h.prototype.addCSS = function (t) {
                 var e = document.createElement("link");
-                return e.type = "text/css", e.rel = "stylesheet", e.href = t, document.getElementsByTagName("head")[0].appendChild(e), this
+                return e.type = "text/css",
+                    e.rel = "stylesheet",
+                    e.href = t,
+                    document.getElementsByTagName("head")[0].appendChild(e), this
             }, h.prototype.addCustom = function (t) {
                 var e = {
                     object: t,
@@ -23356,7 +23399,7 @@
                 return 0 === this.fontsToLoad.length ? void this._loadFiles() : (WebFont.load({
                     custom: {
                         families: this.fontsToLoad,
-                        urls: [ASSET_URL + "./css/fonts.css"]
+                        urls: [URL_HEADER.CSS + "leading-course-fonts.css"]
                     },
                     active: function () {
                         for (var t = 0; t < this.fontsToLoad.length; t++) {
@@ -24374,11 +24417,42 @@
                 o = i(24),
                 s = i(16),
                 a = (i(14), function (t) {
-                    if (this.mode = t, this.onRotationChanged = new s, this.rotationWarning = !0, this.orientation, this.rotateScreen = document.createElement("div"), this.rotateScreen.style.backgroundPosition = "50% 50%", this.rotateScreen.style.backgroundColor = "#3b3b3b", this.rotateScreen.style.backgroundRepeat = "no-repeat", this.rotateScreen.style.position = "absolute", this.rotateScreen.style.backgroundSize = "cover", this.rotateScreen.style.top = "0", this.rotateScreen.style.left = "0", this.rotateScreen.style.bottom = "0", this.rotateScreen.style.right = "0", this.rotateScreen.style.zIndex = 1e7, this.rotateScreen.style.display = "none", this.rotateScreen.height = "100%", this.rotateScreen.width = "100%", this.changeRotationImage(ASSET_URL + "img/orientation_iphone.jpg"), o.instance.iPad && this.changeRotationImage(ASSET_URL + "img/orientation_ipad.jpg"), document.body.appendChild(this.rotateScreen), o.instance.firefox) {
+                    if (
+                        this.mode = t,
+                        this.onRotationChanged = new s,
+                        this.rotationWarning = !0,
+                        this.orientation,
+                        this.rotateScreen = document.createElement("div"),
+                        this.rotateScreen.style.backgroundPosition = "50% 50%",
+                        this.rotateScreen.style.backgroundColor = "#3b3b3b",
+                        this.rotateScreen.style.backgroundRepeat = "no-repeat",
+                        this.rotateScreen.style.position = "absolute",
+                        this.rotateScreen.style.backgroundSize = "cover",
+                        this.rotateScreen.style.top = "0",
+                        this.rotateScreen.style.left = "0",
+                        this.rotateScreen.style.bottom = "0",
+                        this.rotateScreen.style.right = "0",
+                        this.rotateScreen.style.zIndex = 1e7,
+                        this.rotateScreen.style.display = "none",
+                        this.rotateScreen.height = "100%",
+                        this.rotateScreen.width = "100%",
+                        this.changeRotationImage(URL_HEADER.IMAGE + "orientation_iphone.jpg"),
+                        o.instance.iPad && this.changeRotationImage(URL_HEADER.IMAGE + "orientation_ipad.jpg"),
+                        //document.body.appendChild(this.rotateScreen),
+                        $('body').append($(this.rotateScreen)),
+                        o.instance.firefox
+                    ) {
                         var e = window.matchMedia("(orientation: portrait)");
                         e.addListener(this.checkOrientationChangesFirefox.bind(this))
                     }
-                    this.supportsOrientationChange = "onorientationchange" in window, this.supportsOrientationChange && (this.orientation = window.orientation, window.addEventListener("orientationchange", this.checkOrientationChanges.bind(this), !1), this.checkOrientationChanges()), this.supportsOrientationEvent = "DeviceOrientationEvent" in window
+
+                    this.supportsOrientationChange = "onorientationchange" in window,
+                    this.supportsOrientationChange && (
+                        this.orientation = window.orientation,
+                        window.addEventListener("orientationchange", this.checkOrientationChanges.bind(this), !1),
+                        this.checkOrientationChanges()
+                    ),
+                    this.supportsOrientationEvent = "DeviceOrientationEvent" in window
                 });
             a.prototype.constructor = a, a.prototype.checkOrientationResize = function (t) { }, a.prototype.changeRotationImage = function (t) {
                 this.rotateScreen.style.backgroundImage = "url(" + t + ")"
@@ -24402,7 +24476,7 @@
         n = function (t, e, n) {
             var r = i(18),
                 o = function (t, e) {
-                    this.debug = e.debug || !1, this.app = t, this.app.loader.addJson(e.stringsUrl || ASSET_URL + "json/strings.json", "strings")
+                    this.debug = e.debug || !1, this.app = t, this.app.loader.addJson(e.stringsUrl || URL_HEADER.DATA + "json/strings.json", "strings")
                 };
             o.prototype.constructor = o, o.prototype.init = function () {
                 if (window.translations = r.getJson("strings").strings, this.debug)
@@ -24579,13 +24653,56 @@
             }
         }
         e.__esModule = !0, e["default"] = function () {
-            o["default"].sfx.addSound(ASSET_URL + "snd/applause_extra", "applause_extra"), o["default"].sfx.addSound(ASSET_URL + "snd/button_deselect", "cantselect"), o["default"].sfx.addSound(ASSET_URL + "snd/ballkick_billboards", "ballkick_billboards"), o["default"].sfx.addSound(ASSET_URL + "snd/ballkick_pass", "ballkick_pass"), o["default"].sfx.addSound(ASSET_URL + "snd/ball_pickup", "ball_pickup"), o["default"].sfx.addSound(ASSET_URL + "snd/ballkick_post", "ballkick_post"), o["default"].sfx.addSound(ASSET_URL + "snd/ballkick_shoot", "ballkick_shoot"), o["default"].sfx.addSound(ASSET_URL + "snd/ballkick_shoot_hard", "ballkick_shoot_hard"), o["default"].sfx.addSound(ASSET_URL + "snd/bonus_box_pickup", "bonus_box_pickup"), o["default"].sfx.addSound(ASSET_URL + "snd/buttercup", "buttercup"), o["default"].sfx.addSound(ASSET_URL + "snd/button_press", "button_press"), o["default"].sfx.addSound(ASSET_URL + "snd/button_press2", "button_press2"), o["default"].sfx.addSound(ASSET_URL + "snd/button_roll", "button_roll"), o["default"].sfx.addSound(ASSET_URL + "snd/captain_shot_charged", "captain_shot_charged"), o["default"].sfx.addSound(ASSET_URL + "snd/crowd_goal_1", "crowd_goal_1"), o["default"].sfx.addSound(ASSET_URL + "snd/crowd_goal_2", "crowd_goal_2"), o["default"].sfx.addSound(ASSET_URL + "snd/crowd_tackle", "crowd_tackle"), o["default"].sfx.addSound(ASSET_URL + "snd/electro_cute", "electro_cute"), o["default"].sfx.addSound(ASSET_URL + "snd/finn", "finn"), o["default"].sfx.addSound(ASSET_URL + "snd/gumball", "gumball"), o["default"].sfx.addSound(ASSET_URL + "snd/mojo", "mojo"), o["default"].sfx.addSound(ASSET_URL + "snd/panda_bear", "panda_bear"), o["default"].sfx.addSound(ASSET_URL + "snd/princess_bubblegum", "princess_bubblegum"), o["default"].sfx.addSound(ASSET_URL + "snd/shot_charged", "shot_charged"), o["default"].sfx.addSound(ASSET_URL + "snd/charge_up", "charge_up"), o["default"].sfx.addSound(ASSET_URL + "snd/tackle_hit_deck", "tackle_hit_deck"), o["default"].sfx.addSound(ASSET_URL + "snd/whistle_full_time", "whistle_full_time"), o["default"].sfx.addSound(ASSET_URL + "snd/whistle_long", "whistle_long"), o["default"].sfx.addSound(ASSET_URL + "snd/whistle_short", "whistle_short"), o["default"].sfx.addSound(ASSET_URL + "snd/whistle_tripple", "whistle_tripple"), o["default"].sfx.addSound(ASSET_URL + "snd/crowd_tackle_2", "crowd_tackle_2"),
-                o["default"].sfx.addSound(ASSET_URL + "snd/big_kick", "big_kick"), o["default"].sfx.addSound(ASSET_URL + "snd/slide_1", "slide_1"), o["default"].sfx.addSound(ASSET_URL + "snd/slide_2", "slide_2"), o["default"].sfx.addSound(ASSET_URL + "snd/slide_3", "slide_3"), o["default"].sfx.addSound(ASSET_URL + "snd/crowd_normal_1", "crowd_normal_1"), o["default"].sfx.addSound(ASSET_URL + "snd/crowd_normal_2", "crowd_normal_2"), o["default"].sfx.addSound(ASSET_URL + "snd/crowd_normal_3", "crowd_normal_3"), o["default"].sfx.addGroup(["crowd_tackle_2", "crowd_tackle", "crowd_normal_1", "crowd_normal_2", "crowd_normal_3"], "croudAngry"), o["default"].sfx.addGroup(["crowd_normal_1", "crowd_normal_2", "crowd_normal_3"], "croudHappy"), o["default"].sfx.addGroup(["slide_1", "slide_2", "slide_3"], "slide"), o["default"].music.addSound(ASSET_URL + "snd/menumusic2", "menumusic2", {
+            //reset sound url
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/applause_extra", "applause_extra"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/button_deselect", "cantselect"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/ballkick_billboards", "ballkick_billboards"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/ballkick_pass", "ballkick_pass"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/ball_pickup", "ball_pickup"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/ballkick_post", "ballkick_post"), 
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/ballkick_shoot", "ballkick_shoot"), 
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/ballkick_shoot_hard", "ballkick_shoot_hard"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/bonus_box_pickup", "bonus_box_pickup"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/buttercup", "buttercup"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/button_press", "button_press"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/button_press2", "button_press2"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/button_roll", "button_roll"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/captain_shot_charged", "captain_shot_charged"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/crowd_goal_1", "crowd_goal_1"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/crowd_goal_2", "crowd_goal_2"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/crowd_tackle", "crowd_tackle"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/electro_cute", "electro_cute"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/finn", "finn"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/gumball", "gumball"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/mojo", "mojo"), 
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/panda_bear", "panda_bear"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/princess_bubblegum", "princess_bubblegum"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/shot_charged", "shot_charged"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/charge_up", "charge_up"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/tackle_hit_deck", "tackle_hit_deck"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/whistle_full_time", "whistle_full_time"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/whistle_long", "whistle_long"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/whistle_short", "whistle_short"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/whistle_tripple", "whistle_tripple"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/crowd_tackle_2", "crowd_tackle_2"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/big_kick", "big_kick"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/slide_1", "slide_1"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/slide_2", "slide_2"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/slide_3", "slide_3"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/crowd_normal_1", "crowd_normal_1"),
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/crowd_normal_2", "crowd_normal_2"), 
+            o["default"].sfx.addSound(URL_HEADER.SOUND + "/crowd_normal_3", "crowd_normal_3"),
+            o["default"].sfx.addGroup(["crowd_tackle_2", "crowd_tackle", "crowd_normal_1", "crowd_normal_2", "crowd_normal_3"], "croudAngry"),
+            o["default"].sfx.addGroup(["crowd_normal_1", "crowd_normal_2", "crowd_normal_3"], "croudHappy"),
+            o["default"].sfx.addGroup(["slide_1", "slide_2", "slide_3"], "slide"),
+            o["default"].music.addSound(URL_HEADER.SOUND + "/menumusic2", "menumusic2", {
                     loop: !0
-                }), o["default"].music.addSound(ASSET_URL + "snd/applause_loop", "applause_loop", {
+            }),
+            o["default"].music.addSound(URL_HEADER.SOUND + "/applause_loop", "applause_loop", {
                     loop: !0,
                     volume: .1
-                }), window.SoundManager = o["default"]
+            }),
+            window.SoundManager = o["default"]
         };
         var r = i(32),
             o = n(r);
@@ -26057,7 +26174,22 @@
                 p = i(58),
                 d = i(24);
             InstructionsBaseScreen = function (t) {
-                r.Container.call(this), this.hasNextButton = t !== !1, this.mobile = !d.instance.desktop, this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-player-select-and-tournament.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg), this.panelBg = r.Sprite.from(ASSET_URL + "img/ui/instructions-panel.png"), this.panelBg.anchor.set(.5, .5), this.panelBg.position.set(0, -40), this.bg.addChild(this.panelBg), this.title = new a.h1(l.instructions_screen.title), this.title.anchor.set(.5, 1), this.title.position.set(0, -this.bg.height / 2 - 25), this.addChild(this.title), this.onNextButton = new c, this.onPreviousButton = new c;
+                r.Container.call(this),
+                this.hasNextButton = t !== !1,
+                this.mobile = !d.instance.desktop,
+                this.bg = r.Sprite.from(URL_HEADER.IMAGE + "/ui/panel-player-select-and-tournament.png"),
+                this.bg.anchor.set(.5, .5),
+                this.addChild(this.bg),
+                this.panelBg = r.Sprite.from(URL_HEADER.IMAGE + "ui/instructions-panel.png"),
+                this.panelBg.anchor.set(.5, .5),
+                this.panelBg.position.set(0, -40),
+                this.bg.addChild(this.panelBg),
+                this.title = new a.h1(l.instructions_screen.title),
+                this.title.anchor.set(.5, 1),
+                this.title.position.set(0, -this.bg.height / 2 - 25),
+                this.addChild(this.title),
+                this.onNextButton = new c,
+                this.onPreviousButton = new c;
                 var e = {
                     fill: "white",
                     fontSize: 16,
@@ -27502,7 +27634,7 @@
                 function e(i) {
                     o(this, e);
                     var n = s(this, t.call(this));
-                    return n.app = i, n.slider = new w["default"], n.bg = l.Sprite.from(ASSET_URL + "img/ui/panel-player-select-and-tournament.png"), n.bg.anchor.set(.5, .5), n.addChild(n.bg), n.title = new l.Text(_.Translation.team_select_screen.title, {
+                    return n.app = i, n.slider = new w["default"], n.bg = l.Sprite.from(URL_HEADER.IMAGE + "ui/panel-player-select-and-tournament.png"), n.bg.anchor.set(.5, .5), n.addChild(n.bg), n.title = new l.Text(_.Translation.team_select_screen.title, {
                         fill: "white",
                         fontSize: 28,
                         fontFamily: window.MAIN_FONT,
@@ -27587,7 +27719,7 @@
                 function e(i) {
                     o(this, e);
                     var n = s(this, t.call(this));
-                    n.app = i, window.tour = n, n.scaleRatio = .75, n.bg = l.Sprite.from(ASSET_URL + "img/ui/panel-player-select-and-tournament.png"), n.bg.anchor.set(.5, .5), n.addChild(n.bg), n.title = d["default"].h1(x.Translation.tournament_screen.title), n.title.anchor.set(.5, .5), n.addChild(n.title), n.stageLabel = new l.Text("", {
+                    n.app = i, window.tour = n, n.scaleRatio = .75, n.bg = l.Sprite.from(URL_HEADER.IMAGE + "ui/panel-player-select-and-tournament.png"), n.bg.anchor.set(.5, .5), n.addChild(n.bg), n.title = d["default"].h1(x.Translation.tournament_screen.title), n.title.anchor.set(.5, .5), n.addChild(n.title), n.stageLabel = new l.Text("", {
                         fill: "white",
                         fontSize: 28,
                         fontFamily: window.MAIN_FONT,
@@ -27595,7 +27727,7 @@
                         strokeThickness: 8,
                         lineJoin: "round"
                     }), n.stageLabel.anchor.set(.5, .5), n.stageLabel.position.set(0, -185), n.bg.addChild(n.stageLabel);
-                    var r = l.Sprite.from(ASSET_URL + "img/ui/diagram.png");
+                    var r = l.Sprite.from(URL_HEADER.IMAGE + "ui/diagram.png");
                     r.anchor.set(.5, .5), r.position.set(0, -25), n.bg.addChild(r);
                     new l.Point(0, 15), new l.Point(10, 15);
                     return n.stageInfo = {
@@ -27804,16 +27936,29 @@
                 y = i(54),
                 _ = function (t) {
                     var e = this;
-                    r.Container.call(this), this.transition = new y(this.app), this.transition.reverse = !0, this.app = t, this.itemList = [], this.margin = new r.Point(50, 40), p.getScores(function (t) {
+                    r.Container.call(this),
+                    this.transition = new y(this.app),
+                    this.transition.reverse = !0,
+                    this.app = t,
+                    this.itemList = [],
+                    this.margin = new r.Point(50, 40),
+                    p.getScores(function (t) {
                         this.setContent(t)
-                    }.bind(this)), this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-player-select-and-tournament.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg), this.title = new r.Text(u.leaderboard_screen.title, {
+                    }.bind(this)),
+                    this.bg = r.Sprite.from(URL_HEADER.IMAGE + "ui/panel-player-select-and-tournament.png"),
+                    this.bg.anchor.set(.5, .5),
+                    this.addChild(this.bg),
+                    this.title = new r.Text(u.leaderboard_screen.title, {
                         fill: "white",
                         fontSize: 36,
                         fontFamily: window.MAIN_FONT,
                         stroke: !0,
                         strokeThickness: 8,
                         lineJoin: "round"
-                    }), this.title.anchor.set(.5, .5), this.addChild(this.title), this.itemContainer = new r.Container, this.bg.addChild(this.itemContainer), this.titleLabel = new r.Container;
+                    }),
+                    this.title.anchor.set(.5, .5), this.addChild(this.title),
+                    this.itemContainer = new r.Container, this.bg.addChild(this.itemContainer),
+                    this.titleLabel = new r.Container;
                     var i = ({
                         fill: "white",
                         fontSize: 20,
@@ -28659,7 +28804,7 @@
                 function e(i) {
                     o(this, e);
                     var n = s(this, t.call(this));
-                    p.Container.call(n), n.game = i, n.bg = p.Sprite.from(ASSET_URL + "img/ui/panel-various-paused-bg.png"), n.bg.anchor.set(.5, .5), n.addChild(n.bg);
+                    p.Container.call(n), n.game = i, n.bg = p.Sprite.from(URL_HEADER.IMAGE + "ui/panel-various-paused-bg.png"), n.bg.anchor.set(.5, .5), n.addChild(n.bg);
                     var r = c["default"].countryID,
                         a = c["default"].opponentID;
                     n.title = f["default"].h1(window.translations.STR_KICK_OFF), n.title.anchor.set(.5, .5), n.title.position.y = -n.bg.height / 2 - n.title.height + 20, n.addChild(n.title), n.flag = new p.Sprite.fromFrame(r.FLAG), n.flag.anchor.set(.5, .5), n.flag.scale.set(.75), n.flag.position.set(-100, -35), n.addChild(n.flag), n.flag2 = new p.Sprite.fromFrame(a.FLAG), n.flag2.anchor.set(.5, .5), n.flag2.scale.set(.75), n.flag2.position.set(100, -35), n.addChild(n.flag2);
@@ -28721,7 +28866,7 @@
                 s = (o.Translation, i(49)),
                 a = i(57),
                 h = function (t) {
-                    r.Container.call(this), this.game = t, this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-various-paused-bg.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg);
+                    r.Container.call(this), this.game = t, this.bg = r.Sprite.from(URL_HEADER.IMAGE + "ui/panel-various-paused-bg.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg);
                     var e = s.countryID,
                         i = s.opponentID;
                     this.flag = new r.Sprite.fromFrame(e.FLAG), this.flag.anchor.set(.5, .5), this.flag.position.set(-100, -60), this.addChild(this.flag), this.flag2 = new r.Sprite.fromFrame(i.FLAG), this.flag2.anchor.set(.5, .5), this.flag2.position.set(100, -60), this.addChild(this.flag2);
@@ -31727,11 +31872,46 @@
                     u.call(this, 0, 0, e, t);
                     var i = new o.SphereGeometry(10, 32, 32),
                         n = new o.TextureLoader,
-                        s = n.load(ASSET_URL + "img/game/football.jpg"),
+                        s = n.load(URL_HEADER.IMAGE + "game/football.jpg"),
                         p = new o.MeshBasicMaterial({
                             map: s
                         });
-                    p.side = o.DoubleSide, this.view3d = new o.Object3D, this.container = new o.Object3D, this.innerBall = new o.Mesh(i, p), this.view3d.add(this.container), this.container.add(this.innerBall), this.ballMatrix = new o.Matrix4, this.body.position = this.position, t.position.z = 0, t.velocity.z = 0, this.groups = ["Ball"], this.name = "ball", this.shot = !1, this.active = !1, this.perfect = !1, this.type = 99, this.pickedUp = !1, this.owner = null, this.target = null, this.lastOwner = null, this.shadow = a.getMesh(ASSET_URL + "img/game/game_objects/ball-shadow.png", .5, .5), this.shadow.position.z = 10, this.shadow.renderOrder = 999, this.shadow.scale.x = this.shadow.scale.y = this.shadow.scale.z = .1, this.shadow.position.z = -6, this.quaternion = new o.Quaternion, this.quaternion2 = new o.Quaternion, this.chargeEffect = new h(this), this.trailEffect = new l(this), this.rect = new r.Sprite.from("ball_trail_00003.png"), this.frames = c.getTexturesFromFramesWithPrefix("ball_trail_000%%.png", 15), this.tick = 0, this.rect.blendMode = r.BLEND_MODES.ADD, this.rect.scale.set(2), this.rect.anchor.x = .5, this.rect.anchor.y = .75
+                    p.side = o.DoubleSide,
+                    this.view3d = new o.Object3D,
+                    this.container = new o.Object3D,
+                    this.innerBall = new o.Mesh(i, p),
+                    this.view3d.add(this.container),
+                    this.container.add(this.innerBall),
+                    this.ballMatrix = new o.Matrix4,
+                    this.body.position = this.position,
+                    t.position.z = 0,
+                    t.velocity.z = 0,
+                    this.groups = ["Ball"],
+                    this.name = "ball",
+                    this.shot = !1,
+                    this.active = !1,
+                    this.perfect = !1,
+                    this.type = 99,
+                    this.pickedUp = !1,
+                    this.owner = null,
+                    this.target = null,
+                    this.lastOwner = null,
+                    this.shadow = a.getMesh(URL_HEADER.IMAGE + "game/game_objects/ball-shadow.png", .5, .5),
+                    this.shadow.position.z = 10,
+                    this.shadow.renderOrder = 999,
+                    this.shadow.scale.x = this.shadow.scale.y = this.shadow.scale.z = .1,
+                    this.shadow.position.z = -6,
+                    this.quaternion = new o.Quaternion,
+                    this.quaternion2 = new o.Quaternion,
+                    this.chargeEffect = new h(this),
+                    this.trailEffect = new l(this),
+                    this.rect = new r.Sprite.from("ball_trail_00003.png"), 
+                    this.frames = c.getTexturesFromFramesWithPrefix("ball_trail_000%%.png", 15),
+                    this.tick = 0,
+                    this.rect.blendMode = r.BLEND_MODES.ADD,
+                    this.rect.scale.set(2),
+                    this.rect.anchor.x = .5,
+                    this.rect.anchor.y = .75
                 };
             f.prototype = Object.create(u.prototype), f.prototype.addedToWorld = function () {
                 this.world.view3d.scene.add(this.shadow), this.world.view3d.scene.add(this.trailEffect.view), this.world.overlay.addChild(this.rect)
@@ -31805,7 +31985,7 @@
                     for (var e = new o.SphereBufferGeometry(100, 16, 8), i = new Float32Array(e.attributes.position.count), n = 0; n < i.length; n++) i[n] = Math.random();
                     e.addAttribute("alpha", new o.BufferAttribute(i, 1)), this.geometry = e;
                     var r = new o.TextureLoader,
-                        l = r.load(ASSET_URL + "img/dot.png");
+                        l = r.load(URL_HEADER.IMAGE + "dot.png");
                     uniforms = {
                         color: {
                             type: "c",
@@ -31867,7 +32047,7 @@
                         i[h] = 30 * u, i[h + 1] = 30 * p, i[h + 2] = 0
                     }
                     e.setIndex(new o.BufferAttribute(r, 1)), e.addAttribute("position", new o.BufferAttribute(i, 3)), e.addAttribute("alpha", new o.BufferAttribute(n, 1)), this.geometry = e;
-                    this.loader.load(ASSET_URL + "img/dot.png");
+                    this.loader.load(URL_HEADER.IMAGE + "dot.png");
                     uniforms = {
                         color: {
                             type: "c",
@@ -31918,14 +32098,14 @@
                     var h = n.getDebugView();
                     h.alpha = .5, s.call(this, 100, 100, h, n), this.body.position = this.position, this.groups = ["Goal"], this.type = 1, this.left = !1, this.onGoalScored = new o;
                     var l = (i(141), new r.SphereGeometry(1, 1, 1), new r.TextureLoader, new r.TextureLoader);
-                    this.view3d = new r.Object3D, l.load(ASSET_URL + "models/texture_test_goal2.png", function (e) {
+                    this.view3d = new r.Object3D, l.load(URL_HEADER.IMAGE + "models/texture_test_goal2.png", function (e) {
                         e.wrapS = r.ClampToEdgeWrapping, e.wrapT = r.ClampToEdgeWrapping, e.minFilter = r.LinearFilter, e.maxFilter = r.LinearFilter;
                         var i = new r.MeshBasicMaterial({
                             map: e
                         });
                         i.side = r.DoubleSide, i.transparent = !0;
                         var n = new r.OBJLoader;
-                        n.load(ASSET_URL + "models/GOAL.obj", function (e) {
+                        n.load(URL_HEADER.IMAGE + "models/GOAL.obj", function (e) {
                             e.rotation.x = Math.PI / 2, e.traverse(function (t) {
                                 t instanceof r.Mesh && (t.material = i, t.material.needsUpdate = !0)
                             }), this.view3d.add(e), e.position.y = -95, e.position.x = 100, t && (e.rotation.y = Math.PI, e.position.x = 0, e.position.y = 95), e.scale.x = e.scale.y = e.scale.z = .53
@@ -32192,12 +32372,12 @@
                 s = i(126),
                 a = (i(128), i(117)),
                 h = (i(118), function () {
-                    for (var t = r.Sprite.from(ASSET_URL + _gSettings.background_game), e = new o.PlaneGeometry(1800, 1100), i = new r.Container, n = 0; n < 8; n++) {
-                        var h = r.Sprite.from(ASSET_URL + "img/sponsor/board" + (n % 2 + 1) + ".png");
+                    for (var t = r.Sprite.from(URL_HEADER.IMAGE + _gSettings.background_game), e = new o.PlaneGeometry(1800, 1100), i = new r.Container, n = 0; n < 8; n++) {
+                        var h = r.Sprite.from(URL_HEADER.IMAGE + "sponsor/board" + (n % 2 + 1) + ".png");
                         h.x = 305 * n, i.addChild(h)
                     }
                     this.loader = new o.TextureLoader;
-                    var l = this.loader.load(ASSET_URL + _gSettings.background_game),
+                    var l = this.loader.load(URL_HEADER.IMAGE + _gSettings.background_game),
                         c = new o.MeshBasicMaterial({
                             map: l
                         });
@@ -32207,7 +32387,7 @@
                             map: l
                         });
                     c.side = o.DoubleSide, c.transparent = !0, boardGeometry = new o.PlaneGeometry(i.width, 82), this.boardMesh = new o.Mesh(boardGeometry, c), this.view3d.add(this.boardMesh), this.boardMesh.rotation.x = Math.PI / 2 - .8, this.boardMesh.position.z = 25, this.boardMesh.position.y = 500, this.addCrowd(), this.addRunoff(), this.frontCrowd(), this.groups = ["Pitch"];
-                    var u = r.Texture.from(ASSET_URL + "img/sponsor/pitch-logo.png"),
+                    var u = r.Texture.from(URL_HEADER.IMAGE + "sponsor/pitch-logo.png"),
                         p = new o.Texture;
                     p.image = u.baseTexture.source, p.needsUpdate = !0;
                     var c = new o.MeshBasicMaterial({
@@ -32232,14 +32412,14 @@
                     delay: 0
                 })
             }, h.prototype.addCrowd = function () {
-                var t = this.loader.load(ASSET_URL + "img/game/stadium-02.jpg");
+                var t = this.loader.load(URL_HEADER.IMAGE + "game/stadium-02.jpg");
                 t.repeat.set(6 * .3, 1.2), t.wrapS = t.wrapT = o.RepeatWrapping;
                 var e = new o.MeshBasicMaterial({
                     map: t
                 });
                 e.side = o.DoubleSide, crowdGeometry = new o.PlaneGeometry(2400, (-500)), this.crowdMesh = new o.Mesh(crowdGeometry, e), this.view3d.add(this.crowdMesh), this.crowdMesh.rotation.x = -Math.PI / 2 - 1.2, this.crowdMesh.position.z = 75, this.crowdMesh.position.y = 780, this.crowdMesh.scale.z = -1
             }, h.prototype.addRunoff = function () {
-                var t = this.loader.load(ASSET_URL + "img/game/runnoff.png");
+                var t = this.loader.load(URL_HEADER.IMAGE + "game/runnoff.png");
                 t.repeat.set(1, 3), t.wrapS = t.wrapT = o.RepeatWrapping;
                 var e = new o.MeshBasicMaterial({
                     map: t
@@ -32251,7 +32431,7 @@
                 var r = new o.Mesh(i, e);
                 this.view3d.add(r), r.scale.x = -1, r.position.x = 1100, r.position.y = 300
             }, h.prototype.frontCrowd = function () {
-                var t = this.loader.load(ASSET_URL + "img/game/front_crowd.png");
+                var t = this.loader.load(URL_HEADER.IMAGE + "game/front_crowd.png");
                 t.repeat.set(4, 1), t.wrapS = t.wrapT = o.RepeatWrapping;
                 var e = new o.MeshBasicMaterial({
                     map: t
@@ -32826,7 +33006,7 @@
                         e = new s.CrashBody.fromRect((-10), (-10), 20, 20);
                     o.call(this, 0, 0, t, e), this.type = 4, this.timer = 0, this.tick = 100 * Math.random(), this.onDead = new r, this.onPickedup = new r, e.position = this.position, this.height = 300;
                     var i = a.getMesh("pickup_box.png");
-                    this.view3d = i, i.scale.x = i.scale.y = i.scale.z = .2, i.rotation.x = window.test - Math.PI, this.powerup = null, this.groups = ["pickup"], this.shadow = a.getMesh(ASSET_URL + "img/game/game_objects/ball-shadow.png", .5, .5), this.shadow.position.z = 10, i.material.depthTest = !1, this.shadow.scale.x = this.shadow.scale.y = this.shadow.scale.z = .1, this.shadow.position.z = -6, this.pickupEffect = new PIXI.Sprite.from("pickup_00000.png"), this.pickupEffect.anchor.set(.5), this.pickupEffect.blendMode = PIXI.BLEND_MODES.ADD, this.pickupFrames = l.getTexturesFromFramesWithPrefix("pickup_000%%.png", 6), this.frameTick = 0, this.pickedUp = !1
+                    this.view3d = i, i.scale.x = i.scale.y = i.scale.z = .2, i.rotation.x = window.test - Math.PI, this.powerup = null, this.groups = ["pickup"], this.shadow = a.getMesh(URL_HEADER.IMAGE + "game/game_objects/ball-shadow.png", .5, .5), this.shadow.position.z = 10, i.material.depthTest = !1, this.shadow.scale.x = this.shadow.scale.y = this.shadow.scale.z = .1, this.shadow.position.z = -6, this.pickupEffect = new PIXI.Sprite.from("pickup_00000.png"), this.pickupEffect.anchor.set(.5), this.pickupEffect.blendMode = PIXI.BLEND_MODES.ADD, this.pickupFrames = l.getTexturesFromFramesWithPrefix("pickup_000%%.png", 6), this.frameTick = 0, this.pickedUp = !1
                 };
             c.prototype = Object.create(o.prototype), c.prototype.setType = function (t) {
                 this.powerup && this.view.removeChild(this.powerup.icon), this.powerup = t, this.view3d.position.x = this.position.x, this.view3d.position.y = this.position.y
@@ -32904,7 +33084,7 @@
                     for (var a = new Float32Array(n.attributes.position.count), e = 0; e < a.length; e++) a[e] = 0;
                     for (var h = new Float32Array(n.attributes.position.count), e = 0; e < h.length; e++) h[e] = Math.random();
                     n.addAttribute("alpha", new r.BufferAttribute(a, 1)), n.addAttribute("random", new r.BufferAttribute(h, 1)), this.geometry = n;
-                    var l = r.ImageUtils.loadTexture(ASSET_URL + "img/smoke_mixed.png");
+                    var l = r.ImageUtils.loadTexture(URL_HEADER.IMAGE + "smoke_mixed.png");
                     uniforms = {
                         ucolor: {
                             type: "c",
@@ -32962,7 +33142,7 @@
                         for (var t = 0; t < 40; t++) {
                             var e = t;
                             e < 10 && (e = "0" + e);
-                            var i = r.Texture.from(ASSET_URL + "img/game/shield/shield_" + e + ".png"),
+                            var i = r.Texture.from(URL_HEADER.IMAGE + "game/shield/shield_" + e + ".png"),
                                 n = new THREE.Texture;
                             n.image = i.baseTexture.source, n.needsUpdate = !0, a.push(n)
                         }
@@ -32975,7 +33155,7 @@
                     c.side = THREE.DoubleSide, c.blending = THREE.AdditiveBlending, c.transparent = !0, c.alphaTest = .25;
                     var u = new THREE.Mesh(h, c);
                     this.shieldView = new THREE.Object3D, this.shieldView.position.y = 30, this.shieldView.position.z = 100, this.ball = u, this.count = 0, this.dead = !1;
-                    var i = r.Texture.from(ASSET_URL + "img/game/shield_bubble.png"),
+                    var i = r.Texture.from(URL_HEADER.IMAGE + "game/shield_bubble.png"),
                         n = new THREE.Texture;
                     n.image = i.baseTexture.source, n.needsUpdate = !0;
                     var c = new THREE.MeshBasicMaterial({
@@ -33234,7 +33414,7 @@
                 s = i(169),
                 a = (i(18), i(32)),
                 h = function () {
-                    r.Container.call(this), this.onFinish = new o, this.bg = new r.Sprite.from(ASSET_URL + "img/game/bg_superkick_red.jpg"), this.rushBackground = new s, this.addChild(this.bg), this.addChild(this.rushBackground), this.bg.width = 1136, this.bg.height = 746, this.item = new r.Sprite, this.addChild(this.item), this.item.anchor.set(1), this.item.scale.set(1.5), this.visible = !1, this.pos = new r.Point
+                    r.Container.call(this), this.onFinish = new o, this.bg = new r.Sprite.from(URL_HEADER.IMAGE + "game/bg_superkick_red.jpg"), this.rushBackground = new s, this.addChild(this.bg), this.addChild(this.rushBackground), this.bg.width = 1136, this.bg.height = 746, this.item = new r.Sprite, this.addChild(this.item), this.item.anchor.set(1), this.item.scale.set(1.5), this.visible = !1, this.pos = new r.Point
                 };
             h.prototype = Object.create(r.Container.prototype), h.prototype.show = function (t) {
                 var e = "red";
@@ -33698,7 +33878,7 @@
                     var i = s(this, t.call(this));
                     window.arrow = i;
                     var n = new l.TextureLoader,
-                        r = n.load(ASSET_URL + "img/game/tutorial_arrow.png");
+                        r = n.load(URL_HEADER.IMAGE + "game/tutorial_arrow.png");
                     return i.mesh = new l.Mesh(new l.PlaneGeometry(40, 40), new l.MeshBasicMaterial({
                         map: r,
                         transparent: !0
@@ -33883,7 +34063,7 @@
                     r.Container.call(this),
                     this.app = t,
                     this.characters = [],
-                    this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-various-paused-bg.png"),
+                    this.bg = r.Sprite.from(URL_HEADER.IMAGE + "ui/panel-various-paused-bg.png"),
                     this.bg.anchor.set(.5, .5),
                     this.addChild(this.bg),
                     this.title = new s.h1(d.fail_screen.title),
@@ -33990,7 +34170,20 @@
                 function e() {
                     n(this, e);
                     var i = r(this, t.call(this, app));
-                    return window.brand = i, i.bg = new s.Graphics, i.bg.beginFill(0), i.bg.drawRect(0, 0, app.maxSize.width, app.maxSize.height), i.addChild(i.bg), i.bg.alpha = 0, i.center = new s.Container, i.logo = new s.Sprite.from(ASSET_URL + "img/sponsor/main-menu-sponsor.jpg"), i.logo.anchor.set(.5), i.center.position.x = -i.logo.width / 2, i.center.position.y = -i.logo.height / 2, i.center.addChild(i.logo), i.addChild(i.center), i.alpha = 0, i
+                    return window.brand = i,
+                        i.bg = new s.Graphics,
+                        i.bg.beginFill(0),
+                        i.bg.drawRect(0, 0, app.maxSize.width, app.maxSize.height),
+                        i.addChild(i.bg),
+                        i.bg.alpha = 0,
+                        i.center = new s.Container,
+                        i.logo = new s.Sprite.from(URL_HEADER.IMAGE + "sponsor/main-menu-sponsor.jpg"),
+                        i.logo.anchor.set(.5),
+                        i.center.position.x = -i.logo.width / 2,
+                        i.center.position.y = -i.logo.height / 2,
+                        i.center.addChild(i.logo),
+                        i.addChild(i.center),
+                        i.alpha = 0, i
                 }
                 return o(e, t), e.prototype.resize = function (t, e) {
                     this.center.position.set(t / 2, 360)
@@ -34345,7 +34538,32 @@
                 u = i(34),
                 p = i(21),
                 d = function (t) {
-                    s.call(this), this.defaultTransition = new p, this.app = t, this.view = new r.Container, this.view.visible = !1, this.shown = !1, this.pauseScreen = new h(t), this.quitScreen = new l(t), this.instructionsScreen = new c(t), this.addScreen(this.pauseScreen, u.OVERLAY_ID.PAUSE), this.addScreen(this.quitScreen, u.OVERLAY_ID.QUIT), this.addScreen(this.instructionsScreen, u.OVERLAY_ID.INSTRUCTIONS), this.addScreen(new r.Container, u.OVERLAY_ID.EMPTY), this.onShow = new o, this.onHide = new o, this.black = r.Sprite.from(ASSET_URL + "img/ui/overlay-background.png"), this.black.anchor.set(.5, .5), this.black.interactive = !0, this.closeButton = a.close("icon-back.png"), this.closeButton.onPress.add(this.goBack, this), this.closeButton.x = 1e4, this.closeButton.y = 120, this.view.addChild(this.black), this.view.addChild(this.container), this.view.addChild(this.closeButton), this.app.screenManager.container.filterArea = new r.Rectangle(0, 0, 1e4, 1e4)
+                    s.call(this),
+                    this.defaultTransition = new p,
+                    this.app = t, 
+                    this.view = new r.Container,
+                    this.view.visible = !1,
+                    this.shown = !1,
+                    this.pauseScreen = new h(t),
+                    this.quitScreen = new l(t),
+                    this.instructionsScreen = new c(t),
+                    this.addScreen(this.pauseScreen, u.OVERLAY_ID.PAUSE),
+                    this.addScreen(this.quitScreen, u.OVERLAY_ID.QUIT),
+                    this.addScreen(this.instructionsScreen, u.OVERLAY_ID.INSTRUCTIONS),
+                    this.addScreen(new r.Container, u.OVERLAY_ID.EMPTY),
+                    this.onShow = new o,
+                    this.onHide = new o,
+                    this.black = r.Sprite.from(URL_HEADER.IMAGE + "ui/overlay-background.png"),
+                    this.black.anchor.set(.5, .5),
+                    this.black.interactive = !0,
+                    this.closeButton = a.close("icon-back.png"),
+                    this.closeButton.onPress.add(this.goBack, this),
+                    this.closeButton.x = 1e4, 
+                    this.closeButton.y = 120,
+                    this.view.addChild(this.black),
+                    this.view.addChild(this.container),
+                    this.view.addChild(this.closeButton),
+                    this.app.screenManager.container.filterArea = new r.Rectangle(0, 0, 1e4, 1e4)
                 };
             d.prototype = Object.create(s.prototype), d.prototype.goBack = function () {
                 this.history.pop();
@@ -34400,7 +34618,7 @@
                 l = i(37),
                 c = l.Translation;
             PauseScreen = function (t) {
-                r.Container.call(this), this.app = t, this.hasClose = !1, this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-various-paused-bg.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg), this.title = new a.h1(c.pause_overlay.title), this.title.anchor.set(.5), this.title.position.set(0, -this.bg.height / 2 - 35), this.addChild(this.title), this.helpButton = o.big("icon-help.png"), this.helpButton.position.set(130, 0), this.helpButton.onPress.add(this.onHelpButtonPressed, this), this.addChild(this.helpButton), this.resumeButton = new s("big-button-play.png", "big-button-play.png", "big-button-play.png", "icon_play.png", 1.1), this.resumeButton.icon.scale.x = -1, this.resumeButton.defaultScale = 1, this.resumeButton.icon.rotation = Math.PI, this.resumeButton.onPress.add(this.onResumeButtonPressed, this), this.addChild(this.resumeButton), this.quitButton = o.big("icon-bullet-burger.png"), this.quitButton.position.set(-130, 0), this.quitButton.onPress.add(this.onQuitButtonPressed, this), this.addChild(this.quitButton)
+                r.Container.call(this), this.app = t, this.hasClose = !1, this.bg = r.Sprite.from(URL_HEADER.IMAGE + "ui/panel-various-paused-bg.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg), this.title = new a.h1(c.pause_overlay.title), this.title.anchor.set(.5), this.title.position.set(0, -this.bg.height / 2 - 35), this.addChild(this.title), this.helpButton = o.big("icon-help.png"), this.helpButton.position.set(130, 0), this.helpButton.onPress.add(this.onHelpButtonPressed, this), this.addChild(this.helpButton), this.resumeButton = new s("big-button-play.png", "big-button-play.png", "big-button-play.png", "icon_play.png", 1.1), this.resumeButton.icon.scale.x = -1, this.resumeButton.defaultScale = 1, this.resumeButton.icon.rotation = Math.PI, this.resumeButton.onPress.add(this.onResumeButtonPressed, this), this.addChild(this.resumeButton), this.quitButton = o.big("icon-bullet-burger.png"), this.quitButton.position.set(-130, 0), this.quitButton.onPress.add(this.onQuitButtonPressed, this), this.addChild(this.quitButton)
             }, PauseScreen.prototype = Object.create(r.Container.prototype), PauseScreen.prototype.onHelpButtonPressed = function () {
                 this.app.overlayManager.show(h.OVERLAY_ID.INSTRUCTIONS)
             }, PauseScreen.prototype.onResumeButtonPressed = function () {
@@ -34424,7 +34642,7 @@
                 c = i(49),
                 u = i(50);
             QuitScreen = function (t) {
-                r.Container.call(this), this.app = t, this.hasClose = !1, this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-various-paused-bg.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg), this.title = new s.h1(l.quit_overlay.title), this.title.anchor.set(.5, .5), this.title.position.set(0, -this.bg.height / 2 - 35), this.addChild(this.title), this.yesButton = o.validate("icon-tick.png"), this.yesButton.position.set(-65, 0), this.yesButton.onPress.add(this.onYesButtonPressed, this), this.addChild(this.yesButton), this.noButton = o.cancel("icon-cross.png"), this.noButton.position.set(65, 0), this.noButton.onPress.add(this.onNoButtonPressed, this), this.addChild(this.noButton)
+                r.Container.call(this), this.app = t, this.hasClose = !1, this.bg = r.Sprite.from(URL_HEADER.IMAGE + "ui/panel-various-paused-bg.png"), this.bg.anchor.set(.5, .5), this.addChild(this.bg), this.title = new s.h1(l.quit_overlay.title), this.title.anchor.set(.5, .5), this.title.position.set(0, -this.bg.height / 2 - 35), this.addChild(this.title), this.yesButton = o.validate("icon-tick.png"), this.yesButton.position.set(-65, 0), this.yesButton.onPress.add(this.onYesButtonPressed, this), this.addChild(this.yesButton), this.noButton = o.cancel("icon-cross.png"), this.noButton.position.set(65, 0), this.noButton.onPress.add(this.onNoButtonPressed, this), this.addChild(this.noButton)
             }, QuitScreen.prototype = Object.create(r.Container.prototype), QuitScreen.prototype.onYesButtonPressed = function () {
                 this.app.gameScreen.game.reset();
                 for (var t in u.CharacterData) {

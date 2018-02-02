@@ -126,7 +126,7 @@
             this.team1AI,
             this.superMove = new N,
             this.view.addChild(this.superMove),
-            this.vignette = new r.Sprite.from(ASSET_URL + "img/game/vignette.png"),
+            this.vignette = new r.Sprite.from(URL_HEADER.IMAGE + "game/vignette.png"),
             this.view.addChild(this.vignette),
             this.controller = a.instance.desktop ? new c(this) : new u(this),
             this.goldenGoal = !1,

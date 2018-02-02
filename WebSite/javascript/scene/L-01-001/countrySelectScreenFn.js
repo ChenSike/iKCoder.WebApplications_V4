@@ -61,7 +61,7 @@
             function e(i) {
                 o(this, e);
                 var n = s(this, t.call(this));
-                n.app = i, n.ranking = [], n.scaleRatio = .8, n.blocked = !1, n.bg = l.Sprite.from(ASSET_URL + "img/ui/country-select-panel.png"), n.bg.anchor.set(.5, .5), n.addChild(n.bg), n.title = v["default"].h1(M.Translation.country_select_screen.title), n.title.anchor.set(.5, .5), n.addChild(n.title), n.flagsContainer = new l.Container, n.flagsContainer.scale.set(n.scaleRatio), n.bg.addChild(n.flagsContainer), n.countries = (0, M.getCountries)(), n.buttonList = [];
+                n.app = i, n.ranking = [], n.scaleRatio = .8, n.blocked = !1, n.bg = l.Sprite.from(URL_HEADER.IMAGE + "ui/country-select-panel.png"), n.bg.anchor.set(.5, .5), n.addChild(n.bg), n.title = v["default"].h1(M.Translation.country_select_screen.title), n.title.anchor.set(.5, .5), n.addChild(n.title), n.flagsContainer = new l.Container, n.flagsContainer.scale.set(n.scaleRatio), n.bg.addChild(n.flagsContainer), n.countries = (0, M.getCountries)(), n.buttonList = [];
                 for (var r, a, h = 0, h = 0, c = 0, p = 6, f = 0, g = 0; g < n.countries.length; g++) {
                     r = n.countries[g],
                         a = u["default"].country(r.FLAG),

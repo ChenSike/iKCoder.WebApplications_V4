@@ -26,7 +26,7 @@
                 this.addChild(this.bg);
                 var e = v.getJson("config").config.LOCALE;
                 this.local = e,
-                this.logo = r.Sprite.from(ASSET_URL + p.title_screen.logo),
+                this.logo = r.Sprite.from(URL_HEADER.IMAGE + p.title_screen.logo),
                 this.logo.anchor.set(.5, .5),
                 this.playButton = new s("quickplay-normal.png", "quickplay-hover.png", "quickplay-hover.png", p.title_screen.quick_play, 1.1),
                 this.playButton.defaultScale = 1,

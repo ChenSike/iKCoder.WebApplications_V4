@@ -11,7 +11,7 @@
         GameoverScreen = function (t) {
             r.Container.call(this),
             this.app = t,
-            this.bg = r.Sprite.from(ASSET_URL + "img/ui/panel-various-paused-bg.png"),
+            this.bg = r.Sprite.from(URL_HEADER.IMAGE + "ui/panel-various-paused-bg.png"),
             this.bg.anchor.set(.5, .5),
             this.addChild(this.bg),
             this.title = new s.h1(c.gameover_screen.title),

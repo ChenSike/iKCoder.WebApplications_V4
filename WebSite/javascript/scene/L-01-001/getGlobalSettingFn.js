@@ -40,3 +40,11 @@
         }
     }
 }
+
+var URL_HEADER = {
+    IMAGE: 'javascript/scene/image/football/',
+    SOUND: 'javascript/scene/media/football/',
+    CSS: 'style/',
+    FONT: 'fonts/',
+    DATA: 'javascript/scene/data/football/'
+};

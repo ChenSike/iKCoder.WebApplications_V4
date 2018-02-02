@@ -318,6 +318,17 @@
     <script src="javascript/scene/a-01-003/intrcourse/1/Engine/konvas.js"></script>
     <script src="javascript/scene/a-01-003/intrcourse/1/Engine/game_engine.js"></script>
     <script src="javascript/scene/a-01-003/intrcourse/1/scene/scene.js"></script>-->
+    <script src="javascript/scene/L-01-001/getGlobalSettingFn.js"></script>
+    <script src="javascript/scene/L-01-001/loaderScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/titleScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/countrySelectScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/teamReviewScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/gameScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/gameOverScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/globalSettingForControl.js"></script>
+    <script src="javascript/scene/L-01-001/argumentFns.js"></script>
+    <script src="javascript/scene/L-01-001/entryFn.js"></script>
+    <!--<script src="javascript/scene/L-01-001/coursemain.js"></script>-->
 </head>
 <body>
     <div id="mask_Page_Loading">
@@ -573,6 +584,21 @@
             _loadLabels();
             initPage();
             //_startCheckState();
+            var ENV = window.ENV = {};
+            globalWrapFn(argumentFn);
+            function startGame() {
+                if (_gloablObj && _gloablObj.app) {
+                    ////_gloablObj.app.titleScreen.alpha = 0
+                    _gloablObj.app.breadcrumb.next();
+                    _gloablObj.app.breadcrumb.next();
+                    _gloablObj.app.breadcrumb.next();
+                    _gloablObj.app.breadcrumb.next();
+                    _gloablObj.app.teamReviewScreen.playButton.mouseup();
+                } else {
+                    window.setTimeout(startGame, 500);
+                }
+            }
+            window.setTimeout(startGame, 500);
         });
     </script>
 </body>
