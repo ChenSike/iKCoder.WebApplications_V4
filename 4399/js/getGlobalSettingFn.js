@@ -2,7 +2,7 @@
     "use strict";
     t.exports = {
         GAME: {
-            TIME: 1
+            TIME: 0.1
         },
         PLAYER_STATE: {
             IDLE: 0,

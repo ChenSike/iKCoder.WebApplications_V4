@@ -11,9 +11,21 @@
             u = i(21),
             p = i(18),
             d = function (t) {
-                r.Container.call(this), this.app = t, this.count = 0, t.loader.onProgress.add(this.onProgress, this), this.easeLoad = 0, this.targetLoad = 0, this.onReady = new a, this.onComplete = new a, this.transition = new u, this.onAssetsLoaded()
+                r.Container.call(this),
+                this.app = t,
+                this.count = 0,
+                t.loader.onProgress.add(this.onProgress, this),
+                this.easeLoad = 0,
+                this.targetLoad = 0,
+                this.onReady = new a,
+                this.onComplete = new a,
+                this.transition = new u,
+                this.onAssetsLoaded()
             };
-        d.prototype = Object.create(r.Container.prototype), d.prototype.constructor = d, d.prototype.onShown = function () { }, d.prototype.onAssetsLoaded = function () {
+        d.prototype = Object.create(r.Container.prototype),
+        d.prototype.constructor = d,
+        d.prototype.onShown = function () { },
+        d.prototype.onAssetsLoaded = function () {
             this.container = new r.Container,
             this.container.position.x = this.app.safeSize.width / 2,
             this.container.position.y = this.app.safeSize.height / 2;
@@ -65,23 +77,30 @@
                     this.resize(this.w, this.h),
                     s.wait(this.showLoader.bind(this)
                 )
-        }, d.prototype.showLoader = function () {
+        },
+        d.prototype.showLoader = function () {
             TweenLite.to(this.app.background, .6, {
                 alpha: 1,
                 ease: Sine.easeOut
             }), this.app.resize(this.app.w, this.app.h), this.app.loader.load()
-        }, d.prototype.update = function () {
+        },
+        d.prototype.update = function () {
             this.count += .02,
             this.easeLoad += .3 * (this.targetLoad - this.easeLoad),
             this.barMask.scale.x = this.easeLoad,
             this.label.setText(l.loader.loading.replace("##", Math.ceil(100 * this.easeLoad))),
             this.easeLoad > .99 && (o.instance.remove(this.update, this), this.onComplete.dispatch())
-        }, d.prototype.onProgress = function (t) {
+        },
+        d.prototype.onProgress = function (t) {
             this.targetLoad = t
-        }, d.prototype.onShow = function () { }, d.prototype.onHide = function () {
+        },
+        d.prototype.onShow = function () { },
+        d.prototype.onHide = function () {
             o.instance.remove(this.update, this)
-        }, d.prototype.resize = function (t, e) {
+        },
+        d.prototype.resize = function (t, e) {
             this.w = t, this.h = e
-        }, n.exports = d
+            },
+        n.exports = d
     }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
 };

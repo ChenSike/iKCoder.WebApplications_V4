@@ -231,7 +231,10 @@ function loadStageLibs_3(response) {
         }
     }
 
-    if (include3D) {
+    var currStageId = _gStageData.course.id.toLowerCase();
+    if (_gStageData.course.id.toLowerCase().indexOf('l') == 0) {
+
+    } else if (include3D) {
         _gStageData.blockly.lib.push('javascript/common/three.min.js');
         _gStageData.blockly.lib.push('javascript/common/TweenMax.min.js');
         _gStageData.blockly.lib.push('javascript/common/threeengine.js');

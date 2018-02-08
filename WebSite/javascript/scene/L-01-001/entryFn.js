@@ -3,9 +3,11 @@ function globalWrapFn(t) {
     function i(t) {
         if ("undefined" == typeof XMLHttpRequest) return t(new Error("No browser support"));
         try {
-            var e = new XMLHttpRequest,
-                i = p.p + "" + x + ".hot-update.json";
-            e.open("GET", i, !0), e.timeout = 1e4, e.send(null)
+            var e = new XMLHttpRequest;
+            var i = p.p + "" + x + ".hot-update.json";
+            e.open("GET", i, !0),
+            e.timeout = 1e4,
+            e.send(null)
         } catch (n) {
             return t(n)
         }
@@ -41,7 +43,23 @@ function globalWrapFn(t) {
         var i = R[t];
         if (!i) return p;
         var n = function (e) {
-            return i.hot.active ? R[e] ? (R[e].parents.indexOf(t) < 0 && R[e].parents.push(t), i.children.indexOf(e) < 0 && i.children.push(e)) : w = [t] : w = [], p(e)
+            if (i.hot.active) {
+                if (R[e]) {
+                    if (R[e].parents.indexOf(t) < 0) {
+                        R[e].parents.push(t);
+                    }
+
+                    if (i.children.indexOf(e) < 0) {
+                        i.children.push(e);
+                    }
+                } else {
+                    w = [t]
+                }
+            } else {
+                w = []
+            }
+            //return i.hot.active ? R[e] ? (R[e].parents.indexOf(t) < 0 && R[e].parents.push(t), i.children.indexOf(e) < 0 && i.children.push(e)) : w = [t] : w = [], p(e);
+            return p(e);
         };
         for (var r in p) Object.prototype.hasOwnProperty.call(p, r) && (f ? Object.defineProperty(n, r, function (t) {
             return {

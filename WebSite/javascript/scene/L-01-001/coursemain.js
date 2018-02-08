@@ -17,4 +17,4 @@ function startGame() {
     }
 }
 
-window.setTimeout(startGame, 500);
+window.setTimeout(startGame,1000);
