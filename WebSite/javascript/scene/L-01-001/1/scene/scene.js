@@ -7,9 +7,6 @@ var Scene = {
     },
 
     reset: function () {
-        _gloablObj.app.breadcrumb.next();
-        _gloablObj.app.breadcrumb.next();
-        _gloablObj.app.breadcrumb.next();
-        _gloablObj.app.breadcrumb.next();
+        app.screenManager.gotoScreenByID("GAME");
     }
 };

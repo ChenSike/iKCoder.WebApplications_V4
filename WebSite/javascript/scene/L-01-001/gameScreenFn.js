@@ -96,6 +96,10 @@
             this.teamManagerA.human = !0,
             this.teamManagerB = new M(this, this.teamRight, this.teamLeft),
             this.teamManagerB.setSide(!1),
+            //add for external reference
+            _gTeamManager.A = this.teamManagerA;
+            _gTeamManager.B = this.teamManagerB;
+
             this.keeperManagerRight = new E(this.keeperRight, (!1), this),
             this.keeperManagerLeft = new E(this.keeperLeft, (!0), this),
             this.powerupManager = new D,

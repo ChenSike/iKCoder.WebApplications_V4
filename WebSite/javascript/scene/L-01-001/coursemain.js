@@ -6,7 +6,7 @@ globalWrapFn(argumentFn);
 
 function startGame() {
     if (_gloablObj && _gloablObj.app) {
-        ////_gloablObj.app.titleScreen.alpha = 0
+        _gloablObj.app.titleScreen.alpha = 0
         _gloablObj.app.breadcrumb.next();
         _gloablObj.app.breadcrumb.next();
         _gloablObj.app.breadcrumb.next();
