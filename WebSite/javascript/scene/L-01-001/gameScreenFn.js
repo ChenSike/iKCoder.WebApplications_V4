@@ -40,7 +40,8 @@
             G = i(173),
             z = i(175);
         s.game = new s;
-        var V = function (t) {
+        var GameScreen = function (t) {
+            this.pitchCreater = b;
             this.onGameover = new o,
             this.wait = new S(s.game),
             s.game.start(),
@@ -99,7 +100,6 @@
             //add for external reference
             _gTeamManager.A = this.teamManagerA;
             _gTeamManager.B = this.teamManagerB;
-
             this.keeperManagerRight = new E(this.keeperRight, (!1), this),
             this.keeperManagerLeft = new E(this.keeperLeft, (!0), this),
             this.powerupManager = new D,
@@ -112,7 +112,8 @@
                 goal: new C(this),
                 "super": new R(this),
                 end: new L(this)
-            }, this.hud = new p(this),
+            },
+            this.hud = new p(this),
             this.world.view.interactiveChildren = !1,
             this.view.addChild(this.world.overlay),
             this.view.addChild(this.hud.party),
@@ -136,20 +137,36 @@
             this.goldenGoal = !1,
             window.firstPlay && (this.tutorialManager = new U(this), this.view.addChild(this.tutorialManager))
         };
-        V.constructor = V,
-        V.prototype.setPositions = function () {
+        GameScreen.constructor = GameScreen,
+        GameScreen.prototype.setPositions = function () {
             var t = 1600,
                 e = 900;
-            this.pitchWidth = t, this.pitchHeight = e, this.pitch.view.width = t, this.pitch.view.height = e, this.setBounds(new r.Rectangle(0, 0, t, e)), this.ball.position.x = t / 2, this.ball.position.y = e / 2, this.goalLeft.position.x = -100, this.goalLeft.left = !0, this.goalLeft.position.y = e / 2, this.goalRight.position.x = t, this.goalRight.position.y = e / 2, this.keeperRight.position.x = t - 30, this.keeperRight.position.y = e / 2, this.keeperLeft.position.x = 30, this.keeperLeft.position.y = e / 2, this.teamLeft.run(function (e) {
+            this.pitchWidth = t,
+            this.pitchHeight = e,
+            this.pitch.view.width = t,
+            this.pitch.view.height = e,
+            this.setBounds(new r.Rectangle(0, 0, t, e)),
+            this.ball.position.x = t / 2,
+            this.ball.position.y = e / 2,
+            this.goalLeft.position.x = -100,
+            this.goalLeft.left = !0,
+            this.goalLeft.position.y = e / 2,
+            this.goalRight.position.x = t,
+            this.goalRight.position.y = e / 2,
+            this.keeperRight.position.x = t - 30,
+            this.keeperRight.position.y = e / 2,
+            this.keeperLeft.position.x = 30,
+            this.keeperLeft.position.y = e / 2,
+            this.teamLeft.run(function (e) {
                 e.position.x = t / 2, e.position.y = 0
             }, this), this.teamRight.run(function (e) {
                 e.position.x = t / 2, e.position.y = 0
             }, this)
         },
-        V.prototype.onGoalScored = function (t) {
+        GameScreen.prototype.onGoalScored = function (t) {
             this.powerupManager.clear(), this.world.view.camera.shake(), Math.random() < .5 ? h.sfx.play("crowd_goal_1") : h.sfx.play("crowd_goal_2"), t.left ? this.goalsB++ : this.goalsA++, this.goldenGoal ? this.finish() : this.scripts.goal.run(t.left), this.hud.updateScore()
         },
-        V.prototype.reset = function (t) {
+        GameScreen.prototype.reset = function (t) {
             window.firstPlay || (this.hud.scorePanel.alpha = 1),
             this.setPositions(),
             this.isGameover = !1,
@@ -184,16 +201,26 @@
             this.timer.reset(),
             window.firstPlay || this.scripts.start.run(!0, !0)
         },
-        V.prototype.start = function (t) {
-            this.reset(t), this.resume(), window.firstPlay ? (this.tutorialManager.start(), this.hud.scorePanel.alpha = 0) : this.hud.scorePanel.alpha = 1
+        GameScreen.prototype.start = function (t) {
+            this.reset(t),
+            this.resume(),
+            window.firstPlay ? (this.tutorialManager.start(), this.hud.scorePanel.alpha = 0) : this.hud.scorePanel.alpha = 1;
+            if (_gSettings.hideAllTeams) {
+                this.teamManagerA.hideAll();
+                this.teamManagerB.hideAll();
+            }
+
+            if (_gSettings.enablePlay) {
+                resetPlayBtn('R');
+            }
         },
-        V.prototype.pause = function () {
+        GameScreen.prototype.pause = function () {
             this.paused || (l.volume = 1, l.play("menumusic2"), this.paused = !0, this.view.interactive = !1, s.game.stop(), s.game.remove(this.update, this))
         },
-        V.prototype.resume = function () {
+        GameScreen.prototype.resume = function () {
             this.paused && (l.volume = .5, l.play("applause_loop"), this.paused = !1, this.view.interactive = !0, s.game.start(), s.game.add(this.update, this, 1))
         },
-        V.prototype.update = function () {
+        GameScreen.prototype.update = function () {
             window.firstPlay && this.tutorialManager.update(),
             s.game.speed += .3 * (.8 * this.speed - s.game.speed),
             this.counter += s.instance.deltaTime,
@@ -207,24 +234,28 @@
             this.controller.update(),
             this.keeperManagerRight.update(),
             this.keeperManagerLeft.update(),
-            //this.teamManagerA.update(),
-            //this.teamManagerB.update(),
-            this.hud.update()
+            this.hud.update();
+            if (_gSettings.enablePlay) {
+                this.teamManagerA.update(),
+                this.teamManagerB.update();
+            }
         },
-        V.prototype.onTimeUp = function () {
+        GameScreen.prototype.onTimeUp = function () {
             //this.goalsA === this.goalsB ? this.goldenGoal = !0 : (this.finish(), this.teamManagerA.disableShoot())
-            this.finish();
-            this.teamManagerA.disableShoot();
+            if (!_gSettings.neverOver) {
+                this.finish();
+                this.teamManagerA.disableShoot();
+            }
         },
-        V.prototype.finish = function () {
+        GameScreen.prototype.finish = function () {
             this.goldenGoal = !1,
             this.goalsA > this.goalsB ? this.endState = O.END_STATE.WIN : this.goalsA === this.goalsB ? this.endState = O.END_STATE.DRAW : this.endState = O.END_STATE.LOSE,
             this.scripts.end.run(this.endState);
         },
-        V.prototype.gameover = function () {
+        GameScreen.prototype.gameover = function () {
             this.isGameover || (this.isGameover = !0, this.onGameover.dispatch())
         },
-        V.prototype.setBounds = function (t) {
+        GameScreen.prototype.setBounds = function (t) {
             var e = 200,
                 i = new w(t.x - 100, 0, 100, t.height / 2 - e / 2),
                 n = new w(t.x - 100, t.height / 2 + e / 2, 100, t.height / 2 - e / 2),
@@ -238,8 +269,30 @@
                 l = new w(t.x - 100, t.y + t.height, t.width + 200, 100);
             this.world.add(i), this.world.add(n), this.world.add(r), this.world.add(o), this.world.add(s), this.world.add(a), this.world.add(h), this.world.add(l)
         },
-        V.prototype.resize = function (t, e) {
+        GameScreen.prototype.resize = function (t, e) {
             this.hud.resize(t, e), this.controller.resize(t, e), this.world.view3d.resize(t, e), this.black.scale.set(t / 100, e / 100), this.flash.resize(t, e), this.movieBorders.resize(t, e), window.firstPlay && this.tutorialManager.resize(t, e), this.vignette.width = t, this.vignette.height = e, this.superMove.resize(t, e)
-        }, n.exports = V
+        },
+        GameScreen.prototype.setBackground = function (bgImgPath) {
+            if (typeof bgImgPath == 'undefined' && !bgImgPath) {
+                _gSettings.background_game = "game/toon_pitch_full_1.jpg";
+            } else {
+                _gSettings.background_game = bgImgPath;
+            }
+
+            this.world.removeItem(this.pitch);
+            this.pitch = new this.pitchCreater;
+            this.world.add(this.pitch);
+        },
+        GameScreen.prototype.setAllPlayers = function () {
+            this.teamManagerA.showAll();
+            this.teamManagerB.showAll();
+            this.teamManagerA.team.children[0].position.set(650, 300);
+            this.teamManagerA.team.children[1].position.set(760, 450);
+            this.teamManagerA.team.children[2].position.set(650, 600);
+            this.teamManagerB.team.children[0].position.set(940, 600);
+            this.teamManagerB.team.children[1].position.set(1000, 400);
+            this.teamManagerB.team.children[2].position.set(920, 300);
+        },
+        n.exports = GameScreen
     }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
 }

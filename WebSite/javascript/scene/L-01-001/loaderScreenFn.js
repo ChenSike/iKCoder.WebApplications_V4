@@ -96,7 +96,7 @@
         },
         d.prototype.onShow = function () { },
         d.prototype.onHide = function () {
-            o.instance.remove(this.update, this)
+            o.instance.remove(this.update, this);            
         },
         d.prototype.resize = function (t, e) {
             this.w = t, this.h = e

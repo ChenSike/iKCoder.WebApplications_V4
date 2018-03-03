@@ -391,7 +391,8 @@ function initStatusAlertEvents() {
         WorkScene.reset(true);
         $('.wrap-workstatus-alert').hide();
     });
-
+    //for dynamic code
+    /*
     $('.step-status-button.next').on('click', function (e) {
         var url = _getRequestURL(_gURLMapping.bus.setfinishstep, { symbol: _gStageData.course.id });
         var successFn = function (response, status) {
@@ -418,6 +419,12 @@ function initStatusAlertEvents() {
         };
 
         ajaxFn('GET', url, '<root></root>', successFn, _gEmptyFn);
+    });
+    */
+
+    //for static code
+    $('.step-status-button.next').on('click', function (e) {
+        window.location.href = "workplatform.html?scene=" + _gStageData.course.id + "&step=" + _gStageData.course.next;
     });
 
     $('.step-status-button.find-error').on('click', function (e) {
@@ -498,4 +505,4 @@ function adjustCourseMsgSize() {
     $('.front-course-msg-alert-logo').css('left', offset + 'px');
     $('.back-course-msg-alert-logo').css('top', offset - 1 + 'px');
     $('.back-course-msg-alert-logo').css('left', offset - 1 + 'px');
-};    
+};

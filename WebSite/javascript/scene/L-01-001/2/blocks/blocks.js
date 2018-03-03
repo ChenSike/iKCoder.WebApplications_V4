@@ -15,10 +15,10 @@ Blockly.JavaScript['event_start'] = function (block) {
     return '';
 };
 
-Blockly.Blocks['set_background'] = {
+Blockly.Blocks['set_players'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("设置背景");
+            .appendField("添加球员");
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
         this.setColour(150);
@@ -27,6 +27,6 @@ Blockly.Blocks['set_background'] = {
     }
 };
 
-Blockly.JavaScript['set_background'] = function (block) {
-    return 'Scene.setBackground();\n';
+Blockly.JavaScript['set_players'] = function (block) {
+    return 'Scene.setPlayers();\n';
 };

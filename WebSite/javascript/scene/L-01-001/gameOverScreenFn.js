@@ -9,6 +9,7 @@
             l = i(37),
             c = l.Translation;
         GameoverScreen = function (t) {
+            this.refereshR = r,
             r.Container.call(this),
             this.app = t,
             this.bg = r.Sprite.from(URL_HEADER.IMAGE + "ui/panel-various-paused-bg.png"),
@@ -80,7 +81,9 @@
             this.flag = new r.Sprite.fromFrame(t.FLAG), this.flag.anchor.set(.5, .5), this.flag.scale.set(.9), this.flag.position.set(-125, -75), this.bg.addChild(this.flag), this.flag2 = new r.Sprite.fromFrame(e.FLAG), this.flag2.anchor.set(.5, .5), this.flag2.scale.set(.9), this.flag2.position.set(125, -75), this.bg.addChild(this.flag2), this.labelCountry.text = c.countries[t.ID].NAME, this.labelCountry2.text = c.countries[e.ID].NAME, this.labelScore.text = "" + this.app.game.goalsA, this.labelScore2.text = "" + this.app.game.goalsB
         },
         GameoverScreen.prototype.onShow = function () {
-            this.updateContent(), this.bg.scale.set(0), this.app.topMenu.setState("home"), TweenLite.to(this.bg.scale, 1, {
+            this.updateContent(),
+            this.bg.scale.set(0),
+            this.app.topMenu.setState("home"), TweenLite.to(this.bg.scale, 1, {
                 x: 1,
                 y: 1,
                 ease: Elastic.easeOut,

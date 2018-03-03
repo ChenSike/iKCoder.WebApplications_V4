@@ -2421,6 +2421,7 @@
             return this
         }(), i(11))
     },
+    //function index: 10
     function (t, e) {
         function i() {
             throw new Error("setTimeout has not been defined")
@@ -2618,11 +2619,29 @@
                 s = i(17),
                 a = i(18),
                 h = (i(19), function () {
-                    this.crossdomain = !1, window.XDomainRequest && this.crossdomain ? (this.ajaxRequest = new window.XDomainRequest, this.ajaxRequest.timeout = 3e3, this.ajaxRequest.onerror = function () { }, this.ajaxRequest.ontimeout = function () { }, this.ajaxRequest.onprogress = function () { }) : window.XMLHttpRequest && (this.ajaxRequest = new window.XMLHttpRequest), this.ajaxRequest.onload = this._onFileLoaded.bind(this), this.ajaxRequest.onreadystatechange = function (t) { }, this.fileCount = 0, this.filesToLoad = [], this.fontsToLoad = [], this.pixiAssetsToLoad = [], this.soundsToLoad = [], this.customToLoad = [], this.onComplete = new o, this.onProgress = new o
+                    this.crossdomain = !1,
+                    window.XDomainRequest && this.crossdomain ? (
+                        this.ajaxRequest = new window.XDomainRequest,
+                        this.ajaxRequest.timeout = 3e3,
+                        this.ajaxRequest.onerror = function () { },
+                        this.ajaxRequest.ontimeout = function () { },
+                        this.ajaxRequest.onprogress = function () { }
+                    ) : window.XMLHttpRequest && (this.ajaxRequest = new window.XMLHttpRequest),
+                    this.ajaxRequest.onload = this._onFileLoaded.bind(this),
+                    this.ajaxRequest.onreadystatechange = function (t) { },
+                    this.fileCount = 0,
+                    this.filesToLoad = [],
+                    this.fontsToLoad = [],
+                    this.pixiAssetsToLoad = [],
+                    this.soundsToLoad = [],
+                    this.customToLoad = [],
+                    this.onComplete = new o,
+                    this.onProgress = new o
                 });
             h.prototype.addFonts = function (t) {
                 return this.fontsToLoad = this.fontsToLoad.concat(t), this
-            }, h.prototype.addText = function (t, e) {
+            },
+            h.prototype.addText = function (t, e) {
                 var e = e || s.basename(t, s.extname(t)),
                     i = {
                         url: t,
@@ -2630,7 +2649,8 @@
                         type: h.TEXT
                     };
                 return this.filesToLoad.push(i), this
-            }, h.prototype.addJson = function (t, e) {
+            },
+            h.prototype.addJson = function (t, e) {
                 var e = e || s.basename(t, s.extname(t)),
                     i = {
                         url: t,
@@ -2638,33 +2658,41 @@
                         type: h.JSON
                     };
                 return this.filesToLoad.push(i), this
-            }, h.prototype.addManifest = function (t, e) {
+            },
+            h.prototype.addManifest = function (t, e) {
                 var i = t.map(function (t) {
                     return e + t
                 });
                 return this.addPixiAssets(i), this
-            }, h.prototype.addPixiAssets = function (t) {
+            },
+            h.prototype.addPixiAssets = function (t) {
                 return this.pixiAssetsToLoad = this.pixiAssetsToLoad.concat(t), this
-            }, h.prototype.addCSS = function (t) {
+            },
+            h.prototype.addCSS = function (t) {
                 var e = document.createElement("link");
                 return e.type = "text/css",
                     e.rel = "stylesheet",
                     e.href = t,
                     document.getElementsByTagName("head")[0].appendChild(e), this
-            }, h.prototype.addCustom = function (t) {
+            },
+            h.prototype.addCustom = function (t) {
                 var e = {
                     object: t,
                     type: h.CUSTOM
                 };
                 return this.filesToLoad.push(e), this
-            }, h.prototype.load = function () {
+            },
+            h.prototype.load = function () {
                 this._loadFonts()
-            }, h.prototype._loadFiles = function () {
+            },
+            h.prototype._loadFiles = function () {
                 this.fileCount = 0, this.filesToLoad.length ? this._loadNextFile() : this._loadPixiAssets()
-            }, h.prototype._loadNextFile = function () {
+            },
+            h.prototype._loadNextFile = function () {
                 var t = this.filesToLoad[this.fileCount];
                 t.type === h.CUSTOM ? (t.object.onLoaded.addOnce(this._onFileLoaded, this), t.object.load()) : (this.ajaxRequest.open("GET", t.url, !0), this.ajaxRequest.send())
-            }, h.prototype._onFileLoaded = function () {
+            },
+            h.prototype._onFileLoaded = function () {
                 var t = this.filesToLoad[this.fileCount];
                 if (t.type === h.CUSTOM);
                 else if (200 !== this.ajaxRequest.status);
@@ -2678,9 +2706,16 @@
                         a.addJson(i, t.id)
                 }
                 this.fileCount++, this._onProgress(), this.fileCount === this.filesToLoad.length ? this._loadPixiAssets() : this._loadNextFile()
-            }, h.prototype._loadPixiAssets = function () {
-                return 0 === this.pixiAssetsToLoad.length ? void this._onComplete() : (this.pixiAssetLoader = new r.loaders.Loader, this.pixiAssetLoader.add(this.pixiAssetsToLoad), this.pixiAssetLoader.on("progress", this._onProgress, this), void this.pixiAssetLoader.load(this._onComplete.bind(this)))
-            }, h.prototype._loadFonts = function () {
+            },
+            h.prototype._loadPixiAssets = function () {
+                return 0 === this.pixiAssetsToLoad.length ? void this._onComplete() : (
+                    this.pixiAssetLoader = new r.loaders.Loader,
+                    this.pixiAssetLoader.add(this.pixiAssetsToLoad),
+                    this.pixiAssetLoader.on("progress", this._onProgress, this),
+                    void this.pixiAssetLoader.load(this._onComplete.bind(this))
+                )
+            },
+            h.prototype._loadFonts = function () {
                 return 0 === this.fontsToLoad.length ? void this._loadFiles() : (WebFont.load({
                     custom: {
                         families: this.fontsToLoad,
@@ -2695,12 +2730,18 @@
                         }
                     }.bind(this)
                 }), void this._loadFiles())
-            }, h.prototype._onComplete = function (t, e) {
+            },
+            h.prototype._onComplete = function (t, e) {
                 r.loadedResources = e, this.onProgress.dispatch(1), this.onComplete.dispatch()
-            }, h.prototype._onProgress = function () {
+            },
+            h.prototype._onProgress = function () {
                 var t = (this.filesToLoad.length + this.pixiAssetsToLoad.length, this.fileCount);
                 this.pixiAssetLoader && (t = this.pixiAssetLoader.progress), this.onProgress.dispatch(.01 * t)
-            }, h.TEXT = 0, h.JSON = 1, h.CUSTOM = 2, n.exports = h
+            },
+            h.TEXT = 0,
+            h.JSON = 1,
+            h.CUSTOM = 2,
+            n.exports = h
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     //16
@@ -3492,6 +3533,7 @@
             }, this.WebFont || (this.WebFont = {}, this.WebFont.load = o(at.load, at), this.WebFontConfig && at.load(this.WebFontConfig))
         }(this, document)
     },
+    //function index: 20
     screenManagerFn,
     function (t, e, i) {
         var n;
@@ -3897,6 +3939,7 @@
             }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))) : "undefined" != typeof t && t.exports ? t.exports = o : void 0 != r && (r.Stats = o)
         }(this || {})
     },
+    //function index: 30
     function (t, e) {
         t.exports = function () {
             throw new Error("define cannot be used indirect")
@@ -3966,117 +4009,7 @@
             o = n(r);
         t.exports = e["default"]
     },
-    function (t, e, i) {
-        var n;
-        n = function (t, e, n) {
-            var r = i(16),
-                o = i(33),
-                s = function () {
-                    this.disabled = !1, this.preload = !0, this.currentSound = null, this.sounds = {}, this.groups = {}, this.globalVolume = 1, this.isMuted = !1, window.onfocus = this._onFocus.bind(this), this.onMuteToggle = new r
-                };
-            s.prototype._onFocus = function () { }, s.prototype.addSound = function (t, e, i) {
-                if (!this.disabled && !this.sounds[e]) {
-                    i = i || {};
-                    var n = new Howl({
-                        src: [t + ".mp3", t + ".ogg"],
-                        autoplay: i.autoplay || !1,
-                        loop: i.loop || !1,
-                        volume: i.volume || 1
-                    });
-                    n.realVolume = i.volume || 1, this.sounds[e] = n
-                }
-            }, s.prototype.addSounds = function (t, e) {
-                for (var i = 0; i < t.length; i++) {
-                    var n = t[i];
-                    this.addSound(e + n, n)
-                }
-            }, s.prototype.addGroup = function (t, e) {
-                if (!this.disabled && !this.groups[e]) {
-                    var i = {
-                        index: 0,
-                        type: 0,
-                        sounds: t
-                    };
-                    this.groups[e] = i
-                }
-            }, s.prototype.getSoundAtId = function (t) {
-                return this.sounds[t]
-            }, s.prototype.getSound = function (t) {
-                return this.currentSound
-            }, s.prototype.play = function (t, e) {
-                return this.disabled || !this.sounds[t] ? void !this.sounds[t] : (e && this.sounds[t].volume(e), this.sounds[t].play(), this.currentSound = this.sounds[t], this.currentSound)
-            }, s.prototype.fadeTo = function (t, e, i) {
-                if ("undefined" == typeof i && (i = 2.5), "undefined" == typeof callback && (callback = null), "undefined" != typeof e) {
-                    var n = this.sounds[t];
-                    n && TweenLite.to(n, i, {
-                        _volume: e,
-                        onUpdate: this.actuallyChangeVolume.bind(this),
-                        onComplete: this.stopAndReset.bind(this),
-                        onCompleteParams: [t],
-                        onUpdateParams: ["{self}", t]
-                    })
-                }
-            }, s.prototype.actuallyChangeVolume = function (t, e) {
-                this.setVolume(e, t.target._volume)
-            }, s.prototype.stopAndReset = function (t) {
-                this.stop(t), this.setVolume(t, 1), this.stop(t)
-            }, s.prototype.isPlaying = function (t) {
-                if (!this.disabled) return !this.sounds[t]._audioNode[0].paused
-            }, s.prototype.playGroup = function (t) {
-                if (!this.disabled && this.groups[t]) {
-                    var e = this.groups[t],
-                        i = Math.random() * e.sounds.length | 0;
-                    this.sounds[e.sounds[i]].play(), this.currentSound = this.sounds[e.sounds[i]]
-                }
-            }, s.prototype.setVolume = function (t, e) {
-                if (!this.disabled) {
-                    var i = this.sounds[t];
-                    i.realVolume = e, i.volume(e * this.globalVolume)
-                }
-            }, s.prototype.stop = function (t) {
-                !this.disabled && this.sounds[t] && this.sounds[t].stop()
-            }, s.prototype.stopAll = function () {
-                if (!this.disabled)
-                    for (var t in this.sounds) this.sounds[t].stop()
-            }, s.prototype.setPlaybackSpeed = function (t, e) {
-                if (!this.disabled) {
-                    var i = this.sounds[t];
-                    i._playbackSpeed = e;
-                    var n = "music" == t ? 0 : 1;
-                    i._webAudio && Howler._howls[n]._audioNode[0] && (Howler._howls[n]._audioNode[0].bufferSource.playbackRate.value = e)
-                }
-            }, s.prototype.getPlaybackSpeed = function (t) {
-                if (!this.disabled) {
-                    var e = this.sounds[t];
-                    return e._playbackSpeed || 1
-                }
-            }, s.prototype.setGlobalVolume = function (t) {
-                this.globalVolume = t;
-                for (var e in this.sounds) {
-                    var i = this.sounds[e];
-                    i.volume(i.realVolume * t)
-                }
-            }, s.prototype.mute = function () {
-                this.isMuted = !0, Howler.mute(!0), this.onMuteToggle.dispatch(!0)
-            }, s.prototype.unmute = function () {
-                this.isMuted = !1, Howler.mute(!1), this.onMuteToggle.dispatch(!1)
-            }, s.prototype.check = function () {
-                this.lastSeen = Date.now();
-                var t = function () {
-                    lastSeen = Date.now(), setTimeout(t, 50)
-                };
-                t();
-                var i = document.getElementById("music");
-                i.addEventListener("timeupdate", function () {
-                    Date.now() - e.lastSeen > 100 && this.pause()
-                }, !1)
-            }, s.sfx = new s, s.music = new s, s.sfx.disabled = !Howler.usingWebAudio, o.onHide.add(function () {
-                Howler.mute(!0)
-            }.bind(this), Howler), o.onShow.add(function () {
-                s.sfx.isMuted || Howler.mute(!1)
-            }.bind(this), Howler), n.exports = s
-        }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
-    },
+    soundManagerFn,
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -4551,6 +4484,7 @@
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     titleScreenFn,
+    //function index: 40
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -4908,6 +4842,7 @@
             s = new o;
         window.gameSession = s, t.exports = s
     },
+    //function index: 50
     function (t, e) {
         "use strict";
         var i = {
@@ -5629,6 +5564,7 @@
             }, n.exports = o
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 60
     function (t, e, i) {
         var n;
         n = function (t, e, i) {
@@ -6102,58 +6038,7 @@
         }());
         e["default"] = r, t.exports = e["default"]
     },
-    function (t, e, i) {
-        "use strict";
-
-        function n(t) {
-            return t && t.__esModule ? t : {
-                "default": t
-            }
-        }
-
-        function r(t, e) {
-            if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function")
-        }
-
-        function o(t, e) {
-            if (!t) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-            return !e || "object" != typeof e && "function" != typeof e ? t : e
-        }
-
-        function s(t, e) {
-            if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-            t.prototype = Object.create(e && e.prototype, {
-                constructor: {
-                    value: t,
-                    enumerable: !1,
-                    writable: !0,
-                    configurable: !0
-                }
-            }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(t, e) : t.__proto__ = e)
-        }
-        e.__esModule = !0;
-        var a = i(69),
-            h = n(a),
-            l = i(49),
-            c = n(l),
-            u = i(50),
-            p = i(37),
-            d = i(34),
-            f = n(d),
-            m = function (t) {
-                function e(i) {
-                    r(this, e);
-                    var n = o(this, t.call(this, i));
-                    return n.setPlayers((0, u.getCaptains)()), n.gameSessionPlayerToSet = c["default"].teamA[0], n.title.text = p.Translation.captain_select_screen.title, n
-                }
-                return s(e, t), e.prototype.updateCharaterGameSession = function (t) {
-                    c["default"].teamA[0] = t.data
-                }, e.prototype.onShow = function () {
-                    t.prototype.onShow.call(this), this.app.breadcrumb.steps[this.app.breadcrumb.currentStep].hasBeenActivate || (this.playerCardSelected = null, c["default"].teamA[0] && (c["default"].teamA[0].selected = !1)), this.app.topMenu.prevScreen = f["default"].SCREEN_ID.COUNTRY_SELECT, this.app.topMenu.nextScreen = f["default"].SCREEN_ID.PLAYER_SELECT, this.app.breadcrumb.maxStepIndexRiched < 2 ? this.app.topMenu.setState("prev") : this.app.topMenu.setState("prevnext")
-                }, e
-            }(h["default"]);
-        e["default"] = m, t.exports = e["default"]
-    },
+    captainSelectScreenFn,
     function (t, e, i) {
         "use strict";
 
@@ -6343,6 +6228,7 @@
             }(c.Container);
         e["default"] = B, t.exports = e["default"]
     },
+    //function index: 70
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -6793,68 +6679,8 @@
             }, i.exports = n
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
-    function (t, e, i) {
-        "use strict";
-
-        function n(t) {
-            return t && t.__esModule ? t : {
-                "default": t
-            }
-        }
-
-        function r(t, e) {
-            if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function")
-        }
-
-        function o(t, e) {
-            if (!t) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-            return !e || "object" != typeof e && "function" != typeof e ? t : e
-        }
-
-        function s(t, e) {
-            if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-            t.prototype = Object.create(e && e.prototype, {
-                constructor: {
-                    value: t,
-                    enumerable: !1,
-                    writable: !0,
-                    configurable: !0
-                }
-            }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(t, e) : t.__proto__ = e)
-        }
-        e.__esModule = !0;
-        var a = i(69),
-            h = n(a),
-            l = i(49),
-            c = n(l),
-            u = i(50),
-            p = i(34),
-            d = n(p),
-            f = i(37),
-            m = function (t) {
-                function e(i, n) {
-                    r(this, e);
-                    var s = o(this, t.call(this, i));
-                    return s.first = n, s.setPlayers((0, u.getPlayers)()), s.title.text = n ? f.Translation.player1_select_screen.title : f.Translation.player2_select_screen.title, s
-                }
-                return s(e, t), e.prototype.updateCharaterGameSession = function (t) {
-                    c["default"].teamA[this.first ? 1 : 2] = t.data
-                }, e.prototype.selectPlayer = function (t) {
-                    if (this.playerCardSelected) {
-                        for (var e = 0; e < this.cards.length; e++) this.first ? this.cards[e].data.id !== c["default"].teamA[2].id && this.cards[e].unselect() : this.cards[e].data.id !== c["default"].teamA[1].id && this.cards[e].unselect();
-                        u.CharacterData[this.playerCardSelected.data.id].selected = !1
-                    }
-                    this.playerCardSelected = t, this.playerCardSelected.select(), u.CharacterData[this.playerCardSelected.data.id].selected = !0
-                }, e.prototype.onShow = function () {
-                    t.prototype.onShow.call(this);
-                    var e = this.first ? 3 : 4;
-                    this.app.breadcrumb.steps[this.app.breadcrumb.currentStep].hasBeenActivate || (this.playerCardSelected = null, c["default"].teamA[this.first ? 1 : 2] && (c["default"].teamA[this.first ? 1 : 2].selected = !1)), this.first && (this.app.breadcrumb.steps[this.app.breadcrumb.currentStep + 1].hasBeenActivate || c["default"].teamA[2] && (c["default"].teamA[2].selected = !1)), this.app.topMenu.prevScreen = this.first ? d["default"].SCREEN_ID.CAPTAIN_SELECT : d["default"].SCREEN_ID.PLAYER_SELECT, this.app.topMenu.nextScreen = this.first ? d["default"].SCREEN_ID.PLAYER_SELECT_2 : d["default"].SCREEN_ID.TEAM_REVIEW, this.app.breadcrumb.maxStepIndexRiched < e ? this.app.topMenu.setState("prev") : this.app.topMenu.setState("prevnext")
-                }, e.prototype.onHide = function () {
-                    t.prototype.onHide.call(this), c["default"].teamA[this.first ? 1 : 2].selected = !0
-                }, e
-            }(h["default"]);
-        e["default"] = m, t.exports = e["default"]
-    },
+    //function index: 80
+    playerSelectScreenFn,
     teamReviewScreenFn,
     function (t, e, i) {
         "use strict";
@@ -7081,84 +6907,103 @@
                         n.onPlayButtonPressed()
                     }), n.bg.addChild(n.playButton), n
                 }
-                return a(e, t), e.prototype.setContent = function () {
-                    this.bg.removeChild(this.itemContainer), this.itemContainer = new l.Container, this.itemContainer.position.set(0, -150), this.bg.addChild(this.itemContainer), this.bg.addChild(this.countryPanel), this.stage, m["default"].tournamentData.winner.length > 0 ? this.stage = this.stageInfo.winner.id : m["default"].tournamentData["final"].length > 0 ? this.stage = this.stageInfo["final"].id : m["default"].tournamentData.semi.length > 0 ? this.stage = this.stageInfo.semi.id : m["default"].tournamentData.quarter.length > 0 && (this.stage = this.stageInfo.quarter.id);
-                    var t = {
-                        quarter: 0,
-                        semi: 0,
-                        "final": 1
-                    };
-                    m["default"].difficulty = t[this.stage], this.stageLabel.text = x.Translation.tournament_screen.stages[this.stage], this.arrangeItems(this.stage, !0)
-                }, e.prototype.chooseOpponent = function () {
-                    m["default"].leftOverPlayers = [];
-                    for (var t in g.CharacterData) {
-                        var e = g.CharacterData[t];
-                        e.available && m["default"].teamA.indexOf(e) === -1 && m["default"].leftOverPlayers.push(e)
-                    }
-                    w["default"].shuffle(m["default"].leftOverPlayers), m["default"].teamB = [m["default"].leftOverPlayers[0], m["default"].leftOverPlayers[1], m["default"].leftOverPlayers[2]];
-                    for (var t in g.CharacterData) {
-                        var e = g.CharacterData[t];
-                        e.available && m["default"].teamB.indexOf(e) !== -1 && (g.CharacterData[t].available = !1)
-                    }
-                    var i = this.flattenArray(m["default"].tournamentData[this.stage]),
-                        n = i.indexOf(m["default"].countryID);
-                    m["default"].opponentID = i[n % 2 === 0 ? ++n : --n]
-                }, e.prototype.chooseRivals = function (t, e) {
-                    for (var i, n, r, o = [], s = [], a = m["default"].tournamentData[t], h = 0; h < a.length; h++) i = a[h], n = i.indexOf(m["default"].countryID), r = n > -1 ? i[e ? n : (n + 1) % 2] : i[Math.floor(2 * Math.random())], o.push(r), 2 == o.length && (s.push(o), o = []);
-                    return s
-                }, e.prototype.updateRivals = function (t, e) {
-                    t === this.stageInfo["final"].id ? m["default"].tournamentData.winner = [e ? m["default"].countryID : m["default"].tournamentData["final"][Math.floor(2 * Math.random())]] : t === this.stageInfo.semi.id ? (m["default"].tournamentData["final"] = this.flattenArray(this.chooseRivals(t, e)), e || this.updateRivals(this.stageInfo["final"].id, !1)) : t === this.stageInfo.quarter.id && (m["default"].tournamentData.semi = this.chooseRivals(t, e), e || this.updateRivals(this.stageInfo.semi.id, !1))
-                }, e.prototype.arrangeItems = function (t, e) {
-                    t === this.stageInfo.winner.id ? (this.placeItems(this.stageInfo.winner.id, [this.emptyFlag]), this.placeItems(t, m["default"].tournamentData.winner), this.arrangeItems(this.stageInfo["final"].id, !1)) : t === this.stageInfo["final"].id ? (e ? (this.placeItems(this.stageInfo.winner.id, [this.emptyFlag]), this.placeItems(this.stageInfo["final"].id, [this.emptyFlag, this.emptyFlag]), this.placeItems(t, m["default"].tournamentData["final"])) : this.placeItems(t, m["default"].tournamentData["final"]), this.arrangeItems(this.stageInfo.semi.id, !1)) : t === this.stageInfo.semi.id ? (e ? (this.placeItems(this.stageInfo.winner.id, [this.emptyFlag]), this.placeItems(this.stageInfo["final"].id, [this.emptyFlag, this.emptyFlag]), this.placeItems(this.stageInfo.semi.id, [this.emptyFlag, this.emptyFlag, this.emptyFlag, this.emptyFlag]), this.placeItems(t, this.flattenArray(m["default"].tournamentData.semi))) : this.placeItems(t, this.flattenArray(m["default"].tournamentData.semi)), this.arrangeItems(this.stageInfo.quarter.id, !1)) : t === this.stageInfo.quarter.id && (e && (this.placeItems(this.stageInfo.winner.id, [this.emptyFlag]), this.placeItems(this.stageInfo["final"].id, [this.emptyFlag, this.emptyFlag]), this.placeItems(this.stageInfo.semi.id, [this.emptyFlag, this.emptyFlag, this.emptyFlag, this.emptyFlag])), this.placeItems(t, this.flattenArray(m["default"].tournamentData.quarter)))
-                }, e.prototype.onItemHover = function (t) {
-                    if (t.id) {
-                        var e = {
-                            name: x.Translation.countries[t.id].NAME,
-                            label: x.Translation.country_select_screen.countryPanel
-                        },
-                            i = {
-                                x: t.position.x,
-                                y: t.position.y - 2 * t.height - 20
-                            };
-                        TweenLite.to(this.countryPanel.position, .25, {
-                            x: i.x,
-                            y: i.y,
-                            ease: Linear.None
-                        }), this.countryPanel.show(e), this.countryPanel.depth = 2
-                    }
-                }, e.prototype.onItemOut = function (t) {
-                    t.id && this.countryPanel.hide()
-                }, e.prototype.placeItems = function (t, e) {
-                    var i = [];
-                    m["default"].tournamentData.winner.length > 0 ? i = m["default"].tournamentData.winner : m["default"].tournamentData["final"].length > 0 ? i = m["default"].tournamentData["final"] : m["default"].tournamentData.semi.length > 0 && (i = this.flattenArray(m["default"].tournamentData.semi));
-                    for (var n, r, o, s, a, h, c = 0; c < e.length; c++) n = e[c], r = l.Sprite.fromFrame(n.FLAG), o = this.stageInfo[t].pos[c], r.scale.set(this.scaleRatio), r.id = n.ID, r.interactive = !0, r.buttonMode = !0, r.mouseover = this.onItemHover.bind(this, r), r.mouseout = this.onItemOut.bind(this, r), r.anchor.set(.5), r.x = o.x, r.y = o.y, n === m["default"].countryID && (a = l.Sprite.fromFrame("flag-white-border.png"), a.anchor.set(.5), r.addChild(a), h = l.Sprite.fromFrame("halo.png"), h.position.x = r.position.x, h.position.y = r.position.y, h.anchor.set(.5), this.itemContainer.addChild(h)), this.itemContainer.addChild(r), i.length > 0 && i.indexOf(n) < 0 && (s = l.Sprite.fromFrame(this.blackFlag.FLAG), s.anchor.set(.5), s.alpha = .5, r.addChild(s))
-                }, e.prototype.flattenArray = function (t) {
-                    for (var e = [], i = 0; i < t.length; i++) e = e.concat(t[i]);
-                    return e
-                }, e.prototype.onPlayButtonPressed = function () {
-                    void 0 === m["default"].tournamentData.winner[0] ? (this.chooseOpponent(), this.app.spotLights.hide(), this.screenManager.gotoScreenByID(_["default"].SCREEN_ID.GAME)) : m["default"].tournamentData.winner[0] === m["default"].countryID ? this.screenManager.gotoScreenByID(_["default"].SCREEN_ID.SUCCEED) : this.screenManager.gotoScreenByID(_["default"].SCREEN_ID.FAIL)
-                }, e.prototype.onShow = function () {
-                    m["default"].matchResult.goalsA > -1 && this.updateRivals(this.stage, m["default"].matchResult.goalsA > m["default"].matchResult.goalsB), this.app.breadcrumb.hide(), void 0 !== m["default"].tournamentData.winner[0] && (this.playButton.label.text = x.Translation.tournament_screen.endButton), this.setContent(), this.bg.scale.set(0), this.app.topMenu.prevScreen = _["default"].SCREEN_ID.TEAM_REVIEW, this._hack = this.hack.bind(this), this.app.topMenu.buttons.prev.onPress.add(this._hack), this.app.topMenu.setState("prevnext"), TweenLite.to(this.bg.scale, 1, {
-                        x: 1,
-                        y: 1,
-                        ease: Elastic.easeOut,
-                        delay: .2
-                    }), this.title.scale.set(0), TweenLite.to(this.title.scale, 1, {
-                        x: 1,
-                        y: 1,
-                        ease: Elastic.easeOut,
-                        delay: .2
-                    }), this.playButton.scale.set(0), TweenLite.to(this.playButton.scale, 1, {
-                        x: 1,
-                        y: 1,
-                        ease: Elastic.easeOut,
-                        delay: .5
-                    })
-                }, e.prototype.hack = function () {
-                    this.app.breadcrumb.currentStep--, this.app.breadcrumb.steps[this.app.breadcrumb.currentStep].activate(), this.app.topMenu.buttons.prev.onPress.remove(this._hack)
-                }, e.prototype.onShown = function () { }, e.prototype.resize = function (t, e) {
-                    this.bg.position.set(t / 2, e / 2 + 20), this.title.position.y = _["default"].MARGIN.TITLE_TOP, this.title.position.x = t / 2
-                }, e
+                return a(e, t),
+                    e.prototype.setContent = function () {
+                        this.bg.removeChild(this.itemContainer), this.itemContainer = new l.Container, this.itemContainer.position.set(0, -150), this.bg.addChild(this.itemContainer), this.bg.addChild(this.countryPanel), this.stage, m["default"].tournamentData.winner.length > 0 ? this.stage = this.stageInfo.winner.id : m["default"].tournamentData["final"].length > 0 ? this.stage = this.stageInfo["final"].id : m["default"].tournamentData.semi.length > 0 ? this.stage = this.stageInfo.semi.id : m["default"].tournamentData.quarter.length > 0 && (this.stage = this.stageInfo.quarter.id);
+                        var t = {
+                            quarter: 0,
+                            semi: 0,
+                            "final": 1
+                        };
+                        m["default"].difficulty = t[this.stage], this.stageLabel.text = x.Translation.tournament_screen.stages[this.stage], this.arrangeItems(this.stage, !0)
+                    },
+                    e.prototype.chooseOpponent = function () {
+                        m["default"].leftOverPlayers = [];
+                        for (var t in g.CharacterData) {
+                            var e = g.CharacterData[t];
+                            e.available && m["default"].teamA.indexOf(e) === -1 && m["default"].leftOverPlayers.push(e)
+                        }
+                        w["default"].shuffle(m["default"].leftOverPlayers), m["default"].teamB = [m["default"].leftOverPlayers[0], m["default"].leftOverPlayers[1], m["default"].leftOverPlayers[2]];
+                        for (var t in g.CharacterData) {
+                            var e = g.CharacterData[t];
+                            e.available && m["default"].teamB.indexOf(e) !== -1 && (g.CharacterData[t].available = !1)
+                        }
+                        var i = this.flattenArray(m["default"].tournamentData[this.stage]),
+                            n = i.indexOf(m["default"].countryID);
+                        m["default"].opponentID = i[n % 2 === 0 ? ++n : --n]
+                    },
+                    e.prototype.chooseRivals = function (t, e) {
+                        for (var i, n, r, o = [], s = [], a = m["default"].tournamentData[t], h = 0; h < a.length; h++) i = a[h], n = i.indexOf(m["default"].countryID), r = n > -1 ? i[e ? n : (n + 1) % 2] : i[Math.floor(2 * Math.random())], o.push(r), 2 == o.length && (s.push(o), o = []);
+                        return s
+                    },
+                    e.prototype.updateRivals = function (t, e) {
+                        t === this.stageInfo["final"].id ? m["default"].tournamentData.winner = [e ? m["default"].countryID : m["default"].tournamentData["final"][Math.floor(2 * Math.random())]] : t === this.stageInfo.semi.id ? (m["default"].tournamentData["final"] = this.flattenArray(this.chooseRivals(t, e)), e || this.updateRivals(this.stageInfo["final"].id, !1)) : t === this.stageInfo.quarter.id && (m["default"].tournamentData.semi = this.chooseRivals(t, e), e || this.updateRivals(this.stageInfo.semi.id, !1))
+                    },
+                    e.prototype.arrangeItems = function (t, e) {
+                        t === this.stageInfo.winner.id ? (this.placeItems(this.stageInfo.winner.id, [this.emptyFlag]), this.placeItems(t, m["default"].tournamentData.winner), this.arrangeItems(this.stageInfo["final"].id, !1)) : t === this.stageInfo["final"].id ? (e ? (this.placeItems(this.stageInfo.winner.id, [this.emptyFlag]), this.placeItems(this.stageInfo["final"].id, [this.emptyFlag, this.emptyFlag]), this.placeItems(t, m["default"].tournamentData["final"])) : this.placeItems(t, m["default"].tournamentData["final"]), this.arrangeItems(this.stageInfo.semi.id, !1)) : t === this.stageInfo.semi.id ? (e ? (this.placeItems(this.stageInfo.winner.id, [this.emptyFlag]), this.placeItems(this.stageInfo["final"].id, [this.emptyFlag, this.emptyFlag]), this.placeItems(this.stageInfo.semi.id, [this.emptyFlag, this.emptyFlag, this.emptyFlag, this.emptyFlag]), this.placeItems(t, this.flattenArray(m["default"].tournamentData.semi))) : this.placeItems(t, this.flattenArray(m["default"].tournamentData.semi)), this.arrangeItems(this.stageInfo.quarter.id, !1)) : t === this.stageInfo.quarter.id && (e && (this.placeItems(this.stageInfo.winner.id, [this.emptyFlag]), this.placeItems(this.stageInfo["final"].id, [this.emptyFlag, this.emptyFlag]), this.placeItems(this.stageInfo.semi.id, [this.emptyFlag, this.emptyFlag, this.emptyFlag, this.emptyFlag])), this.placeItems(t, this.flattenArray(m["default"].tournamentData.quarter)))
+                    },
+                    e.prototype.onItemHover = function (t) {
+                        if (t.id) {
+                            var e = {
+                                name: x.Translation.countries[t.id].NAME,
+                                label: x.Translation.country_select_screen.countryPanel
+                            },
+                                i = {
+                                    x: t.position.x,
+                                    y: t.position.y - 2 * t.height - 20
+                                };
+                            TweenLite.to(this.countryPanel.position, .25, {
+                                x: i.x,
+                                y: i.y,
+                                ease: Linear.None
+                            }), this.countryPanel.show(e), this.countryPanel.depth = 2
+                        }
+                    },
+                    e.prototype.onItemOut = function (t) {
+                        t.id && this.countryPanel.hide()
+                    },
+                    e.prototype.placeItems = function (t, e) {
+                        var i = [];
+                        m["default"].tournamentData.winner.length > 0 ? i = m["default"].tournamentData.winner : m["default"].tournamentData["final"].length > 0 ? i = m["default"].tournamentData["final"] : m["default"].tournamentData.semi.length > 0 && (i = this.flattenArray(m["default"].tournamentData.semi));
+                        for (var n, r, o, s, a, h, c = 0; c < e.length; c++) n = e[c], r = l.Sprite.fromFrame(n.FLAG), o = this.stageInfo[t].pos[c], r.scale.set(this.scaleRatio), r.id = n.ID, r.interactive = !0, r.buttonMode = !0, r.mouseover = this.onItemHover.bind(this, r), r.mouseout = this.onItemOut.bind(this, r), r.anchor.set(.5), r.x = o.x, r.y = o.y, n === m["default"].countryID && (a = l.Sprite.fromFrame("flag-white-border.png"), a.anchor.set(.5), r.addChild(a), h = l.Sprite.fromFrame("halo.png"), h.position.x = r.position.x, h.position.y = r.position.y, h.anchor.set(.5), this.itemContainer.addChild(h)), this.itemContainer.addChild(r), i.length > 0 && i.indexOf(n) < 0 && (s = l.Sprite.fromFrame(this.blackFlag.FLAG), s.anchor.set(.5), s.alpha = .5, r.addChild(s))
+                    },
+                    e.prototype.flattenArray = function (t) {
+                        for (var e = [], i = 0; i < t.length; i++) e = e.concat(t[i]);
+                        return e
+                    },
+                    e.prototype.onPlayButtonPressed = function () {
+                        void 0 === m["default"].tournamentData.winner[0] ? (
+                            this.chooseOpponent(),
+                            this.app.spotLights.hide(),
+                            this.screenManager.gotoScreenByID(_["default"].SCREEN_ID.GAME)
+                        ) : m["default"].tournamentData.winner[0] === m["default"].countryID ? this.screenManager.gotoScreenByID(_["default"].SCREEN_ID.SUCCEED) : this.screenManager.gotoScreenByID(_["default"].SCREEN_ID.FAIL)
+                    },
+                    e.prototype.onShow = function () {
+                        m["default"].matchResult.goalsA > -1 && this.updateRivals(this.stage, m["default"].matchResult.goalsA > m["default"].matchResult.goalsB), this.app.breadcrumb.hide(), void 0 !== m["default"].tournamentData.winner[0] && (this.playButton.label.text = x.Translation.tournament_screen.endButton), this.setContent(), this.bg.scale.set(0), this.app.topMenu.prevScreen = _["default"].SCREEN_ID.TEAM_REVIEW, this._hack = this.hack.bind(this), this.app.topMenu.buttons.prev.onPress.add(this._hack), this.app.topMenu.setState("prevnext"), TweenLite.to(this.bg.scale, 1, {
+                            x: 1,
+                            y: 1,
+                            ease: Elastic.easeOut,
+                            delay: .2
+                        }), this.title.scale.set(0), TweenLite.to(this.title.scale, 1, {
+                            x: 1,
+                            y: 1,
+                            ease: Elastic.easeOut,
+                            delay: .2
+                        }), this.playButton.scale.set(0), TweenLite.to(this.playButton.scale, 1, {
+                            x: 1,
+                            y: 1,
+                            ease: Elastic.easeOut,
+                            delay: .5
+                        })
+                    },
+                    e.prototype.hack = function () {
+                        this.app.breadcrumb.currentStep--, this.app.breadcrumb.steps[this.app.breadcrumb.currentStep].activate(), this.app.topMenu.buttons.prev.onPress.remove(this._hack)
+                    },
+                    e.prototype.onShown = function () { },
+                    e.prototype.resize = function (t, e) {
+                        this.bg.position.set(t / 2, e / 2 + 20), this.title.position.y = _["default"].MARGIN.TITLE_TOP, this.title.position.x = t / 2
+                    },
+                    e
             }(l.Container);
         e["default"] = A, t.exports = e["default"]
     },
@@ -7491,72 +7336,9 @@
             }, n.exports = a
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 90
     gameOverScreenFn,
-    function (t, e, i) {
-        var n = null;
-        n = function (t, e, n) {
-            var r = i(8),
-                o = (i(32), i(40), i(92)),
-                s = (i(176), i(178)),
-                a = i(34),
-                h = i(49),
-                l = i(61),
-                c = function (t) {
-                    r.Container.call(this),
-                    this.app = t,
-                    this.game = new o,
-                    this.game.onGameover.add(this.onGameover, this),
-                    this.addChild(this.game.view),
-                    this.app.game = this.game,
-                    this.transition = new s
-                    _gloablObj = this;
-                };
-            c.prototype = Object.create(r.Container.prototype),
-            c.prototype.onShow = function () {
-                TweenLite.to(this.app.background, .4, {
-                    alpha: 0,
-                    delay: .4
-                }),
-                this.game.start(),
-                this.app.overlayManager.onShow.add(this.onOverlayShow, this),
-                this.app.overlayManager.onHide.add(this.onOverlayHide, this),
-                this.app.topMenu.setState("game")
-            },
-            c.prototype.quit = function () {
-                this.screenManager.gotoScreenByID(a.SCREEN_ID.TITLE)
-            },
-            c.prototype.onGameover = function () {
-                var t = h.matchResult.goalsA - h.matchResult.goalsB,
-                    e = h.countryID.SCORE_ID;
-                l.sendScore(e, t),
-                h.isTournament === !0 ? this.screenManager.gotoScreenByID(a.SCREEN_ID.TOURNAMENT) : this.screenManager.gotoScreenByID(a.SCREEN_ID.GAMEOVER)
-            },
-            c.prototype.onShown = function () { },
-            c.prototype.onHide = function () {
-                TweenLite.to(this.app.background, .4, {
-                    alpha: 1
-                }),
-                this.game.pause(),
-                this.app.overlayManager.onShow.remove(this.onOverlayShow, this),
-                this.app.overlayManager.onHide.remove(this.onOverlayHide, this),
-                app.view.style["-webkit-filter"] = null
-            },
-            c.prototype.onHidden = function () {
-                this.game.pause(), this.app.topMenu.setState("home")
-            },
-            c.prototype.onOverlayShow = function () {
-                this.game.pause()
-            },
-            c.prototype.onOverlayHide = function () {
-                this.game.isGameover ? (this.game.reset(), this.game.resume()) : this.game.resume()
-            },
-            c.prototype.resize = function (t, e) {
-                this.game.resize(t, e), this.position.x = 0, this.position.y = 0
-            },
-            n.exports = c;
-        }.call(e, i, e, t),
-        !(void 0 !== n && (t.exports = n))
-    },
+    gameScreenWrapFn,
     gameScreenFn,
     function (t, e, i) {
         var n;
@@ -7995,6 +7777,7 @@
             }, n.exports = s
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 100
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -8212,6 +7995,7 @@
             h.prototype = Object.create(r.Container.prototype), n.exports = h
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 105;
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -8223,25 +8007,34 @@
             }
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 106; World
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
             var r = (i(8), i(107)),
                 o = i(23),
                 s = function () {
-                    this.allItems = new r, this.updateItems = new r, this.groups = {}, this.itemsToRemove = [], this.systems = []
+                    this.allItems = new r,
+                    this.updateItems = new r,
+                    this.groups = {},
+                    this.itemsToRemove = [],
+                    this.systems = []
                 };
-            s.constructor = s, s.prototype.install = function (t, e) {
+            s.constructor = s,
+            s.prototype.install = function (t, e) {
                 this.systems.push(t), t.init(this), this[e] = t
-            }, s.prototype.addGroup = function (t) {
+            },
+            s.prototype.addGroup = function (t) {
                 for (var e = 0; e < t.children.length; e++) this.add(t.children[e])
-            }, s.prototype.initGroups = function (t) {
+            },
+            s.prototype.initGroups = function (t) {
                 for (var e = 0; e < t.length; e++) {
                     var i = t[e],
                         n = this.groups[i];
                     n || (n = this.groups[i] = new r)
                 }
-            }, s.prototype.add = function (t) {
+            },
+            s.prototype.add = function (t) {
                 if (t._gc) {
                     var e = this.itemsToRemove.indexOf(t);
                     this.itemsToRemove.splice(e, 1), t._gc = !1
@@ -8255,9 +8048,11 @@
                     o || (o = this.groups[n] = new r), o.add(t)
                 }
                 t.update && this.updateItems.add(t), t.addedToWorld && t.addedToWorld(this)
-            }, s.prototype.remove = function (t) {
+            },
+            s.prototype.remove = function (t) {
                 !t._gc && t.world && (t._gc = !0, this.itemsToRemove.push(t))
-            }, s.prototype.update = function () {
+            },
+            s.prototype.update = function () {
                 var t = Math.round(o.game.deltaTime / o.game.speed);
                 t > 2 && (t = 2);
                 for (var e = 0; e < t; e++) {
@@ -8267,25 +8062,32 @@
                     for (var i = 0; i < this.systems.length; i++) this.systems[i].update();
                     for (var i = 0; i < this.systems.length; i++) this.systems[i].postupdate()
                 }
-            }, s.prototype.removeItems = function () {
+            },
+            s.prototype.removeItems = function () {
                 this.itemsToRemove.length;
                 for (var t = 0; t < this.itemsToRemove.length; t++) {
                     var e = this.itemsToRemove[t];
                     this.removeItem(e)
                 }
                 this.itemsToRemove.length = 0
-            }, s.prototype.removeItem = function (t) {
+            },
+            s.prototype.removeItem = function (t) {
                 t._gc = !1;
                 for (var e = 0; e < this.systems.length; e++) this.systems[e].remove(t);
-                t.update && this.updateItems.remove(t), t.removedFromWorld && t.removedFromWorld(this), t.world = null, this.allItems.remove(t);
+                t.update && this.updateItems.remove(t),
+                t.removedFromWorld && t.removedFromWorld(this),
+                t.world = null,
+                this.allItems.remove(t);
                 for (var e = 0; e < t.groups.length; e++) {
                     var i = t.groups[e];
                     this.groups[i].remove(t)
                 }
-            }, s.prototype.clear = function () {
+            },
+            s.prototype.clear = function () {
                 for (var t = 0; t < this.systems.length; t++) this.systems[t].clear();
                 this.allItems.empty(), this.updateItems.empty(), this.groups = {}, this.removeItems(), this.collisionHash = {}
-            }, s.prototype.find = function (t, e) {
+            },
+            s.prototype.find = function (t, e) {
                 if (!this.groups[t]) return null;
                 for (var i = this.groups[t].children, n = 0; n < i.length; n++)
                     if (i[n].meta.name === e) return i[n]
@@ -8435,6 +8237,7 @@
             }, n.exports = h
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 110
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -10159,6 +9962,7 @@
             }, i
         }(i.dom.dom, i.utils.common), i.dom.dom, i.utils.common)
     },
+    //function index: 120
     function (t, e) {
         var i = t.exports = i || {};
         i.color = i.color || {}, i.utils = i.utils || {}, i.utils.common = function () {
@@ -11037,6 +10841,7 @@
             }, n.exports = o
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 130
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -11435,6 +11240,7 @@
             }, n.exports = h
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 140
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -11715,85 +11521,8 @@
             }, n.exports = c
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
-    function (t, e, i) {
-        var n;
-        n = function (t, e, n) {
-            var r = i(8),
-                o = i(12),
-                s = i(126),
-                a = (i(128), i(117)),
-                h = (i(118), function () {
-                    for (var t = r.Sprite.from(URL_HEADER.IMAGE + _gSettings.background_game), e = new o.PlaneGeometry(1800, 1100), i = new r.Container, n = 0; n < 8; n++) {
-                        var h = r.Sprite.from(URL_HEADER.IMAGE + "sponsor/board" + (n % 2 + 1) + ".png");
-                        h.x = 305 * n, i.addChild(h)
-                    }
-                    this.loader = new o.TextureLoader;
-                    var l = this.loader.load(URL_HEADER.IMAGE + _gSettings.background_game),
-                        c = new o.MeshBasicMaterial({
-                            map: l
-                        });
-                    c.side = o.DoubleSide, c.polygonOffset = !0, c.polygonOffsetFactor = 40, this.view3d = new o.Mesh(e, c), this.view3d.position.x = 800, this.view3d.position.y = 450, s.call(this, 0, 0, t);
-                    var l = a.getPixiTexture(i),
-                        c = new o.MeshBasicMaterial({
-                            map: l
-                        });
-                    c.side = o.DoubleSide, c.transparent = !0, boardGeometry = new o.PlaneGeometry(i.width, 82), this.boardMesh = new o.Mesh(boardGeometry, c), this.view3d.add(this.boardMesh), this.boardMesh.rotation.x = Math.PI / 2 - .8, this.boardMesh.position.z = 25, this.boardMesh.position.y = 500, this.addCrowd(), this.addRunoff(), this.frontCrowd(), this.groups = ["Pitch"];
-                    var u = r.Texture.from(URL_HEADER.IMAGE + "sponsor/pitch-logo.png"),
-                        p = new o.Texture;
-                    p.image = u.baseTexture.source, p.needsUpdate = !0;
-                    var c = new o.MeshBasicMaterial({
-                        map: p
-                    });
-                    c.side = o.DoubleSide, c.transparent = !0, c.depthTest = !1, c.opacity = .5, logoGeometry = new o.PlaneGeometry(336, 336), this.logoMesh = new o.Mesh(logoGeometry, c), window.logoMesh = this.logoMesh, this.view3d.add(this.logoMesh)
-                });
-            h.prototype = Object.create(s.prototype), h.prototype.showLogo = function () {
-                this.logoMesh.visible = !0, this.logoMesh.material.opacity = .4, TweenLite.to(this.logoMesh.material, .5, {
-                    opacity: 0,
-                    onComplete: function () {
-                        this.logoMesh.visible = !1
-                    }.bind(this),
-                    delay: 8
-                })
-            }, h.prototype.hideLogo = function () {
-                TweenLite.to(this.logoMesh.material, .3, {
-                    opacity: 0,
-                    onComplete: function () {
-                        this.logoMesh.visible = !1
-                    }.bind(this),
-                    delay: 0
-                })
-            }, h.prototype.addCrowd = function () {
-                var t = this.loader.load(URL_HEADER.IMAGE + "game/stadium-02.jpg");
-                t.repeat.set(6 * .3, 1.2), t.wrapS = t.wrapT = o.RepeatWrapping;
-                var e = new o.MeshBasicMaterial({
-                    map: t
-                });
-                e.side = o.DoubleSide, crowdGeometry = new o.PlaneGeometry(2400, (-500)), this.crowdMesh = new o.Mesh(crowdGeometry, e), this.view3d.add(this.crowdMesh), this.crowdMesh.rotation.x = -Math.PI / 2 - 1.2, this.crowdMesh.position.z = 75, this.crowdMesh.position.y = 780, this.crowdMesh.scale.z = -1
-            }, h.prototype.addRunoff = function () {
-                var t = this.loader.load(URL_HEADER.IMAGE + "game/runnoff.png");
-                t.repeat.set(1, 3), t.wrapS = t.wrapT = o.RepeatWrapping;
-                var e = new o.MeshBasicMaterial({
-                    map: t
-                });
-                e.side = o.DoubleSide, e.polygonOffset = !0, e.polygonOffsetFactor = 40;
-                var i = new o.PlaneGeometry(400, 1400),
-                    n = new o.Mesh(i, e);
-                this.view3d.add(n), n.position.x = -1100, n.position.y = 300;
-                var r = new o.Mesh(i, e);
-                this.view3d.add(r), r.scale.x = -1, r.position.x = 1100, r.position.y = 300
-            }, h.prototype.frontCrowd = function () {
-                var t = this.loader.load(URL_HEADER.IMAGE + "game/front_crowd.png");
-                t.repeat.set(4, 1), t.wrapS = t.wrapT = o.RepeatWrapping;
-                var e = new o.MeshBasicMaterial({
-                    map: t
-                });
-                e.side = o.DoubleSide, e.transparent = !0;
-                var i = new o.PlaneGeometry(1600, 112),
-                    n = new o.Mesh(i, e);
-                this.view3d.add(n), n.position.z = 106, n.position.y = -586, n.rotation.x = 1
-            }, h.prototype.reset = function () { }, h.prototype.update = function () { }, n.exports = h
-        }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
-    },
+    //function index: 144; Game Background
+    PitchObjectFn,
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -11833,204 +11562,7 @@
         var n = (i(8), function (t) { });
         n.constructor = n, n.prototype.get, t.exports = n
     },
-    function (t, e, i) {
-        "use strict";
-        var n = i(8),
-            r = i(124),
-            o = i(149),
-            s = i(150),
-            a = i(151),
-            h = r.TEAM_STATE,
-            l = r.PLAYER_STATE,
-            c = function (t, e, i) {
-                this.game = t, this.team = e, this.teamBad = i, this.enableShoot(), this.enablePass(), this.enableTackle(), this.enableSignal(), this.state = h.DEFENDING, this.human = !1, window.team = this, this.blockMove = !1, this.goal = null, this.firstGo = !1, this.constrainPlayer = !1, this.team.children[0].DEBUG = !0, this.team.run(function (e) {
-                    e.balanceManager = t, e.signals.onBallRecieved.add(this.onPlayerRecievedBall, this), e.signals.onBallLost.add(this.onPlayerLostBall, this)
-                }, this), this.teamBad.run(function (t) {
-                    t.signals.onBallRecieved.add(this.onPlayerBadRecievedBall, this), t.signals.onBallLost.add(this.onPlayerBadLostBall, this)
-                }, this), this.game.keeperLeft.signals.onBallRecieved.add(this.onKeeperRecievedBall, this), this.game.keeperRight.signals.onBallRecieved.add(this.onKeeperRecievedBall, this), this.game.keeperLeft.signals.onBallLost.add(this.onKeeperLostBall, this), this.game.keeperRight.signals.onBallLost.add(this.onKeeperLostBall, this), this.debug = new n.Text("HI MUM"), this.signCount = 0
-            };
-        c.constructor = c, c.prototype.setSide = function (t) {
-            this.left !== t && (this.left = t, t ? (this.team.children[0].startPosition.set(300, 100), this.team.children[1].startPosition.set(200, 300), this.team.children[2].startPosition.set(100, 400), this.goal = this.game.goalRight, this.keeper = this.game.keeperRight, this.balanceData = this.game.balanceManager.teamA) : (this.team.children[0].startPosition.set(700, 100), this.team.children[1].startPosition.set(600, 300), this.team.children[2].startPosition.set(500, 400), this.goal = this.game.goalLeft, this.keeper = this.game.keeperLeft, this.balanceData = this.game.balanceManager.teamB), this.keeper.balanceData = this.balanceData, this.team.children[0].balanceData = this.balanceData, this.team.children[1].balanceData = this.balanceData, this.team.children[2].balanceData = this.balanceData)
-        }, c.prototype.show = function (t, e, i) {
-            this.team.children[t].show(), this.resetPlayerAt(this.team.children[t], e, i)
-        }, c.prototype.hide = function (t, e, i) {
-            this.team.children[t].hide(), this.resetPlayerAt(this.team.children[t], e, i)
-        }, c.prototype.hideAll = function (t) {
-            for (var e = 0; e < this.team.children.length; e++) this.team.children[e].hide(), this.resetPlayerAt(this.team.children[e], 50, 50)
-        }, c.prototype.showAll = function (t) {
-            for (var e = 0; e < this.team.children.length; e++) this.team.children[e].show()
-        }, c.prototype.setTeam = function (t) {
-            for (var e = 0; e < this.team.children.length; e++) this.team.children[e].setData(t[e])
-        }, c.prototype.resetPositions = function (t, e) {
-            var i = this.team.children;
-            this.setState(h.KICK_OFF), this.setPlayer(null), t ? e ? (this.resetPlayerAt(i[0], .2, .4), this.resetPlayerAt(i[1], .2, .6), this.resetPlayerAt(i[2], .45, .5)) : (i[0].reset(), i[1].reset(), i[2].reset(), i[0].position.set(800, 50), i[1].position.set(800, 50), i[2].position.set(800, 50), this.movePlayerTo(i[0], .2, .4), this.movePlayerTo(i[1], .2, .6), this.movePlayerTo(i[2], .45, .5)) : e ? (this.resetPlayerAt(i[0], .15, .4), this.resetPlayerAt(i[1], .15, .6), this.resetPlayerAt(i[2], .4, .5)) : (i[0].reset(), i[1].reset(), i[2].reset(), i[0].position.set(800, 50), i[1].position.set(800, 50), i[2].position.set(800, 50), this.movePlayerTo(i[0], .15, .4), this.movePlayerTo(i[1], .15, .6), this.movePlayerTo(i[2], .4, .5))
-        }, c.prototype.go = function () {
-            this.firstGo = !0, this.setState(h.DEFENDING), this.team.children[2].movement.direction.x = 1, this.team.children[2].movement.direction.y = 0
-        }, c.prototype.happy = function () {
-            this.setState(h.SCORED)
-        }, c.prototype.sad = function () {
-            this.setState(h.LOST)
-        }, c.prototype.stopActivePlayer = function () {
-            this.activePlayer && this.human && this.activePlayer.stop()
-        }, c.prototype.moveActivePlayerInDirection = function (t, e) {
-            if (this.activePlayer && this.human) return this.blockMove ? void this.activePlayer.moveInDirection(0, 0) : void (this.constrainPlayer ? this.ConstrainActivePlayerInDirection(t, e) : this.activePlayer.moveInDirection(t, e))
-        }, c.prototype.ConstrainActivePlayerInDirection = function (t, e) {
-            if (this.activePlayer && this.human) {
-                var i = this.activePlayer.position.x / this.game.pitchWidth,
-                    n = this.activePlayer.position.y / this.game.pitchHeight;
-                (i < .4 && 1 !== t || i > .6 && t !== -1) && (t = -t), (n < .4 && 1 !== e || n > .6 && e !== -1) && (e = -e), this.activePlayer.moveInDirection(t, e)
-            }
-        }, c.prototype.setPlayer = function (t) {
-            this.activePlayer !== t && (this.activePlayer && (this.activePlayer.stop(), this.activePlayer.auto = !0, this.activePlayer.view3d.reticle.visible = !1), this.activePlayer = t, t && this.human && (t.auto = !1, t.view3d.reticle.visible = !0, t.stop()))
-        };
-        var u = {};
-        u[h.ATTACKING] = "attack", u[h.TUTORIAL_PASS] = "t-attack", u[h.TUTORIAL_IDLE] = "t-idle", u[h.DEFENDING] = "defending", u[h.ATTACK_IDLE] = "attack_idle", u[h.KICK_OFF] = "kickoff", u[h.DEFEND_IDLE] = "defend_idle", u[h.SCORED] = "scored", u[h.LOST] = "lost", c.prototype.setState = function (t) {
-            this.state !== t && (this.debug.text = "state " + u[t], this.makeDecision = !0, t === h.SCORED ? this.team.run(function (t) {
-                t.win()
-            }) : t === h.LOST && this.team.run(function (t) {
-                t.lose()
-            }), t === h.ATTACKING || t === h.DEFENDING ? this.keeper.active = !0 : this.keeper.active = !1, this.state = t)
-        }, c.prototype.actionBegin = function () {
-            var t = this;
-            if (this.shoot = !1, this.tackle = !1, this.pass = !1, this.game.ball.owner === this.activePlayer) this.activePlayer.position.x / this.game.pitchWidth < .7 ? (this.pass = !0, this.canPass && this.passControl()) : this.timer = setTimeout(function () {
-                t.shoot = !0, t.canShoot && t.activePlayer.shootBegin(t.goal)
-            }, 150);
-            else {
-                this.tackle = !0;
-                var e = o(this.activePlayer, this.teamBad);
-                this.canTackle && this.activePlayer.slideTackle(e.dx, e.dy, 10)
-            }
-        }, c.prototype.passControl = function () {
-            var t = o(this.activePlayer, this.team);
-            t.player && t.player.state !== r.PLAYER_STATE.HIDE ? this.activePlayer.ballSkills.passTo(t.player) : this.activePlayer.ballSkills.pass(t.dx, t.dy, 10)
-        }, c.prototype.actionEnd = function () {
-            clearTimeout(this.timer), this.activePlayer && (this.shoot && this.canShoot && this.activePlayer.shootRelease(this.goal), this.shoot || this.tackle || !this.canPass || this.passControl(), this.shoot = !1, this.tackle = !1, this.pass = !1)
-        }, c.prototype.actionOneShootBegin = function () {
-            this.canShoot && this.activePlayer.shootBegin(this.goal)
-        }, c.prototype.actionOneShootEnd = function () {
-            this.canShoot && this.activePlayer.shootRelease(this.goal)
-        }, c.prototype.actionTwoPassTackleBegin = function () {
-            if (this.canPass) {
-                var t = o(this.activePlayer, this.team);
-                t.player && t.player.state !== r.PLAYER_STATE.HIDE ? this.activePlayer.ballSkills.passTo(t.player) : this.activePlayer.ballSkills.pass(t.dx, t.dy, 10)
-            }
-            if (this.canTackle && (!this.activePlayer || !this.activePlayer.ball)) {
-                var t = o(this.activePlayer, this.teamBad);
-                this.activePlayer.slideTackle(t.dx, t.dy, 10)
-            }
-        }, c.prototype.actionTwoPassTackleEnd = function () { }, c.prototype.update = function () {
-            var t = this.game.pitchWidth,
-                e = (this.game.pitchHeight, this.team),
-                i = this.team.getIndex(this.activePlayer),
-                n = this.activePlayer,
-                r = e.getItem((i + 1) % 3),
-                o = e.getItem((i + 2) % 3);
-            o.position.x > r.position.x;
-            var l = 160;
-            if (this.state === h.DEFENDING) {
-                this.makeDecision && (this.makeDecision = !1);
-                var c = this.team.getItem(0),
-                    u = this.team.getItem(1),
-                    p = this.team.getItem(2);
-                this.game.ball.position.x > .4 * t ? (this.movePlayerTo(c, .5, .5), this.movePlayerTo(u, .3, .6), this.movePlayerTo(p, .2, .4)) : this.game.ball.position.x > .5 * t ? (this.movePlayerTo(c, .8, .5), this.movePlayerTo(u, .5, .6), this.movePlayerTo(p, .3, .4)) : (this.movePlayerTo(c, .8, .5), this.movePlayerTo(u, .7, .4), this.movePlayerTo(p, .5, .4));
-                var d = s(this.game.ball, this.team);
-                d.player.movement.turnMultiplier = .2 * this.balanceData.turnMultiplier, d.player.chaseDown(this.game.ball);
-                var f = a(this.game.ball, this.activePlayer, this.team, this.left);
-                this.setPlayer(f.player)
-            } else if (this.state === h.TUTORIAL_IDLE);
-            else if (this.state === h.TUTORIAL_TACKLE) this.human || (this.team.getItem(1).moveTo(n.position.x, n.position.y), this.team.getItem(1).moveTo(this.game.ball.position.x, this.game.ball.position.y), this.team.getItem(1).chaseDown(this.game.ball));
-            else if (this.state === h.ATTACKING) {
-                var m = this.team.getItem(0),
-                    g = this.team.getItem(1),
-                    v = this.team.getItem(2);
-                if (this.human)
-                    if (this.game.ball.position.x < .3 * t) this.movePlayerTo(m, .5, .4), this.movePlayerTo(v, .2, .75), this.movePlayerTo(g, .2, .25);
-                    else {
-                        if (this.left) var y = Math.max(n.position.x, .8 * t),
-                            _ = n.position.x - 200;
-                        else var y = Math.min(n.position.x, .2 * t),
-                            _ = n.position.x + 200;
-                        n.position.y < 450 ? o.moveTo(y, n.position.y + l + 100) : o.moveTo(y, n.position.y - l - 50), r.moveTo(_, n.position.y + l)
-                    } else {
-                    if (o.moveTo(n.position.x, n.position.y - l - 100), r.moveTo(n.position.x + 200, n.position.y + l), this.signCount += .02, this.movePlayerTo(n, .81, .5 + .1 * Math.sin(this.signCount)), n.passWait++, n.ballSkills.ball) {
-                        var d = s(this.game.ball, this.teamBad);
-                        n.passWait > 30 && this.agro < .4 && d.len < 100 && this.passToPlayer(o)
-                    }
-                    if (o.position.x > n.position.x && r.position.x > n.position.x && n.position.x < 500 && (n.passWait = 0), n.position.x < this.percentFromGoal(.2)) {
-                        var x = this.game.pitchHeight;
-                        n.position.y > .25 * x && n.position.y < .75 * x ? n.shootRelease(this.goal) : this.passToPlayer(o)
-                    } else n.passWait > 90 ? this.passToPlayer(Math.random() > .5 ? o : r) : n.passWait > 40 ? o.position.x < this.activePlayer.position.x && this.passToPlayer(o) : n.passWait > 10; if (!this.game.ball.owner) {
-                        var d = s(this.game.ball, this.team);
-                        d.player.movement.turnMultiplier = .2 * this.balanceData.turnMultiplier, d.player.chaseDown(this.game.ball)
-                    }
-                }
-            } else if (this.state === h.DEFEND_IDLE) {
-                var c = this.team.getItem(0),
-                    u = this.team.getItem(1),
-                    p = this.team.getItem(2);
-                this.movePlayerTo(c, .2, .5), this.movePlayerTo(u, .3, .3), this.movePlayerTo(p, .6, .4)
-            } else if (this.state === h.ATTACK_IDLE) {
-                var c = this.team.getItem(0),
-                    u = this.team.getItem(1),
-                    p = this.team.getItem(2);
-                this.movePlayerTo(c, .4, .5), this.movePlayerTo(u, .6, .3), this.movePlayerTo(p, .6, .2)
-            }
-        }, c.prototype.passToPlayer = function (t) {
-            this.canPass && t !== this.activePlayer && t.state !== l.FALL && this.activePlayer.ballSkills.passTo(t)
-        }, c.prototype.resetPlayerAtByIndex = function (t, e, i) {
-            this.left ? (this.team.children[t].position.x = this.game.pitchWidth * e, this.team.children[t].position.y = this.game.pitchHeight * i) : (this.team.children[t].position.x = this.game.pitchWidth * (1 - e), this.team.children[t].position.y = this.game.pitchHeight * (1 - i)), this.team.children[t].reset()
-        }, c.prototype.resetPlayerAt = function (t, e, i) {
-            this.left ? (t.position.x = this.game.pitchWidth * e, t.position.y = this.game.pitchHeight * i) : (t.position.x = this.game.pitchWidth * (1 - e), t.position.y = this.game.pitchHeight * (1 - i)), t.reset()
-        }, c.prototype.movePlayerTo = function (t, e, i) {
-            t.movement.turnMultiplier = 1, t.movingTo = !1, t.ballSkills.ball || (t.movingTo = !0), this.left ? t.moveTo(this.game.pitchWidth * e, this.game.pitchHeight * i) : t.moveTo(this.game.pitchWidth * (1 - e), this.game.pitchHeight * (1 - i))
-        }, c.prototype.onPlayerRecievedBall = function (t) {
-            if (this.state !== h.TUTORIAL_IDLE || this.activePlayer !== t) {
-                if ((Math.random() > .5 || this.firstGo) && (this.firstGo = !1, !this.human)) {
-                    var e = this.team,
-                        i = e.getIndex(t),
-                        n = e.getItem((i + 1) % 3),
-                        r = e.getItem((i + 2) % 3),
-                        o = Math.random();
-                    o > .25 && (o > .75 ? this.passToPlayer(n) : this.passToPlayer(r))
-                }
-                for (var s = 0; s < this.team.children.length; s++);
-                this.agro = Math.random(), this.setPlayer(t), this.setState(h.ATTACKING)
-            }
-        }, c.prototype.onPlayerLostBall = function (t) {
-            if (this.state !== h.TUTORIAL_IDLE) {
-                var e = .5 * this.game.pitchWidth;
-                this.left ? this.game.ball.position.x < e && this.setState(h.DEFENDING) : this.game.ball.position.x > e && this.setState(h.DEFENDING);
-                for (var i = 0; i < this.team.children.length; i++) this.team.children[i].chaseWait = 0
-            }
-        }, c.prototype.percentFromGoal = function (t) {
-            return this.left && (t = 1 - t), this.game.pitchWidth * t
-        }, c.prototype.onPlayerBadRecievedBall = function (t) {
-            var e = s(this.game.ball, this.team);
-            this.setPlayer(e.player), this.state !== h.TUTORIAL_IDLE && this.setState(h.DEFENDING)
-        }, c.prototype.onPlayerBadLostBall = function (t) {
-            this.state === h.TUTORIAL_IDLE
-        }, c.prototype.onKeeperRecievedBall = function (t) {
-            t === this.keeper ? this.setState(h.ATTACK_IDLE) : this.setState(h.DEFEND_IDLE)
-        }, c.prototype.onKeeperLostBall = function (t) {
-            this.setState(h.DEFENDING)
-        }, c.prototype.enableShoot = function () {
-            this.canShoot = !0
-        }, c.prototype.disableShoot = function () {
-            this.canShoot = !1
-        }, c.prototype.enablePass = function () {
-            this.canPass = !0
-        }, c.prototype.disablePass = function () {
-            this.canPass = !1
-        }, c.prototype.enableTackle = function () {
-            this.canTackle = !0
-        }, c.prototype.disableTackle = function () {
-            this.canTackle = !1
-        }, c.prototype.enableSignal = function () {
-            this.listenSignal = !0
-        }, c.prototype.disableSignal = function () {
-            this.listenSignal = !1
-        }, t.exports = c
-    },
+    teamManagerFn,
     function (t, e, i) {
         "use strict";
         var n = i(124),
@@ -12055,6 +11587,7 @@
             };
         t.exports = s
     },
+    //function index: 150
     function (t, e, i) {
         "use strict";
         var n = i(124),
@@ -12103,7 +11636,16 @@
             r = i(48),
             o = i(149),
             s = (n.TEAM_STATE, function (t, e, i) {
-                this.game = i, this.left = e, this.keeper = t, e ? (this.goal = i.goalLeft, this.teamBad = i.teamLeft, this.team = i.teamRight) : (this.goal = i.goalRight, this.team = i.teamLeft, this.teamBad = i.teamRight, window.keeperm = this), this.keeperHome = this.goal.position.clone(), e ? this.keeperHome.x = 40 : this.keeperHome.x -= 40, this.keeper.signals.onBallRecieved.add(this.onRecievedBall, this), this.keeper.signals.onBallLost.add(this.onLostBall, this), this.closeDownDistance = 300, this.active = !0
+                this.game = i,
+                this.left = e,
+                this.keeper = t,
+                e ? (this.goal = i.goalLeft, this.teamBad = i.teamLeft, this.team = i.teamRight) : (this.goal = i.goalRight, this.team = i.teamLeft, this.teamBad = i.teamRight, window.keeperm = this),
+                this.keeperHome = this.goal.position.clone(),
+                e ? this.keeperHome.x = 40 : this.keeperHome.x -= 40,
+                this.keeper.signals.onBallRecieved.add(this.onRecievedBall, this),
+                this.keeper.signals.onBallLost.add(this.onLostBall, this),
+                this.closeDownDistance = 300,
+                this.active = !0
             });
         s.constructor = s, s.prototype.onRecievedBall = function () {
             if (!this.keeper.hidden) {
@@ -12115,7 +11657,8 @@
                     this.keeper.movement.moveTo(t, this.keeper.position.y)
                 }
                 this.active = !1, this.game.wait.wait(120, function () {
-                    this.keeper.movement.moveTo(this.keeperHome.x, this.keeperHome.y), this.left ? this.keeper.movement.direction.set(1, 0) : this.keeper.movement.direction.set(-1, 0);
+                    this.keeper.movement.moveTo(this.keeperHome.x, this.keeperHome.y),
+                    this.left ? this.keeper.movement.direction.set(1, 0) : this.keeper.movement.direction.set(-1, 0);
                     var t = o(this.keeper, this.teamBad);
                     this.keeper.kickOut(t.dx, t.dy), this.active = !0
                 }, this)
@@ -12138,7 +11681,9 @@
                 var s = this.keeper;
                 s.right ? s.body.velocity.x < 0 && s.body.position.x < this.goal.position.x - 300 && (s.body.velocity.x *= 0) : s.body.velocity.x > 0 && s.body.position.x > this.goal.position.x + 300 && (s.body.velocity.x *= 0)
             }
-        }, s.prototype.onLostBall = function () { }, t.exports = s
+        },
+        s.prototype.onLostBall = function () { },
+        t.exports = s
     },
     function (t, e, i) {
         "use strict";
@@ -12296,53 +11841,7 @@
             n.exports = s
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
-    function (t, e, i) {
-        var n;
-        n = function (t, e, n) {
-            var r = i(53),
-                o = i(159),
-                s = i(126),
-                a = i(48),
-                h = i(160),
-                l = i(162),
-                c = i(163),
-                u = i(164),
-                p = i(23),
-                d = i(165),
-                f = function (t) {
-                    this.game = t, this.count = 100, this.pool = new r(o), this.activePowerups = [], this.maxPowerups = 4, this.powerups = [u, c, h, l], this.paused = !1, this.onPowerupActivated = new d, this.firstRun = !0, this.firstRunCount = 0, this.powerupStates = {}, this.world = null, s.call(this, 400, 50, null, null)
-                };
-            f.constructor = f, f.prototype = Object.create(s.prototype), f.prototype.pause = function () {
-                this.paused = !0
-            }, f.prototype.resume = function () {
-                this.paused = !1
-            }, f.prototype.clear = function () {
-                var t = this.world.groups.pickup;
-                t && t.run(function (t) {
-                    t.destroy()
-                }, this)
-            }, f.prototype.update = function () {
-                if (!this.paused && (this.count += p.game.deltaTime, this.count > 1e3)) {
-                    var t = this.world.groups.pickup;
-                    t ? t.children.length < this.maxPowerups && 0 == this.activePowerups.length && this.addPickup() : this.addPickup()
-                }
-            }, f.prototype.addPickup = function () {
-                this.count = 0;
-                var t = r.getObject(o);
-                t.timer = 0, t.position.x = a.random(400, 1200), t.position.y = a.random(250, 650);
-                var e = Math.random() * this.powerups.length | 0;
-                t.reset(this.powerups[e]), this.world.add(t)
-            }, f.prototype.onPickupActivate = function (t) {
-                t = t || this.cachePickup
-            }, f.prototype.reset = function (t) {
-                for (var e = 0; e < this.pickups.length; e++) {
-                    var i = this.pickups[e];
-                    this.game.world.remove(i), GameObjectPool.returnObject(i)
-                }
-                this.powerups = t.powerups, this.paused = !1
-            }, n.exports = f
-        }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
-    },
+    pickupManagerFn,
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -12359,13 +11858,17 @@
                     var i = a.getMesh("pickup_box.png");
                     this.view3d = i, i.scale.x = i.scale.y = i.scale.z = .2, i.rotation.x = window.test - Math.PI, this.powerup = null, this.groups = ["pickup"], this.shadow = a.getMesh(URL_HEADER.IMAGE + "game/game_objects/ball-shadow.png", .5, .5), this.shadow.position.z = 10, i.material.depthTest = !1, this.shadow.scale.x = this.shadow.scale.y = this.shadow.scale.z = .1, this.shadow.position.z = -6, this.pickupEffect = new PIXI.Sprite.from("pickup_00000.png"), this.pickupEffect.anchor.set(.5), this.pickupEffect.blendMode = PIXI.BLEND_MODES.ADD, this.pickupFrames = l.getTexturesFromFramesWithPrefix("pickup_000%%.png", 6), this.frameTick = 0, this.pickedUp = !1
                 };
-            c.prototype = Object.create(o.prototype), c.prototype.setType = function (t) {
+            c.prototype = Object.create(o.prototype),
+            c.prototype.setType = function (t) {
                 this.powerup && this.view.removeChild(this.powerup.icon), this.powerup = t, this.view3d.position.x = this.position.x, this.view3d.position.y = this.position.y
-            }, c.prototype.addedToWorld = function () {
+            },
+            c.prototype.addedToWorld = function () {
                 this.world.view3d.scene.add(this.shadow), this.world.overlay.addChild(this.pickupEffect)
-            }, c.prototype.removedFromWorld = function () {
+            },
+            c.prototype.removedFromWorld = function () {
                 this.world.view3d.scene.remove(this.shadow), this.world.overlay.removeChild(this.pickupEffect)
-            }, c.prototype.reset = function (t) {
+            },
+            c.prototype.reset = function (t) {
                 this.view3d.visible = !0, this.height = 300, this.powerup = t, this.landed = !1, this.view3d.position.z = 300, this.canCollide = !0, this.pickupEffect.visible = !1, this.shadow.visible = !0, this.pickedUp = !1, t.customIcon ? (a.setUvs(this.view3d, PIXI.Texture.from(t.customIcon), .5, .85), this.view3d.scale.x = this.view3d.scale.y = this.view3d.scale.z = .2) : (a.setUvs(this.view3d, PIXI.Texture.from("pickup_box.png"), .5, .85), this.view3d.scale.x = this.view3d.scale.y = this.view3d.scale.z = .2), this.shadow.scale.x = this.shadow.scale.y = this.shadow.scale.z = 0, TweenLite.to(this.view3d.position, 1.5, {
                     z: 2,
                     ease: Bounce.easeOut
@@ -12375,7 +11878,8 @@
                     z: .32,
                     ease: Bounce.easeOut
                 })
-            }, c.prototype.update = function () {
+            },
+            c.prototype.update = function () {
                 if (this.timer++, this.timer >= 1e4 && this.destroy(), this.view3d.position.x = this.position.x, this.view3d.position.y = this.position.y, this.shadow.position.x = this.view3d.position.x, this.shadow.position.y = this.view3d.position.y - 5, this.view3d.rotation.x = window.test - Math.PI, this.tick += .1, this.view3d.rotation.z = .1 * Math.sin(1.6 * this.tick), this.view3d.scale.x = .2 + .01 * Math.sin(this.tick), this.view3d.scale.y = .2 + .01 * Math.cos(this.tick), this.pickedUp) {
                     var t = this.world.view3d.toScreenPosition(this);
                     if (this.pickupEffect.position.x = t.x, this.pickupEffect.position.y = t.y, this.frameTick > this.pickupFrames.length) this.destroy();
@@ -12384,9 +11888,11 @@
                         this.pickupEffect._texture = e, this.frameTick += .4
                     }
                 }
-            }, c.prototype.activate = function () {
+            },
+            c.prototype.activate = function () {
                 this.onPickedup.dispatch(this)
-            }, c.prototype.onCollideBegin = function (t) {
+            },
+            c.prototype.onCollideBegin = function (t) {
                 var e = t.getOtherObject(this);
                 if ("player" === e.name) {
                     var i = this.world.view3d.toScreenPosition(this);
@@ -12397,9 +11903,11 @@
                         s = !1;
                     r < n || r > 1136 - n ? s = !0 : (o < n || o > 745 - n) && (s = !0), s || (this.pickedUp = !0, this.canCollide = !1, this.view3d.visible = !1, this.shadow.visible = !1, this.frameTick = 0, this.pickupEffect.visible = !0, e.setPowerUp(this.powerup))
                 }
-            }, n.exports = c
+            },
+            n.exports = c
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 160
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -12827,6 +12335,7 @@
             }), ParticalTicker.globalCount = 0, ParticalTicker.frames = ["superkick_streak_large.png", "confetti-blue.png", "confetti-red.png", "streamer-blue.png", "streamer-red.png", "streamer-yellow.png"], ParticalTicker.prototype = Object.create(r.Sprite.prototype), n.exports = RushBackground
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 170
     function (t, e, i) {
         "use strict";
 
@@ -13397,6 +12906,7 @@
             }, n.exports = m
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //function index: 180
     function (t, e, i) {
         var n;
         n = function (t, e, n) {

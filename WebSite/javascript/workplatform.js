@@ -44,7 +44,10 @@ function initPage() {
     //};
     //ajaxFn('GET', url, '<root></root>', successFn, failedFn);
 
-    var dataXML = LoadXMLFile('javascript/scene/datadoc/testfootball.xml');
+    //for test football
+    var tmpStage = getQueryString('scene');
+    var tmpStep = getQueryString('step');
+    var dataXML = LoadXMLFile('javascript/scene/datadoc/' + tmpStage + tmpStep + '.xml');
     initData(dataXML);
     buildHeaderHTML();
     buildCourseTips();
@@ -100,6 +103,11 @@ function adjustMainSize() {
     $('.wrap-container .main-container-col').height($('.wrap-container').height() - tmpHeight + 1);
     $('.siderbar-wrap').height($('.wrap-container .main-container-col').height());
     $('.siderbar-wrap').css('top', $('.wrap-container .main-container-col').offset().top + 'px');
+};
+
+function showLoadingMask() {
+    $('#mask_Page_Loading').show();
+    $('#mask_Page_Loading').css('visibility', 'visible');
 };
 
 function hideLoadingMask() {
@@ -806,14 +814,15 @@ function adjustPopupWinSize(symbol) {
 };
 
 function loadCodeText(symbol) {
-    var currLib = '';
+    var currLib = (symbol == '' || symbol == 'core' ? [] : '');
+    var editor = $('#iframe_CoreCode')[0].contentWindow.editor;
+    editor.setValue('', -1);
     for (var i = 0; i < _gStageData.blockly.lib.length; i++) {
         var tmpPath = _gStageData.blockly.lib[i].toLowerCase().replace(/\\/g, '/');
         var tmpArr = tmpPath.split('/');
         if (symbol == '' || symbol == 'core') {
             if (tmpArr[tmpArr.length - 1].indexOf('blocks') < 0 && tmpArr[tmpArr.length - 1].indexOf('scene') < 0) {
-                currLib = tmpPath;
-                break;
+                currLib.push(tmpPath);
             }
         } else {
             if (tmpArr[tmpArr.length - 1].indexOf(symbol) == 0) {
@@ -823,10 +832,20 @@ function loadCodeText(symbol) {
         }
     }
 
-    if (currLib != '') {
-        $.get(tmpPath, function (data, status) {
-            $('#iframe_CoreCode')[0].contentWindow.editor.setValue(data, -1);
-        });
+    if (typeof currLib == 'string') {
+        if (currLib != '') {
+            $.get(tmpPath, function (data, status) {
+                $('#iframe_CoreCode')[0].contentWindow.editor.setValue(data, -1);
+            });
+        }
+    } else {
+        for (var i = 0; i < currLib.length; i++) {
+            if (currLib[i].indexOf('coursemain.js') < 0) {
+                $.get(currLib[i], function (data, status) {
+                    editor.setValue(editor.getValue() + '\n\r' + data, -1);
+                });
+            }
+        }
     }
 };
 
