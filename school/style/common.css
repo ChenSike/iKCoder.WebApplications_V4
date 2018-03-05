@@ -1,0 +1,214 @@
+﻿body {
+    font-family: 微软雅黑;
+}
+
+.no-wrap {
+    padding: 0px;
+    margin: 0px;
+}
+
+.no-padding {
+    padding: 0px;
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.text-5BC0DE {
+    color: #5BC0DE;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: rgb(255,255,255);
+    text-align: center;
+}
+
+    .navbar-light .navbar-nav .nav-link:hover {
+        color: #5BC0DE;
+        text-align: center;
+    }
+
+    .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
+        color: rgb(255,255,255);
+        font-weight: bold;
+    }
+
+header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.marginTop-30 {
+    margin-top: 30px;
+}
+
+.marginBottom-50 {
+    margin-bottom: 50px;
+}
+
+.text-signin-dialog-title {
+    color: rgb(102,102,102);
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    line-height: 40px;
+    padding-bottom: 10px;
+}
+
+.m-window-buttton {
+    background-color: rgb(139,195,74);
+    color: rgb(255,255,255);
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.label-pwd-intension {
+    padding-right: 5px;
+    font-weight: bold;
+}
+
+/* ========================= Footer ========================= */
+
+footer {
+    height: 30px;
+    width: 100%;
+}
+
+
+    footer .footer-copyright {
+        overflow: hidden;
+        padding: 15px 0px;
+    }
+
+    footer .copyright-txt {
+        color: rgb(172,172,172);
+        float: left;
+        font-size: 13px;
+        font-weight: 300;
+        padding: 5px 0px;
+        margin: 0px;
+    }
+
+        footer .copyright-txt a {
+            font-weight: 400;
+        }
+
+        footer .copyright-txt span {
+            font-weight: bold;
+        }
+
+        footer .copyright-txt .split-line {
+            padding: 0px 10px;
+        }
+
+        footer .copyright-txt .normal-text {
+            font-weight: normal;
+        }
+
+        footer .copyright-txt .reference-text {
+            color: #ffffff;
+            cursor: default;
+            font-size: 11px;
+            /*font-style: italic;*/
+            font-weight: bold;
+            padding-left: 50px;
+        }
+
+    footer .footer-txt {
+        background-color: rgb(23,23,23);
+    }
+
+
+div.custom-global-alert {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    text-align: center;
+    z-index: 19999;
+}
+
+div.alert-mask-custom {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 19998;
+    background-color: rgb(0,0,0);
+    opacity: 0.5;
+    display: none;
+}
+
+/* ========================= Footer ========================= */
+@media screen and (max-width:767px) {
+    #footer .scrollup {
+        display: block;
+    }
+}
+
+@media (min-width: 1200px) {
+    .navbar .nav-ul-container {
+        width: 64%;
+    }
+}
+
+@media (min-width: 1440px) {
+    .navbar .nav-ul-container {
+        width: 51%;
+    }
+}
+
+@media (min-width: 1600px) {
+    .navbar .nav-ul-container {
+        width: 47%;
+    }
+}
+
+@media (min-width: 1705px) {
+    .navbar-expand-lg .navbar-collapse {
+        display: -webkit-box !important;
+        display: -webkit-flex !important;
+        display: -ms-flexbox !important;
+        display: flex !important;
+    }
+
+    .navbar-expand-lg .navbar-toggler {
+        display: none;
+    }
+}
+
+@media (min-width: 1920px) {
+    .navbar .nav-ul-container {
+        width: 40%;
+    }
+}
+
+@media (min-width: 2560px) {
+    .navbar .nav-ul-container {
+        width: 27%;
+    }
+}
+
+.alert {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    text-align: center;
+}

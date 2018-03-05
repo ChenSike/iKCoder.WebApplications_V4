@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html style="height:100%; background-color: black;">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/jquery-ui.min.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/jquery-ui.min.js"></script>
+    <script src="javascript/scene/L-01-001/getGlobalSettingFn.js"></script>
+    <script src="javascript/scene/L-01-001/loaderScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/titleScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/countrySelectScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/captainSelectScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/playerSelectScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/teamReviewScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/gameScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/gameOverScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/PitchObjectFn.js"></script>
+    <script src="javascript/scene/L-01-001/globalSettingForControl.js"></script>
+    <script src="javascript/scene/L-01-001/gameScreenWrapFn.js"></script>
+    <script src="javascript/scene/L-01-001/teamManagerFn.js"></script>
+    <script src="javascript/scene/L-01-001/pickupManagerFn.js"></script>
+    <script src="javascript/scene/L-01-001/soundManagerFn.js"></script>
+    <script src="javascript/scene/L-01-001/pixi.js"></script>
+    <script src="javascript/scene/L-01-001/three.js"></script>
+    <script src="javascript/scene/L-01-001/screenManagerFn.js"></script>
+    <script src="javascript/scene/L-01-001/applicationFn.js"></script>
+    <script src="javascript/scene/L-01-001/argumentFns.js"></script>
+    <script src="javascript/scene/L-01-001/entryFn.js"></script>
+</head>
+<body>
+    <div class="text-center no-padding" id="game_container" style="width:100%; height:100%;"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var ENV = window.ENV = {};
+            var timeoutCode = 0;
+            _gSettings = {
+                background_game: "game/toon_pitch_full.jpg",
+                soundMute: false,
+                neverOver: false,
+                hideAllTeams: false,
+                enablePickUP: true,
+                enablePlay: true,
+                enableSelectTeam: true
+            };
+
+            globalWrapFn(argumentFn);
+            function startGame() {
+                if (_gloablObj && _gloablObj.app) {
+                    window.clearTimeout(timeoutCode);
+                    _gloablObj.app.breadcrumb.next();
+                } else {
+                    timeoutCode = window.setTimeout(startGame, 500);
+                }
+            }
+
+            timeoutCode = window.setTimeout(startGame, 500);
+        });
+    </script>
+</body>
+</html>

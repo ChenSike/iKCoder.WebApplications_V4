@@ -1,0 +1,92 @@
+<root>
+  <basic>
+    <usr id="46" nickname="Alice"/>
+  </basic>
+  <sence name="初级第三课：绘图基础" symbol="B_01_006" id="" totalstage="4" currentstage="2" finishstage="4" next="B_01_007"/>
+  <tips>
+    <item index="1">
+      <content chinese="绘制一个完全覆盖灰色正方形蓝色正方形。" english="" blocktype=""/>
+    </item>
+  </tips>
+  <toolbox src="B-01-006_3D/3dBoard/2/Blocks/blocks.JS">
+    <xml id="toolbox" style="display: none">
+      <block type="event_start"></block>
+      <block type="move_forward"></block>
+      <block type="positive_rotate_line"></block>
+      <block type="set_color"></block>
+      <block type="set_lineWidth"></block>
+    </xml>
+  </toolbox>
+  <workspacestatus>
+    <xml xmlns="http://www.w3.org/1999/xhtml"/>
+    <block type="event_start" id="f0Gt`~jczerKhI$;4tt`" colour="#5ba580" stroke="#000000" eventicon="" categoryicon="" maxcount="Infinity" x="248" y="26"/>
+  </workspacestatus>
+  <game>
+    <script src="Common/draw3d.js"/>
+    <script src="B-01-006_3D/3dBoard/2/Scene/scene.JS"/>
+  </game>
+  <message>
+    <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>
+    <suc msg="恭喜你，你已经完成了本课的学习目标."/>
+  </message>
+  <words>
+    <stage value="1">
+      <word value="Algorithm" note="计算机英语" star="4">
+        <soundmark/>
+        <paraphrase>
+          <item>算法. A list of steps to finish a task.</item>
+        </paraphrase>
+        <variant/>
+      </word>
+      <word value="Bug" note="计算机英语" star="4">
+        <soundmark/>
+        <paraphrase>
+          <item>缺陷. Part of a progeam that does not work correctly.</item>
+        </paraphrase>
+        <variant/>
+      </word>
+      <word value="Debugging" note="计算机英语" star="4">
+        <soundmark/>
+        <paraphrase>
+          <item>调试. Finding and fixing problem in an algorithm or program.</item>
+        </paraphrase>
+        <variant/>
+      </word>
+      <word value="Program" note="计算机英语" star="4">
+        <soundmark/>
+        <paraphrase>
+          <item>程序. An algorithm that has been coded into something that can be run by a machine.</item>
+        </paraphrase>
+        <variant/>
+      </word>
+      <word value="Programming" note="计算机英语" star="4">
+        <soundmark/>
+        <paraphrase>
+          <item>程序设计. That art of creating a program.</item>
+        </paraphrase>
+        <variant/>
+      </word>
+      <word value="Leftr" note="日常英语" star="4">
+        <soundmark/>
+        <paraphrase>
+          <item>左边.</item>
+        </paraphrase>
+        <variant/>
+      </word>
+      <word value="Right" note="日常英语" star="4">
+        <soundmark/>
+        <paraphrase>
+          <item>右边.</item>
+        </paraphrase>
+        <variant/>
+      </word>
+      <word value="Move" note="日常英语" star="4">
+        <soundmark/>
+        <paraphrase>
+          <item>移动.</item>
+        </paraphrase>
+        <variant/>
+      </word>
+    </stage>
+  </words>
+</root>

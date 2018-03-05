@@ -1,0 +1,7 @@
+﻿<xml id="toolbox" style="display: none">
+  <block type="event_start"></block>
+  <block type="set_color"></block>
+  <block type="set_lineWidth"></block>
+  <block type="draw_circle"></block>
+  
+</xml>

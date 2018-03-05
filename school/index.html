@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/jquery-ui.min.css">
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.min.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/jquery-ui.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.min.js"></script>
+    <script src="javascript/common/storage.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common.js"></script>
+</head>
+<body style="height:100%;">
+    <div class="container-fluid no-wrap" style="height:100%;">
+        <div class="row no-wrap">
+            <div class="col-12 no-wrap" style="height:60px;">
+                <header>
+                    <nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header">
+                        <a class="navbar-brand" href="#">
+                            <img src="image/logo-new-gray.png" width="120" height="35" class="d-inline-block align-top img-header-logo" alt="">
+                        </a>
+                    </nav>
+                </header>
+            </div>
+        </div>
+        <div class="row no-wrap">
+            <div class="col-12 no-wrap main-container-col">
+                <div class="container-fluid main-content-wrap">
+                    <div class="row justify-content-start main-content-row">
+                        <div class="col" id="wrap_Category_Title">
+                            <button type="button" class="btn btn-primary btn-lg btn-block" id="btn_OpenPPT">打开教案</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" id="btn_OpenGame">程序体验</button>
+                            <button type="button" class="btn btn-primary btn-lg btn-block" id="btn_OpenDemo">演示DEMO</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" id="btn_OpenCourse">进入课件</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-wrap">
+            <div class="col-12 no-wrap" style="height:30px;">
+                <footer id="footer">
+                    <div class="footer-txt">
+                        <div class="container w-100">
+                            <div class="row justify-content-center">
+                                <div class="col-11">
+                                    <p class="copyright-txt">
+                                        <span>
+                                            深圳市鹏博教育科技有限公司
+                                        </span>
+                                        <span class="split-line">
+                                            |
+                                        </span>
+                                        <span class="normal-text">
+                                            Powered by
+                                        </span>
+                                        <span>
+                                            iKCoder.Co (ShenZhen)
+                                        </span>
+                                        <span class="reference-text">
+                                            <a href="http://www.miibeian.gov.cn" target="_blank" style="display:inline-block;">粤ICP备17152880号</a>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.main-container-col').height($('body').height() - 91);
+            $('#btn_OpenPPT').on('click', function () { window.open("grammar.html"); });
+            $('#btn_OpenGame').on('click', function () { window.open("application.html"); });
+            $('#btn_OpenDemo').on('click', function () { window.open("coursedemo.html"); });
+            $('#btn_OpenCourse').on('click', function () { window.open("courseware.html"); });
+        });
+    </script>
+</body>
+</html>

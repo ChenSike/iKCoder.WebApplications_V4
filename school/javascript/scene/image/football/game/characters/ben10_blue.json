@@ -1,0 +1,1540 @@
+{"frames": {
+
+"characters_ben10_blue_celebrate0001.png":
+{
+	"frame": {"x":815,"y":138,"w":65,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":106,"y":97,"w":65,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0002.png":
+{
+	"frame": {"x":815,"y":138,"w":65,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":106,"y":97,"w":65,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0003.png":
+{
+	"frame": {"x":846,"y":274,"w":65,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":106,"y":97,"w":65,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0004.png":
+{
+	"frame": {"x":846,"y":274,"w":65,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":106,"y":97,"w":65,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0005.png":
+{
+	"frame": {"x":1019,"y":137,"w":71,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":71,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0006.png":
+{
+	"frame": {"x":1019,"y":137,"w":71,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":71,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0007.png":
+{
+	"frame": {"x":1019,"y":137,"w":71,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":71,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0008.png":
+{
+	"frame": {"x":1019,"y":137,"w":71,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":71,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0009.png":
+{
+	"frame": {"x":971,"y":2,"w":77,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":98,"w":77,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0010.png":
+{
+	"frame": {"x":971,"y":2,"w":77,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":98,"w":77,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0011.png":
+{
+	"frame": {"x":1177,"y":2,"w":80,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":102,"y":99,"w":80,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0012.png":
+{
+	"frame": {"x":1177,"y":2,"w":80,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":102,"y":99,"w":80,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0013.png":
+{
+	"frame": {"x":971,"y":2,"w":77,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":98,"w":77,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0014.png":
+{
+	"frame": {"x":971,"y":2,"w":77,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":98,"w":77,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0015.png":
+{
+	"frame": {"x":1177,"y":2,"w":80,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":102,"y":99,"w":80,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0016.png":
+{
+	"frame": {"x":1177,"y":2,"w":80,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":102,"y":99,"w":80,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0017.png":
+{
+	"frame": {"x":971,"y":2,"w":77,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":98,"w":77,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0018.png":
+{
+	"frame": {"x":971,"y":2,"w":77,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":98,"w":77,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0019.png":
+{
+	"frame": {"x":1177,"y":2,"w":80,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":102,"y":99,"w":80,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0020.png":
+{
+	"frame": {"x":1177,"y":2,"w":80,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":102,"y":99,"w":80,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0021.png":
+{
+	"frame": {"x":1177,"y":2,"w":80,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":102,"y":99,"w":80,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0022.png":
+{
+	"frame": {"x":1177,"y":2,"w":80,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":102,"y":99,"w":80,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0023.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0024.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0025.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0026.png":
+{
+	"frame": {"x":1362,"y":268,"w":86,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":105,"w":86,"h":126},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0027.png":
+{
+	"frame": {"x":1362,"y":268,"w":86,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":105,"w":86,"h":126},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0028.png":
+{
+	"frame": {"x":1362,"y":268,"w":86,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":105,"w":86,"h":126},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0029.png":
+{
+	"frame": {"x":1362,"y":268,"w":86,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":105,"w":86,"h":126},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0030.png":
+{
+	"frame": {"x":393,"y":164,"w":70,"h":143},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":88,"w":70,"h":143},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0031.png":
+{
+	"frame": {"x":393,"y":2,"w":72,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":71,"w":72,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0032.png":
+{
+	"frame": {"x":393,"y":2,"w":72,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":71,"w":72,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0033.png":
+{
+	"frame": {"x":393,"y":164,"w":70,"h":143},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":88,"w":70,"h":143},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0034.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0035.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0036.png":
+{
+	"frame": {"x":1362,"y":268,"w":86,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":105,"w":86,"h":126},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0037.png":
+{
+	"frame": {"x":1362,"y":268,"w":86,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":105,"w":86,"h":126},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0038.png":
+{
+	"frame": {"x":1362,"y":268,"w":86,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":105,"w":86,"h":126},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0039.png":
+{
+	"frame": {"x":393,"y":164,"w":70,"h":143},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":88,"w":70,"h":143},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0040.png":
+{
+	"frame": {"x":393,"y":2,"w":72,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":71,"w":72,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0041.png":
+{
+	"frame": {"x":393,"y":2,"w":72,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":71,"w":72,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0042.png":
+{
+	"frame": {"x":393,"y":164,"w":70,"h":143},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":88,"w":70,"h":143},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0043.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0044.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0045.png":
+{
+	"frame": {"x":1362,"y":268,"w":86,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":105,"w":86,"h":126},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0046.png":
+{
+	"frame": {"x":1362,"y":268,"w":86,"h":126},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":105,"w":86,"h":126},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0047.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0048.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0049.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0050.png":
+{
+	"frame": {"x":1422,"y":2,"w":81,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":103,"w":81,"h":128},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0051.png":
+{
+	"frame": {"x":1259,"y":2,"w":71,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":99,"w":71,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0052.png":
+{
+	"frame": {"x":1259,"y":2,"w":71,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":99,"w":71,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0053.png":
+{
+	"frame": {"x":1092,"y":137,"w":67,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":67,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0054.png":
+{
+	"frame": {"x":1092,"y":137,"w":67,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":67,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0055.png":
+{
+	"frame": {"x":1050,"y":2,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0056.png":
+{
+	"frame": {"x":1050,"y":2,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0057.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0058.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0059.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0060.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0061.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0062.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0063.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0064.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0065.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0066.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0067.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0068.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0069.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0070.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0071.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0072.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0073.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0074.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0075.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0076.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0077.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0078.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0079.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0080.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0081.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0082.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_celebrate0083.png":
+{
+	"frame": {"x":1087,"y":272,"w":68,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":98,"w":68,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0001.png":
+{
+	"frame": {"x":1258,"y":271,"w":102,"h":131},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":73,"y":100,"w":102,"h":131},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0002.png":
+{
+	"frame": {"x":913,"y":274,"w":97,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":73,"y":98,"w":97,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0003.png":
+{
+	"frame": {"x":491,"y":305,"w":97,"h":136},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":78,"y":95,"w":97,"h":136},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0004.png":
+{
+	"frame": {"x":393,"y":309,"w":96,"h":139},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":78,"y":92,"w":96,"h":139},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0005.png":
+{
+	"frame": {"x":1261,"y":136,"w":88,"h":131},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":91,"y":100,"w":88,"h":131},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0006.png":
+{
+	"frame": {"x":889,"y":2,"w":80,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":94,"y":98,"w":80,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0007.png":
+{
+	"frame": {"x":612,"y":2,"w":66,"h":136},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":95,"w":66,"h":136},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0008.png":
+{
+	"frame": {"x":467,"y":2,"w":71,"h":139},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":92,"w":71,"h":139},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0009.png":
+{
+	"frame": {"x":1258,"y":271,"w":102,"h":131},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":73,"y":100,"w":102,"h":131},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0010.png":
+{
+	"frame": {"x":913,"y":274,"w":97,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":73,"y":98,"w":97,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0011.png":
+{
+	"frame": {"x":491,"y":305,"w":97,"h":136},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":78,"y":95,"w":97,"h":136},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0012.png":
+{
+	"frame": {"x":393,"y":309,"w":96,"h":139},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":78,"y":92,"w":96,"h":139},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0013.png":
+{
+	"frame": {"x":1261,"y":136,"w":88,"h":131},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":91,"y":100,"w":88,"h":131},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0014.png":
+{
+	"frame": {"x":889,"y":2,"w":80,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":94,"y":98,"w":80,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0015.png":
+{
+	"frame": {"x":612,"y":2,"w":66,"h":136},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":95,"w":66,"h":136},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_dash0016.png":
+{
+	"frame": {"x":467,"y":2,"w":71,"h":139},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":92,"w":71,"h":139},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_fall0001.png":
+{
+	"frame": {"x":721,"y":138,"w":92,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":97,"w":92,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_fall0002.png":
+{
+	"frame": {"x":721,"y":138,"w":92,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":97,"w":92,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_fall0003.png":
+{
+	"frame": {"x":1437,"y":132,"w":106,"h":122},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":66,"y":109,"w":106,"h":122},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_fall0004.png":
+{
+	"frame": {"x":1437,"y":132,"w":106,"h":122},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":66,"y":109,"w":106,"h":122},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_fall0005.png":
+{
+	"frame": {"x":728,"y":413,"w":108,"h":91},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":140,"w":108,"h":91},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_fall0006.png":
+{
+	"frame": {"x":728,"y":413,"w":108,"h":91},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":140,"w":108,"h":91},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_fall0007.png":
+{
+	"frame": {"x":1266,"y":404,"w":99,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":73,"y":131,"w":99,"h":100},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_fall0008.png":
+{
+	"frame": {"x":1266,"y":404,"w":99,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":73,"y":131,"w":99,"h":100},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_fall0009.png":
+{
+	"frame": {"x":948,"y":409,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_kick0001.png":
+{
+	"frame": {"x":759,"y":274,"w":85,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":87,"y":97,"w":85,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_kick0002.png":
+{
+	"frame": {"x":615,"y":140,"w":104,"h":135},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":83,"y":96,"w":104,"h":135},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_kick0003.png":
+{
+	"frame": {"x":615,"y":140,"w":104,"h":135},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":83,"y":96,"w":104,"h":135},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_kick0004.png":
+{
+	"frame": {"x":615,"y":140,"w":104,"h":135},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":83,"y":96,"w":104,"h":135},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_kick0005.png":
+{
+	"frame": {"x":680,"y":2,"w":113,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":97,"w":113,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_kick0006.png":
+{
+	"frame": {"x":680,"y":2,"w":113,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":97,"w":113,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_kick0007.png":
+{
+	"frame": {"x":657,"y":277,"w":100,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":123,"y":97,"w":100,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_kick0008.png":
+{
+	"frame": {"x":1157,"y":272,"w":99,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":124,"y":99,"w":99,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_kick0009.png":
+{
+	"frame": {"x":1161,"y":137,"w":98,"h":132},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":125,"y":99,"w":98,"h":132},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0001.png":
+{
+	"frame": {"x":795,"y":2,"w":92,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":97,"w":92,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0002.png":
+{
+	"frame": {"x":795,"y":2,"w":92,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":97,"w":92,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0003.png":
+{
+	"frame": {"x":1505,"y":2,"w":106,"h":122},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":66,"y":109,"w":106,"h":122},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0004.png":
+{
+	"frame": {"x":1505,"y":2,"w":106,"h":122},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":66,"y":109,"w":106,"h":122},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0005.png":
+{
+	"frame": {"x":838,"y":410,"w":108,"h":91},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":140,"w":108,"h":91},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0006.png":
+{
+	"frame": {"x":838,"y":410,"w":108,"h":91},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":140,"w":108,"h":91},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0007.png":
+{
+	"frame": {"x":1613,"y":2,"w":99,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":73,"y":131,"w":99,"h":100},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0008.png":
+{
+	"frame": {"x":1613,"y":2,"w":99,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":73,"y":131,"w":99,"h":100},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0009.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0010.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0011.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0012.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0013.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0014.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0015.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0016.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0017.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0018.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0019.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0020.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0021.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0022.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0023.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0024.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0025.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0026.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0027.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0028.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0029.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0030.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0031.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0032.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0033.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0034.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_lose0035.png":
+{
+	"frame": {"x":1038,"y":407,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":84,"y":135,"w":88,"h":96},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0001.png":
+{
+	"frame": {"x":1351,"y":135,"w":84,"h":131},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":91,"y":100,"w":84,"h":131},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0002.png":
+{
+	"frame": {"x":1351,"y":135,"w":84,"h":131},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":91,"y":100,"w":84,"h":131},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0003.png":
+{
+	"frame": {"x":1012,"y":272,"w":73,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":98,"w":73,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0004.png":
+{
+	"frame": {"x":1012,"y":272,"w":73,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":98,"w":73,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0005.png":
+{
+	"frame": {"x":541,"y":143,"w":72,"h":136},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":95,"w":72,"h":136},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0006.png":
+{
+	"frame": {"x":541,"y":143,"w":72,"h":136},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":95,"w":72,"h":136},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0007.png":
+{
+	"frame": {"x":465,"y":164,"w":74,"h":139},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":92,"w":74,"h":139},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0008.png":
+{
+	"frame": {"x":465,"y":164,"w":74,"h":139},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":92,"w":74,"h":139},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0009.png":
+{
+	"frame": {"x":1332,"y":2,"w":88,"h":131},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":91,"y":100,"w":88,"h":131},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0010.png":
+{
+	"frame": {"x":1332,"y":2,"w":88,"h":131},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":91,"y":100,"w":88,"h":131},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0011.png":
+{
+	"frame": {"x":939,"y":137,"w":78,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":98,"w":78,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0012.png":
+{
+	"frame": {"x":939,"y":137,"w":78,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":98,"w":78,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0013.png":
+{
+	"frame": {"x":590,"y":281,"w":65,"h":136},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":95,"w":65,"h":136},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0014.png":
+{
+	"frame": {"x":590,"y":281,"w":65,"h":136},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":103,"y":95,"w":65,"h":136},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0015.png":
+{
+	"frame": {"x":540,"y":2,"w":70,"h":139},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":92,"w":70,"h":139},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_run0016.png":
+{
+	"frame": {"x":540,"y":2,"w":70,"h":139},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":100,"y":92,"w":70,"h":139},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_stand0001.png":
+{
+	"frame": {"x":882,"y":138,"w":55,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":97,"w":55,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_stand0002.png":
+{
+	"frame": {"x":882,"y":138,"w":55,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":97,"w":55,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_stand0003.png":
+{
+	"frame": {"x":882,"y":138,"w":55,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":97,"w":55,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_stand0004.png":
+{
+	"frame": {"x":882,"y":138,"w":55,"h":134},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":97,"w":55,"h":134},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_stand0005.png":
+{
+	"frame": {"x":1120,"y":2,"w":55,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":98,"w":55,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_stand0006.png":
+{
+	"frame": {"x":1120,"y":2,"w":55,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":98,"w":55,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_stand0007.png":
+{
+	"frame": {"x":1120,"y":2,"w":55,"h":133},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":109,"y":98,"w":55,"h":133},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0001.png":
+{
+	"frame": {"x":1367,"y":396,"w":115,"h":106},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":75,"y":125,"w":115,"h":106},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0002.png":
+{
+	"frame": {"x":1367,"y":396,"w":115,"h":106},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":75,"y":125,"w":115,"h":106},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0003.png":
+{
+	"frame": {"x":590,"y":419,"w":136,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":145,"w":136,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0004.png":
+{
+	"frame": {"x":590,"y":419,"w":136,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":145,"w":136,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0005.png":
+{
+	"frame": {"x":1128,"y":407,"w":136,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":145,"w":136,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0006.png":
+{
+	"frame": {"x":1128,"y":407,"w":136,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":145,"w":136,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0007.png":
+{
+	"frame": {"x":1567,"y":126,"w":135,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":71,"y":145,"w":135,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0008.png":
+{
+	"frame": {"x":1567,"y":126,"w":135,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":71,"y":145,"w":135,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0009.png":
+{
+	"frame": {"x":1567,"y":214,"w":132,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":77,"y":145,"w":132,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0010.png":
+{
+	"frame": {"x":1567,"y":214,"w":132,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":77,"y":145,"w":132,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle0011.png":
+{
+	"frame": {"x":1567,"y":302,"w":132,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":77,"y":145,"w":132,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle_up0001.png":
+{
+	"frame": {"x":1484,"y":390,"w":132,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":77,"y":145,"w":132,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle_up0002.png":
+{
+	"frame": {"x":1484,"y":390,"w":132,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":77,"y":145,"w":132,"h":86},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle_up0003.png":
+{
+	"frame": {"x":1450,"y":256,"w":115,"h":106},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":75,"y":125,"w":115,"h":106},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_ben10_blue_tackle_up0004.png":
+{
+	"frame": {"x":1450,"y":256,"w":115,"h":106},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":75,"y":125,"w":115,"h":106},
+	"sourceSize": {"w":270,"h":240}
+},
+"super_shot_ben10_blue.png":
+{
+	"frame": {"x":2,"y":2,"w":389,"h":500},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":0,"w":389,"h":500},
+	"sourceSize": {"w":390,"h":500}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "ben10_blue.png",
+	"format": "RGBA8888",
+	"size": {"w":1714,"h":507},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:5e35d24bf559b7448a2849583b742ad8:218e6371f4c3caf469fe876eba44eac4:26e089b44158a292d62f64b4c9dd1496$"
+}
+}

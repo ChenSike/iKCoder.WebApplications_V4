@@ -1,0 +1,153 @@
+
+var GAME = GAME || {};
+
+GAME.camera = new PIXI.Point();
+GAME.height;
+GAME.newHighScore = false;
+GAME.viewWidth;
+
+GAME.actionObjCount = 0;
+
+GAME.RprEngine = function () {
+	this.onGameover;
+
+	this.steve = new GAME.Steve(this);
+	this.view = new GAME.RprView(this);
+	this.segmentManager = new GAME.SegmentManager(this);
+	this.enemyManager = new GAME.EnemyManager(this);
+	this.pickupManager = new GAME.PickupManager(this);
+	this.floorManager = new GAME.FloorManager(this);
+	this.collisionManager = new GAME.CollisionManager(this);
+
+	this.steve.view.visible = false;
+
+	this.bulletMult = 1;
+	this.pickupCount = 0;
+	this.score = 0;
+	this.isPlaying = false;
+	this.levelCount = 0;
+	this.gameReallyOver = false;
+	this.isDying = false;
+
+	this.view.game.addChild(this.steve.view);
+}
+
+GAME.RprEngine.prototype.start = function () {
+	this.segmentManager.reset();
+	this.enemyManager.destroyAll();
+	this.pickupManager.destroyAll();
+	this.isPlaying = true;
+	this.gameReallyOver = false;
+	this.score = 0;
+	this.steve.level = 1;
+	this.steve.position.y = 477;
+	this.steve.speed.y = 0;
+	this.steve.speed.x = this.steve.baseSpeed;
+	this.steve.view.rotation = 0;
+	this.steve.isFlying = false;
+	this.steve.isDead = false;
+	this.steve.view.play()
+	this.steve.view.visible = true;
+	this.segmentManager.chillMode = false;
+	this.bulletMult = 1;
+}
+
+GAME.RprEngine.prototype.update = function () {
+
+	if (!this.steve.isDead && !this.steve.pause) {
+		GAME.time.update();
+
+		var targetCamY = 0;
+		if (targetCamY > 0) targetCamY = 0;
+		if (targetCamY < -70) targetCamY = -70;
+
+		GAME.camera.y = targetCamY;
+
+		this.steve.update();
+		this.collisionManager.update();
+		this.segmentManager.update();
+		this.floorManager.update();
+		this.enemyManager.update();
+		this.pickupManager.update();
+
+		this.levelCount += GAME.time.DELTA_TIME;
+
+		if (this.levelCount > (60 * 60)) {
+			this.levelCount = 0;
+			this.steve.level += 0.05;
+			GAME.time.speed += 0.05;
+		}
+
+		this.view.update();
+	}
+}
+
+
+GAME.RprEngine.prototype.reset = function () {
+	this.enemyManager.destroyAll();
+	this.floorManager.destroyAll();
+
+	this.segmentManager.reset();
+	this.view.zoom = 1;
+	this.pickupCount = 0;
+	this.levelCount = 0;
+	this.steve.level = 1;
+
+	this.view.game.addChild(this.steve.view);
+}
+
+GAME.RprEngine.prototype.gameover = function () {
+	this.isPlaying = false;
+	this.isDying = true;
+	this.segmentManager.chillMode = true;
+
+	this.view.game.addChild(this.steve.view);
+}
+
+GAME.RprEngine.prototype.gameoverReal = function () {
+	this.gameReallyOver = true;
+	this.isDying = false;
+	this.onGameoverReal();
+}
+
+GAME.RprEngine.prototype.pickup = function () {
+	if (this.steve.isDead) return;
+
+	this.score += 10;
+
+	this.view.score.jump();
+	this.pickupCount++;
+
+	if (this.pickupCount >= 50 * this.bulletMult && !this.steve.isDead) {
+		this.pickupCount = 0;
+		this.steve.position.x = 0;
+		GAME.camera.x = game.steve.position.x - 100;
+		this.enemyManager.destroyAll();
+		this.pickupManager.destroyAll();
+		this.floorManager.destroyAll();
+		this.segmentManager.reset();
+	}
+}
+
+Time = function () {
+	this.DELTA_TIME = 1;
+	this.lastTime = Date.now();
+	this.speed = 1;
+}
+
+Time.constructor = Time;
+
+Time.prototype.update = function () {
+	var time = Date.now();
+	var currentTime = time;
+	var passedTime = currentTime - this.lastTime;
+
+	this.DELTA_TIME = ((passedTime) * 0.06);
+	this.DELTA_TIME *= this.speed;
+
+	if (this.DELTA_TIME > 2.3) this.DELTA_TIME = 2.3;
+
+	this.lastTime = currentTime;
+}
+
+GAME.time = new Time();

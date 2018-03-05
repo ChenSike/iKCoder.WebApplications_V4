@@ -1,0 +1,66 @@
+﻿<root>
+  <basic>
+    <usr id="42" nickname="Alice"/>
+  </basic>
+  <sence name="初级第一课：模式设别" symbol="b_01_001" id="" totalstage="4" currentstage="4" finishstage="3" next="b_01_002"/>
+  <tips>
+    <item index="1">
+      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+    </item>
+    <item index="2">
+      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+    </item>
+    <item index="3">
+      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+    </item>
+    <item index="4">
+      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+    </item>
+    <item index="5">
+      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+    </item>
+    <item index="6">
+      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+    </item>
+  </tips>
+  <toolbox src="B-01-001_3D/pacman/1/Blocks/blocks.JS">
+    <xml id="toolbox" style="display: none">
+      <block type="event_start"/>
+      <block type="move_onestep_up"/>
+      <block type="move_onestep_down"/>
+      <block type="move_onestep_left"/>
+      <block type="move_onestep_right"/>
+    </xml>
+  </toolbox>
+  <workspacestatus>
+    <xml xmlns="http://www.w3.org/1999/xhtml"/>
+  </workspacestatus>
+  <game>
+    <script src="common/pacman.js"/>
+    <script src="B-01-001_3D/pacman/1/Scene/scene.JS"/>
+  </game>
+  <message>
+    <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>
+    <suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>
+  </message>
+  <words>
+    <stage value="1">
+      <word value="move" note="儿童英语/CET4/计算机英语" star="4">
+        <soundmark>
+          <item type="us" value="美 [kəmpjutɚ]" sound="sound_word_computer_us"></item>
+          <item type="uk" value="英 [kəmpjuːtə]" sound="sound_word_computer_uk"></item>
+        </soundmark>
+        <paraphrase>
+          <item>v.移动</item>
+        </paraphrase>
+        <variant>
+          <item name="复数" value="computers"/>
+        </variant>
+      </word>
+    </stage>
+  </words>
+  <kps>
+    <item>KPS1==恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了.</item>
+    <item>KPS2==恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了.</item>
+  </kps>
+</root>

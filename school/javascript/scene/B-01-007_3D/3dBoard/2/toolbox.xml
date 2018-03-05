@@ -1,0 +1,11 @@
+﻿<xml id="toolbox" style="display: none">
+  <block type="event_start"></block>
+  <block type="draw_diamond"></block>
+  <block type="move_forward"></block>
+  <block type="positive_rotate_line"></block>
+  <block type="positive_rotate_diamond"></block>
+  <block type="draw_diamond_function"></block>
+  <block type="set_color"></block>
+  <block type="set_lineWidth"></block>
+  
+</xml>
