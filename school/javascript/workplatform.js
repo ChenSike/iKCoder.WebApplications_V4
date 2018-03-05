@@ -621,9 +621,13 @@ function gotoCreativeMode() {
 
 function popupAttaPanel(targetBtn) {
     if (targetBtn.hasClass('fa-book')) {
-        showDetailPanel('kps');
+        if (_gStageData.course.kps.length > 0) {
+            showDetailPanel('kps');
+        }
     } else if (targetBtn.hasClass('fa-language')) {
-        showDetailPanel('word');
+        if (_gStageData.course.words.length > 0) {
+            showDetailPanel('word');
+        }
     } else if (targetBtn.hasClass('fa-code')) {
         showCodeEditorWin();
     } else if (targetBtn.hasClass('fa-file-code-o')) {
