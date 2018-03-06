@@ -410,7 +410,7 @@ function initStatusAlertEvents() {
                         }
 
                         var tmpParam = '&scene=' + (_gStageData.isLastScene() ? _gStageData.course.nextid : _gStageData.course.id);
-                        window.location.href = "workplatform.html?rnd=" + Date.now() + tmpParam;
+                        window.location.href = "courseware.html?rnd=" + Date.now() + tmpParam;
                     }
                 };
 
@@ -424,7 +424,7 @@ function initStatusAlertEvents() {
 
     //for static code
     $('.step-status-button.next').on('click', function (e) {
-        window.location.href = "workplatform.html?scene=" + _gStageData.course.id + "&step=" + _gStageData.course.next;
+        window.location.href = "courseware.html?scene=" + _gStageData.course.id + "&step=" + _gStageData.course.next;
     });
 
     $('.step-status-button.find-error').on('click', function (e) {

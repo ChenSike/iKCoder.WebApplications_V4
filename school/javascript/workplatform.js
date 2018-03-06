@@ -422,7 +422,7 @@ function gotoSpecialStep(step) {
             return;
         }
 
-        window.location.href = 'workplatform.html?scene=' + _gStageData.course.id + '&rnd=' + Date.now();
+        window.location.href = 'courseware.html?scene=' + _gStageData.course.id + '&rnd=' + Date.now();
     }
 
     ajaxFn('POST', url, '<root></root>', successFn, _gEmptyFn);
