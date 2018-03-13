@@ -1,0 +1,52 @@
+﻿<root>
+  <basic>
+    <usr id="42" nickname="Alice"/>
+  </basic>
+  <sence name="Hello Programing!" symbol="L_02_001" id="" totalstage="1" currentstage="1" finishstage="0" next="L_02_001"/>
+  <tips></tips>
+  <toolbox src="L-02-001/1/Blocks/blocks.JS">
+    <xml id="toolbox" style="display: none">
+        <block type="event_start"></block>
+        <block type="move_forward"></block>
+        <block type="positive_rotate_line"></block>
+        <block type="forloop"></block>
+        <block type="draw_square"></block>
+        <block type="draw_square_function"></block>
+        <block type="set_color"></block>
+        <block type="set_lineWidth"></block>
+    </xml>
+  </toolbox>
+  <workspacestatus>
+    <xml xmlns="http://www.w3.org/1999/xhtml"/>
+  </workspacestatus>
+  <game>
+    <script src="../common/three.js"></script>
+    <script src="../common/TweenMax.min.js"></script>
+    <script src="../common/threeengine.js"></script>
+    <script src="L-02-001/draw3d.js"></script>
+    <script src="L-02-001/threeengineNew.js"></script>
+    <script src="L-02-001/1/blocks/blocks.js"></script>
+    <script src="L-02-001/1/scene/scene.js"></script>
+  </game>
+  <message>
+    <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>
+    <suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>
+  </message>
+  <words>
+    <stage value="1">
+      <word value="move" note="儿童英语/CET4/计算机英语" star="4">
+        <soundmark>
+          <item type="us" value="美 [kəmpjutɚ]" sound="sound_word_computer_us"></item>
+          <item type="uk" value="英 [kəmpjuːtə]" sound="sound_word_computer_uk"></item>
+        </soundmark>
+        <paraphrase>
+          <item>v.移动</item>
+        </paraphrase>
+        <variant>
+          <item name="复数" value="computers"/>
+        </variant>
+      </word>
+    </stage>
+  </words>
+  <kps></kps>
+</root>

@@ -37,10 +37,12 @@
                 <div class="container-fluid main-content-wrap">
                     <div class="row justify-content-start main-content-row">
                         <div class="col" id="wrap_Category_Title">
-                            <button type="button" class="btn btn-primary btn-lg btn-block" id="btn_OpenPPT">打开教案</button>
+                            <!--<button type="button" class="btn btn-primary btn-lg btn-block" id="btn_OpenPPT">打开教案</button>
                             <button type="button" class="btn btn-secondary btn-lg btn-block" id="btn_OpenGame">程序体验</button>
                             <button type="button" class="btn btn-primary btn-lg btn-block" id="btn_OpenDemo">演示DEMO</button>
-                            <button type="button" class="btn btn-secondary btn-lg btn-block" id="btn_OpenCourse">进入课件</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" id="btn_OpenCourse">进入课件</button>-->
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" id="btn_OpenDrawDemo">演示DEMO-绘图</button>
+                            <button type="button" class="btn btn-primary btn-lg btn-block" id="btn_OpenRunPixiDemo">演示DEMO-跑酷</button>
                         </div>
                     </div>
                 </div>
@@ -85,6 +87,8 @@
             $('#btn_OpenGame').on('click', function () { window.open("application.html"); });
             $('#btn_OpenDemo').on('click', function () { window.open("coursedemo.html"); });
             $('#btn_OpenCourse').on('click', function () { window.open("courseware.html?scene=L_01_001&step=1"); });
+            $('#btn_OpenDrawDemo').on('click', function () { window.open("courseware.html?scene=L_02_001&step=1"); });
+            $('#btn_OpenRunPixiDemo').on('click', function () { window.open("javascript/runpixierun/index.html"); });
         });
     </script>
 </body>

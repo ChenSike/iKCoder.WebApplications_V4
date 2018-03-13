@@ -10,6 +10,7 @@ var _gStageData = {
     }
 };
 var _workspaceCfg = {};
+var _keepWHRate = true;
 
 function initPage() {
     $('#mask_Page_Loading').hide();
@@ -463,7 +464,7 @@ function adjustCanvasSize(keepRate) {
     var wrapWidth = currentWrap.width() - parseInt(currentWrap.css('padding')) * 2;
     var newHeight = wrapHeight;
     var newWidth = wrapWidth;
-    if (keepRate) {
+    if (_keepWHRate && keepRate) {
         if (wrapHeight / wrapWidth < tmpRate) {
             newWidth = wrapHeight / tmpRate;
         } else {
@@ -844,7 +845,7 @@ function loadCodeText(symbol) {
         }
     } else {
         for (var i = 0; i < currLib.length; i++) {
-            if (currLib[i].indexOf('coursemain.js') < 0) {
+            if (currLib[i].indexOf('coursemain.js') < 0 && currLib[i].indexOf('threeengine') < 0) {
                 $.get(currLib[i], function (data, status) {
                     editor.setValue(editor.getValue() + '\n\r' + data, -1);
                 });
