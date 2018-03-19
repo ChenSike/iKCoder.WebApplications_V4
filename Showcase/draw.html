@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+    <title>iKCoder・中国青少年编程教育创导者</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/fontawesome-all.min.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/common/three.min.js"></script>
+    <script src="javascript/common/TweenMax.min.js"></script>
+    <script src="javascript/common/threeengine.js"></script>
+    <script src="draw/javascript/draw3d.js"></script>
+    <script src="draw/javascript/threeengineNew.js"></script>
+    <script src="draw/javascript/scene.js"></script>
+
+</head>
+<body style="background: #d5d5d5; height: 100%; margin:0px;">
+    <div class="" id="game_container" style="height:calc(100% - 20px); width:calc(100% - 20px);">
+        <button class="button-play" type="button"><i class="fas fa-play-circle button-icon" title="开始运行"></i></button>
+    </div>
+    <script>
+        $(document).ready(function () {
+            Scene.initEnvironment("game_container");
+            var button = $('.button-play');
+            button.height($('body').height() / 5);
+            button.width(button.height());
+            button.css('top', 'calc(50% - ' + button.height() / 2 + 'px)');
+            button.css('left', 'calc(50% - ' + button.height() / 2 + 'px)');
+            button.on('click', function () {
+                var buttonSVG = $('.button-play svg');
+                if (buttonSVG.hasClass('fa-play-circle')) {
+                    button.empty();
+                    button.html('<i class="fas fa-undo-alt button-icon" title="重新开始"></i>');
+                    Scene.startGame();
+                } else {
+                    button.empty();
+                    button.html('<i class="fas fa-play-circle button-icon" title="开始运行"></i>');
+                    Scene.reset();
+                }
+            });
+        });
+    </script>
+    <style>
+        .button-play {
+            position: absolute;
+            color: rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            width: 1px;
+        }
+
+            .button-play:hover {
+                color: rgba(0,0,0,0.5);
+            }
+
+            .button-play .button-icon {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+    </style>
+</body>
+</html>

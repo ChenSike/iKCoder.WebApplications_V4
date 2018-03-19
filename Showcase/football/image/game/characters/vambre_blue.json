@@ -1,0 +1,1388 @@
+{"frames": {
+
+"characters_vambre_blue_celebrate0001.png":
+{
+	"frame": {"x":270,"y":327,"w":110,"h":161},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":63,"w":110,"h":161},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0002.png":
+{
+	"frame": {"x":270,"y":327,"w":110,"h":161},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":63,"w":110,"h":161},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0003.png":
+{
+	"frame": {"x":146,"y":332,"w":122,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":49,"y":68,"w":122,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0004.png":
+{
+	"frame": {"x":146,"y":332,"w":122,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":49,"y":68,"w":122,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0005.png":
+{
+	"frame": {"x":613,"y":2,"w":132,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":69,"w":132,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0006.png":
+{
+	"frame": {"x":613,"y":2,"w":132,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":69,"w":132,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0007.png":
+{
+	"frame": {"x":613,"y":2,"w":132,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":69,"w":132,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0008.png":
+{
+	"frame": {"x":138,"y":806,"w":106,"h":179},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":45,"w":106,"h":179},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0009.png":
+{
+	"frame": {"x":138,"y":806,"w":106,"h":179},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":45,"w":106,"h":179},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0010.png":
+{
+	"frame": {"x":144,"y":170,"w":117,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":64,"w":117,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0011.png":
+{
+	"frame": {"x":144,"y":170,"w":117,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":64,"w":117,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0012.png":
+{
+	"frame": {"x":144,"y":170,"w":117,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":64,"w":117,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0013.png":
+{
+	"frame": {"x":722,"y":629,"w":104,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":67,"w":104,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0014.png":
+{
+	"frame": {"x":722,"y":629,"w":104,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":67,"w":104,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0015.png":
+{
+	"frame": {"x":279,"y":646,"w":106,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":68,"w":106,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0016.png":
+{
+	"frame": {"x":279,"y":646,"w":106,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":68,"w":106,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0017.png":
+{
+	"frame": {"x":387,"y":658,"w":111,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":69,"w":111,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0018.png":
+{
+	"frame": {"x":387,"y":658,"w":111,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":69,"w":111,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0019.png":
+{
+	"frame": {"x":276,"y":490,"w":109,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":70,"w":109,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0020.png":
+{
+	"frame": {"x":276,"y":490,"w":109,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":70,"w":109,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0021.png":
+{
+	"frame": {"x":370,"y":815,"w":110,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":69,"w":110,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0022.png":
+{
+	"frame": {"x":370,"y":815,"w":110,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":69,"w":110,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0023.png":
+{
+	"frame": {"x":679,"y":788,"w":106,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":68,"w":106,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0024.png":
+{
+	"frame": {"x":679,"y":788,"w":106,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":68,"w":106,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0025.png":
+{
+	"frame": {"x":500,"y":462,"w":106,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":67,"w":106,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0026.png":
+{
+	"frame": {"x":500,"y":462,"w":106,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":67,"w":106,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0027.png":
+{
+	"frame": {"x":500,"y":621,"w":109,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":67,"w":109,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0028.png":
+{
+	"frame": {"x":500,"y":621,"w":109,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":67,"w":109,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0029.png":
+{
+	"frame": {"x":787,"y":788,"w":104,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":68,"w":104,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0030.png":
+{
+	"frame": {"x":787,"y":788,"w":104,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":68,"w":104,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0031.png":
+{
+	"frame": {"x":744,"y":306,"w":102,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":69,"w":102,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0032.png":
+{
+	"frame": {"x":744,"y":306,"w":102,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":69,"w":102,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0033.png":
+{
+	"frame": {"x":900,"y":942,"w":106,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":70,"w":106,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0034.png":
+{
+	"frame": {"x":900,"y":942,"w":106,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":70,"w":106,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0035.png":
+{
+	"frame": {"x":259,"y":1120,"w":109,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":69,"w":109,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0036.png":
+{
+	"frame": {"x":259,"y":1120,"w":109,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":69,"w":109,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0037.png":
+{
+	"frame": {"x":787,"y":788,"w":104,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":68,"w":104,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0038.png":
+{
+	"frame": {"x":787,"y":788,"w":104,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":68,"w":104,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0039.png":
+{
+	"frame": {"x":828,"y":625,"w":102,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":67,"w":102,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0040.png":
+{
+	"frame": {"x":828,"y":625,"w":102,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":67,"w":102,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0041.png":
+{
+	"frame": {"x":500,"y":462,"w":106,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":67,"w":106,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0042.png":
+{
+	"frame": {"x":500,"y":462,"w":106,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":67,"w":106,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0043.png":
+{
+	"frame": {"x":370,"y":972,"w":110,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":68,"w":110,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0044.png":
+{
+	"frame": {"x":370,"y":972,"w":110,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":68,"w":110,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0045.png":
+{
+	"frame": {"x":370,"y":815,"w":110,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":69,"w":110,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0046.png":
+{
+	"frame": {"x":370,"y":815,"w":110,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":69,"w":110,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0047.png":
+{
+	"frame": {"x":770,"y":1051,"w":104,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":70,"w":104,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0048.png":
+{
+	"frame": {"x":770,"y":1051,"w":104,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":70,"w":104,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0049.png":
+{
+	"frame": {"x":387,"y":658,"w":111,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":69,"w":111,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0050.png":
+{
+	"frame": {"x":387,"y":658,"w":111,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":69,"w":111,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0051.png":
+{
+	"frame": {"x":370,"y":1130,"w":110,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":68,"w":110,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0052.png":
+{
+	"frame": {"x":370,"y":1130,"w":110,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":68,"w":110,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0053.png":
+{
+	"frame": {"x":573,"y":780,"w":104,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":67,"w":104,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0054.png":
+{
+	"frame": {"x":573,"y":780,"w":104,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":67,"w":104,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0055.png":
+{
+	"frame": {"x":828,"y":625,"w":102,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":67,"w":102,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0056.png":
+{
+	"frame": {"x":828,"y":625,"w":102,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":67,"w":102,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0057.png":
+{
+	"frame": {"x":893,"y":784,"w":106,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":68,"w":106,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0058.png":
+{
+	"frame": {"x":893,"y":784,"w":106,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":68,"w":106,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0059.png":
+{
+	"frame": {"x":259,"y":1120,"w":109,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":69,"w":109,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0060.png":
+{
+	"frame": {"x":259,"y":1120,"w":109,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":69,"w":109,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0061.png":
+{
+	"frame": {"x":876,"y":1098,"w":104,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":70,"w":104,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0062.png":
+{
+	"frame": {"x":876,"y":1098,"w":104,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":70,"w":104,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0063.png":
+{
+	"frame": {"x":770,"y":1207,"w":102,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":69,"w":102,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0064.png":
+{
+	"frame": {"x":770,"y":1207,"w":102,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":69,"w":102,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0065.png":
+{
+	"frame": {"x":893,"y":784,"w":106,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":68,"w":106,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0066.png":
+{
+	"frame": {"x":893,"y":784,"w":106,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":68,"w":106,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0067.png":
+{
+	"frame": {"x":611,"y":620,"w":109,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":67,"w":109,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_celebrate0068.png":
+{
+	"frame": {"x":611,"y":620,"w":109,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":67,"w":109,"h":157},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0001.png":
+{
+	"frame": {"x":312,"y":2,"w":159,"h":150},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":75,"w":159,"h":150},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0002.png":
+{
+	"frame": {"x":155,"y":2,"w":155,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":70,"w":155,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0003.png":
+{
+	"frame": {"x":2,"y":170,"w":140,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":65,"w":140,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0004.png":
+{
+	"frame": {"x":2,"y":2,"w":151,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":59,"w":151,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0005.png":
+{
+	"frame": {"x":142,"y":646,"w":135,"h":150},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":43,"y":75,"w":135,"h":150},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0006.png":
+{
+	"frame": {"x":881,"y":2,"w":127,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":43,"y":70,"w":127,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0007.png":
+{
+	"frame": {"x":482,"y":981,"w":100,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":65,"w":100,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0008.png":
+{
+	"frame": {"x":263,"y":159,"w":111,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":59,"w":111,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0009.png":
+{
+	"frame": {"x":312,"y":2,"w":159,"h":150},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":75,"w":159,"h":150},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0010.png":
+{
+	"frame": {"x":155,"y":2,"w":155,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":70,"w":155,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0011.png":
+{
+	"frame": {"x":2,"y":170,"w":140,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":65,"w":140,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0012.png":
+{
+	"frame": {"x":2,"y":2,"w":151,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":59,"w":151,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0013.png":
+{
+	"frame": {"x":142,"y":646,"w":135,"h":150},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":43,"y":75,"w":135,"h":150},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0014.png":
+{
+	"frame": {"x":881,"y":2,"w":127,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":43,"y":70,"w":127,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0015.png":
+{
+	"frame": {"x":482,"y":981,"w":100,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":65,"w":100,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_dash0016.png":
+{
+	"frame": {"x":263,"y":159,"w":111,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":59,"w":111,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0001.png":
+{
+	"frame": {"x":142,"y":1104,"w":115,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":60,"w":115,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0002.png":
+{
+	"frame": {"x":142,"y":1104,"w":115,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":60,"w":115,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0003.png":
+{
+	"frame": {"x":747,"y":2,"w":132,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":68,"w":132,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0004.png":
+{
+	"frame": {"x":747,"y":2,"w":132,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":68,"w":132,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0005.png":
+{
+	"frame": {"x":2,"y":1287,"w":137,"h":111},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":32,"y":113,"w":137,"h":111},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0006.png":
+{
+	"frame": {"x":2,"y":1287,"w":137,"h":111},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":32,"y":113,"w":137,"h":111},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0007.png":
+{
+	"frame": {"x":482,"y":1143,"w":127,"h":114},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":110,"w":127,"h":114},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0008.png":
+{
+	"frame": {"x":482,"y":1143,"w":127,"h":114},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":110,"w":127,"h":114},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0009.png":
+{
+	"frame": {"x":280,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":114,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_fall0010.png":
+{
+	"frame": {"x":280,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":114,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0001.png":
+{
+	"frame": {"x":246,"y":804,"w":122,"h":152},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":55,"y":72,"w":122,"h":152},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0002.png":
+{
+	"frame": {"x":2,"y":332,"w":142,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":47,"y":68,"w":142,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0003.png":
+{
+	"frame": {"x":2,"y":332,"w":142,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":47,"y":68,"w":142,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0004.png":
+{
+	"frame": {"x":2,"y":332,"w":142,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":47,"y":68,"w":142,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0005.png":
+{
+	"frame": {"x":2,"y":1130,"w":138,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":71,"y":69,"w":138,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0006.png":
+{
+	"frame": {"x":2,"y":1130,"w":138,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":71,"y":69,"w":138,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0007.png":
+{
+	"frame": {"x":473,"y":2,"w":138,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":71,"y":69,"w":138,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0008.png":
+{
+	"frame": {"x":2,"y":490,"w":138,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":74,"y":68,"w":138,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0009.png":
+{
+	"frame": {"x":2,"y":648,"w":138,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":74,"y":68,"w":138,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_kick0010.png":
+{
+	"frame": {"x":2,"y":648,"w":138,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":74,"y":68,"w":138,"h":156},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0001.png":
+{
+	"frame": {"x":889,"y":159,"w":115,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":61,"w":115,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0002.png":
+{
+	"frame": {"x":889,"y":159,"w":115,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":61,"w":115,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0003.png":
+{
+	"frame": {"x":142,"y":490,"w":132,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":71,"w":132,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0004.png":
+{
+	"frame": {"x":142,"y":490,"w":132,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":71,"w":132,"h":154},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0005.png":
+{
+	"frame": {"x":141,"y":1287,"w":137,"h":111},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":32,"y":114,"w":137,"h":111},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0006.png":
+{
+	"frame": {"x":141,"y":1287,"w":137,"h":111},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":32,"y":114,"w":137,"h":111},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0007.png":
+{
+	"frame": {"x":138,"y":987,"w":127,"h":115},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":110,"w":127,"h":115},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0008.png":
+{
+	"frame": {"x":138,"y":987,"w":127,"h":115},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":110,"w":127,"h":115},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0009.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0010.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0011.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0012.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0013.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0014.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0015.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0016.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0017.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0018.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0019.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0020.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_lose0021.png":
+{
+	"frame": {"x":419,"y":1288,"w":137,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":115,"w":137,"h":110},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0001.png":
+{
+	"frame": {"x":608,"y":311,"w":123,"h":150},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":51,"y":75,"w":123,"h":150},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0002.png":
+{
+	"frame": {"x":608,"y":311,"w":123,"h":150},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":51,"y":75,"w":123,"h":150},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0003.png":
+{
+	"frame": {"x":494,"y":305,"w":112,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":70,"w":112,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0004.png":
+{
+	"frame": {"x":494,"y":305,"w":112,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":70,"w":112,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0005.png":
+{
+	"frame": {"x":267,"y":958,"w":101,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":65,"w":101,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0006.png":
+{
+	"frame": {"x":267,"y":958,"w":101,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":65,"w":101,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0007.png":
+{
+	"frame": {"x":382,"y":322,"w":110,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":59,"w":110,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0008.png":
+{
+	"frame": {"x":382,"y":322,"w":110,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":59,"w":110,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0009.png":
+{
+	"frame": {"x":614,"y":159,"w":128,"h":150},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":50,"y":75,"w":128,"h":150},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0010.png":
+{
+	"frame": {"x":614,"y":159,"w":128,"h":150},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":50,"y":75,"w":128,"h":150},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0011.png":
+{
+	"frame": {"x":608,"y":463,"w":112,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":70,"w":112,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0012.png":
+{
+	"frame": {"x":608,"y":463,"w":112,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":70,"w":112,"h":155},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0013.png":
+{
+	"frame": {"x":809,"y":463,"w":100,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":65,"w":100,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0014.png":
+{
+	"frame": {"x":809,"y":463,"w":100,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":65,"w":100,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0015.png":
+{
+	"frame": {"x":387,"y":490,"w":111,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":59,"w":111,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_run0016.png":
+{
+	"frame": {"x":387,"y":490,"w":111,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":59,"w":111,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0001.png":
+{
+	"frame": {"x":376,"y":154,"w":91,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":71,"y":59,"w":91,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0002.png":
+{
+	"frame": {"x":376,"y":154,"w":91,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":71,"y":59,"w":91,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0003.png":
+{
+	"frame": {"x":376,"y":154,"w":91,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":71,"y":59,"w":91,"h":166},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0004.png":
+{
+	"frame": {"x":482,"y":815,"w":89,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":72,"y":61,"w":89,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0005.png":
+{
+	"frame": {"x":482,"y":815,"w":89,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":72,"y":61,"w":89,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0006.png":
+{
+	"frame": {"x":482,"y":815,"w":89,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":72,"y":61,"w":89,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0007.png":
+{
+	"frame": {"x":722,"y":463,"w":85,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":74,"y":61,"w":85,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0008.png":
+{
+	"frame": {"x":722,"y":463,"w":85,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":74,"y":61,"w":85,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0009.png":
+{
+	"frame": {"x":722,"y":463,"w":85,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":74,"y":61,"w":85,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0010.png":
+{
+	"frame": {"x":482,"y":815,"w":89,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":72,"y":61,"w":89,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0011.png":
+{
+	"frame": {"x":482,"y":815,"w":89,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":72,"y":61,"w":89,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_stand0012.png":
+{
+	"frame": {"x":482,"y":815,"w":89,"h":164},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":72,"y":61,"w":89,"h":164},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0001.png":
+{
+	"frame": {"x":2,"y":806,"w":134,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":65,"w":134,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0002.png":
+{
+	"frame": {"x":2,"y":806,"w":134,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":65,"w":134,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0003.png":
+{
+	"frame": {"x":469,"y":159,"w":143,"h":144},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":81,"w":143,"h":144},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0004.png":
+{
+	"frame": {"x":469,"y":159,"w":143,"h":144},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":81,"w":143,"h":144},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0005.png":
+{
+	"frame": {"x":744,"y":946,"w":154,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":26,"y":122,"w":154,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0006.png":
+{
+	"frame": {"x":744,"y":946,"w":154,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":26,"y":122,"w":154,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0007.png":
+{
+	"frame": {"x":848,"y":325,"w":157,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":30,"y":122,"w":157,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0008.png":
+{
+	"frame": {"x":848,"y":325,"w":157,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":30,"y":122,"w":157,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0009.png":
+{
+	"frame": {"x":584,"y":946,"w":158,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":34,"y":122,"w":158,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0010.png":
+{
+	"frame": {"x":584,"y":946,"w":158,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":34,"y":122,"w":158,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0011.png":
+{
+	"frame": {"x":611,"y":1051,"w":157,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":38,"y":122,"w":157,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0012.png":
+{
+	"frame": {"x":611,"y":1051,"w":157,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":38,"y":122,"w":157,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle0013.png":
+{
+	"frame": {"x":611,"y":1156,"w":157,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":38,"y":122,"w":157,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle_up0001.png":
+{
+	"frame": {"x":558,"y":1261,"w":157,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":122,"w":157,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle_up0002.png":
+{
+	"frame": {"x":558,"y":1261,"w":157,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":122,"w":157,"h":103},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle_up0003.png":
+{
+	"frame": {"x":744,"y":160,"w":143,"h":144},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":69,"y":81,"w":143,"h":144},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle_up0004.png":
+{
+	"frame": {"x":744,"y":160,"w":143,"h":144},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":69,"y":81,"w":143,"h":144},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle_up0005.png":
+{
+	"frame": {"x":2,"y":968,"w":134,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":79,"y":65,"w":134,"h":160},
+	"sourceSize": {"w":270,"h":240}
+},
+"characters_vambre_blue_tackle_up0006.png":
+{
+	"frame": {"x":2,"y":968,"w":134,"h":160},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":79,"y":65,"w":134,"h":160},
+	"sourceSize": {"w":270,"h":240}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "vambre_blue.png",
+	"format": "RGBA8888",
+	"size": {"w":1010,"h":1400},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:86a7e5ae905dfa8997a7bb6e9db8f280:9ea44f657ce8c757544f416a31d23f5a:f1202f871f97f140b818d1823eba3168$"
+}
+}

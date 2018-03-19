@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html style="height:100%; background-color: black;">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="football/javascript/getGlobalSettingFn.js"></script>
+    <script src="football/javascript/loaderScreenFn.js"></script>
+    <script src="football/javascript/titleScreenFn.js"></script>
+    <script src="football/javascript/countrySelectScreenFn.js"></script>
+    <script src="football/javascript/captainSelectScreenFn.js"></script>
+    <script src="football/javascript/playerSelectScreenFn.js"></script>
+    <script src="football/javascript/teamReviewScreenFn.js"></script>
+    <script src="football/javascript/gameScreenFn.js"></script>
+    <script src="football/javascript/gameOverScreenFn.js"></script>
+    <script src="football/javascript/PitchObjectFn.js"></script>
+    <script src="football/javascript/globalSettingForControl.js"></script>
+    <script src="football/javascript/gameScreenWrapFn.js"></script>
+    <script src="football/javascript/teamManagerFn.js"></script>
+    <script src="football/javascript/pickupManagerFn.js"></script>
+    <script src="football/javascript/soundManagerFn.js"></script>
+    <script src="football/javascript/pixi.js"></script>
+    <script src="football/javascript/three.js"></script>
+    <script src="football/javascript/screenManagerFn.js"></script>
+    <script src="football/javascript/applicationFn.js"></script>
+    <script src="football/javascript/argumentFns.js"></script>
+    <script src="football/javascript/entryFn.js"></script>
+</head>
+<body>
+    <div class="text-center no-padding" id="game_container" style="width:100%; height:100%;"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var ENV = window.ENV = {};
+            var timeoutCode = 0;
+            _gSettings.background_game = "game/toon_pitch_full.jpg";
+            _gSettings.soundMute = false;
+            _gSettings.neverOver = false;
+            _gSettings.hideAllTeams = false;
+            _gSettings.enablePickUP = true;
+            _gSettings.enablePlay = true;
+            _gSettings.enableSelectTeam = true;
+            globalWrapFn(argumentFn);
+            function startGame() {
+                if (_gloablObj && _gloablObj.app) {
+                    window.clearTimeout(timeoutCode);
+                    _gloablObj.app.breadcrumb.next();
+                } else {
+                    timeoutCode = window.setTimeout(startGame, 500);
+                }
+            }
+
+            timeoutCode = window.setTimeout(startGame, 500);
+        });
+    </script>
+</body>
+</html>
