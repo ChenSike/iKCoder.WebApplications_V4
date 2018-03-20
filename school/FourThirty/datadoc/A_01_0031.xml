@@ -2,28 +2,19 @@
   <basic>
     <usr id="46" nickname="Alice"/>
   </basic>
-  <sence name="初级第一课：模式设别" symbol="B_01_001" id="" totalstage="4" currentstage="1" finishstage="4" next="B_01_002"/>
+  <sence name="初级第一课：模式设别" symbol="A_01_003" id="" totalstage="1" currentstage="1" finishstage="1" next="A_01_003"/>
   <tips>
     <item index="1">
       <content chinese="1向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
     </item>
   </tips>
-  <toolbox src="fourthirty/scene/B-01-001_3D/pacman/1/Blocks/blocks.JS">
-    <xml id="toolbox" style="display: none">
-      <block type="event_start"/>
-      <block type="move_onestep_up"/>
-      <block type="move_onestep_down"/>
-      <block type="move_onestep_left"/>
-      <block type="move_onestep_right"/>
-    </xml>
+  <toolbox>
   </toolbox>
   <workspacestatus>
-    <xml xmlns="http://www.w3.org/1999/xhtml"/>
-    <block type="event_start" id="f0Gt`~jczerKhI$;4tt`" colour="#5ba580" stroke="#000000" eventicon="" categoryicon="" maxcount="Infinity" x="248" y="26"/>
   </workspacestatus>
   <game>
-    <script src="javascript/Common/pacman.js"/>
-    <script src="fourthirty/scene/B-01-001_3D/pacman/1/Scene/scene.JS"/>
+    <!--<script src="javascript/Common/pacman.js"/>
+    <script src="fourthirty/scene/B-01-001_3D/pacman/1/Scene/scene.JS"/>-->
   </game>
   <message>
     <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>

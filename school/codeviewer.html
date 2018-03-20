@@ -18,10 +18,29 @@
 <body>
     <div id="editor"></div>
     <script src="javascript/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="javascript/common/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script>
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/javascript");
+        function loadCodeText(codeLibArr) {
+            editor.setValue('', -1);
+            if (typeof codeLibArr == 'string') {
+                if (codeLibArr != '') {
+                    $.get(codeLibArr, function (data, status) {
+                        editor.setValue(data, -1);
+                    });
+                }
+            } else {
+                for (var i = 0; i < codeLibArr.length; i++) {
+                    if (codeLibArr[i].indexOf('coursemain.js') < 0) {
+                        $.get(codeLibArr[i].replace('.min.','.'), function (data, status) {
+                            editor.setValue(editor.getValue() + '\n\r' + data, -1);
+                        });
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>
