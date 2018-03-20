@@ -2,89 +2,149 @@
 <html style="height:100%;">
 <head>
     <title>iKCoder・中国青少年编程教育创导者</title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="style/jquery-ui.min.css">
     <link rel="stylesheet" href="style/tether.min.css">
     <link rel="stylesheet" href="style/bootstrap.min.css">
     <link rel="stylesheet" href="style/font-awesome.min.css">
     <link rel="stylesheet" href="style/common.css">
-    <script src="javascript/common/jquery-3.2.1.min.js"></script>
-    <script src="javascript/common/jquery-ui.min.js"></script>
-    <script src="javascript/common/tether.min.js"></script>
-    <script src="javascript/common/bootstrap.min.js"></script>
-    <script src="javascript/common/storage.js"></script>
-    <script src="javascript/common/common.js"></script>
+    <link rel="stylesheet" href="style/index.css">
+    <script src="javascript/jquery-3.2.1.min.js"></script>
+    <script src="javascript/tether.min.js"></script>
+    <script src="javascript/bootstrap.min.js"></script>
     <script src="javascript/common.js"></script>
+    <script src="javascript/index.js"></script>
 </head>
 <body style="height:100%;">
-    <div class="container-fluid no-wrap" style="height:100%;">
-        <div class="row no-wrap">
-            <div class="col-12 no-wrap" style="height:60px;">
-                <header>
-                    <nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header">
-                        <a class="navbar-brand" href="#">
-                            <img src="image/logo-new-gray.png" width="120" height="35" class="d-inline-block align-top img-header-logo" alt="">
-                        </a>
-                    </nav>
-                </header>
+    <div class="container-fluid" style="height:100%;">
+        <div class="row" style="height:100%;">
+            <div class="col-3 no-padding-margin" id="wrap_LeftBar" style="height:100%; background-color:#2955CE; max-width: 265px;">
+                <div style="height:100%;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col" style="padding:20px 0px;">
+                                <div class="container-fluid">
+                                    <div class="row  align-items-center">
+                                        <div class="col-5">
+                                            <img src="image/logotop.png" id="image_User_Header">
+                                        </div>
+                                        <div class="col-7 user-info-txt" style="padding: 0px;">
+                                            <div class="container-fluid" style="padding: 0px;">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <p id="label_UserName" style="font-size: 16px;"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <!--<a id="lbtn_Logout" href="#" style="color:#8FAC66;">[退出登录]</a>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col user-info-txt" style="text-align:center; color:#699BED">
+                                <p id="label_LastLoginTime">上次登录时间: 2017-09-25 15:00:00</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="accordion" role="tablist" style="width:100%;">
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingFourThirty">
+                                        <h5 class="mb-0 font-weight-bold">
+                                            <a id="menu_FourThirty" data-toggle="collapse" href="#collapseFourThirty" aria-expanded="true" aria-controls="collapseFourThirty">
+                                                四点半课堂
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseFourThirty" class="collapse show" role="tabpanel" aria-labelledby="headingFourThirty" data-parent="#accordion">
+                                        <div class="card-block">
+                                            <div class="col no-padding-margin">
+                                                <ul class="list-group"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingClub">
+                                        <h5 class="mb-0 font-weight-bold">
+                                            <a id="menu_Club" data-toggle="collapse" href="#collapseClub" aria-expanded="true" aria-controls="collapseClub">
+                                                社团活动
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseClub" class="collapse show" role="tabpanel" aria-labelledby="headingClub" data-parent="#accordion">
+                                        <div class="card-block">
+                                            <div class="col no-padding-margin">
+                                                <ul class="list-group"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row no-wrap">
-            <div class="col-12 no-wrap main-container-col">
-                <div class="container-fluid main-content-wrap">
-                    <div class="row justify-content-start main-content-row">
-                        <div class="col" id="wrap_Category_Title">
-                            <button type="button" class="btn btn-primary btn-lg btn-block" id="btn_OpenPPT">打开教案</button>
-                            <button type="button" class="btn btn-secondary btn-lg btn-block" id="btn_OpenGame">程序体验</button>
-                            <button type="button" class="btn btn-primary btn-lg btn-block" id="btn_OpenDemo">演示DEMO</button>
-                            <button type="button" class="btn btn-secondary btn-lg btn-block" id="btn_OpenCourse">进入课件</button>
+            <div class="col" style="height:100%; padding:0px;">
+                <div class="container-fluid" id="container_Datas">
+                    <div class="row justify-content-end" style="background-color:#F1F1F1;">
+                        <div class="col" style="height:50px;">
+                            <img class="top-row-logo-img" src="image/logo-new-gray.png" alt="">
+                        </div>
+                    </div>
+                    <div class="row" style="padding:5px 10px;">
+                        <div class="col" style="height:40px; background-color:#2955CE; border-radius:10px;">
+                            <div class="container-fluid">
+                                <div class="row justify-content-around">
+                                    <div class="col-2 project-name-title" style="line-height:40px;">开始上课</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" id="container_Datas_Col">
+                            <div class="container-fluid" id="container_CourseList">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row no-wrap">
-            <div class="col-12 no-wrap" style="height:30px;">
-                <footer id="footer">
-                    <div class="footer-txt">
-                        <div class="container w-100">
-                            <div class="row justify-content-center">
-                                <div class="col-11">
-                                    <p class="copyright-txt">
-                                        <span>
-                                            深圳市鹏博教育科技有限公司
-                                        </span>
-                                        <span class="split-line">
-                                            |
-                                        </span>
-                                        <span class="normal-text">
-                                            Powered by
-                                        </span>
-                                        <span>
-                                            iKCoder.Co (ShenZhen)
-                                        </span>
-                                        <span class="reference-text">
-                                            <a href="http://www.miibeian.gov.cn" target="_blank" style="display:inline-block;">粤ICP备17152880号</a>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
+    </div>
+    <div class="modal fade" id="modal_LessonDoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="margin:0px;max-width: 100%;">
+            <div class="modal-content" style="width: 100%; height: 100%; max-width: 100%;">
+                <div class="modal-body" style="width: 100%;">
+                    <div id="carousel_LessonDoc" class="carousel slide" data-ride="carousel" data-interval="90000" data-keyboard="true" data-wrap="false" data-ride="true">
+                        <div class="carousel-inner">
                         </div>
+                        <a class="carousel-control-prev" href="#carousel_LessonDoc" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only" style="color:darkred">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carousel_LessonDoc" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
                     </div>
-                </footer>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                </div>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.main-container-col').height($('body').height() - 91);
-            $('#btn_OpenPPT').on('click', function () { window.open("grammar.html"); });
-            $('#btn_OpenGame').on('click', function () { window.open("application.html"); });
-            $('#btn_OpenDemo').on('click', function () { window.open("coursedemo.html"); });
-            $('#btn_OpenCourse').on('click', function () { window.open("courseware.html?scene=L_01_001&step=1"); });
+            initPage();
+            //_startCheckState();
         });
     </script>
 </body>

@@ -1,0 +1,10 @@
+﻿<xml id="toolbox" style="display: none">
+  <block type="event_start"></block>
+  <block type="define_lineLength"></block>
+  <block type="para_lineLength"></block>
+  <block type="move_forward_para"></block>
+  <block type="move_forward_para_calc"></block>
+  <block type="positive_rotate_line"></block>
+  <block type="set_color"></block>
+  <block type="set_lineWidth"></block>
+</xml>

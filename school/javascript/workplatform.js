@@ -12,8 +12,6 @@ var _gStageData = {
 var _workspaceCfg = {};
 
 function initPage() {
-    $('#mask_Page_Loading').hide();
-    $('#mask_Page_Loading').css('visibility', 'hidden');
     adjustMainSize();
     //var url = _getRequestURL(_gURLMapping.account.signstatus);
     //var successFn = function (response, status) {
@@ -45,9 +43,10 @@ function initPage() {
     //ajaxFn('GET', url, '<root></root>', successFn, failedFn);
 
     //for test football
+    var tmpType = getQueryString('type');
     var tmpStage = getQueryString('scene');
     var tmpStep = getQueryString('step');
-    var dataXML = LoadXMLFile('javascript/scene/datadoc/' + tmpStage + tmpStep + '.xml');
+    var dataXML = LoadXMLFile(tmpType + '/datadoc/' + tmpStage + tmpStep + '.xml');
     initData(dataXML);
     buildHeaderHTML();
     buildCourseTips();
@@ -75,6 +74,8 @@ function loadSceneLib_Do(libArr) {
         });
     } else {
         WorkScene.init();
+        $('#mask_Page_Loading').hide();
+        $('#mask_Page_Loading').css('visibility', 'hidden');
     }
 };
 
@@ -123,6 +124,7 @@ function initData(response) {
 
 function initDataCourse(response) {
     var sceneItem = $($(response).find("sence")[0]);
+    _gStageData.course.type = getQueryString('type');
     _gStageData.course.id = sceneItem.attr('symbol');
     _gStageData.course.name = sceneItem.attr('name');
     _gStageData.course.nextid = sceneItem.attr('next');
@@ -253,7 +255,7 @@ function loadStageLibs_3(response) {
     var addLibPathFn = function (node) {
         var tmpAttr = node.attr('src');
         if (tmpAttr && tmpAttr != '') {
-            _gStageData.blockly.lib.push('javascript/scene/' + tmpAttr);
+            _gStageData.blockly.lib.push(tmpAttr);
         }
     }
 
@@ -415,17 +417,18 @@ function initHeaderEvents() {
 };
 
 function gotoSpecialStep(step) {
-    var url = _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: step, symbol: _gStageData.course.id });
-    var successFn = function (response) {
-        if ($(response).find('err').length > 0) {
-            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
-            return;
-        }
+    //var url = _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: step, symbol: _gStageData.course.id });
+    //var successFn = function (response) {
+    //    if ($(response).find('err').length > 0) {
+    //        _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
+    //        return;
+    //    }
 
-        window.location.href = 'courseware.html?scene=' + _gStageData.course.id + '&rnd=' + Date.now();
-    }
+    //    window.location.href = 'courseware.html?type=' + _gStageData.course.type + 'scene=' + _gStageData.course.id + '&rnd=' + Date.now();
+    //}
 
-    ajaxFn('POST', url, '<root></root>', successFn, _gEmptyFn);
+    //ajaxFn('POST', url, '<root></root>', successFn, _gEmptyFn);
+    window.location.href = 'courseware.html?type=' + _gStageData.course.type + '&scene=' + _gStageData.course.id + '&step=' + step;
 };
 
 function initToolbarEvents() {

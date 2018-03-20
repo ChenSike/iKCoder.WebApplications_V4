@@ -81,7 +81,7 @@
             $('#btn_OpenDraw3D').on('click', function () { window.open("draw.html"); });
             $('#btn_OpenLaser').on('click', function () { window.open("laser.html"); });
             $('#btn_OpenFootball').on('click', function () { window.open("football.html"); });
-            window.onresize(function () {
+            $(window).on('resize', function () {
                 $('.main-container-col').height($('body').height() - 91);
             });
         });

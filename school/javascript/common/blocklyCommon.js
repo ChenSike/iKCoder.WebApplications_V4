@@ -424,7 +424,7 @@ function initStatusAlertEvents() {
 
     //for static code
     $('.step-status-button.next').on('click', function (e) {
-        window.location.href = "courseware.html?scene=" + _gStageData.course.id + "&step=" + _gStageData.course.next;
+        window.location.href = "courseware.html?type=" + _gStageData.course.type + "&scene=" + _gStageData.course.id + "&step=" + _gStageData.course.next;
     });
 
     $('.step-status-button.find-error').on('click', function (e) {
