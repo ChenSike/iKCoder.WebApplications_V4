@@ -10,11 +10,9 @@ var _gStageData = {
     }
 };
 var _workspaceCfg = {};
-var _keepWHRate = true;
+var _topTooltip = null;
 
 function initPage() {
-    $('#mask_Page_Loading').hide();
-    $('#mask_Page_Loading').css('visibility', 'hidden');
     adjustMainSize();
     //var url = _getRequestURL(_gURLMapping.account.signstatus);
     //var successFn = function (response, status) {
@@ -46,9 +44,10 @@ function initPage() {
     //ajaxFn('GET', url, '<root></root>', successFn, failedFn);
 
     //for test football
+    var tmpType = getQueryString('type');
     var tmpStage = getQueryString('scene');
     var tmpStep = getQueryString('step');
-    var dataXML = LoadXMLFile('javascript/scene/datadoc/' + tmpStage + tmpStep + '.xml');
+    var dataXML = LoadXMLFile(tmpType + '/datadoc/' + tmpStage + tmpStep + '.xml');
     initData(dataXML);
     buildHeaderHTML();
     buildCourseTips();
@@ -56,6 +55,7 @@ function initPage() {
     resetWorkSpace();
     loadSceneLib();
     initEvents();
+    _topTooltip = initTopTooltips([]);
     //window.setTimeout('WorkScene.saveStatus(true);', 60000);
 };
 
@@ -76,6 +76,8 @@ function loadSceneLib_Do(libArr) {
         });
     } else {
         WorkScene.init();
+        $('#mask_Page_Loading').hide();
+        $('#mask_Page_Loading').css('visibility', 'hidden');
     }
 };
 
@@ -124,6 +126,7 @@ function initData(response) {
 
 function initDataCourse(response) {
     var sceneItem = $($(response).find("sence")[0]);
+    _gStageData.course.type = getQueryString('type');
     _gStageData.course.id = sceneItem.attr('symbol');
     _gStageData.course.name = sceneItem.attr('name');
     _gStageData.course.nextid = sceneItem.attr('next');
@@ -216,7 +219,7 @@ function initDataBlockly(response) {
 };
 
 function loadStageLibs_1(currStageId) {
-    var pathHeader = 'javascript/scene/' + currStageId.replace(/_/g, '-') + '/intrcourse/1/';
+    var pathHeader = getQueryString('type') + '/scene/' + currStageId.replace(/_/g, '-') + '/intrcourse/1/';
     _gStageData.blockly.lib.push(pathHeader + 'konvas.js');
     _gStageData.blockly.lib.push(pathHeader + 'components.js');
     _gStageData.blockly.lib.push(pathHeader + 'level1.js');
@@ -254,7 +257,7 @@ function loadStageLibs_3(response) {
     var addLibPathFn = function (node) {
         var tmpAttr = node.attr('src');
         if (tmpAttr && tmpAttr != '') {
-            _gStageData.blockly.lib.push('javascript/scene/' + tmpAttr);
+            _gStageData.blockly.lib.push(tmpAttr);
         }
     }
 
@@ -416,17 +419,18 @@ function initHeaderEvents() {
 };
 
 function gotoSpecialStep(step) {
-    var url = _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: step, symbol: _gStageData.course.id });
-    var successFn = function (response) {
-        if ($(response).find('err').length > 0) {
-            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
-            return;
-        }
+    //var url = _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: step, symbol: _gStageData.course.id });
+    //var successFn = function (response) {
+    //    if ($(response).find('err').length > 0) {
+    //        _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
+    //        return;
+    //    }
 
-        window.location.href = 'courseware.html?scene=' + _gStageData.course.id + '&rnd=' + Date.now();
-    }
+    //    window.location.href = 'courseware.html?type=' + _gStageData.course.type + 'scene=' + _gStageData.course.id + '&rnd=' + Date.now();
+    //}
 
-    ajaxFn('POST', url, '<root></root>', successFn, _gEmptyFn);
+    //ajaxFn('POST', url, '<root></root>', successFn, _gEmptyFn);
+    window.location.href = 'courseware.html?type=' + _gStageData.course.type + '&scene=' + _gStageData.course.id + '&step=' + step;
 };
 
 function initToolbarEvents() {
@@ -459,12 +463,19 @@ function adjustCanvasSize(keepRate) {
     var container = $('#game_container');
     var currentWrap = container.parent();
     var canvas = container.find('canvas');
-    var tmpRate = canvas.height() / canvas.width();
-    var wrapHeight = currentWrap.height();
+    var tmpRate = 1;
+    if (canvas.length > 0) {
+        canvas = $(canvas[0]);
+        tmpRate = canvas.height() / canvas.width();
+    } else {
+        canvas = null;
+    }
+
+    var wrapHeight = currentWrap.height() - parseInt(currentWrap.css('padding')) * 2;
     var wrapWidth = currentWrap.width() - parseInt(currentWrap.css('padding')) * 2;
     var newHeight = wrapHeight;
     var newWidth = wrapWidth;
-    if (_keepWHRate && keepRate) {
+    if (keepRate) {
         if (wrapHeight / wrapWidth < tmpRate) {
             newWidth = wrapHeight / tmpRate;
         } else {
@@ -476,10 +487,12 @@ function adjustCanvasSize(keepRate) {
     container.width(newWidth);
     container.css('margin-left', (wrapWidth - newWidth) / 2 + 'px');
 
-    canvas.height(newHeight);
-    canvas.width(newWidth);
-    canvas.attr('height', newHeight);
-    canvas.attr('width', newWidth);
+    if (canvas != null) {
+        canvas.height(newHeight);
+        canvas.width(newWidth);
+        canvas.attr('height', newHeight);
+        canvas.attr('width', newWidth);
+    }
 
     var playButton = $('.siderbar-button-run');
     var fontSize = newWidth * 30 / 100;
@@ -820,8 +833,6 @@ function adjustPopupWinSize(symbol) {
 
 function loadCodeText(symbol) {
     var currLib = (symbol == '' || symbol == 'core' ? [] : '');
-    var editor = $('#iframe_CoreCode')[0].contentWindow.editor;
-    editor.setValue('', -1);
     for (var i = 0; i < _gStageData.blockly.lib.length; i++) {
         var tmpPath = _gStageData.blockly.lib[i].toLowerCase().replace(/\\/g, '/');
         var tmpArr = tmpPath.split('/');
@@ -837,21 +848,7 @@ function loadCodeText(symbol) {
         }
     }
 
-    if (typeof currLib == 'string') {
-        if (currLib != '') {
-            $.get(tmpPath, function (data, status) {
-                $('#iframe_CoreCode')[0].contentWindow.editor.setValue(data, -1);
-            });
-        }
-    } else {
-        for (var i = 0; i < currLib.length; i++) {
-            if (currLib[i].indexOf('coursemain.js') < 0 && currLib[i].indexOf('threeengine') < 0) {
-                $.get(currLib[i], function (data, status) {
-                    editor.setValue(editor.getValue() + '\n\r' + data, -1);
-                });
-            }
-        }
-    }
+    $('#iframe_CoreCode')[0].contentWindow.loadCodeText(currLib);
 };
 
 /*course note highlight*/
@@ -889,4 +886,70 @@ function unselectBlockExample() {
 
 
     setTimeout('selectBlockExample();', 500);
+};
+
+function updateTipsText(data) {
+    $('.course-stage-note').empty();
+    if (typeof (data) == 'string') {
+        $('.course-stage-note').html(data);
+    } else {
+        data = (data == null ? _topTooltip : data);
+        var needEvent = false;
+        var tmpStrArr = [];
+        for (var i = 0; i < data.length; i++) {
+            tmpStrArr.push('<strong style="padding-right:5px;">');
+            tmpStrArr.push(data[i].idx);
+            tmpStrArr.push('.</strong>');
+
+            for (var j = 0; j < data[i].content.length; j++) {
+                if (data[i].content[j].btype != '') {
+                    needEvent = true;
+                    tmpStrArr.push('<strong>');
+                    tmpStrArr.push('   <a href="#" class="link-button-block-example" data-target="' + data[i].content[j].btype + '" title="点击查看对应的块">');
+                    tmpStrArr.push(data[i].content[j].text);
+                    tmpStrArr.push('   </a>');
+                    tmpStrArr.push('</strong>');
+                } else {
+                    tmpStrArr.push('<span>');
+                    tmpStrArr.push(data[i].content[j].text);
+                    tmpStrArr.push('</span>');
+                }
+            }
+
+            tmpStrArr.push('</br>');
+        }
+
+        $('.course-stage-note').html(tmpStrArr.join(''));
+        if (needEvent) {
+            $(".link-button-block-example").click(hightlightExampleBlock);
+        }
+    }
+};
+
+function initTopTooltips(notesItems) {
+    var note = [];
+    var tmpItem, contents, tmpContent;
+    for (var i = 0; i < notesItems.length; i++) {
+        tmpItem = $(notesItems[i]);
+        var newNoteObj = { idx: -1, content: [] };
+        newNoteObj.idx = tmpItem.attr('index');
+        contents = tmpItem.find('content');
+        for (var j = 0; j < contents.length; j++) {
+            tmpContent = $(contents[j]);
+            var newContentObj = { text: '', btype: '' };
+            newContentObj.btype = tmpContent.attr('blocktype');
+            newContentObj.text = tmpContent.attr('chinese');
+            newNoteObj.content.push(newContentObj);
+        }
+
+        note.push(newNoteObj);
+    }
+
+    return note;
+};
+
+function changeSiderBarWidth(newWidth) {
+    $(".siderbar-wrap").width(newWidth);
+    $(".siderbar-wrap").css("left", $("body").width() - newWidth + "px");
+    adjustCanvasSize(false);
 };

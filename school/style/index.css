@@ -1,0 +1,22 @@
+﻿.top-row-logo-img {
+    width: 120px;
+    height: 35px;
+    background-color: transparent;
+    border: none;
+    right: 10px;
+    top: 8px;
+    position: absolute;
+}
+
+#container_CourseList p{
+    margin:0px;
+    line-height:30px;
+}
+
+#container_CourseList .row{    
+    padding:5px 0px;
+}
+
+#container_Datas_Col{
+    overflow-y:scroll;
+}

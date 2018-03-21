@@ -289,7 +289,6 @@
     <link rel="stylesheet" href="style/font-awesome.min.css">
     <link rel="stylesheet" href="style/common.css">
     <link rel="stylesheet" href="style/workplatform.css">
-    <!--<link rel="stylesheet" href="style/workspace.css">-->
     <script src="javascript/common/jquery-3.2.1.min.js"></script>
     <script src="javascript/common/jquery-ui.min.js"></script>
     <script src="javascript/common/tether.min.js"></script>
@@ -311,9 +310,12 @@
     <script src="javascript/common/threeengine.js"></script>
     <script src="javascript/scene/common/draw3d.js"></script>
     <script src="javascript/scene/B-01-006_3D/3dboard/1/Scene/scene.js"></script>-->
-    <!--<script src="javascript/3dmodule/pacman.js"></script>
-    <script src="javascript/scene/B-01-003_3D/pacman/4/Blocks/blocks.js"></script>
-    <script src="javascript/scene/B-01-003_3D/pacman/4/Scene/scene.js"></script>-->
+    <!--<script src="javascript/common/three.min.js"></script>
+    <script src="javascript/common/TweenMax.min.js"></script>
+    <script src="javascript/common/threeengine.js"></script>
+    <script src="javascript/common/pacman.js"></script>
+    <script src="fourthirty/scene/B-01-003_3D/pacman/4/Blocks/blocks.js"></script>
+    <script src="fourthirty/scene/B-01-003_3D/pacman/4/Scene/scene.js"></script>-->
     <!--<script src="javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js"></script>
     <script src="javascript/scene/a-01-003/intrcourse/1/Engine/konvas.js"></script>
     <script src="javascript/scene/a-01-003/intrcourse/1/Engine/game_engine.js"></script>
@@ -455,7 +457,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="container-fluid no-wrap" id="wrap_Workspace_Static">
+                <div class="container-fluid no-wrap h-100" id="wrap_Workspace_Static">
                     <div class="row no-wrap h-100">
                         <div class="col no-wrap h-100">
                             <div class="wrap-static-canvas h-100" id="container_Static_Stage">
@@ -466,22 +468,22 @@
             </div>
         </div>
         <div class="row no-wrap align-items-center bottom-toolbar-container-row">
-            <div class="col-3 offset-4">
+            <div class="col-4 offset-4">
                 <div class="container">
                     <div class="row justify-content-center">
-                        <div class="col-4">
+                        <div class="col-2">
                             <i class="bottom-toolbar-item fa fa-gamepad fa-lg active" title="创作模式"></i>
                         </div>
-                        <!--<div class="col-2">
+                        <div class="col-2">
                             <i class="bottom-toolbar-item fa fa-book fa-lg" title="查看知识点"></i>
-                        </div>-->
-                        <div class="col-4">
+                        </div>
+                        <div class="col-2">
                             <i class="bottom-toolbar-item fa fa-code fa-lg" title="代码模式"></i>
                         </div>
-                        <!--<div class="col-2">
+                        <div class="col-2">
                             <i class="bottom-toolbar-item fa fa-language fa-lg" title="词汇术语"></i>
-                        </div>-->
-                        <div class="col-4">
+                        </div>
+                        <div class="col-2">
                             <i class="bottom-toolbar-item fa fa-file-code-o fa-lg" title="核心代码"></i>
                         </div>
                     </div>
@@ -600,8 +602,7 @@
         $(document).ready(function () {
             _loadLabels();
             initPage();
-            //_startCheckState();
-            showLoadingMask();            
+            //_startCheckState();                   
         });
     </script>
 </body>

@@ -41,7 +41,7 @@ var WorkScene = {
     },
 
     init: function () {
-        if (_workspaceCfg.toolbox == '') {
+        if (_workspaceCfg.toolbox.trim() == '') {
             this.init_Static();
         } else {
             this.init_Dynamic();
@@ -49,7 +49,9 @@ var WorkScene = {
     },
 
     init_Dynamic: function () {
-        var container = document.getElementById('wrap_WorkSpace');
+        $('#wrap_Workspace_Blockly').show();
+        $('#wrap_Workspace_Static').hide();
+
         var onresize = function (e) {
             var el = $('#content_WorkSpace');
             el.height("100%");
@@ -119,6 +121,9 @@ var WorkScene = {
     },
 
     init_Static: function () {
+        $('#wrap_Workspace_Blockly').hide();
+        $('.siderbar-wrap').hide();
+        $('#wrap_Workspace_Static').show();
         window.ComputerScene = new Scene(configuration);
         ComputerScene.start();
         CheckSceneObject();
@@ -318,7 +323,7 @@ function showCompleteAlert() {
     $('.wrap-alert-content.completed').show();
     $('.wrap-alert-content.failed').hide();
     $('.wrap-alert-content.completed .step-status-title').html(_gStageData.course.msg.success);
-    $('.wrap-alert-content.completed .step-status-button.next span').text((_gStageData.course.current == _gStageData.course._totalSteps ? '挑战下一课' : '挑战下一步'));
+    $('.wrap-alert-content.completed .step-status-button.next span').text((_gStageData.course.current == _gStageData.course.total ? '挑战下一课' : '挑战下一步'));
     WorkScene.saveStatus();
 };
 
@@ -391,40 +396,12 @@ function initStatusAlertEvents() {
         WorkScene.reset(true);
         $('.wrap-workstatus-alert').hide();
     });
-    //for dynamic code
-    /*
     $('.step-status-button.next').on('click', function (e) {
-        var url = _getRequestURL(_gURLMapping.bus.setfinishstep, { symbol: _gStageData.course.id });
-        var successFn = function (response, status) {
-            if ($(response).find('err').length > 0) {
-                _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Finish_CurrentStep');
-            } else {
-                var tmpURL = _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: _gStageData.course.next, symbol: _gStageData.course.id });
-                var tmpSuccessFn = function (response1, status1) {
-                    if ($(response1).find('err').length > 0) {
-                        _showGlobalMessage($(response1).find('err').attr('msg'), 'danger', 'alert_Set_CurrentStep');
-                    } else {
-                        if (_gStageData.isLastScene()) {
-                            var tURL = _getRequestURL(_gURLMapping.bus.setfinishscene, { symbol: _gStageData.course.id });
-                            ajaxFn('GET', tURL, '<root></root>', _gEmptyFn, _gEmptyFn);
-                        }
-
-                        var tmpParam = '&scene=' + (_gStageData.isLastScene() ? _gStageData.course.nextid : _gStageData.course.id);
-                        window.location.href = "courseware.html?rnd=" + Date.now() + tmpParam;
-                    }
-                };
-
-                ajaxFn('POST', tmpURL, '<root></root>', tmpSuccessFn, _gEmptyFn);
-            }
-        };
-
-        ajaxFn('GET', url, '<root></root>', successFn, _gEmptyFn);
-    });
-    */
-
-    //for static code
-    $('.step-status-button.next').on('click', function (e) {
-        window.location.href = "courseware.html?scene=" + _gStageData.course.id + "&step=" + _gStageData.course.next;
+        if (_gStageData.course.current == _gStageData.course.total) {
+            window.location.href = "courseware.html?type=" + _gStageData.course.type + "&scene=" + _gStageData.course.nextid + "&step=1";
+        } else {
+            window.location.href = "courseware.html?type=" + _gStageData.course.type + "&scene=" + _gStageData.course.id + "&step=" + _gStageData.course.next;
+        }
     });
 
     $('.step-status-button.find-error').on('click', function (e) {
