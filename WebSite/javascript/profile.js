@@ -652,7 +652,7 @@ function buildOverviewCourse(datas, containerHeight) {
 
     $('.overview-course-item-wrap').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
-        window.open("workplatform.html?scene=" + target.attr('data-target'));
+        window.open("workplatform.html?scene=" + target.attr('data-target') + '&step=1');
     });
 };
 
