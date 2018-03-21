@@ -116,19 +116,19 @@ function IKCoderSenceRun_Begin() {
 	i_GameRender = PIXI.autoDetectRenderer(i_background_default_width, i_background_default_height);
 
 	loader = new PIXI.AssetLoader([
-	   "image/scene/run/stretched_hyper_tile.jpg",
-	   "image/scene/run/SplashAssets.json",
-	   "image/scene/run/WorldAssets-hd.json",
-	   "image/scene/run/HudAssets-hd.json",
-	   "image/scene/run/PixiAssets-hd.json",
-	   "image/scene/run/iP4_BGtileEx.jpg",
-	   "image/scene/run/blackSquare.jpg",
-	   "image/scene/run/hud/pausedPanel.png",
-	   "image/scene/run/hud/pixieRevised_controls.png",
-	   "image/scene/run/hud/ContinuePlay.png",
-	   "image/scene/run/hud/RestartPlay.png",
-	   "image/scene/run/hud/pause.png",
-	   "image/scene/run/hud/PersonalBest.png"
+	   "fourthirty/image/run/stretched_hyper_tile.jpg",
+	   "fourthirty/image/run/SplashAssets.json",
+	   "fourthirty/image/run/WorldAssets-hd.json",
+	   "fourthirty/image/run/HudAssets-hd.json",
+	   "fourthirty/image/run/PixiAssets-hd.json",
+	   "fourthirty/image/run/iP4_BGtileEx.jpg",
+	   "fourthirty/image/run/blackSquare.jpg",
+	   "fourthirty/image/run/hud/pausedPanel.png",
+	   "fourthirty/image/run/hud/pixieRevised_controls.png",
+	   "fourthirty/image/run/hud/ContinuePlay.png",
+	   "fourthirty/image/run/hud/RestartPlay.png",
+	   "fourthirty/image/run/hud/pause.png",
+	   "fourthirty/image/run/hud/PersonalBest.png"
 	]);
 
 
@@ -212,7 +212,7 @@ function init() {
 
 	game.onGameover = onGameover;
 
-	black = new PIXI.Sprite.fromImage("image/scene/run/blackSquare.jpg");
+	black = new PIXI.Sprite.fromImage("fourthirty/image/run/blackSquare.jpg");
 	this.game.view.hud.addChild(black);
 
 	TweenLite.to(black, 0.3, {
@@ -227,7 +227,7 @@ function init() {
 
 	//this.game.view.hud.addChild(logo);
 
-	personalBestTitle = PIXI.Sprite.fromImage("assets/hud/PersonalBest.png");
+	personalBestTitle = PIXI.Sprite.fromImage("fourthirty/image/run/hud/PersonalBest.png");
 	personalBestTitle.anchor.x = 0.5;
 	personalBestTitle.anchor.y = 0.5;
 	personalBestTitle.alpha = 0;
@@ -249,7 +249,7 @@ function init() {
 	countdown = new GAME.Countdown();
 	this.game.view.hud.addChild(countdown);
 
-	pauseButton = PIXI.Sprite.fromFrame("image/scene/run/hud/pause.png");
+	pauseButton = PIXI.Sprite.fromFrame("fourthirty/image/run/hud/pause.png");
 	pauseButton.interactive = true;
 	pauseButton.anchor.x = 0.5;
 	pauseButton.anchor.y = 0.5;
@@ -257,7 +257,7 @@ function init() {
 	pauseButton.visible = false;
 	pauseButton.type = "button";
 
-	pauseScreen = PIXI.Sprite.fromImage("image/scene/run/hud/pausedPanel.png");
+	pauseScreen = PIXI.Sprite.fromImage("fourthirty/image/run/hud/pausedPanel.png");
 	pauseScreen.anchor.x = 0.5;
 	pauseScreen.anchor.y = 0.5;
 	pauseScreen.scale.x = 1.5;
@@ -266,7 +266,7 @@ function init() {
 	pauseScreen.visible = false;
 
 	// Buttons
-	resumeButton = PIXI.Sprite.fromImage("image/scene/run/hud/ContinuePlay.png");
+	resumeButton = PIXI.Sprite.fromImage("fourthirty/image/run/hud/ContinuePlay.png");
 	resumeButton.anchor.x = 0.5;
 	resumeButton.anchor.y = 0.5;
 	resumeButton.scale.x = 0;
@@ -278,7 +278,7 @@ function init() {
 		onResumePressed();
 	}
 
-	restartButton = PIXI.Sprite.fromImage("image/scene/run/hud/RestartPlay.png");
+	restartButton = PIXI.Sprite.fromImage("fourthirty/image/run/hud/RestartPlay.png");
 	restartButton.anchor.x = 0.5;
 	restartButton.anchor.y = 0.5;
 	restartButton.scale.x = 0;
@@ -636,7 +636,7 @@ function onTap(event) {
 			logo.alpha = 0;
 			logo.scale.x = 1.5;
 			logo.scale.y = 1.5;
-			logo.setTexture(PIXI.Texture.fromFrame("image/scene/run/hud/pixieRevised_controls.png"));
+			logo.setTexture(PIXI.Texture.fromFrame("fourthirty/image/run/hud/pixieRevised_controls.png"));
 
 			TweenLite.to(logo, 0.1, {
 				alpha: 1

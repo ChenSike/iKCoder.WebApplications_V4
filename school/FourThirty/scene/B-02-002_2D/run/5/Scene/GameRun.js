@@ -162,15 +162,15 @@ function IKCoderSenceRun_Begin() {
 	i_GameRender = PIXI.autoDetectRenderer(i_background_default_width, i_background_default_height);
 
 	var i_loader = new PIXI.AssetLoader([
-		"image/scene/run/stretched_hyper_tile.jpg",
-		"image/scene/run/SplashAssets.json",
-		"image/scene/run/WorldAssets-hd.json",
-		"image/scene/run/HudAssets-hd.json",
-		"image/scene/run/PixiAssets-hd.json",
-		"image/scene/run/iP4_BGtileEx.jpg",
-		"image/scene/run/blackSquare.jpg",
-		"image/scene/run/PersonalBest.png",
-		"image/scene/run/pixieRevised_controls.png"
+		"fourthirty/image/run/stretched_hyper_tile.jpg",
+		"fourthirty/image/run/SplashAssets.json",
+		"fourthirty/image/run/WorldAssets-hd.json",
+		"fourthirty/image/run/HudAssets-hd.json",
+		"fourthirty/image/run/PixiAssets-hd.json",
+		"fourthirty/image/run/iP4_BGtileEx.jpg",
+		"fourthirty/image/run/blackSquare.jpg",
+		"fourthirty/image/run/PersonalBest.png",
+		"fourthirty/image/run/pixieRevised_controls.png"
 	]);
 
 

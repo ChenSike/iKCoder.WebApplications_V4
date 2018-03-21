@@ -45,7 +45,7 @@ GAME.RprView = function (engine) {
 	this.count = 0;
 	this.zoom = 1;
 
-	this.white = PIXI.Sprite.fromImage("image/scene/run/whiteSquare.jpg");
+	this.white = PIXI.Sprite.fromImage("fourthirty/image/run/whiteSquare.jpg");
 	GAME.xOffset = this.container.position.x;
 
 	this.splash = new GAME.Splash();

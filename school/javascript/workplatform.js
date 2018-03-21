@@ -12,7 +12,6 @@ var _gStageData = {
 var _workspaceCfg = {};
 var _topTooltip = null;
 
-
 function initPage() {
     adjustMainSize();
     //var url = _getRequestURL(_gURLMapping.account.signstatus);
@@ -464,8 +463,15 @@ function adjustCanvasSize(keepRate) {
     var container = $('#game_container');
     var currentWrap = container.parent();
     var canvas = container.find('canvas');
-    var tmpRate = canvas.height() / canvas.width();
-    var wrapHeight = currentWrap.height();
+    var tmpRate = 1;
+    if (canvas.length > 0) {
+        canvas = $(canvas[0]);
+        tmpRate = canvas.height() / canvas.width();
+    } else {
+        canvas = null;
+    }
+
+    var wrapHeight = currentWrap.height() - parseInt(currentWrap.css('padding')) * 2;
     var wrapWidth = currentWrap.width() - parseInt(currentWrap.css('padding')) * 2;
     var newHeight = wrapHeight;
     var newWidth = wrapWidth;
@@ -481,10 +487,12 @@ function adjustCanvasSize(keepRate) {
     container.width(newWidth);
     container.css('margin-left', (wrapWidth - newWidth) / 2 + 'px');
 
-    canvas.height(newHeight);
-    canvas.width(newWidth);
-    canvas.attr('height', newHeight);
-    canvas.attr('width', newWidth);
+    if (canvas != null) {
+        canvas.height(newHeight);
+        canvas.width(newWidth);
+        canvas.attr('height', newHeight);
+        canvas.attr('width', newWidth);
+    }
 
     var playButton = $('.siderbar-button-run');
     var fontSize = newWidth * 30 / 100;
@@ -938,4 +946,10 @@ function initTopTooltips(notesItems) {
     }
 
     return note;
+};
+
+function changeSiderBarWidth(newWidth) {
+    $(".siderbar-wrap").width(newWidth);
+    $(".siderbar-wrap").css("left", $("body").width() - newWidth + "px");
+    adjustCanvasSize(false);
 };

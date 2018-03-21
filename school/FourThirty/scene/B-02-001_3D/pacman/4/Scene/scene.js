@@ -748,3 +748,35 @@ Scene.checkPointUsedByMonster = function (x, y) {
 		return false;
 	}
 };
+
+Engine.calcWorldScale = function (needRescale) {
+    if (typeof _useFullContainer != 'boolean') {
+        window._useFullContainer = false;
+    }
+
+    var containerWidth = Engine.container.width();
+    var containerHeight = Engine.container.height();
+    Engine.params.sizes.cw = containerWidth;
+    Engine.params.sizes.ch = containerHeight;
+    if (!_useFullContainer) {
+        var orgWidth = Engine.params.sizes.w;
+        var orgHeight = Engine.params.sizes.h;
+        var hRate = containerHeight / orgHeight;
+        var wRate = containerWidth / orgWidth;
+        var scale = (wRate > hRate ? hRate : wRate);
+        scale = scale > 0.5 ? 0.5 : scale;
+        Engine.params.sizes.nw = orgWidth * scale;
+        Engine.params.sizes.nh = orgHeight * scale;
+        Engine.renderer.setSize(Engine.params.sizes.nw, Engine.params.sizes.nh);
+        Engine.camera.position.x = Engine.params.camera.px * scale;
+        Engine.camera.position.y = Engine.params.camera.py * scale;
+        Engine.camera.position.z = Engine.params.camera.pz * scale;
+        Engine.scene.scale.set(scale, scale, scale);
+    } else {
+        Engine.params.sizes.nw = containerWidth;
+        Engine.params.sizes.nh = containerHeight;
+        Engine.camera.aspect = containerWidth / containerHeight;
+        Engine.camera.updateProjectionMatrix();
+        Engine.renderer.setSize(containerWidth, containerHeight);
+    }
+}

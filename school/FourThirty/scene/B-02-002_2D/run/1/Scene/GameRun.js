@@ -209,12 +209,12 @@ function IKCoderSenceRun_Begin() {
 	IKCoderSenceRun_Resize(i_senceWidth, i_senceHeight);
 
 	i_loader = new PIXI.AssetLoader([
-   "image/scene/run/shine.fw.png",
-   "image/scene/run/candy.fw.png",
-   "image/scene/run/PixiAssets-hd.json",
-   "image/scene/run/iP4_BGtile.jpg",
-   "image/scene/run/box.fw.png",
-   "image/scene/run/stone.fw.png"
+   "fourthirty/image/run/shine.fw.png",
+   "fourthirty/image/run/candy.fw.png",
+   "fourthirty/image/run/PixiAssets-hd.json",
+   "fourthirty/image/run/iP4_BGtile.jpg",
+   "fourthirty/image/run/box.fw.png",
+   "fourthirty/image/run/stone.fw.png"
 	]);
 
 	i_loader.addEventListener('onComplete', function (event) {
@@ -227,13 +227,13 @@ function IKCoderSenceRun_Begin() {
 
 /*初始化 Game 资源*/
 function IKCoderSenceRun_InitResources() {
-	IKCoderSenceRun_AddSprite('image/scene/run/iP4_BGtile.jpg', i_background_default_width, i_background_default_height, -1, -1);
+    IKCoderSenceRun_AddSprite('fourthirty/image/run/iP4_BGtile.jpg', i_background_default_width, i_background_default_height, -1, -1);
 	i_ground_position_Y = i_background_default_height - 161;
 
 	var i_countOfStones = i_background_default_width / 162;
 
 	for (var index = 1; index <= i_countOfStones; index++) {
-		IKCoderSenceRun_AddSprite('image/scene/run/stone.fw.png', -1, -1, 162 * index, i_background_default_height - 70);
+		IKCoderSenceRun_AddSprite('fourthirty/image/run/stone.fw.png', -1, -1, 162 * index, i_background_default_height - 70);
 		var tmpMapNode = new CurveTargetNode();
 		tmpMapNode.target_x = 162 * index;
 		tmpMapNode.target_y = i_background_default_height - 70;
@@ -241,16 +241,16 @@ function IKCoderSenceRun_InitResources() {
 		i_curvemap[index] = tmpMapNode;
 	}
 
-	var sprite_box_one = IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 380, i_background_default_height - 150);
+	var sprite_box_one = IKCoderSenceRun_AddSprite('fourthirty/image/run/box.fw.png', -1, -1, 380, i_background_default_height - 150);
 	IKCoderSenceRun_AddcollisonNode("box_1", 380, i_background_default_height - 150, sprite_box_one.width, sprite_box_one.height, false);
 
-	IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 880, i_background_default_height - 421);
+	IKCoderSenceRun_AddSprite('fourthirty/image/run/box.fw.png', -1, -1, 880, i_background_default_height - 421);
 	IKCoderSenceRun_AddcollisonNode("box_4", 800, i_background_default_height - 421, sprite_box_one.width, sprite_box_one.height, false);
 
-	var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('image/scene/run/shine.fw.png', -1, -1, 1110, i_background_default_height - 121);
+	var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('fourthirty/image/run/shine.fw.png', -1, -1, 1110, i_background_default_height - 121);
 	sprite_pickup_sunshine.anchor.x = sprite_pickup_sunshine.anchor.y = 0.5;
 	i_spritesObjectsPool["sprite_pickup_sunshine"] = sprite_pickup_sunshine;
-	var sprite_pickup_candy = IKCoderSenceRun_AddSprite('image/scene/run/candy.fw.png', -1, -1, 1080, i_background_default_height - 141);
+	var sprite_pickup_candy = IKCoderSenceRun_AddSprite('fourthirty/image/run/candy.fw.png', -1, -1, 1080, i_background_default_height - 141);
 	i_spritesObjectsPool["sprite_pickup_candy"] = sprite_pickup_candy;
 
 	IKCoderSenceRun_AddcollisonNode("candy", 1080, i_background_default_height - 141, sprite_pickup_candy.width, sprite_pickup_candy.height, true);

@@ -102,7 +102,7 @@ function initPage() {
 };
 
 function buildUserInfoHTML(data) {
-    $('#label_UserName').text('欢迎你, ' + data.name);
+    $('#label_UserName').text('iKCoder 艾酷教育');
     $('#label_LastLoginTime').text('上次登录时间: ' + data.last);
     //$('#image_User_Header').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
 };
@@ -141,8 +141,11 @@ function buildCourseList(projectObj, type) {
     var tmpHTMLArr = [];
     for (var i = 0; i < courseItems.length; i++) {
         tmpHTMLArr.push('<div class="row" style="border-bottom:1px solid rgba(0,0,0,0.6);">');
-        tmpHTMLArr.push('   <div class="col-7">');
+        tmpHTMLArr.push('   <div class="col-2">');
         tmpHTMLArr.push('       <p>第' + (i + 1) + '课</p>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div class="col-4">');
+        tmpHTMLArr.push('       <p>编号: ' + courseItems[i].stage.toUpperCase() + '</p>');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('   <div class="col">');
         tmpHTMLArr.push('       <button type="button" class="btn btn-outline-success btn-block" data-toggle="modal" data-target="#modal_LessonDoc" data-course-type="' + type + '" data-course-id="' + courseItems[i].id + '">教案</button>');
@@ -200,7 +203,7 @@ function openLessonDoc(courseId, type) {
 function openCourseWare(courseId, type) {
     for (var i = 0; i < _globalProjectObj.items.length; i++) {
         if (courseId == _globalProjectObj.items[i].id) {
-            window.open('courseware.html?type=' + type + 'scene=' + _globalProjectObj.items[i].stage + '&step=1', 'workplatform', "")
+            window.open('courseware.html?type=' + type + '&scene=' + _globalProjectObj.items[i].stage + '&step=1')
         }
     }
 };

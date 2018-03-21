@@ -2,13 +2,13 @@
   <basic>
     <usr id="46" nickname="Alice"/>
   </basic>
-  <sence name="第二课：路径跟随" symbol="B_02_002" id="" totalstage="6" currentstage="6" finishstage="6" next="B_02_011"/>
+  <sence name="第二课：路径跟随" symbol="B_02_002" id="" totalstage="6" currentstage="6" finishstage="5" next="B_02_002"/>
   <tips>
     <item index="1">
       <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
     </item>
   </tips>
-  <toolbox src="B-02-002_2D/run/6/Blocks/blocks.JS">
+  <toolbox src="fourthirty/scene/B-02-002_2D/run/6/Blocks/blocks.JS">
     <xml id="toolbox" style="display: none">
       <block type="event_start"></block>
       <block type="block_setposition"></block>
@@ -21,8 +21,35 @@
     <block type="event_start" id="f0Gt`~jczerKhI$;4tt`" colour="#5ba580" stroke="#000000" eventicon="" categoryicon="" maxcount="Infinity" x="248" y="26"/>
   </workspacestatus>
   <game>
-    <script src="B-02-002_2D/run/6/Scene/GameRun.js"/>
-    <script src="B-02-002_2D/run/6/Scene/scene.JS"/>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Scene/GameRun.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Scene/scene.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Blocks/blocks.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Scene/SegmentData.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/CollisionManager.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/Enemy.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/EnemyManager.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/Explosion.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/FloorManager.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/GameObjectPool.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/Pickup.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/PickupManager.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/RprEngine.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/SegmentManager.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/Steve.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/SteveTrail.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/SteveTrailFire.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/PixiDust.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/Math2.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/View/Countdown.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/View/Background.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/View/BestScore.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/View/Lava.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/View/RprView.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/View/Score.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/Game/View/Splash.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/tweenlite/TweenLite.min.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/tweenlite/TimelineLite.min.js"></script>
+    <script src="fourthirty/scene/B-02-002_2D/run/6/tweenlite/easing/EasePack.min.js"></script>
   </game>
   <message>
     <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>

@@ -34,12 +34,12 @@ var i_curve_a = 0.016;
 var i_curve_b = 3.2;
 var i_curve_c = 640;
 
-var i_PixiAssets_json = "image/scene/run/PixiAssets-hd.json";
-var i_shine_img = "image/scene/run/shine.fw.png";
-var i_candy_img = "image/scene/run/candy.fw.png";
-var i_box_img = "image/scene/run/box.fw.png";
-var i_stone_img = "image/scene/run/stone.fw.png";
-var i_ip4BGtile_img = "image/scene/run/iP4_BGtile.jpg";
+var i_PixiAssets_json = "fourthirty/image/run/PixiAssets-hd.json";
+var i_shine_img = "fourthirty/image/run/shine.fw.png";
+var i_candy_img = "fourthirty/image/run/candy.fw.png";
+var i_box_img = "fourthirty/image/run/box.fw.png";
+var i_stone_img = "fourthirty/image/run/stone.fw.png";
+var i_ip4BGtile_img = "fourthirty/image/run/iP4_BGtile.jpg";
 
 
 function ActionNode() {
