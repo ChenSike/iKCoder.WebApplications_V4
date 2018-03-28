@@ -206,10 +206,13 @@ function buildDataTableHTML_ClassBegin(data) {
 
 function buildDataTableColHeaderHTML_ClassBegin() {
     var tmpHTMLStr = '<th style="width: 45px;"></th>' +
-    '<th style="width: 120px;">操作</th>' +
-    '<th style="width: 80px;">编号</th>' +
+    '<th style="width: 280px;">操作</th>' +
+    '<th>时间</th>' +
+    '<th>班级</th>' +
+    '<th>教室</th>' +
+    '<th>编号</th>' +
     '<th>内容</th>' +
-    '<th style="width: 80px;">上课</th>';
+    '<th>上课</th>';
     $('#container_DataTable_Header').append($(tmpHTMLStr));
 };
 
@@ -221,7 +224,15 @@ function buildDataTableDataRowsHTML_ClassBegin(data) {
         tmpHTMLStr.push('   <td>');
         tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-classbegin-doc" data-target="' + data[i].symbol + '">教案</button>');
         tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-classbegin-wp" data-target="' + data[i].symbol + '">课件</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-warning btn-classbegin-signin" data-target="' + data[i].symbol + '">签到</button>');
+        if (typeof (data[i].custome) != 'undefined' && data[i].custome > 0) {
+            tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-primary btn-classbegin-custom" data-target="' + data[i].symbol + '">自定义教案</button>');
+        }
+
         tmpHTMLStr.push('   </td>');
+        tmpHTMLStr.push('   <td>' + data[i].datetime + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].grade.name + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].room + '</td>');
         tmpHTMLStr.push('   <td>' + data[i].symbol + '</td>');
         tmpHTMLStr.push('   <td>' + data[i].content + '</td>');
         tmpHTMLStr.push('   <td><button type="button" class="btn btn-sm btn-primary btn-classbegin-begin" data-target="' + data[i].symbol + '">上课</button></td>');

@@ -42,7 +42,7 @@ function initPage() {
 
 function initEvents() {
     $('#menu_Student_New').on('click', function () {
-        createNewStudent(false);
+        createNewStudent();
     });
 
     $('#menu_Student_All').on('click', function () {
@@ -68,7 +68,7 @@ function buildUserInfoHTML(data) {
     //$('#image_User_Header').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
 };
 
-function createNewStudent(isUpdate, stdSymbol) {
+function createNewStudent() {
     if ($('#modal_Student_New').length <= 0) {
         buildCreateNewStudentPopup();
         $('#modal_Student_New').on('show.bs.modal', function (e) {
@@ -76,67 +76,8 @@ function createNewStudent(isUpdate, stdSymbol) {
         });
     }
 
-    $('#modal_Student_New .modal-title').text(isUpdate ? '编辑学员档案' : '新建学员档案');
     $('#modal_Student_New').modal('show');
-    loadStudentInfo(isUpdate);
 }
-
-function loadStudentInfo(isUpdate) {
-    var data = {
-        symbol: 'S_01_001',
-        id: '1',
-        name: '学员 1',
-        gender: '1',
-        birthday: '2017/10/10 ',
-        province: '广东',
-        city: '深圳',
-        address: '福田区香蜜湖街道东海国际中心A-7',
-        school: '学校 1',
-        contact: '联系人 1',
-        phone: '13111111111',
-        email: '13111111111@163.com',
-        level: {
-            id: '1',
-            name: '初级'
-        },
-    };
-
-    if (!isUpdate) {
-        data = {
-            symbol: '',
-            id: '',
-            name: '',
-            gender: '1',
-            birthday: (new Date()).toLocaleDateString(),
-            province: '广东',
-            city: '深圳',
-            address: '',
-            school: '',
-            contact: '',
-            phone: '',
-            email: '',
-            level: {
-                id: '1',
-                name: '初级'
-            },
-        };
-    }
-
-    $('#sel_Level_Student_New').val(data.level.id);
-    $('#txt_Symbol_Student_New').val(data.symbol);
-    $('#txt_Name_Student_New').val(data.name);
-    $('#rb_Gender_Student_New_1').val(data.gender == 1 ? true : false);
-    $('#rb_Gender_Student_New_2').val(data.gender == 1 ? false : true);
-    $('#txt_Birthday_Student_New').val(data.birthday);
-    $('#select_City_Province_Student_New').val(data.province);
-    reloadCityList($("#select_City_Province_Student_New"), $("#select_City_City_Student_New"));
-    $('#title_City_City_Student_New').val(data.city);
-    $('#txt_Email_Student_New').val(data.email);
-    $('#txt_Address_Student_New').val(data.address);
-    $('#txt_School_Student_New').val(data.school);
-    $('#txt_Contact_Student_New').val(data.contact);
-    $('#txt_Phone_Student_New').val(data.phone);
-};
 
 function buildCreateNewStudentPopup() {
     var tmpHTMLStr = [];
@@ -228,13 +169,13 @@ function buildCreateNewStudentPopup() {
     tmpHTMLStr.push('                    <div class="form-group row">');
     tmpHTMLStr.push('                        <label for="txt_School_Student_New" class="col-3 col-form-label class-create">联系人</label>');
     tmpHTMLStr.push('                        <div class="col-9">');
-    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_Contact_Student_New" placeholder="请输入有效的联系人姓名">');
+    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_School_Student_New" placeholder="请输入有效的联系人姓名">');
     tmpHTMLStr.push('                        </div>');
     tmpHTMLStr.push('                    </div>');
     tmpHTMLStr.push('                    <div class="form-group row">');
     tmpHTMLStr.push('                        <label for="txt_School_Student_New" class="col-3 col-form-label class-create">联系电话</label>');
     tmpHTMLStr.push('                        <div class="col-9">');
-    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_Phone_Student_New" placeholder="请输入有效的联系人电话">');
+    tmpHTMLStr.push('                            <input class="form-control" type="text" value="" id="txt_School_Student_New" placeholder="请输入有效的联系人电话">');
     tmpHTMLStr.push('                        </div>');
     tmpHTMLStr.push('                    </div>');
     tmpHTMLStr.push('                </form>');
@@ -332,13 +273,13 @@ function buildDataHeaderHTML_Student() {
     '</div>';
 
     $('#container_Datas').append($(tmpHTMLStr));
-    //buildDataHeaderButtons_Student();
-    //buildDataHeaderFields_Student();
+    buildDataHeaderButtons_Student();
+    buildDataHeaderFields_Student();
 };
 
 function buildDataHeaderButtons_Student() {
-    //$('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success" id="btn_NewStudent_DataTB">新建学员</button>'));
-    //$('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-warning" id="btn_DelStudents_DataTB" style="margin-left:10px;">批量删除</button>'));
+    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-success" id="btn_NewStudent_DataTB">新建学员</button>'));
+    $('#container_DataHeader_Button').append($('<button type="button" class="btn btn-sm btn-warning" id="btn_DelStudents_DataTB" style="margin-left:10px;">批量删除</button>'));
 };
 
 function buildDataHeaderFields_Student() {
@@ -369,7 +310,7 @@ function buildDataTableHTML_Student(data) {
 
 function buildDataTableColHeaderHTML_Student() {
     var tmpHTMLStr = '<th style="width: 50px;"></th>' +
-    '<th style="width: 80px;">操作</th>' +
+    '<th style="width: 120px;">操作</th>' +
     '<th>编号</th>' +
     '<th>姓名</th>' +
     '<th>课程</th>' +
@@ -446,7 +387,8 @@ function buildDataTableDataRowsHTML_Student(data) {
         var tmpHTMLStr = '<tr>' +
         '   <th scope="row">' + (i + 1) + '</th>' +
         '   <td>' +
-        '       <button type="button" class="btn btn-sm btn-success btn-update-student-info" data-target="' + data[i].symbol + '">编辑</button>' +
+        '       <button type="button" class="btn btn-sm btn-success btn-Class-Detail" data-target="' + data[i].symbol + '">编辑</button>' +
+        '       <button type="button" class="btn btn-sm btn-warning btn-Class-Delete" data-target="' + data[i].symbol + '">删除</button>' +
         '   </td>' +
         '   <td>' + data[i].symbol + '</td>' +
         '   <td>' + data[i].name + '</td>' +
@@ -462,9 +404,6 @@ function buildDataTableDataRowsHTML_Student(data) {
         $('#container_DataTable_Rows').append($(tmpHTMLStr));
     }
 
-    $('.btn.btn-sm.btn-success.btn-update-student-info').on('click', function (eventObj) {
-        createNewStudent(true, $(eventObj.currentTarget).attr('data-target'));
-    });
-
-    $('.btn.btn-sm.btn-warning.btn-delete-student-info').on('click', openWorkplatform);
+    //$('.btn.btn-sm.btn-success.btn-Class-doc').on('click', openClassDoc);
+    //$('.btn.btn-sm.btn-warning.btn-Class-wp').on('click', openWorkplatform);
 };

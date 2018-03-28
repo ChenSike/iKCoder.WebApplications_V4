@@ -784,7 +784,7 @@ body {
         }
 
         .wrap-course-msg-alert .container-course-msg-alert .course-msg-alert-btn.close {
-            line-height:25px;
+            line-height: 25px;
             cursor: pointer;
             margin-right: 6px;
         }
@@ -907,3 +907,50 @@ body {
     height: 23px;
     margin: 0 3px;
 }
+
+.editor-workspace-codemodal {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#Console_Workspace_CodeModal {
+    border-style: double;
+    border-width: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#wrap_Workspace_CodeModal .cm-toolbar-wrap-row {
+    background-color: rgb(26,164,216);
+    color: rgb(255,255,255);
+}
+
+    #wrap_Workspace_CodeModal .cm-toolbar-wrap-row .cm-toolbar-buttons-item {
+        line-height: 30px;
+        height: 30px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+        #wrap_Workspace_CodeModal .cm-toolbar-wrap-row .cm-toolbar-buttons-item:hover {
+            font-size: 15px;
+        }
+
+#Toolbar_Workspace_CodeModal div.col-1 {
+    padding: 0px 20px;
+}
+
+.edoitor-tabs-wrap-col .nav-tabs {
+    line-height: 1;
+}
+
+    .edoitor-tabs-wrap-col .nav-tabs .nav-link {
+        font-size: 14px;
+        padding: 0.3rem 1rem;
+    }

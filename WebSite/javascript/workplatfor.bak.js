@@ -10,15 +10,11 @@ var _gStageData = {
     }
 };
 var _workspaceCfg = {};
-var _codeEditor_HTML = null;
-var _codeEditor_JS = null;
 
 function initPage() {
     $('#mask_Page_Loading').hide();
     $('#mask_Page_Loading').css('visibility', 'hidden');
-    var tmpStage = getQueryString('scene');
-    var tmpStep = getQueryString('step');
-    adjustMainSize(tmpStep == '' ? true : false);
+    adjustMainSize();
     //var url = _getRequestURL(_gURLMapping.account.signstatus);
     //var successFn = function (response, status) {
     //    if ($(response).find('err').length > 0) {
@@ -49,104 +45,17 @@ function initPage() {
     //ajaxFn('GET', url, '<root></root>', successFn, failedFn);
 
     //for test football
-    adjustDisplayPart(tmpStep == '' ? true : false);
-    if (tmpStep != "") {
-        var dataXML = LoadXMLFile('javascript/scene/datadoc/' + tmpStage + tmpStep + '.xml');
-        initData(dataXML);
-        buildHeaderHTML();
-        buildCourseTips();
-        hideLoadingMask();
-        resetWorkSpace();
-        loadSceneLib();
-        initEvents();
-        //window.setTimeout('WorkScene.saveStatus(true);', 60000);
-    } else {
-        initialCodeModalComp();
-    }
-};
-
-function initialCodeModalComp() {
-    var wrapHeight = $('#wrap_Workspace_CodeModal').height();
-    $('.edoitor-tabs-wrap-col').height(wrapHeight * 0.7 - 30);
-    $('#Toolbar_Workspace_CodeModal').parent().height(30);
-    var tmpHeight = wrapHeight - $('.edoitor-tabs-wrap-col').parent().height() - $('#Toolbar_Workspace_CodeModal').parent().height();
-    $('#Console_Workspace_CodeModal').parent().height(tmpHeight);
-    tmpHeight = $('.edoitor-tabs-wrap-col').height() - $('.edoitor-tabs-wrap-col nav.nav.nav-tabs').height();
-    var editorEl = $('.editor-workspace-codemodal');
-    var editorParent = editorEl.parent();
-    editorParent.height(tmpHeight);
-    editorEl.height(tmpHeight);
-
-    _codeEditor_HTML = ace.edit("HTML_Editor_Workspace_CodeModal");
-    _codeEditor_HTML.setTheme("ace/theme/monokai");
-    _codeEditor_HTML.getSession().setMode("ace/mode/html");
-    _codeEditor_HTML.setFontSize(16);
-    _codeEditor_JS = ace.edit("JS_Editor_Workspace_CodeModal");
-    _codeEditor_JS.setTheme("ace/theme/monokai");
-    _codeEditor_JS.getSession().setMode("ace/mode/javascript");
-    _codeEditor_JS.setFontSize(16);
-
-    $('#wrap_Workspace_CodeModal .cm-toolbar-wrap-row .cm-toolbar-buttons-item').on('click', onClickCodeModalToolbarBtn);
-    $('.header-course-name').html('L1 JavaScript基础');
-    $('.header-course-name').css('line-height', $('.header-container').height() + 'px')
-}
-
-function onClickCodeModalToolbarBtn(eventObj) {
-    var btn = $(eventObj.currentTarget);
-    if (btn.hasClass('fa-play')) {
-        var frameDocument = $('#iframe_Console_Editor')[0].contentWindow.document;
-        var frameWindow = $('#iframe_Console_Editor')[0].contentWindow;
-        var html = _codeEditor_HTML.getValue();
-        if (frameDocument.all.length > 0) {
-            frameDocument.all[0].remove();
-        }
-
-        frameDocument.write(html);
-        var code = _codeEditor_JS.getValue();
-        frameWindow.eval(code);
-    }
-};
-
-/*
-var strA = 'Hello World';
-var strB = 'iKCoder';
-document.write(strA + ' ' + strB);
-var canvas = document.createElement('canvas');
-document.body.appendChild(canvas);
-canvas.attributes['height'] =200;
-canvas.attributes['width'] =200;
-canvas.style.backgroundColor='red';
-ctx.lineWidth = 5;
-var ctx = canvas.getContext("2d");
-ctx.setLineDash([25, 5]);
-ctx.strokeStyle = "#000000";//"#e8e8e8";    
-ctx.moveTo(0, 0);
-ctx.lineTo(200, 200);
-ctx.stroke();
-*/
-
-function adjustDisplayPart(isCodeModal) {
-    if (isCodeModal) {
-        $('#Course_Stage_Container').hide();
-        $('.siderbar-wrap').hide();
-        $('.course-tip-container-row').hide();
-        $('.toolbar-container-row').hide();
-        $('#wrap_Workspace_Blockly').hide();
-        $('#wrap_Workspace_Static').hide();
-        $('.bottom-toolbar-container-row .fa-code').parent().hide();
-        $('.bottom-toolbar-container-row .fa-file-code-o').parent().hide();
-        $('.bottom-toolbar-container-row .row.justify-content-center div').removeClass('col-2');
-        $('.bottom-toolbar-container-row .row.justify-content-center div').addClass('col-4');
-    } else {
-        $('#Course_Stage_Container').show();
-        $('.siderbar-wrap').show();
-        $('.course-tip-container-row').show();
-        $('.toolbar-container-row').show();
-        $('#wrap_Workspace_Blockly').show();
-        $('#wrap_Workspace_Static').show();
-        $('.bottom-toolbar-container-row .fa-code').parent().show();
-        $('.bottom-toolbar-container-row .fa-file-code-o').parent().show();
-    }
+    var tmpStage = getQueryString('scene');
+    var tmpStep = getQueryString('step');
+    var dataXML = LoadXMLFile('javascript/scene/datadoc/' + tmpStage + tmpStep + '.xml');
+    initData(dataXML);
+    buildHeaderHTML();
+    buildCourseTips();
+    hideLoadingMask();
+    resetWorkSpace();
+    loadSceneLib();
+    initEvents();
+    //window.setTimeout('WorkScene.saveStatus(true);', 60000);
 };
 
 function loadSceneLib() {
@@ -176,7 +85,7 @@ function initEvents() {
     initSiderBarEvents();
     initDetailPanelsEvents();
     $(window).resize(function () {
-        adjustMainSize(getQueryString('step') == '' ? true : false);
+        adjustMainSize();
     });
 
     $(window).on('beforeunload', function () {
@@ -184,14 +93,13 @@ function initEvents() {
     });
 };
 
-function adjustMainSize(isCodeModal) {
+function adjustMainSize() {
     var headerHeight = $('.header-container').height();
     var footerHeight = $('footer').height();
     var tipHeight = $('.course-tip-loading-col').height();
     var toolbarHeight = $('.toolbar-container-row').height();
     var bbarHeight = $('.bottom-toolbar-container-row').height();
-    var tmpHeight = headerHeight + footerHeight + bbarHeight;
-    tmpHeight += (isCodeModal ? 0 : tipHeight + toolbarHeight);
+    var tmpHeight = headerHeight + footerHeight + tipHeight + toolbarHeight + bbarHeight;
     $('.wrap-container .main-container-col').height($('.wrap-container').height() - tmpHeight + 1);
     $('.siderbar-wrap').height($('.wrap-container .main-container-col').height());
     $('.siderbar-wrap').css('top', $('.wrap-container .main-container-col').offset().top + 'px');

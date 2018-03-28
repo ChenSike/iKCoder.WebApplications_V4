@@ -1,0 +1,607 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <style>
+        #mask_Page_Loading {
+            display: flex !important;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(242,242,242);
+            z-index: 99999;
+            -webkit-box-align: center !important;
+            -webkit-align-items: center !important;
+            -ms-flex-align: center !important;
+            align-items: center !important;
+        }
+
+        #loader {
+            /*background-color: #dc3522;*/
+            background-color: rgb(186,186,186);
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            z-index: 1;
+            margin-top: 0px;
+            top: 0px;
+        }
+
+        #loader-center {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #loader-center-absolute {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 150px;
+            width: 150px;
+            margin-top: -75px;
+            margin-left: -75px;
+            -ms-transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .loader-object {
+            width: 20px;
+            height: 20px;
+            background-color: #FFF;
+            position: absolute;
+            left: 65px;
+            top: 65px;
+            -moz-border-radius: 50% 50% 50% 50%;
+            -webkit-border-radius: 50% 50% 50% 50%;
+            border-radius: 50% 50% 50% 50%;
+        }
+
+            .loader-object:nth-child(2n+0) {
+                margin-right: 0px;
+            }
+
+        #loader_object_one {
+            -webkit-animation: loader_object_one 2s infinite;
+            animation: loader_object_one 2s infinite;
+            -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s;
+        }
+
+        #loader_object_two {
+            -webkit-animation: loader_object_two 2s infinite;
+            animation: loader_object_two 2s infinite;
+            -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+        }
+
+        #loader_object_three {
+            -webkit-animation: loader_object_three 2s infinite;
+            animation: loader_object_three 2s infinite;
+            -webkit-animation-delay: 0.4s;
+            animation-delay: 0.4s;
+        }
+
+        #loader_object_four {
+            -webkit-animation: loader_object_four 2s infinite;
+            animation: loader_object_four 2s infinite;
+            -webkit-animation-delay: 0.5s;
+            animation-delay: 0.5s;
+        }
+
+        #loader_object_five {
+            -webkit-animation: loader_object_five 2s infinite;
+            animation: loader_object_five 2s infinite;
+            -webkit-animation-delay: 0.6s;
+            animation-delay: 0.6s;
+        }
+
+        #loader_object_six {
+            -webkit-animation: loader_object_six 2s infinite;
+            animation: loader_object_six 2s infinite;
+            -webkit-animation-delay: 0.7s;
+            animation-delay: 0.7s;
+        }
+
+        #loader_object_seven {
+            -webkit-animation: loader_object_seven 2s infinite;
+            animation: loader_object_seven 2s infinite;
+            -webkit-animation-delay: 0.8s;
+            animation-delay: 0.8s;
+        }
+
+        #loader_object_eight {
+            -webkit-animation: loader_object_eight 2s infinite;
+            animation: loader_object_eight 2s infinite;
+            -webkit-animation-delay: 0.9s;
+            animation-delay: 0.9s;
+        }
+
+        #loader_object_big {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            left: 50px;
+            top: 50px;
+            -webkit-animation: loader_object_big 2s infinite;
+            animation: loader_object_big 2s infinite;
+            -webkit-animation-delay: 0.5s;
+            animation-delay: 0.5s;
+        }
+
+        @-webkit-keyframes loader_object_big {
+            50% {
+                -webkit-transform: scale(0.5);
+            }
+        }
+
+        @keyframes loader_object_big {
+            50% {
+                transform: scale(0.5);
+                -webkit-transform: scale(0.5);
+            }
+        }
+
+        @-webkit-keyframes loader_object_one {
+            50% {
+                -webkit-transform: translate(-65px,-65px);
+            }
+        }
+
+        @keyframes loader_object_one {
+            50% {
+                transform: translate(-65px,-65px);
+                -webkit-transform: translate(-65px,-65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_two {
+            50% {
+                -webkit-transform: translate(0,-65px);
+            }
+        }
+
+        @keyframes loader_object_two {
+            50% {
+                transform: translate(0,-65px);
+                -webkit-transform: translate(0,-65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_three {
+            50% {
+                -webkit-transform: translate(65px,-65px);
+            }
+        }
+
+        @keyframes loader_object_three {
+            50% {
+                transform: translate(65px,-65px);
+                -webkit-transform: translate(65px,-65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_four {
+
+            50% {
+                -webkit-transform: translate(65px,0);
+            }
+        }
+
+        @keyframes loader_object_four {
+            50% {
+                transform: translate(65px,0);
+                -webkit-transform: translate(65px,0);
+            }
+        }
+
+        @-webkit-keyframes loader_object_five {
+            50% {
+                -webkit-transform: translate(65px,65px);
+            }
+        }
+
+        @keyframes loader_object_five {
+            50% {
+                transform: translate(65px,65px);
+                -webkit-transform: translate(65px,65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_six {
+
+            50% {
+                -webkit-transform: translate(0,65px);
+            }
+        }
+
+        @keyframes loader_object_six {
+            50% {
+                transform: translate(0,65px);
+                -webkit-transform: translate(0,65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_seven {
+
+            50% {
+                -webkit-transform: translate(-65px,65px);
+            }
+        }
+
+        @keyframes loader_object_seven {
+            50% {
+                transform: translate(-65px,65px);
+                -webkit-transform: translate(-65px,65px);
+            }
+        }
+
+        @-webkit-keyframes loader_object_eight {
+
+            50% {
+                -webkit-transform: translate(-65px,0);
+            }
+        }
+
+        @keyframes loader_object_eight {
+            50% {
+                transform: translate(-65px,0);
+                -webkit-transform: translate(-65px,0);
+            }
+        }
+
+
+        #tooltip_Component {
+            z-index: 9999;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            opacity: 0.8;
+            display: none;
+        }
+
+        .tooltip-warning-wrap {
+            z-index: -10;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            display: none;
+            border: solid 5px rgb(255,204,51);
+            border-radius: 15px;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+        }
+
+            .tooltip-warning-wrap.hidden {
+                display: none;
+            }
+    </style>
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/jquery-ui.min.css">
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.min.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <link rel="stylesheet" href="style/workplatform.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/jquery-ui.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.min.js"></script>
+    <script src="javascript/common/storage.js"></script>
+    <script src="javascript/blockly_compressed.js"></script>
+    <script src="javascript/blocks_compressed.js"></script>
+    <script src="javascript/javascript_compressed.js"></script>
+    <script src="msg/messages.js"></script>
+    <script src="msg/js/zh-hans.js"></script>
+    <script src="javascript/common/ExtendBlockly.js"></script>
+    <script src="javascript/common/ExtendBlockRenderSvg.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/common/blocklycommon.js"></script>
+    <script src="javascript/workplatform.js"></script>
+    <!--<script src="javascript/common/three.min.js"></script>
+    <script src="javascript/common/TweenMax.min.js"></script>
+    <script src="javascript/common/threeengine.js"></script>
+    <script src="javascript/scene/common/draw3d.js"></script>
+    <script src="javascript/scene/B-01-006_3D/3dboard/1/Scene/scene.js"></script>-->
+    <!--<script src="javascript/3dmodule/pacman.js"></script>
+    <script src="javascript/scene/B-01-003_3D/pacman/4/Blocks/blocks.js"></script>
+    <script src="javascript/scene/B-01-003_3D/pacman/4/Scene/scene.js"></script>-->
+    <!--<script src="javascript/scene/a-01-003/intrcourse/1/Blocks/blocks.js"></script>
+    <script src="javascript/scene/a-01-003/intrcourse/1/Engine/konvas.js"></script>
+    <script src="javascript/scene/a-01-003/intrcourse/1/Engine/game_engine.js"></script>
+    <script src="javascript/scene/a-01-003/intrcourse/1/scene/scene.js"></script>-->
+    <!--<script src="javascript/scene/L-01-001/getGlobalSettingFn.js"></script>
+    <script src="javascript/scene/L-01-001/loaderScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/titleScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/countrySelectScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/captainSelectScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/playerSelectScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/teamReviewScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/gameScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/gameOverScreenFn.js"></script>
+    <script src="javascript/scene/L-01-001/PitchObjectFn.js"></script>
+    <script src="javascript/scene/L-01-001/globalSettingForControl.js"></script>
+    <script src="javascript/scene/L-01-001/gameScreenWrapFn.js"></script>
+    <script src="javascript/scene/L-01-001/teamManagerFn.js"></script>
+    <script src="javascript/scene/L-01-001/pickupManagerFn.js"></script>
+    <script src="javascript/scene/L-01-001/soundManagerFn.js"></script>
+    <script src="javascript/scene/L-01-001/pixi.js"></script>
+    <script src="javascript/scene/L-01-001/three.js"></script>
+    <script src="javascript/scene/L-01-001/screenManagerFn.js"></script>
+    <script src="javascript/scene/L-01-001/applicationFn.js"></script>
+    <script src="javascript/scene/L-01-001/argumentFns.js"></script>
+    <script src="javascript/scene/L-01-001/entryFn.js"></script>-->
+    <!--<script src="javascript/scene/L-01-001/1/blocks/blocks.js"></script>
+    <script src="javascript/scene/L-01-001/1/scene/scene.js"></script>-->
+    <!--<script src="javascript/scene/L-01-001/2/blocks/blocks.js"></script>
+    <script src="javascript/scene/L-01-001/2/scene/scene.js"></script>-->
+    <!--<script src="javascript/scene/L-01-001/3/blocks/blocks.js"></script>
+    <script src="javascript/scene/L-01-001/3/scene/scene.js"></script>-->
+   <!--<script src="javascript/scene/L-01-001/coursemain.js"></script>-->
+</head>
+<body>
+    <div id="mask_Page_Loading">
+        <div id="loader">
+            <div id="loader-center">
+                <div id="loader-center-absolute">
+                    <div class="loader-object" id="loader_object_one"></div>
+                    <div class="loader-object" id="loader_object_two"></div>
+                    <div class="loader-object" id="loader_object_three"></div>
+                    <div class="loader-object" id="loader_object_four"></div>
+                    <div class="loader-object" id="loader_object_five"></div>
+                    <div class="loader-object" id="loader_object_six"></div>
+                    <div class="loader-object" id="loader_object_seven"></div>
+                    <div class="loader-object" id="loader_object_eight"></div>
+                    <div class="loader-object" id="loader_object_big"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid wrap-container">
+        <div class="row no-wrap">
+            <div class="col no-wrap">
+                <div class="container-fluid no-wrap header-container">
+                    <div class="row no-wrap">
+                        <div class="col-3 no-wrap text-center" id="wrap_Head_Course_Name">
+                            <p class="header-course-name"></p>
+                        </div>
+                        <div class="col-6 no-padding">
+                            <div class="container-fluid no-padding">
+                                <div class="row no-margin" style="padding-top:15px;">
+                                    <div class="col-12 text-center" id="Course_Stage_Container" style="height: 30px;">
+                                        <div class="head-stage-background">
+                                            <div class="head-stage-space"></div>
+                                        </div>
+                                        <div class="wrap-head-stage-steps d-flex align-items-center">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 no-padding">
+                            <div class="container">
+                                <div class="row header-user-info-container">
+                                    <div class="col">
+                                        <img class="header-user-info-image" src="image/tmpheader.jpg" width="40" height="40" />
+                                        <span class="header-user-info-name"></span>
+                                        <img class="sign-out-button" src="image/exit.svg" width="25" height="25" title="退出登录" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-wrap course-tip-container-row">
+            <div class="col-2 justify-content-center no-wrap course-tip-loading-col">
+                <div id="loading">
+                    <div id="loading-center">
+                        <div id="loading-center-absolute">
+                            <div class="object" id="object_one"></div>
+                            <div class="object" id="object_two"></div>
+                            <div class="object" id="object_three"></div>
+                            <div class="object" id="object_four"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col text-left">
+                <p class="course-stage-note"></p>
+            </div>
+        </div>
+        <div class="row no-wrap toolbar-container-row">
+            <div class="col no-wrap toolbar-toolbox-col">
+                <span class="toolbar-toolbox-label">工具箱</span>
+            </div>
+            <div class="col no-wrap text-center toolbar-workspace-label">
+                <span>工作区域</span>
+            </div>
+            <div class="col toolbar-buttons-col">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-3">
+                            <i class="toolbar-buttons-item toolbar-button-play fa fa-play" aria-hidden="true" title="运行"></i>
+                        </div>
+                        <div class="col-3">
+                            <i class="toolbar-buttons-item toolbar-button-share fa fa-share-alt" aria-hidden="true" title="分享"></i>
+                        </div>
+                        <div class="col-3">
+                            <i class="toolbar-buttons-item toolbar-button-fullscreen fa fa-arrows-alt" aria-hidden="true" title="全屏"></i>
+                        </div>
+                        <div class="col-3">
+                            <i class="toolbar-buttons-item toolbar-button-referesh fa fa-repeat" aria-hidden="true" title="重置"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-wrap">
+            <div class="col no-wrap main-container-col">
+                <div class="container-fluid no-wrap h-100" id="wrap_Workspace_Blockly">
+                    <div class="row no-wrap h-100">
+                        <div class="col no-wrap h-100">
+                            <div class="workspace-wrap-blockly">
+                                <div id="content_WorkSpace"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid no-wrap" id="wrap_Workspace_Static">
+                    <div class="row no-wrap h-100">
+                        <div class="col no-wrap h-100">
+                            <div class="wrap-static-canvas h-100" id="container_Static_Stage">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-wrap align-items-center bottom-toolbar-container-row">
+            <div class="col-4 offset-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-gamepad fa-lg active" title="创作模式"></i>
+                        </div>
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-book fa-lg" title="查看知识点"></i>
+                        </div>
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-code fa-lg" title="代码模式"></i>
+                        </div>
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-language fa-lg" title="词汇术语"></i>
+                        </div>
+                        <div class="col-2">
+                            <i class="bottom-toolbar-item fa fa-file-code-o fa-lg" title="核心代码"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-wrap">
+            <div class="col no-wrap">
+                <footer id="footer">
+                    <div class="footer-txt">
+                        <div class="container w-100">
+                            <div class="row justify-content-center">
+                                <div class="col-1" style="padding: 2px 10px;">
+                                    <img id="btn_Footer_Logo" src="image/logo-new-white.png" width="60" height="21">
+                                </div>
+                                <div class="col">
+                                    <p class="copyright-txt">
+                                        <span>
+                                            深圳市鹏博教育科技有限公司
+                                        </span>
+                                        <span class="split-line">
+                                            |
+                                        </span>
+                                        <span class="normal-text">
+                                            Powered by
+                                        </span>
+                                        <span>
+                                            iKCoder.Co (ShenZhen)
+                                        </span>
+                                        <span class="reference-text">
+                                            <a href="http://www.miibeian.gov.cn" target="_blank" style="display:inline-block;">粤ICP备17152880号</a>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="siderbar-wrap expanded">
+            <div class="siderbar-expand-button">
+                <i class="fa fa-angle-double-right" id="icon_SiderBar_Expand" aria-hidden="true"></i>
+            </div>
+            <div class="siderbar-drag expanded"></div>
+            <div class="sidebar-content-wrap">
+                <div class="siderbar-content">
+                    <div class="text-center no-padding" id="game_container">
+                        <i class="fa fa-play-circle-o siderbar-button-run" title="开始运行"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="siderbar-drag-proxy"></div>
+        <div class="detail-panel">
+            <div class="detail-panel-header">
+                <i class="fa fa-times-circle-o detail-panel-close-button"></i>
+            </div>
+            <div class="detail-panel-content container"></div>
+        </div>
+        <div class="modal fade" id="win_CodeEditor" tabindex="-1" role="dialog" aria-labelledby="codeEditorLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="codeEditorLabel">Code Editor</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="iframe_CodeEditor" src="codeeditor.html" width="100%" height="600" frameborder="1" scrolling="auto" style="border: none;"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="win_CoreCode" tabindex="-1" role="dialog" aria-labelledby="coreCodeLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="coreCodeLabel">Code Viewer</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid no-padding">
+                            <div class="row">
+                                <div class="col buttons-col">
+                                    <button type="button" class="btn btn-sm btn-outline-primary core-code-view-btn" data-target="block">模块</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary core-code-view-btn" data-target="scene">场景</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary core-code-view-btn" data-target="core">核心</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <iframe id="iframe_CoreCode" src="codeviewer.html" width="100%" height="600" frameborder="1" scrolling="auto" style="border: none;"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-primary" id="btn_Eval_CoreCode">执行</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="run-scene-fullscreen">
+        <i class="fa fa-times-circle-o run-scene-fullscreen-close-button"></i>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            _loadLabels();
+            initPage();
+            //_startCheckState();
+            //showLoadingMask();            
+        });
+    </script>
+</body>
+</html>

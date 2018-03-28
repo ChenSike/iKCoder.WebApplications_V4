@@ -286,7 +286,7 @@
     <link rel="stylesheet" href="style/jquery-ui.min.css">
     <link rel="stylesheet" href="style/tether.min.css">
     <link rel="stylesheet" href="style/bootstrap.min.css">
-    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="style/font-awesome.min.css">-->
     <link rel="stylesheet" href="style/common.css">
     <link rel="stylesheet" href="style/workplatform.css">
     <!--<link rel="stylesheet" href="style/workspace.css">-->
@@ -294,12 +294,14 @@
     <script src="javascript/common/jquery-ui.min.js"></script>
     <script src="javascript/common/tether.min.js"></script>
     <script src="javascript/common/bootstrap.min.js"></script>
+    <script src="javascript/common/fontawesome-all.min.js"></script>
     <script src="javascript/common/storage.js"></script>
     <script src="javascript/blockly_compressed.js"></script>
     <script src="javascript/blocks_compressed.js"></script>
     <script src="javascript/javascript_compressed.js"></script>
     <script src="msg/messages.js"></script>
     <script src="msg/js/zh-hans.js"></script>
+    <script src="javascript/ace/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="javascript/common/ExtendBlockly.js"></script>
     <script src="javascript/common/ExtendBlockRenderSvg.js"></script>
     <script src="javascript/common/common.js"></script>
@@ -345,7 +347,7 @@
     <script src="javascript/scene/L-01-001/2/scene/scene.js"></script>-->
     <!--<script src="javascript/scene/L-01-001/3/blocks/blocks.js"></script>
     <script src="javascript/scene/L-01-001/3/scene/scene.js"></script>-->
-   <!--<script src="javascript/scene/L-01-001/coursemain.js"></script>-->
+    <!--<script src="javascript/scene/L-01-001/coursemain.js"></script>-->
 </head>
 <body>
     <div id="mask_Page_Loading">
@@ -463,6 +465,57 @@
                         </div>
                     </div>
                 </div>
+                <div class="container-fluid no-wrap h-100" id="wrap_Workspace_CodeModal">
+                    <div class="row no-wrap cm-toolbar-wrap-row">
+                        <div class="col-3 no-wrap">
+                            <div class="container-fluid" id="Toolbar_Workspace_CodeModal">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <i class="cm-toolbar-buttons-item cm-toolbar-button-save fas fa-cloud-upload-alt" aria-hidden="true" title="保存"></i>
+                                    </div>
+                                    <div class="col-1">
+                                        <i class="cm-toolbar-buttons-item cm-toolbar-button-load fas fa-cloud-download-alt" aria-hidden="true" title="加载"></i>
+                                    </div>
+                                    <div class="col-1">
+                                        <i class="cm-toolbar-buttons-item cm-toolbar-button-run fas fa-play" aria-hidden="true" title="运行"></i>
+                                    </div>
+                                    <div class="col-1">
+                                        <i class="cm-toolbar-buttons-item cm-toolbar-button-share fas fa-share-alt" aria-hidden="true" title="分享"></i>
+                                    </div>
+                                    <div class="col-1">
+                                        <i class="cm-toolbar-buttons-item cm-toolbar-button-clear fas fa-trash" aria-hidden="true" title="清空"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 offset-6" style="line-height:30px; text-align:right;">
+                            iKCoder. JNEditor
+                        </div>
+                    </div>
+                    <div class="row no-wrap">
+                        <div class="col no-wrap edoitor-tabs-wrap-col">
+                            <nav class="nav nav-tabs" id="tab_Editor_Workspace_CodeModal" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-HTML-tab" data-toggle="tab" href="#nav-HTML" role="tab" aria-controls="nav-HTML" aria-expanded="true">HTML</a>
+                                <a class="nav-item nav-link" id="nav-JS-tab" data-toggle="tab" href="#nav-JS" role="tab" aria-controls="nav-JS">JavaScript</a>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-HTML" role="tabpanel" aria-labelledby="nav-HTML-tab">
+                                    <div class="editor-workspace-codemodal" id="HTML_Editor_Workspace_CodeModal"></div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-JS" role="tabpanel" aria-labelledby="nav-JS-tab">
+                                    <div class="editor-workspace-codemodal" id="JS_Editor_Workspace_CodeModal"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row no-wrap">
+                        <div class="col no-wrap">
+                            <div id="Console_Workspace_CodeModal">
+                                <iframe id="iframe_Console_Editor" src="s.html" width="100%" height="100%" frameborder="1" scrolling="auto" style="border: none;"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row no-wrap align-items-center bottom-toolbar-container-row">
@@ -479,7 +532,7 @@
                             <i class="bottom-toolbar-item fa fa-code fa-lg" title="代码模式"></i>
                         </div>
                         <div class="col-2">
-                            <i class="bottom-toolbar-item fa fa-language fa-lg" title="词汇术语"></i>
+                            <i class="bottom-toolbar-item fa fa-globe fa-lg" title="词汇术语"></i>
                         </div>
                         <div class="col-2">
                             <i class="bottom-toolbar-item fa fa-file-code-o fa-lg" title="核心代码"></i>
@@ -601,7 +654,7 @@
             _loadLabels();
             initPage();
             //_startCheckState();
-            //showLoadingMask();            
+            //showLoadingMask();
         });
     </script>
 </body>
