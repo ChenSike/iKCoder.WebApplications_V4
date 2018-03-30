@@ -104,6 +104,10 @@ function onClickCodeModalToolbarBtn(eventObj) {
         modal.modal('show');
         modalContent.height($('body').height() * 0.7);
         executeEditCode(true);
+    } else if (btn.hasClass('fa-trash')) {
+        _codeEditor_HTML.setValue('');
+        _codeEditor_JS.setValue('');
+        executeEditCode(false);
     }
 };
 
@@ -114,7 +118,7 @@ function executeEditCode(isFull) {
     var frameDocument = $(frameId)[0].contentDocument;
     var frameWindow = $(frameId)[0].contentWindow;
     frameDocument.body.innerHTML = '';
-    frameDocument.write(html);
+    html.trim() == '' ? null : frameDocument.write();
     frameWindow.eval(code);
 };
 
@@ -200,10 +204,9 @@ function initEvents(isCodeModal) {
     } else {
         initBottomTBEvents();
         initDetailPanelsEvents();
-        //$('#full_Console_Modal').on('shown.bs.modal', function (e) {
-        //    $('#iframe_Console_Editor_Full').height($('#full_Console_Modal .modal-content').height() - $('#full_Console_Modal .modal-header').height() - 20);
-
-        //})
+        $('#full_Console_Modal').on('shown.bs.modal', function (e) {
+            $('#iframe_Console_Editor_Full').height($('#full_Console_Modal .modal-content').height() - $('#full_Console_Modal .modal-header').height());
+        })
     }
 };
 
