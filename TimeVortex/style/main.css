@@ -1,0 +1,111 @@
+/*main.css*/
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.enter-vr {
+    position: fixed;
+    z-index: 999999;
+    border: none;
+    width: 100px;
+    height: 100px;
+    background: url(../image/common/vr-logo.png);
+    background-size: cover;
+
+
+    left: 50%;
+    margin-left: -50px;
+    bottom: 10%;
+    display: none;
+}
+
+
+.enter-vr.hasVR {
+	display: block;
+}
+
+.variant-b {
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+
+.debug {
+    position: fixed;
+    color:white;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+
+    font-size: 20px;
+    width:100%;
+}
+
+
+#cookie-warning {
+    padding:20px;
+    position: fixed;
+    color:white;
+    bottom: 0;
+    width:100%;
+    background:rgba(36,36,36,.9);
+    font-family: Arial,Helvetica,freesans,sans-serif;
+    box-sizing: border-box;
+    display: none;
+}
+
+.button-ok-cookie {
+    padding:5px 10px 5px 10px;
+    border:none;
+    background: #3dffd6;
+    font-size: 18px;
+}
+
+#cookie-warning p {
+    font-size: 18px;
+}
+
+#cookie-warning p, #cookie-warning h2 {
+    color:white;
+    margin: 0;
+    padding: 0;
+}
+
+#cookie-warning h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.container-links a, .container-links button {
+    float:left;
+}
+
+.container-links {
+    width:100%;
+    font-size: 18px;
+    margin-top:15px;
+}
+
+.external-links {
+    float:left;
+    margin-top: 6px;
+    margin-left: 20px;
+}
+
+.external-links * {
+    margin-right:10px;
+}
+
+.external-links a {
+    text-decoration: none;
+}
+
+.external-links .divisor {
+    width:2px;
+    height:18px;
+    background:#929292;
+    float:left;
+}

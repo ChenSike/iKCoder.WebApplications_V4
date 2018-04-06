@@ -4,64 +4,17 @@ var _gCID = null;
 var _gExpires = 15;
 var _gLabelMap = {};
 var _gRoleObj = null;
-//var _gHostName = 'http://119.23.233.224/ikcoderapi';
-var _gHostName = 'http://10.86.18.67/ikcoderapi';
+//var _gHostName = 'http://119.23.233.224/';
+var _gHostName = 'http://10.86.18.67/';
 var _gURLMapping = {
-    server: {
-        reg: '/Sys/api_iKCoder_Sys_Set_RegDomain.aspx'
-    },
     account: {
-        reg: '/Account/User/api_iKCoder_User_Set_Reg.aspx',
-        signstatus: '/Account/Common/api_iKCoder_Common_Get_SignStatus.aspx',
-        util: '/Account/Profile/api_iKCoder_Profile_Get_SelectNodes.aspx',
-        educhgpwd: '/Account/EduCenter/api_iKCoder_EduCenter_Set_ChangePassword.aspx',
-        teachchgpwd: '/Account/Teacher/api_iKCoder_Teacher_Set_ChangePassword.aspx',
-        advisorchgpwd: '/Account/Advisor/api_iKCoder_Advisor_Set_ChangePassword.aspx',
-        tmchgpwd: '/Account/EduCenter/api_iKCoder_EduCenter_Set_ChangePassword.aspx',
-        logout: '/Account/Common/api_iKCoder_Common_Set_Logout.aspx',
-        getheader: '/Account/Profile/api_iKCoder_Profile_Get_HeaderImg.aspx',
-        updateheader: '/Account/Profile/api_iKCoder_Profile_Set_UploadTmpHeaderImg.aspx',
-        clipheaderimg: '/Account/Profile/api_iKCoder_Profile_Set_ClipHeaderImg.aspx',
-        updateutil: '/Account/Profile/api_iKCoder_Profile_Set_Nodes.aspx',
-        edusignin: '/Account/EduCenter/api_iKCoder_EduCenter_Set_Sign.aspx',//?symbol=&password=
-        teachersignin: '/Account/Teacher/api_iKCoder_Teacher_Set_Sign.aspx',//?symbol=&password=&licence=
-        advisorsignin: '/Account/Advisor/api_iKCoder_Advisor_Set_Sign.aspx',//?symbol=&password=
-        tmsignin: '/Account/EduCenter/api_iKCoder_EduCenter_Set_Sign.aspx',//?symbol=&password=
-    },
-    data: {
-        getwordlist: '/data/get_checkcodenua.aspx',
-        getaudio: '/Data/api_iKCoder_Data_Get_Audio.aspx',
-        getimage: '/Data/api_iKCoder_Data_Get_Image.aspx',
-        setremovebindata: '/Data/api_iKCoder_Data_Set_RemoveBinData.aspx'
-    },
-    bus: {
-        getworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Get_Workspace.aspx',
-        saveworkspace: '/Bus/Workspace/api_iKCoder_Workspace_Set_WorkspaceStatus.aspx',
-        setcurrentstep: '/Bus/Workspace/api_iKCoder_Workspace_Set_CurrentStage.aspx',
-        setfinishscene: '/Bus/Workspace/api_iKCoder_Workspace_Set_FinishSence.aspx',
-        setfinishstep: '/Bus/Workspace/api_iKCoder_Workspace_Set_FinishStage.aspx',
-        getscenelist: '/Bus/Center/api_iKCoder_Center_Get_SencesList.aspx',
-        getcenterinfo: '/Bus/Center/api_iKCoder_Center_Get_CenterInfo.aspx',
-        getunreadmsgcount: '/Bus/Message/api_iKCoder_Workspace_Get_CountOfUnreadMessage.aspx',
-        getmsgcontent: '/Bus/Message/api_iKCoder_Workspace_Get_MessageContent.aspx?id=',
-        getallmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_AllMessageList.aspx',
-        getsysmsglist: '/Bus/Message/api_iKCoder_Workspace_Get_SysMessageList.aspx',
-        getqamsglist: '/Bus/Message/api_iKCoder_Workspace_Get_QAMessageList.aspx',
-        removemsg: '/Bus/Message/api_iKCoder_Workspace_Set_RemoveMessage.aspx',
-        gethtmlreport: '/Bus/Report/api_iKCoder_Report_Get_HtmlReport.aspx',
-        setexpreport: '/Bus/Report/api_iKCoder_Report_Set_ExpReport.aspx',
-        appstudiosave: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Set_Save.aspx',
-        appstudioload: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Set_Load.aspx',
-        appstudiolist: '/BUS/APPSTUDIO/api_iKCoder_AppSudio_Get_SavedList.aspx',
-        getcurrentdoc: '/BUS/LessonsNav/api_iKCoder_LessonNav_GetCurentDoc.aspx'//?symbol=B_01_001'
-    },
-    tmp: {
-        storesave: '/bus/store/api_iKCoder_Store_Save.aspx', //type : 自定义字符串,istextreq： 1 表示发送的POST数据是字符串，0表示发送的是XML,timeout：设定有效时间，120是分钟，默认值。
-        storeload: '/bus/store/api_iKCoder_Store_Load.aspx'   //?symbol=XXX&type=XXXX'
-    },
-    share: {
-        sharesave: '/bus/share/api_iKCoder_Share_Save.aspx',//<root><sencesymbol>可选参数，默认DEFAULT，多个体验课进行区别的</sencesymbol><config> 保存的内容</config><serverpath>服务器路径前缀</serverpath></root>
-        shareload: '/bus/share/api_iKCoder_Share_Load.aspx'
+        advisor_Login: 'ikcoder/account/advisor/login',//?name=XXX&pwd=XXXXXX  <root><name></name><pwd></pwd></root>
+        advisor_Verify: 'ikcoder/account/advisor/VerifyLStatus',
+        student_Create: 'ikcoder/account/student/create',//uid,pwd,nickname,realname,sex,birthdate,school,tel,cid,pid
+        student_Login: 'ikcoder/account/student/login',//?uid=xxxx&pwd=xxxxxx
+        student_Verify: 'ikcoder/account/student/VerifyLStatus',
+        teacher_Create: 'ikcoder/account/teacher/create',//name, pwd, regFrom
+        teacher_Login: 'ikcoder/account/teacher/login'// string name,string pwd
     }
 };
 
@@ -77,16 +30,16 @@ var _roleValue = {
     teacher: {
         role: '2',
         url: {
-            sign: _gURLMapping.account.teachersignin,
-            chgpwd: _gURLMapping.account.teachchgpwd
+            signin: _gURLMapping.account.teacher_Login,
+            verify: ''//_gURLMapping.account.teacher_Verify
         },
         target: 'teacher.html'
     },
     advisor: {
         role: '3',
         url: {
-            sign: _gURLMapping.account.tmsignin,
-            chgpwd: _gURLMapping.account.advisorchgpwd
+            signin: _gURLMapping.account.advisor_Login,
+            verify: _gURLMapping.account.advisor_Verify
         },
         target: 'advisor.html'
     },
@@ -137,45 +90,6 @@ var _gCitys = [
     { p: '台湾', c: [] }
 ];
 
-function _initURLMapping() {
-    $.ajax({
-        type: 'GET',
-        async: false,
-        url: _gHostName + '/data/get_UrlMap.aspx?showall=1&qid=' + _gCID,
-        success: function (xml, status) {
-            for (var key in _gURLMapping) {
-                $(xml).find("item[group='" + key + "']").each(function (index, ele) {
-                    _gURLMapping[key][$(ele).attr('key')] = $(ele).attr('value');
-                });
-            }
-        },
-        dataType: 'xml',
-        xhrFields: {
-            //withCredentials: true
-        },
-        error: function () {
-            alert('Fail to load URL Mapping.');
-        }
-    });
-};
-
-function _registerRemoteServer() {
-    $.ajax({
-        type: 'GET',
-        async: true,
-        data: '<root></root>',
-        url: _getRequestURL(_gURLMapping.server.reg, { domain: window.location.origin }),
-        success: function (xml, status) {
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-        }
-    });
-};
-
 function _loadLabels() {
 
 };
@@ -186,7 +100,7 @@ function _getLabel(key) {
 
 function _getRequestURL(page, params) {
     var url = _gHostName + page;
-    url += '?qid=' + _gCID;
+    url += '?';
     if (params) {
         for (var key in params) {
             url += '&' + key + '=' + params[key];
@@ -306,36 +220,28 @@ function _getOffsetPosition(target, topParentClass) {
 };
 
 function _startCheckState() {
-    _registerRemoteServer();
-    $.ajax({
-        type: 'GET',
-        async: true,
-        url: _getRequestURL(_gURLMapping.account.signstatus),
-        data: '<root></root>',
-        success: function (responseData, status) {
-            if ($(responseData).find('err').length > 0) {
-                window.location.href = "signin.html?rnd=" + Date.now();
-                $.removeCookie('logined_user_name');
-                return;
-            } else {
-                if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') != '') {
-                    $.cookie("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), { path: '/', expires: 0.125 });
-                    window.setTimeout(_startCheckState, 30000);
-                } else {
-                    $.removeCookie('logined_user_name');
-                    window.location.href = "signin.html?rnd=" + Date.now();
-                }
-            }
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
+    var successFn = function (responseData, status) {
+        if ($(responseData).find('err').length > 0) {
             window.location.href = "signin.html?rnd=" + Date.now();
             $.removeCookie('logined_user_name');
+            return;
+        } else {
+            if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') != '') {
+                $.cookie("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), { path: '/', expires: 0.125 });
+                window.setTimeout(_startCheckState, 30000);
+            } else {
+                $.removeCookie('logined_user_name');
+                window.location.href = "signin.html?rnd=" + Date.now();
+            }
         }
-    });
+    };
+
+    var faildFn = function () {
+        window.location.href = "signin.html?rnd=" + Date.now();
+        $.removeCookie('logined_user_name');
+    };
+
+    ajaxFn('GET', _getRequestURL(_gRoleObj.url.verify), '', successFn, faildFn);
 };
 
 function _loadIMG(src, callback) {
@@ -467,33 +373,6 @@ function _isIE() {
     return false;
 }
 
-(function initCID() {
-    if (_gCID == null) {
-        if (!window.top._gCID) {
-            var searchArr = window.location.search.replace('?', '').split('&');
-            for (var i = 0; i < searchArr.length; i++) {
-                if (searchArr[i].indexOf('qid') == 0) {
-                    var tmpSearchArr = searchArr[i].split('=');
-                    if (tmpSearchArr.length == 2 && tmpSearchArr[1].trim() != '') {
-                        _gCID = tmpSearchArr[1];
-                    }
-
-                    break;
-                }
-            }
-
-            if (!_gCID) {
-                _gCID = Date.now();
-            }
-        } else {
-            _gCID = window.top._gCID;
-        }
-    }
-
-    _registerRemoteServer();
-    //_initURLMapping();
-})();
-
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         define(['jquery'], factory);
@@ -502,91 +381,85 @@ function _isIE() {
     } else {
         factory(jQuery);
     }
-}(function ($) {
+}(
+    function ($) {
+        var pluses = /\+/g;
+        function encode(s) {
+            return config.raw ? s : encodeURIComponent(s);
+        };
 
-    var pluses = /\+/g;
+        function decode(s) {
+            return config.raw ? s : decodeURIComponent(s);
+        };
 
-    function encode(s) {
-        return config.raw ? s : encodeURIComponent(s);
-    }
+        function stringifyCookieValue(value) {
+            return encode(config.json ? JSON.stringify(value) : String(value));
+        };
 
-    function decode(s) {
-        return config.raw ? s : decodeURIComponent(s);
-    }
-
-    function stringifyCookieValue(value) {
-        return encode(config.json ? JSON.stringify(value) : String(value));
-    }
-
-    function parseCookieValue(s) {
-        if (s.indexOf('"') === 0) {
-            s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-        }
-
-        try {
-            s = decodeURIComponent(s.replace(pluses, ' '));
-            return config.json ? JSON.parse(s) : s;
-        } catch (e) { }
-    }
-
-    function read(s, converter) {
-        var value = config.raw ? s : parseCookieValue(s);
-        return $.isFunction(converter) ? converter(value) : value;
-    }
-
-    var config = $.cookie = function (key, value, options) {
-
-        // Write
-
-        if (value !== undefined && !$.isFunction(value)) {
-            options = $.extend({}, config.defaults, options);
-
-            if (typeof options.expires === 'number') {
-                var days = options.expires, t = options.expires = new Date();
-                t.setTime(+t + days * 864e+5);
+        function parseCookieValue(s) {
+            if (s.indexOf('"') === 0) {
+                s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
             }
 
-            return (document.cookie = [
-				encode(key), '=', stringifyCookieValue(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '',
-				options.path ? '; path=' + options.path : '',
-				options.domain ? '; domain=' + options.domain : '',
-				options.secure ? '; secure' : ''
-            ].join(''));
-        }
+            try {
+                s = decodeURIComponent(s.replace(pluses, ' '));
+                return config.json ? JSON.parse(s) : s;
+            } catch (e) { }
+        };
 
-        var result = key ? undefined : {};
-        var cookies = document.cookie ? document.cookie.split('; ') : [];
+        function read(s, converter) {
+            var value = config.raw ? s : parseCookieValue(s);
+            return $.isFunction(converter) ? converter(value) : value;
+        };
 
-        for (var i = 0, l = cookies.length; i < l; i++) {
-            var parts = cookies[i].split('=');
-            var name = decode(parts.shift());
-            var cookie = parts.join('=');
+        var config = $.cookie = function (key, value, options) {
+            if (value !== undefined && !$.isFunction(value)) {
+                options = $.extend({}, config.defaults, options);
+                if (typeof options.expires === 'number') {
+                    var days = options.expires, t = options.expires = new Date();
+                    t.setTime(+t + days * 864e+5);
+                }
 
-            if (key && key === name) {
-                result = read(cookie, value);
-                break;
+                return (document.cookie = [
+				    encode(key), '=', stringifyCookieValue(value),
+				    options.expires ? '; expires=' + options.expires.toUTCString() : '',
+				    options.path ? '; path=' + options.path : '',
+				    options.domain ? '; domain=' + options.domain : '',
+				    options.secure ? '; secure' : ''
+                ].join(''));
             }
 
-            if (!key && (cookie = read(cookie)) !== undefined) {
-                result[name] = cookie;
+            var result = key ? undefined : {};
+            var cookies = document.cookie ? document.cookie.split('; ') : [];
+            for (var i = 0, l = cookies.length; i < l; i++) {
+                var parts = cookies[i].split('=');
+                var name = decode(parts.shift());
+                var cookie = parts.join('=');
+
+                if (key && key === name) {
+                    result = read(cookie, value);
+                    break;
+                }
+
+                if (!key && (cookie = read(cookie)) !== undefined) {
+                    result[name] = cookie;
+                }
             }
-        }
 
-        return result;
-    };
+            return result;
+        };
 
-    config.defaults = {};
+        config.defaults = {};
+        $.removeCookie = function (key, options) {
+            if ($.cookie(key) === undefined) {
+                return false;
+            }
 
-    $.removeCookie = function (key, options) {
-        if ($.cookie(key) === undefined) {
-            return false;
-        }
-
-        $.cookie(key, '', $.extend({}, options, { expires: -1 }));
-        return !$.cookie(key);
-    };
-}));
+            $.cookie(key, '', $.extend({}, options, { expires: -1 }));
+            return !$.cookie(key);
+        };
+    })
+);
 
 function getQueryString(key) {
     var tempArr = window.location.search.substr(1).split('&');
@@ -599,28 +472,16 @@ function getQueryString(key) {
 };
 
 function _logout() {
-    _registerRemoteServer();
-    $.ajax({
-        type: 'GET',
-        async: true,
-        url: _getRequestURL(_gURLMapping.account.logout),
-        data: '<root></root>',
-        success: function (data, status) {
-            if ($(data).find('err').length > 0) {
-                _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_Logout_Error');
-            }
-
-            $.removeCookie('logined_user_name');
-            window.location.href = 'signin.html?rnd=' + Date.now();
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-            $.removeCookie('logined_user_name');
+    var successFn = function (data, status) {
+        if ($(data).find('err').length > 0) {
+            _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_Logout_Error');
         }
-    });
+
+        $.removeCookie('logined_user_name');
+        window.location.href = 'signin.html?rnd=' + Date.now();
+    };
+
+    ajaxFn('GET', _getRequestURL(_gRoleObj.url.logout), '', successFn, function () { $.removeCookie('logined_user_name') });
 };
 
 function _showChgPWDPopup() {
@@ -657,29 +518,17 @@ function _showChgPWDPopup() {
                 return;
             }
 
-            _registerRemoteServer();
-            $.ajax({
-                type: 'GET',
-                async: true,
-                url: _getRequestURL(_gRoleObj.url.chgpwd),
-                data: '<root><password>' + newPWD + '</password></root>',
-                success: function (data, status) {
-                    if ($(data).find('err').length > 0) {
-                        _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_ChangePWD_Error');
-                        return;
-                    }
-
-                    $('#modal_ChangePWD').modal('hide');
-                    _logout();
-                },
-                dataType: 'xml',
-                xhrFields: {
-                    withCredentials: true
-                },
-                error: function () {
+            var successFn = function (data, status) {
+                if ($(data).find('err').length > 0) {
+                    _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_ChangePWD_Error');
+                    return;
                 }
-            });
 
+                $('#modal_ChangePWD').modal('hide');
+                _logout();
+            };
+
+            ajaxFn('GET', _getRequestURL(_gRoleObj.url.chgpwd), '<root><password>' + newPWD + '</password></root>', successFn, _gEmptyFn);
         });
     }
 
@@ -874,7 +723,6 @@ function openWorkplatform() {
     var symbol = $(arguments[0].currentTarget).attr('data-target');
     window.open('/ikcoder/workplatform.html?scene=' + symbol + '&step=1', 'workplatform', "")
 };
-
 /*Date Time*/
 function isLeapYear(year) {
     if ((tmpYear % 100 != 0 && tmpYear % 4 == 0) || (tmpYear % 100 == 0 && tmpYear % 400 == 0)) {
@@ -899,7 +747,7 @@ function getDaysOfMonth(date) {
     }
 
     return tmpDays;
-}
+};
 
 function formatForDateInput(sourceDate) {
     if (sourceDate == null) {
@@ -951,4 +799,67 @@ function getDateByPeriod(sourceDate, period, periodType) {
     }
 
     return retVal;
+};
+
+function ajaxFn(type, url, data, success, failed) {
+    $.ajax({
+        type: type,
+        async: true,
+        url: url,
+        data: data,
+        success: function (response, status) {
+            success(response);
+        },
+        dataType: 'xml',
+        xhrFields: {
+            withCredentials: true
+        },
+        error: function () {
+            failed();
+        }
+    });
+};
+
+function _gEmptyFn() {
+};
+
+/*XML Operation*/
+function LoadXMLFile(fileName) {
+    var xmlDom = null;
+    if (window.ActiveXObject) {
+        xmlDom = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDom.async = "false";
+        xmlDom.load(fileName);
+    } else if (document.implementation && document.implementation.createDocument) {
+        var xmlhttp = new window.XMLHttpRequest();
+        xmlhttp.open("GET", fileName, false);
+        xmlhttp.send(null);
+        xmlDom = xmlhttp.responseXML;
+    } else {
+        xmlDom = null;
+    }
+    return xmlDom;
+};
+
+function XMLToString(xmlDoc) {
+    if (window.ActiveXObject) {
+        return xmlDoc.xml;
+    } else {
+        return (new XMLSerializer()).serializeToString(xmlDoc);
+    }
+};
+
+function StringToXML(str) {
+    if (window.ActiveXObject) {
+        var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDom.loadXML(str);
+        return xmlDom;
+    } else {
+        var retDoc = new DOMParser().parseFromString(str, "text/xml");
+        if (XMLToString(retDoc) != str) {
+            retDoc = null;
+        }
+
+        return retDoc;
+    }
 };

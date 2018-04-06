@@ -38,44 +38,36 @@ function signin() {
     }
 
     var role = $('#sel_Role').val();
-    if (role == _roleValue.teacher) {
-        if ($("#txt_Key").val().trim() == "") {
-            _showGlobalMessage('请输入授权KEY', 'danger', 'alert_SignIn_Key');
-            return;
-        }
-    }
+    //if (role == _roleValue.teacher) {
+    //    if ($("#txt_Key").val().trim() == "") {
+    //        _showGlobalMessage('请输入授权KEY', 'danger', 'alert_SignIn_Key');
+    //        return;
+    //    }
+    //}
 
     _gRoleObj = getRoelObject(role);
     if (_gRoleObj == null) {
         return;
     }
 
-    _registerRemoteServer();
-    $.ajax({
-        type: 'POST',
-        async: true,
-        url: _getRequestURL(_gRoleObj.url.signin),
-        data: '<root>' +
-            '<symbol>' + $("#txt_SignIn").val().trim() + '</symbol>' +
-            '<password>' + $("#pwd_SignIn").val().trim() + '</password>' +
-            '<licence>' + $("#txt_Key").val().trim() + '</licence>' +
-            '</root>',
-        success: function (data, status) {
-            if ($(data).find('err').length > 0) {
-                _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_SignIn_CannotSignIn');
-                return;
-            }
+    var successFn = function (data, status) {
+        if ($(data).find('err').length > 0) {
+            _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_SignIn_CannotSignIn');
+            return;
+        }
 
-            var userName = $($(data).find('msg')[0]).attr('logined_user_name');
-            $.cookie('logined_user_name', userName);
-            window.location.href = _gRoleObj.target + '?rnd=' + Date.now() + '&needcheckstate=1';
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
+        var userName = $($(data).find('msg')[0]).attr('logined_user_name');
+        $.cookie('logined_user_name', userName);
+        window.location.href = _gRoleObj.target + '?rnd=' + Date.now() + '&needcheckstate=1';
+    };
+
+    ajaxFn(
+        'GET',
+        _getRequestURL(_gRoleObj.url.signin, { name: $("#txt_SignIn").val().trim(), pwd: $("#pwd_SignIn").val().trim() }),
+        '',
+        successFn,
+        function () {
             _showGlobalMessage('无法登录, 请联系客服!', 'danger', 'alert_SignIn_CannotSignIn');
         }
-    });
+    );
 }

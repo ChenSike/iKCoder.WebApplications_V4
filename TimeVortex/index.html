@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Who: Time Vortex 360</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="description" content="">
+    <script type="text/javascript" src="javascript/pilot-lib.js"></script>
+    <script src="javascript/main.js"></script>
+    <script src="javascript/pixi.js"></script>
+    <link rel="stylesheet" type="text/css" href="style/main.css">
+    <style type="text/css">
+        body {
+            font-family: helvetica;
+        }
+
+        div.og-game-holder {
+            background: black;
+            position: absolute;
+            z-index: -1;
+            top: 0px;
+            left: 0px;
+        }
+
+            div.og-game-holder canvavs {
+                touch-action: none;
+                position: absolute;
+                top: 49.1667px;
+                left: 0px;
+                width: 1280px;
+                height: 834.667px;
+                cursor: inherit;
+                letter-spacing: 4px;
+            }
+
+        div.bottom-div {
+            background-position: 50% 50%;
+            background-color: rgb(59, 59, 59);
+            background-repeat: no-repeat;
+            position: absolute;
+            background-size: cover;
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            right: 0px;
+            z-index: 10000000;
+            display: none;
+            background-image: url('image/device/rotate.jpg');
+        }
+    </style>
+</head>
+
+<body style="background: black;">
+    <div id="og-game-holder" style="">
+        <canvas width="1280" height="834"></canvas>
+    </div>
+    <script>
+        (function () {
+            window.og = {
+                gid: "countdown-test",
+                gameDir: "",
+                gameContainerId: "og-game-holder",
+                isFullScreen: window.self === window.top,
+                exitGameUrl: "http://www.ikcoder.com/",
+                environment: "test",
+                embedVars: {
+                    statsCounterName: "testCounterName",
+                    statsAppName: "TestAppName"
+                }
+            };
+
+            bbccookies = {
+                isAllowed: function () {
+                    return true;
+                },
+
+                cookiesEnabled: function () {
+                    return true;
+                },
+
+                set: function () {
+                },
+
+                get: function () {
+                    return "";
+                }
+            };
+
+            requirejs.config({
+                paths: {
+                    "Game": "game",
+                    "echo": "javascript/echo"
+                }
+            });
+
+
+            require(["echo"], function (echo) {
+                window.echo = echo;
+                window.initGame();
+
+            });
+
+        })();
+    </script>
+
+    <script type="text/javascript">
+        require(['pilot-lib/taster-offsite-panel'], function (Panel) {
+            var panel = new Panel('.taster-offsite-panel');
+        });
+    </script>
+    <button class="enter-vr"></button>
+    <div class="bottom-div"></div>
+</body>
+</html>

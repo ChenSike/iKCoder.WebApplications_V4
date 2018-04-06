@@ -89,7 +89,7 @@ function initialCodeModalComp() {
 
     $('#wrap_Workspace_CodeModal .cm-toolbar-wrap-row .cm-toolbar-buttons-item').on('click', onClickCodeModalToolbarBtn);
     $('.header-course-name').html('L1 JavaScript基础');
-    $('.header-course-name').css('line-height', $('.header-container').height() + 'px')
+    $('.header-course-name').css('line-height', ($('.header-container').height() - parseInt($('.header-course-name').css('padding-top')) * 2) + 'px')
 }
 
 function onClickCodeModalToolbarBtn(eventObj) {
