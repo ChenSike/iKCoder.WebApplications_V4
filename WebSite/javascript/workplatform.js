@@ -348,6 +348,7 @@ function loadStageLibs_2(currStageId) {
 };
 
 function loadStageLibs_3(response) {
+    return;
     var tmpPaths = $(response).find("game").find('script');
     var include3D = false;
     for (var i = 0; i < tmpPaths.length ; i++) {
@@ -613,32 +614,44 @@ function adjustCanvasSize(keepRate) {
 
 function playScence() {
     if (WorkScene.playableScene) {
-        var currentBtn = $(arguments[0].target);
-        if (currentBtn.hasClass('fa-play-circle-o') || currentBtn.hasClass('fa-play')) {
-            WorkScene.startGame();
-            resetPlayBtn('R');
-        } else if (currentBtn.hasClass('fa-undo')) {
-            WorkScene.resetScene();
-            resetPlayBtn('P');
+        var currentBtn = null;
+        if (typeof arguments[0] != "undefined" && arguments[0].target) {
+            if (arguments[0].target.nodeName == "path") {
+                currentBtn = $(arguments[0].target.parentElement);
+            } else {
+                currentBtn = $(arguments[0].target);
+            }
+
+            if (currentBtn.hasClass('fa-play-circle') || currentBtn.hasClass('fa-play')) {
+                WorkScene.startGame();
+                resetPlayBtn('R');
+            } else if (currentBtn.hasClass('fa-undo-alt')) {
+                WorkScene.resetScene();
+                resetPlayBtn('P');
+            }
         }
     }
 };
 
 function resetPlayBtn(operation) {
     var toolboxBtn = $('.toolbar-button-play');
-    var screenBtn = $('.siderbar-button-run');
+    var screenBtn = $('.siderbar-button-run svg');
     if (operation == 'P') {
-        toolboxBtn.removeClass('fa-undo');
-        screenBtn.removeClass('fa-undo');
+        toolboxBtn.removeClass('fa-undo-alt');
+        screenBtn.removeClass('fas');
+        screenBtn.removeClass('fa-undo-alt');
         toolboxBtn.addClass('fa-play');
-        screenBtn.addClass('fa-play-circle-o');
+        screenBtn.addClass('far');
+        screenBtn.addClass('fa-play-circle');
         toolboxBtn.attr('title', '开始运行');
         screenBtn.attr('title', '开始运行');
     } else {
         toolboxBtn.removeClass('fa-play');
-        screenBtn.removeClass('fa-play-circle-o');
-        toolboxBtn.addClass('fa-undo');
-        screenBtn.addClass('fa-undo');
+        screenBtn.removeClass('far');
+        screenBtn.removeClass('fa-play-circle');
+        toolboxBtn.addClass('fa-undo-alt');
+        screenBtn.addClass('fas');
+        screenBtn.addClass('fa-undo-alt');
         toolboxBtn.attr('title', '重新开始');
         screenBtn.attr('title', '重新开始');
     }

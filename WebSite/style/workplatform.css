@@ -337,7 +337,7 @@ body {
 .toolbar-container-row {
     height: 30px;
     background-color: rgb(26,164,216);
-    padding: 5px 15px;
+    padding: 4px 15px;
     font-size: 14px;
     font-weight: bolder;
     line-height: 20px;
@@ -369,13 +369,14 @@ body {
 
 .toolbar-buttons-item {
     padding-left: 10px;
-    padding-top: 2px;
+    /*padding-top: 2px;*/
+    font-size: 24px;
     cursor: pointer;
 }
 
     .toolbar-buttons-item:hover {
         color: rgb(209,207,204);
-        font-size: 18px;
+        font-size: 26px;
     }
 
 .workspace-wrap-blockly {
@@ -515,6 +516,9 @@ body {
     font-size: 130px;
     color: rgba(255,255,255,0.3);
     position: absolute;
+    line-height: 130px;
+    height: 130px;
+    width: 130px;
     cursor: pointer;
 }
 
