@@ -209,7 +209,8 @@
             this.activePlayer.slideTackle(t.dx, t.dy, 10)
         }
     },
-    c.prototype.actionTwoPassTackleEnd = function () { }, c.prototype.update = function () {
+    c.prototype.actionTwoPassTackleEnd = function () { },
+    c.prototype.update = function () {
         var t = this.game.pitchWidth,
             e = (this.game.pitchHeight, this.team),
             i = this.team.getIndex(this.activePlayer),

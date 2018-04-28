@@ -7468,6 +7468,7 @@
                         state: 0,
                         preventBubble: !0
                     },
+                    /*
                     49: {
                         label: "1",
                         state: 0,
@@ -7558,6 +7559,7 @@
                         state: 0,
                         preventBubble: !0
                     },
+                    */
                     13: {
                         label: "enter",
                         state: 0,
@@ -7612,10 +7614,10 @@
                     return t.processKeyUp(e)
                 };
                 //add for don't disabled key down event, so that blockly field number can be input
-                if (_gSettings.positionCount <= 0) {
-                    window.addEventListener("keydown", this._onKeyDown, !1);
-                    window.addEventListener("keyup", this._onKeyUp, !1);
-                }
+                //if (_gSettings.positionCount <= 0 || ) {
+                window.addEventListener("keydown", this._onKeyDown, !1);
+                window.addEventListener("keyup", this._onKeyUp, !1);
+                //}
             }, Keyboard.prototype.stop = function () {
                 window.removeEventListener("keydown", this._onKeyDown),
                 window.removeEventListener("keyup", this._onKeyUp)
@@ -10535,6 +10537,7 @@
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     getGlobalSettingFn,
+    //Player Object
     function (t, e, i) {
         "use strict";
 
@@ -10614,148 +10617,258 @@
                         a = (new l.Graphics).beginFill(16711680).drawRect(-20, -20, 40, 40);
                     i && (a.tint = 65280);
                     var h = s(this, t.call(this, 400, 50, a, r));
-                    return window.player = h, h.isTeamA = i, h.view3d = new x["default"](h), h.speedBoost = 1, h.shotPower = 1, h.tacklePower = 1, h._tick = 1e3 * Math.random(), h.type = 1, h.currentTouchingPlayer = null, h.touchingBall = !1, h.ball = null, h.body.position = h.position, h.name = "player", h.groups = ["Player"], h.state = G.IDLE, h.startPosition = new w["default"].Vector, h.ballSkills = new E["default"](h), h.movement = new C["default"](h), h.DEBUG = !1, h.auto = !0, h.shootTarget = null, h.tackleWait = 0, h.fallWait = 0, h.chaseWait = 0, h.passWait = 0, h.shotWait = 0, h.turnCount = 0, h.canTackleCount = 0, h.overwriteStopWalk = !1, h.reticle = new R["default"](h), h.view.addChild(h.reticle), h.reticle.visible = !1, h.shootArrow = (new l.Graphics).beginFill(16776960).drawRect(0, -5, 100, 10).drawCircle(0, 0, 20), h.view.addChild(h.shootArrow), h.shootDirection = new l.Point(1, 0), h.shootAngle = 0, h.shootOffsetAngle = 0, h.didModifyShootAngle = !1, h.chargeBar = new O["default"], h.powerup = null, h.speedBoost = !1, h.canBeTackled = !0, h.offScreenIcon = new D["default"], h.balanceData = null, h.helpTackle = !0, h.tackleSize = 30, h.normalSize = 20, h.actualSpeed = 3, h
+                    return window.player = h,
+                        h.isTeamA = i,
+                        h.view3d = new x["default"](h),
+                        h.speedBoost = 1,
+                        h.shotPower = 1,
+                        h.tacklePower = 1,
+                        h._tick = 1e3 * Math.random(),
+                        h.type = 1,
+                        h.currentTouchingPlayer = null,
+                        h.touchingBall = !1,
+                        h.ball = null,
+                        h.body.position =
+                        h.position,
+                        h.name = "player",
+                        h.groups = ["Player"],
+                        h.state = G.IDLE,
+                        h.startPosition = new w["default"].Vector,
+                        h.ballSkills = new E["default"](h),
+                        h.movement = new C["default"](h),
+                        h.DEBUG = !1,
+                        h.auto = !0,
+                        h.shootTarget = null,
+                        h.tackleWait = 0,
+                        h.fallWait = 0,
+                        h.chaseWait = 0,
+                        h.passWait = 0,
+                        h.shotWait = 0,
+                        h.turnCount = 0,
+                        h.canTackleCount = 0,
+                        h.overwriteStopWalk = !1,
+                        h.reticle = new R["default"](h),
+                        h.view.addChild(h.reticle),
+                        h.reticle.visible = !1,
+                        h.shootArrow = (new l.Graphics).beginFill(16776960).drawRect(0, -5, 100, 10).drawCircle(0, 0, 20),
+                        h.view.addChild(h.shootArrow),
+                        h.shootDirection = new l.Point(1, 0),
+                        h.shootAngle = 0,
+                        h.shootOffsetAngle = 0,
+                        h.didModifyShootAngle = !1,
+                        h.chargeBar = new O["default"],
+                        h.powerup = null,
+                        h.speedBoost = !1,
+                        h.canBeTackled = !0,
+                        h.offScreenIcon = new D["default"],
+                        h.balanceData = null,
+                        h.helpTackle = !0,
+                        h.tackleSize = 30,
+                        h.normalSize = 20,
+                        h.actualSpeed = 3,
+                        h
                 }
-                return a(e, t), e.prototype.fallOver = function () {
-                    p["default"].sfx.play("tackle_hit_deck");
-                    var t = Math.random();
-                    t < .4 && p["default"].sfx.playGroup("croudAngry"), this.body.acceleration.x = 0, this.body.acceleration.y = 0, this.fallWait = 0, this.setState(G.FALL), this.ballSkills.ball && this.ballSkills.releaseBall()
-                }, e.prototype.reset = function () {
-                    this.setState(G.STOP), this.endPowerup(), this.ballSkills.ball && this.ballSkills.releaseBall()
-                }, e.prototype.setData = function (t) {
-                    this.data = t, this.view3d.setData(t), this.data.power >= .4 ? this.chargeBar.setSize(2) : this.data.power >= .3 ? this.chargeBar.setSize(1) : this.chargeBar.setSize(0), this.offScreenIcon.setData(t)
-                }, e.prototype.setTeam = function (t) {
-                    for (var e = [], i = 0; i < t.children.length; i++) {
-                        var n = t.children[i];
-                        n !== this && e.push(n)
-                    }
-                    this.reticle.setArrows(e), this.view3d.reticle.setArrows(e)
-                }, e.prototype.setReticle = function (t) {
-                    this.reticle.visible = t
-                }, e.prototype.setState = function (t) {
-                    if (this.state !== t && (this.state !== G.HIDE || t === G.SHOW)) {
-                        this.state === G.KICK_CHARGE && (this.world.view3d.camera.focusMode = !1), this.canCollide = t !== G.FALL;
-                        var e = this.normalSize;
-                        t !== G.TACKLE || this.auto || (e = this.tackleSize), this.body.shape.x = -e / 2, this.body.shape.y = -e / 2, this.body.shape.width = e, this.body.shape.height = e, t === G.KICK_CHARGE ? this.world.view3d.camera.focusMode = !0 : t === G.TACKLE ? (this.tackleWait = 0, this.body.friction = .9, this.actualSpeed = 20) : this.body.friction = .94, this.state = t, this.overwriteStopWalk = !1, this.state === G.HIDE && (this.view3d.hide(), this.movement.stop(), this.overwriteStopWalk = !0, this.offScreenIcon.hide()), this.state === G.SHOW && (this.view3d.show(), this.overwriteStopWalk = !1, this.movement.update(), this.offScreenIcon.show()), this.state !== G.WIN && this.state !== G.LOSE || this.movement.stop(), this.state !== G.LOSE && this.state !== G.WIN && this.state !== G.TACKLE && this.state !== G.FALL && this.state !== G.KICK_CHARGE || (this.overwriteStopWalk = !0)
-                    }
-                }, e.prototype.setPowerUp = function (t) {
-                    this.setState(G.STOP), this.endPowerup(), this.powerup = U["default"].get(t), this.powerup.reset(this)
-                }, e.prototype.endPowerup = function (t) {
-                    this.powerup && (this.powerup.stop(), U["default"]["return"](this.powerup), this.powerup = null)
-                }, e.prototype.update = function () {
-                    this.count += .3;
-                    var t = this.data.speed > .25 ? 1.1 : .9;
-                    if (this.speedBoost ? this.actualSpeed = 4 * this.balanceData.speedMod * t : this.actualSpeed = 3 * this.balanceData.speedMod * t, this.view3d.position.x = this.position.x, this.view3d.position.y = this.position.y, this.view3d.update(), this.powerup && (this.powerup.update(), this.powerup.dead && this.endPowerup()), this.canTackleCount++, this.view3d.reticle.chargeArrow.visible = !1, this.ballSkills.update(), this.view3d.reticle.update(), this.state === G.RUN) this.movement.update();
-                    else if (this.state === G.TACKLE) {
-                        this.actualSpeed = 20;
-                        var e = this.body.velocity.length();
-                        e < 2 && (this.tackleWait++, this.tackleWait > 20 && (this.setState(G.IDLE), this.stop()))
-                    } else if (this.state === G.FALL) this.view.scale.set(.5), this.fallWait++, this.body.velocity.x *= .8, this.body.velocity.y *= .8, this.fallWait > 140 && (this.view.scale.set(1), this.setState(G.IDLE), this.stop());
-                    else if (this.state === G.KICK_CHARGE) {
-                        if (!this.ballSkills.ball) return void this.setState(G.IDLE);
-                        this.chargeBar.show(), this.view3d.reticle.chargeArrow.visible = !0;
-                        var i = Math.atan2(this.shootDirection.y, this.shootDirection.x);
-                        i += this.shootOffsetAngle, !this.didModifyShootAngle, this.didModifyShootAngle = !1, this.shootAngle = i + Math.PI / 2;
-                        var n = this.data.power < .25 ? 1.1 : .9;
-                        this.speedBoost && (n *= 1.5), this.shotWait += .7 * n;
-                        var r = this.shotWait / 75;
-                        r *= r, this.body.velocity.x *= .8, this.body.velocity.y *= .8, this.chargeBar.setRatio(r), this.ballSkills.ball.chargeEffect.setRatio(r), this.shotWait > 75 && this.shootRelease(this.shootTarget)
-                    }
-                    this.movingTo && (this.actualSpeed *= 1.1), this.body.setMaxSpeed(this.actualSpeed), this.state === G.KICK_CHARGE ? this.chargeBar.show() : this.chargeBar.hide();
-                    var o = this.world.view3d.toScreenPosition(this);
-                    this.chargeBar.position.x = o.x, this.chargeBar.position.y = o.y + 40, this.isTeamA || this.offScreenIcon.update(o);
-                    var s = this.world.game.ball;
-                    this.touchingBall && !this.ballSkills.ball && s.body.velocity.z < 15 && s.body.position.z < 10 && (this.touchingBall = !1, this.ballSkills.pickupBall(s))
-                }, e.prototype.addedToWorld = function () {
-                    this.world.overlay.addChild(this.chargeBar), this.isTeamA || this.world.overlay.addChild(this.offScreenIcon)
-                }, e.prototype.removedFromWorld = function () {
-                    this.world.overlay.removeChild(this.chargeBar), this.isTeamA || this.world.overlay.removeChild(this.offScreenIcon)
-                }, e.prototype.chaseDown = function (t) {
-                    if (this.auto && this.state !== G.TACKLE && this.state !== G.FALL) {
-                        this.movingTo = !1, this.alpha = Math.random(), this.movement.follow(t);
-                        var e = t.position.x - this.position.x,
-                            i = t.position.y - this.position.y,
-                            n = Math.sqrt(e * e + i * i);
-                        if (e /= n, i /= n, t.owner && t.owner !== this && n < 150 && (this.chaseWait += f["default"].game.speed, this.chaseWait > 70 + this.balanceData.aggressiveness || t.owner.canTackleCount > 0 && t.owner.body.velocity.length() < 2)) {
-                            var r = Math.atan2(i, e);
-                            this.balanceData.tackleChance < Math.random() && (r = Math.atan2(this.body.velocity.y, this.body.velocity.x)), this.slideTackle(Math.cos(r), Math.sin(r)), this.chaseWait = -80
+                return a(e, t),
+                    e.prototype.fallOver = function () {
+                        p["default"].sfx.play("tackle_hit_deck");
+                        var t = Math.random();
+                        t < .4 && p["default"].sfx.playGroup("croudAngry"), this.body.acceleration.x = 0, this.body.acceleration.y = 0, this.fallWait = 0, this.setState(G.FALL), this.ballSkills.ball && this.ballSkills.releaseBall()
+                    },
+                    e.prototype.reset = function () {
+                        this.setState(G.STOP), this.endPowerup(), this.ballSkills.ball && this.ballSkills.releaseBall()
+                    },
+                    e.prototype.setData = function (t) {
+                        this.data = t, this.view3d.setData(t), this.data.power >= .4 ? this.chargeBar.setSize(2) : this.data.power >= .3 ? this.chargeBar.setSize(1) : this.chargeBar.setSize(0), this.offScreenIcon.setData(t)
+                    },
+                    e.prototype.setTeam = function (t) {
+                        for (var e = [], i = 0; i < t.children.length; i++) {
+                            var n = t.children[i];
+                            n !== this && e.push(n)
                         }
-                    }
-                }, e.prototype.chargeGoal = function () {
-                    this.auto && this.moveInDirection(-1, 0)
-                }, e.prototype.shootBegin = function (t) {
-                    if (this.ballSkills.ball) {
-                        p["default"].sfx.playGroup("croudHappy"), p["default"].sfx.play("charge_up"), this.shotWait = 0, this.world.game.speed = .1, this.shootTarget = t, this.movement.target = null, this.body.acceleration.x = 1e-4, this.body.acceleration.y = 0;
-                        var e = t.position.x - this.position.x,
-                            i = t.position.y - this.position.y,
-                            n = Math.sqrt(e * e + i * i);
-                        e /= n, i /= n, this.shootDirection.x = e, this.shootDirection.y = i, this.shootDirection.visible = !0, this.setState(G.KICK_CHARGE)
-                    }
-                }, e.prototype.shootRelease = function (t) {
-                    if (this.state !== G.TACKLE) {
-                        this.world.game.speed = 1, this.passWait = 0;
-                        var e = 15;
+                        this.reticle.setArrows(e), this.view3d.reticle.setArrows(e)
+                    },
+                    e.prototype.setReticle = function (t) {
+                        this.reticle.visible = t
+                    },
+                    e.prototype.setState = function (t) {
+                        if (this.state !== t && (this.state !== G.HIDE || t === G.SHOW)) {
+                            this.state === G.KICK_CHARGE && (this.world.view3d.camera.focusMode = !1), this.canCollide = t !== G.FALL;
+                            var e = this.normalSize;
+                            t !== G.TACKLE || this.auto || (e = this.tackleSize), this.body.shape.x = -e / 2, this.body.shape.y = -e / 2, this.body.shape.width = e, this.body.shape.height = e, t === G.KICK_CHARGE ? this.world.view3d.camera.focusMode = !0 : t === G.TACKLE ? (this.tackleWait = 0, this.body.friction = .9, this.actualSpeed = 20) : this.body.friction = .94, this.state = t, this.overwriteStopWalk = !1, this.state === G.HIDE && (this.view3d.hide(), this.movement.stop(), this.overwriteStopWalk = !0, this.offScreenIcon.hide()), this.state === G.SHOW && (this.view3d.show(), this.overwriteStopWalk = !1, this.movement.update(), this.offScreenIcon.show()), this.state !== G.WIN && this.state !== G.LOSE || this.movement.stop(), this.state !== G.LOSE && this.state !== G.WIN && this.state !== G.TACKLE && this.state !== G.FALL && this.state !== G.KICK_CHARGE || (this.overwriteStopWalk = !0)
+                        }
+                    },
+                    e.prototype.setPowerUp = function (t) {
+                        this.setState(G.STOP), this.endPowerup(), this.powerup = U["default"].get(t), this.powerup.reset(this)
+                    },
+                    e.prototype.endPowerup = function (t) {
+                        this.powerup && (this.powerup.stop(), U["default"]["return"](this.powerup), this.powerup = null)
+                    },
+                    e.prototype.update = function () {
+                        this.count += .3;
+                        var t = this.data.speed > .25 ? 1.1 : .9;
+                        if (this.speedBoost ?
+                            this.actualSpeed = 4 * this.balanceData.speedMod * t :
+                            this.actualSpeed = 3 * this.balanceData.speedMod * t,
+                            this.view3d.position.x = this.position.x,
+                            this.view3d.position.y = this.position.y,
+                            this.view3d.update(),
+                            this.powerup && (this.powerup.update(), this.powerup.dead && this.endPowerup()),
+                            this.canTackleCount++,
+                            this.view3d.reticle.chargeArrow.visible = !1,
+                            this.ballSkills.update(),
+                            this.view3d.reticle.update(),
+                            this.state === G.RUN
+                        ) {
+                            this.movement.update();
+                        } else if (this.state === G.TACKLE) {
+                            this.actualSpeed = 20;
+                            var e = this.body.velocity.length();
+                            e < 2 && (this.tackleWait++, this.tackleWait > 20 && (this.setState(G.IDLE), this.stop()))
+                        } else if (this.state === G.FALL) {
+                            this.view.scale.set(.5),
+                            this.fallWait++,
+                            this.body.velocity.x *= .8,
+                            this.body.velocity.y *= .8,
+                            this.fallWait > 140 && (this.view.scale.set(1),
+                            this.setState(G.IDLE), this.stop());
+                        } else if (this.state === G.KICK_CHARGE) {
+                            if (!this.ballSkills.ball) return void this.setState(G.IDLE);
+                            this.chargeBar.show(), this.view3d.reticle.chargeArrow.visible = !0;
+                            var i = Math.atan2(this.shootDirection.y, this.shootDirection.x);
+                            i += this.shootOffsetAngle, !this.didModifyShootAngle, this.didModifyShootAngle = !1, this.shootAngle = i + Math.PI / 2;
+                            var n = this.data.power < .25 ? 1.1 : .9;
+                            this.speedBoost && (n *= 1.5), this.shotWait += .7 * n;
+                            var r = this.shotWait / 75;
+                            r *= r, this.body.velocity.x *= .8, this.body.velocity.y *= .8, this.chargeBar.setRatio(r), this.ballSkills.ball.chargeEffect.setRatio(r), this.shotWait > 75 && this.shootRelease(this.shootTarget)
+                        }
+                        this.movingTo && (this.actualSpeed *= 1.1),
+                        this.body.setMaxSpeed(this.actualSpeed),
+                        this.state === G.KICK_CHARGE ? this.chargeBar.show() : this.chargeBar.hide();
+                        var o = this.world.view3d.toScreenPosition(this);
+                        this.chargeBar.position.x = o.x,
+                        this.chargeBar.position.y = o.y + 40,
+                        this.isTeamA || this.offScreenIcon.update(o);
+                        var s = this.world.game.ball;
+                        this.touchingBall && !this.ballSkills.ball && s.body.velocity.z < 15 && s.body.position.z < 10 && (this.touchingBall = !1, this.ballSkills.pickupBall(s))
+                    },
+                    e.prototype.addedToWorld = function () {
+                        this.world.overlay.addChild(this.chargeBar), this.isTeamA || this.world.overlay.addChild(this.offScreenIcon)
+                    },
+                    e.prototype.removedFromWorld = function () {
+                        this.world.overlay.removeChild(this.chargeBar), this.isTeamA || this.world.overlay.removeChild(this.offScreenIcon)
+                    },
+                    e.prototype.chaseDown = function (t) {
+                        if (this.auto && this.state !== G.TACKLE && this.state !== G.FALL) {
+                            this.movingTo = !1, this.alpha = Math.random(), this.movement.follow(t);
+                            var e = t.position.x - this.position.x,
+                                i = t.position.y - this.position.y,
+                                n = Math.sqrt(e * e + i * i);
+                            if (e /= n, i /= n, t.owner && t.owner !== this && n < 150 && (this.chaseWait += f["default"].game.speed, this.chaseWait > 70 + this.balanceData.aggressiveness || t.owner.canTackleCount > 0 && t.owner.body.velocity.length() < 2)) {
+                                var r = Math.atan2(i, e);
+                                this.balanceData.tackleChance < Math.random() && (r = Math.atan2(this.body.velocity.y, this.body.velocity.x)), this.slideTackle(Math.cos(r), Math.sin(r)), this.chaseWait = -80
+                            }
+                        }
+                    },
+                    e.prototype.chargeGoal = function () {
+                        this.auto && this.moveInDirection(-1, 0)
+                    },
+                    e.prototype.shootBegin = function (t) {
                         if (this.ballSkills.ball) {
-                            if (this.setState(G.KICK), t)
-                                if (this.auto) {
-                                    var i = 0;
-                                    i = this.position.x < t.position.x ? 0 : Math.PI, i += k["default"].random(-.3, .3);
-                                    var n = Math.random() < this.balanceData.goalScorePercentage;
-                                    n && p["default"].sfx.play("big_kick"), this.ballSkills.ball.shoot(Math.cos(i) * e, Math.sin(i) * e, n)
-                                } else {
-                                    var r = Math.atan2(this.shootDirection.y, this.shootDirection.x);
-                                    r += this.shootOffsetAngle, this.shootDirection.x = Math.cos(r), this.shootDirection.y = Math.sin(r);
-                                    var o = this.shotWait / 75;
-                                    o *= o;
-                                    var s = this.chargeBar.min,
-                                        a = this.chargeBar.max,
-                                        n = !1;
-                                    if (o > s && o < a) {
-                                        var h = this.position.x - this.shootTarget.position.x,
-                                            l = this.position.y - this.shootTarget.position.y,
-                                            c = Math.sqrt(h * h + l * l);
-                                        c < 500 && (n = Math.random() < this.balanceData.goalScorePercentage, this.data.isCaptain ? (n = !0, this.world.game.scripts["super"].run(this)) : n && p["default"].sfx.play("big_kick"))
+                            p["default"].sfx.playGroup("croudHappy"),
+                            p["default"].sfx.play("charge_up"),
+                            this.shotWait = 0,
+                            this.world.game.speed = .1,
+                            this.shootTarget = t,
+                            this.movement.target = null,
+                            this.body.acceleration.x = 1e-4,
+                            this.body.acceleration.y = 0;
+                            var e = t.position.x - this.position.x,
+                                i = t.position.y - this.position.y,
+                                n = Math.sqrt(e * e + i * i);
+                            e /= n, i /= n,
+                            this.shootDirection.x = e,
+                            this.shootDirection.y = i,
+                            this.shootDirection.visible = !0,
+                            this.setState(G.KICK_CHARGE);
+                        }
+                    },
+                    e.prototype.shootRelease = function (t) {
+                        if (this.state !== G.TACKLE) {
+                            this.world.game.speed = 1, this.passWait = 0;
+                            var e = 15;
+                            if (this.ballSkills.ball) {
+                                if (this.setState(G.KICK), t)
+                                    if (this.auto) {
+                                        var i = 0;
+                                        i = this.position.x < t.position.x ? 0 : Math.PI, i += k["default"].random(-.3, .3);
+                                        var n = Math.random() < this.balanceData.goalScorePercentage;
+                                        n && p["default"].sfx.play("big_kick"), this.ballSkills.ball.shoot(Math.cos(i) * e, Math.sin(i) * e, n)
+                                    } else {
+                                        var r = Math.atan2(this.shootDirection.y, this.shootDirection.x);
+                                        r += this.shootOffsetAngle, this.shootDirection.x = Math.cos(r), this.shootDirection.y = Math.sin(r);
+                                        var o = this.shotWait / 75;
+                                        o *= o;
+                                        var s = this.chargeBar.min,
+                                            a = this.chargeBar.max,
+                                            n = !1;
+                                        if (o > s && o < a) {
+                                            var h = this.position.x - this.shootTarget.position.x,
+                                                l = this.position.y - this.shootTarget.position.y,
+                                                c = Math.sqrt(h * h + l * l);
+                                            c < 500 && (n = Math.random() < this.balanceData.goalScorePercentage, this.data.isCaptain ? (n = !0, this.world.game.scripts["super"].run(this)) : n && p["default"].sfx.play("big_kick"))
+                                        }
+                                        this.ballSkills.ball.shoot(this.shootDirection.x * e, this.shootDirection.y * e, n)
                                     }
-                                    this.ballSkills.ball.shoot(this.shootDirection.x * e, this.shootDirection.y * e, n)
-                                }
-                            this.ballSkills.releaseBall()
+                                this.ballSkills.releaseBall()
+                            }
                         }
-                    }
-                }, e.prototype.slideTackle = function (t, e) {
-                    if (!this.overwriteStopWalk) {
-                        if (p["default"].sfx.playGroup("slide"), this.setState(G.TACKLE), this.chaseWait = -80, !this.auto) {
-                            t = this.body.velocity.x, e = this.body.velocity.y;
-                            var i = Math.sqrt(t * t + e * e);
-                            t /= i, e /= i
+                    },
+                    e.prototype.slideTackle = function (t, e) {
+                        if (!this.overwriteStopWalk) {
+                            if (p["default"].sfx.playGroup("slide"), this.setState(G.TACKLE), this.chaseWait = -80, !this.auto) {
+                                t = this.body.velocity.x, e = this.body.velocity.y;
+                                var i = Math.sqrt(t * t + e * e);
+                                t /= i, e /= i
+                            }
+                            this.movement.direction.x = t, this.movement.direction.y = e, this.body.velocity.x = 15 * t, this.body.velocity.y = 15 * e, this.body.acceleration.x = 0, this.body.acceleration.y = 0, this.currentTouchingPlayer && this.runTackle(this.currentTouchingPlayer)
                         }
-                        this.movement.direction.x = t, this.movement.direction.y = e, this.body.velocity.x = 15 * t, this.body.velocity.y = 15 * e, this.body.acceleration.x = 0, this.body.acceleration.y = 0, this.currentTouchingPlayer && this.runTackle(this.currentTouchingPlayer)
-                    }
-                }, e.prototype.moveTo = function (t, e) {
-                    this.overwriteStopWalk || this.auto && (this.setState(G.RUN), this.movement.moveTo(t, e))
-                }, e.prototype.moveInDirection = function (t, e) {
-                    this.state === G.KICK_CHARGE && (this.didModifyShootAngle = !0, this.shootOffsetAngle += .02 * (.4 * e - this.shootOffsetAngle)), this.overwriteStopWalk || this.movement.moveInDirection(t, e)
-                }, e.prototype.show = function () {
-                    this.setState(G.SHOW)
-                }, e.prototype.hide = function () {
-                    this.setState(G.HIDE)
-                }, e.prototype.win = function () {
-                    this.setState(G.WIN)
-                }, e.prototype.lose = function () {
-                    this.setState(G.LOSE)
-                }, e.prototype.stop = function () {
-                    this.overwriteStopWalk || (this.setState(G.STOP), this.movement.stop())
-                }, e.prototype.onCollideBegin = function (t) {
-                    var e = t.getOtherObject(this);
-                    "ball" === e.name ? (t.ignore = !0, e.body.velocity.z < 15 && e.body.position.z < 20 ? (this.canTackleCount = -50, this.passWait = Math.random() * -150, this.onBallCollide(e)) : this.touchingBall = !0) : "player" === e.name && (t.ignore = !0, e.isTeamA !== this.isTeamA && (this.currentTouchingPlayer = e, this.state === G.TACKLE && this.runTackle(e)))
-                }, e.prototype.runTackle = function (t) {
-                    var e = this.body.velocity.length();
-                    e > 4 && (this.tackleWait = 1e3, t.canBeTackled ? (t.ballSkills.ball && (t.ballSkills.releaseBall(), this.ballSkills.pickupBall(this.world.game.ball)), t.fallOver()) : this.fallOver(), this.world.view3d.camera.shake())
-                }, e.prototype.onCollideEnd = function (t) {
-                    var e = t.getOtherObject(this);
-                    "ball" === e.name ? this.touchingBall = !1 : "player" === e.name && e.isTeamA !== this.isTeamA && (this.world.game.speed = 1, this.currentTouchingPlayer = null)
-                }, e.prototype.onBallCollide = function (t) {
-                    this.state !== G.FALL && (t.owner || this.ballSkills.pickupBall(t))
-                }, e
+                    },
+                    e.prototype.moveTo = function (t, e) {
+                        this.overwriteStopWalk || this.auto && (this.setState(G.RUN), this.movement.moveTo(t, e))
+                    },
+                    e.prototype.moveInDirection = function (t, e) {
+                        this.state === G.KICK_CHARGE && (this.didModifyShootAngle = !0, this.shootOffsetAngle += .02 * (.4 * e - this.shootOffsetAngle)), this.overwriteStopWalk || this.movement.moveInDirection(t, e)
+                    },
+                    e.prototype.show = function () {
+                        this.setState(G.SHOW)
+                    },
+                    e.prototype.hide = function () {
+                        this.setState(G.HIDE)
+                    },
+                    e.prototype.win = function () {
+                        this.setState(G.WIN)
+                    },
+                    e.prototype.lose = function () {
+                        this.setState(G.LOSE)
+                    },
+                    e.prototype.stop = function () {
+                        this.overwriteStopWalk || (this.setState(G.STOP), this.movement.stop())
+                    },
+                    e.prototype.onCollideBegin = function (t) {
+                        var e = t.getOtherObject(this);
+                        "ball" === e.name ? (t.ignore = !0, e.body.velocity.z < 15 && e.body.position.z < 20 ? (this.canTackleCount = -50, this.passWait = Math.random() * -150, this.onBallCollide(e)) : this.touchingBall = !0) : "player" === e.name && (t.ignore = !0, e.isTeamA !== this.isTeamA && (this.currentTouchingPlayer = e, this.state === G.TACKLE && this.runTackle(e)))
+                    },
+                    e.prototype.runTackle = function (t) {
+                        var e = this.body.velocity.length();
+                        e > 4 && (this.tackleWait = 1e3, t.canBeTackled ? (t.ballSkills.ball && (t.ballSkills.releaseBall(), this.ballSkills.pickupBall(this.world.game.ball)), t.fallOver()) : this.fallOver(), this.world.view3d.camera.shake())
+                    },
+                    e.prototype.onCollideEnd = function (t) {
+                        var e = t.getOtherObject(this);
+                        "ball" === e.name ? this.touchingBall = !1 : "player" === e.name && e.isTeamA !== this.isTeamA && (this.world.game.speed = 1, this.currentTouchingPlayer = null)
+                    },
+                    e.prototype.onBallCollide = function (t) {
+                        this.state !== G.FALL && (t.owner || this.ballSkills.pickupBall(t))
+                    }, e
             }(v["default"]);
         e["default"] = z, t.exports = e["default"]
     },
@@ -10877,7 +10990,35 @@
                 }, e.prototype.show = function () {
                     this.playerMesh.material.opacity = 1
                 }, e.prototype.update = function () {
-                    this.chargeArrow.update(), this.player.state === C.KICK_CHARGE ? this.animation.play("kickCharge") : this.player.state === C.FALL ? this.animation.play("fall") : this.player.state === C.TACKLE ? this.animation.play("tackle") : this.player.state === C.WIN ? this.animation.play("win") : this.player.state === C.LOSE ? this.animation.play("lose") : this.player.body.velocity.length() > 1 ? this.player.speedBoost ? this.animation.play("dash") : this.animation.play("run") : this.animation.play("stand"), this.animation.update(v["default"].game.deltaTime), this.count++, u["default"].setUvs(this.playerMesh, this.animation.texture);
+                    this.chargeArrow.update();
+
+                    if (_gSettings.onlyPlayRun) {
+                        this.player.state === C.KICK_CHARGE ?
+                        this.animation.play("kickCharge") :
+                        this.player.state === C.TACKLE ?
+                        this.animation.play("tackle") :
+                        this.animation.play("run");
+
+                    } else {
+                        this.player.state === C.KICK_CHARGE ?
+                        this.animation.play("kickCharge") :
+                        this.player.state === C.FALL ?
+                        this.animation.play("fall") :
+                        this.player.state === C.TACKLE ?
+                        this.animation.play("tackle") :
+                        this.player.state === C.WIN ?
+                        this.animation.play("win") :
+                        this.player.state === C.LOSE ?
+                        this.animation.play("lose") :
+                        this.player.body.velocity.length() > 1 ?
+                        this.player.speedBoost ?
+                        this.animation.play("dash") :
+                        this.animation.play("run") :
+                        this.animation.play("stand");
+                    }
+
+                    this.animation.update(v["default"].game.deltaTime),
+                    this.count++, u["default"].setUvs(this.playerMesh, this.animation.texture);
                     var t = this.player.body.velocity.x > 0 ? 1 : -1;
                     this.flipContainer.scale.x = t, this.flipContainer.rotation.x = window.test - Math.PI
                 }, e
@@ -11005,15 +11146,18 @@
                     var t = this.item.body.velocity.x / 3;
                     t *= 40, t = s.cap(t, -this.speedRange, this.speedRange), this.ball.position.x += (this.item.position.x + this.offset.x + t - this.ball.position.x) * this.easeX, this.item.body.velocity.y > 0 ? this.ball.position.y += .5 * (this.item.position.y + 0 - this.ball.position.y) : this.ball.position.y += .5 * (this.item.position.y - 10 - this.ball.position.y), this.ball.position.z = this.offset.z, this.ball.body.velocity.z = 0
                 }
-            }, a.prototype.releaseBall = function () {
+            },
+            a.prototype.releaseBall = function () {
                 this.ball.released(), this.ball = null, this.item.signals.onBallLost.dispatch(this.item)
-            }, a.prototype.passTo = function (t) {
+            },
+            a.prototype.passTo = function (t) {
                 this.ball && (this.ball.passTo(t), this.releaseBall())
             }, a.prototype.pass = function (t, e, i, n) {
                 this.ball && (this.ball.pass(t, e, i, n), this.releaseBall())
             }, n.exports = a
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //Player.movement
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -11021,7 +11165,18 @@
                 o = i(16),
                 s = i(48),
                 a = function (t) {
-                    this.item = t, this.direction = new r.Vector(1, 0), this.targetDirection = new r.Vector(1, 0), this.targetPosition = new r.Vector(1, 0), t.signals.onArrive = new o(this), t.signals.onMoveTo = new o(this), this.callback = null, this.scope = null, this.active = !0, this.turnMultiplier = 1, this.accel = 1, this.lookingForTarget = !1
+                    this.item = t,
+                    this.direction = new r.Vector(1, 0),
+                    this.targetDirection = new r.Vector(1, 0),
+                    this.targetPosition = new r.Vector(1, 0),
+                    t.signals.onArrive = new o(this),
+                    t.signals.onMoveTo = new o(this),
+                    this.callback = null,
+                    this.scope = null,
+                    this.active = !0,
+                    this.turnMultiplier = 1,
+                    this.accel = 1,
+                    this.lookingForTarget = !1
                 };
             a.prototype.update = function () {
                 if (this.lookingForTarget) {
@@ -11031,13 +11186,21 @@
                         i = Math.sqrt(t * t + e * e);
                     t /= i, e /= i, i > 10 ? this.moveInDirection(t, e) : (this.callback && (this.callback.call(this.scope), this.callback = null), this.stop())
                 }
-            }, a.prototype.follow = function (t, e) {
+            },
+            a.prototype.follow = function (t, e) {
                 this.target = t, this.lookingForTarget = !0
-            }, a.prototype.moveTo = function (t, e) {
-                this.target = null, this.callback = null, this.lookingForTarget = !0, this.targetPosition.x = t, this.targetPosition.y = e
-            }, a.prototype.then = function (t, e) {
+            },
+            a.prototype.moveTo = function (t, e) {
+                this.target = null,
+                this.callback = null,
+                this.lookingForTarget = !0,
+                this.targetPosition.x = t,
+                this.targetPosition.y = e
+            },
+            a.prototype.then = function (t, e) {
                 this.callback = t, this.scope = e
-            }, a.prototype.moveInDirection = function (t, e) {
+            },
+            a.prototype.moveInDirection = function (t, e) {
                 if (this.targetDirection = t, this.targetDirection = e, this.item.auto) {
                     var i = Math.atan2(this.direction.y, this.direction.x),
                         n = Math.atan2(e, t),
@@ -11045,9 +11208,11 @@
                     i += r * this.turnMultiplier, this.direction.x = Math.cos(i), this.direction.y = Math.sin(i)
                 } else this.direction.x = t, this.direction.y = e;
                 this.item.body.acceleration.x = .6 * this.direction.x * this.accel, this.item.body.acceleration.y = .6 * this.direction.y * this.accel
-            }, a.prototype.stop = function () {
+            },
+            a.prototype.stop = function () {
                 this.target = null, this.lookingForTarget = !1, this.item.body.acceleration.x = 1e-4, this.item.body.acceleration.y = 0, this.item.body.velocity.x = .001, this.item.body.velocity.y = 0
-            }, n.exports = a
+            },
+            n.exports = a
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     function (t, e, i) {
@@ -11175,7 +11340,12 @@
             }, f.prototype.pickUp = function (t) {
                 s.sfx.playGroup("ball_pickup"), this.pickedUp = !0, this.lastOwner = this.owner = t, this.target = null, this.body.velocity.set(0), this.chargeEffect.setRatio(0)
             }, f.prototype.shoot = function (t, e, i) {
-                this.perfect = i, this.shot = !0, this.body.velocity.y = e, this.body.velocity.x = t, i ? (s.sfx.playGroup("croudHappy"), this.body.velocity.y *= 1.5, this.body.velocity.x *= 1.5, this.rect.visible = !0) : (Math.random() < .3 && s.sfx.playGroup("croudHappy"), s.sfx.play("ballkick_shoot_hard")), this.body.velocity.z = 13, this.chargeEffect.setRatio(0)
+                this.perfect = i,
+                this.shot = !0,
+                this.body.velocity.y = e,
+                this.body.velocity.x = t, i ? (s.sfx.playGroup("croudHappy"), this.body.velocity.y *= 1.5, this.body.velocity.x *= 1.5, this.rect.visible = !0) : (Math.random() < .3 && s.sfx.playGroup("croudHappy"), s.sfx.play("ballkick_shoot_hard")),
+                this.body.velocity.z = 13,
+                this.chargeEffect.setRatio(0)                
             }, f.prototype.pass = function (t, e, i, n) {
                 s.sfx.play("ballkick_pass"), this.shot = !1, this.body.velocity.x = t * i, this.body.velocity.y = e * i, this.body.velocity.z = n || 0
             }, f.prototype.passTo = function (t) {
@@ -13229,9 +13399,9 @@
                     return window.topMenu = n, n.app = i, n.state = "home", n.previousState = n.state, n.nextScreen = null, n.prevScreen = null, n.states = {
                         home: ["mute"],
                         //for J-01-001 step 1
-                        game: _gSettings.positionCount >= 0 ? ["mute"] : ["mute", "pause"],
+                        game: _gSettings.showHud ? ["mute", "pause"] : ["mute"],
                         //game: ["mute", "pause"],
-                        prev:  ["prev", "mute"],
+                        prev: ["prev", "mute"],
                         next: ["next"],
                         prevnext: ["prev", "mute"],
                         pause: []

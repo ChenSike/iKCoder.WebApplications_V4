@@ -1,6 +1,7 @@
 ﻿'use strict';
 _gSettings.showBall = false;
 _gSettings.positionCount = 6;
+_gSettings.showHud = false;
 
 var Scene = {
     resetSize: function () {

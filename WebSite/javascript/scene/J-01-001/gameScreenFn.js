@@ -118,7 +118,7 @@
             this.view.addChild(this.world.overlay),
             this.view.addChild(this.hud.party),
             this.view.addChild(this.black),
-            _gSettings.positionCount <= 0 ? this.view.addChild(this.hud) : null,
+            _gSettings.showHud ? this.view.addChild(this.hud) : null,
             this.flash = new B,
             this.movieBorders = new k(1, 1, .05),
             this.timer = new P(60 * O.GAME.TIME, s.game),
@@ -188,7 +188,7 @@
             this.teamManagerB.resetPositions(!1, !1),
             this.teamManagerB.showAll(),
             this.keeperManagerRight.show(),
-            this.powerupManager.resume(),
+            this.powerupManager.resume();
             this.keeperLeft.show(),
             this.keeperRight.show(),
             this.goalLeft.enableGoal(),
