@@ -20,9 +20,10 @@ Blockly.Blocks['player'] = {
 Blockly.JavaScript['player'] = function (block) {
     var statements_player_property = Blockly.JavaScript.statementToCode(block, 'player_property');
     var statements_player_function = Blockly.JavaScript.statementToCode(block, 'player_function');
-    var code = "var player = {\n";
-    code += statements_player_property + statements_player_function;
-    code += "};"
+    var code = "var player = function (figure, ix, iy){\n";
+    code += statements_player_property;
+    code += "};\n\n";
+    code += statements_player_function;
     return code;
 };
 
@@ -39,7 +40,7 @@ Blockly.Blocks['player_property_figure'] = {
 };
 
 Blockly.JavaScript['player_property_figure'] = function (block) {
-    var code = 'figure: "",\n';
+    var code = 'this.figure = figure;\n';
     return code;
 };
 
@@ -56,41 +57,38 @@ Blockly.Blocks['player_property_position'] = {
 };
 
 Blockly.JavaScript['player_property_position'] = function (block) {
-    var code = 'position: {x: 0, y: 0},\n';
+    var code = 'this.position = {x: ix, y: iy};\n';
     return code;
 };
 
-Blockly.Blocks['player_function_setFigure'] = {
-    init: function () {
-        this.appendDummyInput().appendField("设置形象(figure)");
-        this.setPreviousStatement(true, "function");
-        this.setNextStatement(true, "function");
-        this.setColour(20);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['player_function_setFigure'] = function (block) {
-    var code = 'setFigure: function(figure){},\n';
-    return code;
-};
-
-Blockly.Blocks['player_function_locate'] = {
-    init: function () {
-        this.appendDummyInput().appendField("定位到(x,y)");
-        this.setPreviousStatement(true, "function");
-        this.setNextStatement(true, "function");
-        this.setColour(20);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-
-Blockly.JavaScript['player_function_locate'] = function (block) {
-    var code = 'locateTo: function(x, y){},\n';
-    return code;
-};
+//Blockly.Blocks['player_function_setFigure'] = {
+//    init: function () {
+//        this.appendDummyInput().appendField("设置形象(figure)");
+//        this.setPreviousStatement(true, "function");
+//        this.setNextStatement(true, "function");
+//        this.setColour(20);
+//        this.setTooltip('');
+//        this.setHelpUrl('http://www.example.com/');
+//    }
+//};
+//Blockly.JavaScript['player_function_setFigure'] = function (block) {
+//    var code = 'setFigure: function(figure){},\n';
+//    return code;
+//};
+//Blockly.Blocks['player_function_locate'] = {
+//    init: function () {
+//        this.appendDummyInput().appendField("定位到(x,y)");
+//        this.setPreviousStatement(true, "function");
+//        this.setNextStatement(true, "function");
+//        this.setColour(20);
+//        this.setTooltip('');
+//        this.setHelpUrl('http://www.example.com/');
+//    }
+//};
+//Blockly.JavaScript['player_function_locate'] = function (block) {
+//    var code = 'locateTo: function(x, y){},\n';
+//    return code;
+//};
 
 Blockly.Blocks['player_function_run'] = {
     init: function () {
@@ -104,7 +102,7 @@ Blockly.Blocks['player_function_run'] = {
 };
 
 Blockly.JavaScript['player_function_run'] = function (block) {
-    var code = 'runTo: function(x, y){},\n';
+    var code = 'player.prototype.runTo = function(x, y){\n};\n\n';
     return code;
 };
 
@@ -120,7 +118,7 @@ Blockly.Blocks['player_function_shot'] = {
 };
 
 Blockly.JavaScript['player_function_shot'] = function (block) {
-    var code = 'shot: function(level){},\n';
+    var code = 'player.prototype.shot = function(level){\n};\n\n';
     return code;
 };
 
@@ -136,6 +134,6 @@ Blockly.Blocks['player_function_tackle'] = {
 };
 
 Blockly.JavaScript['player_function_tackle'] = function (block) {
-    var code = 'tackle: function(){},\n';
+    var code = 'player.prototype.tackle = function(){\n};\n\n';
     return code;
 };

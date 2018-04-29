@@ -348,7 +348,7 @@ function loadStageLibs_2(currStageId) {
 };
 
 function loadStageLibs_3(response) {
-    return;
+    //return;
     var tmpPaths = $(response).find("game").find('script');
     var include3D = false;
     for (var i = 0; i < tmpPaths.length ; i++) {

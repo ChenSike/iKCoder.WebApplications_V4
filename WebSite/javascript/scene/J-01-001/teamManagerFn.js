@@ -167,31 +167,55 @@
             t.lose()
         }), t === h.ATTACKING || t === h.DEFENDING ? this.keeper.active = !0 : this.keeper.active = !1, this.state = t)
     },
-    c.prototype.actionBegin = function () {
+    c.prototype.actionBegin = function (keyLabel) {
         var t = this;
-        if (this.shoot = !1, this.tackle = !1, this.pass = !1, this.game.ball.owner === this.activePlayer) {
-            this.activePlayer.position.x / this.game.pitchWidth < .7 ? (this.pass = !0, this.canPass && this.passControl()) : this.timer = setTimeout(function () {
-                t.shoot = !0, t.canShoot && t.activePlayer.shootBegin(t.goal)
-            }, 150);
+        if (_gSettings.customEvent) {
+            //app.game.teamManagerA.team.children[0].data.id
+            if (_gSettings.customEventMap[keyLabel] == 'pass') {
+                this.pass = !0;
+                this.canPass && this.activePlayer.ballSkills.passTo(_gSettings.customEventPartner);
+            } else if (_gSettings.customEventMap[keyLabel] == 'shoot') {
+                this.timer = setTimeout(function () {
+                    t.shoot = !0, t.canShoot && t.activePlayer.shootBegin(t.goal)
+                }, 150);
+            } else if (_gSettings.customEventMap[keyLabel] == 'tackle') {
+                this.tackle = !0;
+                var e = o(this.activePlayer, this.teamBad);
+                this.canTackle && this.activePlayer.slideTackle(e.dx, e.dy, 10)
+            }
         } else {
-            this.tackle = !0;
-            var e = o(this.activePlayer, this.teamBad);
-            this.canTackle && this.activePlayer.slideTackle(e.dx, e.dy, 10)
+            if (this.shoot = !1, this.tackle = !1, this.pass = !1, this.game.ball.owner === this.activePlayer) {
+                this.activePlayer.position.x / this.game.pitchWidth < .7 ? (this.pass = !0, this.canPass && this.passControl()) : this.timer = setTimeout(function () {
+                    t.shoot = !0, t.canShoot && t.activePlayer.shootBegin(t.goal)
+                }, 150);
+            } else {
+                this.tackle = !0;
+                var e = o(this.activePlayer, this.teamBad);
+                this.canTackle && this.activePlayer.slideTackle(e.dx, e.dy, 10)
+            }
         }
     },
     c.prototype.passControl = function () {
         var t = o(this.activePlayer, this.team);
         t.player && t.player.state !== r.PLAYER_STATE.HIDE ? this.activePlayer.ballSkills.passTo(t.player) : this.activePlayer.ballSkills.pass(t.dx, t.dy, 10)
     },
-    c.prototype.actionEnd = function () {
-        clearTimeout(this.timer),
-        this.activePlayer && (
-            this.shoot && this.canShoot && this.activePlayer.shootRelease(this.goal),
-            this.shoot || this.tackle || !this.canPass || this.passControl(),
-            this.shoot = !1,
-            this.tackle = !1,
-            this.pass = !1
-        )
+    c.prototype.actionEnd = function (keyLabel) {
+        clearTimeout(this.timer);
+        if (_gSettings.customEvent) {
+            if (this.activePlayer) {
+                this.shoot && this.canShoot && this.activePlayer.shootRelease(this.goal);
+                //this.shoot || this.tackle || !this.canPass || this.passControl();
+                this.shoot = !1, this.tackle = !1, this.pass = !1;
+            }
+        } else {
+            this.activePlayer && (
+                        this.shoot && this.canShoot && this.activePlayer.shootRelease(this.goal),
+                        this.shoot || this.tackle || !this.canPass || this.passControl(),
+                        this.shoot = !1,
+                        this.tackle = !1,
+                        this.pass = !1
+                    )
+        }
     },
     c.prototype.actionOneShootBegin = function () {
         this.canShoot && this.activePlayer.shootBegin(this.goal)
@@ -328,17 +352,40 @@
         this.left ? t.moveTo(this.game.pitchWidth * e, this.game.pitchHeight * i) : t.moveTo(this.game.pitchWidth * (1 - e), this.game.pitchHeight * (1 - i))
     },
     c.prototype.onPlayerRecievedBall = function (t) {
-        if (this.state !== h.TUTORIAL_IDLE || this.activePlayer !== t) {
-            if ((Math.random() > .5 || this.firstGo) && (this.firstGo = !1, !this.human)) {
-                var e = this.team,
-                    i = e.getIndex(t),
-                    n = e.getItem((i + 1) % 3),
-                    r = e.getItem((i + 2) % 3),
-                    o = Math.random();
-                o > .25 && (o > .75 ? this.passToPlayer(n) : this.passToPlayer(r))
+        if (_gSettings.customEvent) {
+            if (this.state !== h.TUTORIAL_IDLE || this.activePlayer !== t) {
+                if ((Math.random() > .5 || this.firstGo) && (this.firstGo = !1, !this.human)) {
+                    var e = this.team,
+                        i = e.getIndex(t),
+                        n = e.getItem((i + 1) % 3),
+                        r = e.getItem((i + 2) % 3),
+                        o = Math.random();
+                    o > .25 && (o > .75 ? this.passToPlayer(n) : this.passToPlayer(r))
+                }
+                for (var s = 0; s < this.team.children.length; s++);
+                this.agro = Math.random(),
+                this.setPlayer(t),
+                this.setState(h.ATTACKING);
+                if (this.activePlayer != _gSettings.customEventCharacter) {
+                    var tmpSelf = this;
+                    window.setTimeout(function () { tmpSelf.passToPlayer(_gSettings.customEventCharacter) }, 500);
+                }
             }
-            for (var s = 0; s < this.team.children.length; s++);
-            this.agro = Math.random(), this.setPlayer(t), this.setState(h.ATTACKING)
+        } else {
+            if (this.state !== h.TUTORIAL_IDLE || this.activePlayer !== t) {
+                if ((Math.random() > .5 || this.firstGo) && (this.firstGo = !1, !this.human)) {
+                    var e = this.team,
+                        i = e.getIndex(t),
+                        n = e.getItem((i + 1) % 3),
+                        r = e.getItem((i + 2) % 3),
+                        o = Math.random();
+                    o > .25 && (o > .75 ? this.passToPlayer(n) : this.passToPlayer(r))
+                }
+                for (var s = 0; s < this.team.children.length; s++);
+                this.agro = Math.random(),
+                this.setPlayer(t),
+                this.setState(h.ATTACKING);
+            }
         }
     },
     c.prototype.onPlayerLostBall = function (t) {
@@ -387,5 +434,6 @@
     },
     c.prototype.disableSignal = function () {
         this.listenSignal = !1
-    }, t.exports = c
+    },
+    t.exports = c
 }

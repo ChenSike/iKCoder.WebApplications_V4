@@ -21,7 +21,7 @@ var Scene = {
         app.game.teamManagerA.hideAll();
         app.game.teamManagerB.hideAll();
         var tmpIdx = figures[figure] % 3;
-        var tmpTeam = figures[figure] > 2 ? 'teamManagerA' : 'teamManagerA';
+        var tmpTeam = figures[figure] > 2 ? 'teamManagerB' : 'teamManagerA';
         app.game[tmpTeam].team.children[tmpIdx].show();
         app.game[tmpTeam].team.children[tmpIdx].position.set(300, 300);
     },

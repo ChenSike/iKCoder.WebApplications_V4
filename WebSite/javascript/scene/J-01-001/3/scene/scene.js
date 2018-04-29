@@ -25,22 +25,20 @@ var Scene = {
         app.game.teamManagerB.hideAll();
     },
 
-    addPlayer: function (figure, x, y) {
-        playerObject.figure = figure;
-        playerObject.position.x = x;
-        playerObject.position.y = y;
-        var tmpIdx = Scene.figures[figure] % 3;
-        var tmpTeam = Scene.figures[figure] > 2 ? 'teamManagerB' : 'teamManagerA';
+    addPlayer: function (playerObj) {
+        var tmpIdx = Scene.figures[playerObj.figure] % 3;
+        var tmpTeam = Scene.figures[playerObj.figure] > 2 ? 'teamManagerB' : 'teamManagerA';
         Scene.character = app.game[tmpTeam].team.children[tmpIdx];
         Scene.character.show();
         Scene.character.view3d.animation.play("run");
-        Scene.character.position.set(x, y);
+        Scene.character.position.set(playerObj.position.x, playerObj.position.y);
         Scene.character.ballSkills.pickupBall(app.game.world.game.ball);
         TweenLite.to(Scene.character.position, 2, {
             x: Scene.character.position.x + 1,
             ease: Sine.easeInOut
         });
     },
+
     timeoutCount: 0,
     startGame: function (code) {
         Scene.timeoutCount = 0;
@@ -58,32 +56,32 @@ var Scene = {
                 Scene.timeoutCount += 1000;
             }
         }
-    },
+    }
 };
 
-var playerObject = {
-    figure: 'panda_bear',
-    position: { x: 0, y: 0 },
-    locateTo: function (x, y) { },
-    runTo: function (x, y) {
-        Scene.character.ballSkills.pickupBall(app.game.world.game.ball);
-        TweenLite.to(Scene.character.body.position, 5, {
-            x: x,
-            y: y,
-            ease: Sine.easeInOut
-        });
-    },
+var playerClass = function (figure, ix, iy) {
+    this.figure = figure;
+    this.position = { x: ix, y: iy };
+}
 
-    shot: function (level) {
-        level = level > 10 ? 2000 : 200 * level;
-        Scene.character.shootBegin(app.game.goalRight);
-        window.setTimeout('Scene.character.shootRelease(app.game.goalRight);', level);
-    },
+playerClass.prototype.runTo = function (x, y) {
+    Scene.character.ballSkills.pickupBall(app.game.world.game.ball);
+    TweenLite.to(Scene.character.body.position, 5, {
+        x: x,
+        y: y,
+        ease: Sine.easeInOut
+    });
+};
 
-    tackle: function () {
-        Scene.character.ballSkills.pickupBall(app.game.world.game.ball);
-        Scene.character.slideTackle();
-    }
+playerClass.prototype.shot = function (level) {
+    level = level > 10 ? 2000 : 200 * level;
+    Scene.character.shootBegin(app.game.goalRight);
+    window.setTimeout('Scene.character.shootRelease(app.game.goalRight);', level);
+};
+
+playerClass.prototype.tackle = function () {
+    Scene.character.ballSkills.pickupBall(app.game.world.game.ball);
+    Scene.character.slideTackle();
 };
 
 WorkScene.startGame = function () {

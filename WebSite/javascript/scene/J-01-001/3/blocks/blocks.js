@@ -32,6 +32,7 @@ Blockly.Blocks['initial_setting'] = {
 
 Blockly.JavaScript['initial_setting'] = function (block) {
     var code = Blockly.JavaScript.valueToCode(block, 'player', Blockly.JavaScript.ORDER_NONE);
+    code += 'Scene.addPlayer(playerObject);\n';
     return code;
 };
 
@@ -65,7 +66,7 @@ Blockly.JavaScript['player'] = function (block) {
     var dropdown_figure = block.getFieldValue('figure');
     var number_coord_x = block.getFieldValue('coord_x');
     var number_coord_y = block.getFieldValue('coord_y');
-    var code = 'Scene.addPlayer("' + dropdown_figure + '", ' + number_coord_x + ', ' + number_coord_y + ');\n';
+    var code = 'var playerObject = new playerClass("' + dropdown_figure + '", ' + number_coord_x + ', ' + number_coord_y + ');\n';
     return [code, Blockly.JavaScript.ORDER_NONE];
 };
 

@@ -235,7 +235,7 @@ var WorkScene = {
                 Scene.startGame();
             }
             catch (ex) {
-
+                var a = 0;
             }
         }
     },

@@ -28,7 +28,7 @@
     <xml xmlns="http://www.w3.org/1999/xhtml"/>
   </workspacestatus>
   <game>
-    <!--<script src="J-01-001/getGlobalSettingFn.js"></script>
+    <script src="J-01-001/getGlobalSettingFn.js"></script>
     <script src="J-01-001/loaderScreenFn.js"></script>
     <script src="J-01-001/titleScreenFn.js"></script>
     <script src="J-01-001/countrySelectScreenFn.js"></script>
@@ -51,7 +51,7 @@
     <script src="J-01-001/entryFn.js"></script>
     <script src="J-01-001/coursemain.js"></script>
     <script src="J-01-001/1/blocks/blocks.js"></script>
-    <script src="J-01-001/1/scene/scene.js"></script>-->
+    <script src="J-01-001/1/scene/scene.js"></script>
   </game>
   <message>
     <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>

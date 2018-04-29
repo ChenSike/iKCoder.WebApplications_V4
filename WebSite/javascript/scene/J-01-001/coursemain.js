@@ -13,6 +13,7 @@ function startGame() {
         _gloablObj.app.breadcrumb.next();
         _gloablObj.app.screenManager.gotoScreenByID("GAME");
         _gloablObj.app.breadcrumb.hide();
+        Scene.initEvents ? Scene.initEvents() : null;
     } else {
         window.setTimeout(startGame, 500);
     }

@@ -11,9 +11,27 @@
       <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
     </item>
   </tips>
-  <toolbox src="J-01-001/3/Blocks/blocks.JS">
+  <toolbox src="J-01-001/4/Blocks/blocks.JS">
     <xml id="toolbox" style="display: none">
       <block type="event_start"/>
+      <block type="bind_event"/>
+      <block type="player_event"/>      
+      <block type="keyboard_move"/>
+      <block type="keyboard_move_key_left"/>
+      <block type="keyboard_move_key_right"/>
+      <block type="keyboard_move_key_up"/>
+      <block type="keyboard_move_key_down"/>
+      <block type="keyboard_move_direction_left"/>
+      <block type="keyboard_move_direction_right"/>
+      <block type="keyboard_move_direction_up"/>
+      <block type="keyboard_move_direction_down"/>
+      <block type="keyboard_action"/>
+      <block type="keyboard_action_key_space"/>
+      <block type="keyboard_action_key_shift"/>
+      <block type="keyboard_action_key_ctrl"/>
+      <block type="keyboard_action_func_pass"/>
+      <block type="keyboard_action_func_tackle"/>
+      <block type="keyboard_action_func_shoot"/>
     </xml>
   </toolbox>
   <workspacestatus>
@@ -42,8 +60,8 @@
     <script src="J-01-001/argumentFns.js"></script>
     <script src="J-01-001/entryFn.js"></script>
     <script src="J-01-001/coursemain.js"></script>
-    <script src="J-01-001/3/blocks/blocks.js"></script>
-    <script src="J-01-001/3/scene/scene.js"></script>
+    <script src="J-01-001/4/blocks/blocks.js"></script>
+    <script src="J-01-001/4/scene/scene.js"></script>
   </game>
   <message>
     <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>

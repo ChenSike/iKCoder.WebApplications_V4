@@ -7416,30 +7416,64 @@
             var r = i(94),
                 o = i(18),
                 s = function (t) {
-                    this.game = t, this.keyboard = new r, this.keyIsDown = !1, this.enadbled = !0, this.currentActiveItem = null, this.dPad = new PIXI.Point;
-                    var e = o.getJson("config").config.LOCALE,
-                        i = "z";
-                    "_fr" === e ? i = "w" : "_de" === e && (i = "y"), this.keyboard.onKeyPress("space", this.onSpacePressed.bind(this)), this.keyboard.onKeyRelease("space", this.onSpaceReleased.bind(this)), this.keyboard.onKeyRelease("s", function () { })
+                    this.game = t,
+                    this.keyboard = new r,
+                    this.keyIsDown = !1,
+                    this.enadbled = !0,
+                    this.currentActiveItem = null,
+                    this.dPad = new PIXI.Point;
+                    var e = o.getJson("config").config.LOCALE, i = "z";
+                    "_fr" === e ? i = "w" : "_de" === e && (i = "y"),
+                    this.keyboard.onKeyRelease("s", function () { });
+                    //for _gSettings.customEvent
+                    if (_gSettings.customEvent) {
+                        this.keyboard.onKeyPress("space", this.onCustomKeyPressed.bind(this));
+                        this.keyboard.onKeyRelease("space", this.onCustomKeyReleased.bind(this));
+                        this.keyboard.onKeyPress("shift", this.onCustomKeyPressed.bind(this));
+                        this.keyboard.onKeyRelease("shift", this.onCustomKeyReleased.bind(this));
+                        this.keyboard.onKeyPress("ctrl", this.onCustomKeyPressed.bind(this));
+                        this.keyboard.onKeyRelease("ctrl", this.onCustomKeyReleased.bind(this));
+                    } else {
+                        this.keyboard.onKeyPress("space", this.onSpacePressed.bind(this));
+                        this.keyboard.onKeyRelease("space", this.onSpaceReleased.bind(this));
+                    }
                 };
             s.prototype.reset = function () {
                 this.keyIsDown = !1, window.focus()
-            }, s.prototype.update = function (t) {
+            },
+            s.prototype.update = function (t) {
                 this.game.paused && (this.keyIsDown = !1);
                 var e = 0,
                     i = 0,
                     n = this.game.teamManagerA;
-                if (this.keyboard.isPressed("left") ? e = -1 : this.keyboard.isPressed("right") && (e = 1), this.keyboard.isPressed("up") ? i = -1 : this.keyboard.isPressed("down") && (i = 1), 0 === e && 0 === i) n.stopActivePlayer();
+                if (this.keyboard.isPressed("left") ? e = -1 :
+                    this.keyboard.isPressed("right") && (e = 1),
+                    this.keyboard.isPressed("up") ? i = -1 :
+                    this.keyboard.isPressed("down") && (i = 1),
+                    0 === e && 0 === i)
+                    n.stopActivePlayer();
                 else {
                     var r = Math.sqrt(e * e + i * i);
                     e /= r, i /= r, n.moveActivePlayerInDirection(e, -i)
                 }
-            }, s.prototype.onSpacePressed = function () {
+            },
+            s.prototype.onSpacePressed = function () {
                 this.game.paused || this.game.teamManagerA.actionBegin()
-            }, s.prototype.onSpaceReleased = function () {
+            },
+            s.prototype.onSpaceReleased = function () {
                 this.game.paused || this.game.teamManagerA.actionEnd()
-            }, s.prototype.resize = function (t, e) { }, n.exports = s
+            },
+            s.prototype.onCustomKeyPressed = function (key) {
+                this.game.paused || this.game.teamManagerA.actionBegin(key.label);
+            },
+            s.prototype.onCustomKeyReleased = function (key) {
+                this.game.paused || this.game.teamManagerA.actionEnd(key.label);
+            },
+            s.prototype.resize = function (t, e) { },
+            n.exports = s
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //Keyboard
     function (t, e, i) {
         var n;
         n = function (t, e, i) {
@@ -7447,7 +7481,8 @@
                 this._states = {
                     up: 0,
                     down: 1
-                }, this._keyCodes = {
+                },
+                this._keyCodes = {
                     37: {
                         label: "left",
                         state: 0,
@@ -7570,6 +7605,16 @@
                         state: 0,
                         preventBubble: !0
                     },
+                    16: {
+                        label: "shift",
+                        state: 0,
+                        preventBubble: !0
+                    },
+                    17: {
+                        label: "ctrl",
+                        state: 0,
+                        preventBubble: !0
+                    },
                     65: {
                         label: "a",
                         state: 0,
@@ -7605,8 +7650,14 @@
                         state: 0,
                         preventBubble: !0
                     }
-                }, this.hash = {}, this.hashUp = {}, this.disabled = !1, this.start(), this.dirty = !1
-            }, Keyboard.prototype.start = function () {
+                },
+                this.hash = {},
+                this.hashUp = {},
+                this.disabled = !1,
+                this.start(),
+                this.dirty = !1
+            },
+            Keyboard.prototype.start = function () {
                 var t = this;
                 this._onKeyDown = function (e) {
                     return t.processKeyDown(e)
@@ -7618,10 +7669,12 @@
                 window.addEventListener("keydown", this._onKeyDown, !1);
                 window.addEventListener("keyup", this._onKeyUp, !1);
                 //}
-            }, Keyboard.prototype.stop = function () {
+            },
+            Keyboard.prototype.stop = function () {
                 window.removeEventListener("keydown", this._onKeyDown),
                 window.removeEventListener("keyup", this._onKeyUp)
-            }, Keyboard.prototype.processKeyDown = function (t) {
+            },
+            Keyboard.prototype.processKeyDown = function (t) {
                 if (this.disabled !== !0) {
                     var e = t.keyCode;
                     if (this.keyCode = e, this._keyCodes.hasOwnProperty(e)) {
@@ -7630,26 +7683,35 @@
                         i.state != this._states.down && (i.state = this._states.down, this.dirty = !0, this.hash[i.label] && this.hash[i.label](i))
                     }
                 }
-            }, Keyboard.prototype.processKeyUp = function (t) {
+            },
+            Keyboard.prototype.processKeyUp = function (t) {
+                //test code for key event
+                //return;
                 if (this.disabled !== !0) {
                     var e = t.keyCode;
                     if (this.keyCode = null, this._keyCodes.hasOwnProperty(e)) {
                         var i = this._keyCodes[e];
-                        i.preventBubble && t.preventDefault(), i.state != this._states.up && (i.state = this._states.up, this.dirty = !0, this.hashUp[i.label] && this.hashUp[i.label](i))
+                        i.preventBubble && t.preventDefault(),
+                        i.state != this._states.up && (i.state = this._states.up, this.dirty = !0, this.hashUp[i.label] && this.hashUp[i.label](i))
                     }
                 }
-            }, Keyboard.prototype.isPressed = function (t) {
+            },
+            Keyboard.prototype.isPressed = function (t) {
                 var e = this.getCodeFromLabel(t);
                 return !!e && this._keyCodes[e].state === this._states.down
-            }, Keyboard.prototype.getCodeFromLabel = function (t) {
+            },
+            Keyboard.prototype.getCodeFromLabel = function (t) {
                 for (var e in this._keyCodes)
                     if (this._keyCodes[e].label === t) return e;
                 return !1
-            }, Keyboard.prototype.onKeyPress = function (t, e) {
+            },
+            Keyboard.prototype.onKeyPress = function (t, e) {
                 this.hash[t] = e
-            }, Keyboard.prototype.onKeyRelease = function (t, e) {
+            },
+            Keyboard.prototype.onKeyRelease = function (t, e) {
                 this.hashUp[t] = e
-            }, i.exports = Keyboard
+            },
+            i.exports = Keyboard
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     function (t, e, i) {
@@ -8680,19 +8742,29 @@
                     var i = new o.Scene;
                     this.scene = i, this.camera = e, this.camera.position.x = 0, this.camera.position.y = 0, this.threeRenderer = null, this.w = -1, this.h = -1
                 });
-            a.prototype = Object.create(r.Container.prototype), a.prototype._renderWebGL = function (t) {
+            a.prototype = Object.create(r.Container.prototype),
+            a.prototype._renderWebGL = function (t) {
                 this.camera.update(), this.threeRenderer || (this.threeRenderer = new o.WebGLRenderer({
                     context: t.gl
                 }), this.threeRenderer.setSize(800, 600), this.threeRenderer.autoClear = !1, this.threeRenderer.autoClearColor = !1), this.threeRenderer.resetGLState(), this.threeRenderer.render(this.scene, this.camera), t.reset()
-            }, a.prototype.init = function (t) { }, a.prototype.preupdate = function (t) { }, a.prototype.update = function () { }, a.prototype.postupdate = function (t) { }, a.prototype.add = function (t) {
+            },
+            a.prototype.init = function (t) { },
+            a.prototype.preupdate = function (t) { },
+            a.prototype.update = function () { },
+            a.prototype.postupdate = function (t) { },
+            a.prototype.add = function (t) {
                 t.view3d && this.scene.add(t.view3d)
-            }, a.prototype.remove = function (t) {
+            },
+            a.prototype.remove = function (t) {
                 t.view3d && this.scene.remove(t.view3d)
-            }, a.prototype.clear = function () {
+            },
+            a.prototype.clear = function () {
                 for (var t in this.layers) this.layers[t].removeChildren()
-            }, a.prototype.addLayer = function (t) {
+            },
+            a.prototype.addLayer = function (t) {
                 this.layers[t] = new r.Container, this.activeItemsContainer.addChild(this.layers[t])
-            }, a.prototype.bringToFront = function (t) {
+            },
+            a.prototype.bringToFront = function (t) {
                 var e = this.layers[t.view.layer],
                     i = e.children.indexOf(t.view);
                 i != -1 && (e.children.splice(i, 1), e.children.push(t.view))
@@ -10892,6 +10964,7 @@
             }, n.exports = a
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
+    //Player state and animation
     function (t, e, i) {
         "use strict";
 
@@ -10978,50 +11051,61 @@
                         loop: !1
                     }), n.reticle = new b["default"](i), n.reticle.position.z += 10, n.add(n.reticle), n.chargeArrow = new S["default"](i), n
                 }
-                return s(e, t), e.prototype.setData = function (t) {
-                    this.scale.x = this.scale.y = this.scale.z = .24 * t.scale;
-                    var e = this.player.isTeamA ? "blue" : "red",
-                        i = t.spriteSheet.replace("%COLOR%", e),
-                        n = A["default"].getJson("character-animation")[i],
-                        r = this.animation.animations;
-                    r.run.frames = d["default"].getTexturesFromFrames(n.run), r.dash.frames = d["default"].getTexturesFromFrames(n.dash), r.stand.frames = d["default"].getTexturesFromFrames(n.stand), r.tackle.frames = d["default"].getTexturesFromFrames(n.tackle), r.fall.frames = d["default"].getTexturesFromFrames(n.fall), r.kickCharge.frames = d["default"].getTexturesFromFrames(n.kickCharge), r.win.frames = d["default"].getTexturesFromFrames(n.win), r.lose.frames = d["default"].getTexturesFromFrames(n.lose)
-                }, e.prototype.hide = function () {
-                    this.playerMesh.material.opacity = .5
-                }, e.prototype.show = function () {
-                    this.playerMesh.material.opacity = 1
-                }, e.prototype.update = function () {
-                    this.chargeArrow.update();
+                return s(e, t),
+                    e.prototype.setData = function (t) {
+                        this.scale.x = this.scale.y = this.scale.z = .24 * t.scale;
+                        var e = this.player.isTeamA ? "blue" : "red",
+                            i = t.spriteSheet.replace("%COLOR%", e),
+                            n = A["default"].getJson("character-animation")[i],
+                            r = this.animation.animations;
+                        r.run.frames = d["default"].getTexturesFromFrames(n.run),
+                        r.dash.frames = d["default"].getTexturesFromFrames(n.dash),
+                        r.stand.frames = d["default"].getTexturesFromFrames(n.stand),
+                        r.tackle.frames = d["default"].getTexturesFromFrames(n.tackle),
+                        r.fall.frames = d["default"].getTexturesFromFrames(n.fall),
+                        r.kickCharge.frames = d["default"].getTexturesFromFrames(n.kickCharge),
+                        r.win.frames = d["default"].getTexturesFromFrames(n.win),
+                        r.lose.frames = d["default"].getTexturesFromFrames(n.lose)
+                    },
+                    e.prototype.hide = function () {
+                        this.playerMesh.material.opacity = .5
+                    },
+                    e.prototype.show = function () {
+                        this.playerMesh.material.opacity = 1
+                    },
+                    e.prototype.update = function () {
+                        this.chargeArrow.update();
+                        if (_gSettings.onlyPlayRun) {
+                            this.player.state === C.KICK_CHARGE ?
+                            this.animation.play("kickCharge") :
+                            this.player.state === C.TACKLE ?
+                            this.animation.play("tackle") :
+                            this.animation.play("run");
 
-                    if (_gSettings.onlyPlayRun) {
-                        this.player.state === C.KICK_CHARGE ?
-                        this.animation.play("kickCharge") :
-                        this.player.state === C.TACKLE ?
-                        this.animation.play("tackle") :
-                        this.animation.play("run");
+                        } else {
+                            this.player.state === C.KICK_CHARGE ?
+                            this.animation.play("kickCharge") :
+                            this.player.state === C.FALL ?
+                            this.animation.play("fall") :
+                            this.player.state === C.TACKLE ?
+                            this.animation.play("tackle") :
+                            this.player.state === C.WIN ?
+                            this.animation.play("win") :
+                            this.player.state === C.LOSE ?
+                            this.animation.play("lose") :
+                            this.player.body.velocity.length() > 1 ?
+                            this.player.speedBoost ?
+                            this.animation.play("dash") :
+                            this.animation.play("run") :
+                            this.animation.play("stand");
+                        }
 
-                    } else {
-                        this.player.state === C.KICK_CHARGE ?
-                        this.animation.play("kickCharge") :
-                        this.player.state === C.FALL ?
-                        this.animation.play("fall") :
-                        this.player.state === C.TACKLE ?
-                        this.animation.play("tackle") :
-                        this.player.state === C.WIN ?
-                        this.animation.play("win") :
-                        this.player.state === C.LOSE ?
-                        this.animation.play("lose") :
-                        this.player.body.velocity.length() > 1 ?
-                        this.player.speedBoost ?
-                        this.animation.play("dash") :
-                        this.animation.play("run") :
-                        this.animation.play("stand");
-                    }
-
-                    this.animation.update(v["default"].game.deltaTime),
-                    this.count++, u["default"].setUvs(this.playerMesh, this.animation.texture);
-                    var t = this.player.body.velocity.x > 0 ? 1 : -1;
-                    this.flipContainer.scale.x = t, this.flipContainer.rotation.x = window.test - Math.PI
-                }, e
+                        this.animation.update(v["default"].game.deltaTime),
+                        this.count++, u["default"].setUvs(this.playerMesh, this.animation.texture);
+                        var t = this.player.body.velocity.x > 0 ? 1 : -1;
+                        this.flipContainer.scale.x = t, this.flipContainer.rotation.x = window.test - Math.PI
+                    },
+                    e
             }(l["default"].Object3D));
         e["default"] = L, t.exports = e["default"]
     },
@@ -11137,24 +11221,36 @@
                 o = i(16),
                 s = i(48),
                 a = function (t) {
-                    this.item = t, this.ball = null, t.signals.onBallRecieved = new o(this), t.signals.onBallLost = new o(this), this.easeX = .1, this.offset = new r.Point, this.offset.z = 0, this.speedRange = 35
+                    this.item = t,
+                    this.ball = null,
+                    t.signals.onBallRecieved = new o(this),
+                    t.signals.onBallLost = new o(this),
+                    this.easeX = .1,
+                    this.offset = new r.Point,
+                    this.offset.z = 0,
+                    this.speedRange = 35
                 };
             a.prototype.pickupBall = function (t) {
                 this.ball = t, t.pickUp(this.item), this.item.signals.onBallRecieved.dispatch(this.item)
-            }, a.prototype.update = function () {
+            },
+            a.prototype.update = function () {
                 if (this.ball) {
                     var t = this.item.body.velocity.x / 3;
                     t *= 40, t = s.cap(t, -this.speedRange, this.speedRange), this.ball.position.x += (this.item.position.x + this.offset.x + t - this.ball.position.x) * this.easeX, this.item.body.velocity.y > 0 ? this.ball.position.y += .5 * (this.item.position.y + 0 - this.ball.position.y) : this.ball.position.y += .5 * (this.item.position.y - 10 - this.ball.position.y), this.ball.position.z = this.offset.z, this.ball.body.velocity.z = 0
                 }
             },
             a.prototype.releaseBall = function () {
-                this.ball.released(), this.ball = null, this.item.signals.onBallLost.dispatch(this.item)
+                this.ball.released(),
+                this.ball = null,
+                this.item.signals.onBallLost.dispatch(this.item)
             },
             a.prototype.passTo = function (t) {
                 this.ball && (this.ball.passTo(t), this.releaseBall())
-            }, a.prototype.pass = function (t, e, i, n) {
+            },
+            a.prototype.pass = function (t, e, i, n) {
                 this.ball && (this.ball.pass(t, e, i, n), this.releaseBall())
-            }, n.exports = a
+            },
+            n.exports = a
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
     //Player.movement
@@ -11267,7 +11363,7 @@
             }, n.exports = s
         }.call(e, i, e, t), !(void 0 !== n && (t.exports = n))
     },
-    //football object
+    //Football object
     function (t, e, i) {
         var n;
         n = function (t, e, n) {
@@ -11335,7 +11431,8 @@
                 this.world.view3d.scene.remove(this.shadow), this.world.view3d.scene.remove(this.trailEffect.view), this.world.overlay.removeChild(this.rect)
             }, f.prototype.setActive = function (t) {
                 this.active = t, t ? this.type = 0 : this.type = 99
-            }, f.prototype.reset = function () { }, f.prototype.released = function () {
+            }, f.prototype.reset = function () { },
+            f.prototype.released = function () {
                 this.pickedUp = !1, this.owner = null
             }, f.prototype.pickUp = function (t) {
                 s.sfx.playGroup("ball_pickup"), this.pickedUp = !0, this.lastOwner = this.owner = t, this.target = null, this.body.velocity.set(0), this.chargeEffect.setRatio(0)
@@ -11345,7 +11442,7 @@
                 this.body.velocity.y = e,
                 this.body.velocity.x = t, i ? (s.sfx.playGroup("croudHappy"), this.body.velocity.y *= 1.5, this.body.velocity.x *= 1.5, this.rect.visible = !0) : (Math.random() < .3 && s.sfx.playGroup("croudHappy"), s.sfx.play("ballkick_shoot_hard")),
                 this.body.velocity.z = 13,
-                this.chargeEffect.setRatio(0)                
+                this.chargeEffect.setRatio(0)
             }, f.prototype.pass = function (t, e, i, n) {
                 s.sfx.play("ballkick_pass"), this.shot = !1, this.body.velocity.x = t * i, this.body.velocity.y = e * i, this.body.velocity.z = n || 0
             }, f.prototype.passTo = function (t) {
@@ -11358,7 +11455,8 @@
                     var r = 15;
                     this.body.velocity.x = e * r, this.body.velocity.y = i * r, this.body.velocity.z = 1
                 }
-            }, f.prototype.update = function () {
+            },
+            f.prototype.update = function () {
                 var t = this.body;
                 t.velocity.z -= .6, t.position.z += t.velocity.z, t.position.z < 0 && (t.position.z = 0, t.velocity.z *= -.6, this.rect.visible = !1), this.owner && (this.rect.visible = !1);
                 var e = 700,
@@ -11388,7 +11486,8 @@
                 }
 
                 this.view3d.visible = (_gSettings.showBall ? true : false);
-            }, f.prototype.onCollideBegin = function (t) {
+            },
+            f.prototype.onCollideBegin = function (t) {
                 this.target = null;
                 var e = t.getOtherObject(this);
                 e.net && (this.body.velocity.x *= .15, this.body.velocity.y *= .15), e.wall && s.sfx.play("ballkick_post")
