@@ -431,7 +431,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-3">
-                            <i class="toolbar-buttons-item toolbar-button-play fas fa-play" aria-hidden="true" title="运行" onclick="playScence();"></i>
+                            <i class="toolbar-buttons-item toolbar-button-play fas fa-play" aria-hidden="true" title="运行" onclick="playScence(this);"></i>
                         </div>
                         <div class="col-3">
                             <i class="toolbar-buttons-item toolbar-button-share fas fa-share-alt" aria-hidden="true" title="分享"></i>
@@ -468,7 +468,7 @@
                 <div class="container-fluid no-wrap h-100" id="wrap_Workspace_CodeModal">
                     <div class="row no-wrap cm-toolbar-wrap-row">
                         <div class="col-3 no-wrap">
-                            <div class="container-fluid" id="Toolbar_Workspace_CodeModal">
+                            <div class="container-fluid" id="Toolbar_Workspace_CodeModal" style="display:none;">
                                 <div class="row">
                                     <div class="col-1">
                                         <i class="cm-toolbar-buttons-item cm-toolbar-button-save fas fa-cloud-upload-alt" aria-hidden="true" title="保存"></i>

@@ -308,8 +308,10 @@ function CheckSceneObject() {
         Scene.ResetConfig = function () { };
     }
 
-    Scene.stepComplete = showCompleteAlert;
-    Scene.stepFaild = showFaildAlert;
+    //Scene.stepComplete = showCompleteAlert;
+    //Scene.stepFaild = showFaildAlert;
+    Scene.stepComplete = function () { };
+    Scene.stepFaild = function () { };
 };
 
 function showCompleteAlert() {

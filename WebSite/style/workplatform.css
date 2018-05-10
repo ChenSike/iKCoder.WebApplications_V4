@@ -420,6 +420,11 @@ body {
             line-height: 32px;
         }
 
+.bottom-toolbar-item-wrap-disabled {
+    line-height: 35px;
+    color: grey;
+}
+
 .bottom-toolbar-item {
     cursor: pointer;
     width: 50px;
@@ -440,6 +445,13 @@ body {
         /*border-top: solid 3px rgb(97,208,121);*/
         color: rgb(97,208,121);
     }
+
+.bottom-toolbar-item-disabled {
+    cursor: pointer;
+    width: 50px;
+    border: none;
+    color: grey;
+}
 
 .siderbar-wrap {
     width: 30%;

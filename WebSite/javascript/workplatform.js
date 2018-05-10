@@ -147,9 +147,9 @@ function adjustDisplayPart(isCodeModal) {
         $('.course-tip-container-row').hide();
         $('.toolbar-container-row').hide();
         $('#wrap_Workspace_Blockly').hide();
-        $('#wrap_Workspace_Static').hide();
+        $('#wrap_Workspace_Static').hide();        
         $('.bottom-toolbar-container-row .fa-code').parent().parent().hide();
-        $('.bottom-toolbar-container-row .fa-file-code-o').parent().parent().hide();
+        $('.bottom-toolbar-container-row .fa-file-code').parent().parent().hide();
         $('.bottom-toolbar-container-row .bottom-toolbar-item-col').removeClass('col-2');
         $('.bottom-toolbar-container-row .bottom-toolbar-item-col').addClass('col-4');
     } else {
@@ -159,8 +159,9 @@ function adjustDisplayPart(isCodeModal) {
         $('.toolbar-container-row').show();
         $('#wrap_Workspace_Blockly').show();
         $('#wrap_Workspace_Static').show();
+        $('#wrap_Workspace_CodeModal').hide();
         $('.bottom-toolbar-container-row .fa-code').parent().parent().show();
-        $('.bottom-toolbar-container-row .fa-file-code-o').parent().parent().show();
+        $('.bottom-toolbar-container-row .fa-file-code').parent().parent().show();
         $('.bottom-toolbar-container-row .bottom-toolbar-item-col').removeClass('col-4');
         $('.bottom-toolbar-container-row .bottom-toolbar-item-col').addClass('col-2');
 
@@ -201,6 +202,13 @@ function initEvents(isCodeModal) {
         $(window).on('beforeunload', function () {
             WorkScene.saveStatus();
         });
+
+        if (_gStageData.course.note.length == 0) {
+            //adjustMainSize(getQueryString('step') == '' ? true : false);
+            //$('.course-tip-container-row').hide();
+            //Blockly.svgResize(WorkScene.WORKSPACE);
+            //adjustMainSize(getQueryString('step') == '' ? true : false);
+        }
     } else {
         initBottomTBEvents();
         initDetailPanelsEvents();
@@ -548,7 +556,7 @@ function gotoSpecialStep(step) {
 };
 
 function initToolbarEvents() {
-    $('.toolbar-button-play').on('click', playScence);
+    //$('.toolbar-button-play').on('click', playScence);
 
     $('.toolbar-button-share').on('click', function (e) {
         alert("'Share' will coming soon!");
@@ -615,13 +623,32 @@ function adjustCanvasSize(keepRate) {
 function playScence() {
     if (WorkScene.playableScene) {
         var currentBtn = null;
+        //if (typeof arguments[0] != "undefined" && arguments[0].target) {
+        //    if (arguments[0].target.nodeName == "path") {
+        //        currentBtn = $(arguments[0].target.parentElement);
+        //    } else {
+        //        currentBtn = $(arguments[0].target);
+        //    }
+
+        //    if (currentBtn.hasClass('fa-play-circle') || currentBtn.hasClass('fa-play')) {
+        //        WorkScene.startGame();
+        //        resetPlayBtn('R');
+        //    } else if (currentBtn.hasClass('fa-undo-alt')) {
+        //        WorkScene.resetScene();
+        //        resetPlayBtn('P');
+        //    }
+        //}
         if (typeof arguments[0] != "undefined" && arguments[0].target) {
             if (arguments[0].target.nodeName == "path") {
                 currentBtn = $(arguments[0].target.parentElement);
             } else {
                 currentBtn = $(arguments[0].target);
             }
+        } else if ($(arguments[0]).hasClass('toolbar-button-play')) {
+            currentBtn = $(arguments[0]);
+        }
 
+        if (currentBtn) {
             if (currentBtn.hasClass('fa-play-circle') || currentBtn.hasClass('fa-play')) {
                 WorkScene.startGame();
                 resetPlayBtn('R');
@@ -732,6 +759,15 @@ function siderBarExpand() {
 };
 
 function initBottomTBEvents() {
+    if (_gStageData.course.kps.length == 0) {
+        var tmpItem = $('.bottom-toolbar-item.fa-book');
+        tmpItem.removeClass('bottom-toolbar-item');
+        tmpItem.addClass('bottom-toolbar-item-disabled');
+        tmpItem.parent().removeClass('bottom-toolbar-item-wrap');
+        tmpItem.parent().addClass('bottom-toolbar-item-wrap-disabled');
+    }
+
+
     $('.bottom-toolbar-item-wrap').on('click', function (e) {
         $('.bottom-toolbar-item').removeClass('active');
         $('.bottom-toolbar-item-wrap').removeClass('active');
@@ -761,7 +797,7 @@ function popupAttaPanel(targetBtn) {
         showDetailPanel('word');
     } else if (targetBtn.hasClass('fa-code')) {
         showCodeEditorWin();
-    } else if (targetBtn.hasClass('fa-file-code-o')) {
+    } else if (targetBtn.hasClass('fa-file-code')) {
         showCoreCodeWin();
     }
 };

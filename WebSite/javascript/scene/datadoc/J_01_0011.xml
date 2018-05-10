@@ -4,12 +4,6 @@
   </basic>
   <sence name="初级第一课：模式设别" symbol="J_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="J_01_001"/>
   <tips>
-    <item index="1">
-      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
-    </item>
-    <item index="2">
-      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
-    </item>
   </tips>
   <toolbox src="J-01-001/1/Blocks/blocks.JS">
     <xml id="toolbox" style="display: none">
@@ -74,7 +68,5 @@
     </stage>
   </words>
   <kps>
-    <item>KPS1==恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了.</item>
-    <item>KPS2==恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了.</item>
   </kps>
 </root>
