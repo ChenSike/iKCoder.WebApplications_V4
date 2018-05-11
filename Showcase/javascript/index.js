@@ -9,6 +9,8 @@ var _demos = [
 
 function initPage() {
     initEvents();
+    $('.project-name-title').text('Demo 列表');
+    buildDemoList();
 };
 
 function initEvents() {

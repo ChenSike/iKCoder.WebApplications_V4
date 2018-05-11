@@ -68,7 +68,7 @@ GAME.RprView = function (engine) {
 	this.count = 0;
 	this.zoom = 1;
 
-	this.white = PIXI.Sprite.fromImage("img/whiteSquare.jpg");
+	this.white = PIXI.Sprite.fromImage("run/img/whiteSquare.jpg");
 	GAME.xOffset = this.container.position.x;
 
 	this.dust = new GAME.PixiDust();

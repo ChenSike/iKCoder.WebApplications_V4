@@ -602,7 +602,9 @@ function reloadCityList(provinceEl, cityEl) {
 }
 /*DOC*/
 function openLessonDoc() {
-    var symbol = $(arguments[0].target).attr('data-target');
+    var tempArr = $(arguments[0].currentTarget).attr('data-target').split('|');
+    var symbol = tempArr[0];
+    var step = tempArr.length == 2 ? tempArr[1] : 1;
     //_registerRemoteServer();
     //$.ajax({
     //    type: 'GET',
@@ -720,8 +722,10 @@ function showLessonDoc(data) {
 };
 /*Workplatform*/
 function openWorkplatform() {
-    var symbol = $(arguments[0].currentTarget).attr('data-target');
-    window.open('/ikcoder/workplatform.html?scene=' + symbol + '&step=1', 'workplatform', "")
+    var tempArr = $(arguments[0].currentTarget).attr('data-target').split('|');
+    var symbol = tempArr[0];
+    var step = tempArr.length == 2 ? tempArr[1] : 1;
+    window.open('/ikcoder/workplatform.html?scene=' + symbol + '&step=' + step, 'workplatform', "")
 };
 /*Date Time*/
 function isLeapYear(year) {

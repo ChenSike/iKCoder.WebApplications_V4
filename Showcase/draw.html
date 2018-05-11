@@ -5,6 +5,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="../image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/codewindow.css">
     <script src="javascript/common/jquery-3.2.1.min.js"></script>
     <script src="javascript/common/fontawesome-all.min.js"></script>
     <script src="javascript/common/common.js"></script>
@@ -15,7 +16,7 @@
     <script src="draw/javascript/draw3d.js"></script>
     <script src="draw/javascript/threeengineNew.js"></script>
     <script src="draw/javascript/scene.js"></script>
-
+    <script type="text/javascript" src="javascript/codewindow.js"></script>
 </head>
 <body style="background: #d5d5d5; height: 100%; margin:0px;">
     <div class="" id="game_container" style="height:calc(100% - 20px); width:calc(100% - 20px);">
@@ -41,6 +42,9 @@
                     Scene.reset();
                 }
             });
+
+            var scripts = ['javascript/common/threeengine.js', 'draw/javascript/draw3d.js', 'draw/javascript/threeengineNew.js', 'draw/javascript/scene.js'];
+            showCodeButton(scripts);
         });
     </script>
     <style>

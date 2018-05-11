@@ -118,7 +118,7 @@ function executeEditCode(isFull) {
     var frameDocument = $(frameId)[0].contentDocument;
     var frameWindow = $(frameId)[0].contentWindow;
     frameDocument.body.innerHTML = '';
-    html.trim() == '' ? null : frameDocument.write();
+    html.trim() == '' ? null : frameDocument.write(html.trim());
     frameWindow.eval(code);
 };
 
@@ -147,7 +147,9 @@ function adjustDisplayPart(isCodeModal) {
         $('.course-tip-container-row').hide();
         $('.toolbar-container-row').hide();
         $('#wrap_Workspace_Blockly').hide();
-        $('#wrap_Workspace_Static').hide();        
+        $('#wrap_Workspace_Static').hide();
+        $('#wrap_Workspace_CodeModal').show();
+        $('#Toolbar_Workspace_CodeModal').show();
         $('.bottom-toolbar-container-row .fa-code').parent().parent().hide();
         $('.bottom-toolbar-container-row .fa-file-code').parent().parent().hide();
         $('.bottom-toolbar-container-row .bottom-toolbar-item-col').removeClass('col-2');

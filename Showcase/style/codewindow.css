@@ -1,0 +1,30 @@
+﻿.code-button {
+    width: 25px;
+    height: 85px;
+    position: absolute;
+    top: 25px;
+    left: 0px;
+    background-color: #ff8f00d9;
+    color: white;
+    z-index: 10000;
+    font-size: 15px;
+    text-align: center;
+    font-family: 微软雅黑;
+    border: 2px solid gray;
+    border-left: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    cursor: pointer;
+}
+
+.code-window {
+    display:none;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    height: calc(100% - 50px);
+    width: calc(100% - 50px);
+    z-index: 10000;
+}

@@ -59,6 +59,7 @@ function onReady() {
 	FidoAudio.init();
 	stressTest = new PIXI.StressTest(onStressTestComplete);
 	resize();
+	showCodeButton(['run/js/RunPixieRun.js']);
 }
 
 //加载游戏里的各图像，事件监听，调整大小。
@@ -221,7 +222,7 @@ function init() {
 
 	game.onGameover = onGameover;
 
-	black = new PIXI.Sprite.fromImage("img/blackSquare.jpg");
+	black = new PIXI.Sprite.fromImage("run/img/blackSquare.jpg");
 	this.game.view.hud.addChild(black);
 
 	TweenLite.to(black, 0.3, {

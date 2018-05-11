@@ -2,7 +2,7 @@
   <basic>
     <usr id="42" nickname="Alice"/>
   </basic>
-  <sence name="初级第一课：模式设别" symbol="J_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="J_01_001"/>
+  <sence name="第一课：Hello,Prfogramming! " symbol="J_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="J_01_001"/>
   <tips>
   </tips>
   <toolbox src="J-01-001/1/Blocks/blocks.JS">

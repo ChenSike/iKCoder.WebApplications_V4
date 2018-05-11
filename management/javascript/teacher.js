@@ -114,6 +114,7 @@ function formatData_ClassBegin() {
             content: '模式识别 ',
             status: '0',
             symbol: 'B_01_001',
+            step: 1,
             grade: { id: 1, name: '初级1班' },
             custome: 1
         }, {
@@ -121,7 +122,382 @@ function formatData_ClassBegin() {
             room: 'Room 2',
             content: '路径跟随',
             status: '1',
-            symbol: 'C_01_001',
+            symbol: 'B_01_001',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_001',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_001',
+            step: 4,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_002',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_002',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_002',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_002',
+            step: 4,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_003',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_003',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_003',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_003',
+            step: 4,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_004',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_004',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_004',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_004',
+            step: 4,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_005',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_005',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_005',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_005',
+            step: 4,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_006',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_006',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_006',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_006',
+            step: 4,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_007',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_007',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_007',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_007',
+            step: 4,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_01_008',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_01_008',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_02_001',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_02_001',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_02_001',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_02_001',
+            step: 4,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_02_002',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_02_002',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_02_002',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_02_002',
+            step: 4,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_02_002',
+            step: 5,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_02_011',
+            step: 6,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'B_02_002',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'B_02_011',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'J_01_001',
+            step: 1,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'J_01_001',
+            step: 2,
+            grade: { id: 1, name: '中级2班' }
+        }, {
+            datetime: '2017-10-10 10:00',
+            room: 'Room 1',
+            content: '模式识别 ',
+            status: '0',
+            symbol: 'J_01_001',
+            step: 3,
+            grade: { id: 1, name: '初级1班' },
+            custome: 1
+        }, {
+            datetime: '2017-10-10 14:00',
+            room: 'Room 2',
+            content: '路径跟随',
+            status: '1',
+            symbol: 'J_01_001',
+            step: 4,
             grade: { id: 1, name: '中级2班' }
         }
     ];
@@ -207,24 +583,26 @@ function buildDataTableHTML_ClassBegin(data) {
 function buildDataTableColHeaderHTML_ClassBegin() {
     var tmpHTMLStr = '<th style="width: 45px;"></th>' +
     '<th style="width: 120px;">操作</th>' +
-    '<th style="width: 80px;">编号</th>' +
+    '<th style="width: 180px;">编号</th>' +
     '<th>内容</th>' +
     '<th style="width: 80px;">上课</th>';
     $('#container_DataTable_Header').append($(tmpHTMLStr));
 };
 
 function buildDataTableDataRowsHTML_ClassBegin(data) {
+    var tempSymbol = '';
     for (var i = 0; i < data.length; i++) {
+        tempSymbol = data[i].symbol + '|' + data[i].step;
         var tmpHTMLStr = [];
         tmpHTMLStr.push('<tr class="row-classbegin-items">');
         tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
         tmpHTMLStr.push('   <td>');
-        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-classbegin-doc" data-target="' + data[i].symbol + '">教案</button>');
-        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-classbegin-wp" data-target="' + data[i].symbol + '">课件</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-success btn-classbegin-doc" data-target="' + tempSymbol + '">教案</button>');
+        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-classbegin-wp" data-target="' + tempSymbol + '">课件</button>');
         tmpHTMLStr.push('   </td>');
-        tmpHTMLStr.push('   <td>' + data[i].symbol + '</td>');
+        tmpHTMLStr.push('   <td>' + data[i].symbol + ' STEP: ' + data[i].step + '</td>');
         tmpHTMLStr.push('   <td>' + data[i].content + '</td>');
-        tmpHTMLStr.push('   <td><button type="button" class="btn btn-sm btn-primary btn-classbegin-begin" data-target="' + data[i].symbol + '">上课</button></td>');
+        tmpHTMLStr.push('   <td><button type="button" class="btn btn-sm btn-primary btn-classbegin-begin" data-target="' + tempSymbol + '">上课</button></td>');
         tmpHTMLStr.push('</tr>');
         $('#container_DataTable_Rows').append($(tmpHTMLStr.join('')));
     }
