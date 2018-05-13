@@ -403,6 +403,7 @@ function buildStageTitleHTML() {
     var tmpWrap = $('.header-course-name');
     var titleWidth = testTextWidth(titleText, '16px', 'bold', '', '2px');
     if (titleWidth > $('#wrap_Head_Course_Name').width()) {
+        tmpWrap.css('line-height', '25px');
         titleText = titleText.replace('：', ':').replace(':', '<br/>');
     } else {
         tmpWrap.css('line-height', '50px');

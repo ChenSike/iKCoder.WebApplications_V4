@@ -74,11 +74,11 @@ function IKCoderSenceRun_Begin()
     IKCoderSenceRun_Resize(i_senceWidth, i_senceHeight);
 
     i_loader = new PIXI.AssetLoader([
-   "image/scene/run/shine.fw.png",
-   "image/scene/run/candy.fw.png",
-   "image/scene/run/PixiAssets-hd.json",
-   "image/scene/run/iP4_BGtile.jpg",
-   "image/scene/run/box.fw.png"
+   "javascript/scene/image/run/shine.fw.png",
+   "javascript/scene/image/run/candy.fw.png",
+   "javascript/scene/image/run/PixiAssets-hd.json",
+   "javascript/scene/image/run/iP4_BGtile.jpg",
+   "javascript/scene/image/run/box.fw.png"
     ]);
 
     i_loader.addEventListener('onComplete', function (event) {
@@ -113,29 +113,29 @@ function IKCoderSenceRun_AddcollisonNode(name,position_x,position_y,width,height
 }
 
 function IKCoderSenceRun_InitSenceSprites() {
-    IKCoderSenceRun_AddSprite('image/scene/run/iP4_BGtile.jpg', i_background_default_width, i_background_default_height, -1, -1);
+    IKCoderSenceRun_AddSprite('javascript/scene/image/run/iP4_BGtile.jpg', i_background_default_width, i_background_default_height, -1, -1);
    
     i_ground_position_Y = i_background_default_height - 161;
 
-    var sprite_box_one = IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 300, i_background_default_height - 161);
+    var sprite_box_one = IKCoderSenceRun_AddSprite('javascript/scene/image/run/box.fw.png', -1, -1, 300, i_background_default_height - 161);
     IKCoderSenceRun_AddcollisonNode("box_1", 300, i_background_default_height - 161, sprite_box_one.width, sprite_box_one.height,false);
 
-    IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 480, i_background_default_height - 161);
+    IKCoderSenceRun_AddSprite('javascript/scene/image/run/box.fw.png', -1, -1, 480, i_background_default_height - 161);
     IKCoderSenceRun_AddcollisonNode("box_2", 480, i_background_default_height - 161, sprite_box_one.width, sprite_box_one.height,false);
 
-    IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 680, i_background_default_height - 561);
+    IKCoderSenceRun_AddSprite('javascript/scene/image/run/box.fw.png', -1, -1, 680, i_background_default_height - 561);
     IKCoderSenceRun_AddcollisonNode("box_3", 680, i_background_default_height - 561, sprite_box_one.width, sprite_box_one.height,false);
     
-    IKCoderSenceRun_AddSprite('image/scene/run/box.fw.png', -1, -1, 880, i_background_default_height - 421);
+    IKCoderSenceRun_AddSprite('javascript/scene/image/run/box.fw.png', -1, -1, 880, i_background_default_height - 421);
     IKCoderSenceRun_AddcollisonNode("box_4", 800, i_background_default_height - 421, sprite_box_one.width, sprite_box_one.height,false);
     
-    var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('image/scene/run/shine.fw.png', -1, -1, 1110, i_background_default_height - 121);
+    var sprite_pickup_sunshine = IKCoderSenceRun_AddSprite('javascript/scene/image/run/shine.fw.png', -1, -1, 1110, i_background_default_height - 121);
     sprite_pickup_sunshine.anchor.x = sprite_pickup_sunshine.anchor.y = 0.5;
     i_spritesObjectsPool["sprite_pickup_sunshine"] = sprite_pickup_sunshine;
     var sprite_pickup_candy = IKCoderSenceRun_AddSprite('pickup_06.png', -1, -1, 1080, i_background_default_height - 141);
     i_spritesObjectsPool["sprite_pickup_candy"] = sprite_pickup_candy;
 
-    IKCoderSenceRun_AddcollisonNode("image/scene/run/candy.fw.png", 1080, i_background_default_height - 141, sprite_pickup_candy.width, sprite_pickup_candy.height, true);
+    IKCoderSenceRun_AddcollisonNode("javascript/scene/image/run/candy.fw.png", 1080, i_background_default_height - 141, sprite_pickup_candy.width, sprite_pickup_candy.height, true);
     IKCoderSenceRun_Animation_PickupShine();
 
     IKCoderSenceRun_PersonInit(100, i_background_default_height - 161);

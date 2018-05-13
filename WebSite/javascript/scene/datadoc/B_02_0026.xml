@@ -21,6 +21,32 @@
     <block type="event_start" id="f0Gt`~jczerKhI$;4tt`" colour="#5ba580" stroke="#000000" eventicon="" categoryicon="" maxcount="Infinity" x="248" y="26"/>
   </workspacestatus>
   <game>
+    <script src="B-02-002_2D/run/6/Scene/SegmentData.js"></script>
+    <script src="B-02-002_2D/run/6/tweenlite/TimelineLite.min.js"></script>
+    <script src="B-02-002_2D/run/6/tweenlite/TweenLite.min.js"></script>
+    <script src="B-02-002_2D/run/6/tweenlite/easing/EasePack.min.js"></script>
+    <script src="B-02-002_2D/run/6/game/Math2.js"></script>
+    <script src="B-02-002_2D/run/6/game/view/Background.js"></script>
+    <script src="B-02-002_2D/run/6/game/view/Lava.js"></script>
+    <script src="B-02-002_2D/run/6/game/view/RprView.js"></script>
+    <script src="B-02-002_2D/run/6/game/view/Countdown.js"></script>
+    <script src="B-02-002_2D/run/6/game/view/Splash.js"></script>
+    <script src="B-02-002_2D/run/6/game/view/Score.js"></script>
+    <script src="B-02-002_2D/run/6/game/view/BestScore.js"></script>
+    <script src="B-02-002_2D/run/6/game/GameObjectPool.js"></script>
+    <script src="B-02-002_2D/run/6/game/CollisionManager.js"></script>
+    <script src="B-02-002_2D/run/6/game/FloorManager.js"></script>
+    <script src="B-02-002_2D/run/6/game/SegmentManager.js"></script>
+    <script src="B-02-002_2D/run/6/game/Enemy.js"></script>
+    <script src="B-02-002_2D/run/6/game/EnemyManager.js"></script>
+    <script src="B-02-002_2D/run/6/game/Pickup.js"></script>
+    <script src="B-02-002_2D/run/6/game/PickupManager.js"></script>
+    <script src="B-02-002_2D/run/6/game/RprEngine.js"></script>
+    <script src="B-02-002_2D/run/6/game/Steve.js"></script>
+    <script src="B-02-002_2D/run/6/game/SteveTrail.js"></script>
+    <script src="B-02-002_2D/run/6/game/Explosion.js"></script>
+    <script src="B-02-002_2D/run/6/game/SteveTrailFire.js"></script>
+    <script src="B-02-002_2D/run/6/game/PixiDust.js"></script>
     <script src="B-02-002_2D/run/6/Scene/GameRun.js"/>
     <script src="B-02-002_2D/run/6/Scene/scene.JS"/>
   </game>

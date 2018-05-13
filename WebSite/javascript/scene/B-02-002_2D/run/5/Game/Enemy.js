@@ -39,7 +39,7 @@ GAME.Enemy.prototype.hit = function()
 	this.explosion.explode();
 	this.view.addChild(this.explosion);
  
-	this.view.setTexture(PIXI.Texture.fromImage("image/scene/run/empty.png"))
+	this.view.setTexture(PIXI.Texture.fromImage("javascript/scene/image/run/empty.png"))
 }
 
 GAME.Enemy.prototype.update = function()

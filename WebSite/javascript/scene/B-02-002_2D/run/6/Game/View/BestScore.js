@@ -29,7 +29,7 @@ GAME.BestScore = function () {
 		this.addChild(this.digits[i]);
 	}
 
-	this.title = PIXI.Sprite.fromFrame("image/scene/run/hud/PersonalBest.png");
+	this.title = PIXI.Sprite.fromFrame("javascript/scene/image/run/hud/PersonalBest.png");
 	this.title.anchor.x = 0;
 	this.title.anchor.y = 0;
 	this.title.position.y = 1;

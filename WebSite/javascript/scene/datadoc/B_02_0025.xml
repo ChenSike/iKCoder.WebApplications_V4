@@ -32,6 +32,27 @@
     <block type="event_start" id="f0Gt`~jczerKhI$;4tt`" colour="#5ba580" stroke="#000000" eventicon="" categoryicon="" maxcount="Infinity" x="248" y="26"/>
   </workspacestatus>
   <game>
+    <script src="B-02-002_2D/run/5/Scene/SegmentData.js"></script>
+    <script src="B-02-002_2D/run/5/game/Math2.js"></script>
+    <script src="B-02-002_2D/run/5/game/view/Background.js"></script>
+    <script src="B-02-002_2D/run/5/game/view/Lava.js"></script>
+    <script src="B-02-002_2D/run/5/game/view/RprView.js"></script>
+    <script src="B-02-002_2D/run/5/game/view/Splash.js"></script>
+    <script src="B-02-002_2D/run/5/game/view/Score.js"></script>
+    <script src="B-02-002_2D/run/5/game/view/BestScore.js"></script>
+    <script src="B-02-002_2D/run/5/game/GameObjectPool.js"></script>
+    <script src="B-02-002_2D/run/5/game/CollisionManager.js"></script>
+    <script src="B-02-002_2D/run/5/game/FloorManager.js"></script>
+    <script src="B-02-002_2D/run/5/game/SegmentManager.js"></script>
+    <script src="B-02-002_2D/run/5/game/Enemy.js"></script>
+    <script src="B-02-002_2D/run/5/game/EnemyManager.js"></script>
+    <script src="B-02-002_2D/run/5/game/Pickup.js"></script>
+    <script src="B-02-002_2D/run/5/game/PickupManager.js"></script>
+    <script src="B-02-002_2D/run/5/game/RprEngine.js"></script>
+    <script src="B-02-002_2D/run/5/game/Steve.js"></script>
+    <script src="B-02-002_2D/run/5/game/SteveTrail.js"></script>
+    <script src="B-02-002_2D/run/5/game/Explosion.js"></script>
+    <script src="B-02-002_2D/run/5/game/SteveTrailFire.js"></script>
     <script src="B-02-002_2D/run/5/Scene/GameRun.js"/>
     <script src="B-02-002_2D/run/5/Scene/scene.JS"/>
   </game>
