@@ -2,7 +2,7 @@
   <basic>
     <usr id="42" nickname="Alice"/>
   </basic>
-  <sence name="第一课：Hello,Prfogramming! " symbol="J_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="J_01_001"/>
+  <sence name="HELLO PROGRAMING！" symbol="J_01_001" id="" totalstage="4" currentstage="1" finishstage="0" next="J_01_001"/>
   <tips>
   </tips>
   <toolbox src="J-01-001/1/Blocks/blocks.JS">
@@ -53,18 +53,6 @@
   </message>
   <words>
     <stage value="1">
-      <word value="move" note="儿童英语/CET4/计算机英语" star="4">
-        <soundmark>
-          <item type="us" value="美 [kəmpjutɚ]" sound="sound_word_computer_us"></item>
-          <item type="uk" value="英 [kəmpjuːtə]" sound="sound_word_computer_uk"></item>
-        </soundmark>
-        <paraphrase>
-          <item>v.移动</item>
-        </paraphrase>
-        <variant>
-          <item name="复数" value="computers"/>
-        </variant>
-      </word>
     </stage>
   </words>
   <kps>

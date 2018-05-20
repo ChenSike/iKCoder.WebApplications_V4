@@ -207,9 +207,9 @@ function initEvents(isCodeModal) {
 
         if (_gStageData.course.note.length == 0) {
             //adjustMainSize(getQueryString('step') == '' ? true : false);
-            //$('.course-tip-container-row').hide();
+            $('.course-tip-container-row').hide();
             //Blockly.svgResize(WorkScene.WORKSPACE);
-            //adjustMainSize(getQueryString('step') == '' ? true : false);
+            adjustMainSize(getQueryString('step') == '' ? true : false);
         }
     } else {
         initBottomTBEvents();
@@ -223,8 +223,13 @@ function initEvents(isCodeModal) {
 function adjustMainSize(isCodeModal) {
     var headerHeight = $('.header-container').height();
     var footerHeight = $('footer').height();
-    var tipHeight = $('.course-tip-loading-col').height();
-    var toolbarHeight = $('.toolbar-container-row').height();
+    var tipHeight = 0;
+    if ($('.course-tip-container-row').css('display') != 'none') {
+        //$('.course-tip-loading-col').height();
+        tipHeight = $('.course-tip-container-row').height();
+    }
+    
+    var toolbarHeight = $('.toolbar-container-row').height() + 8;
     var bbarHeight = $('.bottom-toolbar-container-row').height();
     var tmpHeight = headerHeight + footerHeight + bbarHeight;
     tmpHeight += (isCodeModal ? 0 : tipHeight + toolbarHeight);
@@ -615,6 +620,7 @@ function adjustCanvasSize(keepRate) {
     playButton.height(fontSize);
     playButton.width(fontSize);
     playButton.css('font-size', fontSize + 'px');
+    playButton.css('line-height', fontSize + 'px');
     playButton.css('left', (parseInt(container.css('margin-left')) + 10) + 'px');
     playButton.css('top', (newHeight - 10 - fontSize) + 'px');
 
@@ -764,6 +770,14 @@ function siderBarExpand() {
 function initBottomTBEvents() {
     if (_gStageData.course.kps.length == 0) {
         var tmpItem = $('.bottom-toolbar-item.fa-book');
+        tmpItem.removeClass('bottom-toolbar-item');
+        tmpItem.addClass('bottom-toolbar-item-disabled');
+        tmpItem.parent().removeClass('bottom-toolbar-item-wrap');
+        tmpItem.parent().addClass('bottom-toolbar-item-wrap-disabled');
+    }
+
+    if (_gStageData.course.words.length == 0) {
+        var tmpItem = $('.bottom-toolbar-item.fa-globe');
         tmpItem.removeClass('bottom-toolbar-item');
         tmpItem.addClass('bottom-toolbar-item-disabled');
         tmpItem.parent().removeClass('bottom-toolbar-item-wrap');
