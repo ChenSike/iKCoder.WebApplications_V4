@@ -1,0 +1,37 @@
+﻿<root>
+  <basic>
+    <usr id="42" nickname="Alice"/>
+  </basic>
+  <sence name="萌宠大逃亡" symbol="OE_01_001" id="" totalstage="3" currentstage="3" finishstage="2" next="OE_01_001"/>
+  <tips>
+  </tips>
+  <toolbox src="OE-01-001_3D/3/Blocks/blocks.JS">
+    <xml id="toolbox" style="display: none">
+      <block type="set_control_mouse" maxcount="1"></block>
+      <block type="set_control_keyboard" maxcount="1"></block>
+      <block type="scene_setting_complete" maxcount="1"></block>
+    </xml>
+  </toolbox>
+  <workspacestatus>
+    <xml xmlns="http://www.w3.org/1999/xhtml" id="workspaceBlocks" style="display:none">
+      <block type="scene_control_setting" x="50" y="100"></block>
+    </xml>
+  </workspacestatus>
+  <game>
+    <script src="OE-01-001_3D/main.js"></script>
+    <script src="OE-01-001_3D/Materials.js"></script>
+    <script src="OE-01-001_3D/objects.js"></script>
+    <script src="OE-01-001_3D/3/blocks/blocks.js"></script>
+    <script src="OE-01-001_3D/3/scene/scene.js"></script>
+  </game>
+  <message>
+    <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>
+    <suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>
+  </message>
+  <words>
+    <stage value="1">
+    </stage>
+  </words>
+  <kps>
+  </kps>
+</root>

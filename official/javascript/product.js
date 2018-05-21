@@ -14,4 +14,7 @@ function initPage() {
 };
 
 function initPageEvent() {
+    $('#btn_OnlineExperience').on('click', function () {
+        window.open('/ikcoder/workplatform.html?scene=OE_01_001&step=1', 'workplatform', "")
+    });
 };

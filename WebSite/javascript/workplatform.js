@@ -12,6 +12,7 @@ var _gStageData = {
 var _workspaceCfg = {};
 var _codeEditor_HTML = null;
 var _codeEditor_JS = null;
+var _forceReset = true;
 
 function initPage() {
     $('#mask_Page_Loading').hide();
@@ -229,7 +230,8 @@ function adjustMainSize(isCodeModal) {
         tipHeight = $('.course-tip-container-row').height();
     }
     
-    var toolbarHeight = $('.toolbar-container-row').height() + 8;
+    var toolbarHeight = $('.toolbar-container-row').height();
+    toolbarHeight = toolbarHeight >= 30 ? toolbarHeight : toolbarHeight + 8;
     var bbarHeight = $('.bottom-toolbar-container-row').height();
     var tmpHeight = headerHeight + footerHeight + bbarHeight;
     tmpHeight += (isCodeModal ? 0 : tipHeight + toolbarHeight);
@@ -550,17 +552,16 @@ function initHeaderEvents() {
 };
 
 function gotoSpecialStep(step) {
-    var url = _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: step, symbol: _gStageData.course.id });
-    var successFn = function (response) {
-        if ($(response).find('err').length > 0) {
-            _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
-            return;
-        }
-
-        window.location.href = 'workplatform.html?scene=' + _gStageData.course.id + '&rnd=' + Date.now();
-    }
-
-    ajaxFn('POST', url, '<root></root>', successFn, _gEmptyFn);
+    //var url = _getRequestURL(_gURLMapping.bus.setcurrentstep, { stage: step, symbol: _gStageData.course.id });
+    //var successFn = function (response) {
+    //    if ($(response).find('err').length > 0) {
+    //        _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Save_CurrentStepSymbol');
+    //        return;
+    //    }
+    //    window.location.href = 'workplatform.html?scene=' + _gStageData.course.id + '&rnd=' + Date.now();
+    //}
+    //ajaxFn('POST', url, '<root></root>', successFn, _gEmptyFn);
+    window.location.href = 'workplatform.html?scene=' + _gStageData.course.id + '&step=' + step;
 };
 
 function initToolbarEvents() {
@@ -578,7 +579,7 @@ function initToolbarEvents() {
     });
 
     $('.toolbar-button-referesh').on('click', function (e) {
-        WorkScene.reset(true);
+        WorkScene.reset(_forceReset);
     });
 
     $('.run-scene-fullscreen-close-button').on('click', function (e) {
@@ -595,10 +596,10 @@ function adjustCanvasSize(keepRate) {
     var canvas = container.find('canvas');
     var tmpRate = canvas.height() / canvas.width();
     var wrapHeight = currentWrap.height();
-    var wrapWidth = currentWrap.width() - parseInt(currentWrap.css('padding')) * 2;
-    var newHeight = wrapHeight;
-    var newWidth = wrapWidth;
-    if (keepRate) {
+    var wrapWidth = currentWrap.width();
+    var newHeight = wrapHeight - parseInt(currentWrap.css('padding')) * 2;
+    var newWidth = wrapWidth - parseInt(currentWrap.css('padding')) * 2;
+    if (keepRate && !_useFullContainer) {
         if (wrapHeight / wrapWidth < tmpRate) {
             newWidth = wrapHeight / tmpRate;
         } else {
@@ -608,7 +609,7 @@ function adjustCanvasSize(keepRate) {
 
     container.height(newHeight);
     container.width(newWidth);
-    container.css('margin-left', (wrapWidth - newWidth) / 2 + 'px');
+    //container.css('margin-left', (wrapWidth - newWidth) / 2 + 'px');
 
     canvas.height(newHeight);
     canvas.width(newWidth);

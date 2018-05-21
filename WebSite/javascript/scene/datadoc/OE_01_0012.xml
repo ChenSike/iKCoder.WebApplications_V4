@@ -1,0 +1,50 @@
+﻿<root>
+  <basic>
+    <usr id="42" nickname="iKCoder"/>
+  </basic>
+  <sence name="萌宠大逃亡" symbol="OE_01_001" id="" totalstage="3" currentstage="2" finishstage="3" next="OE_01_001"/>
+  <tips>
+  </tips>
+  <toolbox src="OE-01-001_3D/2/Blocks/blocks.JS">
+    <xml id="toolbox" style="display: none">
+      <block type="scene_setting_complete" maxcount="1"></block>
+    </xml>
+  </toolbox>
+  <workspacestatus>
+    <xml id="workspace" style="display: none">
+      <block type="scene_setting" x="50" y="100">
+        <statement name="scene_roles_setting">
+          <block type="set_rabbit_shape">
+            <field name="rabbit_head">middle</field>
+            <field name="rabbit_body">middle</field>
+            <field name="rabbit_ear">middle</field>
+            <next>
+              <block type="set_wolf_shape">
+                <field name="wolf_head">middle</field>
+                <field name="wolf_body">middle</field>
+                <field name="wolf_ear">middle</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </xml>
+  </workspacestatus>
+  <game>
+    <script src="OE-01-001_3D/main.js"></script>
+    <script src="OE-01-001_3D/Materials.js"></script>
+    <script src="OE-01-001_3D/objects.js"></script>
+    <script src="OE-01-001_3D/2/blocks/blocks.js"></script>
+    <script src="OE-01-001_3D/2/scene/scene.js"></script>
+  </game>
+  <message>
+    <faild msg="非常抱歉，您的工作出现错误，请检查后继续运行."/>
+    <suc msg="恭喜你，你已经完成了第 1 步了.距离成为一个工程师已经不远了."/>
+  </message>
+  <words>
+    <stage value="1">
+    </stage>
+  </words>
+  <kps>
+  </kps>
+</root>

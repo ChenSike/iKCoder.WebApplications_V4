@@ -170,7 +170,7 @@ var WorkScene = {
     outputCode: function () {
         try {
             var editor = $('#iframe_CodeEditor')[0].contentWindow.editor;
-            var code = Blockly.JavaScript.workspaceToCode(this.WORKSPACE);
+            var code = Blockly.JavaScript.workspaceToCode(WorkScene.WORKSPACE);
             editor.setValue(code);
             WorkScene.OutputCodeCallBack(code);
         }
