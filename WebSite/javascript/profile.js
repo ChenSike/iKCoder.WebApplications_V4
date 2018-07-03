@@ -4,15 +4,14 @@ var _ajaxObj = null;
 var _gCurrentCategory = 'overview';
 var _gCategory = [
     { id: 'overview', icon: 'fa-tachometer', text: '课程', atta: '' },
-    { id: 'settings', icon: 'fa-cogs', text: '基础信息', atta: '' },
-    //{ id: 'homework', icon: 'fa-home', text: '作业', atta: 'bool' },
-    //{ id: 'exam', icon: 'fa-superscript', text: '测试', atta: '' },
-    //{ id: 'message', icon: 'fa-envelope-o', text: '消息', atta: 'number' },
-    //{ id: 'report', icon: 'fa-bar-chart', text: '报表', atta: '' },
-    //{ id: 'settings', icon: 'fa-cogs', text: '设定', atta: '' },
-    //{ id: 'workplatform', icon: 'fa-anchor', text: 'App Studio', atta: '' },
-    //{ id: 'appshop', icon: 'fa-shopping-cart', text: 'App Shop', atta: '' },
-    //{ id: 'teamsuit', icon: 'fa-users', text: 'Team Suit', atta: '' }
+    { id: 'homework', icon: 'fa-home', text: '作业', atta: 'bool' },
+    { id: 'exam', icon: 'fa-superscript', text: '测试', atta: '' },
+    { id: 'message', icon: 'fa-envelope-o', text: '消息', atta: 'number' },
+    { id: 'report', icon: 'fa-bar-chart', text: '报表', atta: '' },
+    { id: 'settings', icon: 'fa-cogs', text: '设定', atta: '' },
+    { id: 'workplatform', icon: 'fa-anchor', text: 'App Studio', atta: '' },
+    { id: 'appshop', icon: 'fa-shopping-cart', text: 'App Shop', atta: '' },
+    { id: 'teamsuit', icon: 'fa-users', text: 'Team Suit', atta: '' }
 ];
 var _distributionMap = {
     S: { name: '科学', color: 'rgb(36,90,186)' },
@@ -295,58 +294,7 @@ function rebuildContent(symbol) {
     _gCurrentCategory = symbol;
 };
 
-function rebuildOverviewPanel(contentHeight) {
-    var data = [
-        {
-            datetime: '2017-10-10 10:00',
-            room: 'Room 1',
-            content: '模式识别 ',
-            status: '0',
-            symbol: 'B_01_001',
-            grade: { id: 1, name: '初级1班' },
-            custome: 1
-        }, {
-            datetime: '2017-10-10 14:00',
-            room: 'Room 2',
-            content: '路径跟随',
-            status: '1',
-            symbol: 'C_01_001',
-            grade: { id: 1, name: '中级2班' }
-        }
-    ];
-
-    $('#wrap_Category_Title').hide();
-    $('#wrap_Category_Content').css('background-color', 'rgb(246,246,246)');
-    var tmpHTMLStr = [];
-    tmpHTMLStr.push('<table class="table table-striped">');
-    tmpHTMLStr.push('   <thead>');
-    tmpHTMLStr.push('       <tr>');
-    tmpHTMLStr.push('           <th style="width: 45px;"></th>');
-    tmpHTMLStr.push('           <th style="width: 80px;">操作</th>');
-    tmpHTMLStr.push('           <th style="width: 80px;">编号</th>');
-    tmpHTMLStr.push('           <th>内容</th>');
-    tmpHTMLStr.push('       </tr>');
-    tmpHTMLStr.push('   </thead>');
-    tmpHTMLStr.push('   <tbody id="container_DataTable_Rows">');
-    for (var i = 0; i < data.length; i++) {
-        tmpHTMLStr.push('<tr class="row-classbegin-items">');
-        tmpHTMLStr.push('   <th scope="row">' + (i + 1) + '</th>');
-        tmpHTMLStr.push('   <td>');
-        tmpHTMLStr.push('       <button type="button" class="btn btn-sm btn-info btn-classbegin-wp" data-target="' + data[i].symbol + '">课件</button>');
-        tmpHTMLStr.push('   </td>');
-        tmpHTMLStr.push('   <td>' + data[i].symbol + '</td>');
-        tmpHTMLStr.push('   <td>' + data[i].content + '</td>');
-        tmpHTMLStr.push('</tr>');
-    }
-
-    tmpHTMLStr.push('   </tbody>');
-    tmpHTMLStr.push('</table>');
-    $('#wrap_Category_Content').append($(tmpHTMLStr.join('')));
-    hideLoadingMask();
-};
-
 /*Overview panel*/
-/*
 function rebuildOverviewPanel(contentHeight) {
     var tmpHeight = calcOverviewItemheight(contentHeight);
     var data = formatOverviewData(null);
@@ -1003,7 +951,7 @@ function drawExpCourseLevelGraph(canvasId, data) {
     context.fillStyle = "rgb(71,71,71)";
     context.fillText(data.value + '%', (width - bigFontSize * ((data.value + '%').length - 1)) / 2, tmpY + bigFontSize / 2);
 };
-*/
+
 /*Settings panel*/
 function rebuildSettingsPanel(contentHeight) {
     var mapping = [
@@ -1102,14 +1050,13 @@ function calcSettingsItemheight(contentHeight) {
         pwdHeight = 285;
     }
 
-    return { p: contentHeight, c: 0 };
+    return { p: profileHeight, c: pwdHeight };
 };
 
 function buildSettingsProfile(data, tmpHeight) {
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid" id="wrap_Settings_Profile">');
-    //tmpHTMLArr.push('    <div class="row justify-content-start align-items-center" style="height:' + tmpHeight + 'px">');
-    tmpHTMLArr.push('    <div class="row justify-content-start align-items-start" style="height:' + tmpHeight + 'px">');
+    tmpHTMLArr.push('    <div class="row justify-content-start align-items-center" style="height:' + tmpHeight + 'px">');
     tmpHTMLArr.push('        <div class="col-10 offset-1">');
     tmpHTMLArr.push('            <form class="my-3">');
     tmpHTMLArr.push('                <div class="form-group row">');
@@ -1117,13 +1064,13 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                    <div class="col-7">');
     //tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" style="width: 100px; height: 100px;">');
     tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="image/circles.svg">');
-    //tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
+    tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
     tmpHTMLArr.push('                    <label for="txt_Settings_Profile_User_Name" class="col-2 col-form-label">姓名</label>');
     tmpHTMLArr.push('                    <div class="col-8">');
-    tmpHTMLArr.push('                        <input type="text" class="form-control" id="txt_Settings_Profile_User_Name" placeholder="请输入姓名" readonly>');
+    tmpHTMLArr.push('                        <input type="text" class="form-control" id="txt_Settings_Profile_User_Name" placeholder="请输入姓名">');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
@@ -1175,11 +1122,11 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                        <input type="text" class="form-control" id="txt_Settings_Profile_User_School" placeholder="请输入就读的学校名称" readonly>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
-    //tmpHTMLArr.push('                <div class="form-group row">');
-    //tmpHTMLArr.push('                    <div class="col text-center">');
-    //tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info col-3" id="btn_Settings_Profile_Save_Profile">保存</button>');
-    //tmpHTMLArr.push('                    </div>');
-    //tmpHTMLArr.push('                </div>');
+    tmpHTMLArr.push('                <div class="form-group row">');
+    tmpHTMLArr.push('                    <div class="col text-center">');
+    tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info col-3" id="btn_Settings_Profile_Save_Profile">保存</button>');
+    tmpHTMLArr.push('                    </div>');
+    tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('            </form>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
@@ -1761,15 +1708,14 @@ function rebuildSettingsTitles(tmpHeight) {
             color: 'rgb(73,208,227)',
             icon: 'user-o',
             text: '<p class="settings-title-item-text">个人信息</p>'
+        }, {
+            id: 'changepwd',
+            height: tmpHeight.c,
+            bgColor: 'rgb(236,239,241)',
+            color: 'rgb(235,168,103)',
+            icon: 'unlock-alt',
+            text: '<p class="settings-title-item-text">账号密码</p>'
         }
-        //, {
-        //    id: 'changepwd',
-        //    height: tmpHeight.c,
-        //    bgColor: 'rgb(236,239,241)',
-        //    color: 'rgb(235,168,103)',
-        //    icon: 'unlock-alt',
-        //    text: '<p class="settings-title-item-text">账号密码</p>'
-        //}
     ];
 
     for (var i = 0; i < constArr.length; i++) {

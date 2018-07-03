@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <title>iKCoder・中国青少年编程教育创导者</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <link rel="stylesheet" href="style/signin.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/signin.js"></script>
+    <style>
+        .alert {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" id="navbar_Header">
+        <div class="row justify-content-start">
+            <div class="col-6" style="padding:30px;">
+                <img src="image/logo-new-gray.png" width="150" height="50" class="d-inline-block align-top img-header-logo" style="cursor:pointer;" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="wrap_Page_Content">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center" style="text-align:center; color:rgb(255,255,255);">
+                <div id="title_PageTop" style="font-weight: normal;">Hello, world.</div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-1 d-flex justify-content-center">
+                <div class="wrap-content-panel" id="wrap_SignIn_Panel">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 text-center title-panel" id="title_SignIn_Panel">
+                                登录
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <form class="my-3" id="form_SignIn_Section" name="form_SignIn_Section" target="iframe_for_autocomplete" action="s.html" method="post" autocomplete="on">
+                                    <div class="form-group">
+                                        <label for="txt_SignIn_PhoneNumber">用户名</label>
+                                        <input class="form-control form-control-sm" id="txt_SignIn_PhoneNumber" name="signin_phonenumber" type="text" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_SignIn_Password">登录密码</label>
+                                        <input class="form-control form-control-sm" id="txt_SignIn_Password" name="signin_password" type="password" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_SignIn_CheckCode">图片识别码</label>
+                                        <div class="col-12" style="padding: 0px;">
+                                            <div class="input-group" style="width:100%;">
+                                                <input type="text" class="form-control form-control-sm" id="txt_SignIn_CheckCode" placeholder="" />
+                                                <div class="input-group-addon" style="width:75px; padding:2px;">
+                                                    <img class="check-code-image rounded-right" id="img_SignIn_CheckCode" src="image/api_iKCoder_Util_Get_CheckCode.gif" title="点击刷新图片识别码">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" id="btn_AutoComplete" style="display:none;"></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <form class="form-inline">
+                                    <div class="col-6 form-group d-flex justify-content-start" style="padding-left:0px;">
+                                        <div class="form-check form-control-sm">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="chk_SignIn_Remember" type="checkbox" checked>记住我
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center my-3">
+                                <button class="btn btn-sm btn-info" id="btn_SignIn" style="width:100px;" type="button">登录</button>
+                            </div>
+                        </div>
+                        <div class="row" style="background-color:transparent">
+                            <div class="col-12 d-flex justify-content-center my-3">
+                                <!--<p class="link-button-panel-bottom" id="linkBtn_Goto_SignUp">还没有账号? 立即注册</p>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrap-background-body">
+        <img src="image/gaosiback.jpg" style="position:absolute" width="1920" height="1080" />
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            checkStatus();
+            _loadLabels();
+            initPage();
+        });
+    </script>
+</body>
+</html>
