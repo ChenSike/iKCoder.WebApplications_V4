@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <link rel="stylesheet" href="style/profile.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <canvas id="canvas_CustomHeader" width="320" height="320"></canvas>
+                            <div id="warnning_HeaderUpload" class="warnning"></div>
+                            <div id="progress_HeaderUpload" class="progress">
+                                <div id="loading">
+                                    <div id="loading-center">
+                                        <div id="loading-center-absolute">
+                                            <div class="object" id="object_one"></div>
+                                            <div class="object" id="object_two"></div>
+                                            <div class="object" id="object_three"></div>
+                                            <div class="object" id="object_four"></div>
+                                            <div class="object" id="object_five"></div>
+                                            <div class="object" id="object_six"></div>
+                                            <div class="object" id="object_seven"></div>
+                                            <div class="object" id="object_eight"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="fileinput-button" href="#" id="linkBtn_Upload_HeaderFile" data-holder-rendered="true">
+                                <i class="glyphicon glyphicon-picture"></i>
+                                选择图片
+                            </a>
+                            <span class="color-all-128">(最佳尺寸100×100, 可以上传高质量图片进行裁切)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <p style="text-align:left;color:rgb(56,56,56); ">图片预览</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-11 offset-1" style="text-align: center;">
+                            <canvas class="canvas-sample" id="canvas_Sample_1" width="100" height="100"></canvas>
+                            <p class="color-all-128">100×100</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-11 offset-1" style="text-align: center;">
+                            <canvas class="canvas-sample" id="canvas_Sample_2" width="64" height="64"></canvas>
+                            <p class="color-all-128">64×64</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-11 offset-1" style="text-align: center;">
+                            <canvas class="canvas-sample" id="canvas_Sample_3" width="24" height="24"></canvas>
+                            <p class="color-all-128">24×24</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:none;">
+        <form target="iFrame_Upload" name="uploadForm" id="form_Upload" action="" method="post" enctype="multipart/form-data">
+            <input name="file_Upload" type="file" id="file_Upload" />
+            <button type="reset" id="btn_Form_File_Upload"></button>
+        </form>
+        <iframe name="iFrame_Upload"></iframe>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#linkBtn_Upload_HeaderFile').on('click', function () {
+                $('#progress_HeaderUpload').hide();
+                $('#warnning_HeaderUpload').hide();                
+                $('#file_Upload').click();
+            });
+
+            $('#file_Upload').on('change', function () {
+                var regExp = /(\.|\/)(gif|jpe?g|png|bmp)$/i;
+                var fileName = $(this).val();
+                if (fileName != '' && !regExp.test(fileName)) {
+                    $('#warnning_HeaderUpload').show();
+                    $('#warnning_HeaderUpload').text("仅支持.jpg .jpeg .gif .png .bmp格式的图片");
+                    return;
+                } else if (this.files[0].size / 1024 > 4096) {
+                    $('#warnning_HeaderUpload').show();
+                    $('#warnning_HeaderUpload').text("图片大小不能超过4M");
+                    return;
+                } else {
+                    $('#progress_HeaderUpload').show();
+                    var fileType = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+                    $('#form_Upload').attr('action', 'http://119.23.233.224/ikcoderapi/Account/Profile/api_iKCoder_Profile_Set_UploadTmpHeaderImg.aspx');
+                    $('#form_Upload').submit();
+                    var timeout = 2000;
+                    if (this.files[0].size / 1024 > 3072) {
+                        timeout = 8000;
+                    } else if (this.files[0].size / 1024 > 2048) {
+                        timeout = 5000;
+                    } else if (this.files[0].size / 1024 > 1024) {
+                        timeout = 3000;
+                    }
+
+                    _UploadHeaderHandle = setTimeout('initCustomHeaderImg()', timeout);
+                    $('#btn_Form_File_Upload').click();
+                }
+            });
+        });
+
+        var _currentHeaderImageSrc = '';
+        var _currentHeaderImage = null;
+        function initCustomHeaderImg(uploadType) {
+            var canvas = document.getElementById("canvas_CustomHeader");
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 320, 320);
+            var image = new Image();
+            if (!uploadType && _currentHeaderImageSrc == '') {
+                image.src = 'http://119.23.233.224/ikcoderapi/Account/Profile/api_iKCoder_Profile_Get_HeaderImg.aspx';
+            } else if (typeof uploadType == 'string' && uploadType != '') {
+                image.src = 'http://119.23.233.224/ikcoderapi/Account/Profile/api_iKCoder_Profile_Get_HeaderImg.aspx';
+            } else {
+                image.src = _currentHeaderImageSrc + "&rnd=" + Date.now();
+            }
+
+            image.onload = function () {
+                var tmpSize = calcExhibitionSize(image);
+                ctx.drawImage(image, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
+                fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
+                $('#progress_HeaderUpload').hide();
+            };
+
+            image.onerror = function () {
+                var tmpSize = calcExhibitionSize(_currentHeaderImage);
+                ctx.drawImage(_currentHeaderImage, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
+                fnImageCropRot(_currentHeaderImage, { w: tmpSize.nw, h: tmpSize.nh });
+                $('#progress_HeaderUpload').hide();
+            };
+
+            _currentHeaderImageSrc = image.src;
+            _currentHeaderImage = image;
+            var tmpSize = calcExhibitionSize(image);
+            fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
+        }
+
+        var _eventBinded = false;
+        var fnImageCropRot = function (o, newSize) {
+            var ID = function (id) {
+                return document.getElementById(id);
+            };
+
+            var oCanvas = ID("canvas_CustomHeader");
+            oCanvas.onselectstart = function () {
+                return false;
+            };
+
+            var oCreateImg = o;
+            var iOrigWidth = (oCreateImg.width > 320 ? 320 : oCreateImg.width);
+            var iOrigHeight = (oCreateImg.height > 320 ? 320 : oCreateImg.height);
+            if ($('#wrap_CropBox_Header').length == 0) {
+                var tmpHTMLArr = [];
+                tmpHTMLArr.push('<div id="wrap_CropBox_Header" style="width:' + iOrigWidth + 'px; height:' + iOrigHeight + 'px;">');
+                tmpHTMLArr.push('   <div id="CropBox_Header">');
+                tmpHTMLArr.push('       <div id="DragBg_Header"></div>');
+                tmpHTMLArr.push('       <div id="dragRightBot" ></div>');
+                tmpHTMLArr.push('   </div>');
+                tmpHTMLArr.push('</div>');
+                $("#canvas_CustomHeader").after(tmpHTMLArr.join(""));
+            }
+
+            var tmpParams = {
+                left: 0,
+                top: 0,
+                width: 0,
+                height: 0,
+                currentX: 0,
+                currentY: 0,
+                flag: false,
+                kind: "drag"
+            };
+            $('#wrap_CropBox_Header').show();
+            var cropWidth = (iOrigWidth > 100 ? 100 : iOrigWidth);
+            var cropHeight = (iOrigHeight > 100 ? 100 : iOrigHeight);
+            var orgLeft = (320 - cropWidth) / 2;
+            var orgTop = (320 - cropHeight) / 2;
+            $("#CropBox_Header").width(cropWidth);
+            $("#CropBox_Header").height(cropHeight);
+            $("#CropBox_Header").css('top', orgTop + "px");
+            $("#CropBox_Header").css('left', orgLeft + "px");
+            showSampleImage(o, orgLeft, orgTop, cropWidth, cropHeight, newSize);
+            startDrag.image = o;
+            startDrag.newSize = newSize;
+            if (!_eventBinded) {
+                startDrag(ID("DragBg_Header"), ID("CropBox_Header"), "drag", tmpParams);
+                startDrag(ID("dragRightBot"), ID("CropBox_Header"), "se", tmpParams);
+                _eventBinded = true;
+            }
+        };
+
+        var startDrag = function (point, target, kind, params) {
+            params.width = $(target).width();
+            params.height = $(target).height();
+            params.left = $(target).position().left;
+            params.top = $(target).position().top;
+
+            point.onmousedown = function (event) {
+                params.kind = kind;
+                params.flag = true;
+                if (!event) {
+                    event = window.event;
+                }
+
+                var e = event;
+                params.currentX = e.clientX;
+                params.currentY = e.clientY;
+                point.onselectstart = function () {
+                    return false;
+                }
+
+                return false;
+            };
+
+            document.onmouseup = function () {
+                params.flag = false;
+                params.left = $(target).position().left;
+                params.top = $(target).position().top;
+                params.width = $(target).width();
+                params.height = $(target).height();
+                showSampleImage(startDrag.image, params.left, params.top, params.width, params.height, startDrag.newSize);
+            };
+
+            document.onmousemove = function (event) {
+                var e = event ? event : window.event;
+                if (params.flag) {
+                    var nowX = e.clientX, nowY = e.clientY;
+                    var disX = nowX - params.currentX;
+                    var disY = nowY - params.currentY;
+                    var tmpWidth = parseInt(params.width);
+                    var tmpHeighth = parseInt(params.height);
+                    var tmpLeft = parseInt(params.left);
+                    var tmpTop = parseInt(params.top);
+                    if (params.kind === "se") {
+                        var newWidth = tmpWidth + disX;
+                        var newHeight = tmpHeighth + disX;
+                        newWidth = (newWidth + tmpLeft > 320 ? 320 - tmpLeft : newWidth);
+                        newHeight = (newHeight + tmpTop > 320 ? 320 - tmpTop : newHeight);
+                        if (newWidth != newHeight) {
+                            return;
+                        }
+
+                        $(target).width(newWidth);
+                        $(target).height(newHeight);
+                    } else {
+                        var newLeft = tmpLeft + disX;
+                        var newTop = tmpTop + disY;
+                        newLeft = (newLeft < 0 ? 0 : newLeft);
+                        newTop = (newTop < 0 ? 0 : newTop);
+                        newLeft = (newLeft + tmpWidth > 320 ? 320 - tmpWidth : newLeft);
+                        newTop = (newTop + tmpHeighth > 320 ? 320 - tmpHeighth : newTop);
+                        $(target).css('left', newLeft + "px");
+                        $(target).css('top', newTop + "px");
+                    }
+                }
+            }
+        }
+
+        startDrag.image = null;
+        startDrag.newSize = null;
+        function calcExhibitionSize(image) {
+            var imgHeight = image.height;
+            var imgWidth = image.width;
+            var newWidth = imgWidth;
+            var newHeight = imgHeight;
+            var scaleX = imgWidth / 320;
+            var scaleY = imgHeight / 320;
+            if (imgHeight > imgWidth) {
+                newHeight = 320;
+                newWidth = imgWidth / imgHeight * newHeight;
+            } else {
+                newWidth = 320;
+                newHeight = imgHeight / imgWidth * newWidth;
+            }
+
+            return { w: imgWidth, h: imgHeight, nw: newWidth, nh: newHeight };
+        };
+
+        function transCropBoxSizeToRealSize(image, left, top, width, height, newSize) {
+            var tmpSpaceH = (320 - newSize.w) / 2;
+            var tmpSpaceV = (320 - newSize.h) / 2;
+            var tmpLeft = left - tmpSpaceH;
+            var tmpTop = top - tmpSpaceV;
+            var tmpWidth = width;
+            var tmpHeight = height;
+            if (tmpLeft < 0) {
+                tmpWidth = tmpWidth + tmpLeft;
+                tmpLeft = 0;
+            }
+
+            if (tmpWidth > newSize.w) {
+                tmpWidth = newSize.w;
+            } else if (tmpLeft + tmpWidth > newSize.w) {
+                tmpWidth = tmpWidth - (tmpLeft + tmpWidth - newSize.w);
+            }
+
+            if (tmpTop < 0) {
+                tmpHeight = tmpHeight + tmpTop;
+                tmpTop = 0;
+            }
+
+            if (tmpHeight > newSize.h) {
+                tmpHeight = newSize.h;
+            } else if (tmpTop + tmpHeight > newSize.h) {
+                tmpHeight = tmpHeight - (tmpTop + tmpHeight - newSize.h);
+            }
+
+            var scaleX = image.width / newSize.w;
+            var scaleY = image.height / newSize.h;
+            left = tmpLeft * scaleX;
+            top = tmpTop * scaleY;
+            width = tmpWidth * scaleX;
+            height = tmpHeight * scaleY;
+            return { l: left, t: top, w: width, h: height };
+        };
+
+        function showSampleImage(image, left, top, width, height, newSize) {
+            var sizeObj = transCropBoxSizeToRealSize(image, left, top, width, height, newSize)
+            var ctx = document.getElementById("canvas_Sample_1").getContext('2d');
+            ctx.clearRect(0, 0, 100, 100);
+            ctx.drawImage(image, sizeObj.l, sizeObj.t, sizeObj.w, sizeObj.h, 0, 0, 100, 100);
+            ctx = document.getElementById("canvas_Sample_2").getContext('2d');
+            ctx.clearRect(0, 0, 64, 64);
+            ctx.drawImage(image, sizeObj.l, sizeObj.t, sizeObj.w, sizeObj.h, 0, 0, 64, 64);
+            ctx = document.getElementById("canvas_Sample_3").getContext('2d');
+            ctx.clearRect(0, 0, 24, 24);
+            ctx.drawImage(image, sizeObj.l, sizeObj.t, sizeObj.w, sizeObj.h, 0, 0, 24, 24);
+            $('#btn_CustomHeader_Save').attr('data-content', sizeObj.l + ',' + sizeObj.t + ',' + sizeObj.w + ',' + sizeObj.h)
+        };
+    </script>
+</body>
+</html>
