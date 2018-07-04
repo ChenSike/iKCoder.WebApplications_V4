@@ -2,18 +2,18 @@
 <html>
 <head>
     <title></title>
-	<meta charset="utf-8" />
-    <link rel="stylesheet" href="style/tether.min.css">
+    <meta charset="utf-8" />
+    <!--<link rel="stylesheet" href="style/tether.min.css">
     <link rel="stylesheet" href="style/bootstrap.css">
     <link rel="stylesheet" href="style/font-awesome.min.css">
     <link rel="stylesheet" href="style/common.css">
-    <link rel="stylesheet" href="style/profile.css">
+    <link rel="stylesheet" href="style/profile.css">-->
     <script src="javascript/common/jquery-3.2.1.min.js"></script>
-    <script src="javascript/common/tether.min.js"></script>
-    <script src="javascript/common/bootstrap.js"></script>
+    <!--<script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.js"></script>-->
 </head>
 <body>
-    <div class="container">
+    <!--<div class="container">
         <div class="row">
             <div class="col-8">
                 <div class="container">
@@ -90,7 +90,7 @@
         $(document).ready(function () {
             $('#linkBtn_Upload_HeaderFile').on('click', function () {
                 $('#progress_HeaderUpload').hide();
-                $('#warnning_HeaderUpload').hide();                
+                $('#warnning_HeaderUpload').hide();
                 $('#file_Upload').click();
             });
 
@@ -352,6 +352,28 @@
             ctx.drawImage(image, sizeObj.l, sizeObj.t, sizeObj.w, sizeObj.h, 0, 0, 24, 24);
             $('#btn_CustomHeader_Save').attr('data-content', sizeObj.l + ',' + sizeObj.t + ',' + sizeObj.w + ',' + sizeObj.h)
         };
+    </script>-->
+    <div id="uploadForm">
+        <input id="file" type="file" name="file" multiple="multiple"/>
+        <button id="upload" type="button">upload</button>
+    </div>
+    <script>
+        $('#upload').on('click', function () {
+            var formData = new FormData();
+            formData.append('file', $('#file')[0].files[0]);
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                cache: false,
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (res) {
+
+            }).fail(function (res) {
+
+            });
+        });
     </script>
 </body>
 </html>
