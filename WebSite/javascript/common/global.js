@@ -1,18 +1,18 @@
 ﻿'use strict';
 
 var _cssPrefixArr = ['', '-moz-', '-o-', '-webkit-', 'ms'];
-
+//get date now
 if (!Date.now) {
     Date.now = function () {
         return new Date().getTime();
     };
 }
-
+//defined requestAnimationFrame and cancelAnimationFrame
 (function () {
     'use strict';
-    var _cssPrefixArr = ['webkit', 'moz', 'o', 'ms'];
-    for (var i = 0; i < _cssPrefixArr.length && !window.requestAnimationFrame; ++i) {
-        var vp = _cssPrefixArr[i];
+    var tmpPrefixArr = ['webkit', 'moz', 'o', 'ms'];
+    for (var i = 0; i < tmpPrefixArr.length && !window.requestAnimationFrame; ++i) {
+        var vp = tmpPrefixArr[i];
         window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
         window.cancelAnimationFrame = (window[vp + 'CancelAnimationFrame'] || window[vp + 'CancelRequestAnimationFrame']);
     }
@@ -29,15 +29,15 @@ if (!Date.now) {
             );
         };
 
-        window.cancelAnimationFrame = window.clearTimeout;
+        window.c = window.clearTimeout;
     }
 }());
-
+//defined host name
 var _gHostName = {
     Basic: 'http://www.ikcoder.com/corebasic/api',
     App: 'http://www.ikcoder.com/coreapp/api',
 };
-
+//defined url mapping
 var _gURLMapping = {
     account: {
         //Get	string uid, string pwd, string status = "0", string level = "0"
@@ -45,13 +45,13 @@ var _gURLMapping = {
         //Get	string uid, string pwd, string checkcode, string status = "0", string level = "0"
         signupwithcode: _gHostName.Basic + '/Account_Students_CreateWithCheckCode',
         //Get	string uid
-        existed: _gHostName.Basic + '/Account_Students_Existed	',
+        existed: _gHostName.Basic + '/Account_Students_Existed',
         //Get	string name, string pwd
         signin: _gHostName.Basic + '/Account_Students_Login',
         //Get	string name, string pwd,string checkcode
         signinwithcode: _gHostName.Basic + '/Account_Students_LoginWithCheckCode',
         //Get
-        signout: _gHostName.Basic + '/Account_Students_Logout	Get',
+        signout: _gHostName.Basic + '/Account_Students_Logout',
         //Get
         signstatus: _gHostName.Basic + '/Account_Students_SignStatus',
         //Get
@@ -68,8 +68,7 @@ var _gURLMapping = {
         getinfo: _gHostName.Basic + '/Profiles_Students_GetTextInfo',
     }
 };
-
-
+//merge url
 function _getRequestURL(page, params) {
     var url = page + '?rnd=' + Date.now();;
     if (params) {
@@ -80,7 +79,7 @@ function _getRequestURL(page, params) {
 
     return url;
 };
-
+//cover image to base64
 function ConvertImgToBase64(url, callback, outputFormat) {
     var canvas = document.createElement('CANVAS'),
         ctx = canvas.getContext('2d'),
@@ -97,7 +96,7 @@ function ConvertImgToBase64(url, callback, outputFormat) {
 
     img.src = url;
 };
-
+//test text width
 function testTextWidth(text, fontSize, fontWeight, fontFamily, letterSpaceing) {
     var testDiv = $("#div_test_text_width");
     if (!testDiv || testDiv.length == 0) {
@@ -113,7 +112,7 @@ function testTextWidth(text, fontSize, fontWeight, fontFamily, letterSpaceing) {
 
     return testDiv.width();
 };
-
+//test text width
 function testTextWidthFromElId(sourceTagId) {
     var sourceTag = document.getElementById(sourceTagId);
     if (!sourceTag) {
@@ -122,7 +121,7 @@ function testTextWidthFromElId(sourceTagId) {
 
     return testTextWidth(sourceTag.innerHTML, sourceTag.style.fontSize, sourceTag.style.fontWeight, sourceTag.style.fontFamily);
 };
-
+//test text width
 function testTextWidthFromEl(source) {
     if (!source) {
         return -1;
@@ -130,7 +129,7 @@ function testTextWidthFromEl(source) {
 
     return testTextWidth(source.text(), source.css('font-size'), source.css('font-weight'), source.css('font-family'), source.css('letter-spacing'));
 };
-
+//test text height
 function testTextHeight(text, fontSize, fontWeight, fontFamily, letterSpaceing) {
     var testDiv = $("#div_test_text_width");
     if (!testDiv || testDiv.length == 0) {
@@ -146,119 +145,99 @@ function testTextHeight(text, fontSize, fontWeight, fontFamily, letterSpaceing) 
 
     return testDiv.height();
 }
-
+//get random int
 function randomInt(minVal, maxVal) {
     var rand = parseInt(Math.random() * (maxVal - minVal + 1) + minVal);
     return rand;
 }
-
+//check sign in state
 function _startCheckState() {
-    $.ajax({
-        type: 'GET',
-        async: true,
-        url: _getRequestURL(_gURLMapping.account.signstatus),
-        data: '<root></root>',
-        success: function (responseData, status) {
-            if ($(responseData).find('err').length > 0) {
-                var tmpIndex = window.location.href.indexOf("/appstudio/");
-                if (tmpIndex > 0) {
-                    window.location.href = window.location.href.substring(0, tmpIndex + 1) + "signin.html?rnd=" + Date.now();
-                } else {
-                    window.location.href = "signin.html?rnd=" + Date.now();
-                }
-
-                $.removeCookie('logined_user_name');
-                $.removeCookie('logined_user_nickname');
-                return;
-            } else {
-                if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') == '1') {
-                    $.cookie("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), { path: '/', expires: 0.125 });
-                    if (!$.cookie("logined_user_nickname") || $.cookie("logined_user_nickname") == '') {
-                        $.ajax({
-                            type: 'POST',
-                            async: true,
-                            url: _getRequestURL(_gURLMapping.account.util),
-                            data: '<root>' +
-                                '<select>' +
-                                '<items value="/root/usrbasic/usr_nickname"></items>' +
-                                '</select>' +
-                                '</root>',
-                            success: function (responseData_2, status) {
-                                if ($(responseData_2).find('err').length > 0) {
-                                    window.location.href = "signin.html?rnd=" + Date.now();
-                                    $.removeCookie('logined_user_name');
-                                    $.removeCookie('logined_user_nickname');
-                                    return;
-                                } else {
-                                    var nickName = '';
-                                    var tmpObject = $(responseData_2).find('msg');
-                                    for (var i = 0; i < tmpObject.length; i++) {
-                                        if ((!$(tmpObject[i]).attr('type') || $(tmpObject[i]).attr('type') != '1') && $(tmpObject[i]).attr('xpath') == '/root/usrbasic/usr_nickname') {
-                                            nickName = $(tmpObject[i]).attr('value');
-                                        }
-                                    }
-
-                                    if (nickName) {
-                                        $.cookie("logined_user_nickname", nickName, { path: '/', expires: 0.125 });
-                                    }
+    var checkSuccessFn = function (responseData) {
+        if ($(responseData).find('err').length > 0) {
+            _signOut();
+        } else {
+            if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') == '1') {
+                _CookieUtils.set("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), { path: '/', expires: 0.125 });
+                if (!_CookieUtils.get("logined_user_nickname") || _CookieUtils.get("logined_user_nickname") == '') {
+                    var getNickNameSuccessFn = function (responseData_2) {
+                        if ($(responseData_2).find('err').length > 0) {
+                            _signOut();
+                        } else {
+                            var nickName = '';
+                            var tmpObject = $(responseData_2).find('msg');
+                            for (var i = 0; i < tmpObject.length; i++) {
+                                if ((!$(tmpObject[i]).attr('type') || $(tmpObject[i]).attr('type') != '1') && $(tmpObject[i]).attr('xpath') == '/root/usrbasic/usr_nickname') {
+                                    nickName = $(tmpObject[i]).attr('value');
                                 }
-                            },
-                            dataType: 'xml',
-                            xhrFields: {
-                                withCredentials: true
-                            },
-                            error: function () {
-                                window.location.href = "signin.html?rnd=" + Date.now();
-                                $.removeCookie('logined_user_name');
-                                $.removeCookie('logined_user_nickname');
                             }
-                        });
+
+                            if (nickName) {
+                                _CookieUtils.set("logined_user_nickname", nickName, { path: '/', expires: 0.125 });
+                            }
+                        }
                     }
 
-                    window.setTimeout(_startCheckState, 30000);
-                } else {
-                    $.removeCookie('logined_user_name');
-                    $.removeCookie('logined_user_nickname');
-                    window.location.href = "signin.html?rnd=" + Date.now();
+                    ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo), '', getNickNameSuccessFn, _signOut);
                 }
+
+                window.setTimeout(_startCheckState, 30000);
+            } else {
+                _signOut();
             }
+        }
+    };
+
+    ajaxFn('GET', _getRequestURL(_gURLMapping.account.signstatus), '', checkSuccessFn, _signOut);
+};
+//sign out
+function _signOut() {
+    ajaxFn('GET', _getRequestURL(_gURLMapping.account.signout), '', function () {
+        //window.location.href = "http://www.ikcoder.com/signin.html?rnd=" + Date.now();
+        window.location.href = "http://ikcoder.ikcoder.com/ikcoderv4/sign.html?rnd=" + Date.now();
+        _CookieUtils.delete('logined_user_name');
+        _CookieUtils.delete('logined_user_nickname');
+    });
+};
+//format ajax request
+function ajaxFn(type, url, data, success, failed, async) {
+    var asyncType = true;
+    if (typeof async != 'undefined' && async === false) {
+        asyncType = false;
+    }
+
+    var failedFn = typeof failed == 'function' ? failed : _gEmptyFn;
+    var errorFn = typeof error == 'function' ? error : _gEmptyFn;
+    $.ajax({
+        type: type,
+        async: asyncType,
+        url: url,
+        data: data,
+        success: function (response, status) {
+            success(response);
         },
         dataType: 'xml',
         xhrFields: {
             withCredentials: true
         },
         error: function () {
-            window.location.href = "signin.html?rnd=" + Date.now();
-            $.removeCookie('logined_user_name');
-            $.removeCookie('logined_user_nickname');
+            errorFn();
         }
     });
 };
 
-function _signOut() {
-    alert('Sign Out Building');
-}
-
 function _gEmptyFn() {
 };
-
+//referesh check code
 var _timeoutRefereshCC;
 function _refereshCheckCode(checkCodeId, notClear) {
     if (typeof notClear == 'undefined' || notClear != '1') {
         window.clearTimeout(_timeoutRefereshCC);
     }
 
-    var _checkCodeParams = {
-        length: 4,
-        name: 'signincode',
-        width: 70,
-        height: 30
-    };
-
-    $("#" + checkCodeId).attr("src", _getRequestURL(_gURLMapping.account.checkcode, _checkCodeParams));
+    $("#" + checkCodeId).attr("src", _getRequestURL(_gURLMapping.account.checkcode, {}));
     _timeoutRefereshCC = window.setTimeout('_refereshCheckCode("' + checkCodeId + '", "1");', 540000);
 };
-
+//load image
 function _loadIMG(src, callback) {
     var img = new Image();
     img.src = src;
@@ -272,7 +251,7 @@ function _loadIMG(src, callback) {
         _loadIMG(src);
     };
 };
-
+//get query string in url
 function getQueryString(key) {
     var retValue = '';
     var tempArr = window.location.search.substr(1).split('&');
@@ -285,7 +264,7 @@ function getQueryString(key) {
 
     return retValue;
 };
-
+//start introduce
 function _startIntroJs() {
     var flag = true;
     $('head').find('link').each(function (index, ele) {
@@ -310,7 +289,7 @@ function _startIntroJs() {
         });
     }
 };
-
+//show global message
 function _showGlobalMessage(msg, type, id) {
     if ($('.alert-mask-custom').length == 0) {
         $('body').append($('<div class="alert-mask-custom"></div>'));
@@ -323,119 +302,67 @@ function _showGlobalMessage(msg, type, id) {
         $('body').remove('#' + id);
     });
 };
+//defined cookie operation
+var _CookieUtils = {
+    get: function (name) {
+        var cookieName = encodeURIComponent(name) + "=";
+        //只取得最匹配的name，value
+        var cookieStart = document.cookie.indexOf(cookieName);
+        var cookieValue = null;
 
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(['jquery'], factory);
-    } else if (typeof exports === 'object') {
-        factory(require('jquery'));
-    } else {
-        factory(jQuery);
-    }
-}(function ($) {
-
-    var pluses = /\+/g;
-
-    function encode(s) {
-        return config.raw ? s : encodeURIComponent(s);
-    }
-
-    function decode(s) {
-        return config.raw ? s : decodeURIComponent(s);
-    }
-
-    function stringifyCookieValue(value) {
-        return encode(config.json ? JSON.stringify(value) : String(value));
-    }
-
-    function parseCookieValue(s) {
-        if (s.indexOf('"') === 0) {
-            s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-        }
-
-        try {
-            s = decodeURIComponent(s.replace(pluses, ' '));
-            return config.json ? JSON.parse(s) : s;
-        } catch (e) { }
-    }
-
-    function read(s, converter) {
-        var value = config.raw ? s : parseCookieValue(s);
-        return $.isFunction(converter) ? converter(value) : value;
-    }
-
-    var config = $.cookie = function (key, value, options) {
-        if (value !== undefined && !$.isFunction(value)) {
-            options = $.extend({}, config.defaults, options);
-
-            if (typeof options.expires === 'number') {
-                var days = options.expires, t = options.expires = new Date();
-                t.setTime(+t + days * 864e+5);
-            }
-
-            return (document.cookie = [
-                encode(key), '=', stringifyCookieValue(value),
-                options.expires ? '; expires=' + options.expires.toUTCString() : '',
-                options.path ? '; path=' + options.path : '',
-                options.domain ? '; domain=' + options.domain : '',
-                options.secure ? '; secure' : ''
-            ].join(''));
-        }
-
-        var result = key ? undefined : {};
-        var cookies = document.cookie ? document.cookie.split('; ') : [];
-
-        for (var i = 0, l = cookies.length; i < l; i++) {
-            var parts = cookies[i].split('=');
-            var name = decode(parts.shift());
-            var cookie = parts.join('=');
-
-            if (key && key === name) {
-                result = read(cookie, value);
-                break;
-            }
-
-            if (!key && (cookie = read(cookie)) !== undefined) {
-                result[name] = cookie;
+        if (cookieStart > -1) {
+            // 从cookieStart算起
+            var cookieEnd = document.cookie.indexOf(';', cookieStart);
+            //从=后面开始
+            if (cookieEnd > -1) {
+                cookieValue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, cookieEnd));
+            } else {
+                cookieValue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, document.cookie.length));
             }
         }
 
-        return result;
-    };
+        return cookieValue;
+    },
+    set: function (name, val, options) {
+        if (!name) {
+            throw new Error("coolie must have name");
+        }
+        var enc = encodeURIComponent;
+        var parts = [];
 
-    config.defaults = {};
-
-    $.removeCookie = function (key, options) {
-        if ($.cookie(key) === undefined) {
-            return false;
+        val = (val !== null && val !== undefined) ? val.toString() : "";
+        options = options || {};
+        parts.push(enc(name) + "=" + enc(val));
+        // domain中必须包含两个点号
+        if (options.domain) {
+            parts.push("domain=" + options.domain);
+        }
+        if (options.path) {
+            parts.push("path=" + options.path);
+        }
+        // 如果不设置expires和max-age浏览器会在页面关闭时清空cookie
+        if (options.expires) {
+            parts.push("expires=" + options.expires.toGMTString());
+        }
+        if (options.maxAge && typeof options.maxAge === "number") {
+            parts.push("max-age=" + options.maxAge);
+        }
+        if (options.httpOnly) {
+            parts.push("HTTPOnly");
+        }
+        if (options.secure) {
+            parts.push("secure");
         }
 
-        $.cookie(key, '', $.extend({}, options, { expires: -1 }));
-        return !$.cookie(key);
-    };
-}));
-
-function ajaxFn(type, url, data, success, failed) {
-    _registerRemoteServer();
-    $.ajax({
-        type: type,
-        async: true,
-        url: url,
-        data: data,
-        success: function (response, status) {
-            success(response);
-        },
-        dataType: 'xml',
-        xhrFields: {
-            withCredentials: true
-        },
-        error: function () {
-            failed();
-        }
-    });
+        document.cookie = parts.join(";");
+    },
+    delete: function (name, options) {
+        options.expires = new Date(0);// 设置为过去日期
+        this.set(name, null, options);
+    }
 };
-
 /*XML Operation*/
+//load xml file
 function LoadXMLFile(fileName) {
     var xmlDom = null;
     if (window.ActiveXObject) {
@@ -452,7 +379,7 @@ function LoadXMLFile(fileName) {
     }
     return xmlDom;
 };
-
+//xml to string
 function XMLToString(xmlDoc) {
     if (window.ActiveXObject) {
         return xmlDoc.xml;
@@ -460,7 +387,7 @@ function XMLToString(xmlDoc) {
         return (new XMLSerializer()).serializeToString(xmlDoc);
     }
 };
-
+//string to xml
 function StringToXML(str) {
     if (window.ActiveXObject) {
         var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
