@@ -215,7 +215,7 @@ function ajaxFn(type, url, data, success, failed, async) {
         success: function (response, status) {
             success(response);
         },
-        dataType: 'xml',
+        dataType: 'text',
         xhrFields: {
             withCredentials: true
         },

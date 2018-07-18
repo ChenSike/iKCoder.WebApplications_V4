@@ -117,8 +117,20 @@ function initEvents() {
     });
 
     $('#signin_Password_Next_Btn').on('click', function () {
-        $('.signin-password-row').fadeToggle(1000, function () {
-        });
+        var successFn = function (response) {
+            var error = false;
+            if (!error) {
+                window.location.href = "profile.html";
+            } else {
+                _showGlobalMessage('无法登录！', 'warning', 'alert_Wrong_SignIn');
+            }
+        };
+
+        var data = {
+            name: $('#txt_Signin_UserName').val().trim(),
+            pwd: $('#txt_Signin_Password').val().trim(),
+        };
+        ajaxFn('GET', _getRequestURL(_gURLMapping.account.signin, data), '', successFn);
     });
 
     $('#signin_ForgetPWD_Btn').on('click', function () {
@@ -153,6 +165,27 @@ function initEvents() {
         }
     });
 
+    $('#forget_UserName_Next_Btn').on('click', function () {
+        var successFn = function (response) {
+            var error = false;
+            if (!error) {
+                $('#wrap_Forget').fadeOut(500, function () {
+                    $('#wrap_SignIn').fadeIn(500, function () { });
+                });
+                
+                if ($('#signin_ForgetPWD_Btn').text() != '找回密码') {
+                    $('#signin_ForgetPWD_Btn').fadeOut(300, function () {
+                        $('#signin_ForgetPWD_Btn').text('找回密码').fadeIn(300);
+                    });
+                }
+            } else {
+                _showGlobalMessage('找回密码失败！', 'warning', 'alert_Wrong_Forget');
+            }
+        };
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.account.updatepwd, { name: $('#txt_Forget_UserName').val().trim() }), '', successFn);
+    });
+
     $('#signin_Go_SignUp_Btn').on('click', function () {
         if ($('#wrap_SignUp').css('display') == 'none') {
             if ($('#wrap_SignIn').css('display') != 'none') {
@@ -169,6 +202,7 @@ function initEvents() {
                 $('#signin_Go_SignUp_Btn').fadeOut(300);
                 initSignInPanel();
                 $('#wrap_SignUp').hide();
+                $('#wrap_Forget').hide();
                 $('#wrap_SignIn').fadeIn(500, function () {
                     $('#signin_Go_SignUp_Btn').text('创建新用户').fadeIn(300);
                 });
@@ -185,19 +219,11 @@ function initEvents() {
         }
     });
 
-    $('#modal_Agreement').on('hidden.bs.modal', function (e) {
-        $('#wrap_SignIn').fadeIn(500, function () { });
-        if ($('#signin_ForgetPWD_Btn').text() != '找回密码') {
-            $('#signin_ForgetPWD_Btn').fadeOut(300, function () {
-                $('#signin_ForgetPWD_Btn').text('找回密码').fadeIn(300);
-            });
-        }
-    });
-
     $('#btn_OK_Agreement_Modal').on('click', function () {
         $('#signin_Go_SignUp_Btn').fadeOut(300);
         initSignUpPanel();
         $('#wrap_SignIn').hide();
+        $('#wrap_Forget').hide();
         $('#wrap_SignUp').fadeIn(500, function () {
             $('#signin_Go_SignUp_Btn').text('用户登录').fadeIn(300);
         });
@@ -206,11 +232,19 @@ function initEvents() {
     $('#signup_UserName_Next_Btn').on('click', function () {
         var phone = $('#txt_SignUp_UserName').val().trim();
         if (_checkPhoneNumber(phone)) {
-            ajaxFn('GET', _getRequestURL(_gURLMapping.account.existed, { uid: phone }), '', function () {
-                $('.signup-username-row').fadeOut(500, function () {
-                    $('.signup-password-row').fadeIn(500);
-                });
-            });
+            var successFn = function (response) {
+                var error = false;
+                //<root><executed>false</executed></root>
+                if (!error) {
+                    $('.signup-username-row').fadeOut(500, function () {
+                        $('.signup-password-row').fadeIn(500);
+                    });
+                } else {
+                    _showGlobalMessage('该手机号码已经被注册！', 'warning', 'alert_Wrong_Phone');
+                }
+            };
+
+            ajaxFn('GET', _getRequestURL(_gURLMapping.account.existed, { name: phone }), '', successFn);
         } else {
             _showGlobalMessage('请输入正确的手机号码！', 'warning', 'alert_Wrong_Phone');
         }
@@ -225,9 +259,9 @@ function initEvents() {
     $('#signup_CfgPwd_Next_Btn').on('click', function () {
         if ($('#txt_SignUp_Password').val().trim() != $('#txt_SignUp_CfgPwd').val().trim()) {
             _showGlobalMessage('两次输入的密码不一致，请重新输入！', 'warning', 'alert_Wrong_Password');
-            $('.signup-cfgpwd-row').fadeOut(500, function () {
-                $('.signup-password-row').fadeIn(500);
-            });
+            //$('.signup-cfgpwd-row').fadeOut(500, function () {
+            //    $('.signup-password-row').fadeIn(500);
+            //});
         } else {
             $('.signup-cfgpwd-row').fadeOut(500, function () {
                 $('.signup-checkcode-row').fadeIn(500);
@@ -237,19 +271,25 @@ function initEvents() {
     });
 
     $('#signup_CheckCode_Next_Btn').on('click', function () {
-        //if ($('#txt_SignUp_CheckCode').val().trim() != $('#txt_SignUp_CfgPwd').val().trim()) {
-        //    _showGlobalMessage('两次输入的密码不一致，请重新输入！', 'warning', 'alert_Wrong_Password');
-        //    $('.signup-cfgpwd-row').fadeOut(500, function () {
-        //        $('.signup-password-row').fadeIn(500);
-        //    });
-        //} else {
-        //    $('.signup-cfgpwd-row').fadeOut(500, function () {
-        //        $('.signup-checkcode-row').fadeIn(500);
-        //        _refereshCheckCode('img_SignUp_CheckCode', 1);
-        //    });
-        //}
+        var successFn = function (response) {
+            var error = false;
+            if (!error) {
+                window.location.href = "profile.html";
+            } else {
+                _showGlobalMessage('无法创建用户！', 'warning', 'alert_Wrong_SignUp');
+            }
+        };
+
+        var data = {
+            uid: $('#txt_SignUp_UserName').val().trim(),
+            pwd: $('#txt_SignUp_Password').val().trim(),
+            checkcode: $('#txt_SignUp_CheckCode').val().trim(),
+            status: '0',
+            level: '0'
+        };
+        ajaxFn('GET', _getRequestURL(_gURLMapping.account.signupwithcode, data), '', successFn);
     });
-}
+};
 
 function wrapResize() {
     var width = window.innerWidth;

@@ -1,6 +1,8 @@
 ﻿body {
     /*font-family: 微软雅黑;*/
     font-family: 'Microsoft YaHei';
+    background-image: url(../image/signin_bg.jpg);
+    background-size: 100% 100%;
 }
 
 .no-wrap {
@@ -53,8 +55,8 @@ div.alert-mask-custom {
         }
 
 #col_Wrap_Global {
-    background-image: url(../image/signin_bg.jpg);
-    background-size: 100% 100%;
+    /*background-image: url(../image/signin_bg.jpg);
+    background-size: 100% 100%;*/
 }
 
 #wrap_SignIn, #wrap_SignUp, #wrap_Forget {
