@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <style>
         #mask_Page_Loading {
-            display: flex !important;
+            display: none;
             position: absolute;
             top: 0px;
             left: 0px;
@@ -19,6 +19,7 @@
             -webkit-align-items: center !important;
             -ms-flex-align: center !important;
             align-items: center !important;
+            visibility:hidden;
         }
 
         body p {
@@ -41,10 +42,10 @@
             border-radius: 100%;
             z-index: -1;
             position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
+            left: calc(50% - 75px);
+            /*right: 0;*/
+            top: calc(50% - 75px);
+            /*bottom: 0;*/
             margin: auto;
         }
 
@@ -52,12 +53,12 @@
             z-index: -2;
             width: 100px;
             height: 100px;
-            top: -120px !important;
+            /*top: -120px !important;*/
             position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
+            left: calc(50% - 50px);
+            /*right: 0;*/
+            top: calc(50% - 120px);
+            /*bottom: 0;*/
             margin: auto;
         }
 
@@ -286,6 +287,7 @@
     <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="style/tether.min.css">
     <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/common.bak.css">
     <link rel="stylesheet" href="style/profile.bak.css">
     <script src="javascript/common/jquery-3.2.1.min.js"></script>
     <script src="javascript/common/fontawesome-all.min.js"></script>
@@ -295,18 +297,15 @@
     <script src="javascript/profile.bak.js"></script>
 </head>
 <body style="height:100%;">
-    <div class="container-fluid main-container">
-        <div class="row no-wrap">
-            <div class="col-12 no-wrap">
+    <div class="container-fluid h-100 w-100 no-wrap main-container">
+        <div class="row no-wrap row-header">
+            <div class="col no-wrap">
                 <header>
-                    <nav class="navbar navbar-expand-lg navbar-light" id="navbar_Header">
+                    <nav class="navbar navbar-expand navbar-light" id="navbar_Header">
                         <a class="navbar-brand" href="#">
-                            <img src="image/logo-new-black.png" width="255" height="35" class="d-inline-block align-top img-header-logo" alt="">
+                            <img src="image/logo-new-gray.png" width="105" height="30" class="d-inline-block align-top img-header-logo" alt="">
                         </a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="container-fluid" style="padding-right: 5px;">
+                        <div class="container-fluid">
                             <div class="row w-100 justify-content-end">
                                 <div class="col-12 col-md-12 col-lg-10 col-xl-5 nav-ul-container">
                                     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
@@ -314,30 +313,31 @@
                                             <li class="nav-item">
                                                 <button type="button" class="btn btn-sm btn-primary" id="btn_Student_SignIn">
                                                     <span class="fa-stack">
-                                                        <i class="fa fa-circle-o-notch fa-spin fa-stack-2x fa-fw"></i>
-                                                        <i class="fa fa-bell fa-stack-1x"></i>
+                                                        <i class="fas fa-expand fa-spin fa-stack-2x fa-fw"></i>
+                                                        <i class="fas fa-bell fa-stack-1x"></i>
                                                     </span>
-                                                    <span class="nav-bar-signin-text">点击签到</span>
+                                                    <span class="mood-text">点击签到</span>
                                                 </button>
                                             </li>
                                             <li class="nav-item">
-                                                <div class="btn-group mood-group" data-toggle="buttons">
-                                                    <label class="btn btn-primary active">
+                                                <div class="btn-group" data-toggle="buttons">
+                                                    <button class="btn btn-primary btn-sm btn-mood-first">
                                                         <span class="fa-stack">
-                                                            <i class="fa fa-circle-o-notch fa-spin fa-stack-2x fa-fw"></i>
-                                                            <i class="fa fa-heartbeat fa-stack-1x"></i>
+                                                            <!--<i class="fas fa-circle-notch fa-spin fa-stack-2x fa-fw"></i>-->
+                                                            <i class="fas fa-expand fa-spin fa-stack-2x fa-fw"></i>
+                                                            <i class="fas fa-heartbeat fa-stack-1x"></i>
                                                         </span>
                                                         <span class="mood-text">心情日记</span>
-                                                    </label>
-                                                    <label class="btn btn-success mood-button">
-                                                        <i class="fa fa-smile-o fa-lg"></i>
-                                                    </label>
-                                                    <label class="btn btn-warning mood-button">
-                                                        <i class="fa fa-meh-o fa-lg"></i>
-                                                    </label>
-                                                    <label class="btn btn-danger mood-button mood-last">
-                                                        <i class="fa fa-frown-o fa-lg"></i>
-                                                    </label>
+                                                    </button>
+                                                    <button class="btn btn-success btn-sm">
+                                                        <i class="fas fa-smile fa-lg"></i>
+                                                    </button>
+                                                    <button class="btn btn-warning btn-sm">
+                                                        <i class="fas fa-meh fa-lg"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm btn-mood-last">
+                                                        <i class="fas fa-frown fa-lg"></i>
+                                                    </button>
                                                 </div>
                                             </li>
                                         </ul>
@@ -349,76 +349,82 @@
                 </header>
             </div>
         </div>
-        <div class="row no-wrap">
-            <div class="col-12 no-wrap main-container-col">
-                <div class="container-fluid main-content-wrap">
-                    <div class="row justify-content-start main-content-row">
-                        <div class="col" id="sideBar_Page_Left">
-                            <div class="container-fluid left-sidebar-wrap">
-                                <div class="row justify-content-center">
-                                    <div class="col-12 text-center user-infors">
-                                        <img class="img-fluid" id="img_Profile_Title" src="image/circles.svg" />
-                                        <p id="txt_NickName_Profile_Title"></p>
-                                        <p id="txt_Title_Profile_Title"></p>
+        <div class="row no-wrap row-content">
+            <div class="col no-wrap col-content">
+                <div id="mask_Page_Loading">
+                    <div class="loader">
+                        <div class="loader_overlay"></div>
+                        <div class="loader_cogs">
+                            <div class="loader_cogs__top">
+                                <div class="top_part"></div>
+                                <div class="top_part"></div>
+                                <div class="top_part"></div>
+                                <div class="top_hole"></div>
+                            </div>
+                            <div class="loader_cogs__left">
+                                <div class="left_part"></div>
+                                <div class="left_part"></div>
+                                <div class="left_part"></div>
+                                <div class="left_hole"></div>
+                            </div>
+                            <div class="loader_cogs__bottom">
+                                <div class="bottom_part"></div>
+                                <div class="bottom_part"></div>
+                                <div class="bottom_part"></div>
+                                <div class="bottom_hole"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid h-100 no-wrap">
+                    <div class="row h-100 no-wrap justify-content-start">
+                        <div class="col h-100 no-wrap col-siderbar">
+                            <div class="container-fluid h-100 no-wrap wrap-siderbar">
+                                <div class="row no-wrap justify-content-center">
+                                    <div class="col text-center siderbar-user-infors">
+                                        <!--<img class="img-fluid" id="img_Siderbar_Header" src="image/circles.svg" />-->
+                                        <img class="img-fluid" id="img_Siderbar_Header" src="image/tmpheader.jpg" />
+                                    </div>
+                                    <div class="col text-center siderbar-user-infors">
+                                        <p id="txt_Siderbar_NickName">Alice</p>
+                                        <p id="txt_Siderbar_UserTitle">初级工程师</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col" id="wrap_Category_Title"></div>
-                        <div class="col no-padding" id="wrap_Category_Content"></div>
-                        <div id="mask_Page_Loading">
-                            <div class="loader">
-                                <div class="loader_overlay"></div>
-                                <div class="loader_cogs">
-                                    <div class="loader_cogs__top">
-                                        <div class="top_part"></div>
-                                        <div class="top_part"></div>
-                                        <div class="top_part"></div>
-                                        <div class="top_hole"></div>
-                                    </div>
-                                    <div class="loader_cogs__left">
-                                        <div class="left_part"></div>
-                                        <div class="left_part"></div>
-                                        <div class="left_part"></div>
-                                        <div class="left_hole"></div>
-                                    </div>
-                                    <div class="loader_cogs__bottom">
-                                        <div class="bottom_part"></div>
-                                        <div class="bottom_part"></div>
-                                        <div class="bottom_part"></div>
-                                        <div class="bottom_hole"></div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col no-wrap col-main-content">
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row no-wrap">
+        <div class="row no-wrap row-footer">
             <div class="col-12 no-wrap">
-                <footer id="footer">
+                <footer class="w-100" id="footer">
                     <div class="footer-txt">
-                        <div class="container w-100">
+                        <div class="container-fluid">
                             <div class="row justify-content-center">
-                                <div class="col-11">
+                                <div class="col-9">
                                     <p class="copyright-txt">
-                                        <span>
+                                        <span class="company-name">
                                             深圳市鹏博教育科技有限公司
                                         </span>
                                         <span class="split-line">
                                             |
                                         </span>
-                                        <span class="normal-text">
+                                        <span>
                                             Powered by
                                         </span>
-                                        <span>
+                                        <span class="company-name">
                                             iKCoder.Co (ShenZhen)
                                         </span>
-                                        <span class="reference-text">
-                                            <a href="http://www.miibeian.gov.cn" target="_blank" style="display:inline-block;">粤ICP备17152880号</a>
-                                        </span>
                                     </p>
+                                </div>
+                                <div class="col-2">
+                                    <span class="reference-text">
+                                        <a href="http://www.miibeian.gov.cn" target="_blank" style="display:inline-block;">粤ICP备17152880号</a>
+                                    </span>
                                 </div>
                             </div>
                         </div>

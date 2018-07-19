@@ -1,0 +1,166 @@
+﻿.main-container {
+    min-height: 825px;
+    min-width: 1150px;
+}
+
+header {
+    height: 35px;
+    background-color: rgb(246,246,246);
+    position: static;
+    top: 0px;
+    left: 0px;
+}
+
+    header #navbar_Header {
+        padding: 2px 15px;
+    }
+
+        header #navbar_Header .navbar-brand {
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+
+        header #navbar_Header #ul_NavBar_Container .fa-stack {
+            vertical-align: middle;
+        }
+
+        header #navbar_Header #ul_NavBar_Container .mood-text {
+            line-height: 24px;
+        }
+
+        header #navbar_Header #ul_NavBar_Container .btn {
+            border: none;
+        }
+
+            header #navbar_Header #ul_NavBar_Container .btn.btn-sm {
+                padding-top: 1px;
+                padding-bottom: 1px;
+            }
+
+            header #navbar_Header #ul_NavBar_Container .btn.btn-primary {
+                border: none;
+                border-radius: 8px;
+                font-size: 12px;
+            }
+
+        header #navbar_Header #ul_NavBar_Container .btn-group .btn.btn-sm {
+            font-size: 12px;
+        }
+
+            header #navbar_Header #ul_NavBar_Container .btn-group .btn.btn-sm.btn-mood-first {
+                cursor: inherit;
+                margin-left: 10px;
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+            }
+
+            header #navbar_Header #ul_NavBar_Container .btn-group .btn.btn-sm.btn-mood-last {
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+
+footer {
+    height: 30px;
+    background-color: rgb(23,23,23);
+}
+
+    footer .copyright-txt {
+        color: rgb(172,172,172);
+        float: left;
+        font-size: 13px;
+        font-weight: 300;
+        padding: 5px 0px;
+        margin: 0px;
+        text-align: left;
+    }
+
+        footer .copyright-txt .company-name {
+            font-weight: bold;
+        }
+
+        footer .copyright-txt .split-line {
+            font-weight: bold;
+            padding: 0px 10px;
+            font-size: 16px;
+            line-height: 16px;
+        }
+
+    footer .reference-text {
+        color: #ffffff;
+        cursor: default;
+        font-size: 12px;
+        /* font-style: italic; */
+        padding-left: 50px;
+    }
+
+.col-siderbar {
+    min-width: 160px;
+    max-width: 200px;
+    min-height: 760px;
+    background-color: rgb(38,50,56);
+    color: rgb(255,255,255);
+    padding: 0px;
+}
+
+.row-category-item {
+    margin: 0px;
+    cursor: pointer;
+    /* color: rgb(85,103,110); */
+    color: rgb(255,255,255);
+    background-color: rgb(38, 50, 56);
+    min-height: 40px;
+    font-size: 14px;
+    font-weight: lighter;
+}
+
+    .row-category-item .category-item-attr {
+        width: 40px;
+        margin-left: 10px;
+        display: inline-block;
+        text-align: center;
+        background-color: rgb(236,64,122);
+        color: rgb(255,255,255);
+        -moz-border-radius: 12px;
+        -webkit-border-radius: 12px;
+        border-radius: 10px;
+    }
+
+    .row-category-item:hover {
+        background-color: rgb(46, 60, 66);
+        font-weight: 600;
+    }
+
+        .row-category-item:hover .category-item-icon {
+            color: rgba(236,64,122,0.7);
+        }
+
+    .row-category-item.active-item {
+        background-color: rgb(66,80,86);
+        font-weight: 600;
+    }
+
+    .row-category-item .category-item-icon {
+        font-size: 18px;
+    }
+
+    .row-category-item.active-item .category-item-icon {
+        color: rgb(236,64,122);
+    }
+
+.siderbar-user-infors {
+    padding: 10px;
+}
+
+    .siderbar-user-infors #img_Siderbar_Header {
+        margin: 5px;
+        width: 60px;
+        height: 60px;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+    }
+
+    .siderbar-user-infors p {
+        text-align: left;
+        font-size: 14px;
+    }
