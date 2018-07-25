@@ -102,6 +102,7 @@ function initEvents() {
                 $('#canvas_BG_SignUp').fadeOut(500);
                 $('#wrap_SignUp').fadeOut(500, function () {
                     $('#wrap_Forget').fadeIn(500);
+                    $('#canvas_BG_SignIn').fadeIn(500);
                     $('#signin_Go_SignUp_Btn').fadeOut(300, function () {
                         $('#signin_Go_SignUp_Btn').text('创建新用户').fadeIn(300);
                     });
@@ -175,6 +176,7 @@ function initEvents() {
 
     $('#btn_Cancel_Agreement_Modal').on('click', function () {
         $('#wrap_SignIn').fadeIn(500, function () { });
+        initSignInPanel();
         if ($('#signin_ForgetPWD_Btn').text() != '找回密码') {
             $('#signin_ForgetPWD_Btn').fadeOut(300, function () {
                 $('#signin_ForgetPWD_Btn').text('找回密码').fadeIn(300);
@@ -188,6 +190,7 @@ function initEvents() {
         $('#wrap_SignIn').hide();
         $('#wrap_Forget').hide();
         $('#wrap_SignUp').fadeIn(500, function () {
+            $('#signin_ForgetPWD_Btn').text('找回密码');
             $('#signin_Go_SignUp_Btn').text('用户登录').fadeIn(300);
         });
     });
@@ -511,6 +514,7 @@ function Circle(ctx, pos, rad, color) {
 };
 
 function initSignUpPanel() {
+    $('#canvas_BG_SignIn').fadeOut(500);
     var container = $('#col_Wrap_Global');
     var canvas = $('#canvas_BG_SignUp');
     if (canvas.length == 0) {
@@ -526,7 +530,6 @@ function initSignUpPanel() {
         canvas.fadeIn(500);
     }
 
-    $('#canvas_BG_SignIn').fadeOut(500);
     $('.signup-username-row').show();
     $('.signup-password-row').hide();
     $('.signup-cfgpwd-row').hide();

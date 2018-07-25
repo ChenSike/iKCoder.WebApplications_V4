@@ -402,3 +402,43 @@ function StringToXML(str) {
         return retDoc;
     }
 };
+//horizontal list arrow function - left
+function listMovePrev() {
+    if (arguments[0] && arguments[0].data) {
+        var targetId = arguments[0].data.cls;
+        var step = arguments[0].data.step;
+        var container = $(targetId);
+        var wrap = container.parent();
+        var left = parseInt(container.css('margin-left').replace('px', ''));
+        var width = container.width();
+        var wrapWidth = wrap.width();
+        if (left < 0) {
+            var tmpStep = step;
+            if (Math.abs(left) < step) {
+                tmpStep = Math.abs(left);
+            }
+
+            container.animate({ marginLeft: left + tmpStep + 'px', });
+        }
+    }
+};
+//horizontal list arrow function - right
+function listMoveNext() {
+    if (arguments[0] && arguments[0].data) {
+        var targetId = arguments[0].data.cls;
+        var step = arguments[0].data.step;
+        var container = $(targetId);
+        var wrap = container.parent();
+        var left = parseInt(container.css('margin-left').replace('px', ''));
+        var width = container.width();
+        var wrapWidth = wrap.width();
+        if (width + left > wrapWidth) {
+            var tmpStep = step;
+            if (width + left - wrapWidth < step) {
+                tmpStep = width + left - wrapWidth;
+            }
+
+            container.animate({ marginLeft: left - tmpStep + 'px', });
+        }
+    }
+};

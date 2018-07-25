@@ -1211,8 +1211,8 @@ var HEIGHT, WIDTH, windowHalfX, windowHalfY, mousePos = { x: 0, y: 0 };
 var dist = 0;
 function init() {
     scene = new THREE.Scene();
-    HEIGHT = window.innerHeight - 15;
-    WIDTH = window.innerWidth - 15;
+    HEIGHT = window.innerHeight - 10;
+    WIDTH = window.innerWidth - 10;
     aspectRatio = WIDTH / HEIGHT;
     fieldOfView = 60;
     nearPlane = 1;

@@ -33,6 +33,10 @@ button {
     text-align: center;
 }
 
+.cursor-hand{
+    cursor:pointer;
+}
+
 div.alert-mask-custom {
     position: absolute;
     top: 0px;

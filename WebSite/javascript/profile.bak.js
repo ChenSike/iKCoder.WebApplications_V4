@@ -36,56 +36,32 @@ var _gCitys = [
     { p: '澳门', pt: '特区', c: [] },
     { p: '台湾', c: [] }
 ];
-var _gCurrCateId = 'overview';
+var _gCurrCateId = 'courses';
 var _gCurrCateObj = null;
 var _gCategory = [
-    {
-        id: 'overview', icon: 'fa-chess', text: '课程', atta: '', sub: [
-            //{
-            //    id: 'Honor',
-            //    bgColor: 'rgb(236,239,241)',
-            //    color: 'rgb(255,192,0)',
-            //    icon: 'thumbs-up',
-            //    height: 115,
-            //    text: '<p class="overview-title-item-text">荣誉墙</p>'
-            //}, {
-            //    id: 'Course',
-            //    bgColor: 'rgb(248,250,251)',
-            //    color: 'rgb(117,180,76)',
-            //    icon: 'gamepad',
-            //    height: 270,
-            //    text: '<p class="overview-title-item-text">已完成</p><p class="overview-title-item-data">' + data.course.completed + '/' + data.course.total + '</ｐ><p class="overview-title-item-text">个课程</p>'
-            //}, {
-            //    id: 'Experience',
-            //    bgColor: 'rgb(236,239,241)',
-            //    color: 'rgb(77,208,225)',
-            //    icon: 'star',
-            //    height: 270,
-            //    text: '<p class="overview-title-item-text"><span class="overview-title-item-data">' + totalExp + '</span></p><p class="overview-title-item-text">经验值</p>'
-            //}, {
-            //    id: 'Times',
-            //    bgColor: 'rgb(248,250,251)',
-            //    color: 'rgb(124,77,255)',
-            //    icon: 'clock-o',
-            //    height: 270,
-            //    text: '<p class="overview-title-item-text">编程<span class="overview-title-item-data">' + totalTime + '</span>小时</p>'
-            //}
-        ]
-    },
-    { id: 'homework', icon: 'fa-home', text: '作业', atta: 'bool' },
-    { id: 'exam', icon: 'fa-superscript', text: '测试', atta: '' },
-    { id: 'message', icon: 'fa-envelope', text: '消息', atta: 'number' },
+    { id: 'courses', icon: 'fa-chess', text: '课程', atta: '' },
+    { id: 'homework', icon: 'fa-home', text: '实验', atta: 'bool' },
+    { id: 'moments', icon: 'fa-envelope', text: '圈子', atta: 'number' },
     { id: 'report', icon: 'fa-chart-line', text: '报表', atta: '' },
     { id: 'settings', icon: 'fa-user-cog', text: '设定', atta: '' },
     { id: 'workplatform', icon: 'fa-helicopter', text: 'App Studio', atta: '' },
     { id: 'appshop', icon: 'fa-shopping-cart', text: 'App Shop', atta: '' },
     { id: 'teamsuit', icon: 'fa-users', text: 'Team Suit', atta: '' }
 ];
+var _gCourseTypeMap = {
+    js: 'js-square',
+    python: 'python',
+    java: 'java',
+    node: 'node-js',
+    html5: 'html5',
+    css3: 'css3-alt'
+}
 
 function initPage() {
     globalResize();
     showLoadingMask();
     buildCategorys();
+    buildCategoryContent();
     initEvents();
     initData();
 };
@@ -98,7 +74,8 @@ function globalResize() {
     var header = $('header');
     var footer = $('footer');
     $('.col-content').height($('.main-container').height() - header.height() - footer.height());
-};
+    $('.col-main-content').width($('body').width() - $('.col-siderbar').width() - $('.col-sub-categoory-content').width() - 18);
+}
 
 function showLoadingMask() {
     $('#mask_Page_Loading .loader').height('99%').height('100%');
@@ -153,14 +130,258 @@ function buildCategorys() {
     }
 
     $('.wrap-siderbar').append($(tmpHTMLArr.join('')));
+    $('.row-category-item').on('click', function () {
+        $('.row-category-item').removeClass('active-item');
+        var currItem = $(arguments[0].currentTarget);
+        currItem.addClass('active-item');
+        buildCategoryContent(currItem.attr('data-target'));
+    });
+};
+
+function buildCategoryContent(categoryId) {
+    getCurrentCategoryObj();
+    $('.col-sub-categoory-content').empty();
+    $('.col-main-content').empty();
+    buildSubCategory();
+    switch (_gCurrCateId) {
+        case 'courses':
+            buildContent_Courses();
+            break;
+    }
+};
+
+function getCurrentCategoryObj(categoryId) {
+    if (typeof categoryId == 'undefined' || categoryId == '') {
+        $('.row-category-item').removeClass('active-item');
+        $($('.row-category-item')[0]).addClass('active-item');
+        _gCurrCateObj = _gCategory[0];
+        _gCurrCateId = _gCategory[0].id;
+    } else {
+        _gCurrCateId = categoryId;
+        for (var i = 0; i < _gCategory.length; i++) {
+            if (_gCurrCateId == _gCategory[i].id) {
+                _gCurrCateObj = _gCategory[i];
+            }
+        }
+    }
 };
 
 function buildSubCategory() {
-    _gCurrCateObj = _gCurrCateObj == null ? _gCategory[0] : _gCurrCateObj;
+    var subContent = $('.col-sub-categoory-content');
+    if (_gCurrCateObj.sub && _gCurrCateObj.sub.length > 0) {
+        var minHeight = 0;
+        for (var i = 0; i < _gCurrCateObj.sub.length; i++) {
+            minHeight += _gCurrCateObj.sub[i].height;
+        }
 
+        var tmpRate = $('.col-main-content').height() / minHeight;
+        var tmpHTMLArr = [];
+        var tmpId = '';
+        for (var i = 0; i < _gCurrCateObj.sub.length; i++) {
+            tmpId = 'title_' + _gCurrCateObj.id + '_' + _gCurrCateObj.sub[i].id;
+            tmpHTMLArr.push('<div class="container" id="' + tmpId + '_Container" style="background-color:' + _gCurrCateObj.sub[i].bgColor + ';">');
+            tmpHTMLArr.push('   <div class="row align-items-center" id="' + tmpId + '_Row" style="height:' + (tmpRate * _gCurrCateObj.sub[i].height) + 'px;">');
+            tmpHTMLArr.push('       <div class="col-12 text-center no-padding">');
+            tmpHTMLArr.push('           <i class="fas fa-' + _gCurrCateObj.sub[i].icon + ' aria-hidden="true" style="font-size:40px; color:' + _gCurrCateObj.sub[i].color + '"></i>');
+            tmpHTMLArr.push('           <p class="sub-categoory-item-title">' + _gCurrCateObj.sub[i].text + '</p>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('</div>');
+        }
+
+        subContent.show();
+        subContent.append($(tmpHTMLArr.join('')));
+    } else {
+        subContent.hide();
+    }
+
+    fillDataToTitle();
 };
 
+function buildContent_Courses() {
+    var orgAvailableHeight = 890;
+    var orgContainerHeight = 235;
+    var orgHeight = 225;
+    var orgWidth = 155;
+    var orgImgHeight = 140;
+    var orgSpace = 35;
+    var availableHeight = $('.col-content').height();
+    var scale = availableHeight / orgAvailableHeight;
 
+    var containerHeight = Math.floor(scale * orgContainerHeight);
+    var height = Math.floor(scale * orgHeight);
+    var width = Math.floor(scale * orgWidth);
+    var imgHeight = Math.floor(scale * orgImgHeight);
+    var padding = Math.floor((containerHeight - height) / 2);
+    var space = Math.floor(scale * orgSpace);
+
+    var datas = [
+        { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
+        { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别模式识别模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' },
+        { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
+        { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别模式识别模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' },
+        { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
+        { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别模式识别模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' }
+    ];
+    var itemCount = datas.length;
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid h-100 wrap-courses-content">');
+    tmpHTMLArr.push('    <div class="row align-items-center row-courses-group-list">');
+    tmpHTMLArr.push('        <div class="col">');
+
+
+    var tmpStyle = '';
+    tmpHTMLArr.push('<div class="container-fluid horizontal-list">');
+    tmpHTMLArr.push('    <div class="row h-100 align-items-center">');
+    tmpHTMLArr.push('        <div class="col-1 text-center">');
+    tmpHTMLArr.push('           <div class="horizontal-list-arrow arrow-left">');
+    tmpHTMLArr.push('               <i class="fas fa-chevron-left"></i>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-10 h-100 horizontal-list-wrap" id="col_Courses_Items">');
+    tmpHTMLArr.push('            <div class="h-100 horizontal-list-container">');
+    for (var i = 0; i < itemCount; i++) {
+        tmpStyle = 'padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;';
+        tmpHTMLArr.push('<div class="text-center wrap-horizontal-list-items" style="' + tmpStyle + '">');
+        tmpHTMLArr.push('    <div class="d-flex align-items-center h-100">');
+        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
+        tmpHTMLArr.push('        <div class="container-fluid horizontal-list-item-wrap" style="' + tmpStyle + '">');
+        tmpHTMLArr.push('            <div class="row no-margin">');
+        tmpHTMLArr.push('                <div class="col-12 no-padding">');
+        tmpStyle = 'height:' + imgHeight + 'px;';
+        tmpHTMLArr.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="' + tmpStyle + '" />');
+        tmpHTMLArr.push('                </div>');
+        tmpHTMLArr.push('            </div>');
+        tmpHTMLArr.push('            <div class="row no-margin">');
+        tmpHTMLArr.push('                <div class="col no-padding">');
+        tmpStyle = 'color:' + datas[i].color + '; font-size:18px;';
+        tmpStyle = '';
+        tmpHTMLArr.push('                   <p class="text-center courses-item-title" style="' + tmpStyle + '"></p>');
+        tmpHTMLArr.push('                </div>');
+        tmpHTMLArr.push('            </div>');
+        tmpHTMLArr.push('            <div class="row no-margin">');
+        tmpHTMLArr.push('                <div class="col-12 no-padding">');
+        tmpStyle = 'color:' + datas[i].color + ';font-size:' + 12 + 'px';
+        tmpHTMLArr.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
+        tmpHTMLArr.push('                </div>');
+        tmpHTMLArr.push('            </div>');
+        tmpHTMLArr.push('        </div>');
+        tmpHTMLArr.push('    </div>');
+        tmpHTMLArr.push('</div>');
+    }
+
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-1 text-center">');
+    tmpHTMLArr.push('           <div class="horizontal-list-arrow arrow-right">');
+    tmpHTMLArr.push('               <i class="fas fa-chevron-right"></i>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    $('.col-main-content').append($(tmpHTMLArr.join('')));
+    $('.horizontal-list').height(containerHeight);
+    var itemWidth = width + space + 3;
+    $('.horizontal-list-container').width(itemWidth * itemCount - space);
+    var funData = { cls: ".horizontal-list-container", step: itemWidth };
+    $('.horizontal-list-arrow.arrow-left').on('click', funData, listMovePrev);
+    $('.horizontal-list-arrow.arrow-right').on('click', funData, listMoveNext);
+    if ($('.horizontal-list').width() > $('.horizontal-list-container').width()) {
+        $('.horizontal-list-arrow').hide();
+    }
+
+    $('.horizontal-list-item-wrap').on('click', function (eventObj) {
+        var target = $(eventObj.currentTarget);
+        buildDetail_Course(target.attr('data-target'));
+    });
+};
+
+function buildDetail_Course() {
+    var datas = [
+        { symbol: 'B_01_002', title: '第一课XXXXXX', steps: 4, complete: 4, steam: 's', type: ['js', 'python', 'html5', 'node', 'java'] },
+        { symbol: 'B_01_002', title: '第二课XXXXXX', steps: 5, complete: 2, steam: 'ea', type: ['python', 'css3'] },
+        { symbol: 'B_01_002', title: '第三课XXXXXX', steps: 4, complete: 4, steam: 'te', type: ['js'] },
+        { symbol: 'B_01_002', title: '第四课XXXXXX', steps: 4, complete: 4, steam: 'sm', type: ['html5', 'java'] },
+        { symbol: 'B_01_002', title: '第五课XXXXXX', steps: 6, complete: 1, steam: 'em', type: ['java'] },
+        { symbol: 'B_01_002', title: '第六课XXXXXX', steps: 4, complete: 4, steam: 'ste', type: ['js', 'python', 'css3', 'node', 'java'] },
+        { symbol: 'B_01_002', title: '第七课XXXXXX', steps: 3, complete: 3, steam: 'steam', type: ['js', 'html5', 'node', 'java'] },
+        { symbol: 'B_01_002', title: '第八课XXXXXX', steps: 4, complete: 4, steam: 's', type: [] }
+    ];
+
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('    <div class="row align-items-center row-courses-group-item-list">');
+    tmpHTMLArr.push('        <div class="col no-padding">');
+    tmpHTMLArr.push('<table class="table table-hover table-sm">');
+    tmpHTMLArr.push('   <thead>');
+    tmpHTMLArr.push('       <tr>');
+    tmpHTMLArr.push('           <th scope="col col-course-state" style="width: 50px;height: 1px;padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-course-title" style="height: 1px;padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-course-step" style="width: 50px;height: 1px;padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-course-steam" style="width: 150px;height: 1px;padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-course-type" style="height: 1px;padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-course-run" style="width: 80px;height: 1px;padding: 0px;"></th>');
+    tmpHTMLArr.push('       </tr>');
+    tmpHTMLArr.push('   </thead>');
+    tmpHTMLArr.push('   <tbody>');
+
+    var tmpState;
+    for (var i = 0; i < datas.length; i++) {
+        tmpState = (datas[i].complete == datas[i].steps ? 'star' : 'star-half-alt');
+        tmpHTMLArr.push('       <tr>');
+        tmpHTMLArr.push('           <td class="text-center"><i class="fas fa-' + tmpState + ' course-state"></i></td>');
+        tmpHTMLArr.push('           <td>' + datas[i].title + '</td>');
+        tmpHTMLArr.push('           <td><span class="course-step-complete">' + datas[i].complete + '</span>/<span class="course-step-total">' + datas[i].steps + '</span></td>');
+        tmpHTMLArr.push('           <td>' + buildSTEAMHTML(datas[i].steam) + '</td>');
+        tmpHTMLArr.push('           <td>' + buildCourseTypeHTML(datas[i].type) + '</td>');
+        tmpHTMLArr.push('           <td>');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-link course-start" data-target="' + datas[i].symbol + '|' + datas[i].complete + '">');
+        tmpHTMLArr.push('                   <i class="fas fa-map-pin cursor-hand"></i>');
+        tmpHTMLArr.push('               </button>');
+        tmpHTMLArr.push('           </td>');
+        tmpHTMLArr.push('       </tr>');
+    }
+
+    tmpHTMLArr.push('   </tbody>');
+    tmpHTMLArr.push('</table>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    $('.row-courses-group-list').after($(tmpHTMLArr.join('')));
+    $('.row-courses-group-item-list .course-start').on('click', function (eventObj) {
+        var target = $(eventObj.currentTarget).attr('data-target').split('|');
+        window.open("workplatform.html?scene=" + target[0] + '&step=' + target[1]);
+    });
+};
+
+function buildSTEAMHTML(steam) {
+    var tmpHTMLArr = [];
+    for (var i = 0; i < steam.length; i++) {
+        tmpHTMLArr.push('<span class="course-staem-' + steam [i]+ ' steam-char' + '">'+steam[i].toUpperCase()+'</span>');
+    }
+    //tmpHTMLArr.push('<span class="course-staem-t steam-char-' + (steam[1] == 1 ? 'used' : 'unuse') + '">T</span>');
+    //tmpHTMLArr.push('<span class="course-staem-e steam-char-' + (steam[2] == 1 ? 'used' : 'unuse') + '">E</span>');
+    //tmpHTMLArr.push('<span class="course-staem-a steam-char-' + (steam[3] == 1 ? 'used' : 'unuse') + '">A</span>');
+    //tmpHTMLArr.push('<span class="course-staem-m steam-char-' + (steam[4] == 1 ? 'used' : 'unuse') + '">M</span>');
+    return tmpHTMLArr.join('');
+};
+
+function buildCourseTypeHTML(courseType) {
+    var tmpHTMLArr = [];
+    for (var i = 0; i < courseType.length; i++) {
+        tmpHTMLArr.push('<i class="fab fa-' + _gCourseTypeMap[courseType[i]] + ' course-type-icon"></i>');
+    }
+
+    return tmpHTMLArr.join('');
+};
+
+function fillDataToTitle() {
+    if (_gCurrCateId == '') {
+
+    }
+};
 
 function initData() {
     var successFn = function (response) {
