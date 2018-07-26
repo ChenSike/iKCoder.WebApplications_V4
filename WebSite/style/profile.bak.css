@@ -169,25 +169,6 @@ footer {
         font-size: 14px;
     }
 
-
-.col-sub-categoory-content {
-    min-width: 150px;
-    max-width: 150px;
-    background-color: rgb(248, 250, 251);
-    padding: 0px;
-}
-
-    .col-sub-categoory-content .sub-categoory-item-title {
-        color: rgb(107,129,140);
-        font-size: 14px;
-        padding: 5px;
-        /*font-size: 1.6rem;
-        font-weight: bold;
-        color: rgb(0,0,0);
-        padding-left: 3px;
-        padding-right: 3px;*/
-    }
-
 .row-courses-group-list {
     background-color: rgb(248, 250, 251);
 }
@@ -201,11 +182,11 @@ footer {
         overflow: hidden;
     }
 
-    .horizontal-list .wrap-horizontal-list-items {
+    .horizontal-list .wrap-horizontal-list-item {
         display: inline-block;
     }
 
-        .horizontal-list .wrap-horizontal-list-items .horizontal-list-item-wrap {
+        .horizontal-list .wrap-horizontal-list-item .horizontal-list-item {
             padding: 0px;
             border: solid 1px rgb(237,240,242);
             box-shadow: 1px 1px 5px rgb(188,188,188);
@@ -225,9 +206,9 @@ footer {
     font-size: 14px;
 }
 
-.row-courses-group-item-list tbody tr td {
-    line-height:28px;
-}
+    .row-courses-group-item-list tbody tr td {
+        line-height: 28px;
+    }
 
 .course-state {
     font-size: 18px;
@@ -306,4 +287,61 @@ footer {
 .course-step-total {
     font-weight: bold;
     /*color: #0069d9;*/
+}
+
+.fa-flask.experiment-symbol {
+    color: rgb(34,139,34);
+    font-size: 18px;
+}
+
+.collapse.experiment-item .card-block {
+    border: solid 2px rgb(188, 188, 188);
+}
+
+    .collapse.experiment-item .card-block .table.table-sm {
+        margin-bottom: 0px;
+        font-size: 14px;
+    }
+
+.experiment-atta-title {
+    font-weight: bold;
+    border: none;
+    background-color: orange;
+    border-radius: 10px;
+    padding-left: 20px;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    color: rgb(17,138,195);
+}
+
+    .carousel-control-prev:hover, .carousel-control-next:hover {
+        color: rgb(2,117,216);
+    }
+
+.wrap-circle-search {
+    padding: 10px 0px;
+}
+
+    .wrap-circle-search table tbody td {
+        border: none;
+        padding: 2px 5px;
+    }
+
+.circle-item-header {
+    border-radius: 50%;
+    border: solid 2px rgb(17,138,195);
+    box-shadow: 1px 1px 5px rgb(142,142,142);
+}
+
+.wrap-circle .horizontal-list .wrap-horizontal-list-item .horizontal-list-item {
+    border: none;
+    box-shadow: none;
+}
+
+.row-circle-friend-wrap{
+    overflow:auto; padding:15px;
+}
+.col-circle-friend-wrap{
+    display:contents;
 }

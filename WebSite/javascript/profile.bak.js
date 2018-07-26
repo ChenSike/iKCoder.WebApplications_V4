@@ -40,22 +40,30 @@ var _gCurrCateId = 'courses';
 var _gCurrCateObj = null;
 var _gCategory = [
     { id: 'courses', icon: 'fa-chess', text: '课程', atta: '' },
-    { id: 'homework', icon: 'fa-home', text: '实验', atta: 'bool' },
-    { id: 'moments', icon: 'fa-envelope', text: '圈子', atta: 'number' },
+    { id: 'experiment', icon: 'fa-flask', text: '实验', atta: 'bool' },
+    { id: 'circle', icon: 'fa-user-friends', text: '圈子', atta: 'number' },
     { id: 'report', icon: 'fa-chart-line', text: '报表', atta: '' },
     { id: 'settings', icon: 'fa-user-cog', text: '设定', atta: '' },
-    { id: 'workplatform', icon: 'fa-helicopter', text: 'App Studio', atta: '' },
-    { id: 'appshop', icon: 'fa-shopping-cart', text: 'App Shop', atta: '' },
+    { id: 'studio', icon: 'fa-helicopter', text: 'App Studio', atta: '' },
+    { id: 'appshop', icon: 'fa-cart-plus', text: 'App Shop', atta: '' },
     { id: 'teamsuit', icon: 'fa-users', text: 'Team Suit', atta: '' }
 ];
 var _gCourseTypeMap = {
-    js: 'js-square',
-    python: 'python',
-    java: 'java',
-    node: 'node-js',
-    html5: 'html5',
-    css3: 'css3-alt'
-}
+    js: { icon: 'js-square', title: 'Java Script' },
+    python: { icon: 'python', title: 'Python' },
+    java: { icon: 'java', title: 'Java' },
+    node: { icon: 'node-js', title: 'Node.JS' },
+    html5: { icon: 'html5', title: 'HTML5' },
+    css3: { icon: 'css3-alt', title: 'CSS3' }
+};
+var _gSTEAMMap = {
+    s: { icon: 'js-square', title: 'Science' },
+    t: { icon: 'python', title: 'Technology' },
+    e: { icon: 'java', title: 'Engineering' },
+    a: { icon: 'node-js', title: 'Arts' },
+    m: { icon: 'html5', title: 'Mathematics' }
+};
+var orgAvailableHeight = 890;
 
 function initPage() {
     globalResize();
@@ -74,7 +82,7 @@ function globalResize() {
     var header = $('header');
     var footer = $('footer');
     $('.col-content').height($('.main-container').height() - header.height() - footer.height());
-    $('.col-main-content').width($('body').width() - $('.col-siderbar').width() - $('.col-sub-categoory-content').width() - 18);
+    $('.col-main-content').width($('body').width() - $('.col-siderbar').width() - 18);
 }
 
 function showLoadingMask() {
@@ -138,18 +146,6 @@ function buildCategorys() {
     });
 };
 
-function buildCategoryContent(categoryId) {
-    getCurrentCategoryObj();
-    $('.col-sub-categoory-content').empty();
-    $('.col-main-content').empty();
-    buildSubCategory();
-    switch (_gCurrCateId) {
-        case 'courses':
-            buildContent_Courses();
-            break;
-    }
-};
-
 function getCurrentCategoryObj(categoryId) {
     if (typeof categoryId == 'undefined' || categoryId == '') {
         $('.row-category-item').removeClass('active-item');
@@ -166,40 +162,38 @@ function getCurrentCategoryObj(categoryId) {
     }
 };
 
-function buildSubCategory() {
-    var subContent = $('.col-sub-categoory-content');
-    if (_gCurrCateObj.sub && _gCurrCateObj.sub.length > 0) {
-        var minHeight = 0;
-        for (var i = 0; i < _gCurrCateObj.sub.length; i++) {
-            minHeight += _gCurrCateObj.sub[i].height;
-        }
-
-        var tmpRate = $('.col-main-content').height() / minHeight;
-        var tmpHTMLArr = [];
-        var tmpId = '';
-        for (var i = 0; i < _gCurrCateObj.sub.length; i++) {
-            tmpId = 'title_' + _gCurrCateObj.id + '_' + _gCurrCateObj.sub[i].id;
-            tmpHTMLArr.push('<div class="container" id="' + tmpId + '_Container" style="background-color:' + _gCurrCateObj.sub[i].bgColor + ';">');
-            tmpHTMLArr.push('   <div class="row align-items-center" id="' + tmpId + '_Row" style="height:' + (tmpRate * _gCurrCateObj.sub[i].height) + 'px;">');
-            tmpHTMLArr.push('       <div class="col-12 text-center no-padding">');
-            tmpHTMLArr.push('           <i class="fas fa-' + _gCurrCateObj.sub[i].icon + ' aria-hidden="true" style="font-size:40px; color:' + _gCurrCateObj.sub[i].color + '"></i>');
-            tmpHTMLArr.push('           <p class="sub-categoory-item-title">' + _gCurrCateObj.sub[i].text + '</p>');
-            tmpHTMLArr.push('       </div>');
-            tmpHTMLArr.push('   </div>');
-            tmpHTMLArr.push('</div>');
-        }
-
-        subContent.show();
-        subContent.append($(tmpHTMLArr.join('')));
-    } else {
-        subContent.hide();
+function buildCategoryContent(categoryId) {
+    getCurrentCategoryObj(categoryId);
+    $('.col-main-content').empty();
+    switch (_gCurrCateId) {
+        case 'courses':
+            buildContent_Courses();
+            break;
+        case 'experiment':
+            buildContent_Exp();
+            break;
+        case 'circle':
+            buildContent_Circle();
+            break;
+        case 'report':
+            buildContent_Report();
+            break;
+        case 'settings':
+            buildContent_Setting();
+            break;
+        case 'studio':
+            buildContent_Studio();
+            break;
+        case 'appshop':
+            buildContent_AppShop();
+            break;
+        case 'teamsuit':
+            buildContent_TeamSuit();
+            break;
     }
-
-    fillDataToTitle();
 };
 
 function buildContent_Courses() {
-    var orgAvailableHeight = 890;
     var orgContainerHeight = 235;
     var orgHeight = 225;
     var orgWidth = 155;
@@ -225,82 +219,49 @@ function buildContent_Courses() {
     ];
     var itemCount = datas.length;
     var tmpHTMLArr = [];
+    var tmpStyle = '';
     tmpHTMLArr.push('<div class="container-fluid h-100 wrap-courses-content">');
     tmpHTMLArr.push('    <div class="row align-items-center row-courses-group-list">');
     tmpHTMLArr.push('        <div class="col">');
-
-
-    var tmpStyle = '';
-    tmpHTMLArr.push('<div class="container-fluid horizontal-list">');
-    tmpHTMLArr.push('    <div class="row h-100 align-items-center">');
-    tmpHTMLArr.push('        <div class="col-1 text-center">');
-    tmpHTMLArr.push('           <div class="horizontal-list-arrow arrow-left">');
-    tmpHTMLArr.push('               <i class="fas fa-chevron-left"></i>');
-    tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-10 h-100 horizontal-list-wrap" id="col_Courses_Items">');
-    tmpHTMLArr.push('            <div class="h-100 horizontal-list-container">');
+    var itemsHTML = [];
     for (var i = 0; i < itemCount; i++) {
         tmpStyle = 'padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;';
-        tmpHTMLArr.push('<div class="text-center wrap-horizontal-list-items" style="' + tmpStyle + '">');
-        tmpHTMLArr.push('    <div class="d-flex align-items-center h-100">');
+        itemsHTML.push('<div class="text-center wrap-horizontal-list-item" style="' + tmpStyle + '">');
+        itemsHTML.push('    <div class="d-flex align-items-center h-100">');
         tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
-        tmpHTMLArr.push('        <div class="container-fluid horizontal-list-item-wrap" style="' + tmpStyle + '">');
-        tmpHTMLArr.push('            <div class="row no-margin">');
-        tmpHTMLArr.push('                <div class="col-12 no-padding">');
+        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '" data-target="' + datas[i].id + '">');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col-12 no-padding">');
         tmpStyle = 'height:' + imgHeight + 'px;';
-        tmpHTMLArr.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="' + tmpStyle + '" />');
-        tmpHTMLArr.push('                </div>');
-        tmpHTMLArr.push('            </div>');
-        tmpHTMLArr.push('            <div class="row no-margin">');
-        tmpHTMLArr.push('                <div class="col no-padding">');
-        tmpStyle = 'color:' + datas[i].color + '; font-size:18px;';
-        tmpStyle = '';
-        tmpHTMLArr.push('                   <p class="text-center courses-item-title" style="' + tmpStyle + '"></p>');
-        tmpHTMLArr.push('                </div>');
-        tmpHTMLArr.push('            </div>');
-        tmpHTMLArr.push('            <div class="row no-margin">');
-        tmpHTMLArr.push('                <div class="col-12 no-padding">');
-        tmpStyle = 'color:' + datas[i].color + ';font-size:' + 12 + 'px';
-        tmpHTMLArr.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
-        tmpHTMLArr.push('                </div>');
-        tmpHTMLArr.push('            </div>');
-        tmpHTMLArr.push('        </div>');
-        tmpHTMLArr.push('    </div>');
-        tmpHTMLArr.push('</div>');
+        itemsHTML.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="' + tmpStyle + '" />');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col-12 no-padding">');
+        tmpStyle = 'color:' + datas[i].color + ';font-size:12px';
+        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        itemsHTML.push('        </div>');
+        itemsHTML.push('    </div>');
+        itemsHTML.push('</div>');
     }
 
-    tmpHTMLArr.push('            </div>');
-    tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('        <div class="col-1 text-center">');
-    tmpHTMLArr.push('           <div class="horizontal-list-arrow arrow-right">');
-    tmpHTMLArr.push('               <i class="fas fa-chevron-right"></i>');
-    tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('        </div>');
-    tmpHTMLArr.push('    </div>');
-    tmpHTMLArr.push('</div>');
-
+    tmpHTMLArr.push(buildHorizontalList(itemsHTML.join('')));
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('.col-main-content').append($(tmpHTMLArr.join('')));
-    $('.horizontal-list').height(containerHeight);
-    var itemWidth = width + space + 3;
-    $('.horizontal-list-container').width(itemWidth * itemCount - space);
-    var funData = { cls: ".horizontal-list-container", step: itemWidth };
-    $('.horizontal-list-arrow.arrow-left').on('click', funData, listMovePrev);
-    $('.horizontal-list-arrow.arrow-right').on('click', funData, listMoveNext);
-    if ($('.horizontal-list').width() > $('.horizontal-list-container').width()) {
-        $('.horizontal-list-arrow').hide();
-    }
-
-    $('.horizontal-list-item-wrap').on('click', function (eventObj) {
+    $('.horizontal-list-item').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
         buildDetail_Course(target.attr('data-target'));
     });
+    bindHorizontalListEvent(containerHeight, width, space, itemCount);
+
+    buildDetail_Course(datas[0].id);
 };
 
-function buildDetail_Course() {
+function buildDetail_Course(courseGroupId) {
     var datas = [
         { symbol: 'B_01_002', title: '第一课XXXXXX', steps: 4, complete: 4, steam: 's', type: ['js', 'python', 'html5', 'node', 'java'] },
         { symbol: 'B_01_002', title: '第二课XXXXXX', steps: 5, complete: 2, steam: 'ea', type: ['python', 'css3'] },
@@ -339,7 +300,7 @@ function buildDetail_Course() {
         tmpHTMLArr.push('           <td>' + buildCourseTypeHTML(datas[i].type) + '</td>');
         tmpHTMLArr.push('           <td>');
         tmpHTMLArr.push('               <button type="button" class="btn btn-link course-start" data-target="' + datas[i].symbol + '|' + datas[i].complete + '">');
-        tmpHTMLArr.push('                   <i class="fas fa-map-pin cursor-hand"></i>');
+        tmpHTMLArr.push('                   <i class="far fa-hand-point-right cursor-hand"></i>');
         tmpHTMLArr.push('               </button>');
         tmpHTMLArr.push('           </td>');
         tmpHTMLArr.push('       </tr>');
@@ -349,6 +310,7 @@ function buildDetail_Course() {
     tmpHTMLArr.push('</table>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
+    $('.row-courses-group-item-list').remove();
     $('.row-courses-group-list').after($(tmpHTMLArr.join('')));
     $('.row-courses-group-item-list .course-start').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget).attr('data-target').split('|');
@@ -358,30 +320,384 @@ function buildDetail_Course() {
 
 function buildSTEAMHTML(steam) {
     var tmpHTMLArr = [];
+    var tmpObj;
     for (var i = 0; i < steam.length; i++) {
-        tmpHTMLArr.push('<span class="course-staem-' + steam [i]+ ' steam-char' + '">'+steam[i].toUpperCase()+'</span>');
+        tmpObj = _gSTEAMMap[steam[i]];
+        tmpHTMLArr.push('<span class="course-staem-' + steam[i] + ' steam-char" title="' + tmpObj.title + '">' + steam[i].toUpperCase() + '</span>');
     }
-    //tmpHTMLArr.push('<span class="course-staem-t steam-char-' + (steam[1] == 1 ? 'used' : 'unuse') + '">T</span>');
-    //tmpHTMLArr.push('<span class="course-staem-e steam-char-' + (steam[2] == 1 ? 'used' : 'unuse') + '">E</span>');
-    //tmpHTMLArr.push('<span class="course-staem-a steam-char-' + (steam[3] == 1 ? 'used' : 'unuse') + '">A</span>');
-    //tmpHTMLArr.push('<span class="course-staem-m steam-char-' + (steam[4] == 1 ? 'used' : 'unuse') + '">M</span>');
+
     return tmpHTMLArr.join('');
 };
 
 function buildCourseTypeHTML(courseType) {
     var tmpHTMLArr = [];
+    var tmpObj;
     for (var i = 0; i < courseType.length; i++) {
-        tmpHTMLArr.push('<i class="fab fa-' + _gCourseTypeMap[courseType[i]] + ' course-type-icon"></i>');
+        tmpObj = _gCourseTypeMap[courseType[i]];
+        tmpHTMLArr.push('<i class="fab fa-' + tmpObj.icon + ' course-type-icon" title="' + tmpObj.title + '"></i>');
     }
 
     return tmpHTMLArr.join('');
 };
 
-function fillDataToTitle() {
-    if (_gCurrCateId == '') {
+function buildContent_Exp() {
+    var data = [
+        {
+            id: '3',
+            type: '2',
+            date: '2017-10-3',
+            teacher: 'Teacher Zhang',
+            status: '',
+            title: 'B-01-001: 模式识别',
+            content: '想一想，试一试，如何让吃豆人运行到附件图中的位置.',
+            attach: ['image/Experimental/e_1.png', 'image/Experimental/e_2.png', 'image/Experimental/e_3.png'],
+            correct: "",
+            incorrect: ""
+        }
+    ];
 
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid no-wrap wrap-experiment">');
+    tmpHTMLArr.push('   <div class="row no-wrap">');
+    tmpHTMLArr.push('       <div class="col-12 no-wrap" style="overflow:auto;">');
+    tmpHTMLArr.push('           <div id="accordion" role="tablist">');
+    for (var i = 0; i < data.length; i++) {
+        tmpHTMLArr.push('<div class="card" style="border-radius: 0px;">');
+        tmpHTMLArr.push('   <div class="card-header no-padding" role="tab" id="heading_' + data[i].id + '">');
+        tmpHTMLArr.push('       <table class="table table-striped" style="margin-bottom: 0px;">');
+        tmpHTMLArr.push('           <tbody>');
+        tmpHTMLArr.push('               <tr>');
+        tmpHTMLArr.push('                   <th><i class="fas fa-flask experiment-symbol"></i></th>');
+        tmpHTMLArr.push('                   <td><a data-toggle="collapse" href="#collapse_' + data[i].id + '" aria-expanded="true" aria-controls="collapse_' + data[i].id + '">' + data[i].title + '</a></td>');
+        tmpHTMLArr.push('                   <td class="mw-100 text-right">' + data[i].date + '</td>');
+        tmpHTMLArr.push('                   <td class="mw-100 text-right">' + data[i].teacher + '</td>');
+        tmpHTMLArr.push('               </tr>');
+        tmpHTMLArr.push('           </tbody>');
+        tmpHTMLArr.push('       </table>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div id="collapse_' + data[i].id + '" class="collapse experiment-item" role="tabpanel" aria-labelledby="heading_' + data[i].id + '" data-parent="#accordion" data-target="' + data[i].id + '">');
+        tmpHTMLArr.push('       <div class="card-block" style="padding:10px;">');
+        tmpHTMLArr.push('       <table class="table table-sm">');
+        tmpHTMLArr.push('           <tbody>');
+        if (data[i].attach.length > 0) {
+            tmpHTMLArr.push('               <tr>');
+            tmpHTMLArr.push('                   <td class="mw-100 experiment-atta-title" style="border:none;">');
+            tmpHTMLArr.push('                       <a href="#" class="experiment-attach-label" data-target="' + data[i].id + '">共有' + data[i].attach.length + '个附件，点击查看。</a>');
+            tmpHTMLArr.push('                   </td>');
+            tmpHTMLArr.push('               <tr>');
+        }
+
+        tmpHTMLArr.push('               <tr>');
+        tmpHTMLArr.push('                   <td class="mw-100" style="border:none;">' + data[i].content + '</td>');
+        tmpHTMLArr.push('               <tr>');
+        tmpHTMLArr.push('           <tbody>');
+        tmpHTMLArr.push('       </table>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
     }
+
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+
+    $('.col-main-content').append($(tmpHTMLArr.join('')));
+    var wrap = $('.wrap-experiment');
+    var availableHeight = $('.col-content').height();
+    if (wrap.height() < availableHeight) {
+        wrap.height(availableHeight);
+    }
+
+    $('.experiment-attach-label').on('click', function () {
+        var dataId = $(arguments[0].target).attr('data-target');
+        var attachs = [];
+        for (var i = 0; i < data.length; i++) {
+            if (dataId == data[i].id) {
+                attachs = data[i].attach;
+            }
+        }
+
+        showExperimentAttachs(attachs);
+    });
 };
+
+function showExperimentAttachs(attachs) {
+    if ($('#modal_Experiment_Attachs').length == 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_Experiment_Attachs" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
+        tmpHTMLStr.push('    <div class="modal-dialog modal-lg" role="document">');
+        tmpHTMLStr.push('        <div class="modal-content h-100">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h5 class="modal-title font-16" id="exampleModalLabel">题目附件</h5>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('                <div id="carousel_Experiment_Attachs" class="carousel slide h-100" data-ride="carousel" data-interval="90000" data-keyboard="true" data-wrap="false" data-ride="true">');
+        tmpHTMLStr.push('                    <div class="carousel-inner h-100">');
+        tmpHTMLStr.push('                    </div>');
+        tmpHTMLStr.push('                    <a class="carousel-control-prev" href="#carousel_Experiment_Attachs" role="button" data-slide="prev">');
+        //tmpHTMLStr.push('                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>');
+        tmpHTMLStr.push('                        <i class="fas fa-angle-left fa-2x" aria-hidden="true"></i>');
+        tmpHTMLStr.push('                        <span class="sr-only" style="color:darkred">Previous</span>');
+        tmpHTMLStr.push('                    </a>');
+        tmpHTMLStr.push('                    <a class="carousel-control-next" href="#carousel_Experiment_Attachs" role="button" data-slide="next">');
+        //tmpHTMLStr.push('                        <span class="carousel-control-next-icon" aria-hidden="true"></span>');
+        tmpHTMLStr.push('                        <i class="fas fa-angle-right fa-2x" aria-hidden="true"></i>');
+        tmpHTMLStr.push('                        <span class="sr-only">Next</span>');
+        tmpHTMLStr.push('                    </a>');
+        tmpHTMLStr.push('                </div>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">关闭</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+    }
+
+    $('#carousel_Experiment_Attachs .carousel-inner').empty();
+    var tmpItemStr = '';
+    for (var i = 0; i < attachs.length; i++) {
+        tmpItemStr += '<div class=" h-100 carousel-item ' + (i == 0 ? 'active' : '') + '">';
+        tmpItemStr += '   <img class="d-block h-100" src="' + attachs[i] + '" style="margin: auto;">';
+        tmpItemStr += '</div>';
+    }
+
+    $('#carousel_Experiment_Attachs .carousel-inner').append($(tmpItemStr));
+    $('#modal_Experiment_Attachs').modal('show');
+};
+
+function buildContent_Circle() {
+    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
+    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
+
+    var dataSystem = [];
+    for (var i = 0; i < 20; i++) {
+        dataSystem.push({
+            "userName": names[i % 13],
+            "header": "image/header/" + (i % 10) + ".jpg",
+            "userId": i
+        });
+    }
+
+    var dataUser = [];
+    for (var i = 0; i < 50; i++) {
+        var tmpIdx = randomInt(0, 49);
+        dataUser.push({
+            "userName": names[tmpIdx % 13],
+            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
+            "userId": i
+        });
+    }
+
+    var dataSearch = { value: [] };
+    for (var i = 0; i < 12; i++) {
+        dataSearch.value.push({
+            "userName": names[i],
+            "shortAccount": shortAccount[i],
+            "userId": i
+        });
+    }
+
+    var defaultOptions = {
+        url: null,                      //请求数据的 URL 地址
+        jsonp: null,                  //设置此参数名，将开启jsonp功能，否则使用json数据结构
+        data: dataSearch,                              //提示所用的数据，注意格式
+        indexId: 0,                     //每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
+        indexKey: 0,                    //每组数据的第几个数据，作为input输入框的内容
+        idField: 'userId',                    //每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
+        keyField: 'userName',                   //每组数据的哪个字段作为输入框内容，优先级高于 indexKey 设置（推荐）
+
+        /* 搜索相关 */
+        autoSelect: true,               //键盘向上/下方向键时，是否自动选择值
+        allowNoKeyword: true,           //是否允许无关键字时请求数据
+        getDataMethod: 'data',    //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
+        delayUntilKeyup: false,         //获取数据的方式 为 firstByUrl 时，是否延迟到有输入时才请求数据
+        ignorecase: true,              //前端搜索匹配时，是否忽略大小写
+        effectiveFields: [],            //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
+        effectiveFieldsAlias: { userName: "姓名" },       //有效字段的别名对象，用于 header 的显示
+        searchFields: [],               //有效搜索字段，从前端搜索过滤数据时使用，但不一定显示在列表中。effectiveFields 配置字段也会用于搜索过滤
+        clearable: true,
+
+        multiWord: false,               //以分隔符号分割的多关键字支持
+        separator: ',',                 //多关键字支持时的分隔符，默认为半角逗号
+
+        /* UI */
+        autoDropup: false,              //选择菜单是否自动判断向上展开。设为 true，则当下拉菜单高度超过窗体，且向上方向不会被窗体覆盖，则选择菜单向上弹出
+        autoMinWidth: false,            //是否自动最小宽度，设为 false 则最小宽度不小于输入框宽度
+        showHeader: false,              //是否显示选择列表的 header。为 true 时，有效字段大于一列则显示表头
+        showBtn: true,                  //是否显示下拉按钮
+        inputBgColor: '',               //输入框背景色，当与容器背景色不同时，可能需要该项的配置
+        inputWarnColor: 'rgba(255,0,0,.1)', //输入框内容不是下拉列表选择时的警告色
+        listStyle: {
+            'padding-top': 0,
+            'max-height': '375px',
+            'max-width': '800px',
+            'overflow': 'auto',
+            'width': 'auto',
+            'transition': '0.3s',
+            '-webkit-transition': '0.3s',
+            '-moz-transition': '0.3s',
+            '-o-transition': '0.3s',
+            'font-size': '12px'
+        },                              //列表的样式控制
+        listAlign: 'left',              //提示列表对齐位置，left/right/auto
+        listHoverStyle: 'background: #07d; color:#fff', //提示框列表鼠标悬浮的样式
+        listHoverCSS: 'jhover',         //提示框列表鼠标悬浮的样式名称
+
+        /* methods */
+        //fnProcessData: null,     //processData 格式化数据的方法，返回数据格式参考 data 参数
+        //fnGetData: null,             //getData获取数据的方法，无特殊需求一般不作设置
+        //fnAdjustAjaxParam: null,        //调整 ajax 请求参数方法，用于更多的请求配置需求。如对请求关键字作进一步处理、修改超时时间等
+        //fnPreprocessKeyword: null       //搜索过滤数据前，对输入关键字作进一步处理方法。注意，应返回字符串
+    };
+
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid wrap-circle">');
+    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('       <div class="col">');
+    tmpHTMLArr.push('           <div class="input-group w-100 wrap-circle-search">');
+    //tmpHTMLArr.push('               <i class="clearable glyphicon glyphicon-remove" style="position: absolute; top: 12px; right: 12px; z-index: 4; cursor: pointer; font-size: 12px; display: none;"></i>');
+    tmpHTMLArr.push('               <input type="text" class="form-control form-control-sm" id="search_Circle" style="border-radius:5px; border-color:rgb(17,138,195);" autocomplete="off" placeholder="Search" data-id="" alt="a">');
+    tmpHTMLArr.push('               <div class="input-group-btn">');
+    tmpHTMLArr.push('                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="" style="display: none;">');
+    tmpHTMLArr.push('                       <span class="caret"></span>');
+    tmpHTMLArr.push('                   </button>');
+    tmpHTMLArr.push('                   <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('       <div class="col">');
+    tmpHTMLArr.push('       <table class="w-100"><tr>');
+    tmpHTMLArr.push('       <td style="width:10%;">');
+    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:2px solid rgba(0,0,0,0.3);"/>');
+    tmpHTMLArr.push('       </td>');
+    tmpHTMLArr.push('       <td style="white-space: nowrap;">');
+    tmpHTMLArr.push('           <span style="line-height: 30px;">系统及顾问</span>');
+    tmpHTMLArr.push('       </td>');
+    tmpHTMLArr.push('       <td style="width:85%;">');
+    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:2px solid rgba(0,0,0,0.3);"/>');
+    tmpHTMLArr.push('       </td>');
+    tmpHTMLArr.push('       </tr></table>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="row no-wrap">');
+    tmpHTMLArr.push('       <div class="col no-wrap" style="overflow:auto;">');
+    var orgContainerHeight = 100;
+    var orgHeight = 80;
+    var orgWidth = 70;
+    var orgSpace = 10;
+    var orgImgHeight = 50;
+    var availableHeight = $('.col-content').height();
+    var scale = availableHeight / orgAvailableHeight;
+    var containerheight = Math.floor(scale * orgContainerHeight);
+    var height = Math.floor(scale * orgHeight);
+    var width = Math.floor(scale * orgWidth);
+    var padding = Math.floor((containerheight - height) / 2);
+    var imgheight = Math.floor(scale * orgImgHeight);
+    var space = Math.floor(scale * orgSpace);
+    var itemsHTML = [];
+    var itemCount = dataSystem.length;
+    var tmpStyle = '';
+    for (var i = 0; i < itemCount; i++) {
+        tmpStyle = 'padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px; padding-top:' + padding + 'px;';
+        itemsHTML.push('<div class="text-center wrap-horizontal-list-item" style="' + tmpStyle + '">');
+        itemsHTML.push('    <div class="d-flex align-items-center h-100">');
+        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
+        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '" data-target="' + dataSystem[i].userId + '">');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col no-padding">');
+        tmpStyle = 'height:' + imgheight + 'px; width:' + imgheight + 'px;';
+        itemsHTML.push('                    <img class="img-fluid circle-item-header" src="' + dataSystem[i].header + '" style="' + tmpStyle + '" />');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col no-padding">');
+        tmpStyle = 'font-size:12px';
+        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + dataSystem[i].userName + '</p>');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        itemsHTML.push('        </div>');
+        itemsHTML.push('    </div>');
+        itemsHTML.push('</div>');
+    }
+
+    tmpHTMLArr.push(buildHorizontalList(itemsHTML.join(''), "System"));
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('       <div class="col">');
+    tmpHTMLArr.push('       <table class="w-100"><tr>');
+    tmpHTMLArr.push('       <td style="width:10%;">');
+    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:2px solid rgba(0,0,0,0.3);"/>');
+    tmpHTMLArr.push('       </td>');
+    tmpHTMLArr.push('       <td style="white-space: nowrap;">');
+    tmpHTMLArr.push('           <span style="line-height: 30px;">我的小伙伴</span>');
+    tmpHTMLArr.push('       </td>');
+    tmpHTMLArr.push('       <td style="width:85%;">');
+    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:2px solid rgba(0,0,0,0.3);"/>');
+    tmpHTMLArr.push('       </td>');
+    tmpHTMLArr.push('       </tr></table>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="row no-wrap row-circle-friend-wrap justify-content-center">');
+    tmpHTMLArr.push('       <div class="col col-circle-friend-wrap" style="overflow:auto; padding:15px;">');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+
+    $('.col-main-content').append($(tmpHTMLArr.join('')));
+    $("#search_Circle").bsSuggest(defaultOptions);
+    $('.horizontal-list-item').on('click', function (eventObj) {
+        buildDetail_Course($(eventObj.currentTarget).attr('data-target'));
+    });
+
+    bindHorizontalListEvent(containerheight, width, space, dataSystem.length, "System");
+    $('.row-circle-friend-wrap').height($('.col-main-content').height() - $('.wrap-circle').height());
+    itemsHTML = [];
+    itemCount = dataUser.length;
+    for (var i = 0; i < itemCount; i++) {
+        tmpStyle = 'padding-top:' + padding + 'px; width:' + width + 'px;';
+        itemsHTML.push('<div class="text-center" style="' + tmpStyle + '">');
+        itemsHTML.push('    <div class="d-flex align-items-center h-100">');
+        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
+        itemsHTML.push('        <div class="container-fluid no-wrap horizontal-list-item" style="' + tmpStyle + '" data-target="' + dataUser[i].userId + '">');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col no-padding">');
+        tmpStyle = 'height:' + imgheight + 'px; width:' + imgheight + 'px;';
+        itemsHTML.push('                    <img class="img-fluid circle-item-header" src="' + dataUser[i].header + '" style="' + tmpStyle + '" />');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col no-padding">');
+        tmpStyle = 'font-size:12px';
+        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + dataUser[i].userName + '</p>');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        itemsHTML.push('        </div>');
+        itemsHTML.push('    </div>');
+        itemsHTML.push('</div>');
+    }
+    $('.col-circle-friend-wrap').append($(itemsHTML.join('')));
+};
+
+
+
+
+
+
+function buildContent_Report() { };
+function buildContent_Setting() { };
+function buildContent_Studio() { };
+function buildContent_AppShop() { };
+function buildContent_TeamSuit() { };
 
 function initData() {
     var successFn = function (response) {
@@ -390,4 +706,43 @@ function initData() {
 
     //ajaxFn('GET', _getRequestURL(_gURLMapping.account.updatepwd, {}), '', successFn);
     successFn();
+};
+
+function buildHorizontalList(listItemsHTML, symbol) {
+    var tmpSymbol = (typeof symbol == 'undefined' ? '' : symbol)
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid horizontal-list" id="Horizontal_List_' + tmpSymbol + '">');
+    tmpHTMLArr.push('    <div class="row h-100 align-items-center">');
+    tmpHTMLArr.push('        <div class="col-1 text-center">');
+    tmpHTMLArr.push('           <div class="horizontal-list-arrow arrow-left" id="Horizontal_List_Arrow_Left_' + tmpSymbol + '">');
+    tmpHTMLArr.push('               <i class="fas fa-chevron-left"></i>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-10 h-100 horizontal-list-wrap">');
+    tmpHTMLArr.push('            <div class="h-100 horizontal-list-container" id="Horizontal_List_Container_' + tmpSymbol + '">');
+    tmpHTMLArr.push(listItemsHTML);
+    tmpHTMLArr.push('            </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('        <div class="col-1 text-center">');
+    tmpHTMLArr.push('           <div class="horizontal-list-arrow arrow-right" id="Horizontal_List_Arrow_Right_' + tmpSymbol + '">');
+    tmpHTMLArr.push('               <i class="fas fa-chevron-right"></i>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    return tmpHTMLArr.join('');
+};
+
+function bindHorizontalListEvent(containerHeight, itemWidth, itemSpace, itemCount, symbol) {
+    var tmpSymbol = (typeof symbol == 'undefined' ? '' : symbol)
+    $('#Horizontal_List_' + tmpSymbol).height(containerHeight);
+    var tmpWidth = itemWidth + itemSpace + 3;
+    $('#Horizontal_List_Container_' + tmpSymbol).width(tmpWidth * itemCount - itemSpace);
+    var funData = { cls: ".horizontal-list-container", step: tmpWidth };
+    $('#Horizontal_List_Arrow_Left_' + tmpSymbol).on('click', funData, listMovePrev);
+    $('#Horizontal_List_Arrow_Right_' + tmpSymbol).on('click', funData, listMoveNext);
+    if ($('#Horizontal_List_' + tmpSymbol).width() > $('#Horizontal_List_Container_' + tmpSymbol).width()) {
+        $('#Horizontal_List_Arrow_Left_' + tmpSymbol).hide();
+        $('#Horizontal_List_Arrow_Right_' + tmpSymbol).hide();
+    }
 };
