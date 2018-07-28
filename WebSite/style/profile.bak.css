@@ -94,8 +94,8 @@ footer {
     }
 
 .col-siderbar {
-    min-width: 160px;
-    max-width: 200px;
+    min-width: 190px;
+    max-width: 210px;
     min-height: 760px;
     background-color: rgb(38,50,56);
     color: rgb(255,255,255);
@@ -114,7 +114,8 @@ footer {
 }
 
     .row-category-item .category-item-attr {
-        width: 40px;
+        /*width: 40px;*/
+        width: 21px;
         margin-left: 10px;
         display: inline-block;
         text-align: center;
@@ -122,7 +123,9 @@ footer {
         color: rgb(255,255,255);
         -moz-border-radius: 12px;
         -webkit-border-radius: 12px;
-        border-radius: 10px;
+        /*border-radius: 10px;*/
+        border-radius: 50%;
+        margin-left: 55px;
     }
 
     .row-category-item:hover {
@@ -130,6 +133,14 @@ footer {
         /*font-weight: 600;*/
         font-size: 16px;
     }
+
+        /*.row-category-item:hover .category-item-attr {
+            font-size: 14px;
+        }*/
+        .row-category-item:hover .category-item-attr {
+            width: 24px;
+            margin-left: 50px;
+        }
 
         .row-category-item:hover .category-item-icon {
             color: rgba(255,84,142,1);
@@ -150,6 +161,19 @@ footer {
         color: rgb(215,44,102);
         font-size: 22px;
     }
+
+    /*.row-category-item.active-item .category-item-attr {
+        min-width: 50px;
+        font-size: 14px;
+    }*/
+    .row-category-item.active-item .category-item-attr {
+        width: 24px;
+        margin-left: 50px;
+    }
+
+/*.row-category-item.active-item .category-item-attr .category-item-attr-icon {
+            font-size: 14px;
+    }*/
 
 .siderbar-user-infors {
     padding: 10px;
@@ -320,7 +344,7 @@ footer {
     }
 
 .wrap-circle-search {
-    padding: 10px 0px;
+    /*padding: 10px 0px;*/
 }
 
     .wrap-circle-search table tbody td {
@@ -334,14 +358,265 @@ footer {
     box-shadow: 1px 1px 5px rgb(142,142,142);
 }
 
-.wrap-circle .horizontal-list .wrap-horizontal-list-item .horizontal-list-item {
+/*.wrap-circle .horizontal-list .wrap-horizontal-list-item .horizontal-list-item {
     border: none;
     box-shadow: none;
 }
 
-.row-circle-friend-wrap{
-    overflow:auto; padding:15px;
+.row-circle-friend-wrap {
+    overflow: auto;
+    padding: 15px;
 }
-.col-circle-friend-wrap{
-    display:contents;
+
+.col-circle-friend-wrap {
+    display: contents;
+}*/
+
+.col-circle-user-list {
+    min-width: 240px;
+    max-width: 240px;
+    overflow: auto;
+    border: 1px solid rgba(0, 0, 0, 0.125);
 }
+
+    .col-circle-user-list .card-header {
+        padding: 0px;
+        border-bottom: none;
+        cursor: pointer;
+    }
+
+    .col-circle-user-list .header-circle-user-search {
+        padding: 5px;
+    }
+
+    .col-circle-user-list .card {
+        border: none;
+        margin-top: 1px;
+    }
+
+    .col-circle-user-list .circle-user-list-group {
+        font-size: 14px;
+        line-height: 28px;
+    }
+
+        .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-msg {
+            min-width: 30px;
+            padding: 0px;
+        }
+
+            .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-msg .circle-user-list-item-msg {
+                border-radius: 50%;
+                border: none;
+                background-color: rgb(234,84,21);
+                width: 20px;
+                height: 20px;
+                color: white;
+                line-height: 19px;
+                text-align: center;
+                font-size: 10px;
+                font-weight: bold;
+                margin-top: 8px;
+            }
+
+        .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-hearder {
+            min-width: 40px;
+            padding: 2px 5px;
+        }
+
+            .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-hearder .circle-user-list-item-hearder {
+                border-radius: 50%;
+                border: solid 2px rgb(17,138,195);
+                box-shadow: 1px 1px 5px rgb(142,142,142);
+            }
+
+        .col-circle-user-list .circle-user-list-group .row-circle-user-list-item {
+            cursor: pointer;
+        }
+
+            .col-circle-user-list .circle-user-list-group .row-circle-user-list-item:hover {
+                background-color: rgba(0,0,0,0.2);
+            }
+
+            .col-circle-user-list .circle-user-list-group .row-circle-user-list-item .col {
+                line-height: 33px;
+            }
+
+.col-circle-message-list {
+    max-width: calc(100% - 240px);
+}
+
+    .col-circle-message-list .card {
+        border-left: none;
+        border-radius: 0px;
+        height: 100%;
+    }
+
+    .col-circle-message-list .card-header {
+        padding: 1px 15px;
+    }
+
+        .col-circle-message-list .card-header .card-header-tabs {
+            margin-bottom: -1px;
+        }
+
+            .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link {
+                padding: 4px 10px;
+                font-size: 12px;
+            }
+
+                .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link img {
+                    height: 26px;
+                    margin-right: 3px;
+                    border-radius: 50%;
+                    border: solid 2px rgb(17,138,195);
+                    box-shadow: 1px 1px 5px rgb(142,142,142);
+                }
+
+
+    .col-circle-message-list .circle-input-drag {
+        height: 5px;
+        width: 100%;
+        background-color: transparent;
+        border-top: 2px solid rgb(203,204,203);
+        cursor: n-resize;
+    }
+
+    .col-circle-message-list .circle-input-drag-proxy {
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        background-color: rgb(203,204,203);
+        display: none;
+        visibility: hidden;
+        cursor: n-resize;
+        left: 5px;
+        z-index: 9999;
+    }
+
+    .col-circle-message-list .row-circle-message-input-type {
+        height: 25px;
+    }
+
+        .col-circle-message-list .row-circle-message-input-type .circle-message-input-type {
+            cursor: pointer;
+        }
+
+            .col-circle-message-list .row-circle-message-input-type .circle-message-input-type:hover {
+                border: 1px solid rgba(0,0,0,0.3);
+                border-radius: 5px;
+            }
+
+    .col-circle-message-list .row-circle-message-input-field {
+        height: calc(100% - 60px);
+    }
+
+        .col-circle-message-list .row-circle-message-input-field .circle-message-input-field {
+            outline: none;
+        }
+
+    .col-circle-message-list .row-circle-message-input-button {
+        padding-top: 3px;
+        font-size: 12px;
+    }
+
+        .col-circle-message-list .row-circle-message-input-button .circle-message-input-send {
+            padding: 2px 5px;
+        }
+
+    .col-circle-message-list .col-circle-message-history {
+        padding-top: 5px;
+        background-color: rgba(0,0,0,0.1);
+        overflow: auto;
+    }
+
+    .col-circle-message-list .row-message-item {
+        padding-bottom: 5px;
+        min-height: 40px;
+    }
+
+        .col-circle-message-list .row-message-item img {
+            max-width: 30px;
+            border-radius: 50%;
+            border: solid 2px rgb(17,138,195);
+            box-shadow: 1px 1px 5px rgb(142,142,142);
+        }
+
+        .col-circle-message-list .row-message-item .message-item-wrap {
+            font-size: 14px;
+        }
+
+
+
+            .col-circle-message-list .row-message-item .message-item-wrap.msg-item-wrap-right {
+                position: relative;
+                right: 0px;
+            }
+
+                .col-circle-message-list .row-message-item .message-item-wrap.msg-item-wrap-right .message-item-content {
+                    right: -10px;
+                    max-width: 100%;
+                    position: relative;
+                    margin-left: auto;
+                    background-color: rgb(159, 203, 67);
+                }
+
+            .col-circle-message-list .row-message-item .message-item-wrap .arrow-back {
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px;
+                height: 0px;
+                width: 0px;
+                position: absolute;
+                top: 6px;
+            }
+
+                .col-circle-message-list .row-message-item .message-item-wrap .arrow-back.arrow-left {
+                    border-color: transparent rgba(0,0,0,0.5) transparent transparent;
+                }
+
+                .col-circle-message-list .row-message-item .message-item-wrap .arrow-back.arrow-right {
+                    /*right: 0px;*/
+                    right: -20px;
+                    border-color: transparent transparent transparent rgba(0,0,0,0.5);
+                }
+
+            .col-circle-message-list .row-message-item .message-item-wrap .arrow-front {
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px;
+                height: 0px;
+                width: 0px;
+                position: absolute;
+                margin-left: 1px;
+                top: 6px;
+            }
+
+                .col-circle-message-list .row-message-item .message-item-wrap .arrow-front.arrow-left {
+                    border-color: transparent rgb(255,255,255) transparent transparent;
+                }
+
+                .col-circle-message-list .row-message-item .message-item-wrap .arrow-front.arrow-right {
+                    /*right: 1px;*/
+                    right: -19px;
+                    border-color: transparent transparent transparent rgb(159, 203, 67);
+                }
+
+            .col-circle-message-list .row-message-item .message-item-wrap .message-item-content {
+                border: rgba(0,0,0,0.3) 1px solid;
+                margin-left: 10px;
+                border-radius: 3px;
+                background-color: rgb(255,255,255);
+                text-align: left;
+                width: max-content;
+                padding: 5px 10px;
+                max-width: 100%;
+            }
+
+
+            .popover{
+                max-width:unset;
+            }
+            .popover-content{
+                padding:0px;
+                  
+            }

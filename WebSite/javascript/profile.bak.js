@@ -36,17 +36,17 @@ var _gCitys = [
     { p: '澳门', pt: '特区', c: [] },
     { p: '台湾', c: [] }
 ];
-var _gCurrCateId = 'courses';
+var _gCurrCateId = 'circle';
 var _gCurrCateObj = null;
 var _gCategory = [
-    { id: 'courses', icon: 'fa-chess', text: '课程', atta: '' },
-    { id: 'experiment', icon: 'fa-flask', text: '实验', atta: 'bool' },
-    { id: 'circle', icon: 'fa-user-friends', text: '圈子', atta: 'number' },
-    { id: 'report', icon: 'fa-chart-line', text: '报表', atta: '' },
-    { id: 'settings', icon: 'fa-user-cog', text: '设定', atta: '' },
-    { id: 'studio', icon: 'fa-helicopter', text: 'App Studio', atta: '' },
-    { id: 'appshop', icon: 'fa-cart-plus', text: 'App Shop', atta: '' },
-    { id: 'teamsuit', icon: 'fa-users', text: 'Team Suit', atta: '' }
+    { id: 'courses', icon: 'fa-chess', text: '课程' },
+    { id: 'experiment', icon: 'fa-flask', text: '实验', attr: ['new'] },
+    { id: 'circle', icon: 'fa-user-friends', text: '圈子', attr: ['msg', 'user'], attrIcon: ['envelope', 'user'] },
+    { id: 'report', icon: 'fa-chart-line', text: '报表' },
+    { id: 'settings', icon: 'fa-user-cog', text: '设定' },
+    { id: 'studio', icon: 'fa-helicopter', text: 'App Studio' },
+    { id: 'appshop', icon: 'fa-cart-plus', text: 'App Shop' },
+    { id: 'teamsuit', icon: 'fa-users', text: 'Team Suit' }
 ];
 var _gCourseTypeMap = {
     js: { icon: 'js-square', title: 'Java Script' },
@@ -69,9 +69,10 @@ function initPage() {
     globalResize();
     showLoadingMask();
     buildCategorys();
-    buildCategoryContent();
+    buildCategoryContent('circle');
     initEvents();
     initData();
+    //initEvents_Circle();
 };
 
 function initEvents() {
@@ -119,22 +120,23 @@ function buildCategorys() {
     var tmpHTMLArr = [];
     var activeCls = '';
     for (var i = 0; i < _gCategory.length; i++) {
-        activeCls = (i == 0 ? 'active-item' : '');
+        if (_gCategory[i].id == _gCurrCateId) {
+            _gCurrCateObj = _gCategory[i];
+            activeCls = 'active-item';
+        } else {
+            activeCls = '';
+        }
+        //activeCls = (i == 0 ? 'active-item' : '');
         tmpHTMLArr.push('<div class="row justify-content-start align-items-center row-category-item ' + activeCls + '" data-target="' + _gCategory[i].id + '">');
         tmpHTMLArr.push('   <div class="col-3 text-center">');
         tmpHTMLArr.push('      <i class="fas ' + _gCategory[i].icon + ' category-item-icon" aria-hidden="true"></i>');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('   <div class="col-9 text-left">');
         tmpHTMLArr.push(_gCategory[i].text);
-        if (_gCategory[i].atta != '') {
-            tmpHTMLArr.push('       <div class="category-item-attr ' + _gCategory[i].id + '-attr">New</div>');
-        }
 
+        tmpHTMLArr.push(buildCategoryAttr(_gCategory[i]));
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('</div>');
-        if (_gCategory[i].id == _gCurrCateId) {
-            _gCurrCateObj = _gCategory[i];
-        }
     }
 
     $('.wrap-siderbar').append($(tmpHTMLArr.join('')));
@@ -144,6 +146,26 @@ function buildCategorys() {
         currItem.addClass('active-item');
         buildCategoryContent(currItem.attr('data-target'));
     });
+};
+
+function buildCategoryAttr(cateObj) {
+    var tmpHTMLArr = [];
+    if (cateObj.attr) {
+        tmpHTMLArr.push('<div class="category-item-attr ' + cateObj.id + '-attr">');
+        tmpHTMLArr.push('   <i class="fas fa-bell category-item-attr-icon" aria-hidden="true"></i>');
+        tmpHTMLArr.push('</div>');
+        //for (var j = 0; j < cateObj.attr.length; j++) {
+        //    tmpHTMLArr.push('<div class="category-item-attr ' + cateObj.id + '-attr-' + cateObj.attr[j] + '">');
+        //    if (cateObj.attrIcon) {
+        //        tmpHTMLArr.push('   <i class="fas fa-' + cateObj.attrIcon[j] + ' category-item-attr-icon" aria-hidden="true"></i>');
+        //    }
+
+        //    tmpHTMLArr.push('   <span class="category-item-attr-text"></span>');
+        //    tmpHTMLArr.push('</div>');
+        //}
+    }
+
+    return tmpHTMLArr.join('');
 };
 
 function getCurrentCategoryObj(categoryId) {
@@ -174,6 +196,7 @@ function buildCategoryContent(categoryId) {
             break;
         case 'circle':
             buildContent_Circle();
+            initEvents_Circle();
             break;
         case 'report':
             buildContent_Report();
@@ -472,7 +495,7 @@ function showExperimentAttachs(attachs) {
     $('#modal_Experiment_Attachs').modal('show');
 };
 
-function buildContent_Circle() {
+function buildContent_Circle_1() {
     var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
     var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
 
@@ -486,8 +509,8 @@ function buildContent_Circle() {
     }
 
     var dataUser = [];
-    for (var i = 0; i < 50; i++) {
-        var tmpIdx = randomInt(0, 49);
+    for (var i = 0; i < 150; i++) {
+        var tmpIdx = randomInt(0, 149);
         dataUser.push({
             "userName": names[tmpIdx % 13],
             "header": "image/header/" + (tmpIdx % 10) + ".jpg",
@@ -577,13 +600,13 @@ function buildContent_Circle() {
     tmpHTMLArr.push('       <div class="col">');
     tmpHTMLArr.push('       <table class="w-100"><tr>');
     tmpHTMLArr.push('       <td style="width:10%;">');
-    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:2px solid rgba(0,0,0,0.3);"/>');
+    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:1px solid rgba(0,0,0,0.3);"/>');
     tmpHTMLArr.push('       </td>');
     tmpHTMLArr.push('       <td style="white-space: nowrap;">');
     tmpHTMLArr.push('           <span style="line-height: 30px;">系统及顾问</span>');
     tmpHTMLArr.push('       </td>');
     tmpHTMLArr.push('       <td style="width:85%;">');
-    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:2px solid rgba(0,0,0,0.3);"/>');
+    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:1px solid rgba(0,0,0,0.3);"/>');
     tmpHTMLArr.push('       </td>');
     tmpHTMLArr.push('       </tr></table>');
     tmpHTMLArr.push('       </div>');
@@ -636,13 +659,13 @@ function buildContent_Circle() {
     tmpHTMLArr.push('       <div class="col">');
     tmpHTMLArr.push('       <table class="w-100"><tr>');
     tmpHTMLArr.push('       <td style="width:10%;">');
-    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:2px solid rgba(0,0,0,0.3);"/>');
+    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:1px solid rgba(0,0,0,0.3);"/>');
     tmpHTMLArr.push('       </td>');
     tmpHTMLArr.push('       <td style="white-space: nowrap;">');
     tmpHTMLArr.push('           <span style="line-height: 30px;">我的小伙伴</span>');
     tmpHTMLArr.push('       </td>');
     tmpHTMLArr.push('       <td style="width:85%;">');
-    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:2px solid rgba(0,0,0,0.3);"/>');
+    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:1px solid rgba(0,0,0,0.3);"/>');
     tmpHTMLArr.push('       </td>');
     tmpHTMLArr.push('       </tr></table>');
     tmpHTMLArr.push('       </div>');
@@ -688,9 +711,441 @@ function buildContent_Circle() {
     $('.col-circle-friend-wrap').append($(itemsHTML.join('')));
 };
 
+function buildContent_Circle() {
+    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
+    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
 
+    var dataSystem = [];
+    for (var i = 0; i < 10; i++) {
+        dataSystem.push({
+            "userName": names[i % 13],
+            "header": "image/header/" + (i % 10) + ".jpg",
+            "userId": i
+        });
+    }
 
+    var dataUser = [];
+    for (var i = 0; i < 30; i++) {
+        var tmpIdx = randomInt(0, 29);
+        dataUser.push({
+            "userName": names[tmpIdx % 13],
+            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
+            "userId": i
+        });
+    }
 
+    var dataNew = [];
+    for (var i = 0; i < 5; i++) {
+        dataNew.push({
+            "userName": names[i],
+            "header": "image/header/" + i + ".jpg",
+            "userId": i
+        });
+    }
+
+    var dataSearch = { value: [] };
+    for (var i = 0; i < 12; i++) {
+        dataSearch.value.push({
+            "userName": names[i],
+            "shortAccount": shortAccount[i],
+            "userId": i
+        });
+    }
+
+    var defaultOptions = {
+        url: null,                      //请求数据的 URL 地址
+        jsonp: null,                  //设置此参数名，将开启jsonp功能，否则使用json数据结构
+        data: dataSearch,                              //提示所用的数据，注意格式
+        indexId: 0,                     //每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
+        indexKey: 0,                    //每组数据的第几个数据，作为input输入框的内容
+        idField: 'userId',                    //每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
+        keyField: 'userName',                   //每组数据的哪个字段作为输入框内容，优先级高于 indexKey 设置（推荐）
+
+        /* 搜索相关 */
+        autoSelect: true,               //键盘向上/下方向键时，是否自动选择值
+        allowNoKeyword: true,           //是否允许无关键字时请求数据
+        getDataMethod: 'data',    //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
+        delayUntilKeyup: false,         //获取数据的方式 为 firstByUrl 时，是否延迟到有输入时才请求数据
+        ignorecase: true,              //前端搜索匹配时，是否忽略大小写
+        effectiveFields: [],            //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
+        effectiveFieldsAlias: { userName: "姓名" },       //有效字段的别名对象，用于 header 的显示
+        searchFields: [],               //有效搜索字段，从前端搜索过滤数据时使用，但不一定显示在列表中。effectiveFields 配置字段也会用于搜索过滤
+        clearable: true,
+
+        multiWord: false,               //以分隔符号分割的多关键字支持
+        separator: ',',                 //多关键字支持时的分隔符，默认为半角逗号
+
+        /* UI */
+        autoDropup: false,              //选择菜单是否自动判断向上展开。设为 true，则当下拉菜单高度超过窗体，且向上方向不会被窗体覆盖，则选择菜单向上弹出
+        autoMinWidth: false,            //是否自动最小宽度，设为 false 则最小宽度不小于输入框宽度
+        showHeader: false,              //是否显示选择列表的 header。为 true 时，有效字段大于一列则显示表头
+        showBtn: true,                  //是否显示下拉按钮
+        inputBgColor: '',               //输入框背景色，当与容器背景色不同时，可能需要该项的配置
+        inputWarnColor: 'rgba(255,0,0,.1)', //输入框内容不是下拉列表选择时的警告色
+        listStyle: {
+            'padding-top': 0,
+            'max-height': '375px',
+            'max-width': '800px',
+            'overflow': 'auto',
+            'width': 'auto',
+            'transition': '0.3s',
+            '-webkit-transition': '0.3s',
+            '-moz-transition': '0.3s',
+            '-o-transition': '0.3s',
+            'font-size': '12px'
+        },                              //列表的样式控制
+        listAlign: 'left',              //提示列表对齐位置，left/right/auto
+        listHoverStyle: 'background: #07d; color:#fff', //提示框列表鼠标悬浮的样式
+        listHoverCSS: 'jhover',         //提示框列表鼠标悬浮的样式名称
+
+        /* methods */
+        //fnProcessData: null,     //processData 格式化数据的方法，返回数据格式参考 data 参数
+        //fnGetData: null,             //getData获取数据的方法，无特殊需求一般不作设置
+        //fnAdjustAjaxParam: null,        //调整 ajax 请求参数方法，用于更多的请求配置需求。如对请求关键字作进一步处理、修改超时时间等
+        //fnPreprocessKeyword: null       //搜索过滤数据前，对输入关键字作进一步处理方法。注意，应返回字符串
+    };
+
+    var groups = [
+    { id: 'System', title: '助手和顾问', items: dataSystem },
+    { id: 'Friend', title: '我的小伙伴', items: dataUser },
+    { id: 'Guest', title: '新朋友', items: dataNew }
+    ];
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid h-100 no-wrap">');
+    tmpHTMLArr.push('   <div class="row h-100 no-wrap">');
+    tmpHTMLArr.push('       <div class="col h-100 no-wrap col-circle-user-list">');
+    tmpHTMLArr.push('           <div id="accordion">');
+    tmpHTMLArr.push('               <div class="card">');
+    tmpHTMLArr.push('                   <div class="card-header header-circle-user-search">');
+    tmpHTMLArr.push('                       <div class="input-group w-100 wrap-circle-search">');
+    tmpHTMLArr.push('                           <!--<i class="clearable glyphicon glyphicon-remove" style="position: absolute; top: 12px; right: 12px; z-index: 4; cursor: pointer; font-size: 12px; display: none;"></i>-->');
+    tmpHTMLArr.push('                           <input type="text" class="form-control form-control-sm" id="search_Circle" style="border-radius:5px; border-color:rgb(17,138,195);" autocomplete="off" placeholder="Search" data-id="" alt="a">');
+    tmpHTMLArr.push('                           <div class="input-group-btn">');
+    tmpHTMLArr.push('                               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="" style="display: none;">');
+    tmpHTMLArr.push('                                   <span class="caret"></span>');
+    tmpHTMLArr.push('                               </button>');
+    tmpHTMLArr.push('                               <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>');
+    tmpHTMLArr.push('                           </div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    for (var i = 0; i < groups.length; i++) {
+        tmpHTMLArr.push('               <div class="card">');
+        tmpHTMLArr.push('                   <div class="card-header" id="heading_Circle_' + groups[i].id + '">');
+        tmpHTMLArr.push('                       <div class="btn-primary btn-sm collapsed" data-toggle="collapse" data-target="#collapse_Circle_' + groups[i].id + '" aria-expanded="false" aria-controls="collapse_Circle_' + groups[i].id + '">');
+        tmpHTMLArr.push(groups[i].title);
+        tmpHTMLArr.push('                       </div>');
+        tmpHTMLArr.push('                   </div>');
+        tmpHTMLArr.push('                   <div id="collapse_Circle_' + groups[i].id + '" class="collapse" aria-labelledby="heading_Circle_' + groups[i].id + '" data-parent="#accordion">');
+        tmpHTMLArr.push('                       <div class="card-body circle-user-list-group">');
+        tmpHTMLArr.push('                           <div class="container-fluid">');
+        for (var j = 0; j < groups[i].items.length; j++) {
+            tmpHTMLArr.push('                               <div class="row row-circle-user-list-item" data-target="' + groups[i].id + '|' + groups[i].items[j].userId + '">');
+            tmpHTMLArr.push('                                   <div class="col-1 col-circle-user-list-item-hearder">');
+            tmpHTMLArr.push('                                       <img class="img-fluid circle-user-list-item-hearder" src="' + groups[i].items[j].header + '">');
+            tmpHTMLArr.push('                                   </div>');
+            tmpHTMLArr.push('                                   <div class="col">');
+            tmpHTMLArr.push(groups[i].items[j].userName);
+            tmpHTMLArr.push('                                   </div>');
+            tmpHTMLArr.push('                                   <div class="col-1 col-circle-user-list-item-msg">');
+            tmpHTMLArr.push('                                       <div class="circle-user-list-item-msg">');
+            tmpHTMLArr.push('22');
+            tmpHTMLArr.push('                                       </div>');
+            tmpHTMLArr.push('                                   </div>');
+            tmpHTMLArr.push('                               </div>');
+        }
+
+        tmpHTMLArr.push('                           </div>');
+        tmpHTMLArr.push('                       </div>');
+        tmpHTMLArr.push('                   </div>');
+        tmpHTMLArr.push('               </div>');
+    }
+
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('       <div class="col h-100 no-wrap col-circle-message-list">');
+    tmpHTMLArr.push('           <div class="card text-center">');
+    tmpHTMLArr.push('               <div class="card-header">');
+    tmpHTMLArr.push('                   <ul class="nav nav-tabs card-header-tabs container-circle-message-list-user-header"></ul>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('               <div class="card-body h-100" style="padding:5px;">');
+    tmpHTMLArr.push('                   <div class="container-fluid h-100 wrap-circle-message">');
+    tmpHTMLArr.push('                       <div class="row">');
+    tmpHTMLArr.push('                           <div class="col col-circle-message-history">');
+    tmpHTMLArr.push('                               <div class="container-fluid h-100 container-circle-message-history"></div>');
+    tmpHTMLArr.push('                           </div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                       <div class="row">');
+    tmpHTMLArr.push('                           <div class="col" style="padding: 0px;"><div class="circle-input-drag"></div></div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                       <div class="row">');
+    tmpHTMLArr.push('                           <div class="col col-circle-message-input">');
+    tmpHTMLArr.push('                               <div class="container-fluid h-100">');
+    tmpHTMLArr.push('                                   <div class="row row-circle-message-input-type">');
+    tmpHTMLArr.push('                                       <div class="col-1">');
+    tmpHTMLArr.push('                                           <div class="circle-message-input-type input-type-emoji" data-placement="top" data-toggle="popover" title="" data-content="">');
+    tmpHTMLArr.push('                                               <i class="far fa-smile"></i>');
+    tmpHTMLArr.push('                                           </div>');
+    tmpHTMLArr.push('                                       </div>');
+    tmpHTMLArr.push('                                       <div class="col-1"><div class="circle-message-input-type input-type-file"><i class="far fa-folder-open"></i></div></div>');
+    tmpHTMLArr.push('                                       <div class="col-1"><div class="circle-message-input-type input-type-history"><i class="far fa-comments"></i></div></div>');
+    tmpHTMLArr.push('                                   </div>');
+    tmpHTMLArr.push('                                   <div class="row row-circle-message-input-field">');
+    tmpHTMLArr.push('                                       <div class="col h-100 text-left circle-message-input-field" contenteditable="true"></div>');
+    tmpHTMLArr.push('                                   </div>');
+    tmpHTMLArr.push('                                   <div class="row row-circle-message-input-button">');
+    tmpHTMLArr.push('                                       <div class="col"></div>');
+    tmpHTMLArr.push('                                       <div class="col-2">');
+    tmpHTMLArr.push('                                           <button type="button" class="btn btn-outline-primary btn-sm circle-message-input-send">');
+    tmpHTMLArr.push('                                               <span>发送</span><i class="far fa-envelope"></i>');
+    tmpHTMLArr.push('                                           </button>');
+    tmpHTMLArr.push('                                       </div>');
+    tmpHTMLArr.push('                                   </div>');
+    tmpHTMLArr.push('                               </div>');
+    tmpHTMLArr.push('                           </div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="circle-input-drag-proxy"></div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+
+    $('.col-main-content').append($(tmpHTMLArr.join('')));
+    //resize message input row and history row height
+    var tmpObj = calcCircleMessageHeight(-1);
+    $(".col-circle-message-input").height(tmpObj.input);
+    $(".col-circle-message-history").height(tmpObj.history);
+    //init search suggest
+    $('#search_Circle').bsSuggest(defaultOptions);
+    //init events
+    $('.row-circle-user-list-item').on('click', function (eventObj) {
+        alert($(eventObj.currentTarget).attr('data-target'));
+    });
+    //load messages
+    loadCircleMessageHistory();
+};
+
+function buildCircleEmojiPopover() {
+    var emoji = [];
+    for (var i = 0; i < 20; i++) {
+        emoji.push("image/header/" + (i % 10) + ".jpg");
+    }
+
+    var popoverHTML = [];
+
+    popoverHTML.push('<div class="container-fluid aaaaa" style="width:300px; ">');
+    popoverHTML.push('  <div class="row">');
+    popoverHTML.push('      <div class="col" style="padding:10px 10px 5px 10px; overflow:auto;height:200px;">');
+    popoverHTML.push('          <div class="container-fluid" style=" border-radius:5px;">');
+    popoverHTML.push('              <div class="row">');
+    popoverHTML.push('                  <div class="col" style="padding:0px;">');
+    for (var i = 0; i < 20; i++) {
+        popoverHTML.push('<img class="img-fluid" src="' + emoji[i] + '" style="width:30px;cursor:pointer;margin-bottom:5px;">');
+    }
+
+    popoverHTML.push('                  </div>');
+    popoverHTML.push('              </div>');
+    popoverHTML.push('          </div>');
+    popoverHTML.push('      </div>');
+    popoverHTML.push('  </div>');
+    popoverHTML.push('  <div class="row" style="height:30px;">');
+    popoverHTML.push('      <div class="col" style="width: calc(100% - 70px);">');
+    popoverHTML.push('          <div>');
+    popoverHTML.push('              <img class="img-fluid " src="image/header/1.jpg" style="width:25px;">');
+    popoverHTML.push('          </div>');
+    popoverHTML.push('      </div>');
+    popoverHTML.push('      <div class="col" style="max-width: 70px;    padding: 2px">');
+    popoverHTML.push('          <button type="button" class="btn btn-outline-info btn-sm" style="line-height: 17px;">');
+    popoverHTML.push('              <i class="fas fa-chevron-left"></i>');
+    popoverHTML.push('          </button>');
+    popoverHTML.push('          <button type="button" class="btn btn-outline-info btn-sm" style="line-height: 17px;">');
+    popoverHTML.push('              <i class="fas fa-chevron-right"></i>');
+    popoverHTML.push('          </button>');
+    popoverHTML.push('      </div>');
+    popoverHTML.push('  </div>');
+    popoverHTML.push('</div>');
+
+    return popoverHTML.join('');
+}
+
+function loadCircleMessageHistory(userInfo) {
+    var dataMsg = [
+        { type: -1, content: 'Apply a CSS fade transition to the popover' },
+        { type: -1, content: 'Example: container: "body". This option is particularly useful in that it allows you to position the popover in the flow of the document near the triggering element - which will prevent the popover from floating away from the triggering element during a window resize.' },
+        { type: 1, content: 'Default content value if data-content attribute is not present.' },
+        { type: -1, content: 'If a function is given, it will be called with its this reference set to the element that the popover is attached to.' },
+        { type: 1, content: 'Delay showing and hiding the popover (ms) - does not apply to manual trigger type' },
+        { type: 1, content: 'If a number is supplied, delay is applied to both hide/show Object structure is: delay: { "show": 500, "hide": 100 }' },
+        { type: -1, content: 'Insert HTML into the popover. If false, jQuerys text method will be used to insert content into the DOM. Use text if you are worried about XSS attacks.' },
+        { type: 1, content: 'How to position the popover - auto | top | bottom | left | right. When auto is specified, it will dynamically reorient the popover.' },
+        { type: -1, content: 'Base HTML to use when creating the popover. The popover title will be injected into the .popover-header.' },
+        { type: 1, content: '.arrow will become the popovers arrow.' }
+    ];
+
+    var currType = 'system';
+    var currId = '1';
+    if (typeof (userInfo) == 'string' && userInfo.split('|') == 2) {
+        currType = userInfo.split('|')[0];
+        currId = userInfo.split('|')[1];
+    }
+
+    var userObj = getCircleUserObj(currType, currId);
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<li class="nav-item" data-target="system|1">');
+    tmpHTMLArr.push('   <div class="nav-link active container-fluid">');
+    tmpHTMLArr.push('       <img class="img-fluid" src="' + userObj.header + '" />' + userObj.userName);
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</li>');
+    $('.container-circle-message-list-user-header').append($(tmpHTMLArr.join('')));
+    var selfObj = { "userName": 'Terry', "header": "image/tmpheader_1.jpg", "userId": 88 };
+    tmpHTMLArr = [];
+    for (var i = 0; i < dataMsg.length; i++) {
+        tmpHTMLArr.push('<div class="row row-message-item">');
+        if (dataMsg[i].type == -1) {
+            tmpHTMLArr.push('   <div class="col-1">');
+            tmpHTMLArr.push('       <img class="img-fluid" src="' + userObj.header + '" />');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('   <div class="col-9">');
+            tmpHTMLArr.push('       <div class="message-item-wrap">');
+            tmpHTMLArr.push('           <div class="arrow-back arrow-left"></div>');
+            tmpHTMLArr.push('           <div class="arrow-front arrow-left"></div>');
+            tmpHTMLArr.push('           <div class="message-item-content">' + dataMsg[i].content + '</div>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('   </div>');
+        } else {
+            tmpHTMLArr.push('   <div class="col-2"></div>');
+            tmpHTMLArr.push('   <div class="col-9">');
+            tmpHTMLArr.push('       <div class="message-item-wrap msg-item-wrap-right">');
+            tmpHTMLArr.push('           <div class="message-item-content">' + dataMsg[i].content + '</div>');
+            tmpHTMLArr.push('           <div class="arrow-back arrow-right"></div>');
+            tmpHTMLArr.push('           <div class="arrow-front arrow-right"></div>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('   <div class="col-1">');
+            tmpHTMLArr.push('       <img class="img-fluid" src="' + selfObj.header + '" />');
+            tmpHTMLArr.push('   </div>');
+        }
+
+        tmpHTMLArr.push('</div>');
+    }
+
+    $('.container-circle-message-history').append($(tmpHTMLArr.join('')));
+};
+
+function getCircleUserObj(userType, userId) {
+    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
+    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
+
+    var dataSystem = [];
+    for (var i = 0; i < 10; i++) {
+        dataSystem.push({
+            "userName": names[i % 13],
+            "header": "image/header/" + (i % 10) + ".jpg",
+            "userId": i
+        });
+    }
+
+    var dataUser = [];
+    for (var i = 0; i < 30; i++) {
+        var tmpIdx = randomInt(0, 29);
+        dataUser.push({
+            "userName": names[tmpIdx % 13],
+            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
+            "userId": i
+        });
+    }
+
+    var tmpDatas = (userType == 'system' ? dataSystem : dataUser);
+    var tmpObj = null;
+    for (var i = 0; i < tmpDatas.length; i++) {
+        if (tmpDatas[i].userId == userId) {
+            tmpObj = tmpDatas[i];
+            break;
+        }
+    }
+
+    return tmpObj;
+};
+
+function calcCircleMessageHeight(top) {
+    var retObj = null;
+    top = (top == -1 ? $('.row-footer').offset().top - 220 : top);
+    if (checkCircleMsgDragScope(top, true)) {
+        var containerHeight = $(".col-circle-message-list").height() - 40 - 10;
+        var minHeight = containerHeight * 30 / 100;
+        var tmpHeight = $("body").height() - top - 30;
+        tmpHeight = (tmpHeight < minHeight ? minHeight : tmpHeight);
+        retObj = { input: tmpHeight - 5, history: containerHeight - tmpHeight };
+    }
+
+    return retObj;
+};
+
+function checkCircleMsgDragScope(top, chekcSize) {
+    var bodyHeight = $("body").height();
+    var maxTop = $('.wrap-circle-message').offset().top;
+    var maxBottom = $('.row-footer').offset().top;
+    if (chekcSize && top > maxTop + 100 && top <= maxBottom - 220) {
+        return true;
+    } else if (!chekcSize && top > maxTop + 20 && top <= maxBottom - 20) {
+        return true;
+    }
+
+    return false;
+};
+
+function initEvents_Circle() {
+    $(".circle-input-drag").mousedown(function (e) {
+        var drag = $('.circle-input-drag');
+        var dragOff = $('.circle-input-drag').offset();
+        if (e.pageY < dragOff.top + 5 && e.pageY > dragOff.top - 5) {
+            $(document).mouseup(mouseUpFn);
+            $(".circle-input-drag-proxy").css("display", "block");
+            $(".circle-input-drag-proxy").css("visibility", "visible");
+            $(".circle-input-drag-proxy").width(drag.width());
+            $(".circle-input-drag-proxy").css("top", (dragOff.top - 35) + "px");
+            dragFn(e);
+        }
+    });
+
+    var mouseUpFn = function () {
+        $(document).unbind("mousemove");
+        $(document).unbind("mouseup");
+        var dragProxy = $(".circle-input-drag-proxy");
+        if (dragProxy.css("display") != "none") {
+            var tmpObj = calcCircleMessageHeight(dragProxy.offset().top);
+            if (tmpObj != null) {
+                $(".col-circle-message-input").height(tmpObj.input);
+                $(".col-circle-message-history").height(tmpObj.history);
+            }
+
+            $(".circle-input-drag-proxy").css("display", "none");
+            $(".circle-input-drag-proxy").css("visibility", "hidden");
+        }
+    };
+
+    var dragFn = function siderBarDrag(e) {
+        var _circleInputDragStarY = e.pageY;
+        $(document).bind("mousemove", function (ev) {
+            var top = ev.pageY - 35;
+            $(".circle-input-drag-proxy").css("top", top + "px");
+            if (!checkCircleMsgDragScope(top, false)) {
+                mouseUpFn();
+            }
+        });
+    };
+
+    $('.circle-message-input-type.input-type-emoji').popover({
+        html: true,
+        content: buildCircleEmojiPopover()
+    });
+
+    $('.circle-message-input-type').on('click', function () {
+
+    });
+};
 
 
 function buildContent_Report() { };
