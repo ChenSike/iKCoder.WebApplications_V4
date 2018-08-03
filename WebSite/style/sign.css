@@ -53,6 +53,7 @@
     font-size: 24px;
     color: white;
     text-align: center;
+    min-width:130px;
 }
 
 .wrap-input-form .form-group.row.title-field-row .col-form-label {

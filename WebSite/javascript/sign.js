@@ -81,8 +81,8 @@ function initEvents() {
 
     $('#signin_Password_Next_Btn').on('click', function () {
         var successFn = function (response) {
-            var error = ($($(response).find('executed')[0]).text() == 'false' ? true : false);
-            if (error) {
+            var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
+            if (!success) {
                 _showGlobalMessage('无法登录！', 'warning', 'alert_Wrong_SignIn');
             } else {
                 window.location.href = "profile.html";
@@ -131,8 +131,8 @@ function initEvents() {
 
     $('#forget_UserName_Next_Btn').on('click', function () {
         var successFn = function (response) {
-            var error = ($($(response).find('executed')[0]).text() == 'false' ? true : false);
-            if (error) {
+            var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
+            if (!success) {
                 _showGlobalMessage('找回密码失败！', 'warning', 'alert_Wrong_Forget');
             } else {
                 $('#wrap_Forget').fadeOut(500, function () {
@@ -199,8 +199,8 @@ function initEvents() {
         var phone = $('#txt_SignUp_UserName').val().trim();
         if (_checkPhoneNumber(phone)) {
             var successFn = function (response) {
-                var error = ($($(response).find('executed')[0]).text() == 'false' ? false : true);
-                if (error) {
+                var exist = _getExcuted(response);
+                if (exist) {
                     _showGlobalMessage('该手机号码已经被注册！', 'warning', 'alert_Wrong_Phone');
                 } else {
                     $('.signup-username-row').fadeOut(500, function () {
@@ -237,11 +237,11 @@ function initEvents() {
 
     $('#signup_CheckCode_Next_Btn').on('click', function () {
         var successFn = function (response) {
-            var error = ($($(response).find('executed')[0]).text() == 'false' ? true : false);
-            if (!error) {
-                _showGlobalMessage('无法创建用户！', 'warning', 'alert_Wrong_SignUp');
-            } else {
+            var success = _getExcuted(response);
+            if (success) {
                 window.location.href = "profile.html";
+            } else {
+                _showGlobalMessage('无法创建用户！', 'warning', 'alert_Wrong_SignUp');
             }
         };
 

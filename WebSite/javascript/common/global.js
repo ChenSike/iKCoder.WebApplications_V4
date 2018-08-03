@@ -152,38 +152,38 @@ function randomInt(minVal, maxVal) {
 }
 //check sign in state
 function _startCheckState() {
+    return;
     var checkSuccessFn = function (responseData) {
-        if ($(responseData).find('err').length > 0) {
-            _signOut();
-        } else {
-            if ($(responseData).find('msg').length > 0 && $($(responseData).find('msg')[0]).attr('logined_marked') == '1') {
-                _CookieUtils.set("logined_user_name", $($(responseData).find('msg')[0]).attr('logined_user_name'), { path: '/', expires: 0.125 });
-                if (!_CookieUtils.get("logined_user_nickname") || _CookieUtils.get("logined_user_nickname") == '') {
-                    var getNickNameSuccessFn = function (responseData_2) {
-                        if ($(responseData_2).find('err').length > 0) {
-                            _signOut();
-                        } else {
-                            var nickName = '';
-                            var tmpObject = $(responseData_2).find('msg');
-                            for (var i = 0; i < tmpObject.length; i++) {
-                                if ((!$(tmpObject[i]).attr('type') || $(tmpObject[i]).attr('type') != '1') && $(tmpObject[i]).attr('xpath') == '/root/usrbasic/usr_nickname') {
-                                    nickName = $(tmpObject[i]).attr('value');
-                                }
-                            }
-
-                            if (nickName) {
-                                _CookieUtils.set("logined_user_nickname", nickName, { path: '/', expires: 0.125 });
+        var success = ($($(responseData).find('executed')[0]).text() == 'true' ? true : false);
+        if (success) {
+            if (!_CookieUtils.get("logined_user_nickname") || _CookieUtils.get("logined_user_nickname") == '') {
+                var getNickNameSuccessFn = function (responseData_2) {
+                    var success_2 = ($($(responseData_2).find('executed')[0]).text() == 'true' ? true : false);
+                    if (!success_2) {
+                        _signOut();
+                    } else {
+                        var nickName = '';
+                        var tmpObject = $(responseData_2).find('msg');
+                        for (var i = 0; i < tmpObject.length; i++) {
+                            if ((!$(tmpObject[i]).attr('type') || $(tmpObject[i]).attr('type') != '1') && $(tmpObject[i]).attr('xpath') == '/root/usrbasic/usr_nickname') {
+                                nickName = $(tmpObject[i]).attr('value');
                             }
                         }
-                    }
 
-                    ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo), '', getNickNameSuccessFn, _signOut);
+                        if (nickName) {
+                            _CookieUtils.set("logined_user_nickname", nickName, { path: '/', expires: 0.125 });
+                        }
+
+                        window.setTimeout(_startCheckState, 30000);
+                    }
                 }
 
-                window.setTimeout(_startCheckState, 30000);
+                ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo), '', getNickNameSuccessFn, _signOut);
             } else {
-                _signOut();
+                window.setTimeout(_startCheckState, 30000);
             }
+        } else {
+            _signOut();
         }
     };
 
@@ -192,10 +192,10 @@ function _startCheckState() {
 //sign out
 function _signOut() {
     ajaxFn('GET', _getRequestURL(_gURLMapping.account.signout), '', function () {
-        //window.location.href = "http://www.ikcoder.com/signin.html?rnd=" + Date.now();
-        window.location.href = "http://ikcoder.ikcoder.com/ikcoderv4/sign.html?rnd=" + Date.now();
         _CookieUtils.delete('logined_user_name');
         _CookieUtils.delete('logined_user_nickname');
+        //window.location.href = "http://www.ikcoder.com/signin.html?rnd=" + Date.now();
+        window.location.href = "http://ikcoder.ikcoder.com/ikcoderv4/sign.html?rnd=" + Date.now();
     });
 };
 //format ajax request
@@ -223,6 +223,10 @@ function ajaxFn(type, url, data, success, failed, async) {
             errorFn();
         }
     });
+};
+//get excuted result from reponse
+function _getExcuted(response) {
+    return ($($(response).find('executed')[0]).text() == 'true' ? true : false);
 };
 
 function _gEmptyFn() {
@@ -357,6 +361,7 @@ var _CookieUtils = {
         document.cookie = parts.join(";");
     },
     delete: function (name, options) {
+        options = options || {};
         options.expires = new Date(0);// 设置为过去日期
         this.set(name, null, options);
     }
@@ -442,3 +447,11 @@ function listMoveNext() {
         }
     }
 };
+//Get GUID
+function _GUID_S4() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+}
+
+function _GUID() {
+    return (_GUID_S4() + _GUID_S4() + "-" + _GUID_S4() + "-" + _GUID_S4() + "-" + _GUID_S4() + "-" + _GUID_S4() + _GUID_S4() + _GUID_S4());
+}
