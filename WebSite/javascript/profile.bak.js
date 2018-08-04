@@ -3279,6 +3279,7 @@ function webSocketCreate() {
 };
 
 function webSocketSend(msg) {
+    return;
     if (_gSocket.readyState == 1) {
         var tmpMsg = [];
         tmpMsg.push('<root>');
