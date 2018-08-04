@@ -394,6 +394,17 @@ footer {
         padding: 5px;
     }
 
+        .col-circle-user-list .header-circle-user-search .col-header-circle-user-search {
+            padding: 0px 5px 0px 0px;
+            max-width: calc(100% - 35px);
+            min-width: calc(100% - 35px);
+        }
+
+        .col-circle-user-list .header-circle-user-search .col-header-circle-button-search {
+            max-width: 30px;
+            min-width: 30px;
+        }
+
     .col-circle-user-list .card {
         border: none;
         margin-top: 1px;
@@ -478,18 +489,26 @@ footer {
             }
 
                 .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link {
-                    padding: 4px 10px;
+                    padding: 4px 5px;
                     font-size: 12px;
                 }
 
                     .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link img {
                         height: 26px;
-                        margin-right: 3px;
+                        margin-right: 5px;
                         border-radius: 50%;
                         border: solid 2px rgb(17,138,195);
                         box-shadow: 1px 1px 5px rgb(142,142,142);
                     }
 
+                    .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link button {
+                        margin-top: -1px;
+                        margin-left: 5px;
+                    }
+
+                        .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link button:focus {
+                            outline: none;
+                        }
 
     .col-circle-message-list .circle-input-drag {
         height: 5px;

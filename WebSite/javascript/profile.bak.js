@@ -63,13 +63,13 @@ var _gSTEAMMap = {
     a: { icon: 'node-js', title: 'Arts' },
     m: { icon: 'html5', title: 'Mathematics' }
 };
-var _gCircleGroups = [];
-var _gCurrentCircleGroup = null;
+var _gEmojiGroups = [];
+var _gCurrentEmojiGroup = null;
 var _gSocket = null;
 var _gToken = '';
-var orgAvailableHeight = 890;
-var _gUserInfoObj = { "userName": 'Terry', "header": "image/tmpheader_1.jpg", "userId": 88 };
-var _gUserInformation = { header: 'image/tmpheader.jpg', nickName: 'Terry', level: '初级工程师' };
+var _orgAvailableHeight = 890;
+var _gUserInfoObj = { userName: 'Terry', header: "image/tmpheader_1.jpg", userId: 88, nickName: 'Terry', level: '初级工程师' };
+var _gCirleMessages = {};
 
 function initPage() {
     globalResize();
@@ -138,7 +138,7 @@ function initEvents() {
                     ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
                         var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
                         if (success) {
-                            _gUserInformation.header = _gUserHeader = 'image/tmpheader.jpg';
+                            _gUserInfoObj.header = _gUserHeader = 'image/tmpheader.jpg';
                             updateUserInfo();
                         }
                     });
@@ -295,7 +295,7 @@ function buildContent_Courses() {
     var orgImgHeight = 140;
     var orgSpace = 35;
     var availableHeight = $('.col-content').height();
-    var scale = availableHeight / orgAvailableHeight;
+    var scale = availableHeight / _orgAvailableHeight;
 
     var containerHeight = Math.floor(scale * orgContainerHeight);
     var height = Math.floor(scale * orgHeight);
@@ -690,7 +690,7 @@ function buildContent_Circle_1() {
     var orgSpace = 10;
     var orgImgHeight = 50;
     var availableHeight = $('.col-content').height();
-    var scale = availableHeight / orgAvailableHeight;
+    var scale = availableHeight / _orgAvailableHeight;
     var containerheight = Math.floor(scale * orgContainerHeight);
     var height = Math.floor(scale * orgHeight);
     var width = Math.floor(scale * orgWidth);
@@ -785,35 +785,6 @@ function buildContent_Circle_1() {
 function buildContent_Circle() {
     var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
     var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
-
-    var dataSystem = [];
-    for (var i = 0; i < 10; i++) {
-        dataSystem.push({
-            "userName": names[i % 13],
-            "header": "image/header/" + (i % 10) + ".jpg",
-            "userId": i
-        });
-    }
-
-    var dataUser = [];
-    for (var i = 0; i < 30; i++) {
-        var tmpIdx = randomInt(0, 29);
-        dataUser.push({
-            "userName": names[tmpIdx % 13],
-            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
-            "userId": i
-        });
-    }
-
-    var dataNew = [];
-    for (var i = 0; i < 5; i++) {
-        dataNew.push({
-            "userName": names[i],
-            "header": "image/header/" + i + ".jpg",
-            "userId": i
-        });
-    }
-
     var dataSearch = { value: [] };
     for (var i = 0; i < 12; i++) {
         dataSearch.value.push({
@@ -875,38 +846,101 @@ function buildContent_Circle() {
         //fnAdjustAjaxParam: null,        //调整 ajax 请求参数方法，用于更多的请求配置需求。如对请求关键字作进一步处理、修改超时时间等
         //fnPreprocessKeyword: null       //搜索过滤数据前，对输入关键字作进一步处理方法。注意，应返回字符串
     };
-
-    var groups = [
-    { id: 'system', title: '助手和顾问', items: dataSystem },
-    { id: 'friend', title: '我的小伙伴', items: dataUser },
-    { id: 'guest', title: '新朋友', items: dataNew }
-    ];
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid h-100 no-wrap">');
     tmpHTMLArr.push('   <div class="row h-100 no-wrap">');
     tmpHTMLArr.push('       <div class="col h-100 no-wrap col-circle-user-list">');
-    tmpHTMLArr.push('           <div id="accordion">');
-    tmpHTMLArr.push('               <div class="card">');
-    tmpHTMLArr.push('                   <div class="card-header header-circle-user-search">');
-    tmpHTMLArr.push('                       <form>');
-    tmpHTMLArr.push('                           <div class="form-group row" style="margin-bottom: 0px;">');
-    tmpHTMLArr.push('                               <div class="col" style="padding-right: 5px;">');
-    tmpHTMLArr.push('                                   <div class="input-group w-100 wrap-circle-search">');
-    tmpHTMLArr.push('                                       <!--<i class="clearable glyphicon glyphicon-remove" style="position: absolute; top: 12px; right: 12px; z-index: 4; cursor: pointer; font-size: 12px; display: none;"></i>-->');
-    tmpHTMLArr.push('                                       <input type="text" class="form-control form-control-sm" id="search_Circle" style="border-radius:5px; border-color:rgb(17,138,195);" autocomplete="off" placeholder="Search" data-id="" alt="a">');
-    tmpHTMLArr.push('                                       <div class="input-group-btn">');
-    tmpHTMLArr.push('                                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="" style="display: none;"><span class="caret"></span></button>');
-    tmpHTMLArr.push('                                           <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>');
-    tmpHTMLArr.push('                                       </div>');
-    tmpHTMLArr.push('                                   </div>');
-    tmpHTMLArr.push('                               </div>');
-    tmpHTMLArr.push('                               <div class="col no-padding" style="max-width:45px; min-width:45px;">');
-    tmpHTMLArr.push('                                   <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modalFindFriend"><i class="fas fa-plus"></i></button>');
-    tmpHTMLArr.push('                               </div>');
-    tmpHTMLArr.push('                           </div>');
-    tmpHTMLArr.push('                       </form>');
+    tmpHTMLArr.push('           <div class="container-fluid h-100 no-wrap">');
+    tmpHTMLArr.push('               <div class="row no-wrap">');
+    tmpHTMLArr.push('                   <div class="col no-wrap">');
+    circleBuildSearchPart(tmpHTMLArr);
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('               <div class="row no-wrap" style="height: calc(100% - 42px);">');
+    tmpHTMLArr.push('                   <div class="col no-wrap" style="overflow: auto;">');
+    tmpHTMLArr.push('                       <div id="accordion">');
+    circleBuildFriendPart(tmpHTMLArr);
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('       <div class="col h-100 no-wrap col-circle-message-list">');
+    circleBuildMessagePart(tmpHTMLArr)
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+
+    $('.col-main-content').append($(tmpHTMLArr.join('')));
+    //resize message input row and history row height
+    var tmpObj = circleCalcMessageHeight(-1);
+    $(".col-circle-message-input").height(tmpObj.input);
+    $(".col-circle-message-history").height(tmpObj.history);
+    //init search suggest
+    $('#search_Circle').bsSuggest(defaultOptions);
+    //load messages
+    circleLoadMessageHistory();
+    //init events
+    initEvents_Circle();
+};
+
+function circleBuildSearchPart(tmpHTMLArr) {
+    tmpHTMLArr.push('<form  class="header-circle-user-search">');
+    tmpHTMLArr.push('   <div class="form-group row no-margin">');
+    tmpHTMLArr.push('       <div class="col col-header-circle-user-search">');
+    tmpHTMLArr.push('           <div class="input-group w-100 wrap-circle-search">');
+    tmpHTMLArr.push('               <input type="text" class="form-control form-control-sm" id="search_Circle" style="border-radius:5px; border-color:rgb(17,138,195);" autocomplete="off" placeholder="Search" data-id="" alt="a"/>');
+    tmpHTMLArr.push('               <div class="input-group-btn">');
+    tmpHTMLArr.push('                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="" style="display: none;"><span class="caret"></span></button>');
+    tmpHTMLArr.push('                   <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('       <div class="col no-padding col-header-circle-button-search">');
+    tmpHTMLArr.push('           <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modalFindFriend"><i class="fas fa-plus"></i></button>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</form>');
+};
+
+function circleBuildFriendPart(tmpHTMLArr) {
+    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
+    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
+
+    var dataSystem = [];
+    for (var i = 0; i < 10; i++) {
+        dataSystem.push({
+            "userName": names[i % 13],
+            "header": "image/header/" + (i % 10) + ".jpg",
+            "userId": i
+        });
+    }
+
+    var dataUser = [];
+    for (var i = 0; i < 30; i++) {
+        var tmpIdx = randomInt(0, 29);
+        dataUser.push({
+            "userName": names[tmpIdx % 13],
+            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
+            "userId": i
+        });
+    }
+
+    var dataNew = [];
+    for (var i = 0; i < 5; i++) {
+        dataNew.push({
+            "userName": names[i],
+            "header": "image/header/" + i + ".jpg",
+            "userId": i
+        });
+    }
+
+    var groups = [
+        { id: 'system', title: '助手和顾问', items: dataSystem },
+        { id: 'friend', title: '我的小伙伴', items: dataUser },
+        { id: 'guest', title: '新朋友', items: dataNew }
+    ];
+
     for (var i = 0; i < groups.length; i++) {
         tmpHTMLArr.push('               <div class="card">');
         tmpHTMLArr.push('                   <div class="card-header" id="heading_Circle_' + groups[i].id + '">');
@@ -938,76 +972,60 @@ function buildContent_Circle() {
         tmpHTMLArr.push('                   </div>');
         tmpHTMLArr.push('               </div>');
     }
+};
 
-    tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('       <div class="col h-100 no-wrap col-circle-message-list">');
-    tmpHTMLArr.push('           <div class="card text-center">');
-    tmpHTMLArr.push('               <div class="card-header">');
+function circleBuildMessagePart(tmpHTMLArr) {
+    tmpHTMLArr.push('<div class="card text-center">');
+    tmpHTMLArr.push('   <div class="card-header">');
     //tmpHTMLArr.push('                   <div class="wrap-circle-message-history-header">');
-    tmpHTMLArr.push('                       <ul class="nav nav-tabs card-header-tabs container-circle-message-list-user-header"></ul>');
+    tmpHTMLArr.push('       <ul class="nav nav-tabs card-header-tabs container-circle-message-list-user-header"></ul>');
     //tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="card-body">');
+    tmpHTMLArr.push('       <div class="container-fluid h-100 wrap-circle-message">');
+    tmpHTMLArr.push('           <div class="row">');
+    tmpHTMLArr.push('               <div class="col col-circle-message-history">');
+    tmpHTMLArr.push('                   <div class="container-fluid container-circle-message-history"></div>');
     tmpHTMLArr.push('               </div>');
-    tmpHTMLArr.push('               <div class="card-body">');
-    tmpHTMLArr.push('                   <div class="container-fluid h-100 wrap-circle-message">');
-    tmpHTMLArr.push('                       <div class="row">');
-    tmpHTMLArr.push('                           <div class="col col-circle-message-history">');
-    tmpHTMLArr.push('                               <div class="container-fluid container-circle-message-history"></div>');
-    tmpHTMLArr.push('                           </div>');
-    tmpHTMLArr.push('                       </div>');
-    tmpHTMLArr.push('                       <div class="row">');
-    tmpHTMLArr.push('                           <div class="col no-padding"><div class="circle-input-drag"></div></div>');
-    tmpHTMLArr.push('                       </div>');
-    tmpHTMLArr.push('                       <div class="row">');
-    tmpHTMLArr.push('                           <div class="col col-circle-message-input">');
-    tmpHTMLArr.push('                               <div class="container-fluid h-100">');
-    tmpHTMLArr.push('                                   <div class="row row-circle-message-input-type">');
-    tmpHTMLArr.push('                                       <div class="col-1">');
-    tmpHTMLArr.push('                                           <div class="circle-message-input-type input-type-emoji" data-placement="top" data-toggle="popover" title="" data-content="">');
-    tmpHTMLArr.push('                                               <i class="far fa-smile"></i>');
-    tmpHTMLArr.push('                                           </div>');
-    tmpHTMLArr.push('                                       </div>');
-    tmpHTMLArr.push('                                       <div class="col-1"><div class="circle-message-input-type input-type-file"><i class="far fa-folder-open"></i></div></div>');
-    tmpHTMLArr.push('                                       <div class="col-1"><div class="circle-message-input-type input-type-history"><i class="far fa-comments"></i></div></div>');
-    tmpHTMLArr.push('                                   </div>');
-    tmpHTMLArr.push('                                   <div class="row row-circle-message-input-field">');
-    tmpHTMLArr.push('                                       <div class="col h-100 text-left no-padding circle-message-input-field" contenteditable="true"></div>');
-    tmpHTMLArr.push('                                   </div>');
-    tmpHTMLArr.push('                                   <div class="row row-circle-message-input-button">');
-    tmpHTMLArr.push('                                       <div class="col"></div>');
-    tmpHTMLArr.push('                                       <div class="col-2">');
-    tmpHTMLArr.push('                                           <button type="button" class="btn btn-outline-primary btn-sm circle-message-input-send">');
-    tmpHTMLArr.push('                                               <span>发送</span><i class="far fa-envelope"></i>');
-    tmpHTMLArr.push('                                           </button>');
-    tmpHTMLArr.push('                                       </div>');
-    tmpHTMLArr.push('                                   </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row">');
+    tmpHTMLArr.push('               <div class="col no-padding"><div class="circle-input-drag"></div></div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row">');
+    tmpHTMLArr.push('               <div class="col col-circle-message-input">');
+    tmpHTMLArr.push('                   <div class="container-fluid h-100">');
+    tmpHTMLArr.push('                       <div class="row row-circle-message-input-type">');
+    tmpHTMLArr.push('                           <div class="col-1">');
+    tmpHTMLArr.push('                               <div class="circle-message-input-type input-type-emoji" data-placement="top" data-toggle="popover" title="" data-content="">');
+    tmpHTMLArr.push('                                   <i class="far fa-smile"></i>');
     tmpHTMLArr.push('                               </div>');
+    tmpHTMLArr.push('                           </div>');
+    tmpHTMLArr.push('                           <div class="col-1"><div class="circle-message-input-type input-type-file"><i class="far fa-folder-open"></i></div></div>');
+    tmpHTMLArr.push('                           <div class="col-1"><div class="circle-message-input-type input-type-history"><i class="far fa-comments"></i></div></div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                       <div class="row row-circle-message-input-field">');
+    tmpHTMLArr.push('                           <div class="col h-100 text-left no-padding circle-message-input-field" contenteditable="true"></div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                       <div class="row row-circle-message-input-button">');
+    tmpHTMLArr.push('                           <div class="col"></div>');
+    tmpHTMLArr.push('                           <div class="col-2">');
+    tmpHTMLArr.push('                               <button type="button" class="btn btn-outline-primary btn-sm circle-message-input-send">');
+    tmpHTMLArr.push('                                   <span>发送</span><i class="far fa-envelope"></i>');
+    tmpHTMLArr.push('                               </button>');
     tmpHTMLArr.push('                           </div>');
     tmpHTMLArr.push('                       </div>');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('           <div class="circle-input-drag-proxy"></div>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('</div>');
-
-    $('.col-main-content').append($(tmpHTMLArr.join('')));
-    //resize message input row and history row height
-    var tmpObj = circleCalcMessageHeight(-1);
-    $(".col-circle-message-input").height(tmpObj.input);
-    $(".col-circle-message-history").height(tmpObj.history);
-    //init search suggest
-    $('#search_Circle').bsSuggest(defaultOptions);
-    //load messages
-    circleLoadMessageHistory();
-    //init events
-    initEvents_Circle();
+    tmpHTMLArr.push('<div class="circle-input-drag-proxy"></div>');
 };
 
 function circleBuildEmojiPopover() {
     for (var i = 0; i < 10; i++) {
-        _gCircleGroups.push({ id: i, img: "image/header/" + (i % 10) + ".jpg", emoji: [] });
+        _gEmojiGroups.push({ id: i, img: "image/header/" + (i % 10) + ".jpg", emoji: [] });
     }
 
     var popoverHTML = [];
@@ -1026,8 +1044,8 @@ function circleBuildEmojiPopover() {
     popoverHTML.push('  <div class="row row-emoji-groups">');
     popoverHTML.push('      <div class="col-emoji-groups">');
     popoverHTML.push('          <div class="container-emoji-groups">');
-    for (var i = 0; i < _gCircleGroups.length; i++) {
-        popoverHTML.push('              <img class="img-fluid emoji-groups-item" src="' + _gCircleGroups[i].img + '" data-target="' + _gCircleGroups[i].id + '">');
+    for (var i = 0; i < _gEmojiGroups.length; i++) {
+        popoverHTML.push('              <img class="img-fluid emoji-groups-item" src="' + _gEmojiGroups[i].img + '" data-target="' + _gEmojiGroups[i].id + '">');
     }
     popoverHTML.push('          </div>');
     popoverHTML.push('      </div>');
@@ -1079,7 +1097,10 @@ function circleLoadMessageHistory(userInfo) {
         tmpHTMLArr.push('<li class="nav-item" data-target="' + currType + '|' + currId + '">');
         tmpHTMLArr.push('   <div class="nav-link active container-fluid">');
         tmpHTMLArr.push('       <img class="img-fluid" src="' + userObj.header + '" />' + userObj.userName);
-        tmpHTMLArr.push('       <button type="button" class="close circle-message-list-header-item-close"><span>&times;</span></button>');
+        if (items.length > 0) {
+            tmpHTMLArr.push('       <button type="button" class="close circle-message-list-header-item-close"><span>&times;</span></button>');
+        }
+
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('</li>');
         var newItem = $(tmpHTMLArr.join(''));
@@ -1347,9 +1368,9 @@ function circleAddMsgItem(msgItem) {
 function circleInsertEmoji(eventObj) {
     var emojiId = $(eventObj.currentTarget).attr('data-target');
     var img = '';
-    for (var i = 0; i < _gCurrentCircleGroup.emoji.length; i++) {
-        if (_gCurrentCircleGroup.emoji[i].id == emojiId) {
-            img = _gCurrentCircleGroup.emoji[i].img;
+    for (var i = 0; i < _gCurrentEmojiGroup.emoji.length; i++) {
+        if (_gCurrentEmojiGroup.emoji[i].id == emojiId) {
+            img = _gCurrentEmojiGroup.emoji[i].img;
             break;
         }
     }
@@ -1581,24 +1602,24 @@ function circleResizeImage(image) {
 
 function circleChangeEmojiGroup(eventObj) {
     var groupId = (eventObj == null ? $($('.emoji-groups-item')[0]).attr('data-target') : $(eventObj.currentTarget).attr('data-target'));
-    for (var i = 0; i < _gCircleGroups.length; i++) {
-        if (_gCircleGroups[i].id == groupId) {
-            _gCurrentCircleGroup = _gCircleGroups[i];
+    for (var i = 0; i < _gEmojiGroups.length; i++) {
+        if (_gEmojiGroups[i].id == groupId) {
+            _gCurrentEmojiGroup = _gEmojiGroups[i];
             break;
         }
     }
 
     var random = randomInt(6, 10);
-    if (_gCurrentCircleGroup.emoji.length == 0) {
+    if (_gCurrentEmojiGroup.emoji.length == 0) {
         var count = ($('.emoji-item').length == 20 ? 30 : 20);
         for (var i = 0; i < count; i++) {
-            _gCurrentCircleGroup.emoji.push({ id: i, img: "image/header/" + (i % random) + ".jpg" });
+            _gCurrentEmojiGroup.emoji.push({ id: i, img: "image/header/" + (i % random) + ".jpg" });
         }
     }
 
     var popoverHTML = [];
-    for (var i = 0; i < _gCurrentCircleGroup.emoji.length; i++) {
-        popoverHTML.push('<img class="img-fluid emoji-item" src="' + _gCurrentCircleGroup.emoji[i].img + '" data-target="' + _gCurrentCircleGroup.emoji[i].id + '">');
+    for (var i = 0; i < _gCurrentEmojiGroup.emoji.length; i++) {
+        popoverHTML.push('<img class="img-fluid emoji-item" src="' + _gCurrentEmojiGroup.emoji[i].img + '" data-target="' + _gCurrentEmojiGroup.emoji[i].id + '">');
     }
 
     $('.container-emoji-items').empty();
@@ -1764,9 +1785,9 @@ function settingsLoadUserProfile() {
         //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
         //    var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
         //    if (success) {
-        $('#img_Settings_Profile_Header_B').attr('src', _gUserInformation.header);
-        $('#img_Settings_Profile_Header_M').attr('src', _gUserInformation.header);
-        $('#img_Settings_Profile_Header_S').attr('src', _gUserInformation.header);
+        $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header);
+        $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header);
+        $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header);
         $('#txt_Settings_Profile_NickName').val('Terry');
         $('#txt_Settings_Profile_Name').val('郭靖');
         //$("[name='settings_profile_gender']").each(function () {
@@ -1920,7 +1941,7 @@ function settingUpdateProfile() {
         var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
         if (success) {
             _CookieUtils.set("logined_user_nickname", $('#txt_Settings_Profile_NickName').val(), { path: '/', expires: 0.125 });
-            _gUserInformation.nickName = $('#txt_Settings_Profile_NickName').val();
+            _gUserInfoObj.nickName = $('#txt_Settings_Profile_NickName').val();
             updateUserInfo();
         } else {
             _showGlobalMessage('更新个人信息失败，请重试!', 'warning', 'alert_UpdateProfile_Error');
@@ -2160,7 +2181,7 @@ function reportBuildOverviewHeader(data, tmpHTMLArr) {
     tmpHTMLArr.push('       超越<span class="text-21 text-fc8823">' + data.over + '%</span>的全国学员');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="padding-10">');
-    tmpHTMLArr.push('       <img class="img-report-overview-header" src="' + _gUserInformation.header + '"  />');
+    tmpHTMLArr.push('       <img class="img-report-overview-header" src="' + _gUserInfoObj.header + '"  />');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div>');
     tmpHTMLArr.push('       <div class="container-fluid no-padding">');
@@ -2730,7 +2751,7 @@ function reportBuildAttention(data) {
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('        <div class="col-6 padding-l-30">');
     tmpHTMLArr.push('            <img src="image/iphone7.png" class="img-fluid report-attention-bakcground" />');
-    tmpHTMLArr.push('            <img src="' + _gUserInformation.header + '"  class="report-attention-header header-img"/>');
+    tmpHTMLArr.push('            <img src="' + _gUserInfoObj.header + '"  class="report-attention-header header-img"/>');
     tmpHTMLArr.push('            <div class="report-attention-header header-point"></div>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
@@ -2770,7 +2791,7 @@ function initData() {
         //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
         //    var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
         //    if (success) {
-        //        _gUserInformation.header = _gUserHeader = 'image/tmpheader.jpg';
+        //        _gUserInfoObj.header = _gUserHeader = 'image/tmpheader.jpg';
         //        updateUserInfo();
         //    }
         //});
@@ -2799,9 +2820,9 @@ function initData() {
 };
 
 function updateUserInfo() {
-    $('#img_Siderbar_Header').attr('src', _gUserInformation.header);
-    $('#txt_Siderbar_NickName').text(_gUserInformation.nickName);
-    $('#txt_Siderbar_UserTitle').text(_gUserInformation.level);
+    $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header);
+    $('#txt_Siderbar_NickName').text(_gUserInfoObj.nickName);
+    $('#txt_Siderbar_UserTitle').text(_gUserInfoObj.level);
 };
 
 function buildHorizontalList(listItemsHTML, symbol) {
@@ -3229,6 +3250,7 @@ function showSampleImage(image, left, top, width, height, newSize) {
 };
 
 function getCircleToken() {
+    return;
     ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
         var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
         if (success) {
