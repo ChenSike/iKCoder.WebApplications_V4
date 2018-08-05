@@ -288,14 +288,14 @@
     <link rel="stylesheet" href="style/tether.min.css">
     <link rel="stylesheet" href="style/bootstrap.css">
     <link rel="stylesheet" href="style/common.bak.css">
-    <link rel="stylesheet" href="style/profile.bak.css">
+    <link rel="stylesheet" href="style/profile.css">
     <script src="javascript/common/jquery-3.2.1.min.js"></script>
     <script src="javascript/common/fontawesome-all.min.js"></script>
     <script src="javascript/common/tether.min.js"></script>
     <script src="javascript/common/bootstrap.js"></script>
     <script src="javascript/common/bootstrap-suggest.min.js"></script>
     <script src="javascript/common/global.js"></script>
-    <script src="javascript/profile.bak.js"></script>
+    <script src="javascript/profile.js"></script>
 </head>
 <body style="height:100%;">
     <div class="container-fluid h-100 w-100 no-wrap main-container">
@@ -535,12 +535,36 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary btn-sm" id="btn_ModalFindFriend_Add" data-content="">添加</button>
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
+    <div class="modal fade" id="modalCircleUserInfor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" id="modalCircleUserInfor_Dialog" style="max-width:600px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">详细资料</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btn_CircleUserInfor_Add" data-content="">添加</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
     <div style="display:none;">
         <form target="iFrame_Upload" name="uploadForm" id="form_Upload" action="" method="post" enctype="multipart/form-data">
             <input name="file_Upload" type="file" id="file_Upload" />
