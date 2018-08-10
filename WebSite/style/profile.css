@@ -5,7 +5,8 @@
 
 header {
     height: 35px;
-    background-color: rgb(246,246,246);
+    /*background-color: rgb(246,246,246);*/
+    background-color: rgb(240,240,240);
     position: static;
     top: 0px;
     left: 0px;
@@ -61,7 +62,8 @@ header {
 
 footer {
     height: 30px;
-    background-color: rgb(23,23,23);
+    /*background-color: rgb(23,23,23);*/
+    background-color: rgb(45,41,40);
 }
 
     footer .copyright-txt {
@@ -102,7 +104,7 @@ footer {
     min-width: 190px;
     max-width: 210px;
     min-height: 760px;
-    background-color: rgb(38,50,56);
+    background-color: rgb(45,41,40);
     color: rgb(255,255,255);
     padding: 0px;
 }
@@ -111,8 +113,8 @@ footer {
     margin: 0px;
     cursor: pointer;
     /* color: rgb(85,103,110); */
-    color: rgb(255,255,255);
-    background-color: rgb(38, 50, 56);
+    color: rgb(140,140,140);
+    background-color: rgb(45,41,40);
     min-height: 40px;
     font-size: 14px;
     font-weight: lighter;
@@ -134,9 +136,10 @@ footer {
     }
 
     .row-category-item:hover {
-        background-color: rgb(46, 60, 66);
-        /*font-weight: 600;*/
-        font-size: 16px;
+        /*background-color: rgb(46, 60, 66);
+        font-weight: 600;*/
+        color: rgb(255,255,255);
+        /*font-size: 16px;*/
     }
 
         /*.row-category-item:hover .category-item-attr {
@@ -148,13 +151,16 @@ footer {
         }
 
         .row-category-item:hover .category-item-icon {
-            color: rgba(255,84,142,1);
-            font-size: 22px;
+            /*color: rgba(255,84,142,1);*/
+            /*color: rgb(140,140,140);*/
+            color: rgb(255,255,255);
+            /*font-size: 22px;*/
         }
 
     .row-category-item.active-item {
-        background-color: rgb(66,80,86);
+        /*background-color: rgb(66,80,86);*/
         /*font-weight: 600;*/
+        color: rgb(255,255,255);
         font-size: 16px;
     }
 
@@ -163,7 +169,8 @@ footer {
     }
 
     .row-category-item.active-item .category-item-icon {
-        color: rgb(215,44,102);
+        /*color: rgb(215,44,102);*/
+        color: rgb(255,255,255);
         font-size: 22px;
     }
 
@@ -191,6 +198,8 @@ footer {
         -moz-border-radius: 50%;
         -webkit-border-radius: 50%;
         border-radius: 50%;
+        border: solid 2px rgb(255,255,255);
+        box-shadow: 1px 1px 5px rgb(188,188,188);
     }
 
     .siderbar-user-infors p {
@@ -381,7 +390,7 @@ footer {
     min-width: 240px;
     max-width: 240px;
     overflow: auto;
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    /*border: 1px solid rgba(0, 0, 0, 0.125);*/
 }
 
     .col-circle-user-list .card-header {
@@ -390,14 +399,21 @@ footer {
         cursor: pointer;
     }
 
+        .col-circle-user-list .card-header .btn-sm {
+            border-radius: 0px;
+            background-color: rgb(45,41,40);
+            color: rgb(255,255,255);
+        }
+
     .col-circle-user-list .header-circle-user-search {
         padding: 5px;
+        background-color: rgb(236,234,232);
     }
 
         .col-circle-user-list .header-circle-user-search .col-header-circle-user-search {
             padding: 0px 5px 0px 0px;
-            max-width: calc(100% - 35px);
-            min-width: calc(100% - 35px);
+            max-width: calc(100% - 30px);
+            min-width: calc(100% - 30px);
         }
 
         .col-circle-user-list .header-circle-user-search .col-header-circle-button-search {
@@ -405,12 +421,22 @@ footer {
             min-width: 30px;
         }
 
+            .col-circle-user-list .header-circle-user-search .col-header-circle-button-search .btn.btn-sm {
+                padding: 0.20rem 0.45rem;
+            }
+
     .col-circle-user-list .card {
         border: none;
         margin-top: 1px;
     }
 
+        .col-circle-user-list .card:first-child {
+            border: none;
+            margin-top: 0px;
+        }
+
     .col-circle-user-list .circle-user-list-group {
+        background-color: rgb(227,224,223);
         font-size: 14px;
         line-height: 28px;
     }
@@ -441,9 +467,10 @@ footer {
         }
 
             .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-hearder .circle-user-list-item-hearder {
-                border-radius: 50%;
+                border-radius: 5px;
+                /*border-radius: 50%;
                 border: solid 2px rgb(17,138,195);
-                box-shadow: 1px 1px 5px rgb(142,142,142);
+                box-shadow: 1px 1px 5px rgb(142,142,142);*/
             }
 
         .col-circle-user-list .circle-user-list-group .row-circle-user-list-item {
@@ -451,8 +478,16 @@ footer {
         }
 
             .col-circle-user-list .circle-user-list-group .row-circle-user-list-item:hover {
-                background-color: rgba(0,0,0,0.2);
+                background-color: rgb(210,209,209);
             }
+
+            .col-circle-user-list .circle-user-list-group .row-circle-user-list-item.active {
+                background-color: rgb(189,190,191);
+            }
+
+                .col-circle-user-list .circle-user-list-group .row-circle-user-list-item.active:hover {
+                    background-color: rgb(189,190,191);
+                }
 
             .col-circle-user-list .circle-user-list-group .row-circle-user-list-item .col {
                 line-height: 33px;
@@ -462,95 +497,9 @@ footer {
     max-width: calc(100% - 240px);
 }
 
-    .col-circle-message-list .card {
-        border-left: none;
-        border-radius: 0px;
-        height: 100%;
+    .col-circle-message-list .container-circle-message-history {
+        padding: 15px;
     }
-
-    .col-circle-message-list .card-body {
-        padding: 5px;
-        height: calc(100% - 38px);
-    }
-
-    .col-circle-message-list .card-header {
-        padding: 1px 0px;
-        height: 36px;
-    }
-
-        .col-circle-message-list .card-header .wrap-circle-message-history-header {
-            width: calc(100% - 55px);
-            overflow: hidden;
-            position: absolute;
-            left: 27px;
-            top: 0px;
-        }
-
-            .col-circle-message-list .card-header .wrap-circle-message-history-header .portable-circle-message-history-header {
-                width: max-content;
-                position: absolute;
-                top: 0px;
-            }
-
-        .col-circle-message-list .card-header .circle-message-history-header-btn-prev {
-            position: absolute;
-            left: 0px;
-            top: 0px;
-            /* border: none; */
-            height: 36px;
-            line-height: 26px;
-            cursor: pointer;
-        }
-
-        .col-circle-message-list .card-header .circle-message-history-header-btn-next {
-            position: absolute;
-            right: 0px;
-            top: 0px;
-            /* border: none; */
-            height: 36px;
-            line-height: 26px;
-            cursor: pointer;
-        }
-
-
-        .col-circle-message-list .card-header .card-header-tabs {
-            margin-bottom: -1px;
-            margin-left: 0px;
-            margin-right: 0px;
-        }
-
-            .col-circle-message-list .card-header .card-header-tabs .nav-item {
-                cursor: pointer;
-                margin-bottom: 1px;
-            }
-
-                .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link {
-                    padding: 4px 5px;
-                    font-size: 12px;
-                }
-
-                    .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link:hover {
-                        color: #464a4c;
-                        background-color: #fff;
-                        border-color: #ddd #ddd #fff;
-                    }
-
-                    .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link img {
-                        height: 26px;
-                        margin-right: 5px;
-                        border-radius: 50%;
-                        border: solid 2px rgb(17,138,195);
-                        box-shadow: 1px 1px 5px rgb(142,142,142);
-                    }
-
-                    .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link button {
-                        margin-top: -1px;
-                        margin-left: 5px;
-                    }
-
-                        .col-circle-message-list .card-header .card-header-tabs .nav-item .nav-link button:focus {
-                            outline: none;
-                        }
 
     .col-circle-message-list .circle-input-drag {
         height: 5px;
@@ -608,9 +557,21 @@ footer {
             padding: 2px 5px;
         }
 
+    .col-circle-message-list .col-circle-message-history-user {
+        padding: 0px;
+        border-bottom: solid 1px rgb(231,231,231);
+        background-color: rgb(245,245,245);
+    }
+
+        .col-circle-message-list .col-circle-message-history-user .label-circle-message-history-user {
+            margin: 0px;
+            line-height: 29px;
+            padding: 5px 15px;
+        }
+
     .col-circle-message-list .col-circle-message-history {
         padding-top: 5px;
-        background-color: rgba(0,0,0,0.1);
+        background-color: rgb(245,245,245);
         overflow: auto;
     }
 
@@ -630,7 +591,16 @@ footer {
             font-size: 14px;
         }
 
-
+            .col-circle-message-list .row-message-item .message-item-wrap .message-item-content {
+                border: rgba(0,0,0,0.3) 1px solid;
+                margin-left: 10px;
+                border-radius: 3px;
+                background-color: rgb(255,255,255);
+                text-align: left;
+                width: max-content;
+                padding: 5px 10px;
+                max-width: 100%;
+            }
 
             .col-circle-message-list .row-message-item .message-item-wrap.msg-item-wrap-right {
                 position: relative;
@@ -642,7 +612,8 @@ footer {
                     max-width: 100%;
                     position: relative;
                     margin-left: auto;
-                    background-color: rgb(159, 203, 67);
+                    background-color: rgb(158,234,106);
+                    border: none;
                 }
 
             .col-circle-message-list .row-message-item .message-item-wrap .arrow-back {
@@ -661,8 +632,8 @@ footer {
 
                 .col-circle-message-list .row-message-item .message-item-wrap .arrow-back.arrow-right {
                     /*right: 0px;*/
+                    border-color: transparent transparent transparent rgb(158,234,106);
                     right: -20px;
-                    border-color: transparent transparent transparent rgba(0,0,0,0.5);
                 }
 
             .col-circle-message-list .row-message-item .message-item-wrap .arrow-front {
@@ -683,20 +654,8 @@ footer {
                 .col-circle-message-list .row-message-item .message-item-wrap .arrow-front.arrow-right {
                     /*right: 1px;*/
                     right: -19px;
-                    border-color: transparent transparent transparent rgb(159, 203, 67);
+                    border-color: transparent transparent transparent rgb(158,234,106);
                 }
-
-            .col-circle-message-list .row-message-item .message-item-wrap .message-item-content {
-                border: rgba(0,0,0,0.3) 1px solid;
-                margin-left: 10px;
-                border-radius: 3px;
-                background-color: rgb(255,255,255);
-                text-align: left;
-                width: max-content;
-                padding: 5px 10px;
-                max-width: 100%;
-            }
-
 
 .popover {
     max-width: unset;
@@ -831,14 +790,14 @@ footer {
         font-weight: bold;
     }
 
-#mWindow_customHeaderModal {
+#modalCustomHeader {
 }
 
-    #mWindow_customHeaderModal .modal-title {
+    #modalCustomHeader .modal-title {
         font-size: 16px;
     }
 
-    #mWindow_customHeaderModal #canvas_CustomHeader {
+    #modalCustomHeader #canvas_CustomHeader {
         width: 322px;
         height: 322px;
         border: solid 1px rgb(175,175,175);
@@ -846,29 +805,29 @@ footer {
     }
 
 
-    #mWindow_customHeaderModal .canvas-sample {
+    #modalCustomHeader .canvas-sample {
         /*border: solid 1px rgb(175,175,175);*/
         -moz-border-radius: 50%;
         -webkit-border-radius: 50%;
         border-radius: 50%;
     }
 
-        #mWindow_customHeaderModal .canvas-sample #canvas_Sample_1 {
+        #modalCustomHeader .canvas-sample #canvas_Sample_1 {
             width: 100px;
             height: 100px;
         }
 
-        #mWindow_customHeaderModal .canvas-sample #canvas_Sample_2 {
+        #modalCustomHeader .canvas-sample #canvas_Sample_2 {
             width: 64px;
             height: 64px;
         }
 
-        #mWindow_customHeaderModal .canvas-sample #canvas_Sample_3 {
+        #modalCustomHeader .canvas-sample #canvas_Sample_3 {
             width: 24px;
             height: 24px;
         }
 
-    #mWindow_customHeaderModal .object {
+    #modalCustomHeader .object {
         width: 20px;
         height: 20px;
         background-color: #FFF;
@@ -880,73 +839,73 @@ footer {
         animation: animate 0.8s infinite;
     }
 
-        #mWindow_customHeaderModal .object #object_one {
+        #modalCustomHeader .object #object_one {
             top: 19px;
             left: 19px;
         }
 
-        #mWindow_customHeaderModal .object #object_two {
+        #modalCustomHeader .object #object_two {
             top: 0px;
             left: 65px;
             -webkit-animation-delay: 0.1s;
             animation-delay: 0.1s;
         }
 
-        #mWindow_customHeaderModal .object #object_three {
+        #modalCustomHeader .object #object_three {
             top: 19px;
             left: 111px;
             -webkit-animation-delay: 0.2s;
             animation-delay: 0.2s;
         }
 
-        #mWindow_customHeaderModal .object #object_four {
+        #modalCustomHeader .object #object_four {
             top: 65px;
             left: 130px;
             -webkit-animation-delay: 0.3s;
             animation-delay: 0.3s;
         }
 
-        #mWindow_customHeaderModal .object #object_five {
+        #modalCustomHeader .object #object_five {
             top: 111px;
             left: 111px;
             -webkit-animation-delay: 0.4s;
             animation-delay: 0.4s;
         }
 
-        #mWindow_customHeaderModal .object #object_six {
+        #modalCustomHeader .object #object_six {
             top: 130px;
             left: 65px;
             -webkit-animation-delay: 0.5s;
             animation-delay: 0.5s;
         }
 
-        #mWindow_customHeaderModal .object #object_seven {
+        #modalCustomHeader .object #object_seven {
             top: 111px;
             left: 19px;
             -webkit-animation-delay: 0.6s;
             animation-delay: 0.6s;
         }
 
-        #mWindow_customHeaderModal .object #object_eight {
+        #modalCustomHeader .object #object_eight {
             top: 65px;
             left: 0px;
             -webkit-animation-delay: 0.7s;
             animation-delay: 0.7s;
         }
 
-    #mWindow_customHeaderModal #wrap_CropBox_Header {
+    #modalCustomHeader #wrap_CropBox_Header {
         position: absolute;
         top: 0px;
         left: 15px;
         display: none;
     }
 
-    #mWindow_customHeaderModal #CropBox_Header {
+    #modalCustomHeader #CropBox_Header {
         border: 1px solid rgb(56,56,56);
         position: absolute;
     }
 
-    #mWindow_customHeaderModal #dragRightBot {
+    #modalCustomHeader #dragRightBot {
         position: absolute;
         width: 8px;
         height: 8px;
@@ -961,11 +920,11 @@ footer {
         border-radius: 50%;
     }
 
-    #mWindow_customHeaderModal .container-canvas-samples .row {
+    #modalCustomHeader .container-canvas-samples .row {
         padding-bottom: 5px;
     }
 
-    #mWindow_customHeaderModal #DragBg_Header {
+    #modalCustomHeader #DragBg_Header {
         height: 100%;
         background: white;
         opacity: 0.3;
@@ -1204,4 +1163,38 @@ footer {
 
 .padding-l-30 {
     padding-left: 30px;
+}
+
+.btn-gray {
+    color: rgb(88,88,88);
+    background-color: rgb(219,217,216);
+    border: none;
+    background-image: none;
+    border-radius: 5px;
+}
+
+    .btn-gray:hover {
+        color: rgb(26,26,26);
+        background-color: rgb(209,209,209);
+    }
+
+    .btn-gray:focus, .btn-gray.focus {
+        color: rgb(26,26,26);
+        background-color: rgb(209,209,209);
+    }
+
+    .btn-gray.disabled, .btn-gray:disabled {
+        color: rgb(88,88,88);
+        background-color: rgb(219,217,216);
+    }
+
+    .btn-gray:active, .btn-gray.active,
+    .show > .btn-gray.dropdown-toggle {
+        color: rgb(26,26,26);
+        background-color: rgb(209,209,209);
+    }
+
+.emoji-item-in-field {
+    width: 25px;
+    margin-bottom: -5px;
 }

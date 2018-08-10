@@ -70,6 +70,11 @@ var _gToken = '';
 var _orgAvailableHeight = 890;
 var _gUserInfoObj = { userName: 'Terry', header: "image/tmpheader_1.jpg", userId: 88, nickName: 'Terry', level: '初级工程师' };
 var _gCirleMessages = {};
+var _gUserGroups = [
+    { id: 'system', title: '助手和顾问', items: [] },
+    { id: 'friend', title: '我的小伙伴', items: [] },
+    { id: 'guest', title: '新朋友', items: [] }
+];
 
 function initPage() {
     globalResize();
@@ -89,7 +94,7 @@ function initEvents() {
         $('#file_Upload').click();
     });
 
-    $('#mWindow_customHeaderModal').on('shown.bs.modal', function () {
+    $('#modalCustomHeader').on('shown.bs.modal', function () {
         $('#progress_HeaderUpload').show();
         $('#warnning_HeaderUpload').hide();
         $('#wrap_CropBox_Header').hide();
@@ -134,7 +139,7 @@ function initEvents() {
             var successFn = function (data, status) {
                 var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
                 if (success) {
-                    $('#mWindow_customHeaderModal').modal('hide');
+                    $('#modalCustomHeader').modal('hide');
                     ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
                         var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
                         if (success) {
@@ -214,10 +219,12 @@ function buildCategorys() {
 
     $('.wrap-siderbar').append($(tmpHTMLArr.join('')));
     $('.row-category-item').on('click', function () {
-        $('.row-category-item').removeClass('active-item');
         var currItem = $(arguments[0].currentTarget);
-        currItem.addClass('active-item');
-        buildCategoryContent(currItem.attr('data-target'));
+        if (currItem.attr('data-target') != _gCurrCateId) {
+            $('.row-category-item').removeClass('active-item');
+            currItem.addClass('active-item');
+            buildCategoryContent(currItem.attr('data-target'));
+        }
     });
 };
 
@@ -566,7 +573,7 @@ function showExperimentAttachs(attachs) {
     $('#modal_Experiment_Attachs').modal('show');
 };
 
-function buildContent_Circle_1() {
+function buildContent_Circle_Old() {
     var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
     var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
 
@@ -783,46 +790,88 @@ function buildContent_Circle_1() {
 };
 
 function buildContent_Circle() {
+    var successFn = function (reponsse) {
+        if (_getExcuted(reponsse)) {
+            buildContent_Circle_Do(reponsse);
+        } else {
+            _showGlobalMessage('获取朋友列表失败，请重试!', 'warning', 'alert_GetFriendList_Error');
+        }
+    };
+
+    //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo, {}), '', successFn);
+    buildContent_Circle_Do();
+}
+
+function buildContent_Circle_Do(reponsse) {
     var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
     var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
+    var dataSystem = [];
     var dataSearch = { value: [] };
-    for (var i = 0; i < 12; i++) {
-        dataSearch.value.push({
+    for (var i = 0; i < 10; i++) {
+        var newUser = {
+            "userName": names[i % 13],
+            "header": "image/header/" + (i % 10) + ".jpg",
+            "userId": i,
+            "type": 'system'
+        };
+
+        dataSearch.value.push(newUser);
+        dataSystem.push(newUser);
+    }
+
+    var dataUser = [];
+    for (var i = 0; i < 30; i++) {
+        var tmpIdx = randomInt(0, 29);
+        var newUser = {
+            "userName": names[tmpIdx % 13],
+            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
+            "userId": i + 99,
+            "type": 'friend'
+        };
+
+        dataSearch.value.push(newUser);
+        dataUser.push(newUser);
+    }
+
+    var dataNew = [];
+    for (var i = 0; i < 5; i++) {
+        dataNew.push({
             "userName": names[i],
-            "shortAccount": shortAccount[i],
-            "userId": i
+            "header": "image/header/" + i + ".jpg",
+            "userId": i,
+            "type": 'new'
         });
     }
 
     var defaultOptions = {
-        url: null,                      //请求数据的 URL 地址
-        jsonp: null,                  //设置此参数名，将开启jsonp功能，否则使用json数据结构
-        data: dataSearch,                              //提示所用的数据，注意格式
-        indexId: 0,                     //每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
-        indexKey: 0,                    //每组数据的第几个数据，作为input输入框的内容
-        idField: 'userId',                    //每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
-        keyField: 'userName',                   //每组数据的哪个字段作为输入框内容，优先级高于 indexKey 设置（推荐）
+        url: null,                             //请求数据的 URL 地址
+        jsonp: null,                         //设置此参数名，将开启jsonp功能，否则使用json数据结构
+        data: dataSearch,               //提示所用的数据，注意格式
+        indexId: 0,                         //每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
+        indexKey: 0,                       //每组数据的第几个数据，作为input输入框的内容
+        idField: 'userId',                  //每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
+        keyField: 'userName',           //每组数据的哪个字段作为输入框内容，优先级高于 indexKey 设置（推荐）
 
         /* 搜索相关 */
         autoSelect: true,               //键盘向上/下方向键时，是否自动选择值
-        allowNoKeyword: true,           //是否允许无关键字时请求数据
-        getDataMethod: 'data',    //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
-        delayUntilKeyup: false,         //获取数据的方式 为 firstByUrl 时，是否延迟到有输入时才请求数据
+        allowNoKeyword: true,        //是否允许无关键字时请求数据
+        getDataMethod: 'data',       //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
+        delayUntilKeyup: false,       //获取数据的方式 为 firstByUrl 时，是否延迟到有输入时才请求数据
         ignorecase: true,              //前端搜索匹配时，是否忽略大小写
-        effectiveFields: [],            //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
+        effectiveFields: ['userName', 'userId'],            //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
         effectiveFieldsAlias: { userName: "姓名" },       //有效字段的别名对象，用于 header 的显示
         searchFields: [],               //有效搜索字段，从前端搜索过滤数据时使用，但不一定显示在列表中。effectiveFields 配置字段也会用于搜索过滤
         clearable: true,
 
-        multiWord: false,               //以分隔符号分割的多关键字支持
-        separator: ',',                 //多关键字支持时的分隔符，默认为半角逗号
+        multiWord: false,              //以分隔符号分割的多关键字支持
+        separator: ',',                  //多关键字支持时的分隔符，默认为半角逗号
 
         /* UI */
-        autoDropup: false,              //选择菜单是否自动判断向上展开。设为 true，则当下拉菜单高度超过窗体，且向上方向不会被窗体覆盖，则选择菜单向上弹出
-        autoMinWidth: false,            //是否自动最小宽度，设为 false 则最小宽度不小于输入框宽度
-        showHeader: false,              //是否显示选择列表的 header。为 true 时，有效字段大于一列则显示表头
-        showBtn: true,                  //是否显示下拉按钮
-        inputBgColor: '',               //输入框背景色，当与容器背景色不同时，可能需要该项的配置
+        autoDropup: false,           //选择菜单是否自动判断向上展开。设为 true，则当下拉菜单高度超过窗体，且向上方向不会被窗体覆盖，则选择菜单向上弹出
+        autoMinWidth: false,        //是否自动最小宽度，设为 false 则最小宽度不小于输入框宽度
+        showHeader: false,          //是否显示选择列表的 header。为 true 时，有效字段大于一列则显示表头
+        showBtn: true,               //是否显示下拉按钮
+        inputBgColor: '',              //输入框背景色，当与容器背景色不同时，可能需要该项的配置
         inputWarnColor: 'rgba(255,0,0,.1)', //输入框内容不是下拉列表选择时的警告色
         listStyle: {
             'padding-top': 0,
@@ -835,10 +884,10 @@ function buildContent_Circle() {
             '-moz-transition': '0.3s',
             '-o-transition': '0.3s',
             'font-size': '12px'
-        },                              //列表的样式控制
-        listAlign: 'left',              //提示列表对齐位置，left/right/auto
+        },                 //列表的样式控制
+        listAlign: 'left',               //提示列表对齐位置，left/right/auto
         listHoverStyle: 'background: #07d; color:#fff', //提示框列表鼠标悬浮的样式
-        listHoverCSS: 'jhover',         //提示框列表鼠标悬浮的样式名称
+        listHoverCSS: 'jhover',    //提示框列表鼠标悬浮的样式名称
 
         /* methods */
         //fnProcessData: null,     //processData 格式化数据的方法，返回数据格式参考 data 参数
@@ -857,7 +906,7 @@ function buildContent_Circle() {
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('               <div class="row no-wrap" style="height: calc(100% - 42px);">');
-    tmpHTMLArr.push('                   <div class="col no-wrap" style="overflow: auto;">');
+    tmpHTMLArr.push('                   <div class="col no-wrap" style="overflow: auto; background-color: rgb(227,224,223);">');
     tmpHTMLArr.push('                       <div id="accordion">');
     circleBuildFriendPart(tmpHTMLArr);
     tmpHTMLArr.push('                       </div>');
@@ -879,7 +928,8 @@ function buildContent_Circle() {
     //init search suggest
     $('#search_Circle').bsSuggest(defaultOptions);
     //load messages
-    circleLoadMessageHistory();
+    webSocketGetCiecleHistory('system|1');
+    //circleLoadMessageHistory();
     //init events
     initEvents_Circle();
 };
@@ -889,7 +939,7 @@ function circleBuildSearchPart(tmpHTMLArr) {
     tmpHTMLArr.push('   <div class="form-group row no-margin">');
     tmpHTMLArr.push('       <div class="col col-header-circle-user-search">');
     tmpHTMLArr.push('           <div class="input-group w-100 wrap-circle-search">');
-    tmpHTMLArr.push('               <input type="text" class="form-control form-control-sm" id="search_Circle" style="border-radius:5px; border-color:rgb(17,138,195);" autocomplete="off" placeholder="Search" data-id="" alt="a"/>');
+    tmpHTMLArr.push('               <input type="text" class="form-control form-control-sm" id="search_Circle" style="border-radius:5px; border:none; background-color:rgb(219,217,216);" autocomplete="off" placeholder="Search" data-id="" alt="a"/>');
     tmpHTMLArr.push('               <div class="input-group-btn">');
     tmpHTMLArr.push('                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="" style="display: none;"><span class="caret"></span></button>');
     tmpHTMLArr.push('                   <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>');
@@ -897,62 +947,25 @@ function circleBuildSearchPart(tmpHTMLArr) {
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('       <div class="col no-padding col-header-circle-button-search">');
-    tmpHTMLArr.push('           <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modalFindFriend"><i class="fas fa-plus"></i></button>');
+    tmpHTMLArr.push('           <button type="button" class="btn btn-gray btn-sm" data-toggle="modal" data-target="#modalFindFriend"><i class="fas fa-plus"></i></button>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('</form>');
 };
 
 function circleBuildFriendPart(tmpHTMLArr) {
-    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
-    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
-
-    var dataSystem = [];
-    for (var i = 0; i < 10; i++) {
-        dataSystem.push({
-            "userName": names[i % 13],
-            "header": "image/header/" + (i % 10) + ".jpg",
-            "userId": i
-        });
-    }
-
-    var dataUser = [];
-    for (var i = 0; i < 30; i++) {
-        var tmpIdx = randomInt(0, 29);
-        dataUser.push({
-            "userName": names[tmpIdx % 13],
-            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
-            "userId": i
-        });
-    }
-
-    var dataNew = [];
-    for (var i = 0; i < 5; i++) {
-        dataNew.push({
-            "userName": names[i],
-            "header": "image/header/" + i + ".jpg",
-            "userId": i
-        });
-    }
-
-    var groups = [
-        { id: 'system', title: '助手和顾问', items: dataSystem },
-        { id: 'friend', title: '我的小伙伴', items: dataUser },
-        { id: 'guest', title: '新朋友', items: dataNew }
-    ];
-
-    for (var i = 0; i < groups.length; i++) {
+    for (var i = 0; i < _gUserGroups.length; i++) {
         tmpHTMLArr.push('               <div class="card">');
-        tmpHTMLArr.push('                   <div class="card-header" id="heading_Circle_' + groups[i].id + '">');
-        tmpHTMLArr.push('                       <div class="btn-primary btn-sm collapsed" data-toggle="collapse" data-target="#collapse_Circle_' + groups[i].id + '" aria-expanded="false" aria-controls="collapse_Circle_' + groups[i].id + '">');
-        tmpHTMLArr.push(groups[i].title);
+        tmpHTMLArr.push('                   <div class="card-header" id="heading_Circle_' + _gUserGroups[i].id + '">');
+        tmpHTMLArr.push('                       <div class="btn-dark btn-sm collapsed" data-toggle="collapse" data-target="#collapse_Circle_' + _gUserGroups[i].id + '" aria-expanded="false" aria-controls="collapse_Circle_' + _gUserGroups[i].id + '">');
+        tmpHTMLArr.push(_gUserGroups[i].title);
         tmpHTMLArr.push('                       </div>');
         tmpHTMLArr.push('                   </div>');
-        tmpHTMLArr.push('                   <div id="collapse_Circle_' + groups[i].id + '" class="collapse" aria-labelledby="heading_Circle_' + groups[i].id + '" data-parent="#accordion">');
+        tmpHTMLArr.push('                   <div id="collapse_Circle_' + _gUserGroups[i].id + '" class="collapse" aria-labelledby="heading_Circle_' + _gUserGroups[i].id + '" data-parent="#accordion">');
         tmpHTMLArr.push('                       <div class="card-body circle-user-list-group">');
         tmpHTMLArr.push('                           <div class="container-fluid">');
-        for (var j = 0; j < groups[i].items.length; j++) {
-            circleBuildFriednItem(tmpHTMLArr, groups[i], groups[i].items[j]);
+        for (var j = 0; j < _gUserGroups[i].items.length; j++) {
+            circleBuildFriednItem(tmpHTMLArr, _gUserGroups[i], _gUserGroups[i].items[j]);
         }
 
         tmpHTMLArr.push('                           </div>');
@@ -977,53 +990,39 @@ function circleBuildFriednItem(tmpHTMLArr, group, item) {
 };
 
 function circleBuildMessagePart(tmpHTMLArr) {
-    tmpHTMLArr.push('<div class="card text-center">');
-    tmpHTMLArr.push('   <div class="card-header">');
-    tmpHTMLArr.push('       <div type="button" class="btn btn-outline-primary btn-sm circle-message-history-header-btn-prev">');
-    tmpHTMLArr.push('           <i class="fas fa-chevron-left"></i>');
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('       <div class="wrap-circle-message-history-header h-100">');
-    tmpHTMLArr.push('           <div class="portable-circle-message-history-header">');
-    tmpHTMLArr.push('               <ul class="nav nav-tabs card-header-tabs container-circle-message-list-user-header"></ul>');
-    tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('       <div type="button" class="btn btn-outline-primary btn-sm circle-message-history-header-btn-next">');
-    tmpHTMLArr.push('           <i class="fas fa-chevron-right"></i>');
+    tmpHTMLArr.push('<div class="container-fluid h-100 wrap-circle-message">');
+    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('       <div class="col col-circle-message-history-user">');
+    tmpHTMLArr.push('           <label class="container-fluid label-circle-message-history-user">aaa</label>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('   <div class="card-body">');
-    tmpHTMLArr.push('       <div class="container-fluid h-100 wrap-circle-message">');
-    tmpHTMLArr.push('           <div class="row">');
-    tmpHTMLArr.push('               <div class="col col-circle-message-history">');
-    tmpHTMLArr.push('                   <div class="container-fluid container-circle-message-history"></div>');
+    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('       <div class="col col-circle-message-history">');
+    tmpHTMLArr.push('           <div class="container-fluid container-circle-message-history"></div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('       <div class="col no-padding"><div class="circle-input-drag"></div></div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('       <div class="col col-circle-message-input">');
+    tmpHTMLArr.push('           <div class="container-fluid h-100">');
+    tmpHTMLArr.push('               <div class="row row-circle-message-input-type">');
+    tmpHTMLArr.push('                   <div class="col-1">');
+    tmpHTMLArr.push('                       <div class="circle-message-input-type input-type-emoji text-center" data-placement="top" data-toggle="popover" title="" data-content="">');
+    tmpHTMLArr.push('                           <i class="far fa-smile"></i>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('                   <div class="col-1"><div class="circle-message-input-type input-type-file text-center"><i class="far fa-folder-open"></i></div></div>');
+    tmpHTMLArr.push('                   <div class="col-1"><div class="circle-message-input-type input-type-history text-center"><i class="far fa-comments"></i></div></div>');
     tmpHTMLArr.push('               </div>');
-    tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('           <div class="row">');
-    tmpHTMLArr.push('               <div class="col no-padding"><div class="circle-input-drag"></div></div>');
-    tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('           <div class="row">');
-    tmpHTMLArr.push('               <div class="col col-circle-message-input">');
-    tmpHTMLArr.push('                   <div class="container-fluid h-100">');
-    tmpHTMLArr.push('                       <div class="row row-circle-message-input-type">');
-    tmpHTMLArr.push('                           <div class="col-1">');
-    tmpHTMLArr.push('                               <div class="circle-message-input-type input-type-emoji" data-placement="top" data-toggle="popover" title="" data-content="">');
-    tmpHTMLArr.push('                                   <i class="far fa-smile"></i>');
-    tmpHTMLArr.push('                               </div>');
-    tmpHTMLArr.push('                           </div>');
-    tmpHTMLArr.push('                           <div class="col-1"><div class="circle-message-input-type input-type-file"><i class="far fa-folder-open"></i></div></div>');
-    tmpHTMLArr.push('                           <div class="col-1"><div class="circle-message-input-type input-type-history"><i class="far fa-comments"></i></div></div>');
-    tmpHTMLArr.push('                       </div>');
-    tmpHTMLArr.push('                       <div class="row row-circle-message-input-field">');
-    tmpHTMLArr.push('                           <div class="col h-100 text-left no-padding circle-message-input-field" contenteditable="true"></div>');
-    tmpHTMLArr.push('                       </div>');
-    tmpHTMLArr.push('                       <div class="row row-circle-message-input-button">');
-    tmpHTMLArr.push('                           <div class="col"></div>');
-    tmpHTMLArr.push('                           <div class="col-2">');
-    tmpHTMLArr.push('                               <button type="button" class="btn btn-outline-primary btn-sm circle-message-input-send">');
-    tmpHTMLArr.push('                                   <span>发送</span><i class="far fa-envelope"></i>');
-    tmpHTMLArr.push('                               </button>');
-    tmpHTMLArr.push('                           </div>');
-    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('               <div class="row row-circle-message-input-field">');
+    tmpHTMLArr.push('                   <div class="col h-100 text-left no-padding circle-message-input-field" contenteditable="true"></div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('               <div class="row row-circle-message-input-button">');
+    tmpHTMLArr.push('                   <div class="col"></div>');
+    tmpHTMLArr.push('                   <div class="col-2 text-right">');
+    tmpHTMLArr.push('                       <button type="button" class="btn btn-outline-green btn-sm circle-message-input-send"><span>发送</span><i class="far fa-envelope"></i></button>');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
@@ -1031,6 +1030,36 @@ function circleBuildMessagePart(tmpHTMLArr) {
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('</div>');
     tmpHTMLArr.push('<div class="circle-input-drag-proxy"></div>');
+};
+
+function circleUpdateMsgHistory(userSymbol) {
+    var isDisplay = (typeof (userSymbol) == 'string' ? false : true);
+    var currUserSymbol = (isDisplay ? $('.label-circle-message-history-user').attr('data-target') : userSymbol);
+    var currGroupID = currUserSymbol.split('|')[0];
+    var currUserId = currUserSymbol.split('|')[1];
+    var currUserObj = circleGetUserObj(currGroupID, currUserId);
+    var currHistory = _gCirleMessages[currUserSymbol];
+    if (!isDisplay) {
+        $('.container-circle-message-history').empty();
+        $('.label-circle-message-history-user').text(currUserObj.userName);
+        $('.label-circle-message-history-user').attr('data-target', currGroupID + '|' + currUserId);
+    }
+
+    var existCount = $('.row-message-item').length;
+    for (var i = existCount; i < currHistory.length; i++) {
+        circleAddMsgItem(currHistory[i]);
+    }
+};
+
+function circleAddMsgItem(msgItem) {
+    $('.container-circle-message-history').append(msgItem);
+    var colHeight = $('.col-circle-message-history').height();
+    var containerHeight = $('.container-circle-message-history').height();
+    if (containerHeight > colHeight) {
+        $('.col-circle-message-history').scrollTop(containerHeight - colHeight);
+    }
+
+    $('.circle-message-input-field').html('');
 };
 
 function circleBuildEmojiPopover() {
@@ -1072,134 +1101,6 @@ function circleBuildEmojiPopover() {
 
     return popoverHTML.join('');
 }
-
-function circleLoadMessageHistory(userInfo) {
-    var currType = 'system';
-    var currId = '1';
-    if (typeof (userInfo) == 'string' && userInfo.split('|').length == 2) {
-        currType = userInfo.split('|')[0];
-        currId = userInfo.split('|')[1];
-    }
-
-    var items = $('.container-circle-message-list-user-header .nav-item .nav-link');
-    items.removeClass('active');
-
-    items = $('.container-circle-message-list-user-header .nav-item');
-    var tmpItem, tmpSymbol;
-    var addNewChat = true;
-    for (var i = 0; i < items.length; i++) {
-        tmpItem = $(items[i]);
-        tmpSymbol = tmpItem.attr('data-target').split('|');
-        if (tmpSymbol.length == 2) {
-            if (tmpSymbol[0] == currType && tmpSymbol[1] == currId) {
-                $(tmpItem.find('.nav-link')[0]).addClass('active');
-                circleBuildMessageHistory(tmpItem.attr('data-target'));
-                addNewChat = false;
-                break;
-            }
-        }
-    }
-
-    if (addNewChat) {
-        var userObj = circleGetUserObj(currType, currId);
-        var container = $('.container-circle-message-list-user-header');
-        var tmpHTMLArr = [];
-        tmpHTMLArr.push('<li class="nav-item" data-target="' + currType + '|' + currId + '">');
-        tmpHTMLArr.push('   <div class="nav-link active container-fluid">');
-        tmpHTMLArr.push('       <img class="img-fluid" src="' + userObj.header + '" />' + userObj.userName);
-        if (items.length > 0) {
-            tmpHTMLArr.push('       <button type="button" class="close circle-message-list-header-item-close"><span>&times;</span></button>');
-        }
-
-        tmpHTMLArr.push('   </div>');
-        tmpHTMLArr.push('</li>');
-        var newItem = $(tmpHTMLArr.join(''));
-        container.append(newItem);
-        newItem.on('click', function (eventObj) {
-            $('.container-circle-message-list-user-header .nav-item .nav-link').removeClass('active');
-            $($(eventObj.currentTarget).find('.nav-link')[0]).addClass('active');
-            circleBuildMessageHistory($(eventObj.currentTarget).attr('data-target'));
-            circleResetMessageHeader(newItem);
-        });
-        var btn = $(newItem.find('.circle-message-list-header-item-close')[0]);
-        btn.on('click', function (eventObj) {
-            $(eventObj.currentTarget).parent().parent().remove();
-            var firstTab = $($('.container-circle-message-list-user-header .nav-item .nav-link')[0]);
-            firstTab.addClass('active');
-            circleBuildMessageHistory(firstTab.attr('data-target'));
-            circleResetMessageHeader(0);
-        });
-        circleResetMessageHeader(newItem);
-        //circleBuildMessageHistory(currType + '|' + currId);
-    } else {
-        circleResetMessageHeader(tmpItem);
-    }
-}
-
-function circleResetMessageHeader(currItem) {
-    var portable = $('.wrap-circle-message-history-header .portable-circle-message-history-header');
-    if (typeof (currItem) == 'number') {
-        portable.css('left', currItem + 'px');
-    } else {
-        var wrap = $('.wrap-circle-message-history-header');
-        var wrapWidth = wrap.width();
-        if (wrapWidth > portable.width()) {
-            portable.css('left', '0px');
-        } else {
-            var wrapOffset = wrap.offset();
-            var portableLeft = parseInt(portable.css('left'));
-            var itemOffset = currItem.offset();
-            var itemWidth = currItem.width();
-            if (wrapOffset.left + wrapWidth < itemOffset.left + itemWidth) {
-                portable.css('left', ((wrapOffset.left + wrapWidth) - (itemOffset.left + itemWidth) + portableLeft) + 'px');
-            } else {
-                portable.css('left', '0px');
-            }
-        }
-    }
-};
-
-function circleBuildMessageHistory(userInfo) {
-    var dataMsg = [
-        { type: -1, content: 'Apply a CSS fade transition to the popover' },
-        { type: -1, content: 'Example: container: "body". This option is particularly useful in that it allows you to position the popover in the flow of the document near the triggering element - which will prevent the popover from floating away from the triggering element during a window resize.' },
-        { type: 1, content: 'Default content value if data-content attribute is not present.' },
-        { type: -1, content: 'If a function is given, it will be called with its this reference set to the element that the popover is attached to.' },
-        { type: 1, content: 'Delay showing and hiding the popover (ms) - does not apply to manual trigger type' },
-        { type: 1, content: 'If a number is supplied, delay is applied to both hide/show Object structure is: delay: { "show": 500, "hide": 100 }' },
-        { type: -1, content: 'Insert HTML into the popover. If false, jQuerys text method will be used to insert content into the DOM. Use text if you are worried about XSS attacks.' },
-        { type: 1, content: 'How to position the popover - auto | top | bottom | left | right. When auto is specified, it will dynamically reorient the popover.' },
-        { type: -1, content: 'Base HTML to use when creating the popover. The popover title will be injected into the .popover-header.' },
-        { type: 1, content: '.arrow will become the popovers arrow.' }
-    ];
-    var currType = 'system';
-    var currId = '1';
-    if (typeof (userInfo) == 'string' && userInfo.split('|').length == 2) {
-        currType = userInfo.split('|')[0];
-        currId = userInfo.split('|')[1];
-        dataMsg = [
-            { type: -1, content: '哪种好主要看具体需求了,innerHTML和crea' },
-            { type: -1, content: '可创建文本节点。 此方法可返回 Text 对象' },
-            { type: 1, content: '2017年9月13日 - 用法: innerHTML的用法 Object.innerHTML createTextNode的用法 document.createTextNode(data)         parendNode.' },
-            { type: -1, content: '最佳答案: 哪种好主要看具体需求了,innerHTML和createTextNode都可以把一段内容添加到一个节点中,区别是如果这段内容中有html标签' },
-            { type: 1, content: '美媒称，主要的汽车生产国将在没有美国的情况下举行会谈' },
-            { type: 1, content: '据彭博社7月29日报道，三位知情人士称，来自欧盟、加拿大、墨西' },
-            { type: -1, content: '日本的代表将于7月31日在日内瓦召开会议' },
-            { type: 1, content: '车关税的国际协议的可能性，但另外两名官员表示这不' },
-            { type: -1, content: '报道称，尽管欧盟委员会主席容克和美国总统特朗普为避免“单边行动”而达成贸易协定，' },
-            { type: 1, content: '彭博社的报道称，“总统指示我们继续调查并汇总材料' }
-        ];
-    }
-
-    var userObj = circleGetUserObj(currType, currId);
-    var tmpHTMLArr = [];
-    for (var i = 0; i < dataMsg.length; i++) {
-        tmpHTMLArr.push(circleBuildMessageItem(dataMsg[i].content, dataMsg[i].type, (dataMsg[i].type == -1 ? userObj : _gUserInfoObj)));
-    }
-
-    $('.container-circle-message-history').empty();
-    circleAddMsgItem($(tmpHTMLArr.join('')));
-};
 
 function circleBuildMessageItem(content, type, userInfo) {
     userInfo = (typeof (userInfo) == 'string' ? circleGetUserObj(userInfo.split('|')[0], userInfo.split('|')[1]) : userInfo);
@@ -1271,11 +1172,11 @@ function circleGetUserObj(userType, userId) {
 
 function circleCalcMessageHeight(top) {
     var retObj = null;
-    top = (top == -1 ? $('.row-footer').offset().top - 220 : top);
+    top = (top == -1 ? $('.row-footer').offset().top - 200 : top);
     if (circleCheckMsgDragScope(top, true)) {
-        var containerHeight = $(".col-circle-message-list").height() - 40 - 10;
-        var minHeight = containerHeight * 30 / 100;
-        var tmpHeight = $("body").height() - top - 30;
+        var containerHeight = $(".col-circle-message-list").height() - 10 - 39;
+        var minHeight = containerHeight * 25 / 100;
+        var tmpHeight = $("body").height() - top - 30 - 39;
         tmpHeight = (tmpHeight < minHeight ? minHeight : tmpHeight);
         retObj = { input: tmpHeight - 5, history: containerHeight - tmpHeight };
     }
@@ -1287,7 +1188,7 @@ function circleCheckMsgDragScope(top, chekcSize) {
     var bodyHeight = $("body").height();
     var maxTop = $('.wrap-circle-message').offset().top;
     var maxBottom = $('.row-footer').offset().top;
-    if (chekcSize && top > maxTop + 100 && top <= maxBottom - 220) {
+    if (chekcSize && top > maxTop + 80 && top <= maxBottom - 80) {
         return true;
     } else if (!chekcSize && top > maxTop + 20 && top <= maxBottom - 20) {
         return true;
@@ -1304,7 +1205,7 @@ function initEvents_Circle() {
             $(document).mouseup(mouseUpFn);
             $(".circle-input-drag-proxy").css("display", "block");
             $(".circle-input-drag-proxy").css("visibility", "visible");
-            $(".circle-input-drag-proxy").width(drag.width());
+            $(".circle-input-drag-proxy").width(drag.width() - 10);
             $(".circle-input-drag-proxy").css("top", (dragOff.top - 35) + "px");
             dragFn(e);
         }
@@ -1376,66 +1277,92 @@ function initEvents_Circle() {
     });
 
     $('.circle-message-input-send').on('click', function () {
-        var msg = circleBuildMessageItem($('.circle-message-input-field').html(), 0, _gUserInfoObj);
-        var tmpHeaderEl = $('.container-circle-message-list-user-header li .nav-link.active').parent();
-        var tmpSymbol = (tmpHeaderEl.length > 0 ? tmpHeaderEl.attr('data-target') : '');
-        if (typeof _gCirleMessages[tmpSymbol] == undefined || !$.isArray(_gCirleMessages[tmpSymbol])) {
-            _gCirleMessages[tmpSymbol] = [];
-        }
+        if (!circleCheckEmptyInput()) {
+            var msg = circleBuildMessageItem($('.circle-message-input-field').html(), 0, _gUserInfoObj);
+            var tmpSymbol = $('.label-circle-message-history-user').attr('data-target');
+            if (typeof _gCirleMessages[tmpSymbol] == undefined || !$.isArray(_gCirleMessages[tmpSymbol])) {
+                _gCirleMessages[tmpSymbol] = [];
+            }
 
-        _gCirleMessages[tmpSymbol].push(msg);
-        webSocketSend(msg);
-        circleAddMsgItem($(msg), false);
+            _gCirleMessages[tmpSymbol].push(msg);
+            webSocketSend('send', msg);
+            circleUpdateMsgHistory();
+        }
     });
 
     $('.row-circle-user-list-item').on('click', function (eventObj) {
-        webSocketGetCiecleHistory();
-        circleLoadMessageHistory($(eventObj.currentTarget).attr('data-target'));
-        var symbolEl = $($(eventObj.currentTarget).find('.circle-user-list-item-msg')[0]);
-        symbolEl.text('0');
-        symbolEl.hide();
+        circleClickUserItem(eventObj);
     });
 
     $('.row-circle-user-list-item').on('dblclick', function (eventObj) {
-        var tmpSymbol = $(eventObj.currentTarget).attr('data-target');
-        $('#modalCircleUserInfor').modal('show');
+        circleDBClickUserItem(eventObj);
     });
 
     $($('.col-circle-user-list .collapse')[0]).collapse('show');
 
-    $('.circle-message-history-header-btn-prev').on('click', function (eventObj) {
-        var portable = $('.wrap-circle-message-history-header .portable-circle-message-history-header');
-        var portableLeft = parseInt(portable.css('left'));
-        if (portableLeft + 102 < 0) {
-            portable.css('left', (portableLeft + 102) + 'px');
-        } else {
-            portable.css('left', '0px');
+    $('#search_Circle').on('onSetSelectValue', function () {
+        var user = arguments[2];
+        circleUpdateMsgHistory(user.type + '|' + user.id);
+        for (var i = 0; i < _gUserGroups.length; i++) {
+            if (_gUserGroups[i].id != user.type) {
+                $('#collapse_Circle_' + _gUserGroups[i].id).collapse('hide');
+            } else {
+                $('#collapse_Circle_' + _gUserGroups[i].id).collapse('show');
+            }
         }
-    });
 
-    $('.circle-message-history-header-btn-next').on('click', function (eventObj) {
-        var portable = $('.wrap-circle-message-history-header .portable-circle-message-history-header');
-        var portableLeft = parseInt(portable.css('left'));
-        var portableWidth = portable.width();
-        var wrapWidth = $('.wrap-circle-message-history-header').width();
-        if (portableLeft - 102 > wrapWidth - portableWidth) {
-            portable.css('left', (portableLeft - 102) + 'px');
-        } else {
-            portable.css('left', (wrapWidth - portableWidth) + 'px');
-        }
+        $('.row-circle-user-list-item').removeClass('active');
+        var currItem = $(eventObj.currentTarget);
+        currItem.addClass('active');
     });
 };
 
-function circleAddMsgItem(msgItem, isNew) {
-    $('.container-circle-message-history').append(msgItem);
-    var colHeight = $('.col-circle-message-history').height();
-    var containerHeight = $('.container-circle-message-history').height();
-    if (containerHeight > colHeight && !isNew) {
-        $('.col-circle-message-history').scrollTop(containerHeight - colHeight);
+function circleClickUserItem(eventObj) {
+    var tmpSymbol = $(eventObj.currentTarget).attr('data-target');
+    if (tmpSymbol.split('|')[0] == 'guest') {
+        circleDBClickUserItem(eventObj);
+    } else {
+        $('.row-circle-user-list-item').removeClass('active');
+        var currItem = $(eventObj.currentTarget);
+        currItem.addClass('active');
+        webSocketGetCiecleHistory();
+        var symbolEl = $(currItem.find('.circle-user-list-item-msg')[0]);
+        symbolEl.text('0');
+        symbolEl.hide();
+    }
+};
+
+function circleDBClickUserItem(eventObj) {
+    var tmpSymbol = $(eventObj.currentTarget).attr('data-target');
+    $('#modalCircleUserInfor').modal('show');
+};
+
+function circleCheckEmptyInput() {
+    var tmpContent = $('.circle-message-input-field').html();
+    var isEmptyContent = false;
+    try {
+        var tmpObj = $(tmpContent);
+        if (tmpObj.length == 0) {
+            if (tmpContent.length == 0) {
+                isEmptyContent = true;
+            }
+        } else if (tmpObj.length == 1) {
+            if (tmpObj.text().trim().length == 0 && tmpObj[0].nodeName != 'IMG') {
+                isEmptyContent = true;
+            }
+        } else {
+            if (tmpObj.text().trim().length == 0) {
+                if (tmpObj.find('img').length == 0) {
+                    isEmptyContent = true;
+                }
+            }
+        }
+    } catch (ex) {
+
     }
 
-    $('.circle-message-input-field').html('');
-};
+    return isEmptyContent;
+}
 
 function circleInsertEmoji(eventObj) {
     var emojiId = $(eventObj.currentTarget).attr('data-target');
@@ -1743,9 +1670,9 @@ function settingBuildInfors() {
     tmpHTMLArr.push('               <div class="form-group row">');
     tmpHTMLArr.push('                   <label for="img_Settings_Profile_Header_B" class="col-2 col-form-label">头像</label>');
     tmpHTMLArr.push('                   <div class="col text-left wrap-settings-profile-header">');
-    tmpHTMLArr.push('                       <img id="img_Settings_Profile_Header_B" src="image/circles.svg" data-toggle="modal" data-target="#mWindow_customHeaderModal"/>');
-    tmpHTMLArr.push('                       <img id="img_Settings_Profile_Header_M" src="image/circles.svg" data-toggle="modal" data-target="#mWindow_customHeaderModal"/>');
-    tmpHTMLArr.push('                       <img id="img_Settings_Profile_Header_S" src="image/circles.svg" data-toggle="modal" data-target="#mWindow_customHeaderModal"/>');
+    tmpHTMLArr.push('                       <img id="img_Settings_Profile_Header_B" src="image/circles.svg" data-toggle="modal" data-target="#modalCustomHeader"/>');
+    tmpHTMLArr.push('                       <img id="img_Settings_Profile_Header_M" src="image/circles.svg" data-toggle="modal" data-target="#modalCustomHeader"/>');
+    tmpHTMLArr.push('                       <img id="img_Settings_Profile_Header_S" src="image/circles.svg" data-toggle="modal" data-target="#modalCustomHeader"/>');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('               <div class="form-group row">');
@@ -2938,6 +2865,10 @@ function bindHorizontalListEvent(containerHeight, itemWidth, itemSpace, itemCoun
 
 var _gLastEditRange;
 function bindContentEditableEvent(element) {
+    try {
+        document.execCommand("AutoUrlDetect", false, false);
+    } catch (e) { }
+
     element.on('click', function () {
         _gLastEditRange = window.getSelection().getRangeAt(0);
     });
@@ -3350,30 +3281,30 @@ function webSocketCreate() {
     };
 };
 
-function webSocketGetCiecleHistory() {
+function webSocketGetCiecleHistory(userSymbol) {
     return;
-    _gSocket.send("gethistory");
+    webSocketSend("gethistory");
 }
 
 function webSocketSend(msg) {
     return;
+    var tmpMsg = [];
+    tmpMsg.push('<root>');
+    tmpMsg.push('   <token>');
+    tmpMsg.push(_gToken);
+    tmpMsg.push('   </token>');
+    tmpMsg.push('   <msg>');
+    tmpMsg.push(msg);
+    tmpMsg.push('   </msg>');
+    tmpMsg.push('</root>');
     if (_gSocket.readyState == 1) {
-        var tmpMsg = [];
-        tmpMsg.push('<root>');
-        tmpMsg.push('   <token>');
-        tmpMsg.push(_gToken);
-        tmpMsg.push('   </token>');
-        tmpMsg.push('   <msg>');
-        tmpMsg.push(msg);
-        tmpMsg.push('   </msg>');
-        tmpMsg.push('</root>');
         _gSocket.send(tmpMsg);
     } else if (_gSocket.readyState == 2) {
-        window.setTimeout("webSocketSend(" + msg + ")", 1000);
+        window.setTimeout("webSocketSend(" + tmpMsg + ")", 1000);
     } else {
         webSocketCreate();
         _gSocket.onopen = function () {
-            webSocketSend(msg);
+            webSocketSend(tmpMsg);
         };
     }
 };
@@ -3384,49 +3315,52 @@ function webSocketClose() {
 
 function webSocketReceiveCircle(evt) {
     var receiveObj = webSocketFormatMsg(evt);
-    if (receiveObj.type == 'new') {
+    //list/new/guest
+    if (receiveObj.type == 'new' || receiveObj.type == 'guest') {
         $('.category-item-attr.circle-attr').show();
     }
 
-    if (_gCurrCateId == 'circle') {
-        var isNew = (receiveObj.symbol.indexOf('new') = 0 ? true : false);
-        var tmpSymbol = '.row-circle-user-list-item[data-target="' + receiveObj.symbol + '"] .col-circle-user-list-item-msg .circle-user-list-item-msg';
-        var tmpItemEl = $(tmpSymbol);
-        var tmpHTMLArr = [];
-        if (tmpItemEl.length <= 0 && isNew) {
-            tmpHTMLArr = [];
-            circleBuildFriednItem(tmpHTMLArr, group, item);
-            $('#collapse_Circle_new .circle-user-list-group .container-fluid').append($(tmpHTMLArr.join('')));
-            $('.row-circle-user-list-item[data-target="' + receiveObj.symbol + '"]').on('click', function (eventObj) {
-                circleLoadMessageHistory($(eventObj.currentTarget).attr('data-target'));
-                var symbolEl = $($(eventObj.currentTarget).find('.circle-user-list-item-msg')[0]);
-                symbolEl.text('0');
-                symbolEl.hide();
-            });
-            $('.row-circle-user-list-item[data-target="' + receiveObj.symbol + '"]').on('dblclick', function (eventObj) {
-                var tmpSymbol = $(eventObj.currentTarget).attr('data-target');
-                $('#modalCircleUserInfor').modal('show');
-            });
-        }
+    if (typeof _gCirleMessages[receiveObj.symbol] == undefined || !$.isArray(_gCirleMessages[receiveObj.symbol])) {
+        _gCirleMessages[receiveObj.symbol] = [];
+    }
 
-        tmpItemEl = $(tmpSymbol);
-        if (tmpItemEl.length > 0) {
-            var tmpHeaderEl = $('.container-circle-message-list-user-header li[data-target="' + receiveObj.symbol + '"]');
-            if (tmpHeaderEl.length > 0) {
-                if ($(tmpHeaderEl.find('nav-link')[0]).hasClass('active')) {
-                    tmpHTMLArr = [];
-                    var tmpUserObj = circleGetUserObj(receiveObj.symbol.split('|')[0], receiveObj.symbol.split('|')[1]);
-                    for (var i = 0; i < dataMsg.length; i++) {
-                        tmpHTMLArr.push(circleBuildMessageItem(receiveObj.items[i].content, receiveObj.items[i].type, (receiveObj.items[i].type == -1 ? tmpUserObj : _gUserInfoObj)));
-                    }
+    var targetMsgs = _gCirleMessages[receiveObj.symbol];
+    var targetUserGroupID = receiveObj.symbol.split('|')[0];
+    var targetUserId = receiveObj.symbol.split('|')[1];
+    var targetUserEl = $('.row-circle-user-list-item[data-target="' + receiveObj.symbol + '"]');
+    var targetUserObj = circleGetUserObj(targetUserGroupID, targetUserId);
+    if (targetUserEl.length == 0) {
+        tmpHTMLArr = [];
+        circleBuildFriednItem(tmpHTMLArr, _gUserGroups[targetUserGroupID], targetUserObj);
+        targetUserEl = $(tmpHTMLArr.join(''));
+        $('#collapse_Circle_' + targetUserGroupID + ' .circle-user-list-group .container-fluid').append(targetUserEl);
+        targetUserEl.on('click', function (eventObj) {
+            circleClickUserItem(eventObj);
+        });
+        targetUserEl.on('dblclick', function (eventObj) {
+            circleDBClickUserItem(eventObj);
+        });
+    }
 
-                    circleAddMsgItem($(tmpHTMLArr.join('')), isNew);
-                }
-            } else {
-                tmpItemEl.show();
-                tmpItemEl.text(tmpItemEl.css('display') != 'none' ? parseInt(tmpItemEl.text()) + 1 : 1);
-            }
-        }
+    var currUserSymbol = $('.label-circle-message-history-user').attr('data-target');
+    var currGroupID = currUserSymbol.split('|')[0];
+    var currUserId = currUserSymbol.split('|')[1];
+    var currUserObj = circleGetUserObj(currGroupID, currUserId);
+    var targetUserNoteEl = $('.row-circle-user-list-item[data-target="' + receiveObj.symbol + '"] .col-circle-user-list-item-msg .circle-user-list-item-msg');
+    var isDisplay = (currUserSymbol == receiveObj.symbol ? true : false);
+    var newMsgItem;
+    for (var i = 0; i < receiveObj.items.length; i++) {
+        newMsgItem = circleBuildMessageItem(receiveObj.items[i].content, receiveObj.items[i].type, (receiveObj.items[i].type == -1 ? targetUserObj : _gUserInfoObj));
+        targetMsgs.push(newMsgItem);
+    }
+
+    if (receiveObj.type == 'new' && !isDisplay) {
+        targetUserNoteEl.show();
+        targetUserNoteEl.text(parseInt(targetUserNoteEl.text()) + receiveObj.items.length);
+    }
+
+    if (isDisplay) {
+        circleUpdateMsgHistory();
     }
 };
 

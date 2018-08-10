@@ -1064,7 +1064,7 @@ function buildSettingsProfile(data, tmpHeight) {
     tmpHTMLArr.push('                    <div class="col-7">');
     //tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="' + _getRequestURL(_gURLMapping.account.getheader, {}) + '" style="width: 100px; height: 100px;">');
     tmpHTMLArr.push('                        <img id="img_Settings_Profile_Header" src="image/circles.svg">');
-    tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" data-toggle="modal" data-target="#mWindow_customHeaderModal">上传新头像</button>');
+    tmpHTMLArr.push('                        <button type="button" class="btn btn-outline-info" id="btn_Settings_Profile_Upload_Header" data-toggle="modal" data-target="#modalCustomHeader">上传新头像</button>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="form-group row">');
@@ -1261,14 +1261,14 @@ function initSettingsEvents() {
         _checkPwdIntension($("#txt_Settings_PWD_New_PWD").val().trim(), $('#lb_Settings_New_Pwd_Intension'));
     });
 
-    $('#mWindow_customHeaderModal').on('show.bs.modal', function () {
+    $('#modalCustomHeader').on('show.bs.modal', function () {
         $('#progress_HeaderUpload').show();
         $('#warnning_HeaderUpload').hide();
         $('#wrap_CropBox_Header').hide();
         initCustomHeaderImg();
     });
 
-    $('#mWindow_customHeaderModal').on('hide.bs.modal', function () {
+    $('#modalCustomHeader').on('hide.bs.modal', function () {
         $('#progress_HeaderUpload').hide();
         $('#warnning_HeaderUpload').hide();
         $('#wrap_CropBox_Header').hide();
@@ -1337,7 +1337,7 @@ function initSettingsEvents() {
                         _showGlobalMessage($(data).find('err').attr('msg'), 'danger', 'alert_Save_CustHead_Error');
                         return;
                     } else {
-                        $('#mWindow_customHeaderModal').modal('hide');
+                        $('#modalCustomHeader').modal('hide');
                         loadHeaderImg();
                     }
                 },

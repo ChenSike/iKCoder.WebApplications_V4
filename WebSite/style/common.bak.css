@@ -64,3 +64,35 @@ div.alert-mask-custom {
 .font-16{
     font-size:16px;
 }
+
+.btn-outline-green {
+    color: rgb(96,96,96);
+    background-color: rgb(245,245,245);
+    border:solid 1px rgb(230,230,230);
+    background-image: none;
+    border-radius:0px;
+}
+
+    .btn-outline-green:hover {
+        color: #fff;
+        background-color: rgb(18,150,17);
+        border-color: rgb(18,150,17);
+    }
+
+    .btn-outline-green:focus, .btn-outline-green.focus {
+        color: #fff;
+        background-color: rgb(18,150,17);
+        border-color: rgb(18,150,17);
+    }
+
+    .btn-outline-green.disabled, .btn-green-success:disabled {
+        color: rgb(96,96,96);
+        background-color: rgb(245,245,245);
+    }
+
+    .btn-outline-green:active, .btn-outline-green.active,
+    .show > .btn-outline-success.dropdown-toggle {
+        color: #fff;
+        background-color:  rgb(26,173,25);
+        border-color: rgb(26,173,25);
+    }
