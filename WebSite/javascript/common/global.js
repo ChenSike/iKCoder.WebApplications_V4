@@ -36,6 +36,8 @@ if (!Date.now) {
 var _gHostName = {
     Basic: 'http://www.ikcoder.com/corebasic/api',
     App: 'http://www.ikcoder.com/coreapp/api',
+    Main: 'http://www.ikcoder.com/appmain/',
+    Core: 'http://www.ikcoder.com/corebasic/'
 };
 //defined url mapping
 var _gURLMapping = {
@@ -66,6 +68,34 @@ var _gURLMapping = {
         setinfo: _gHostName.Basic + '/Profiles_Students_SetTextInfo',
         //Get
         getinfo: _gHostName.Basic + '/Profiles_Students_GetTextInfo',
+    },
+    profile: {
+        //Get
+        getcoursepackage: _gHostName.Main + 'api/course_get_coursepackage',
+        //Get course_name
+        getlessonslist: _gHostName.Main + 'api/course_get_lessonslist',
+        //Get
+        getcourselist: _gHostName.Main + 'api/course_get_list',
+        //Get //检查签到情况，可以每次调用，如果今天已经签到就会一直TRUE
+        getcheckon: _gHostName.Main + 'api/students_get_checkon',
+        //Get //签到，无论调用多少次，每天只会记录一次
+        setcheckon: _gHostName.Main + 'api/student_set_checkon',
+        //Get //检查系统是否正常
+        getcheck: _gHostName.Main + 'api/system_get_check',
+        //Get 
+        gettitlelist: _gHostName.Main + 'api/title_get_list'
+    },
+    circle: {
+        //Get suname
+        getnewfriend: _gHostName.Core + 'api/Relations_Students_SetNewFriend',
+        //Post id
+        setaccecptfriend: _gHostName.Core + 'api/Relations_Students_SetAccecptFriend',
+        //Get
+        getlist: _gHostName.Core + 'api/Relations_Students_GetList',
+        //Get keyvalue
+        getdosearch: _gHostName.Core + 'api/Relations_Students_GetDoSearch',
+        //Get
+        getacceptlist: _gHostName.Core + 'api/Relations_Students_GetAcceptedList'
     }
 };
 //merge url

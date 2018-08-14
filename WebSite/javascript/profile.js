@@ -993,7 +993,7 @@ function circleBuildMessagePart(tmpHTMLArr) {
     tmpHTMLArr.push('<div class="container-fluid h-100 wrap-circle-message">');
     tmpHTMLArr.push('   <div class="row">');
     tmpHTMLArr.push('       <div class="col col-circle-message-history-user">');
-    tmpHTMLArr.push('           <label class="container-fluid label-circle-message-history-user">aaa</label>');
+    tmpHTMLArr.push('           <label class="container-fluid label-circle-message-history-user"></label>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="row">');
