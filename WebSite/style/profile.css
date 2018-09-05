@@ -212,12 +212,12 @@ footer {
 }
 
 .horizontal-list {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px 0px;
 }
 
     .horizontal-list .horizontal-list-wrap {
         overflow: hidden;
+        padding: 0px;
     }
 
     .horizontal-list .wrap-horizontal-list-item {

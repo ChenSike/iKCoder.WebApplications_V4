@@ -34,73 +34,75 @@ if (!Date.now) {
 }());
 //defined host name
 var _gHostName = {
-    Basic: 'http://www.ikcoder.com/corebasic/api',
-    App: 'http://www.ikcoder.com/coreapp/api',
-    Main: 'http://www.ikcoder.com/appmain/',
-    Core: 'http://www.ikcoder.com/corebasic/'
+    Basic: 'http://www.ikcoder.com/corebasic/api/',
+    Main: 'http://www.ikcoder.com/appmain/api/'
 };
 //defined url mapping
 var _gURLMapping = {
     account: {
         //Get	string uid, string pwd, string status = "0", string level = "0"
-        signup: _gHostName.Basic + '/Account_Students_Create',
+        signup: _gHostName.Basic + 'Account_Students_Create',
         //Get	string uid, string pwd, string checkcode, string status = "0", string level = "0"
-        signupwithcode: _gHostName.Basic + '/Account_Students_CreateWithCheckCode',
+        signupwithcode: _gHostName.Basic + 'Account_Students_CreateWithCheckCode',
         //Get	string uid
-        existed: _gHostName.Basic + '/Account_Students_Existed',
+        existed: _gHostName.Basic + 'Account_Students_Existed',
         //Get	string name, string pwd
-        signin: _gHostName.Basic + '/Account_Students_Login',
+        signin: _gHostName.Basic + 'Account_Students_Login',
         //Get	string name, string pwd,string checkcode
-        signinwithcode: _gHostName.Basic + '/Account_Students_LoginWithCheckCode',
+        signinwithcode: _gHostName.Basic + 'Account_Students_LoginWithCheckCode',
         //Get
-        signout: _gHostName.Basic + '/Account_Students_Logout',
+        signout: _gHostName.Basic + 'Account_Students_Logout',
         //Get
-        signstatus: _gHostName.Basic + '/Account_Students_SignStatus',
+        signstatus: _gHostName.Basic + 'Account_Students_SignStatus',
         //Get
-        checkcode: _gHostName.Basic + '/Common_Services_NewCheckCode',
+        checkcode: _gHostName.Basic + 'Common_Services_NewCheckCode',
         //Get	string oldpwd,string newpwd
-        updatepwd: _gHostName.Basic + '/Account_Students_ChangePWD',
+        updatepwd: _gHostName.Basic + 'Account_Students_ChangePWD',
         //Get	string withpath="1"
-        getheader: _gHostName.Basic + '/Profiles_Students_GetHeader',
+        getheader: _gHostName.Basic + 'Profiles_Students_GetHeader',
         //Post
-        setheader: _gHostName.Basic + '/Profiles_Students_SetHeader',
+        setheader: _gHostName.Basic + 'Profiles_Students_SetHeader',
         //Get	string sex, string nickname, string birthday, string state, string city , string country = "China"
-        setinfo: _gHostName.Basic + '/Profiles_Students_SetTextInfo',
+        setinfo: _gHostName.Basic + 'Profiles_Students_SetTextInfo',
         //Get
-        getinfo: _gHostName.Basic + '/Profiles_Students_GetTextInfo',
+        getinfo: _gHostName.Basic + 'Profiles_Students_GetTextInfo',
     },
     profile: {
-        //Get
-        getcoursepackage: _gHostName.Main + 'api/course_get_coursepackage',
-        //Get course_name
-        getlessonslist: _gHostName.Main + 'api/course_get_lessonslist',
-        //Get
-        getcourselist: _gHostName.Main + 'api/course_get_list',
+        //Get //取出所有的包
+        getcoursepackage: _gHostName.Main + 'course_get_coursepackage',
+        //Get course_name //取出对应包的所有课程
+        getlessonslist: _gHostName.Main + 'course_get_lessonslist',
+        //Get //取出已经付费或者免费的包
+        getcourselist: _gHostName.Main + 'course_get_list',
         //Get //检查签到情况，可以每次调用，如果今天已经签到就会一直TRUE
-        getcheckon: _gHostName.Main + 'api/students_get_checkon',
+        getcheckon: _gHostName.Main + 'students_get_checkon',
         //Get //签到，无论调用多少次，每天只会记录一次
-        setcheckon: _gHostName.Main + 'api/student_set_checkon',
+        setcheckon: _gHostName.Main + 'student_set_checkon',
         //Get //检查系统是否正常
-        getcheck: _gHostName.Main + 'api/system_get_check',
+        getcheck: _gHostName.Main + 'system_get_check',
         //Get 
-        gettitlelist: _gHostName.Main + 'api/title_get_list'
+        gettitlelist: _gHostName.Main + 'title_get_list',
+        //Get //获取情绪
+        getmood: _gHostName.Main + 'students_get_mood',
+        //Get //设置情绪 mood=1 / 2 / 3 
+        setmood: _gHostName.Main + 'students_set_mood'
     },
     circle: {
         //Get suname
-        getnewfriend: _gHostName.Core + 'api/Relations_Students_SetNewFriend',
+        getnewfriend: _gHostName.Basic + 'Relations_Students_SetNewFriend',
         //Post id
-        setaccecptfriend: _gHostName.Core + 'api/Relations_Students_SetAccecptFriend',
+        setaccecptfriend: _gHostName.Basic + 'Relations_Students_SetAccecptFriend',
         //Get
-        getlist: _gHostName.Core + 'api/Relations_Students_GetList',
+        getlist: _gHostName.Basic + 'Relations_Students_GetList',
         //Get keyvalue
-        getdosearch: _gHostName.Core + 'api/Relations_Students_GetDoSearch',
+        getdosearch: _gHostName.Basic + 'Relations_Students_GetDoSearch',
         //Get
-        getacceptlist: _gHostName.Core + 'api/Relations_Students_GetAcceptedList'
+        getacceptlist: _gHostName.Basic + 'Relations_Students_GetAcceptedList'
     }
 };
 //merge url
 function _getRequestURL(page, params) {
-    var url = page + '?rnd=' + Date.now();;
+    var url = page + '?student_token=' + _CookieUtils.get('student_token') + '&rnd=' + Date.now();
     if (params) {
         for (var key in params) {
             url += '&' + key + '=' + params[key];
@@ -342,7 +344,7 @@ var _CookieUtils = {
         var cookieName = encodeURIComponent(name) + "=";
         //只取得最匹配的name，value
         var cookieStart = document.cookie.indexOf(cookieName);
-        var cookieValue = null;
+        var cookieValue = '';
 
         if (cookieStart > -1) {
             // 从cookieStart算起

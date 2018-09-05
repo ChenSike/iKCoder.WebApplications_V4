@@ -648,17 +648,18 @@ nav-ul-container {
     border-bottom: solid 1px rgb(236,239,241);
 }
 
-#wrap_Settings_PWD .fa.fa-eye-slash{
-    width:15px; height:15px;
-}
+    #wrap_Settings_PWD .fa.fa-eye-slash {
+        width: 15px;
+        height: 15px;
+    }
 
-#wrap_Settings_PWD h4{
-    color:rgb(107,129,140);
-}
+    #wrap_Settings_PWD h4 {
+        color: rgb(107,129,140);
+    }
 
-#wrap_Settings_PWD label{
-    justify-content: flex-start;
-}
+    #wrap_Settings_PWD label {
+        justify-content: flex-start;
+    }
 
 
 /*Profile-User Information & Upload header Image*/

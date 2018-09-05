@@ -75,6 +75,13 @@ var _gUserGroups = [
     { id: 'friend', title: '我的小伙伴', items: [] },
     { id: 'guest', title: '新朋友', items: [] }
 ];
+var _gCourseImgMap = {
+    A: { img: 'image/course/course_1.png', color: 'rgb(86,181,34)' },
+    B: { img: 'image/course/course_2.png', color: 'rgb(100,124,185)' },
+    C: { img: 'image/course/course_1.png', color: 'rgb(86,181,34)' },
+    D: { img: 'image/course/course_2.png', color: 'rgb(100,124,185)' },
+    E: { img: 'image/course/course_2.png', color: 'rgb(100,124,185)' }
+};
 
 function initPage() {
     globalResize();
@@ -86,6 +93,32 @@ function initPage() {
 
 function initEvents() {
     $(window).resize(globalResize);
+
+    $('#btn_Student_SignIn').on('click', function () {
+        var checkOnFn = function (response) {
+            var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
+            if (success) {
+                $('#btn_Student_SignIn .mood-text').text('已签到');
+            } else {
+
+            }
+        };
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.profile.setcheckon, {}), '', checkOnFn);
+    });
+
+    $('.btn-header-mood').on('click', function () {
+        var moodFn = function (response) {
+            var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
+            if (success) {
+
+            } else {
+
+            }
+        };
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.profile.setmood, { mood: $(arguments[0].currentTarget).attr('data-target') }), '', moodFn);
+    });
 
     $('#linkBtn_Upload_HeaderFile').on('click', function () {
         $('#progress_HeaderUpload').hide();
@@ -267,9 +300,19 @@ function getCurrentCategoryObj(categoryId) {
 function buildCategoryContent(categoryId) {
     getCurrentCategoryObj(categoryId);
     $('.col-main-content').empty();
+    var successFn;
     switch (_gCurrCateId) {
         case 'courses':
-            buildContent_Courses();
+            successFn = function (response) {
+                var items = $(response).find('row');
+                if (items.length > 0) {
+                    buildContent_Courses(items);
+                } else {
+
+                }
+            };
+
+            ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcoursepackage, {}), '', successFn);
             break;
         case 'experiment':
             buildContent_Exp();
@@ -295,7 +338,7 @@ function buildCategoryContent(categoryId) {
     }
 };
 
-function buildContent_Courses() {
+function buildContent_Courses(items) {
     var orgContainerHeight = 235;
     var orgHeight = 225;
     var orgWidth = 155;
@@ -311,17 +354,17 @@ function buildContent_Courses() {
     var padding = Math.floor((containerHeight - height) / 2);
     var space = Math.floor(scale * orgSpace);
 
-    var datas = [
-        { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
-        { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别模式识别模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' },
-        { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
-        { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别模式识别模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' },
-        { id: 'enlighten', title: '当前课程', course: '【B_01_002】路径跟随', img: 'image/course/course_1.png', color: 'rgb(86,181,34)', symbol: 'B_01_002' },
-        { id: 'primary', title: '历史课程', course: '【B_01_001】模式识别模式识别模式识别', img: 'image/course/course_2.png', color: 'rgb(100,124,185)', symbol: 'B_01_001' }
-    ];
+    var datas = [];
+    var tmpItem = null;
+    for (var i = 0; i < items.length; i++) {
+        tmpItem = $(items[i]);
+        datas.push({ id: tmpItem.attr('id'), name: tmpItem.attr('name'), course: tmpItem.attr('title'), price: tmpItem.attr('price'), isfree: tmpItem.attr('isfree'), discount: tmpItem.attr('discount') });
+    }
+
     var itemCount = datas.length;
     var tmpHTMLArr = [];
     var tmpStyle = '';
+    var tmpPrice = '';
     tmpHTMLArr.push('<div class="container-fluid h-100 wrap-courses-content">');
     tmpHTMLArr.push('    <div class="row align-items-center row-courses-group-list">');
     tmpHTMLArr.push('        <div class="col">');
@@ -331,38 +374,54 @@ function buildContent_Courses() {
         itemsHTML.push('<div class="text-center wrap-horizontal-list-item" style="' + tmpStyle + '">');
         itemsHTML.push('    <div class="d-flex align-items-center h-100">');
         tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
-        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '" data-target="' + datas[i].id + '">');
+        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '" data-target="' + datas[i].name + '">');
         itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col-12 no-padding">');
+        itemsHTML.push('                <div class="col no-padding">');
         tmpStyle = 'height:' + imgHeight + 'px;';
-        itemsHTML.push('                    <img class="img-fluid" src="' + datas[i].img + '" style="' + tmpStyle + '" />');
+        itemsHTML.push('                    <img class="img-fluid" src="' + _gCourseImgMap[datas[i].name.trim()].img + '" style="' + tmpStyle + '" />');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col-12 no-padding">');
-        tmpStyle = 'color:' + datas[i].color + ';font-size:12px';
+        itemsHTML.push('                <div class="col no-padding">');
+        tmpStyle = 'color:' + _gCourseImgMap[datas[i].name.trim()].color + ';font-size:12px';
         itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col no-padding">');
+        tmpPrice = (datas[i].isfree == '1' ? '免费' : parseInt(datas[i].price).toFixed(2));
+        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">价格: <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span></p>');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        if (datas[i].isfree != '1') {
+            itemsHTML.push('            <div class="row no-margin">');
+            itemsHTML.push('                <div class="col no-padding">');
+            tmpPrice = (datas[i].discount == '0' ? '无' : parseInt(datas[i].price * 100).toFixed(2));
+            itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">折扣: ' + tmpPrice + '</p>');
+            itemsHTML.push('                </div>');
+            itemsHTML.push('            </div>');
+        }
+
         itemsHTML.push('        </div>');
         itemsHTML.push('    </div>');
         itemsHTML.push('</div>');
     }
 
-    tmpHTMLArr.push(buildHorizontalList(itemsHTML.join('')));
+    tmpHTMLArr.push(buildHorizontalList(itemsHTML.join(''), 'course_package'));
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('.col-main-content').append($(tmpHTMLArr.join('')));
     $('.horizontal-list-item').on('click', function (eventObj) {
-        buildDetail_Course($(eventObj.currentTarget).attr('data-target'));
+        ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { name: $(eventObj.currentTarget).attr('data-target') }), '', buildDetail_Course);
     });
-    bindHorizontalListEvent(containerHeight, width, space, itemCount);
 
-    buildDetail_Course(datas[0].id);
+    bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
+    ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { name: datas[0].name }), '', buildDetail_Course);
+    buildDetail_Course();
 };
 
-function buildDetail_Course(courseGroupId) {
+function buildDetail_Course(response) {
     var datas = [
         { symbol: 'B_01_002', title: '第一课XXXXXX', steps: 4, complete: 4, steam: 's', type: ['js', 'python', 'html5', 'node', 'java'] },
         { symbol: 'B_01_002', title: '第二课XXXXXX', steps: 5, complete: 2, steam: 'ea', type: ['python', 'css3'] },
@@ -2786,6 +2845,15 @@ function reportAttentionAdjustImg() {
 };
 
 function initData() {
+    var checkOnFn = function (response) {
+        var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
+        if (success) {
+            $('#btn_Student_SignIn .mood-text').text('已签到');
+        }
+    };
+
+    ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcheckon, {}), '', checkOnFn);
+
     var successFn = function (response) {
         //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
         //    var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
