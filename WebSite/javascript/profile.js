@@ -413,11 +413,11 @@ function buildContent_Courses(items) {
     tmpHTMLArr.push('</div>');
     $('.col-main-content').append($(tmpHTMLArr.join('')));
     $('.horizontal-list-item').on('click', function (eventObj) {
-        ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { name: $(eventObj.currentTarget).attr('data-target') }), '', buildDetail_Course);
+        ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: $(eventObj.currentTarget).attr('data-target') }), '', buildDetail_Course);
     });
 
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
-    ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { name: datas[0].name }), '', buildDetail_Course);
+    ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Course);
     buildDetail_Course();
 };
 
