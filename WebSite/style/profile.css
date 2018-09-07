@@ -349,6 +349,20 @@ footer {
     padding-left: 20px;
 }
 
+.experiment-attach-btn {
+    padding: 0px 5px;
+}
+
+
+.experiment-content-text {
+    width: 100%;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0px;
+}
+
 .carousel-control-prev, .carousel-control-next {
     color: rgb(17,138,195);
 }
@@ -1129,12 +1143,20 @@ footer {
     font-size: 13px;
 }
 
+.text-14 {
+    font-size: 14px;
+}
+
 .text-16 {
     font-size: 16px;
 }
 
 .text-21 {
     font-size: 21px;
+}
+
+.text-bold {
+    font-weight: bold;
 }
 
 .text-90c553 {

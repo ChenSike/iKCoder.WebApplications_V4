@@ -49,12 +49,12 @@ var _gCategory = [
     { id: 'teamsuit', icon: 'fa-users', text: 'Team Suit' }
 ];
 var _gCourseTypeMap = {
-    js: { icon: 'js-square', title: 'Java Script' },
-    python: { icon: 'python', title: 'Python' },
-    java: { icon: 'java', title: 'Java' },
-    node: { icon: 'node-js', title: 'Node.JS' },
-    html5: { icon: 'html5', title: 'HTML5' },
-    css3: { icon: 'css3-alt', title: 'CSS3' }
+    l: { icon: 'html5', title: 'HTML5' },
+    j: { icon: 'java', title: 'Java' },
+    p: { icon: 'python', title: 'Python' },
+    c: { icon: 'css3-alt', title: 'CSS3' },
+    n: { icon: 'node-js', title: 'Node.JS' },
+    s: { icon: 'js-square', title: 'Java Script' }
 };
 var _gSTEAMMap = {
     s: { icon: 'js-square', title: 'Science' },
@@ -68,8 +68,9 @@ var _gCurrentEmojiGroup = null;
 var _gSocket = null;
 var _gToken = '';
 var _orgAvailableHeight = 890;
-var _gUserInfoObj = { userName: 'Terry', header: "image/tmpheader_1.jpg", userId: 88, nickName: 'Terry', level: '初级工程师' };
+var _gUserInfoObj = { userName: '', header: '', userId: '', nickName: '', level: '', nickName: '', birthday: '', country: '', gender: '', province: '', city: '', school: '' };
 var _gCirleMessages = {};
+var _circleDataSearch = { value: [] };
 var _gUserGroups = [
     { id: 'system', title: '助手和顾问', items: [] },
     { id: 'friend', title: '我的小伙伴', items: [] },
@@ -100,7 +101,6 @@ function initEvents() {
             if (success) {
                 $('#btn_Student_SignIn .mood-text').text('已签到');
             } else {
-
             }
         };
 
@@ -169,15 +169,19 @@ function initEvents() {
         var tmpStr = $('#btn_CustomHeader_Save').attr('data-content');
         var tmpParams = tmpStr.split(',');
         if (tmpStr != '' && tmpParams.length == 4) {
-            var successFn = function (data, status) {
+            var successFn = function (response, status) {
                 var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
                 if (success) {
                     $('#modalCustomHeader').modal('hide');
                     ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
                         var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
                         if (success) {
-                            _gUserInfoObj.header = _gUserHeader = 'image/tmpheader.jpg';
-                            updateUserInfo();
+                            var tmpImg = $($(response_header).find('msg')[0]).text();
+                            if (tmpImg.indexOf('.') < 0) {
+                                tmpImg = 'image/tmpheader.jpg';
+                            }
+
+                            _gUserInfoObj.header = tmpImg;
                         }
                     });
                 } else {
@@ -185,7 +189,7 @@ function initEvents() {
                 }
             };
 
-            ajaxFn('POST', _getRequestURL(_gURLMapping.account.cheaderimg, {}), { data: document.getElementById("canvas_Sample_1").toDataURL() }, successFn);
+            ajaxFn('POST', _getRequestURL(_gURLMapping.account.setheader, {}), { data: document.getElementById("canvas_Sample_1").toDataURL() }, successFn);
         }
     });
 };
@@ -304,7 +308,7 @@ function buildCategoryContent(categoryId) {
     switch (_gCurrCateId) {
         case 'courses':
             successFn = function (response) {
-                var items = $(response).find('row');
+                var items = $(response).find('item');
                 if (items.length > 0) {
                     buildContent_Courses(items);
                 } else {
@@ -315,7 +319,16 @@ function buildCategoryContent(categoryId) {
             ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcoursepackage, {}), '', successFn);
             break;
         case 'experiment':
-            buildContent_Exp();
+            successFn = function (response) {
+                var items = $(response).find('item');
+                if (items.length > 0) {
+                    buildContent_Exp(items);
+                } else {
+
+                }
+            };
+
+            ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcoursepackage, {}), '', successFn);
             break;
         case 'circle':
             buildContent_Circle();
@@ -418,20 +431,27 @@ function buildContent_Courses(items) {
 
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
     ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Course);
-    buildDetail_Course();
 };
 
 function buildDetail_Course(response) {
-    var datas = [
-        { symbol: 'B_01_002', title: '第一课XXXXXX', steps: 4, complete: 4, steam: 's', type: ['js', 'python', 'html5', 'node', 'java'] },
-        { symbol: 'B_01_002', title: '第二课XXXXXX', steps: 5, complete: 2, steam: 'ea', type: ['python', 'css3'] },
-        { symbol: 'B_01_002', title: '第三课XXXXXX', steps: 4, complete: 4, steam: 'te', type: ['js'] },
-        { symbol: 'B_01_002', title: '第四课XXXXXX', steps: 4, complete: 4, steam: 'sm', type: ['html5', 'java'] },
-        { symbol: 'B_01_002', title: '第五课XXXXXX', steps: 6, complete: 1, steam: 'em', type: ['java'] },
-        { symbol: 'B_01_002', title: '第六课XXXXXX', steps: 4, complete: 4, steam: 'ste', type: ['js', 'python', 'css3', 'node', 'java'] },
-        { symbol: 'B_01_002', title: '第七课XXXXXX', steps: 3, complete: 3, steam: 'steam', type: ['js', 'html5', 'node', 'java'] },
-        { symbol: 'B_01_002', title: '第八课XXXXXX', steps: 4, complete: 4, steam: 's', type: [] }
-    ];
+    //<root itemcount="1">
+    //<row index="1" id="1" course_name="A" lesson_title="模式识别" isfree="1" lesson_code="A_01_001" steam="s" udba="l" totalsteps="4" exp="100"></row>
+    //</root>
+    var items = $(response).find('row');
+    var datas = [];
+    var currItem = null;
+    for (var i = 0; i < items.length; i++) {
+        currItem = $(items[i]);
+        datas.push({
+            symbol: currItem.attr('lesson_code'),
+            title: currItem.attr('lesson_title'),
+            steps: currItem.attr('totalsteps'),
+            complete: typeof currItem.attr('complete') == 'undefined' ? '0' : currItem.attr('complete'),
+            steam: currItem.attr('steam'),
+            type: currItem.attr('udba'),
+            course: currItem.attr('course_name')
+        });
+    }
 
     var tmpHTMLArr = [];
     tmpHTMLArr.push('    <div class="row align-items-center row-courses-group-item-list">');
@@ -500,101 +520,165 @@ function buildCourseTypeHTML(courseType) {
     return tmpHTMLArr.join('');
 };
 
-function buildContent_Exp() {
-    var data = [
-        {
-            id: '3',
-            type: '2',
-            date: '2017-10-3',
-            teacher: 'Teacher Zhang',
-            status: '',
-            title: 'B-01-001: 模式识别',
-            content: '想一想，试一试，如何让吃豆人运行到附件图中的位置.',
-            attach: ['image/Experimental/e_1.png', 'image/Experimental/e_2.png', 'image/Experimental/e_3.png'],
-            correct: "",
-            incorrect: ""
+function buildContent_Exp(items) {
+    var orgContainerHeight = 235;
+    var orgHeight = 225;
+    var orgWidth = 155;
+    var orgImgHeight = 140;
+    var orgSpace = 35;
+    var availableHeight = $('.col-content').height();
+    var scale = availableHeight / _orgAvailableHeight;
+
+    var containerHeight = Math.floor(scale * orgContainerHeight);
+    var height = Math.floor(scale * orgHeight);
+    var width = Math.floor(scale * orgWidth);
+    var imgHeight = Math.floor(scale * orgImgHeight);
+    var padding = Math.floor((containerHeight - height) / 2);
+    var space = Math.floor(scale * orgSpace);
+
+    var datas = [];
+    var tmpItem = null;
+    for (var i = 0; i < items.length; i++) {
+        tmpItem = $(items[i]);
+        datas.push({ id: tmpItem.attr('id'), name: tmpItem.attr('name'), course: tmpItem.attr('title'), price: tmpItem.attr('price'), isfree: tmpItem.attr('isfree'), discount: tmpItem.attr('discount') });
+    }
+
+    var itemCount = datas.length;
+    var tmpHTMLArr = [];
+    var tmpStyle = '';
+    var tmpPrice = '';
+    tmpHTMLArr.push('<div class="container-fluid h-100 wrap-experiment-content">');
+    tmpHTMLArr.push('    <div class="row align-items-center row-experiment-group-list">');
+    tmpHTMLArr.push('        <div class="col">');
+    var itemsHTML = [];
+    for (var i = 0; i < itemCount; i++) {
+        tmpStyle = 'padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;';
+        itemsHTML.push('<div class="text-center wrap-horizontal-list-item" style="' + tmpStyle + '">');
+        itemsHTML.push('    <div class="d-flex align-items-center h-100">');
+        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
+        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '" data-target="' + datas[i].name + '">');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col no-padding">');
+        tmpStyle = 'height:' + imgHeight + 'px;';
+        itemsHTML.push('                    <img class="img-fluid" src="' + _gCourseImgMap[datas[i].name.trim()].img + '" style="' + tmpStyle + '" />');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col no-padding">');
+        tmpStyle = 'color:' + _gCourseImgMap[datas[i].name.trim()].color + ';font-size:12px';
+        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('                <div class="col no-padding">');
+        tmpPrice = (datas[i].isfree == '1' ? '免费' : parseInt(datas[i].price).toFixed(2));
+        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">价格: <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span></p>');
+        itemsHTML.push('                </div>');
+        itemsHTML.push('            </div>');
+        if (datas[i].isfree != '1') {
+            itemsHTML.push('            <div class="row no-margin">');
+            itemsHTML.push('                <div class="col no-padding">');
+            tmpPrice = (datas[i].discount == '0' ? '无' : parseInt(datas[i].price * 100).toFixed(2));
+            itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">折扣: ' + tmpPrice + '</p>');
+            itemsHTML.push('                </div>');
+            itemsHTML.push('            </div>');
         }
+
+        itemsHTML.push('        </div>');
+        itemsHTML.push('    </div>');
+        itemsHTML.push('</div>');
+    }
+
+    tmpHTMLArr.push(buildHorizontalList(itemsHTML.join(''), 'course_package'));
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    $('.col-main-content').append($(tmpHTMLArr.join('')));
+    $('.horizontal-list-item').on('click', function (eventObj) {
+        ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: $(eventObj.currentTarget).attr('data-target') }), '', buildDetail_Exp);
+    });
+
+    bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
+    ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Exp);
+};
+
+function buildDetail_Exp(response) {
+    var datas = [
+       {
+           id: 1,
+           date: '2017-10-3',
+           author: 'Teacher Zhang',
+           status: '',
+           title: '模式识别',
+           content: '想一想，试一试，如何让吃豆人运行到附件图中的位置.',
+           attach: ['image/Experimental/e_1.png', 'image/Experimental/e_2.png', 'image/Experimental/e_3.png'],
+           course: '',
+           lesson: ''
+       }
     ];
 
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid no-wrap wrap-experiment">');
-    tmpHTMLArr.push('   <div class="row no-wrap">');
-    tmpHTMLArr.push('       <div class="col-12 no-wrap" style="overflow:auto;">');
-    tmpHTMLArr.push('           <div id="accordion" role="tablist">');
-    for (var i = 0; i < data.length; i++) {
-        tmpHTMLArr.push('<div class="card" style="border-radius: 0px;">');
-        tmpHTMLArr.push('   <div class="card-header no-padding" role="tab" id="heading_' + data[i].id + '">');
-        tmpHTMLArr.push('       <table class="table table-striped" style="margin-bottom: 0px;">');
-        tmpHTMLArr.push('           <tbody>');
-        tmpHTMLArr.push('               <tr>');
-        tmpHTMLArr.push('                   <th><i class="fas fa-flask experiment-symbol"></i></th>');
-        tmpHTMLArr.push('                   <td><a data-toggle="collapse" href="#collapse_' + data[i].id + '" aria-expanded="true" aria-controls="collapse_' + data[i].id + '">' + data[i].title + '</a></td>');
-        tmpHTMLArr.push('                   <td class="mw-100 text-right">' + data[i].date + '</td>');
-        tmpHTMLArr.push('                   <td class="mw-100 text-right">' + data[i].teacher + '</td>');
-        tmpHTMLArr.push('               </tr>');
-        tmpHTMLArr.push('           </tbody>');
-        tmpHTMLArr.push('       </table>');
-        tmpHTMLArr.push('   </div>');
-        tmpHTMLArr.push('   <div id="collapse_' + data[i].id + '" class="collapse experiment-item" role="tabpanel" aria-labelledby="heading_' + data[i].id + '" data-parent="#accordion" data-target="' + data[i].id + '">');
-        tmpHTMLArr.push('       <div class="card-block" style="padding:10px;">');
-        tmpHTMLArr.push('       <table class="table table-sm">');
-        tmpHTMLArr.push('           <tbody>');
-        if (data[i].attach.length > 0) {
-            tmpHTMLArr.push('               <tr>');
-            tmpHTMLArr.push('                   <td class="mw-100 experiment-atta-title" style="border:none;">');
-            tmpHTMLArr.push('                       <a href="#" class="experiment-attach-label" data-target="' + data[i].id + '">共有' + data[i].attach.length + '个附件，点击查看。</a>');
-            tmpHTMLArr.push('                   </td>');
-            tmpHTMLArr.push('               <tr>');
-        }
+    tmpHTMLArr.push('    <div class="row align-items-center text-14 row-experiment-group-item-list">');
+    tmpHTMLArr.push('        <div class="col no-padding">');
+    tmpHTMLArr.push('<table class="table table-hover table-sm">');
+    tmpHTMLArr.push('   <thead>');
+    tmpHTMLArr.push('       <tr>');
+    tmpHTMLArr.push('           <th scope="col col-experiment-state" style="width: 50px; min-width:50px; height: 1px; padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-experiment-title" style="width: 100px; min-width:50px; height: 1px; padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-experiment-content" style="height: 1px; padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-experiment-attach" style="width: 60px; min-width:60px; height: 1px; padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-experiment-author" style="width: 120px; min-width:120px; height: 1px; padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-experiment-date" style="width: 120px; min-width:120px; height: 1px; padding: 0px;"></th>');
+    tmpHTMLArr.push('       </tr>');
+    tmpHTMLArr.push('   </thead>');
+    tmpHTMLArr.push('   <tbody>');
 
-        tmpHTMLArr.push('               <tr>');
-        tmpHTMLArr.push('                   <td class="mw-100" style="border:none;">' + data[i].content + '</td>');
-        tmpHTMLArr.push('               <tr>');
-        tmpHTMLArr.push('           <tbody>');
-        tmpHTMLArr.push('       </table>');
-        tmpHTMLArr.push('       </div>');
-        tmpHTMLArr.push('   </div>');
-        tmpHTMLArr.push('</div>');
+    var tmpState;
+    for (var i = 0; i < datas.length; i++) {
+        tmpState = (datas[i].status == '1' ? 'star' : 'star-half-alt');
+        tmpHTMLArr.push('       <tr style="line-height: 30px;">');
+        tmpHTMLArr.push('           <td class="text-center"><i class="fas fa-' + tmpState + ' course-state"></i></td>');
+        tmpHTMLArr.push('           <td class="text-bold">' + datas[i].title + '</td>');
+        tmpHTMLArr.push('           <td><div class="experiment-content-text">' + datas[i].content + '</div></td>');
+        tmpHTMLArr.push('           <td><button type="button" class="btn btn-outline-info btn-sm experiment-attach-btn" data-target="' + datas[i].id + '">View</button></td>');
+        tmpHTMLArr.push('           <td>' + datas[i].author + '</td>');
+        tmpHTMLArr.push('           <td>' + datas[i].date + '</td>');
+        tmpHTMLArr.push('       </tr>');
     }
 
-    tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('</div>');
-
-    $('.col-main-content').append($(tmpHTMLArr.join('')));
-    var wrap = $('.wrap-experiment');
-    var availableHeight = $('.col-content').height();
-    if (wrap.height() < availableHeight) {
-        wrap.height(availableHeight);
-    }
-
-    $('.experiment-attach-label').on('click', function () {
+    tmpHTMLArr.push('   </tbody>');
+    tmpHTMLArr.push('</table>');
+    tmpHTMLArr.push('        </div>');
+    tmpHTMLArr.push('    </div>');
+    $('.row-experiment-group-item-list').remove();
+    $('.row-experiment-group-list').after($(tmpHTMLArr.join('')));
+    $('.experiment-attach-btn').on('click', function () {
         var dataId = $(arguments[0].target).attr('data-target');
         var attachs = [];
-        for (var i = 0; i < data.length; i++) {
-            if (dataId == data[i].id) {
-                attachs = data[i].attach;
+        for (var i = 0; i < datas.length; i++) {
+            if (dataId == datas[i].id) {
+                showExperimentAttachs(datas[i]);
             }
         }
-
-        showExperimentAttachs(attachs);
     });
 };
 
-function showExperimentAttachs(attachs) {
+function showExperimentAttachs(data) {
     if ($('#modal_Experiment_Attachs').length == 0) {
         var tmpHTMLStr = [];
         tmpHTMLStr.push('<div class="modal fade" id="modal_Experiment_Attachs" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
         tmpHTMLStr.push('    <div class="modal-dialog modal-lg" role="document">');
         tmpHTMLStr.push('        <div class="modal-content h-100">');
         tmpHTMLStr.push('            <div class="modal-header">');
-        tmpHTMLStr.push('                <h5 class="modal-title font-16" id="exampleModalLabel">题目附件</h5>');
+        tmpHTMLStr.push('                <h5 class="modal-title font-16" id="exampleModalLabel">题目详情</h5>');
         tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
         tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
         tmpHTMLStr.push('                </button>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('<div class="container-fluid wrap-circle">');
+        tmpHTMLStr.push('   <div class="row">');
+        tmpHTMLStr.push('       <div class="col">');
         tmpHTMLStr.push('                <div id="carousel_Experiment_Attachs" class="carousel slide h-100" data-ride="carousel" data-interval="90000" data-keyboard="true" data-wrap="false" data-ride="true">');
         tmpHTMLStr.push('                    <div class="carousel-inner h-100">');
         tmpHTMLStr.push('                    </div>');
@@ -609,6 +693,14 @@ function showExperimentAttachs(attachs) {
         tmpHTMLStr.push('                        <span class="sr-only">Next</span>');
         tmpHTMLStr.push('                    </a>');
         tmpHTMLStr.push('                </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('    <div class="row">');
+        tmpHTMLStr.push('       <div class="col">');
+        tmpHTMLStr.push('           <p class="padding-10">' + data.content + '</p>');
+        tmpHTMLStr.push('       </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('            <div class="modal-footer">');
         tmpHTMLStr.push('                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">关闭</button>');
@@ -622,9 +714,9 @@ function showExperimentAttachs(attachs) {
 
     $('#carousel_Experiment_Attachs .carousel-inner').empty();
     var tmpItemStr = '';
-    for (var i = 0; i < attachs.length; i++) {
+    for (var i = 0; i < data.attach.length; i++) {
         tmpItemStr += '<div class=" h-100 carousel-item ' + (i == 0 ? 'active' : '') + '">';
-        tmpItemStr += '   <img class="d-block h-100" src="' + attachs[i] + '" style="margin: auto;">';
+        tmpItemStr += '   <img class="d-block h-100" src="' + data.attach[i] + '" style="margin: auto;">';
         tmpItemStr += '</div>';
     }
 
@@ -862,50 +954,10 @@ function buildContent_Circle() {
 }
 
 function buildContent_Circle_Do(reponsse) {
-    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
-    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
-    var dataSystem = [];
-    var dataSearch = { value: [] };
-    for (var i = 0; i < 10; i++) {
-        var newUser = {
-            "userName": names[i % 13],
-            "header": "image/header/" + (i % 10) + ".jpg",
-            "userId": i,
-            "type": 'system'
-        };
-
-        dataSearch.value.push(newUser);
-        dataSystem.push(newUser);
-    }
-
-    var dataUser = [];
-    for (var i = 0; i < 30; i++) {
-        var tmpIdx = randomInt(0, 29);
-        var newUser = {
-            "userName": names[tmpIdx % 13],
-            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
-            "userId": i + 99,
-            "type": 'friend'
-        };
-
-        dataSearch.value.push(newUser);
-        dataUser.push(newUser);
-    }
-
-    var dataNew = [];
-    for (var i = 0; i < 5; i++) {
-        dataNew.push({
-            "userName": names[i],
-            "header": "image/header/" + i + ".jpg",
-            "userId": i,
-            "type": 'new'
-        });
-    }
-
     var defaultOptions = {
         url: null,                             //请求数据的 URL 地址
         jsonp: null,                         //设置此参数名，将开启jsonp功能，否则使用json数据结构
-        data: dataSearch,               //提示所用的数据，注意格式
+        data: _circleDataSearch,      //提示所用的数据，注意格式
         indexId: 0,                         //每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
         indexKey: 0,                       //每组数据的第几个数据，作为input输入框的内容
         idField: 'userId',                  //每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
@@ -1195,29 +1247,7 @@ function circleBuildMessageItem(content, type, userInfo) {
 };
 
 function circleGetUserObj(userType, userId) {
-    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
-    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
-
-    var dataSystem = [];
-    for (var i = 0; i < 10; i++) {
-        dataSystem.push({
-            "userName": names[i % 13],
-            "header": "image/header/" + (i % 10) + ".jpg",
-            "userId": i
-        });
-    }
-
-    var dataUser = [];
-    for (var i = 0; i < 30; i++) {
-        var tmpIdx = randomInt(0, 29);
-        dataUser.push({
-            "userName": names[tmpIdx % 13],
-            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
-            "userId": i
-        });
-    }
-
-    var tmpDatas = (userType == 'system' ? dataSystem : dataUser);
+    var tmpDatas = (userType == 'system' ? _gUserGroups[0].items : _gUserGroups[1].items);
     var tmpObj = null;
     for (var i = 0; i < tmpDatas.length; i++) {
         if (tmpDatas[i].userId == userId) {
@@ -1384,7 +1414,8 @@ function circleClickUserItem(eventObj) {
         $('.row-circle-user-list-item').removeClass('active');
         var currItem = $(eventObj.currentTarget);
         currItem.addClass('active');
-        webSocketGetCiecleHistory();
+        //webSocketGetCiecleHistory(tmpSymbol);
+        testswebSocketGetCiecleHistory(tmpSymbol);
         var symbolEl = $(currItem.find('.circle-user-list-item-msg')[0]);
         symbolEl.text('0');
         symbolEl.hide();
@@ -1839,36 +1870,26 @@ function settingBuildInfors() {
 };
 
 function settingsLoadUserProfile() {
-    var successFn = function (response) {
-        //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
-        //    var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        //    if (success) {
-        $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header);
-        $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header);
-        $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header);
-        $('#txt_Settings_Profile_NickName').val('Terry');
-        $('#txt_Settings_Profile_Name').val('郭靖');
-        //$("[name='settings_profile_gender']").each(function () {
-        //    $(this).removeAttr("checked");
-        //    if ($(this).attr("value") == data.gender) {
-        //        $(this).prop("checked", true);
-        //    }
-        //});
+    $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header);
+    $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header);
+    $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header);
+    $('#txt_Settings_Profile_NickName').val(_gUserInfoObj.nickName);
+    $('#txt_Settings_Profile_Name').val(_gUserInfoObj.userName);
+    _gUserInfoObj.gender = (_gUserInfoObj.gender == '' ? '1' : _gUserInfoObj.gender);
+    $("[name='settings_profile_gender']").each(function () {
+        $(this).removeAttr("checked");
+        if ($(this).attr("value") == _gUserInfoObj.gender) {
+            $(this).prop("checked", true);
+        }
+    });
 
-        $('#rb_Settings_Profile_Gender_Male').prop("checked", true);
-        $('#dt_Settings_Profile_Birthday').val('2007-01-15');
-        $('#sel_Settings_Profile_Province').val('广东').trigger("change");
-        //if (data.city != '') {
-        //    $('#select_Settings_Profile_User_City_City').val(data.city);
-        //}
-        $('#sel_Settings_Profile_City').val('深圳')
-        $('#txt_Settings_Profile_School').val('深圳市实验小学');
-        //    }
-        //});
-    };
-
-    //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo, {}), '', successFn);
-    successFn();
+    $('#dt_Settings_Profile_Birthday').val(_gUserInfoObj.birthday);
+    _gUserInfoObj.province = (_gUserInfoObj.province == '' ? '广东' : _gUserInfoObj.province);
+    $('#sel_Settings_Profile_Province').val(_gUserInfoObj.province);
+    $('#sel_Settings_Profile_Province').trigger("change");
+    _gUserInfoObj.city = (_gUserInfoObj.city == '' ? '深圳' : _gUserInfoObj.city);
+    $('#sel_Settings_Profile_City').val(_gUserInfoObj.city);
+    $('#txt_Settings_Profile_School').val(_gUserInfoObj.school);
 };
 
 function settingBuildChange() {
@@ -2012,9 +2033,9 @@ function settingUpdateProfile() {
 function buildContent_Report() {
     var data = {
         user: {
-            header: 'image/tmpheader.jpg',
-            name: 'Terry',
-            title: 'Level 2',
+            header: _gUserInfoObj.header,
+            name: _gUserInfoObj.nickName,
+            title: _gUserInfoObj.level,
             exp: 2.5,
             over: 25,
             course: 1,
@@ -2115,7 +2136,7 @@ function buildContent_Report() {
 function reportFormatData(response) {
     var tmpNode = $($(response).find('overview')[0]);
     var basicData = {
-        header: _getRequestURL(_gURLMapping.account.getheader, {}),
+        header: _gUserInfoObj.header,
         name: tmpNode.attr('usr_nickname') == '' ? $.cookie('logined_user_nickname') : tmpNode.attr('usr_nickname'),
         title: tmpNode.attr('usr_title'),
         exp: parseInt(tmpNode.attr('exprate')),
@@ -2845,45 +2866,72 @@ function reportAttentionAdjustImg() {
 };
 
 function initData() {
-    var checkOnFn = function (response) {
-        var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        if (success) {
-            $('#btn_Student_SignIn .mood-text').text('已签到');
-        }
-    };
-
-    ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcheckon, {}), '', checkOnFn);
-
     var successFn = function (response) {
-        //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
-        //    var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        //    if (success) {
-        //        _gUserInfoObj.header = _gUserHeader = 'image/tmpheader.jpg';
-        //        updateUserInfo();
-        //    }
-        //});
+        var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
+        var formatFn = function (attrName) {
+            var item = $(response).find('item[attr="' + attrName + '"]');
+            var retVal = '';
+            if (item.length > 0) {
+                retVal = $(item).attr('value');
+            }
 
+            return retVal;
+        };
+
+        if (success) {
+            var resObj = $(response);
+            _gUserInfoObj = {
+                userName: formatFn('username'),
+                header: '',
+                userId: formatFn('userid'),
+                nickName: formatFn('nickname'),
+                level: formatFn('level'),
+                birthday: formatFn('birthday'),
+                country: formatFn('country'),
+                gender: formatFn('gender'),
+                province: formatFn('province'),
+                city: formatFn('city'),
+                school: formatFn('school')
+            };
+        }
+
+        var headerFn = function (response_header) {
+            var success_header = ($($(response_header).find('executed')[0]).text() == 'true' ? true : false);
+            if (success_header) {
+                var tmpImg = $($(response_header).find('msg')[0]).text();
+                if (tmpImg.indexOf('.') < 0) {
+                    tmpImg = 'image/tmpheader.jpg';
+                }
+
+                _gUserInfoObj.header = tmpImg;
+            } else {
+                _gUserInfoObj.header = 'image/tmpheader.jpg';
+            }
+
+            updateUserInfo();
+            var checkOnFn = function (response_checkon) {
+                var success = ($($(response_checkon).find('executed')[0]).text() == 'true' ? true : false);
+                if (success) {
+                    $('#btn_Student_SignIn .mood-text').text('已签到');
+                }
+            };
+
+            ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcheckon, {}), '', checkOnFn);
+        }
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', headerFn);
         //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getCircleNews, {}), '', function () {
         //    var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
         //    if (success) {
         //        updateCircleNews();
         //    }
         //});
-
-        //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getExamNews, {}), '', function () {
-        //    var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        //    if (success) {
-        //        updateExamNews();
-        //    }
-        //});
-
-        updateUserInfo();
         buildCategoryContent();
         hideLoadingMask();
     };
 
-    //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo, {}), '', successFn);
-    successFn();
+    ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo, {}), '', successFn);
+    initFriendsForTest();
 };
 
 function updateUserInfo() {
@@ -3093,38 +3141,43 @@ function _checkPwdIntension(value, lbField) {
 
 function initCustomHeaderImg(path) {
     var successFn = function () {
-        //var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        //if (success) {
-        var canvas = document.getElementById("canvas_CustomHeader");
-        var ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, 320, 320);
-        var image = new Image();
-        image.src = (typeof path == 'string' ? path : 'image/tmpheader.jpg');
-        image.onload = function () {
+        var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
+        if (success) {
+            var tmpImg = $($(response_header).find('msg')[0]).text();
+            if (tmpImg.indexOf('.') < 0) {
+                tmpImg = 'image/tmpheader.jpg';
+            }
+
+            _gUserInfoObj.header = tmpImg;
+            var canvas = document.getElementById("canvas_CustomHeader");
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 320, 320);
+            var image = new Image();
+            image.src = (typeof path == 'string' ? path : _gUserInfoObj.header);
+            image.onload = function () {
+                var tmpSize = calcExhibitionSize(image);
+                ctx.drawImage(image, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
+                fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
+                $('#progress_HeaderUpload').hide();
+            };
+
+            image.onerror = function () {
+                var tmpSize = calcExhibitionSize(_currentHeaderImage);
+                ctx.drawImage(_currentHeaderImage, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
+                fnImageCropRot(_currentHeaderImage, { w: tmpSize.nw, h: tmpSize.nh });
+                $('#progress_HeaderUpload').hide();
+            };
+
             var tmpSize = calcExhibitionSize(image);
-            ctx.drawImage(image, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
             fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
+        } else {
             $('#progress_HeaderUpload').hide();
-        };
-
-        image.onerror = function () {
-            var tmpSize = calcExhibitionSize(_currentHeaderImage);
-            ctx.drawImage(_currentHeaderImage, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
-            fnImageCropRot(_currentHeaderImage, { w: tmpSize.nw, h: tmpSize.nh });
-            $('#progress_HeaderUpload').hide();
-        };
-
-        var tmpSize = calcExhibitionSize(image);
-        fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
-        //} else {
-        //    $('#progress_HeaderUpload').hide();
-        //    $('#warnning_HeaderUpload').show();
-        //    $('#wrap_CropBox_Header').show();
-        //}
+            $('#warnning_HeaderUpload').show();
+            $('#wrap_CropBox_Header').show();
+        }
     };
 
-    //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', successFn);
-    successFn();
+    ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', successFn);
 }
 
 var _eventBinded = false;
@@ -3449,3 +3502,96 @@ function webSocketFormatMsg(msgs) {
 
     return { type: 'list', symbol: userSymbol, items: newItems };
 };
+
+function initFriendsForTest() {
+    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
+    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
+    _circleDataSearch = { value: [] };
+    _gUserGroups[0].items = [];
+    for (var i = 0; i < 10; i++) {
+        var newUser = {
+            "userName": names[i % 13] + ' System',
+            "header": "image/header/" + (i % 10) + ".jpg",
+            "userId": i,
+            "type": 'system'
+        };
+
+        _circleDataSearch.value.push(newUser);
+        _gUserGroups[0].items.push(newUser);
+    }
+
+    _gUserGroups[1].items = [];
+    for (var i = 0; i < 20; i++) {
+        var tmpIdx = randomInt(0, 19);
+        var newUser = {
+            "userName": names[tmpIdx % 13] + ' Friend',
+            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
+            "userId": i + 99,
+            "type": 'friend'
+        };
+
+        _circleDataSearch.value.push(newUser);
+        _gUserGroups[1].items.push(newUser);
+    }
+
+    _gUserGroups[2].items = [];
+    for (var i = 0; i < 5; i++) {
+        _gUserGroups[2].items.push({
+            "userName": names[i] + ' New',
+            "header": "image/header/" + i + ".jpg",
+            "userId": i,
+            "type": 'new'
+        });
+    }
+};
+
+function testswebSocketGetCiecleHistory(userSymbol) {
+     var tmpDatas= [
+            { type: -1, content: '哪种好主要看具体需求了,innerHTML和crea' },
+            { type: -1, content: '可创建文本节点。 此方法可返回 Text 对象' },
+            { type: 1, content: '2017年9月13日 - 用法: innerHTML的用法 Object.innerHTML createTextNode的用法 document.createTextNode(data)         parendNode.' },
+            { type: -1, content: '最佳答案: 哪种好主要看具体需求了,innerHTML和createTextNode都可以把一段内容添加到一个节点中,区别是如果这段内容中有html标签' },
+            { type: 1, content: '美媒称，主要的汽车生产国将在没有美国的情况下举行会谈' },
+            { type: 1, content: '据彭博社7月29日报道，三位知情人士称，来自欧盟、加拿大、墨西' },
+            { type: -1, content: '日本的代表将于7月31日在日内瓦召开会议' },
+            { type: 1, content: '车关税的国际协议的可能性，但另外两名官员表示这不' },
+            { type: -1, content: '报道称，尽管欧盟委员会主席容克和美国总统特朗普为避免“单边行动”而达成贸易协定，' },
+            { type: 1, content: '彭博社的报道称，“总统指示我们继续调查并汇总材料' }
+    ];
+
+    var targetUserGroupID = userSymbol.split('|')[0];
+    var targetUserId = userSymbol.split('|')[1];
+    var targetUserEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"]');
+    var targetUserObj = circleGetUserObj(targetUserGroupID, targetUserId);
+    if (targetUserEl.length == 0) {
+        tmpHTMLArr = [];
+        circleBuildFriednItem(tmpHTMLArr, _gUserGroups[targetUserGroupID], targetUserObj);
+        targetUserEl = $(tmpHTMLArr.join(''));
+        $('#collapse_Circle_' + targetUserGroupID + ' .circle-user-list-group .container-fluid').append(targetUserEl);
+        targetUserEl.on('click', function (eventObj) {
+            circleClickUserItem(eventObj);
+        });
+        targetUserEl.on('dblclick', function (eventObj) {
+            circleDBClickUserItem(eventObj);
+        });
+    }
+
+    var currUserSymbol = $('.label-circle-message-history-user').attr('data-target');
+    if (typeof (currUserSymbol) == 'undefined') {
+        currUserSymbol = 'system|1';
+    }
+
+    var currGroupID = currUserSymbol.split('|')[0];
+    var currUserId = currUserSymbol.split('|')[1];
+    var currUserObj = circleGetUserObj(currGroupID, currUserId);
+    var targetUserNoteEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"] .col-circle-user-list-item-msg .circle-user-list-item-msg');
+    var isDisplay = (currUserSymbol == userSymbol ? true : false);
+    var newMsgItem;
+    _gCirleMessages[userSymbol] = [];
+    for (var i = 0; i < tmpDatas.length; i++) {
+        newMsgItem = circleBuildMessageItem(tmpDatas[i].content, tmpDatas[i].type, (tmpDatas[i].type == -1 ? targetUserObj : _gUserInfoObj));
+        _gCirleMessages[userSymbol].push(newMsgItem);
+    }
+
+    circleUpdateMsgHistory(userSymbol);
+}

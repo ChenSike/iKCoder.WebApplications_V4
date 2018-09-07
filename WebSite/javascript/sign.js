@@ -85,7 +85,6 @@ function initEvents() {
             if (!success) {
                 _showGlobalMessage('无法登录！', 'warning', 'alert_Wrong_SignIn');
             } else {
-                //<root><executed>true</executed><msgcode>TOKEN</msgcode><msg>671cfe67-5f54-4900-a4e6-c7a90ef8303a</msg></root>
                 if ($($(response).find('msgcode')).text() == 'TOKEN') {
                     _CookieUtils.set('student_token', $($(response).find('msg')).text());
                     window.location.href = "profile.html";
@@ -250,8 +249,12 @@ function initEvents() {
                     if (!success) {
                         _showGlobalMessage('无法登录！', 'warning', 'alert_Wrong_SignIn');
                     } else {
-                        _CookieUtils.set('student_token', 'student_token');
-                        window.location.href = "profile.html";
+                        if ($($(response).find('msgcode')).text() == 'TOKEN') {
+                            _CookieUtils.set('student_token', $($(response).find('msg')).text());
+                            window.location.href = "profile.html";
+                        } else {
+                            _showGlobalMessage('无法获取用户信息，请重新登录！', 'warning', 'alert_Wrong_SignIn');
+                        }
                     }
                 };
 
