@@ -30,17 +30,77 @@ body {
     z-index: 1000;
 }
 
-.siderbar-drag {
-    position: relative;
-    height: 100%;
-    width: 5px;
-    left: -5px;
-    background-image: url(../image/siderbardrag.png);
-}
-
-    .siderbar-drag.expanded {
-        cursor: col-resize;
+    .siderbar-wrap .sidebar-content-wrap {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        background-color: rgb(41,49,67);
     }
+
+        .siderbar-wrap .sidebar-content-wrap .sidebar-content-container {
+            height: 100%;
+            width: 100%;
+        }
+
+            .siderbar-wrap .sidebar-content-wrap .sidebar-content-container .top-row {
+                background-color: rgb(135,135,135);
+                border-top: solid 1px;
+            }
+
+                .siderbar-wrap .sidebar-content-wrap .sidebar-content-container .top-row .col {
+                    padding: 0px;
+                }
+
+                    .siderbar-wrap .sidebar-content-wrap .sidebar-content-container .top-row .col button {
+                        padding: 0px 5px;
+                        margin-top: -3px;
+                    }
+
+            .siderbar-wrap .sidebar-content-wrap .sidebar-content-container .console-row {
+                height: calc(100% - 30% - 75px);
+            }
+
+            .siderbar-wrap .sidebar-content-wrap .sidebar-content-container .result-row {
+                background-color: rgb(0,0,0);
+                border-top: solid 1px;
+                height: 30%;
+            }
+
+            .siderbar-wrap .sidebar-content-wrap .sidebar-content-container .title-row {
+                background-color: rgb(135,135,135);
+                border-top: solid 1px;
+                font-size: 14px;
+                line-height: 24px;
+            }
+
+        .siderbar-wrap .sidebar-content-wrap .sidebar-expand-bar {
+            position: absolute;
+            width: 20px;
+            height: 100%;
+            top: 0px;
+            left: -20px;
+            background-color: rgb(135,135,135);
+            border: solid 1px;
+            display: none;
+        }
+
+            .siderbar-wrap .sidebar-content-wrap .sidebar-expand-bar .btn-expand {
+                padding: 1px;
+                margin-top: -3px;
+            }
+
+    .siderbar-wrap .siderbar-drag {
+        position: relative;
+        height: 100%;
+        width: 5px;
+        left: -5px;
+        background-image: url(../image/siderbardrag.png);
+    }
+
+        .siderbar-wrap .siderbar-drag.expanded {
+            cursor: col-resize;
+        }
 
 .siderbar-drag-proxy {
     position: absolute;
@@ -53,50 +113,6 @@ body {
     z-index: 9999;
 }
 
-.sidebar-content-wrap {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0px;
-}
-
-.siderbar-content {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    background-color: rgb(41,49,67);
-    padding: 10px;
-}
-
-.modal-header {
-    padding: 5px 15px;
-    border: none;
-}
-
-.modal-title {
-    font-size: 18px;
-}
-
-.modal-dialog {
-    max-width: 80%;
-}
-
-.modal-body {
-    padding: 0px 5px;
-}
-
-    .modal-body .col.buttons-col {
-        padding-bottom: 10px;
-    }
-
-        .modal-body .col.buttons-col button {
-            margin-left: 10px;
-        }
-
-.modal-footer {
-    padding: 5px 15px;
-    border: none;
-}
 
 .header-wrap-row {
     background-color: rgb(41,49,67);
@@ -144,6 +160,7 @@ body {
 
     .toolbar-wrap-row .toolbar-buttons-item {
         padding: 0px 3px;
+        width: 25px;
     }
 
     .toolbar-wrap-row .toolbar-title {
@@ -151,6 +168,8 @@ body {
         font-size: 14px;
         font-weight: bold;
         line-height: 25px;
+        /*color: #292b2c;*/
+        color: rgb(41,49,67);
     }
 
 #content_Editor {
@@ -164,4 +183,57 @@ body {
 
 .keypoint-container-col {
     background-color: rgb(210,210,210);
+    overflow-y: auto;
 }
+
+    .keypoint-container-col .card .card-header {
+        padding: 5px;
+    }
+
+        .keypoint-container-col .card .card-header div.item-mark {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            background-color: #ea5415;
+            border: 3px solid rgb(255, 255, 255);
+            box-shadow: 0px 0px 15px #ea5415;
+        }
+
+        .keypoint-container-col .card .card-header button {
+            width: calc(100% - 20px);
+            margin-left: 0px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            padding: 0px;
+            text-align: left;
+            padding-left: 5px;
+            color: #ea5415;
+        }
+
+    .keypoint-container-col .card.complete .card-header div.item-mark {
+        background-color: #28a745;
+        box-shadow: 0px 0px 15px#28a745;
+    }
+
+    .keypoint-container-col .card.complete .card-header button {
+        color: #28a745;
+    }
+
+    .keypoint-container-col .card.current .card-header div.item-mark {
+        background-color: #007bff;
+        box-shadow: 0px 0px 15px#007bff;
+    }
+
+    .keypoint-container-col .card.current .card-header button {
+        color: #007bff;
+    }
+
+    .keypoint-container-col .card .card-body button {
+        padding: 0px 5px;
+        margin: 5px;
+    }
+
+    .keypoint-container-col .card .card-body ul li {
+        font-size: 13px;
+    }

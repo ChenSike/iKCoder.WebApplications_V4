@@ -68,7 +68,7 @@ var _gCurrentEmojiGroup = null;
 var _gSocket = null;
 var _gToken = '';
 var _orgAvailableHeight = 890;
-var _gUserInfoObj = { userName: '', header: '', userId: '', nickName: '', level: '', nickName: '', birthday: '', country: '', gender: '', province: '', city: '', school: '' };
+var _gUserInfoObj = { userName: '', header: '', userId: '', nickName: '', level: '', birthday: '', country: '', gender: '', province: '', city: '', school: '' };
 var _gCirleMessages = {};
 var _circleDataSearch = { value: [] };
 var _gUserGroups = [
@@ -77,11 +77,11 @@ var _gUserGroups = [
     { id: 'guest', title: '新朋友', items: [] }
 ];
 var _gCourseImgMap = {
-    A: { img: 'image/course/course_1.png', color: 'rgb(86,181,34)' },
-    B: { img: 'image/course/course_2.png', color: 'rgb(100,124,185)' },
-    C: { img: 'image/course/course_1.png', color: 'rgb(86,181,34)' },
-    D: { img: 'image/course/course_2.png', color: 'rgb(100,124,185)' },
-    E: { img: 'image/course/course_2.png', color: 'rgb(100,124,185)' }
+    A: { img: 'image/course/course_logic.png', color: 'rgb(86,181,34)' },
+    B: { img: 'image/course/course_html.png', color: 'rgb(100,124,185)' },
+    C: { img: 'image/course/course_js.png', color: 'rgb(86,181,34)' },
+    D: { img: 'image/course/course_python.png', color: 'rgb(100,124,185)' },
+    E: { img: 'image/course/course_cs.png', color: 'rgb(100,124,185)' }
 };
 
 function initPage() {
@@ -182,6 +182,7 @@ function initEvents() {
                             }
 
                             _gUserInfoObj.header = tmpImg;
+                            _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
                         }
                     });
                 } else {
@@ -2019,7 +2020,7 @@ function settingUpdateProfile() {
     var successFn = function (response) {
         var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
         if (success) {
-            _CookieUtils.set("logined_user_nickname", $('#txt_Settings_Profile_NickName').val(), { path: '/', expires: 0.125 });
+            _CookieUtils.set("logined_user_nickname", $('#txt_Settings_Profile_NickName').val());
             _gUserInfoObj.nickName = $('#txt_Settings_Profile_NickName').val();
             updateUserInfo();
         } else {
@@ -2893,6 +2894,8 @@ function initData() {
                 city: formatFn('city'),
                 school: formatFn('school')
             };
+
+            _CookieUtils.set("logined_user_nickname", _gUserInfoObj.nickName);
         }
 
         var headerFn = function (response_header) {
@@ -2908,6 +2911,7 @@ function initData() {
                 _gUserInfoObj.header = 'image/tmpheader.jpg';
             }
 
+            _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
             updateUserInfo();
             var checkOnFn = function (response_checkon) {
                 var success = ($($(response_checkon).find('executed')[0]).text() == 'true' ? true : false);

@@ -342,23 +342,17 @@
             <div class="col-3 no-wrap">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-1">
-                            <button type="button" class="btn btn-primary btn-sm toolbar-buttons-item toolbar-button-save">
+                        <div class="col">
+                            <button type="button" class="btn btn-outline-secondary btn-sm toolbar-buttons-item toolbar-button-save">
                                 <i class="fas fa-cloud-upload-alt" aria-hidden="true" title="保存"></i>
                             </button>
-                        </div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn-primary btn-sm toolbar-buttons-item toolbar-button-load">
+                            <button type="button" class="btn btn-outline-secondary btn-sm toolbar-buttons-item toolbar-button-load">
                                 <i class="fas fa-cloud-download-alt" aria-hidden="true" title="加载"></i>
                             </button>
-                        </div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn-primary btn-sm toolbar-buttons-item toolbar-button-run">
+                            <button type="button" class="btn btn-outline-secondary btn-sm toolbar-buttons-item toolbar-button-run">
                                 <i class="fas fa-play" aria-hidden="true" title="运行"></i>
                             </button>
-                        </div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn-primary btn-sm toolbar-buttons-item toolbar-button-clear">
+                            <button type="button" class="btn btn-outline-secondary btn-sm toolbar-buttons-item toolbar-button-clear">
                                 <i class="fas fa-trash" aria-hidden="true" title="清空"></i>
                             </button>
                         </div>
@@ -370,15 +364,7 @@
             </div>
         </div>
         <div class="row no-wrap main-wrap-row">
-            <div class="col-2 no-wrap keypoint-container-col">
-                <ul class="list-group">
-                    <li class="list-group-item active">Cras justo odio</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
-            </div>
+            <div class="col-2 no-wrap keypoint-container-col"></div>
             <div class="col no-wrap main-container-col">
                 <div id="content_Editor"></div>
             </div>
@@ -420,7 +406,35 @@
         <div class="siderbar-wrap expanded">
             <div class="siderbar-drag expanded"></div>
             <div class="sidebar-content-wrap">
-                <div class="siderbar-content">
+                <div class="container-fluid sidebar-content-container">
+                    <div class="row top-row">
+                        <div class="col text-left">
+                            <button type="button" class="btn btn-link btn-expand"><i class="fas fa-angle-double-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="row title-row">
+                        <div class="col">
+                            控制台
+                        </div>
+                    </div>
+                    <div class="row console-row">
+                        <div class="col">
+
+                        </div>
+                    </div>
+                    <div class="row title-row">
+                        <div class="col">
+                            输出
+                        </div>
+                    </div>
+                    <div class="row result-row">
+                        <div class="col">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-expand-bar">
+                    <button type="button" class="btn btn-link btn-expand"><i class="fas fa-angle-double-left"></i></button>
                 </div>
             </div>
         </div>

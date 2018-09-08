@@ -88,16 +88,16 @@ var _gURLMapping = {
         setmood: _gHostName.Main + 'students_set_mood'
     },
     circle: {
-        //Get suname
-        getnewfriend: _gHostName.Basic + 'Relations_Students_SetNewFriend',
-        //Post id
-        setaccecptfriend: _gHostName.Basic + 'Relations_Students_SetAccecptFriend',
-        //Get
-        getlist: _gHostName.Basic + 'Relations_Students_GetList',
-        //Get keyvalue
-        getdosearch: _gHostName.Basic + 'Relations_Students_GetDoSearch',
-        //Get
-        getacceptlist: _gHostName.Basic + 'Relations_Students_GetAcceptedList'
+        //Get //取出好友列表
+        getfriends: _gHostName.Basic + 'Relations_Students_GetAcceptedList',
+        //Get //只搜索UID \ UNAME keyvalue=   
+        findfriend: _gHostName.Basic + 'Relations_Students_GetDoSearch',
+        //Get 取出所有
+        getguests: _gHostName.Basic + 'Relations_Students_GetList',
+        //Get //接受好友 id=从Relations_Students_GetList取到，
+        acceguest: _gHostName.Basic + 'Relations_Students_SetAccecptFriend',
+        //Get //用户名，加为好友 suname= 
+        addfriend: _gHostName.Basic + 'Relations_Students_SetNewFriend'
     }
 };
 //merge url
