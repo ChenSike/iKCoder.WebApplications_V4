@@ -400,6 +400,35 @@ footer {
     display: contents;
 }*/
 
+.col-circle-sidetoolbar {
+    width: 50px;
+    max-width: 50px;
+    min-width: 50px;
+    background-color: rgb(65,61,60);
+    /*border-left:solid 1px rgb(227,224,223);*/
+}
+
+    .col-circle-sidetoolbar .btn-circle-stb-item {
+        font-size: 24px;
+        padding: 8px 0px;
+        width: 49px;
+        border-radius: 0;
+        border: none;
+    }
+
+        .col-circle-sidetoolbar .btn-circle-stb-item .alert-circle-stb-item {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            border-radius: 50%;
+            background-color: red;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            color: white;
+        }
+
 .col-circle-user-list {
     min-width: 240px;
     max-width: 240px;
@@ -489,6 +518,7 @@ footer {
 
         .col-circle-user-list .circle-user-list-group .row-circle-user-list-item {
             cursor: pointer;
+            padding: 5px 0px;
         }
 
             .col-circle-user-list .circle-user-list-group .row-circle-user-list-item:hover {
@@ -507,8 +537,13 @@ footer {
                 line-height: 33px;
             }
 
+        .col-circle-user-list .circle-user-list-group .row-circle-address-group-title {
+            border-top: solid 1px rgb(217,217,217);
+            color: rgb(153,153,153);
+        }
+
 .col-circle-message-list {
-    max-width: calc(100% - 240px);
+    max-width: calc(100% - 290px);
 }
 
     .col-circle-message-list .container-circle-message-history {
@@ -670,6 +705,124 @@ footer {
                     right: -19px;
                     border-color: transparent transparent transparent rgb(158,234,106);
                 }
+
+.row-circle-address-new-friend-item {
+    padding: 5px 0px;
+    border-bottom: solid 1px rgb(231,231,231);
+}
+
+    .row-circle-address-new-friend-item .col-new-friend-header {
+        width: fit-content;
+        padding-right: 0px;
+    }
+
+        .row-circle-address-new-friend-item .col-new-friend-header .circle-address-new-friend-hearder {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+    .row-circle-address-new-friend-item .col-new-friend-content {
+        font-size: 12px;
+        text-align: left;
+        padding-left: 0px;
+    }
+
+        .row-circle-address-new-friend-item .col-new-friend-content .col {
+            height: 25px;
+            line-height: 25px;
+        }
+
+.row-circle-address-channle-items {
+}
+
+    .row-circle-address-channle-items .col-1 {
+        width: fit-content;
+    }
+
+    .row-circle-address-channle-items .card {
+        width: 60px;
+        background-color: transparent;
+        border: none;
+        padding: 5px 0px;
+    }
+
+        .row-circle-address-channle-items .card:hover {
+            background-color: rgb(230,230,230);
+        }
+
+        .row-circle-address-channle-items .card img {
+            border-radius: 50%;
+            cursor: pointer;
+            width: 50px;
+            align-self: center;
+        }
+
+        .row-circle-address-channle-items .card .card-body {
+            font-size: 12px;
+            text-align: center;
+        }
+
+.channel-popover-wrap {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgb(255,255,255);
+    width: 250px;
+    padding: 10px 0px;
+}
+
+    .channel-popover-wrap .channel-name {
+        height: 25px;
+        line-height: 25px;
+        font-size: 14px;
+        width: 140px;
+    }
+
+    .channel-popover-wrap .channel-code {
+        height: 25px;
+        line-height: 25px;
+        font-size: 12px;
+        color: rgb(153,153,153);
+    }
+
+    .channel-popover-wrap .channel-header {
+        width: 50px;
+        height: 50px;
+    }
+
+    .channel-popover-wrap .col-channel-detail {
+        font-size: 12px;
+        padding: 10px 15px;
+    }
+
+        .channel-popover-wrap .col-channel-detail p {
+            border-top: solid 1px rgb(244,244,244);
+            padding-top: 10px;
+        }
+
+    .channel-popover-wrap .btn.btn-sm {
+        background-color: transparent;
+        color: rgb(153,153,153);
+        border: none;
+        font-size: 18px;
+    }
+
+        .channel-popover-wrap .btn.btn-sm:hover {
+            color: rgb(0,0,0);
+        }
+
+        .channel-popover-wrap .btn.btn-sm:focus {
+            box-shadow: none;
+        }
+
+.col-circle-search-container {
+}
+
+.col-circle-itemlist-container {
+    overflow: auto;
+    background-color: rgb(227,224,223);
+}
 
 .popover {
     max-width: unset;
@@ -1171,6 +1324,10 @@ footer {
     color: #eaeaea;
 }
 
+.text-999999 {
+    color: #999999;
+}
+
 .padding-10 {
     padding: 10px;
 }
@@ -1219,4 +1376,22 @@ footer {
 .emoji-item-in-field {
     width: 25px;
     margin-bottom: -5px;
+}
+
+.bell-alert {
+    animation: bell-animation 1s infinite;
+}
+
+@keyframes bell-animation {
+    0% {
+        color: rgb(204, 204, 204);
+    }
+
+    50% {
+        color: rgb(234, 84, 21);
+    }
+
+    100% {
+        color: rgb(204, 204, 204);
+    }
 }

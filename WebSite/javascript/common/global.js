@@ -482,8 +482,108 @@ function listMoveNext() {
 //Get GUID
 function _GUID_S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-}
+};
 
 function _GUID() {
     return (_GUID_S4() + _GUID_S4() + "-" + _GUID_S4() + "-" + _GUID_S4() + "-" + _GUID_S4() + "-" + _GUID_S4() + _GUID_S4() + _GUID_S4());
-}
+};
+
+var _sortGroupEN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+var _sortGroupZH = "ABCDEFGHJKLMNOPQRSTWXYZ".split('');
+var _zhSortSequ = "阿八嚓哒妸发旮哈讥咔垃痳拏噢妑七呥扨它穵夕丫帀".split('');
+function _GroupSortArray(sourceArr, sortAttr) {
+    var enArr = [];
+    var zhArr = [];
+    var result = [];
+    var currSortAttr = (typeof sortAttr == 'string' ? sortAttr : null)
+    if (sourceArr.length > 0) {
+        if (typeof sourceArr[0] == 'string' || (typeof sourceArr[0] == 'object' && currSortAttr != null && typeof sourceArr[0][currSortAttr] == 'string')) {
+            var sliceIdx = 0;
+            if (sourceArr[0] == 'string') {
+                for (var i = 0; i < sourceArr.length; i++) {
+                    if (/.*[\u4e00-\u9fa5]+.*$/.test(c[0])) {
+                        zhArr.push(sourceArr[i]);
+                    } else {
+                        enArr.push(sourceArr[i]);
+                    }
+                }
+            } else {
+                for (var i = 0; i < sourceArr.length; i++) {
+                    if (/.*[\u4e00-\u9fa5]+.*$/.test(sourceArr[i][currSortAttr][0])) {
+                        zhArr.push(sourceArr[i]);
+                    } else {
+                        enArr.push(sourceArr[i]);
+                    }
+                }
+            }
+
+
+            enArr.sort();
+            if (sourceArr[0] == 'string') {
+                zhArr.sort(function (a, b) {
+                    return a.localeCompare(b, 'zh-Hans-CN');
+                });
+            } else {
+                zhArr.sort(function (a, b) {
+                    return a[currSortAttr].localeCompare(b[currSortAttr], 'zh-Hans-CN');
+                });
+            }
+
+            var enObj = _groupSortEn(enArr, currSortAttr);
+            var zhObj = _groupSortZh(zhArr, currSortAttr);
+            for (var key in enObj) {
+                result.push({ id: key, title: key, items: enObj[key].concat(zhObj[key]) });
+            }
+        }
+    }
+
+    return result;
+};
+
+function _groupSortEn(sourceArr, sortAttr) {
+    var retObj = { '*': [] };
+    for (var i = 0; i < _sortGroupEN.length; i++) {
+        retObj[_sortGroupEN[i]] = [];
+    }
+
+    var currGroup = null;
+    var currChar = '';
+    for (var j = 0; j < sourceArr.length; j++) {
+        currGroup = null;
+        for (var i = 0; i < _sortGroupEN.length; i++) {
+            currChar = (sortAttr == null ? sourceArr[j][0] : sourceArr[j][sortAttr][0])
+            if (currChar.toUpperCase() == _sortGroupEN[i]) {
+                currGroup = retObj[_sortGroupEN[i]];
+                break;
+            }
+        }
+
+        currGroup == null ? retObj['*'].push(sourceArr[j]) : currGroup.push(sourceArr[j]);
+    }
+
+    return retObj;
+};
+
+function _groupSortZh(sourceArr, sortAttr) {
+    var retObj = { '*': [] };
+    for (var i = 0; i < _sortGroupEN.length; i++) {
+        retObj[_sortGroupEN[i]] = [];
+    }
+
+    var currGroup = null;
+    var currChar = '';
+    for (var j = 0; j < sourceArr.length; j++) {
+        currGroup = null;
+        for (var i = 0; i < _zhSortSequ.length; i++) {
+            currChar = (sortAttr == null ? sourceArr[j][0] : sourceArr[j][sortAttr][0])
+            if (currChar.localeCompare(_zhSortSequ[i], 'zh-Hans-CN') >= 0 && (i == _zhSortSequ.length - 1 || currChar.localeCompare(_zhSortSequ[i + 1], 'zh-Hans-CN') < 0)) {
+                currGroup = retObj[_sortGroupZH[i]];
+                break;
+            }
+        }
+
+        currGroup == null ? retObj['*'].push(sourceArr[j]) : currGroup.push(sourceArr[j]);
+    }
+
+    return retObj;
+};

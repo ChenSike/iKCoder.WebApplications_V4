@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col" style="padding-top:20px;">
+                <form>
+                    <div class="row">
+                        <div class="col">
+                            <label for="txt_WSAdd" style="line-height:30px;">WebSocket Address</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control" id="txt_WSAdd" placeholder="ws://localhost:9998/echo">
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-primary" id="btn_Open">Open WS</button>
+                            <button type="button" class="btn btn-warning" id="btn_Close">Close WS</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <label class="text-primary" style="line-height:30px; font-weight:bold;">Open Result</label>
+                        </div>
+                        <div class="col">
+                            <label style="line-height:30px;" id="lb_OpenResult"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="txt_WSSend" style="line-height:30px;">Send Message</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control" id="txt_WSSend" />
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-primary" id="btn_Send">Send Message</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <label class="text-primary" style="line-height:30px; font-weight:bold;">Send Result</label>
+                        </div>
+                        <div class="col">
+                            <label style="line-height:30px;" id="lb_SendResult"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <label class="text-primary" style="line-height:30px; font-weight:bold;">Receive Message</label>
+                        </div>
+                        <div class="col" id="col_Receive">                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var _gSocket = null;
+        function initPage() {
+            $('#btn_Open').on('click', webSocketCreate);
+            $('#btn_Close').on('click', webSocketClose);
+            $('#btn_Send').on('click', webSocketSend);
+        }
+
+        function webSocketCreate() {
+            try{
+                _gSocket = new WebSocket($('#txt_WSAdd').val());
+                //建立websocket连接成功
+                _gSocket.onopen = function () {
+                    $('#lb_OpenResult').removeClass();
+                    $('#lb_OpenResult').addClass("text-success");
+                    $('#lb_OpenResult').text('Create and Open WebSocket Success!');
+                };
+
+                //接收服务端数据时
+                _gSocket.onmessage = function (evt) {
+                    webSocketReceive(evt);
+                };
+
+                //断开websocket连接成功
+                _gSocket.onclose = function () {
+                    $('#lb_OpenResult').removeClass();
+                    $('#lb_OpenResult').addClass("text-success");
+                    $('#lb_OpenResult').text('Close WebSocket Success!');
+                };
+
+                _gSocket.onerror = function () {
+                    $('#lb_OpenResult').removeClass();
+                    $('#lb_OpenResult').addClass("text-danger");
+                    $('#lb_OpenResult').text('Create and Open WebSocket Failed');
+                };
+            } catch (ex) {
+                $('#lb_OpenResult').removeClass();
+                $('#lb_OpenResult').addClass("text-danger");
+                $('#lb_OpenResult').text(ex);
+            }
+        };
+
+        function webSocketClose() {
+            try {
+                _gSocket.close();
+            } catch (ex) {
+                $('#lb_OpenResult').removeClass();
+                $('#lb_OpenResult').addClass("text-danger");
+                $('#lb_OpenResult').text(ex);
+            }
+        };
+
+        function webSocketSend() {
+            var msg = $('#txt_WSSend').val();
+            $('#lb_SendResult').removeClass();
+            if (_gSocket.readyState == 1) {
+                _gSocket.send(msg);
+                $('#lb_SendResult').addClass("text-success");
+                $('#lb_SendResult').text('Send Message Success!');
+            } else if (_gSocket.readyState == 2) {
+                window.setTimeout("webSocketSend(" + msg + ")", 1000);
+                $('#lb_SendResult').addClass("text-warning");
+                $('#lb_SendResult').text('Still Keep to Send Message!');
+            } else {
+                $('#lb_SendResult').addClass("text-danger");
+                $('#lb_SendResult').text('WebSocket Error, Recreate and Open!');
+                webSocketCreate();
+                _gSocket.onopen = function () {
+                    webSocketSend(msg);
+                };
+            }
+        };
+
+        function webSocketReceive(evt) {
+            $('#col_Receive').append($('<label style="border: solid 1px red;">' + evt + '</label>'));
+        };
+
+        initPage();
+    </script>
+</body>
+</html>

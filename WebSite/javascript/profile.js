@@ -71,11 +71,7 @@ var _orgAvailableHeight = 890;
 var _gUserInfoObj = { userName: '', header: '', userId: '', nickName: '', level: '', birthday: '', country: '', gender: '', province: '', city: '', school: '' };
 var _gCirleMessages = {};
 var _circleDataSearch = { value: [] };
-var _gUserGroups = [
-    { id: 'system', title: '助手和顾问', items: [] },
-    { id: 'friend', title: '我的小伙伴', items: [] },
-    { id: 'guest', title: '新朋友', items: [] }
-];
+var _gCiecleUsers = [];
 var _gCourseImgMap = {
     A: { img: 'image/course/course_logic.png', color: 'rgb(86,181,34)' },
     B: { img: 'image/course/course_html.png', color: 'rgb(100,124,185)' },
@@ -83,6 +79,7 @@ var _gCourseImgMap = {
     D: { img: 'image/course/course_python.png', color: 'rgb(100,124,185)' },
     E: { img: 'image/course/course_cs.png', color: 'rgb(100,124,185)' }
 };
+var _gCircleGroups = [];
 
 function initPage() {
     globalResize();
@@ -950,84 +947,33 @@ function buildContent_Circle() {
         }
     };
 
-    //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo, {}), '', successFn);
+    //ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getfriends, {}), '', successFn);
     buildContent_Circle_Do();
 }
 
 function buildContent_Circle_Do(reponsse) {
-    var defaultOptions = {
-        url: null,                             //请求数据的 URL 地址
-        jsonp: null,                         //设置此参数名，将开启jsonp功能，否则使用json数据结构
-        data: _circleDataSearch,      //提示所用的数据，注意格式
-        indexId: 0,                         //每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
-        indexKey: 0,                       //每组数据的第几个数据，作为input输入框的内容
-        idField: 'userId',                  //每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
-        keyField: 'userName',           //每组数据的哪个字段作为输入框内容，优先级高于 indexKey 设置（推荐）
-
-        /* 搜索相关 */
-        autoSelect: true,               //键盘向上/下方向键时，是否自动选择值
-        allowNoKeyword: true,        //是否允许无关键字时请求数据
-        getDataMethod: 'data',       //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
-        delayUntilKeyup: false,       //获取数据的方式 为 firstByUrl 时，是否延迟到有输入时才请求数据
-        ignorecase: true,              //前端搜索匹配时，是否忽略大小写
-        effectiveFields: ['userName', 'userId'],            //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
-        effectiveFieldsAlias: { userName: "姓名" },       //有效字段的别名对象，用于 header 的显示
-        searchFields: [],               //有效搜索字段，从前端搜索过滤数据时使用，但不一定显示在列表中。effectiveFields 配置字段也会用于搜索过滤
-        clearable: true,
-
-        multiWord: false,              //以分隔符号分割的多关键字支持
-        separator: ',',                  //多关键字支持时的分隔符，默认为半角逗号
-
-        /* UI */
-        autoDropup: false,           //选择菜单是否自动判断向上展开。设为 true，则当下拉菜单高度超过窗体，且向上方向不会被窗体覆盖，则选择菜单向上弹出
-        autoMinWidth: false,        //是否自动最小宽度，设为 false 则最小宽度不小于输入框宽度
-        showHeader: false,          //是否显示选择列表的 header。为 true 时，有效字段大于一列则显示表头
-        showBtn: true,               //是否显示下拉按钮
-        inputBgColor: '',              //输入框背景色，当与容器背景色不同时，可能需要该项的配置
-        inputWarnColor: 'rgba(255,0,0,.1)', //输入框内容不是下拉列表选择时的警告色
-        listStyle: {
-            'padding-top': 0,
-            'max-height': '375px',
-            'max-width': '800px',
-            'overflow': 'auto',
-            'width': 'auto',
-            'transition': '0.3s',
-            '-webkit-transition': '0.3s',
-            '-moz-transition': '0.3s',
-            '-o-transition': '0.3s',
-            'font-size': '12px'
-        },                 //列表的样式控制
-        listAlign: 'left',               //提示列表对齐位置，left/right/auto
-        listHoverStyle: 'background: #07d; color:#fff', //提示框列表鼠标悬浮的样式
-        listHoverCSS: 'jhover',    //提示框列表鼠标悬浮的样式名称
-
-        /* methods */
-        //fnProcessData: null,     //processData 格式化数据的方法，返回数据格式参考 data 参数
-        //fnGetData: null,             //getData获取数据的方法，无特殊需求一般不作设置
-        //fnAdjustAjaxParam: null,        //调整 ajax 请求参数方法，用于更多的请求配置需求。如对请求关键字作进一步处理、修改超时时间等
-        //fnPreprocessKeyword: null       //搜索过滤数据前，对输入关键字作进一步处理方法。注意，应返回字符串
-    };
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid h-100 no-wrap">');
     tmpHTMLArr.push('   <div class="row h-100 no-wrap">');
+    tmpHTMLArr.push('       <div class="col h-100 no-wrap col-circle-sidetoolbar">');
+    circleBuildSideToolbar(tmpHTMLArr);
+    tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('       <div class="col h-100 no-wrap col-circle-user-list">');
     tmpHTMLArr.push('           <div class="container-fluid h-100 no-wrap">');
     tmpHTMLArr.push('               <div class="row no-wrap">');
-    tmpHTMLArr.push('                   <div class="col no-wrap">');
-    circleBuildSearchPart(tmpHTMLArr);
+    tmpHTMLArr.push('                   <div class="col no-wrap col-circle-search-container">');
+    tmpHTMLArr.push(circleBuildSearchPart());
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('               <div class="row no-wrap" style="height: calc(100% - 42px);">');
-    tmpHTMLArr.push('                   <div class="col no-wrap" style="overflow: auto; background-color: rgb(227,224,223);">');
-    tmpHTMLArr.push('                       <div id="accordion">');
-    circleBuildFriendPart(tmpHTMLArr);
-    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   <div class="col no-wrap col-circle-itemlist-container">');
+    tmpHTMLArr.push(circleBuildFriendPart());
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('       <div class="col h-100 no-wrap col-circle-message-list">');
-    circleBuildMessagePart(tmpHTMLArr)
+    tmpHTMLArr.push(circleBuildMessagePart());
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('</div>');
@@ -1037,16 +983,32 @@ function buildContent_Circle_Do(reponsse) {
     var tmpObj = circleCalcMessageHeight(-1);
     $(".col-circle-message-input").height(tmpObj.input);
     $(".col-circle-message-history").height(tmpObj.history);
-    //init search suggest
-    $('#search_Circle').bsSuggest(defaultOptions);
     //load messages
-    webSocketGetCiecleHistory('system|1');
+    webSocketGetCiecleHistory('-1');
     //circleLoadMessageHistory();
     //init events
     initEvents_Circle();
 };
 
-function circleBuildSearchPart(tmpHTMLArr) {
+function circleBuildSideToolbar(tmpHTMLArr) {
+    tmpHTMLArr.push('<div class="btn-group-vertical">');
+    tmpHTMLArr.push('   <button type="button" class="btn btn-outline-secondary btn-circle-stb-item active" data-target="chat" title="聊天">');
+    tmpHTMLArr.push('       <i class="far fa-comment"></i>');
+    tmpHTMLArr.push('       <div class="alert-circle-stb-item">1</i>');
+    tmpHTMLArr.push('   </button>');
+    tmpHTMLArr.push('   <button type="button" class="btn btn-outline-secondary btn-circle-stb-item" data-target="address" title="通讯录">');
+    tmpHTMLArr.push('       <i class="far fa-address-book"></i>');
+    tmpHTMLArr.push('       <div class="alert-circle-stb-item">1</i>');
+    tmpHTMLArr.push('   </button>');
+    tmpHTMLArr.push('   <button type="button" class="btn btn-outline-secondary btn-circle-stb-item" data-target="collect" title="收藏">');
+    tmpHTMLArr.push('       <i class="far fa-star "></i>');
+    tmpHTMLArr.push('       <div class="alert-circle-stb-item">1</i>');
+    tmpHTMLArr.push('   </button>');
+    tmpHTMLArr.push('</div>');
+};
+
+function circleBuildSearchPart() {
+    var tmpHTMLArr = [];
     tmpHTMLArr.push('<form  class="header-circle-user-search">');
     tmpHTMLArr.push('   <div class="form-group row no-margin">');
     tmpHTMLArr.push('       <div class="col col-header-circle-user-search">');
@@ -1063,45 +1025,36 @@ function circleBuildSearchPart(tmpHTMLArr) {
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('</form>');
+    return tmpHTMLArr.join('');
 };
 
-function circleBuildFriendPart(tmpHTMLArr) {
-    for (var i = 0; i < _gUserGroups.length; i++) {
-        tmpHTMLArr.push('               <div class="card">');
-        tmpHTMLArr.push('                   <div class="card-header" id="heading_Circle_' + _gUserGroups[i].id + '">');
-        tmpHTMLArr.push('                       <div class="btn-dark btn-sm collapsed" data-toggle="collapse" data-target="#collapse_Circle_' + _gUserGroups[i].id + '" aria-expanded="false" aria-controls="collapse_Circle_' + _gUserGroups[i].id + '">');
-        tmpHTMLArr.push(_gUserGroups[i].title);
-        tmpHTMLArr.push('                       </div>');
-        tmpHTMLArr.push('                   </div>');
-        tmpHTMLArr.push('                   <div id="collapse_Circle_' + _gUserGroups[i].id + '" class="collapse" aria-labelledby="heading_Circle_' + _gUserGroups[i].id + '" data-parent="#accordion">');
-        tmpHTMLArr.push('                       <div class="card-body circle-user-list-group">');
-        tmpHTMLArr.push('                           <div class="container-fluid">');
-        for (var j = 0; j < _gUserGroups[i].items.length; j++) {
-            circleBuildFriednItem(tmpHTMLArr, _gUserGroups[i], _gUserGroups[i].items[j]);
-        }
-
-        tmpHTMLArr.push('                           </div>');
-        tmpHTMLArr.push('                       </div>');
-        tmpHTMLArr.push('                   </div>');
-        tmpHTMLArr.push('               </div>');
+function circleBuildFriendPart() {
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid circle-user-list-group">');
+    for (var j = 0; j < _gCiecleUsers.length; j++) {
+        circleBuildFriednItem(tmpHTMLArr, _gCiecleUsers[j]);
     }
+
+    tmpHTMLArr.push('</div>');
+    return tmpHTMLArr.join('');
 };
 
-function circleBuildFriednItem(tmpHTMLArr, group, item) {
-    tmpHTMLArr.push('                               <div class="row row-circle-user-list-item" data-target="' + group.id + '|' + item.userId + '">');
-    tmpHTMLArr.push('                                   <div class="col-1 col-circle-user-list-item-hearder">');
-    tmpHTMLArr.push('                                       <img class="img-fluid circle-user-list-item-hearder" src="' + item.header + '">');
-    tmpHTMLArr.push('                                   </div>');
-    tmpHTMLArr.push('                                   <div class="col">');
+function circleBuildFriednItem(tmpHTMLArr, item) {
+    tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '">');
+    tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-hearder">');
+    tmpHTMLArr.push('       <img class="img-fluid circle-user-list-item-hearder" src="' + item.header + '">');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="col">');
     tmpHTMLArr.push(item.userName);
-    tmpHTMLArr.push('                                   </div>');
-    tmpHTMLArr.push('                                   <div class="col-1 col-circle-user-list-item-msg">');
-    tmpHTMLArr.push('                                       <div class="circle-user-list-item-msg">0</div>');
-    tmpHTMLArr.push('                                   </div>');
-    tmpHTMLArr.push('                               </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-msg">');
+    tmpHTMLArr.push('       <div class="circle-user-list-item-msg">0</div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
 };
 
-function circleBuildMessagePart(tmpHTMLArr) {
+function circleBuildMessagePart() {
+    var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid h-100 wrap-circle-message">');
     tmpHTMLArr.push('   <div class="row">');
     tmpHTMLArr.push('       <div class="col col-circle-message-history-user">');
@@ -1142,19 +1095,18 @@ function circleBuildMessagePart(tmpHTMLArr) {
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('</div>');
     tmpHTMLArr.push('<div class="circle-input-drag-proxy"></div>');
+    return tmpHTMLArr.join('');
 };
 
 function circleUpdateMsgHistory(userSymbol) {
     var isDisplay = (typeof (userSymbol) == 'string' ? false : true);
-    var currUserSymbol = (isDisplay ? $('.label-circle-message-history-user').attr('data-target') : userSymbol);
-    var currGroupID = currUserSymbol.split('|')[0];
-    var currUserId = currUserSymbol.split('|')[1];
-    var currUserObj = circleGetUserObj(currGroupID, currUserId);
-    var currHistory = _gCirleMessages[currUserSymbol];
+    var currUserId = (isDisplay ? $('.label-circle-message-history-user').attr('data-target') : userSymbol);
+    var currUserObj = circleGetUserObj(currUserId);
+    var currHistory = _gCirleMessages[currUserId];
     if (!isDisplay) {
         $('.container-circle-message-history').empty();
         $('.label-circle-message-history-user').text(currUserObj.userName);
-        $('.label-circle-message-history-user').attr('data-target', currGroupID + '|' + currUserId);
+        $('.label-circle-message-history-user').attr('data-target', currUserId);
     }
 
     var existCount = $('.row-message-item').length;
@@ -1247,12 +1199,11 @@ function circleBuildMessageItem(content, type, userInfo) {
     return tmpHTMLArr.join('');
 };
 
-function circleGetUserObj(userType, userId) {
-    var tmpDatas = (userType == 'system' ? _gUserGroups[0].items : _gUserGroups[1].items);
+function circleGetUserObj(userId) {
     var tmpObj = null;
-    for (var i = 0; i < tmpDatas.length; i++) {
-        if (tmpDatas[i].userId == userId) {
-            tmpObj = tmpDatas[i];
+    for (var i = 0; i < _gCiecleUsers.length; i++) {
+        if (_gCiecleUsers[i].userId == userId) {
+            tmpObj = _gCiecleUsers[i];
             break;
         }
     }
@@ -1288,6 +1239,88 @@ function circleCheckMsgDragScope(top, chekcSize) {
 };
 
 function initEvents_Circle() {
+    $('.btn-circle-stb-item').on('click', function (eventObj) {
+        $($(eventObj.currentTarget).find('.alert-circle-stb-item')).empty().hide();
+        var tmpSymbol = $(eventObj.currentTarget).attr('data-target');
+        if (!$(eventObj.currentTarget).hasClass('active')) {
+            $('.btn-circle-stb-item').removeClass('active');
+            $(eventObj.currentTarget).addClass('active');
+            $('.col-circle-itemlist-container').empty();
+            $('.col-circle-message-list').empty();
+            switch (tmpSymbol) {
+                case 'address':
+                    circleBuildSection_Address();
+                    break;
+                case 'chat':
+                    circleBuildSection_Chat();
+                    break;
+                case 'collect':
+                    alert('Coming Soon!');
+                    break;
+            }
+        }
+    });
+
+    initEvents_Circle_Chat();
+};
+
+function initEvents_Circle_Chat() {
+    var defaultOptions = {
+        url: null,                             //请求数据的 URL 地址
+        jsonp: null,                         //设置此参数名，将开启jsonp功能，否则使用json数据结构
+        data: _circleDataSearch,      //提示所用的数据，注意格式
+        indexId: 0,                         //每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
+        indexKey: 0,                       //每组数据的第几个数据，作为input输入框的内容
+        idField: 'userId',                  //每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
+        keyField: 'userName',           //每组数据的哪个字段作为输入框内容，优先级高于 indexKey 设置（推荐）
+
+        /* 搜索相关 */
+        autoSelect: true,               //键盘向上/下方向键时，是否自动选择值
+        allowNoKeyword: true,        //是否允许无关键字时请求数据
+        getDataMethod: 'data',       //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
+        delayUntilKeyup: false,       //获取数据的方式 为 firstByUrl 时，是否延迟到有输入时才请求数据
+        ignorecase: true,              //前端搜索匹配时，是否忽略大小写
+        effectiveFields: ['userName', 'userId'],            //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
+        effectiveFieldsAlias: { userName: "姓名" },       //有效字段的别名对象，用于 header 的显示
+        searchFields: [],               //有效搜索字段，从前端搜索过滤数据时使用，但不一定显示在列表中。effectiveFields 配置字段也会用于搜索过滤
+        clearable: true,
+
+        multiWord: false,              //以分隔符号分割的多关键字支持
+        separator: ',',                  //多关键字支持时的分隔符，默认为半角逗号
+
+        /* UI */
+        autoDropup: false,           //选择菜单是否自动判断向上展开。设为 true，则当下拉菜单高度超过窗体，且向上方向不会被窗体覆盖，则选择菜单向上弹出
+        autoMinWidth: false,        //是否自动最小宽度，设为 false 则最小宽度不小于输入框宽度
+        showHeader: false,          //是否显示选择列表的 header。为 true 时，有效字段大于一列则显示表头
+        showBtn: true,               //是否显示下拉按钮
+        inputBgColor: '',              //输入框背景色，当与容器背景色不同时，可能需要该项的配置
+        inputWarnColor: 'rgba(255,0,0,.1)', //输入框内容不是下拉列表选择时的警告色
+        listStyle: {
+            'padding-top': 0,
+            'max-height': '375px',
+            'max-width': '800px',
+            'overflow': 'auto',
+            'width': 'auto',
+            'transition': '0.3s',
+            '-webkit-transition': '0.3s',
+            '-moz-transition': '0.3s',
+            '-o-transition': '0.3s',
+            'font-size': '12px'
+        },                 //列表的样式控制
+        listAlign: 'left',               //提示列表对齐位置，left/right/auto
+        listHoverStyle: 'background: #07d; color:#fff', //提示框列表鼠标悬浮的样式
+        listHoverCSS: 'jhover',    //提示框列表鼠标悬浮的样式名称
+
+        /* methods */
+        //fnProcessData: null,     //processData 格式化数据的方法，返回数据格式参考 data 参数
+        //fnGetData: null,             //getData获取数据的方法，无特殊需求一般不作设置
+        //fnAdjustAjaxParam: null,        //调整 ajax 请求参数方法，用于更多的请求配置需求。如对请求关键字作进一步处理、修改超时时间等
+        //fnPreprocessKeyword: null       //搜索过滤数据前，对输入关键字作进一步处理方法。注意，应返回字符串
+    };
+
+    //init search suggest
+    $('#search_Circle').bsSuggest(defaultOptions);
+
     $(".circle-input-drag").mousedown(function (e) {
         var drag = $('.circle-input-drag');
         var dragOff = $('.circle-input-drag').offset();
@@ -1381,46 +1414,321 @@ function initEvents_Circle() {
     });
 
     $('.row-circle-user-list-item').on('click', function (eventObj) {
-        circleClickUserItem(eventObj);
+        circleClickUserItem($(eventObj.currentTarget));
     });
 
     $('.row-circle-user-list-item').on('dblclick', function (eventObj) {
         circleDBClickUserItem(eventObj);
     });
 
-    $($('.col-circle-user-list .collapse')[0]).collapse('show');
-
     $('#search_Circle').on('onSetSelectValue', function () {
         var user = arguments[2];
-        circleUpdateMsgHistory(user.type + '|' + user.id);
-        for (var i = 0; i < _gUserGroups.length; i++) {
-            if (_gUserGroups[i].id != user.type) {
-                $('#collapse_Circle_' + _gUserGroups[i].id).collapse('hide');
-            } else {
-                $('#collapse_Circle_' + _gUserGroups[i].id).collapse('show');
-            }
-        }
-
+        circleUpdateMsgHistory(user.id);
         $('.row-circle-user-list-item').removeClass('active');
         var currItem = $(eventObj.currentTarget);
         currItem.addClass('active');
     });
 };
 
-function circleClickUserItem(eventObj) {
-    var tmpSymbol = $(eventObj.currentTarget).attr('data-target');
-    if (tmpSymbol.split('|')[0] == 'guest') {
-        circleDBClickUserItem(eventObj);
-    } else {
-        $('.row-circle-user-list-item').removeClass('active');
-        var currItem = $(eventObj.currentTarget);
-        currItem.addClass('active');
-        //webSocketGetCiecleHistory(tmpSymbol);
-        testswebSocketGetCiecleHistory(tmpSymbol);
-        var symbolEl = $(currItem.find('.circle-user-list-item-msg')[0]);
-        symbolEl.text('0');
-        symbolEl.hide();
+function circleBuildSection_Chat() {
+    $('.col-circle-itemlist-container').append($(circleBuildFriendPart()));
+    $('.col-circle-message-list').append($(circleBuildMessagePart()));
+    var tmpObj = circleCalcMessageHeight(-1);
+    $(".col-circle-message-input").height(tmpObj.input);
+    $(".col-circle-message-history").height(tmpObj.history);
+    //load messages
+    webSocketGetCiecleHistory('-1');
+    initEvents_Circle_Chat();
+};
+
+function circleBuildSection_Address() {
+    $('.col-circle-itemlist-container').append($(circleBuildFriendPart_Address()));
+    $('.col-circle-message-list').append($(circleBuildMessagePart_Address()));
+    $('.col-circle-message-history').height($("body").height() - 30 - 35 - 39 - 5);
+    initEvents_Circle_Address();
+};
+
+function circleBuildFriendPart_Address() {
+    _gCircleGroups = [
+        { id: 'new', title: '新朋友', items: [{ userName: "新朋友", header: "image/tmpheader.jpg", userId: "-2" }] },
+        { id: 'channel', title: '频道', items: [{ userName: "频道", header: "image/tmpheader.jpg", userId: "-3" }] },
+        { id: 'group', title: '群聊', items: [] }
+    ];
+    _gCircleGroups = _gCircleGroups.concat(_GroupSortArray(_gCiecleUsers, 'userName'));
+
+    var tmpHTMLArr = [];
+    for (var i = 0; i < _gCircleGroups.length; i++) {
+        if (_gCircleGroups[i].items.length > 0) {
+            tmpHTMLArr.push('<div class="container-fluid circle-user-list-group">');
+            if (i > 0) {
+                tmpHTMLArr.push('   <div class="row"><div class="col" style="height:10px;"></div></div>');
+            }
+
+            tmpHTMLArr.push('   <div class="row row-circle-address-group-title">');
+            tmpHTMLArr.push('       <div class="col">');
+            tmpHTMLArr.push(_gCircleGroups[i].title);
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('   </div>');
+            for (var j = 0; j < _gCircleGroups[i].items.length; j++) {
+                circleBuildFriednItem(tmpHTMLArr, _gCircleGroups[i].items[j]);
+            }
+
+            tmpHTMLArr.push('</div>');
+        }
     }
+    return tmpHTMLArr.join('');
+};
+
+function circleBuildMessagePart_Address() {
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="container-fluid h-100 wrap-circle-message">');
+    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('       <div class="col col-circle-message-history-user">');
+    tmpHTMLArr.push('           <label class="container-fluid label-circle-message-history-user"></label>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('       <div class="col col-circle-message-history">');
+    tmpHTMLArr.push('           <div class="container-fluid container-circle-message-history"></div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+    return tmpHTMLArr.join('');
+};
+
+function initEvents_Circle_Address() {
+    var defaultOptions = {
+        url: null,                             //请求数据的 URL 地址
+        jsonp: null,                         //设置此参数名，将开启jsonp功能，否则使用json数据结构
+        data: _circleDataSearch,      //提示所用的数据，注意格式
+        indexId: 0,                         //每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
+        indexKey: 0,                       //每组数据的第几个数据，作为input输入框的内容
+        idField: 'userId',                  //每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
+        keyField: 'userName',           //每组数据的哪个字段作为输入框内容，优先级高于 indexKey 设置（推荐）
+
+        /* 搜索相关 */
+        autoSelect: true,               //键盘向上/下方向键时，是否自动选择值
+        allowNoKeyword: true,        //是否允许无关键字时请求数据
+        getDataMethod: 'data',       //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
+        delayUntilKeyup: false,       //获取数据的方式 为 firstByUrl 时，是否延迟到有输入时才请求数据
+        ignorecase: true,              //前端搜索匹配时，是否忽略大小写
+        effectiveFields: ['userName', 'userId'],            //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
+        effectiveFieldsAlias: { userName: "姓名" },       //有效字段的别名对象，用于 header 的显示
+        searchFields: [],               //有效搜索字段，从前端搜索过滤数据时使用，但不一定显示在列表中。effectiveFields 配置字段也会用于搜索过滤
+        clearable: true,
+
+        multiWord: false,              //以分隔符号分割的多关键字支持
+        separator: ',',                  //多关键字支持时的分隔符，默认为半角逗号
+
+        /* UI */
+        autoDropup: false,           //选择菜单是否自动判断向上展开。设为 true，则当下拉菜单高度超过窗体，且向上方向不会被窗体覆盖，则选择菜单向上弹出
+        autoMinWidth: false,        //是否自动最小宽度，设为 false 则最小宽度不小于输入框宽度
+        showHeader: false,          //是否显示选择列表的 header。为 true 时，有效字段大于一列则显示表头
+        showBtn: true,               //是否显示下拉按钮
+        inputBgColor: '',              //输入框背景色，当与容器背景色不同时，可能需要该项的配置
+        inputWarnColor: 'rgba(255,0,0,.1)', //输入框内容不是下拉列表选择时的警告色
+        listStyle: {
+            'padding-top': 0,
+            'max-height': '375px',
+            'max-width': '800px',
+            'overflow': 'auto',
+            'width': 'auto',
+            'transition': '0.3s',
+            '-webkit-transition': '0.3s',
+            '-moz-transition': '0.3s',
+            '-o-transition': '0.3s',
+            'font-size': '12px'
+        },                 //列表的样式控制
+        listAlign: 'left',               //提示列表对齐位置，left/right/auto
+        listHoverStyle: 'background: #07d; color:#fff', //提示框列表鼠标悬浮的样式
+        listHoverCSS: 'jhover',    //提示框列表鼠标悬浮的样式名称
+
+        /* methods */
+        //fnProcessData: null,     //processData 格式化数据的方法，返回数据格式参考 data 参数
+        //fnGetData: null,             //getData获取数据的方法，无特殊需求一般不作设置
+        //fnAdjustAjaxParam: null,        //调整 ajax 请求参数方法，用于更多的请求配置需求。如对请求关键字作进一步处理、修改超时时间等
+        //fnPreprocessKeyword: null       //搜索过滤数据前，对输入关键字作进一步处理方法。注意，应返回字符串
+    };
+    //init search suggest
+    $('#search_Circle').bsSuggest(defaultOptions);
+    $('.row-circle-user-list-item').on('click', function (eventObj) {
+        circleClickAddressItem($(eventObj.currentTarget));
+    });
+
+    circleClickAddressItem($('.row-circle-user-list-item[data-target="-2"]'));
+};
+
+function circleClickAddressItem(currentTarget) {
+    var userId = currentTarget.attr('data-target');
+    $('.row-circle-user-list-item').removeClass('active');
+    currentTarget.addClass('active');
+    var currUserObj = null;
+    if (userId == '-2') {
+        currUserObj = { userName: "新朋友", header: "image/tmpheader.jpg", userId: "-2" };
+        var newFriendFn = function (response) {
+            var newFriends = initNewFriendsForTest();
+            circleBuildNewFriendsList(newFriends);
+        };
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getguests, {}), '', newFriendFn);
+    } else if (userId == '-3') {
+        currUserObj = { userName: "频道", header: "image/tmpheader.jpg", userId: "-3" };
+        var channelFn = function (response) {
+            var channels = initChannelForTest();
+            circleBuildChannelList(channels);
+        };
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getguests, {}), '', channelFn);
+    } else {
+        currUserObj = circleGetUserObj(userId);
+    }
+
+    $('.label-circle-message-history-user').text(currUserObj.userName);
+};
+
+function circleBuildNewFriendsList(friends) {
+    var container = $('.container-circle-message-history');
+    var tmpHTMLArr = [];
+    for (var i = 0; i < friends.length; i++) {
+        tmpHTMLArr.push('<div class="row row-circle-address-new-friend-item">');
+        tmpHTMLArr.push('   <div class="col-1 col-new-friend-header">');
+        tmpHTMLArr.push('       <img class="img-fluid circle-address-new-friend-hearder" src="' + friends[i].header + '">');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div class="col col-new-friend-content">');
+        tmpHTMLArr.push('       <div class="container container-fluid">');
+        tmpHTMLArr.push('           <div class="row">');
+        tmpHTMLArr.push('               <div class="col">' + friends[i].userName + '</div>');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('           <div class="row">');
+        tmpHTMLArr.push('               <div class="col text-999999">' + '我想加你为好友，请同意' + '</div>');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div class="col-1 d-flex align-items-center text-12 text-999999" style="width:70px;">');
+        if (friends[i].accecpt == '1') {
+            tmpHTMLArr.push('已添加');
+        } else {
+            tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm " style="width: 60px;padding: 0px 5px;">接受</button>');
+        }
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
+    }
+
+    container.empty();
+    container.append($(tmpHTMLArr.join('')));
+    $('.circle-address-new-friend-hearder').on('click', function () {
+        alert('popup user information window');
+    });
+
+};
+
+function circleBuildChannelList(channels) {
+    var container = $('.container-circle-message-history');
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="row row-circle-address-channle-items">');
+    for (var i = 0; i < channels.length; i++) {
+        tmpHTMLArr.push('   <div class="col-1">');
+        tmpHTMLArr.push('       <div class="card">');
+        tmpHTMLArr.push('           <img class="card-img-top circle-address-channle-hearder"  src="' + channels[i].header + '" data-target="' + channels[i].id + '">');
+        tmpHTMLArr.push('           <div class="card-body">');
+        tmpHTMLArr.push('           <p>' + channels[i].name + '</p>');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+    }
+
+    tmpHTMLArr.push('</div>');
+    container.empty();
+    container.append($(tmpHTMLArr.join('')));
+    $('.circle-address-channle-hearder').on('click', circleBuildAddressChannelPop);
+};
+
+function circleBuildAddressChannelPop(eventObj) {
+    var channels = initChannelForTest();
+    var target = $(eventObj.currentTarget);
+    var channelId = target.attr('data-target');
+    var current = null;
+    for (var i = 0; i < channels.length; i++) {
+        if (channels[i].id == channelId) {
+            current = channels[i];
+            break;
+        }
+    }
+
+    var container = $('.col-circle-message-history');
+    if ($('.channel-popover-wrap').length <= 0) {
+        var tmpHTMLArr = [];
+        tmpHTMLArr.push('<div class="channel-popover-wrap">');
+        tmpHTMLArr.push('   <div class="container-fluid">');
+        tmpHTMLArr.push('       <div class="row">');
+        tmpHTMLArr.push('           <div class="col">');
+        tmpHTMLArr.push('               <p class="channel-name"></p>');
+        tmpHTMLArr.push('               <p class="channel-code"></p>');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('           <div class="col" style="width: fit-content;">');
+        tmpHTMLArr.push('               <img class="rounded channel-header"  src="">');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('       <div class="row">');
+        tmpHTMLArr.push('           <div class="col col-channel-detail"><p></p></div>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('       <div class="row">');
+        tmpHTMLArr.push('           <div class="col text-right">');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="分享频道"><i class="far fa-share-square"></i></button>');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="历史数据"><i class="fas fa-history"></i></button>');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="进入频道"><i class="fas fa-sign-in-alt"></i></button>');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
+        container.append($(tmpHTMLArr.join('')));
+        $('.btn-circle-address-channel-popover').on('click', circleClickChannelPopBtn);
+    }
+
+    $('.channel-popover-wrap').show();
+    $('.channel-popover-wrap .channel-name').text(current.name);
+    $('.channel-popover-wrap .channel-code').text('频道号: ' + current.code);
+    $('.channel-popover-wrap .channel-header').attr('src', current.header);
+    $('.channel-popover-wrap .col-channel-detail p').text(current.detail);
+
+
+    var tmpTop = eventObj.pageY - container.offset().top;
+    var tmpLeft = eventObj.pageX - container.offset().left;
+    if (tmpTop + $('.channel-popover-wrap').height() > $('.col-circle-message-history').height()) {
+        tmpTop -= $('.channel-popover-wrap').height();
+    }
+
+    if (tmpLeft + $('.channel-popover-wrap').width() > $('.col-circle-message-history').width()) {
+        tmpLeft -= $('.channel-popover-wrap').width();
+    }
+
+    $('.channel-popover-wrap').css('top', tmpTop + 'px');
+    $('.channel-popover-wrap').css('left', tmpLeft + 'px');
+
+};
+
+function circleClickChannelPopBtn(eventObj) {
+    $('.channel-popover-wrap').hide();
+    var target = $(eventObj.currentTarget);
+    var action = $($(eventObj.currentTarget).find('svg'));
+    if (action.hasClass('fa-share-square')) {
+        alert('Share Channel with Other People!');
+    } else if (action.hasClass('fa-history')) {
+        alert('History of Channel!');
+    } else if (action.hasClass('fa-sign-in-alt')) {
+        alert('Enter Channel!');
+    }
+};
+
+function circleClickUserItem(currentTarget) {
+    var tmpSymbol = currentTarget.attr('data-target');
+    $('.row-circle-user-list-item').removeClass('active');
+    currentTarget.addClass('active');
+    //webSocketGetCiecleHistory(tmpSymbol);
+    testswebSocketGetCiecleHistory(tmpSymbol);
+    var symbolEl = $(currentTarget.find('.circle-user-list-item-msg')[0]);
+    symbolEl.text('0');
+    symbolEl.hide();
 };
 
 function circleDBClickUserItem(eventObj) {
@@ -3450,17 +3758,15 @@ function webSocketReceiveCircle(evt) {
     }
 
     var targetMsgs = _gCirleMessages[receiveObj.symbol];
-    var targetUserGroupID = receiveObj.symbol.split('|')[0];
-    var targetUserId = receiveObj.symbol.split('|')[1];
     var targetUserEl = $('.row-circle-user-list-item[data-target="' + receiveObj.symbol + '"]');
-    var targetUserObj = circleGetUserObj(targetUserGroupID, targetUserId);
+    var targetUserObj = circleGetUserObj(receiveObj.symbol);
     if (targetUserEl.length == 0) {
         tmpHTMLArr = [];
-        circleBuildFriednItem(tmpHTMLArr, _gUserGroups[targetUserGroupID], targetUserObj);
+        circleBuildFriednItem(tmpHTMLArr, targetUserObj);
         targetUserEl = $(tmpHTMLArr.join(''));
         $('#collapse_Circle_' + targetUserGroupID + ' .circle-user-list-group .container-fluid').append(targetUserEl);
         targetUserEl.on('click', function (eventObj) {
-            circleClickUserItem(eventObj);
+            circleClickUserItem($(eventObj.currentTarget));
         });
         targetUserEl.on('dblclick', function (eventObj) {
             circleDBClickUserItem(eventObj);
@@ -3468,9 +3774,7 @@ function webSocketReceiveCircle(evt) {
     }
 
     var currUserSymbol = $('.label-circle-message-history-user').attr('data-target');
-    var currGroupID = currUserSymbol.split('|')[0];
-    var currUserId = currUserSymbol.split('|')[1];
-    var currUserObj = circleGetUserObj(currGroupID, currUserId);
+    var currUserObj = circleGetUserObj(currUserSymbol);
     var targetUserNoteEl = $('.row-circle-user-list-item[data-target="' + receiveObj.symbol + '"] .col-circle-user-list-item-msg .circle-user-list-item-msg');
     var isDisplay = (currUserSymbol == receiveObj.symbol ? true : false);
     var newMsgItem;
@@ -3511,69 +3815,81 @@ function initFriendsForTest() {
     var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
     var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
     _circleDataSearch = { value: [] };
-    _gUserGroups[0].items = [];
-    for (var i = 0; i < 10; i++) {
-        var newUser = {
-            "userName": names[i % 13] + ' System',
-            "header": "image/header/" + (i % 10) + ".jpg",
-            "userId": i,
-            "type": 'system'
-        };
-
-        _circleDataSearch.value.push(newUser);
-        _gUserGroups[0].items.push(newUser);
-    }
-
-    _gUserGroups[1].items = [];
+    _gCiecleUsers = [{ userName: '系统消息', header: 'image/tmpheader.jpg', userId: '-1' }];
     for (var i = 0; i < 20; i++) {
         var tmpIdx = randomInt(0, 19);
         var newUser = {
-            "userName": names[tmpIdx % 13] + ' Friend',
+            "userName": names[tmpIdx % 13],
             "header": "image/header/" + (tmpIdx % 10) + ".jpg",
-            "userId": i + 99,
-            "type": 'friend'
+            "userId": i + 99
         };
 
         _circleDataSearch.value.push(newUser);
-        _gUserGroups[1].items.push(newUser);
-    }
-
-    _gUserGroups[2].items = [];
-    for (var i = 0; i < 5; i++) {
-        _gUserGroups[2].items.push({
-            "userName": names[i] + ' New',
-            "header": "image/header/" + i + ".jpg",
-            "userId": i,
-            "type": 'new'
-        });
+        _gCiecleUsers.push(newUser);
     }
 };
 
+function initNewFriendsForTest() {
+    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
+    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
+    var result = [];
+    for (var i = 0; i < 20; i++) {
+        var tmpIdx = randomInt(0, 19);
+        var newUser = {
+            "userName": names[tmpIdx % 13],
+            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
+            "userId": i + 99,
+            "msg": '申请成文好友的信息：' + i,
+            "accecpt": tmpIdx % 2
+        };
+
+        result.push(newUser);
+    }
+
+    return result;
+};
+
+function initChannelForTest() {
+    var names = ["C#讲堂", "JAVA讲堂", "Node.JS讲堂", "JavaScript讲堂", "Python讲堂", "C++讲堂", "Windows讲堂", "Lunix讲堂", "HTML5讲堂", "CSS3讲堂", "Three3D讲堂"];
+    var result = [];
+    for (var i = 0; i < names.length; i++) {
+        var newChannel = {
+            "name": names[i],
+            "code": 'channel-' + i,
+            "header": "image/header/" + (i % 10) + ".jpg",
+            "id": i + 50,
+            "detail": "频道：" + names[i] + " 的简介"
+        };
+
+        result.push(newChannel);
+    }
+
+    return result;
+};
+
 function testswebSocketGetCiecleHistory(userSymbol) {
-     var tmpDatas= [
-            { type: -1, content: '哪种好主要看具体需求了,innerHTML和crea' },
-            { type: -1, content: '可创建文本节点。 此方法可返回 Text 对象' },
-            { type: 1, content: '2017年9月13日 - 用法: innerHTML的用法 Object.innerHTML createTextNode的用法 document.createTextNode(data)         parendNode.' },
-            { type: -1, content: '最佳答案: 哪种好主要看具体需求了,innerHTML和createTextNode都可以把一段内容添加到一个节点中,区别是如果这段内容中有html标签' },
-            { type: 1, content: '美媒称，主要的汽车生产国将在没有美国的情况下举行会谈' },
-            { type: 1, content: '据彭博社7月29日报道，三位知情人士称，来自欧盟、加拿大、墨西' },
-            { type: -1, content: '日本的代表将于7月31日在日内瓦召开会议' },
-            { type: 1, content: '车关税的国际协议的可能性，但另外两名官员表示这不' },
-            { type: -1, content: '报道称，尽管欧盟委员会主席容克和美国总统特朗普为避免“单边行动”而达成贸易协定，' },
-            { type: 1, content: '彭博社的报道称，“总统指示我们继续调查并汇总材料' }
+    var tmpDatas = [
+           { type: -1, content: '哪种好主要看具体需求了,innerHTML和crea' },
+           { type: -1, content: '可创建文本节点。 此方法可返回 Text 对象' },
+           { type: 1, content: '2017年9月13日 - 用法: innerHTML的用法 Object.innerHTML createTextNode的用法 document.createTextNode(data)         parendNode.' },
+           { type: -1, content: '最佳答案: 哪种好主要看具体需求了,innerHTML和createTextNode都可以把一段内容添加到一个节点中,区别是如果这段内容中有html标签' },
+           { type: 1, content: '美媒称，主要的汽车生产国将在没有美国的情况下举行会谈' },
+           { type: 1, content: '据彭博社7月29日报道，三位知情人士称，来自欧盟、加拿大、墨西' },
+           { type: -1, content: '日本的代表将于7月31日在日内瓦召开会议' },
+           { type: 1, content: '车关税的国际协议的可能性，但另外两名官员表示这不' },
+           { type: -1, content: '报道称，尽管欧盟委员会主席容克和美国总统特朗普为避免“单边行动”而达成贸易协定，' },
+           { type: 1, content: '彭博社的报道称，“总统指示我们继续调查并汇总材料' }
     ];
 
-    var targetUserGroupID = userSymbol.split('|')[0];
-    var targetUserId = userSymbol.split('|')[1];
     var targetUserEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"]');
-    var targetUserObj = circleGetUserObj(targetUserGroupID, targetUserId);
+    var targetUserObj = circleGetUserObj(userSymbol);
     if (targetUserEl.length == 0) {
         tmpHTMLArr = [];
-        circleBuildFriednItem(tmpHTMLArr, _gUserGroups[targetUserGroupID], targetUserObj);
+        circleBuildFriednItem(tmpHTMLArr, targetUserObj);
         targetUserEl = $(tmpHTMLArr.join(''));
         $('#collapse_Circle_' + targetUserGroupID + ' .circle-user-list-group .container-fluid').append(targetUserEl);
         targetUserEl.on('click', function (eventObj) {
-            circleClickUserItem(eventObj);
+            circleClickUserItem($(eventObj.currentTarget));
         });
         targetUserEl.on('dblclick', function (eventObj) {
             circleDBClickUserItem(eventObj);
@@ -3585,9 +3901,7 @@ function testswebSocketGetCiecleHistory(userSymbol) {
         currUserSymbol = 'system|1';
     }
 
-    var currGroupID = currUserSymbol.split('|')[0];
-    var currUserId = currUserSymbol.split('|')[1];
-    var currUserObj = circleGetUserObj(currGroupID, currUserId);
+    var currUserObj = circleGetUserObj(currUserSymbol);
     var targetUserNoteEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"] .col-circle-user-list-item-msg .circle-user-list-item-msg');
     var isDisplay = (currUserSymbol == userSymbol ? true : false);
     var newMsgItem;
