@@ -1487,9 +1487,13 @@ function circleBuildMessagePart_Address() {
     tmpHTMLArr.push('           <label class="container-fluid label-circle-message-history-user"></label>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('   <div class="row">');
+    tmpHTMLArr.push('   <div class="row row-circle-message-part-1">');
     tmpHTMLArr.push('       <div class="col col-circle-message-history">');
     tmpHTMLArr.push('           <div class="container-fluid container-circle-message-history"></div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="row row-circle-message-part-2">');
+    tmpHTMLArr.push('       <div class="col">');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('</div>');
@@ -1551,14 +1555,12 @@ function initEvents_Circle_Address() {
     };
     //init search suggest
     $('#search_Circle').bsSuggest(defaultOptions);
-    $('.row-circle-user-list-item').on('click', function (eventObj) {
-        circleClickAddressItem($(eventObj.currentTarget));
-    });
-
-    circleClickAddressItem($('.row-circle-user-list-item[data-target="-2"]'));
+    $('.row-circle-user-list-item').on('click', circleClickAddressItem);
+    circleClickAddressItem(null);
 };
 
-function circleClickAddressItem(currentTarget) {
+function circleClickAddressItem(eventObj) {
+    var currentTarget = (eventObj != null ? $(eventObj.currentTarget) : $('.row-circle-user-list-item[data-target="-2"]'));
     var userId = currentTarget.attr('data-target');
     $('.row-circle-user-list-item').removeClass('active');
     currentTarget.addClass('active');
@@ -1571,6 +1573,8 @@ function circleClickAddressItem(currentTarget) {
         };
 
         ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getguests, {}), '', newFriendFn);
+        $('.row-circle-message-part-2').hide();
+        $('.row-circle-message-part-1').show();
     } else if (userId == '-3') {
         currUserObj = { userName: "频道", header: "image/tmpheader.jpg", userId: "-3" };
         var channelFn = function (response) {
@@ -1579,8 +1583,11 @@ function circleClickAddressItem(currentTarget) {
         };
 
         ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getguests, {}), '', channelFn);
+        $('.row-circle-message-part-2').hide();
+        $('.row-circle-message-part-1').show();
     } else {
         currUserObj = circleGetUserObj(userId);
+        circleBuildFriendDetail(currUserObj, false);
     }
 
     $('.label-circle-message-history-user').text(currUserObj.userName);
@@ -1592,7 +1599,7 @@ function circleBuildNewFriendsList(friends) {
     for (var i = 0; i < friends.length; i++) {
         tmpHTMLArr.push('<div class="row row-circle-address-new-friend-item">');
         tmpHTMLArr.push('   <div class="col-1 col-new-friend-header">');
-        tmpHTMLArr.push('       <img class="img-fluid circle-address-new-friend-hearder" src="' + friends[i].header + '">');
+        tmpHTMLArr.push('       <img class="img-fluid circle-address-new-friend-hearder" src="' + friends[i].header + '" data-target="' + friends[i].userId + '">');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('   <div class="col col-new-friend-content">');
         tmpHTMLArr.push('       <div class="container container-fluid">');
@@ -1616,10 +1623,18 @@ function circleBuildNewFriendsList(friends) {
 
     container.empty();
     container.append($(tmpHTMLArr.join('')));
-    $('.circle-address-new-friend-hearder').on('click', function () {
-        alert('popup user information window');
-    });
+    $('.circle-address-new-friend-hearder').on('click', function (eventObj) {
+        var userId = $(eventObj.currentTarget).attr('data-target');
+        var userObj = null;
+        for (var i = 0; i < friends.length; i++) {
+            if (userId == friends[i].userId) {
+                userObj = friends[i];
+                break;
+            }
+        }
 
+        circleBuildFriendDetail(userObj, (userObj.accecpt == '1' ? false : true));
+    });
 };
 
 function circleBuildChannelList(channels) {
@@ -1640,10 +1655,10 @@ function circleBuildChannelList(channels) {
     tmpHTMLArr.push('</div>');
     container.empty();
     container.append($(tmpHTMLArr.join('')));
-    $('.circle-address-channle-hearder').on('click', circleBuildAddressChannelPop);
+    $('.circle-address-channle-hearder').on('click', circleBuildChannelPop);
 };
 
-function circleBuildAddressChannelPop(eventObj) {
+function circleBuildChannelPop(eventObj) {
     var channels = initChannelForTest();
     var target = $(eventObj.currentTarget);
     var channelId = target.attr('data-target');
@@ -1655,7 +1670,7 @@ function circleBuildAddressChannelPop(eventObj) {
         }
     }
 
-    var container = $('.col-circle-message-history');
+    var container = $('.container-circle-message-history');
     if ($('.channel-popover-wrap').length <= 0) {
         var tmpHTMLArr = [];
         tmpHTMLArr.push('<div class="channel-popover-wrap">');
@@ -1692,8 +1707,8 @@ function circleBuildAddressChannelPop(eventObj) {
     $('.channel-popover-wrap .col-channel-detail p').text(current.detail);
 
 
-    var tmpTop = eventObj.pageY - container.offset().top;
-    var tmpLeft = eventObj.pageX - container.offset().left;
+    var tmpTop = eventObj.pageY - container.offset().top + 5;
+    var tmpLeft = eventObj.pageX - container.offset().left + 15;
     if (tmpTop + $('.channel-popover-wrap').height() > $('.col-circle-message-history').height()) {
         tmpTop -= $('.channel-popover-wrap').height();
     }
@@ -1705,6 +1720,93 @@ function circleBuildAddressChannelPop(eventObj) {
     $('.channel-popover-wrap').css('top', tmpTop + 'px');
     $('.channel-popover-wrap').css('left', tmpLeft + 'px');
 
+};
+
+function circleBuildFriendDetail(userObj, isNew) {
+    if (userObj != null) {
+        var titleLab = $('.label-circle-message-history-user');
+        var detailWrap = $('.row-circle-message-part-2');
+        var listWrap = $('.row-circle-message-part-1');
+        detailWrap.show();
+        listWrap.hide();
+        if (isNew) {
+            var currTxt = titleLab.text();
+            titleLab.html('<i class="fas fa-arrow-left"></i>');
+            titleLab.css('cursor', 'pointer');
+            titleLab.on('click', function () {
+                listWrap.show();
+                detailWrap.hide();
+                titleLab.empty();
+                titleLab.text(currTxt);
+                titleLab.unbind();
+                titleLab.css('cursor', 'default');
+            });
+
+        } else {
+            titleLab.html();
+        }
+
+        if ($('.container-circle-friend-item-detail').length == 0) {
+            var tmpHTMLArr = [];
+            tmpHTMLArr.push('<div class="container-fluid container-circle-friend-item-detail">');
+            tmpHTMLArr.push('   <div class="row" style="padding-bottom: 15px;">');
+            tmpHTMLArr.push('       <div class="col">');
+            tmpHTMLArr.push('           <p><span class="s-circle-friend-item-detail-name"></span><i class="fas fa-female"></i><i class="fas fa-male"></i></p>');
+            tmpHTMLArr.push('           <p class="p-circle-friend-item-detail-note"></p>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('       <div class="col-3 col-circle-friend-item-detail-header">');
+            tmpHTMLArr.push('           <img class="img-fluid circle-friend-item-detail-hearder" src="">');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('   <div class="row" style="padding-top: 15px; border-top:solid 1px rgb(231,231,231);">');
+            tmpHTMLArr.push('       <div class="col-3 col-circle-friend-item-detail-th">备  注 : </div>');
+            tmpHTMLArr.push('       <div class="col"><input type="text" class="form-control-plaintext" id="txt_Circle_Friend_Item_Detail_Comment" value="" placeholder="点击添加备注"/></div>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('   <div class="row">');
+            tmpHTMLArr.push('       <div class="col-3 col-circle-friend-item-detail-th">地  区 : </div>');
+            tmpHTMLArr.push('       <div class="col col-circle-friend-item-detail-address"></div>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('   <div class="row" style="padding-bottom: 15px; border-bottom:solid 1px rgb(231,231,231);">');
+            tmpHTMLArr.push('       <div class="col-3 col-circle-friend-item-detail-th">用户名 : </div>');
+            tmpHTMLArr.push('       <div class="col col-circle-friend-item-detail-symbol"></div>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('   <div class="row" style="padding-top: 15px;">');
+            tmpHTMLArr.push('       <div class="col text-center col-circle-friend-item-detail-talk">');
+            tmpHTMLArr.push('           <button type="button" class="btn btn-success btn-sm btn-circle-friend-item-detail-talk" style="width: 60px;padding: 0px 5px;">发消息</button>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('       <div class="col text-right col-circle-friend-item-detail-reply">');
+            tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-friend-item-detail-replay" title="回复">');
+            tmpHTMLArr.push('               <i class="fas fa-reply-all"></i>');
+            tmpHTMLArr.push('           </button>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('</div>');
+            $('.row-circle-message-part-2 .col').append($(tmpHTMLArr.join('')));
+        }
+
+        if (userObj.gender == '1') {
+            $('.container-circle-friend-item-detail .fa-female').hide();
+            $('.container-circle-friend-item-detail .fa-male').show();
+        } else {
+            $('.container-circle-friend-item-detail .fa-female').show();
+            $('.container-circle-friend-item-detail .fa-male').hide();
+        }
+
+        $('.container-circle-friend-item-detail .s-circle-friend-item-detail-name').text(userObj.userName);
+        $('.container-circle-friend-item-detail .circle-friend-item-detail-hearder').attr('src', userObj.header);
+        $('.container-circle-friend-item-detail .p-circle-friend-item-detail-note').text(userObj.note);
+        $('.container-circle-friend-item-detail #txt_Circle_Friend_Item_Detail_Comment').val(userObj.comment);
+        $('.container-circle-friend-item-detail .col-circle-friend-item-detail-address').text(userObj.address);
+        $('.container-circle-friend-item-detail .col-circle-friend-item-detail-symbol').text(userObj.userId);
+
+        if (isNew) {
+            $('.container-circle-friend-item-detail .col-circle-friend-item-detail-talk').hide();
+            $('.container-circle-friend-item-detail .col-circle-friend-item-detail-reply').show();
+        } else {
+            $('.container-circle-friend-item-detail .col-circle-friend-item-detail-talk').show();
+            $('.container-circle-friend-item-detail .col-circle-friend-item-detail-reply').hide();
+        }
+    }
 };
 
 function circleClickChannelPopBtn(eventObj) {
@@ -3821,7 +3923,13 @@ function initFriendsForTest() {
         var newUser = {
             "userName": names[tmpIdx % 13],
             "header": "image/header/" + (tmpIdx % 10) + ".jpg",
-            "userId": i + 99
+            "userId": i + 99,
+            "msg": '申请成文好友的信息：' + i,
+            "accecpt": tmpIdx % 5 % 2,
+            "gender": tmpIdx % 2,
+            "address": 'Address ' + i,
+            "comment": 'Comment ' + i,
+            "note": 'Note ' + i
         };
 
         _circleDataSearch.value.push(newUser);
@@ -3840,7 +3948,11 @@ function initNewFriendsForTest() {
             "header": "image/header/" + (tmpIdx % 10) + ".jpg",
             "userId": i + 99,
             "msg": '申请成文好友的信息：' + i,
-            "accecpt": tmpIdx % 2
+            "accecpt": tmpIdx % 5 % 2,
+            "gender": tmpIdx % 2,
+            "address": 'Address ' + i,
+            "comment": 'Comment ' + i,
+            "note": 'Note ' + i
         };
 
         result.push(newUser);

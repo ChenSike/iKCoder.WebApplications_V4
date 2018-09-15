@@ -1395,3 +1395,89 @@ footer {
         color: rgb(204, 204, 204);
     }
 }
+
+.row-circle-message-part-2 {
+    display: none;
+    background-color: rgb(245, 245, 245);
+    height: calc(100% - 40px);
+}
+
+    .row-circle-message-part-2 .container-circle-friend-item-detail {
+        padding: 20px;
+        width: 350px;
+        font-size: 12px;
+    }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .row {
+            padding: 5px;
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail p {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail svg {
+            height: 20px;
+            width: 20px;
+        }
+
+            .row-circle-message-part-2 .container-circle-friend-item-detail svg.fa-female {
+                color: rgb(243,126,125);
+            }
+
+            .row-circle-message-part-2 .container-circle-friend-item-detail svg.fa-male {
+                color: rgb(70,182,239);
+            }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .col-circle-friend-item-detail-header {
+            width: 90px;
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .circle-friend-item-detail-hearder {
+            width: 60px;
+            height: 60px;
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .s-circle-friend-item-detail-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .p-circle-friend-item-detail-note {
+            color: rgb(153,153,153);
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail #txt_Circle_Friend_Item_Detail_Comment {
+            border: none;
+            padding: 0px;
+            background-color: transparent;
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .col-circle-friend-item-detail-th {
+            color: rgb(153,153,153);
+            text-align: justify;
+            text-align-last: justify;
+            width: 80px;
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .col-circle-friend-item-detail-address {
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .col-circle-friend-item-detail-symbol {
+        }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .btn-circle-friend-item-detail-replay {
+            background-color: transparent;
+            color: rgb(153,153,153);
+            border: none;
+            font-size: 18px;
+        }
+
+            .row-circle-message-part-2 .container-circle-friend-item-detail .btn-circle-friend-item-detail-replay:hover {
+                color: rgb(0,0,0);
+            }
+
+            .row-circle-message-part-2 .container-circle-friend-item-detail .btn-circle-friend-item-detail-replay:focus {
+                box-shadow: none;
+            }
