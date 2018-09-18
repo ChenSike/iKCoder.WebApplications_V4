@@ -80,6 +80,7 @@ var _gCourseImgMap = {
     E: { img: 'image/course/course_cs.png', color: 'rgb(100,124,185)' }
 };
 var _gCircleGroups = [];
+var _gCurrentChatter = { id: '', type: '' };
 
 function initPage() {
     globalResize();
@@ -1040,9 +1041,22 @@ function circleBuildFriendPart() {
 };
 
 function circleBuildFriednItem(tmpHTMLArr, item) {
-    tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '">');
+    var isGroup = (typeof item.header == 'undefined' && item.items.length > 1);
+    tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '" data-group="' + (isGroup ? '1' : '0') + '">');
     tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-hearder">');
-    tmpHTMLArr.push('       <img class="img-fluid circle-user-list-item-hearder" src="' + item.header + '">');
+    if (isGroup) {
+        var imgStyle = (item.items.length <= 4 ? 'style="width:15px;height:15px;"' : '');
+        var wrapStyle = (item.items.length > 4 && item.items.length < 7 ? 'style="padding: 5px 0px;"' : '');
+        tmpHTMLArr.push('       <div class="group-header-wrap" ' + wrapStyle + '>');
+        for (var j = 0; j < item.items.length && j < 9; j++) {
+            tmpHTMLArr.push('           <img class="circle-group-item-hearder" src="' + item.items[j].header + '" ' + imgStyle + '>');
+        }
+
+        tmpHTMLArr.push('       </div>');
+    } else {
+        tmpHTMLArr.push('       <img class="img-fluid circle-user-list-item-hearder" src="' + item.header + '">');
+    }
+
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="col">');
     tmpHTMLArr.push(item.userName);
@@ -1057,8 +1071,11 @@ function circleBuildMessagePart() {
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid h-100 wrap-circle-message">');
     tmpHTMLArr.push('   <div class="row">');
-    tmpHTMLArr.push('       <div class="col col-circle-message-history-user">');
+    tmpHTMLArr.push('       <div class="col-11 col-circle-message-history-user">');
     tmpHTMLArr.push('           <label class="container-fluid label-circle-message-history-user"></label>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('       <div class="col-1 col-circle-message-history-button">');
+    tmpHTMLArr.push('           <button type="button" class="btn btn-sm" title="详情"><i class="fas fa-tasks"></i></button>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="row">');
@@ -1087,8 +1104,34 @@ function circleBuildMessagePart() {
     tmpHTMLArr.push('               <div class="row row-circle-message-input-button">');
     tmpHTMLArr.push('                   <div class="col"></div>');
     tmpHTMLArr.push('                   <div class="col-2 text-right">');
-    tmpHTMLArr.push('                       <button type="button" class="btn btn-outline-green btn-sm circle-message-input-send"><span>发送</span><i class="far fa-envelope"></i></button>');
+    tmpHTMLArr.push('                       <button type="button" class="btn btn-outline-green btn-sm circle-message-input-send">');
+    tmpHTMLArr.push('                           <span>发送</span><i class="far fa-envelope"></i>');
+    tmpHTMLArr.push('                       </button>');
     tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('       </div>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('   <div class="setting-bar-chatter">');
+    tmpHTMLArr.push('       <div class="container-fluid h-100 container-for-user">');
+    tmpHTMLArr.push('           <div class="row">');
+    tmpHTMLArr.push('               <div class="col-1">');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row">');
+    tmpHTMLArr.push('               <div class="col-1">');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row">');
+    tmpHTMLArr.push('               <div class="col">');
+    tmpHTMLArr.push('<div class="form-group">');
+    tmpHTMLArr.push('<label for="exampleFormControlInput1">Email address</label>');
+    tmpHTMLArr.push('<div class="form-control  form-control-sm">');
+    tmpHTMLArr.push('<div class="switch switch-small" tabindex="0">');
+    tmpHTMLArr.push('<input id="notification1" type="checkbox" />');
+    tmpHTMLArr.push('</div>');
+    tmpHTMLArr.push('</div>');
+    tmpHTMLArr.push('</div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('       </div>');
@@ -1101,12 +1144,14 @@ function circleBuildMessagePart() {
 function circleUpdateMsgHistory(userSymbol) {
     var isDisplay = (typeof (userSymbol) == 'string' ? false : true);
     var currUserId = (isDisplay ? $('.label-circle-message-history-user').attr('data-target') : userSymbol);
+    var currUserType = (isDisplay ? $('.label-circle-message-history-user').attr('data-type') : 'user');
     var currUserObj = circleGetUserObj(currUserId);
     var currHistory = _gCirleMessages[currUserId];
     if (!isDisplay) {
         $('.container-circle-message-history').empty();
         $('.label-circle-message-history-user').text(currUserObj.userName);
         $('.label-circle-message-history-user').attr('data-target', currUserId);
+        $('.label-circle-message-history-user').attr('data-type', currUserObj.type);
     }
 
     var existCount = $('.row-message-item').length;
@@ -1321,6 +1366,8 @@ function initEvents_Circle_Chat() {
     //init search suggest
     $('#search_Circle').bsSuggest(defaultOptions);
 
+    $('#notification1').wrap('<div class="switch" />').parent().bootstrapSwitch();
+
     $(".circle-input-drag").mousedown(function (e) {
         var drag = $('.circle-input-drag');
         var dragOff = $('.circle-input-drag').offset();
@@ -1428,16 +1475,39 @@ function initEvents_Circle_Chat() {
         var currItem = $(eventObj.currentTarget);
         currItem.addClass('active');
     });
+
+    $('.col-circle-message-history-button .btn.btn-sm').on('click', function (eventObj) {
+        circleShowSettingBar($(eventObj.currentTarget).attr('data-target'));
+    });
 };
 
-function circleBuildSection_Chat() {
+function circleShowSettingBar() {
+    var settingBar = $('.setting-bar-chatter');
+    if (settingBar.css('display') == 'block') {
+        $('.col-main-content').css('overflow', 'hidden');
+        settingBar.animate({
+            right: '-250px',
+            opacity: '0'
+        }, 500, function () { settingBar.hide(); });
+    } else {
+        settingBar.show();
+        settingBar.animate({
+            right: '0px',
+            opacity: '1'
+        }, 500, function () { $('.col-main-content').css('overflow', 'auto'); });
+    }
+};
+
+function circleBuildSection_Chat(id, type) {
     $('.col-circle-itemlist-container').append($(circleBuildFriendPart()));
     $('.col-circle-message-list').append($(circleBuildMessagePart()));
     var tmpObj = circleCalcMessageHeight(-1);
     $(".col-circle-message-input").height(tmpObj.input);
     $(".col-circle-message-history").height(tmpObj.history);
     //load messages
-    webSocketGetCiecleHistory('-1');
+    var chatterId = (arguments.length == 2 ? id : _gCurrentChatter.id == '' ? '-1' : _gCurrentChatter.id);
+    var chatterType = (arguments.length == 2 ? type : _gCurrentChatter.type == '' ? 'user' : _gCurrentChatter.type);
+    webSocketGetCiecleHistory(chatterId, chatterType);
     initEvents_Circle_Chat();
 };
 
@@ -1452,7 +1522,7 @@ function circleBuildFriendPart_Address() {
     _gCircleGroups = [
         { id: 'new', title: '新朋友', items: [{ userName: "新朋友", header: "image/tmpheader.jpg", userId: "-2" }] },
         { id: 'channel', title: '频道', items: [{ userName: "频道", header: "image/tmpheader.jpg", userId: "-3" }] },
-        { id: 'group', title: '群聊', items: [] }
+        { id: 'group', title: '讨论组', items: initGroupForTest() }
     ];
     _gCircleGroups = _gCircleGroups.concat(_GroupSortArray(_gCiecleUsers, 'userName'));
 
@@ -1565,6 +1635,7 @@ function circleClickAddressItem(eventObj) {
     $('.row-circle-user-list-item').removeClass('active');
     currentTarget.addClass('active');
     var currUserObj = null;
+    var currType = 'user';
     if (userId == '-2') {
         currUserObj = { userName: "新朋友", header: "image/tmpheader.jpg", userId: "-2" };
         var newFriendFn = function (response) {
@@ -1576,6 +1647,7 @@ function circleClickAddressItem(eventObj) {
         $('.row-circle-message-part-2').hide();
         $('.row-circle-message-part-1').show();
     } else if (userId == '-3') {
+        currType = 'channel';
         currUserObj = { userName: "频道", header: "image/tmpheader.jpg", userId: "-3" };
         var channelFn = function (response) {
             var channels = initChannelForTest();
@@ -1586,11 +1658,20 @@ function circleClickAddressItem(eventObj) {
         $('.row-circle-message-part-2').hide();
         $('.row-circle-message-part-1').show();
     } else {
-        currUserObj = circleGetUserObj(userId);
-        circleBuildFriendDetail(currUserObj, false);
+        if (currentTarget.attr('data-group') == '1') {
+            currType = 'group';
+            $('.row-circle-message-part-1').show();
+            $('.row-circle-message-part-2').hide();
+            currUserObj = getCurrentGroup(userId);
+            circleBuildGroupDetail(userId);
+        } else {
+            currUserObj = circleGetUserObj(userId);
+            circleBuildFriendDetail(currUserObj);
+        }
     }
 
     $('.label-circle-message-history-user').text(currUserObj.userName);
+    $('.label-circle-message-history-user').attr('data-target', currType);
 };
 
 function circleBuildNewFriendsList(friends) {
@@ -1606,17 +1687,21 @@ function circleBuildNewFriendsList(friends) {
         tmpHTMLArr.push('           <div class="row">');
         tmpHTMLArr.push('               <div class="col">' + friends[i].userName + '</div>');
         tmpHTMLArr.push('           </div>');
-        tmpHTMLArr.push('           <div class="row">');
-        tmpHTMLArr.push('               <div class="col text-999999">' + '我想加你为好友，请同意' + '</div>');
-        tmpHTMLArr.push('           </div>');
+        for (var j = 0; j < 2 && j < friends[i].msg.length; j++) {
+            tmpHTMLArr.push('           <div class="row">');
+            tmpHTMLArr.push('               <div class="col text-999999">' + friends[i].msg[j] + '</div>');
+            tmpHTMLArr.push('           </div>');
+        }
+
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('   </div>');
-        tmpHTMLArr.push('   <div class="col-1 d-flex align-items-center text-12 text-999999" style="width:70px;">');
+        tmpHTMLArr.push('   <div class="col-1 d-flex align-items-center col-new-friend-accept">');
         if (friends[i].accecpt == '1') {
             tmpHTMLArr.push('已添加');
         } else {
-            tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm " style="width: 60px;padding: 0px 5px;">接受</button>');
+            tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm btn-new-friend-accept" data-target="' + friends[i].userId + '">接受</button>');
         }
+
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('</div>');
     }
@@ -1624,17 +1709,23 @@ function circleBuildNewFriendsList(friends) {
     container.empty();
     container.append($(tmpHTMLArr.join('')));
     $('.circle-address-new-friend-hearder').on('click', function (eventObj) {
-        var userId = $(eventObj.currentTarget).attr('data-target');
-        var userObj = null;
-        for (var i = 0; i < friends.length; i++) {
-            if (userId == friends[i].userId) {
-                userObj = friends[i];
-                break;
-            }
-        }
-
-        circleBuildFriendDetail(userObj, (userObj.accecpt == '1' ? false : true));
+        var userObj = circleGetUserObj($(eventObj.currentTarget).attr('data-target'));
+        circleBuildFriendDetail(userObj);
     });
+
+    $('.btn-new-friend-accept').on('click', function (eventObj) {
+        var target = $(eventObj.currentTarget);
+        var userObj = circleGetUserObj(target.attr('data-target'));
+        userObj.accecpt = '1';
+        circleAcceptFriendRequest(userObj.userId);
+        var parent = target.parent();
+        parent.empty();
+        parent.text('已添加');
+    });
+};
+
+function circleAcceptFriendRequest(userId) {
+
 };
 
 function circleBuildChannelList(channels) {
@@ -1705,7 +1796,7 @@ function circleBuildChannelPop(eventObj) {
     $('.channel-popover-wrap .channel-code').text('频道号: ' + current.code);
     $('.channel-popover-wrap .channel-header').attr('src', current.header);
     $('.channel-popover-wrap .col-channel-detail p').text(current.detail);
-
+    $('.btn-circle-address-channel-popover').attr('data-target', current.code);
 
     var tmpTop = eventObj.pageY - container.offset().top + 5;
     var tmpLeft = eventObj.pageX - container.offset().left + 15;
@@ -1719,16 +1810,16 @@ function circleBuildChannelPop(eventObj) {
 
     $('.channel-popover-wrap').css('top', tmpTop + 'px');
     $('.channel-popover-wrap').css('left', tmpLeft + 'px');
-
 };
 
-function circleBuildFriendDetail(userObj, isNew) {
+function circleBuildFriendDetail(userObj) {
     if (userObj != null) {
         var titleLab = $('.label-circle-message-history-user');
         var detailWrap = $('.row-circle-message-part-2');
         var listWrap = $('.row-circle-message-part-1');
         detailWrap.show();
         listWrap.hide();
+        var isNew = (userObj.accecpt == '1');
         if (isNew) {
             var currTxt = titleLab.text();
             titleLab.html('<i class="fas fa-arrow-left"></i>');
@@ -1758,7 +1849,7 @@ function circleBuildFriendDetail(userObj, isNew) {
             tmpHTMLArr.push('           <img class="img-fluid circle-friend-item-detail-hearder" src="">');
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('   </div>');
-            tmpHTMLArr.push('   <div class="row" style="padding-top: 15px; border-top:solid 1px rgb(231,231,231);">');
+            tmpHTMLArr.push('   <div class="row row-circle-friend-item-detail-comment">');
             tmpHTMLArr.push('       <div class="col-3 col-circle-friend-item-detail-th">备  注 : </div>');
             tmpHTMLArr.push('       <div class="col"><input type="text" class="form-control-plaintext" id="txt_Circle_Friend_Item_Detail_Comment" value="" placeholder="点击添加备注"/></div>');
             tmpHTMLArr.push('   </div>');
@@ -1766,22 +1857,41 @@ function circleBuildFriendDetail(userObj, isNew) {
             tmpHTMLArr.push('       <div class="col-3 col-circle-friend-item-detail-th">地  区 : </div>');
             tmpHTMLArr.push('       <div class="col col-circle-friend-item-detail-address"></div>');
             tmpHTMLArr.push('   </div>');
-            tmpHTMLArr.push('   <div class="row" style="padding-bottom: 15px; border-bottom:solid 1px rgb(231,231,231);">');
+            tmpHTMLArr.push('   <div class="row row-circle-friend-item-detail-symbol">');
             tmpHTMLArr.push('       <div class="col-3 col-circle-friend-item-detail-th">用户名 : </div>');
             tmpHTMLArr.push('       <div class="col col-circle-friend-item-detail-symbol"></div>');
             tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('   <div class="row">');
+            tmpHTMLArr.push('       <div class="col col-circle-friend-item-detail-message">');
+            tmpHTMLArr.push('<div class="container-fluid">');
+            for (var i = 0; i < userObj.msg.length; i++) {
+                tmpHTMLArr.push('   <div class="row">');
+                tmpHTMLArr.push('       <div class="col">' + userObj.msg[i] + '</div>');
+                tmpHTMLArr.push('   </div>');
+            }
+
+            tmpHTMLArr.push('</div>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('   </div>');
             tmpHTMLArr.push('   <div class="row" style="padding-top: 15px;">');
             tmpHTMLArr.push('       <div class="col text-center col-circle-friend-item-detail-talk">');
-            tmpHTMLArr.push('           <button type="button" class="btn btn-success btn-sm btn-circle-friend-item-detail-talk" style="width: 60px;padding: 0px 5px;">发消息</button>');
+            tmpHTMLArr.push('           <button type="button" class="btn btn-success btn-sm btn-circle-friend-item-detail-talk">发消息</button>');
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('       <div class="col text-right col-circle-friend-item-detail-reply">');
-            tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-friend-item-detail-replay" title="回复">');
+            tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-friend-item-detail-replay" title="回复" data-taget="">');
             tmpHTMLArr.push('               <i class="fas fa-reply-all"></i>');
             tmpHTMLArr.push('           </button>');
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('   </div>');
             tmpHTMLArr.push('</div>');
             $('.row-circle-message-part-2 .col').append($(tmpHTMLArr.join('')));
+            $('.btn-circle-friend-item-detail-talk').on('click', function () {
+                circleSwitchToTalk($(arguments[0].currentTarget).attr('data-target'), 'user');
+            });
+
+            $('.btn-circle-friend-item-detail-replay').on('click', function () {
+                circleOpenRelpayPop($(arguments[0].currentTarget).attr('data-target'));
+            });
         }
 
         if (userObj.gender == '1') {
@@ -1802,10 +1912,202 @@ function circleBuildFriendDetail(userObj, isNew) {
         if (isNew) {
             $('.container-circle-friend-item-detail .col-circle-friend-item-detail-talk').hide();
             $('.container-circle-friend-item-detail .col-circle-friend-item-detail-reply').show();
+            $('.container-circle-friend-item-detail .col-circle-friend-item-detail-talk .btn-circle-friend-item-detail-talk').attr('data-target', '');
+            $('.container-circle-friend-item-detail .col-circle-friend-item-detail-reply .btn-circle-friend-item-detail-replay').attr('data-target', userObj.userId);
         } else {
             $('.container-circle-friend-item-detail .col-circle-friend-item-detail-talk').show();
             $('.container-circle-friend-item-detail .col-circle-friend-item-detail-reply').hide();
+            $('.container-circle-friend-item-detail .col-circle-friend-item-detail-talk .btn-circle-friend-item-detail-talk').attr('data-target', userObj.userId);
+            $('.container-circle-friend-item-detail .col-circle-friend-item-detail-reply .btn-circle-friend-item-detail-replay').attr('data-target', '');
         }
+    }
+};
+
+function circleSwitchToTalk(chatterId, chatterType) {
+    $('.btn-circle-stb-item').removeClass('active');
+    $('.btn-circle-stb-item[data-target="chat"]').addClass('active');
+    $('.col-circle-itemlist-container').empty();
+    $('.col-circle-message-list').empty();
+    circleBuildSection_Chat(chatterId, chatterType);
+    $('.row-circle-user-list-item').removeClass('active');
+    $('.row-circle-user-list-item[data-target="' + chatterId + '"]').addClass('active');
+    _gCurrentChatter.id = chatterId;
+    _gCurrentChatter.type = chatterType;
+};
+
+function circleOpenRelpayPop(chatterId) {
+    if ($('#modal_Circle_Guest_Replay').length == 0) {
+        var tmpHTMLArr = [];
+        tmpHTMLArr.push('<div class="modal" id="modal_Circle_Guest_Replay" tabindex="-1" role="dialog">');
+        tmpHTMLArr.push('   <div class="modal-dialog" role="document">');
+        tmpHTMLArr.push('       <div class="modal-content">');
+        tmpHTMLArr.push('           <div class="modal-header" style="border:none;">');
+        tmpHTMLArr.push('               <h5 class="modal-title text-14">回复</h5>');
+        tmpHTMLArr.push('               <button type="button" class="close text-14" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLArr.push('                   <span aria-hidden="true">&times;</span>');
+        tmpHTMLArr.push('               </button>');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('           <div class="modal-body">');
+        tmpHTMLArr.push('               <form> ');
+        tmpHTMLArr.push('                   <div class="form-group no-margin">');
+        tmpHTMLArr.push('                       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>');
+        tmpHTMLArr.push('                   </div>');
+        tmpHTMLArr.push('               </form> ');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('           <div class="modal-footer" style="border:none;">');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-primary btn-sm btn-replay-msg-send" style="padding: 0px 10px;" data-target="' + chatterId + '">确定</button>');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-secondary btn-sm" style="padding: 0px 10px;" data-dismiss="modal">取消</button>');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
+        $('body').append(tmpHTMLArr.join(''));
+        $('#modal_Circle_Guest_Replay .btn-replay-msg-send').on('click', function () {
+            alert('Replay Message to Guest!');
+            $('#modal_Circle_Guest_Replay').modal('hide');
+        });
+    }
+
+    $('#modal_Circle_Guest_Replay').modal('show');
+};
+
+function circleBuildGroupDetail(groupId) {
+    var currGroup = getCurrentGroup(groupId);
+    for (var i = 0; i < _testGroups.length; i++) {
+        if (groupId == _testGroups[i].userId) {
+            currGroup = _testGroups[i];
+            break;
+        }
+    }
+
+    var container = $('.container-circle-message-history');
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<div class="row row-circle-address-group-items">');
+    for (var i = 0; i < currGroup.items.length; i++) {
+        tmpHTMLArr.push('   <div class="col-1">');
+        tmpHTMLArr.push('       <div class="card">');
+        tmpHTMLArr.push('           <img class="card-img-top circle-address-group-item-hearder"  src="' + currGroup.items[i].header + '" data-target="' + currGroup.items[i].userId + '">');
+        tmpHTMLArr.push('           <div class="card-body">');
+        tmpHTMLArr.push('           <p>' + currGroup.items[i].userName + '</p>');
+        tmpHTMLArr.push('           </div>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+    }
+
+    tmpHTMLArr.push('</div>');
+    tmpHTMLArr.push('<div class="row row-circle-address-group-button">');
+    tmpHTMLArr.push('   <div class="col text-center align-self-end">');
+    tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm btn-circle-address-group-item-talk" data-target="' + groupId + '">发消息</button>');
+    tmpHTMLArr.push('   </div>');
+    tmpHTMLArr.push('</div>');
+
+    container.empty();
+    container.append($(tmpHTMLArr.join('')));
+    var tmpHeight = $('.col-circle-message-history').height() - $('.row-circle-address-group-items').height() - 35;
+    $('.row-circle-address-group-button').height((tmpHeight > 35 ? tmpHeight : 35));
+    $('.circle-address-group-item-hearder').on('click', circleBuildGroupItemPop);
+    $('.btn-circle-address-group-item-talk').on('click', function () {
+        circleSwitchToTalk($(arguments[0].currentTarget).attr('data-target'), 'group');
+    });
+};
+
+function circleBuildGroupItemPop(eventObj) {
+    var target = $(eventObj.currentTarget);
+    var userId = target.attr('data-target');
+    var userObj = circleGetUserObj(userId);
+    var container = $('.container-circle-message-history');
+    var tmpWrap = $('.group-item-popover-wrap');
+    if (tmpWrap.length <= 0) {
+        var tmpHTMLArr = [];
+        tmpHTMLArr.push('<div class="group-item-popover-wrap">');
+        tmpHTMLArr.push('<div class="container-fluid container-circle-group-user-detail">');
+        tmpHTMLArr.push('   <div class="row" style="padding-bottom: 15px;">');
+        tmpHTMLArr.push('       <div class="col">');
+        tmpHTMLArr.push('           <p><span class="s-circle-group-user-detail-name"></span><i class="fas fa-female"></i><i class="fas fa-male"></i></p>');
+        tmpHTMLArr.push('           <p class="p-circle-group-user-detail-note"></p>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('       <div class="col-3 col-circle-group-user-detail-header">');
+        tmpHTMLArr.push('           <img class="img-fluid circle-group-user-detail-hearder" src="">');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div class="row" style="padding-top: 15px; border-top:solid 1px rgb(231,231,231);">');
+        tmpHTMLArr.push('       <div class="col-3 col-circle-group-user-detail-th">备  注 : </div>');
+        tmpHTMLArr.push('       <div class="col"><input type="text" class="form-control-plaintext" id="txt_Circle_Group_User_Detail_Comment" value="" placeholder="点击添加备注"/></div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div class="row">');
+        tmpHTMLArr.push('       <div class="col-3 col-circle-group-user-detail-th">地  区 : </div>');
+        tmpHTMLArr.push('       <div class="col col-circle-group-user-detail-address"></div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div class="row" style="padding-bottom: 15px; border-bottom:solid 1px rgb(231,231,231);">');
+        tmpHTMLArr.push('       <div class="col-3 col-circle-group-user-detail-th">用户名 : </div>');
+        tmpHTMLArr.push('       <div class="col col-circle-group-user-detail-symbol"></div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('   <div class="row" style="padding-top: 15px;">');
+        tmpHTMLArr.push('       <div class="col text-right">');
+        tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-group-user-popover" title="推荐朋友"><i class="far fa-share-square"></i></button>');
+        tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-group-user-popover" title="开始聊天"><i class="fas fa-sign-in-alt"></i></button>');
+        tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-group-user-popover" title="加为好友"><i class="far fa-plus-square"></i></button>');
+        tmpHTMLArr.push('       </div>');
+        tmpHTMLArr.push('   </div>');
+        tmpHTMLArr.push('</div>');
+        tmpHTMLArr.push('</div>');
+        container.append($(tmpHTMLArr.join('')));
+        $('.btn-circle-group-user-popover').on('click', circleClickGroupItemPopBtn);
+        tmpWrap = $('.group-item-popover-wrap');
+    }
+
+    tmpWrap.show();
+
+    if (userObj.gender == '1') {
+        $('.container-circle-group-user-detail .fa-female').hide();
+        $('.container-circle-group-user-detail .fa-male').show();
+    } else {
+        $('.container-circle-group-user-detail .fa-female').show();
+        $('.container-circle-group-user-detail .fa-male').hide();
+    }
+
+    $('.container-circle-group-user-detail .s-circle-group-user-detail-name').text(userObj.userName);
+    $('.container-circle-group-user-detail .circle-group-user-detail-hearder').attr('src', userObj.header);
+    $('.container-circle-group-user-detail .p-circle-group-user-detail-note').text(userObj.note);
+    $('.container-circle-group-user-detail #txt_Circle_Group_User_Detail_Comment').val(userObj.comment);
+    $('.container-circle-group-user-detail .col-circle-group-user-detail-address').text(userObj.address);
+    $('.container-circle-group-user-detail .col-circle-group-user-detail-symbol').text(userObj.userId);
+    $('.container-circle-group-user-detail .btn-circle-group-user-popover').attr('data-target', userId);
+
+    if (userObj.isnew == '1') {
+        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-share-square').parent().hide();
+        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-sign-in-alt').parent().hide();
+        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-plus-square').parent().show();
+    } else {
+        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-share-square').parent().show();
+        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-sign-in-alt').parent().show();
+        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-plus-square').parent().hide();
+    }
+
+    var tmpTop = eventObj.pageY - container.offset().top + 5;
+    var tmpLeft = eventObj.pageX - container.offset().left + 15;
+    if (tmpTop + tmpWrap.height() > $('.col-circle-message-history').height()) {
+        tmpTop -= tmpWrap.height();
+    }
+
+    if (tmpLeft + tmpWrap.width() > $('.col-circle-message-history').width()) {
+        tmpLeft -= tmpWrap.width();
+    }
+
+    tmpWrap.css('top', tmpTop + 'px');
+    tmpWrap.css('left', tmpLeft + 'px');
+};
+
+function circleClickGroupItemPopBtn(eventObj) {
+    $('.group-item-popover-wrap').hide();
+    var target = $(eventObj.currentTarget);
+    var action = $($(eventObj.currentTarget).find('svg'));
+    if (action.hasClass('fa-share-square')) {
+        alert('Share Friend with Other People!');
+    } else if (action.hasClass('fa-sign-in-alt')) {
+        circleSwitchToTalk(target.attr('data-target'), 'user');
+    } else if (action.hasClass('fa-plus-square')) {
+        alert('Add User to Be My Friend!');
     }
 };
 
@@ -1818,7 +2120,7 @@ function circleClickChannelPopBtn(eventObj) {
     } else if (action.hasClass('fa-history')) {
         alert('History of Channel!');
     } else if (action.hasClass('fa-sign-in-alt')) {
-        alert('Enter Channel!');
+        circleSwitchToTalk(target.attr('data-target'), 'channel');
     }
 };
 
@@ -1828,6 +2130,8 @@ function circleClickUserItem(currentTarget) {
     currentTarget.addClass('active');
     //webSocketGetCiecleHistory(tmpSymbol);
     testswebSocketGetCiecleHistory(tmpSymbol);
+    $('.label-circle-message-history-user').attr('data-target', tmpSymbol);
+    $('.col-circle-message-history-button .btn.btn-sm').attr('data-target', tmpSymbol);
     var symbolEl = $(currentTarget.find('.circle-user-list-item-msg')[0]);
     symbolEl.text('0');
     symbolEl.hide();
@@ -3924,7 +4228,7 @@ function initFriendsForTest() {
             "userName": names[tmpIdx % 13],
             "header": "image/header/" + (tmpIdx % 10) + ".jpg",
             "userId": i + 99,
-            "msg": '申请成文好友的信息：' + i,
+            "msg": ['申请成文好友的信息：' + i],
             "accecpt": tmpIdx % 5 % 2,
             "gender": tmpIdx % 2,
             "address": 'Address ' + i,
@@ -3947,7 +4251,7 @@ function initNewFriendsForTest() {
             "userName": names[tmpIdx % 13],
             "header": "image/header/" + (tmpIdx % 10) + ".jpg",
             "userId": i + 99,
-            "msg": '申请成文好友的信息：' + i,
+            "msg": ['申请成为好友的信息：' + i],
             "accecpt": tmpIdx % 5 % 2,
             "gender": tmpIdx % 2,
             "address": 'Address ' + i,
@@ -3960,6 +4264,56 @@ function initNewFriendsForTest() {
 
     return result;
 };
+
+var _testGroups = [];
+function initGroupForTest() {
+    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
+    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
+    var users = [];
+    for (var i = 0; i < 13; i++) {
+        var newUser = {
+            "userName": names[i],
+            "header": "image/header/" + (i % 10) + ".jpg",
+            "userId": i + 99,
+            "gender": i % 2,
+            "address": 'Address ' + i,
+            "comment": 'Comment ' + i,
+            "note": 'Note ' + i,
+            "isnew": randomInt(0, 12) % 2
+        };
+
+        users.push(newUser);
+    }
+
+    var result = [];
+    for (var i = 0; i < 5; i++) {
+        var tmpIdx = randomInt(3, 12);
+        var newGroup = { userId: 'group_' + i, items: [], userName: '' };
+        var tmpName = [];
+        for (var j = 0; j < tmpIdx; j++) {
+            newGroup.items.push(users[j]);
+            tmpName.push(users[j].userName);
+        }
+
+        newGroup.userName = (i % 3 == 0 ? '讨论组 ' + i : tmpName.join(','));
+        result.push(newGroup);
+    }
+
+    _testGroups = result;
+    return result;
+};
+
+function getCurrentGroup(groupId) {
+    var currGroup = null;
+    for (var i = 0; i < _testGroups.length; i++) {
+        if (groupId == _testGroups[i].userId) {
+            currGroup = _testGroups[i];
+            break;
+        }
+    }
+
+    return currGroup;
+}
 
 function initChannelForTest() {
     var names = ["C#讲堂", "JAVA讲堂", "Node.JS讲堂", "JavaScript讲堂", "Python讲堂", "C++讲堂", "Windows讲堂", "Lunix讲堂", "HTML5讲堂", "CSS3讲堂", "Three3D讲堂"];
@@ -3981,16 +4335,16 @@ function initChannelForTest() {
 
 function testswebSocketGetCiecleHistory(userSymbol) {
     var tmpDatas = [
-           { type: -1, content: '哪种好主要看具体需求了,innerHTML和crea' },
-           { type: -1, content: '可创建文本节点。 此方法可返回 Text 对象' },
-           { type: 1, content: '2017年9月13日 - 用法: innerHTML的用法 Object.innerHTML createTextNode的用法 document.createTextNode(data)         parendNode.' },
-           { type: -1, content: '最佳答案: 哪种好主要看具体需求了,innerHTML和createTextNode都可以把一段内容添加到一个节点中,区别是如果这段内容中有html标签' },
-           { type: 1, content: '美媒称，主要的汽车生产国将在没有美国的情况下举行会谈' },
-           { type: 1, content: '据彭博社7月29日报道，三位知情人士称，来自欧盟、加拿大、墨西' },
-           { type: -1, content: '日本的代表将于7月31日在日内瓦召开会议' },
-           { type: 1, content: '车关税的国际协议的可能性，但另外两名官员表示这不' },
-           { type: -1, content: '报道称，尽管欧盟委员会主席容克和美国总统特朗普为避免“单边行动”而达成贸易协定，' },
-           { type: 1, content: '彭博社的报道称，“总统指示我们继续调查并汇总材料' }
+        { type: -1, content: '哪种好主要看具体需求了,innerHTML和crea' },
+        { type: -1, content: '可创建文本节点。 此方法可返回 Text 对象' },
+        { type: 1, content: '2017年9月13日 - 用法: innerHTML的用法 Object.innerHTML createTextNode的用法 document.createTextNode(data)         parendNode.' },
+        { type: -1, content: '最佳答案: 哪种好主要看具体需求了,innerHTML和createTextNode都可以把一段内容添加到一个节点中,区别是如果这段内容中有html标签' },
+        { type: 1, content: '美媒称，主要的汽车生产国将在没有美国的情况下举行会谈' },
+        { type: 1, content: '据彭博社7月29日报道，三位知情人士称，来自欧盟、加拿大、墨西' },
+        { type: -1, content: '日本的代表将于7月31日在日内瓦召开会议' },
+        { type: 1, content: '车关税的国际协议的可能性，但另外两名官员表示这不' },
+        { type: -1, content: '报道称，尽管欧盟委员会主席容克和美国总统特朗普为避免“单边行动”而达成贸易协定，' },
+        { type: 1, content: '彭博社的报道称，“总统指示我们继续调查并汇总材料' }
     ];
 
     var targetUserEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"]');

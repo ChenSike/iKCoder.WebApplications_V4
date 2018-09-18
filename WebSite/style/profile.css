@@ -411,7 +411,7 @@ footer {
     .col-circle-sidetoolbar .btn-circle-stb-item {
         font-size: 24px;
         padding: 8px 0px;
-        width: 49px;
+        width: 50px;
         border-radius: 0;
         border: none;
     }
@@ -516,6 +516,22 @@ footer {
                 box-shadow: 1px 1px 5px rgb(142,142,142);*/
             }
 
+            .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-hearder .group-header-wrap {
+                width: 30px;
+                height: 30px;
+                background-color: rgb(221,222,224);
+            }
+
+                .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-hearder .group-header-wrap .circle-group-item-hearder {
+                    width: 10px;
+                    height: 10px;
+                    padding: 0px;
+                    margin: 0px;
+                    position: relative;
+                    display: block;
+                    float: left;
+                }
+
         .col-circle-user-list .circle-user-list-group .row-circle-user-list-item {
             cursor: pointer;
             padding: 5px 0px;
@@ -535,12 +551,18 @@ footer {
 
             .col-circle-user-list .circle-user-list-group .row-circle-user-list-item .col {
                 line-height: 33px;
+                overflow: hidden;
+                flex-wrap: nowrap;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
 
         .col-circle-user-list .circle-user-list-group .row-circle-address-group-title {
             border-top: solid 1px rgb(217,217,217);
             color: rgb(153,153,153);
         }
+
+
 
 .col-circle-message-list {
     max-width: calc(100% - 290px);
@@ -733,6 +755,17 @@ footer {
             line-height: 25px;
         }
 
+    .row-circle-address-new-friend-item .col-new-friend-accept {
+        width: 70px;
+        font-size: 12px;
+        color: #999999;
+    }
+
+        .row-circle-address-new-friend-item .col-new-friend-accept .btn-new-friend-accept {
+            width: 60px;
+            padding: 0px 5px;
+        }
+
 .row-circle-address-channle-items {
 }
 
@@ -762,6 +795,41 @@ footer {
             font-size: 12px;
             text-align: center;
         }
+
+.row-circle-address-group-items {
+}
+
+    .row-circle-address-group-items .col-1 {
+        width: fit-content;
+    }
+
+    .row-circle-address-group-items .card {
+        width: 60px;
+        background-color: transparent;
+        border: none;
+        padding: 5px 0px;
+    }
+
+        .row-circle-address-group-items .card:hover {
+            background-color: rgb(230,230,230);
+        }
+
+        .row-circle-address-group-items .card img {
+            border-radius: 5px;
+            cursor: pointer;
+            width: 50px;
+            align-self: center;
+        }
+
+        .row-circle-address-group-items .card .card-body {
+            font-size: 12px;
+            text-align: center;
+            color: rgb(153,153,153);
+        }
+
+            .row-circle-address-group-items .card .card-body p {
+                padding: 5px 0px;
+            }
 
 .channel-popover-wrap {
     position: absolute;
@@ -1461,11 +1529,21 @@ footer {
             width: 80px;
         }
 
+        .row-circle-message-part-2 .container-circle-friend-item-detail .row-circle-friend-item-detail-comment {
+            padding-top: 15px;
+            border-top: solid 1px rgb(231,231,231);
+        }
+
         .row-circle-message-part-2 .container-circle-friend-item-detail .col-circle-friend-item-detail-address {
         }
 
-        .row-circle-message-part-2 .container-circle-friend-item-detail .col-circle-friend-item-detail-symbol {
+        .row-circle-message-part-2 .container-circle-friend-item-detail .row-circle-friend-item-detail-symbol {
+            padding-bottom: 15px;
+            border-bottom: solid 1px rgb(231,231,231);
         }
+
+            .row-circle-message-part-2 .container-circle-friend-item-detail .row-circle-friend-item-detail-symbol .col-circle-friend-item-detail-symbol {
+            }
 
         .row-circle-message-part-2 .container-circle-friend-item-detail .btn-circle-friend-item-detail-replay {
             background-color: transparent;
@@ -1480,4 +1558,140 @@ footer {
 
             .row-circle-message-part-2 .container-circle-friend-item-detail .btn-circle-friend-item-detail-replay:focus {
                 box-shadow: none;
+            }
+
+        .row-circle-message-part-2 .container-circle-friend-item-detail .btn-circle-friend-item-detail-talk {
+            width: 60px;
+            padding: 0px 5px;
+        }
+
+.group-item-popover-wrap {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgb(255,255,255);
+    width: 300px;
+}
+
+    .group-item-popover-wrap .container-circle-group-user-detail {
+        padding: 20px;
+        font-size: 12px;
+    }
+
+        .group-item-popover-wrap .container-circle-group-user-detail .row {
+            padding: 5px;
+        }
+
+        .group-item-popover-wrap .container-circle-group-user-detail p {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .group-item-popover-wrap .container-circle-group-user-detail svg {
+            height: 20px;
+            width: 20px;
+        }
+
+            .group-item-popover-wrap .container-circle-group-user-detail svg.fa-female {
+                color: rgb(243,126,125);
+            }
+
+            .group-item-popover-wrap .container-circle-group-user-detail svg.fa-male {
+                color: rgb(70,182,239);
+            }
+
+        .group-item-popover-wrap .container-circle-group-user-detail .col-circle-group-user-detail-header {
+            width: 90px;
+        }
+
+        .group-item-popover-wrap .container-circle-group-user-detail .circle-group-user-detail-hearder {
+            width: 60px;
+            height: 60px;
+        }
+
+        .group-item-popover-wrap .container-circle-group-user-detail .s-circle-group-user-detail-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .group-item-popover-wrap .container-circle-group-user-detail .p-circle-group-user-detail-note {
+            color: rgb(153,153,153);
+        }
+
+        .group-item-popover-wrap .container-circle-group-user-detail #txt_Circle_Group_User_Detail_Comment {
+            border: none;
+            padding: 0px;
+            background-color: transparent;
+        }
+
+        .group-item-popover-wrap .container-circle-group-user-detail .col-circle-group-user-detail-th {
+            color: rgb(153,153,153);
+            text-align: justify;
+            text-align-last: justify;
+            width: 80px;
+        }
+
+        .group-item-popover-wrap .container-circle-group-user-detail .btn.btn-sm {
+            background-color: transparent;
+            color: rgb(153,153,153);
+            border: none;
+            font-size: 18px;
+        }
+
+            .group-item-popover-wrap .container-circle-group-user-detail .btn.btn-sm:hover {
+                color: rgb(0,0,0);
+            }
+
+            .group-item-popover-wrap .container-circle-group-user-detail .btn.btn-sm:focus {
+                box-shadow: none;
+            }
+
+.col-circle-message-history-button {
+    border-bottom: solid 1px rgb(231,231,231);
+    background-color: rgb(245,245,245);
+    text-align: center;
+}
+
+    .col-circle-message-history-button .btn.btn-sm {
+        color: rgb(153,153,153);
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+        padding: 0px;
+        height: 20px;
+        height: 38px;
+    }
+
+        .col-circle-message-history-button .btn.btn-sm:hover {
+            color: rgb(0,0,0);
+        }
+
+        .col-circle-message-history-button .btn.btn-sm:focus {
+            box-shadow: none;
+        }
+
+.setting-bar-chatter {
+    display: none;
+    border-left: solid 1px rgb(236,236,236);
+    background-color: rgb(255,255,255);
+    height: calc(100% - 39px);
+    width: 250px;
+    position: absolute;
+    top: 39px;
+    right: 0px;
+}
+
+
+    .setting-bar-chatter .form-control {
+        border: none;
+    }
+
+        .setting-bar-chatter .form-control:focus {
+        }
+
+        .setting-bar-chatter .form-control .switch.switch-small {
+        }
+
+            .setting-bar-chatter .form-control .switch.switch-small:focus {
+                outline: none;
             }
