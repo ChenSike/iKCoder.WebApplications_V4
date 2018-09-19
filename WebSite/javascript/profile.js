@@ -4416,8 +4416,7 @@ function initGroupForTest() {
             "address": 'Address ' + i,
             "comment": 'Comment ' + i,
             "note": 'Note ' + i,
-            "isnew": randomInt(0, 12) % 2,
-            "type": 'group'
+            "isnew": randomInt(0, 12) % 2
         };
 
         users.push(newUser);
@@ -4426,7 +4425,7 @@ function initGroupForTest() {
     var result = [];
     for (var i = 0; i < 5; i++) {
         var tmpIdx = randomInt(3, 12);
-        var newGroup = { userId: 'group_' + i, items: [], userName: '' };
+        var newGroup = { userId: 'group_' + i, items: [], userName: '', type: 'group' };
         var tmpName = [];
         for (var j = 0; j < tmpIdx; j++) {
             newGroup.items.push(users[j]);
