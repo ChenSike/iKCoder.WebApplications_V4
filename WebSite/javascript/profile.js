@@ -1033,14 +1033,14 @@ function circleBuildFriendPart() {
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid circle-user-list-group">');
     for (var j = 0; j < _gCiecleUsers.length; j++) {
-        circleBuildFriednItem(tmpHTMLArr, _gCiecleUsers[j]);
+        circleBuildFriendItem(tmpHTMLArr, _gCiecleUsers[j]);
     }
 
     tmpHTMLArr.push('</div>');
     return tmpHTMLArr.join('');
 };
 
-function circleBuildFriednItem(tmpHTMLArr, item) {
+function circleBuildFriendItem(tmpHTMLArr, item) {
     tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '" data-type="' + item.type + '">');
     tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-header">');
     if (item.type == 'group') {
@@ -1656,7 +1656,14 @@ function circleBuildFriendPart_Address() {
         { id: 'channel', title: '频道', items: [{ userName: "频道", header: "image/tmpheader.jpg", userId: "-3" }] },
         { id: 'group', title: '讨论组', items: initGroupForTest() }
     ];
-    _gCircleGroups = _gCircleGroups.concat(_GroupSortArray(_gCiecleUsers, 'userName'));
+    var tmpArr = [];
+    for (var i = 0; i < _gCiecleUsers.length; i++) {
+        if (_gCiecleUsers[i].type == 'user') {
+            tmpArr.push(_gCiecleUsers[i]);
+        }
+    }
+
+    _gCircleGroups = _gCircleGroups.concat(_GroupSortArray(tmpArr, 'userName'));
 
     var tmpHTMLArr = [];
     for (var i = 0; i < _gCircleGroups.length; i++) {
@@ -1672,12 +1679,13 @@ function circleBuildFriendPart_Address() {
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('   </div>');
             for (var j = 0; j < _gCircleGroups[i].items.length; j++) {
-                circleBuildFriednItem(tmpHTMLArr, _gCircleGroups[i].items[j]);
+                circleBuildFriendItem(tmpHTMLArr, _gCircleGroups[i].items[j]);
             }
 
             tmpHTMLArr.push('</div>');
         }
     }
+
     return tmpHTMLArr.join('');
 };
 
@@ -1867,9 +1875,9 @@ function circleBuildChannelList(channels) {
     for (var i = 0; i < channels.length; i++) {
         tmpHTMLArr.push('   <div class="col-1">');
         tmpHTMLArr.push('       <div class="card">');
-        tmpHTMLArr.push('           <img class="card-img-top circle-address-channle-header"  src="' + channels[i].header + '" data-target="' + channels[i].id + '">');
+        tmpHTMLArr.push('           <img class="card-img-top circle-address-channle-header"  src="' + channels[i].header + '" data-target="' + channels[i].userId + '">');
         tmpHTMLArr.push('           <div class="card-body">');
-        tmpHTMLArr.push('           <p>' + channels[i].name + '</p>');
+        tmpHTMLArr.push('           <p>' + channels[i].userName + '</p>');
         tmpHTMLArr.push('           </div>');
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('   </div>');
@@ -1887,7 +1895,7 @@ function circleBuildChannelPop(eventObj) {
     var channelId = target.attr('data-target');
     var current = null;
     for (var i = 0; i < channels.length; i++) {
-        if (channels[i].id == channelId) {
+        if (channels[i].userId == channelId) {
             current = channels[i];
             break;
         }
@@ -1924,11 +1932,11 @@ function circleBuildChannelPop(eventObj) {
     }
 
     $('.channel-popover-wrap').show();
-    $('.channel-popover-wrap .channel-name').text(current.name);
-    $('.channel-popover-wrap .channel-code').text('频道号: ' + current.code);
+    $('.channel-popover-wrap .channel-name').text(current.userName);
+    $('.channel-popover-wrap .channel-code').text('频道号: ' + current.userId);
     $('.channel-popover-wrap .channel-header').attr('src', current.header);
-    $('.channel-popover-wrap .col-channel-detail p').text(current.detail);
-    $('.btn-circle-address-channel-popover').attr('data-target', current.code);
+    $('.channel-popover-wrap .col-channel-detail p').text(current.comment);
+    $('.btn-circle-address-channel-popover').attr('data-target', current.userId);
 
     var tmpTop = eventObj.pageY - container.offset().top + 5;
     var tmpLeft = eventObj.pageX - container.offset().left + 15;
@@ -4303,7 +4311,7 @@ function webSocketReceiveCircle(evt) {
     var targetUserObj = circleGetUserObj(receiveObj.symbol);
     if (targetUserEl.length == 0) {
         tmpHTMLArr = [];
-        circleBuildFriednItem(tmpHTMLArr, targetUserObj);
+        circleBuildFriendItem(tmpHTMLArr, targetUserObj);
         targetUserEl = $(tmpHTMLArr.join(''));
         $('#collapse_Circle_' + targetUserGroupID + ' .circle-user-list-group .container-fluid').append(targetUserEl);
         targetUserEl.on('click', function (eventObj) {
@@ -4375,6 +4383,9 @@ function initFriendsForTest() {
         _circleDataSearch.value.push(newUser);
         _gCiecleUsers.push(newUser);
     }
+
+    _gCiecleUsers = _gCiecleUsers.concat(initGroupForTest());
+    _gCiecleUsers = _gCiecleUsers.concat(initChannelForTest());
 };
 
 function initNewFriendsForTest() {
@@ -4457,11 +4468,10 @@ function initChannelForTest() {
     var result = [];
     for (var i = 0; i < names.length; i++) {
         var newChannel = {
-            "name": names[i],
-            "code": 'channel-' + i,
-            "header": "image/header/" + (i % 10) + ".jpg",
-            "id": i + 50,
-            "detail": "频道：" + names[i] + " 的简介",
+            "userName": names[i],
+            "userId": 'channel-' + i,
+            "header": "image/header/" + (i % 10) + ".jpg",            
+            "comment": "频道：" + names[i] + " 的简介",
             "type": 'channel'
         };
 
@@ -4489,7 +4499,7 @@ function testswebSocketGetCiecleHistory(userSymbol) {
     var targetUserObj = circleGetUserObj(userSymbol);
     if (targetUserEl.length == 0) {
         tmpHTMLArr = [];
-        circleBuildFriednItem(tmpHTMLArr, targetUserObj);
+        circleBuildFriendItem(tmpHTMLArr, targetUserObj);
         targetUserEl = $(tmpHTMLArr.join(''));
         $('#collapse_Circle_' + targetUserGroupID + ' .circle-user-list-group .container-fluid').append(targetUserEl);
         targetUserEl.on('click', function (eventObj) {
