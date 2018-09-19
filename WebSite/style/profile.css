@@ -504,25 +504,25 @@ footer {
                 display: none;
             }
 
-        .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-hearder {
+        .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-header {
             min-width: 40px;
             padding: 2px 5px;
         }
 
-            .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-hearder .circle-user-list-item-hearder {
+            .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-header .circle-user-list-item-header {
                 border-radius: 5px;
                 /*border-radius: 50%;
                 border: solid 2px rgb(17,138,195);
                 box-shadow: 1px 1px 5px rgb(142,142,142);*/
             }
 
-            .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-hearder .group-header-wrap {
+            .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-header .group-header-wrap {
                 width: 30px;
                 height: 30px;
                 background-color: rgb(221,222,224);
             }
 
-                .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-hearder .group-header-wrap .circle-group-item-hearder {
+                .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-header .group-header-wrap .circle-group-item-header {
                     width: 10px;
                     height: 10px;
                     padding: 0px;
@@ -738,7 +738,7 @@ footer {
         padding-right: 0px;
     }
 
-        .row-circle-address-new-friend-item .col-new-friend-header .circle-address-new-friend-hearder {
+        .row-circle-address-new-friend-item .col-new-friend-header .circle-address-new-friend-header {
             width: 50px;
             height: 50px;
             cursor: pointer;
@@ -1502,7 +1502,7 @@ footer {
             width: 90px;
         }
 
-        .row-circle-message-part-2 .container-circle-friend-item-detail .circle-friend-item-detail-hearder {
+        .row-circle-message-part-2 .container-circle-friend-item-detail .circle-friend-item-detail-header {
             width: 60px;
             height: 60px;
         }
@@ -1604,7 +1604,7 @@ footer {
             width: 90px;
         }
 
-        .group-item-popover-wrap .container-circle-group-user-detail .circle-group-user-detail-hearder {
+        .group-item-popover-wrap .container-circle-group-user-detail .circle-group-user-detail-header {
             width: 60px;
             height: 60px;
         }
@@ -1681,17 +1681,163 @@ footer {
     right: 0px;
 }
 
-
-    .setting-bar-chatter .form-control {
-        border: none;
+    .setting-bar-chatter .row-headers {
+        padding: 15px;
+        padding-bottom: 0px;
     }
 
-        .setting-bar-chatter .form-control:focus {
+        .setting-bar-chatter .row-headers .col-3 {
+            padding: 0px;
+            text-align: center;
         }
 
-        .setting-bar-chatter .form-control .switch.switch-small {
-        }
-
-            .setting-bar-chatter .form-control .switch.switch-small:focus {
-                outline: none;
+            .setting-bar-chatter .row-headers .col-3 p {
+                color: rgb(68,68,68);
+                font-size: 10px;
+                padding: 5px;
+                overflow: hidden;
+                flex-wrap: nowrap;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
+
+            .setting-bar-chatter .row-headers .col-3 .user-header {
+                width: 35px;
+                height: 35px;
+                cursor: pointer;
+            }
+
+            .setting-bar-chatter .row-headers .col-3 .btn-add-user-to-group {
+                background-color: transparent;
+                border: solid 1px rgb(226,226,226);
+                width: 35px;
+                height: 35px;
+            }
+
+                .setting-bar-chatter .row-headers .col-3 .btn-add-user-to-group:hover {
+                    border-color: rgb(205,205,205);
+                }
+
+    .setting-bar-chatter .row-split {
+        padding: 15px;
+    }
+
+        .setting-bar-chatter .row-split .col-split {
+            border-bottom: solid 1px rgb(236,236,236);
+        }
+
+    .setting-bar-chatter .row-switch {
+    }
+
+        .setting-bar-chatter .row-switch label {
+            font-size: 12px;
+            color: rgb(153,153,153);
+        }
+
+        .setting-bar-chatter .row-switch .form-control {
+            border: none;
+            padding: 0px;
+        }
+
+            .setting-bar-chatter .row-switch .form-control:focus {
+            }
+
+            .setting-bar-chatter .row-switch .form-control .switch.switch-small {
+            }
+
+                .setting-bar-chatter .row-switch .form-control .switch.switch-small:focus {
+                    outline: none;
+                }
+
+                .setting-bar-chatter .row-switch .form-control .switch.switch-small .switch.has-switch {
+                    height: 20px;
+                    z-index: 0;
+                }
+
+                    .setting-bar-chatter .row-switch .form-control .switch.switch-small .switch.has-switch .switch-animate span {
+                        line-height: 12px;
+                        font-size: 12px;
+                        top: -4px;
+                    }
+
+.user-popover-wrap {
+    width: 300px;
+    height: 230px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(255,255,255,1);
+    box-shadow: 2px 2px 5px rgb(153,153,153);
+    border-radius: 5px;
+}
+
+    .user-popover-wrap .container-user-popover {
+        padding: 20px;
+        font-size: 14px;
+    }
+
+    .user-popover-wrap .user-popover-name {
+        font-size: 16px;
+        padding-right: 10px;
+    }
+
+    .user-popover-wrap .fa-female {
+        color: rgb(243,126,125);
+    }
+
+    .user-popover-wrap .fa-male {
+        color: rgb(70,182,239);
+    }
+
+    .user-popover-wrap .col-user-popover-th {
+        color: rgb(153,153,153);
+        text-align: justify;
+        text-align-last: justify;
+        width: 80px;
+    }
+
+    .user-popover-wrap .user-popover-symbol {
+        color: rgb(153,153,153);
+    }
+
+    .user-popover-wrap .user-popover-header {
+        width: 60px;
+        height: 60px;
+    }
+
+    .user-popover-wrap .row-split {
+        padding: 10px 15px;
+    }
+
+    .user-popover-wrap .col-split {
+        border-top: solid 1px rgb(244,244,244);
+    }
+
+    .user-popover-wrap .row-user-popover-comment #txt_User_Popover_Comment {
+        border: none;
+        padding: 0px;
+        background-color: transparent;
+    }
+
+    .user-popover-wrap .btn-user-popover {
+        background-color: transparent;
+        color: rgb(153,153,153);
+        border: none;
+        font-size: 18px;
+    }
+
+        .user-popover-wrap .btn-user-popover:hover {
+            color: rgb(0,0,0);
+        }
+
+        .user-popover-wrap .btn-user-popover:focus {
+            box-shadow: none;
+        }
+
+    .user-popover-wrap .row-buttons {
+        padding-top: 15px;
+    }
+
+        .user-popover-wrap .row-buttons svg {
+            font-size: 25px;
+        }

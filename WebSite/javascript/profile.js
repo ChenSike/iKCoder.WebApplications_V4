@@ -1041,20 +1041,19 @@ function circleBuildFriendPart() {
 };
 
 function circleBuildFriednItem(tmpHTMLArr, item) {
-    var isGroup = (typeof item.header == 'undefined' && item.items.length > 1);
-    tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '" data-group="' + (isGroup ? '1' : '0') + '">');
-    tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-hearder">');
-    if (isGroup) {
+    tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '" data-type="' + item.type + '">');
+    tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-header">');
+    if (item.type == 'group') {
         var imgStyle = (item.items.length <= 4 ? 'style="width:15px;height:15px;"' : '');
         var wrapStyle = (item.items.length > 4 && item.items.length < 7 ? 'style="padding: 5px 0px;"' : '');
         tmpHTMLArr.push('       <div class="group-header-wrap" ' + wrapStyle + '>');
         for (var j = 0; j < item.items.length && j < 9; j++) {
-            tmpHTMLArr.push('           <img class="circle-group-item-hearder" src="' + item.items[j].header + '" ' + imgStyle + '>');
+            tmpHTMLArr.push('           <img class="circle-group-item-header" src="' + item.items[j].header + '" ' + imgStyle + '>');
         }
 
         tmpHTMLArr.push('       </div>');
     } else {
-        tmpHTMLArr.push('       <img class="img-fluid circle-user-list-item-hearder" src="' + item.header + '">');
+        tmpHTMLArr.push('       <img class="img-fluid circle-user-list-item-header" src="' + item.header + '">');
     }
 
     tmpHTMLArr.push('   </div>');
@@ -1075,7 +1074,7 @@ function circleBuildMessagePart() {
     tmpHTMLArr.push('           <label class="container-fluid label-circle-message-history-user"></label>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('       <div class="col-1 col-circle-message-history-button">');
-    tmpHTMLArr.push('           <button type="button" class="btn btn-sm" title="详情"><i class="fas fa-tasks"></i></button>');
+    tmpHTMLArr.push('           <button type="button" class="btn btn-sm" title="详情" data-target="" data-type=""><i class="fas fa-tasks"></i></button>');
     tmpHTMLArr.push('       </div>');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="row">');
@@ -1114,24 +1113,43 @@ function circleBuildMessagePart() {
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="setting-bar-chatter">');
     tmpHTMLArr.push('       <div class="container-fluid h-100 container-for-user">');
-    tmpHTMLArr.push('           <div class="row">');
-    tmpHTMLArr.push('               <div class="col-1">');
+    tmpHTMLArr.push('           <div class="row row-headers">');
+    tmpHTMLArr.push('               <div class="col-3">');
+    tmpHTMLArr.push('                   <button type="button" class="btn btn-outline-light btn-sm btn-add-user-to-group">');
+    tmpHTMLArr.push('                       <i class="fas fa-plus"></i>');
+    tmpHTMLArr.push('                   </button>');
+    tmpHTMLArr.push('                   <p class="">添加</p>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('               <div class="col-3">');
+    tmpHTMLArr.push('                   <img class="user-header" src="">');
+    tmpHTMLArr.push('                   <p class="user-name"></p>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('           <div class="row">');
-    tmpHTMLArr.push('               <div class="col-1">');
-    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           <div class="row row-split">');
+    tmpHTMLArr.push('               <div class="col col-split"></div>');
     tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('           <div class="row">');
+    tmpHTMLArr.push('           <div class="row row-switch">');
     tmpHTMLArr.push('               <div class="col">');
-    tmpHTMLArr.push('<div class="form-group">');
-    tmpHTMLArr.push('<label for="exampleFormControlInput1">Email address</label>');
-    tmpHTMLArr.push('<div class="form-control  form-control-sm">');
-    tmpHTMLArr.push('<div class="switch switch-small" tabindex="0">');
-    tmpHTMLArr.push('<input id="notification1" type="checkbox" />');
-    tmpHTMLArr.push('</div>');
-    tmpHTMLArr.push('</div>');
-    tmpHTMLArr.push('</div>');
+    tmpHTMLArr.push('                   <div class="form-group">');
+    tmpHTMLArr.push('                       <label for="switch_DND_For_User">消息免打扰</label>');
+    tmpHTMLArr.push('                       <div class="form-control  form-control-sm">');
+    tmpHTMLArr.push('                           <div class="switch switch-small" tabindex="0">');
+    tmpHTMLArr.push('                               <input id="switch_DND_For_User" type="checkbox" />');
+    tmpHTMLArr.push('                           </div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row row-switch">');
+    tmpHTMLArr.push('               <div class="col">');
+    tmpHTMLArr.push('                   <div class="form-group">');
+    tmpHTMLArr.push('                       <label for="switch_Top_For_User">聊天置顶</label>');
+    tmpHTMLArr.push('                       <div class="form-control  form-control-sm">');
+    tmpHTMLArr.push('                           <div class="switch switch-small" tabindex="0">');
+    tmpHTMLArr.push('                               <input id="switch_Top_For_User" type="checkbox" />');
+    tmpHTMLArr.push('                           </div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('       </div>');
@@ -1366,7 +1384,8 @@ function initEvents_Circle_Chat() {
     //init search suggest
     $('#search_Circle').bsSuggest(defaultOptions);
 
-    $('#notification1').wrap('<div class="switch" />').parent().bootstrapSwitch();
+    $('#switch_DND_For_User').wrap('<div class="switch" />').parent().bootstrapSwitch();
+    $('#switch_Top_For_User').wrap('<div class="switch" />').parent().bootstrapSwitch();
 
     $(".circle-input-drag").mousedown(function (e) {
         var drag = $('.circle-input-drag');
@@ -1477,19 +1496,132 @@ function initEvents_Circle_Chat() {
     });
 
     $('.col-circle-message-history-button .btn.btn-sm').on('click', function (eventObj) {
-        circleShowSettingBar($(eventObj.currentTarget).attr('data-target'));
+        var target = $(eventObj.currentTarget);
+        if (target.attr('data-type') != 'channel') {
+            circleShowSettingBar(target.attr('data-target'), target.attr('data-type'));
+        } else {
+            circleBuildChannelPop(eventObj);
+        }
+    });
+
+    $('.setting-bar-chatter .user-header').on('click', circleBuildUserPop);
+
+    $('.setting-bar-chatter .btn-add-user-to-group').on('click', function (eventObj) {
+        circleShowAddToGroupPop($(eventObj.currentTarget).attr('data-target'));
     });
 };
 
-function circleShowSettingBar() {
+function circleBuildUserPop(eventObj) {
+    if ($('.user-popover-wrap').length > 0 && $('.user-popover-wrap').css('display') != 'none') {
+        $('.user-popover-wrap').hide();
+    } else {
+
+        var target = $(eventObj.currentTarget);
+        var userId = target.attr('data-target');
+        var current = circleGetUserObj(userId);
+        var container = $('.wrap-circle-message');
+        if ($('.user-popover-wrap').length <= 0) {
+            var tmpHTMLArr = [];
+            tmpHTMLArr.push('<div class="user-popover-wrap">');
+            tmpHTMLArr.push('   <div class="container-fluid container-user-popover">');
+            tmpHTMLArr.push('       <div class="row" style="padding-bottom: 15px;">');
+            tmpHTMLArr.push('           <div class="col-8">');
+            tmpHTMLArr.push('               <p><span class="user-popover-name"></span><i class="fas fa-female"></i><i class="fas fa-male"></i></p>');
+            tmpHTMLArr.push('               <p>');
+            tmpHTMLArr.push('                   <span class="col-3 col-user-popover-th" style="padding-left: 0px;">用户名:</span>');
+            tmpHTMLArr.push('                   <span class="user-popover-symbol"></span>');
+            tmpHTMLArr.push('               </p>');
+            tmpHTMLArr.push('           </div>');
+            tmpHTMLArr.push('           <div class="col-4 col-user-popover-header">');
+            tmpHTMLArr.push('               <img class="img-fluid user-popover-header" src="">');
+            tmpHTMLArr.push('           </div>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('       <div class="row row-split">');
+            tmpHTMLArr.push('           <div class="col col-split"></div>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('       <div class="row row-user-popover-comment">');
+            tmpHTMLArr.push('           <div class="col-3 col-user-popover-th">备注</div>');
+            tmpHTMLArr.push('           <div class="col">');
+            tmpHTMLArr.push('               <input type="text" class="form-control-plaintext" id="txt_User_Popover_Comment" value="" placeholder="点击添加备注"/>');
+            tmpHTMLArr.push('           </div>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('       <div class="row">');
+            tmpHTMLArr.push('           <div class="col-3 col-user-popover-th">地区</div>');
+            tmpHTMLArr.push('           <div class="col col-user-popover-address"></div>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('       <div class="row row-buttons">');
+            tmpHTMLArr.push('           <div class="col text-right">');
+            tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-user-popover btn-add-friend" title="加为好友" data-taget="">');
+            tmpHTMLArr.push('                   <i class="far fa-plus-square"></i>');
+            tmpHTMLArr.push('               </button>');
+            tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-user-popover btn-share-friend" title="推荐朋友" data-taget="">');
+            tmpHTMLArr.push('                   <i class="far fa-share-square"></i>');
+            tmpHTMLArr.push('               </button>');
+            tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-user-popover btn-send-msg" title="开始聊天" data-taget="">');
+            tmpHTMLArr.push('                   <i class="far fa-comment"></i>');
+            tmpHTMLArr.push('               </button>');
+            tmpHTMLArr.push('           </div>');
+            tmpHTMLArr.push('       </div>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('</div>');
+            container.append($(tmpHTMLArr.join('')));
+            $('.user-popover-wrap .btn-user-popover').on('click', circleClickUserPopBtn);
+        }
+
+        $('.user-popover-wrap').show();
+        $('.user-popover-wrap .user-popover-name').text(current.userName);
+        if (typeof current.gender != 'undefined') {
+            if (current.gender == '1') {
+                $('.user-popover-wrap .fa-female').hide();
+                $('.user-popover-wrap .fa-male').show();
+            } else {
+                $('.user-popover-wrap .fa-female').show();
+                $('.user-popover-wrap .fa-male').hide();
+            }
+        } else {
+            $('.user-popover-wrap .fa-female').hide();
+            $('.user-popover-wrap .fa-male').hide();
+        }
+
+        $('.user-popover-wrap .user-popover-symbol').text(current.userId);
+        $('.user-popover-wrap .user-popover-header').attr('src', current.header);
+        $('.user-popover-wrap #txt_User_Popover_Comment').val(current.comment);
+        $('.user-popover-wrap .col-user-popover-address').text(current.address);
+        $('.user-popover-wrap .btn-user-popover').attr('data-target', current.userId);
+
+        var tmpTop = eventObj.pageY - container.offset().top;
+        var tmpLeft = eventObj.pageX - container.offset().left - $('.user-popover-wrap').width();
+        $('.user-popover-wrap').css('top', tmpTop + 'px');
+        $('.user-popover-wrap').css('left', tmpLeft + 'px');
+    }
+};
+
+function circleClickUserPopBtn(eventObj) {
+    var btn = $(eventObj.currentTarget);
+    var userId = btn.attr('data-taget');
+    if (btn.hasClass('btn-add-friend')) {
+        alert('Add Friend to Create a Group!');
+    } else if (btn.hasClass('btn-share-friend')) {
+        alert('Share Friend to Other Friend!');
+    } else if (btn.hasClass('btn-send-msg')) {
+        circleSwitchToTalk(userId, 'user');
+    }
+};
+
+function circleShowSettingBar(userId, userType) {
+    var userObj = circleGetUserObj(userId);
     var settingBar = $('.setting-bar-chatter');
-    if (settingBar.css('display') == 'block') {
+    if (settingBar.css('display') != 'none') {
         $('.col-main-content').css('overflow', 'hidden');
+        $('.user-popover-wrap').hide();
         settingBar.animate({
             right: '-250px',
             opacity: '0'
         }, 500, function () { settingBar.hide(); });
     } else {
+        $('.setting-bar-chatter .user-header').attr('src', userObj.header);
+        $('.setting-bar-chatter .user-header').attr('data-target', userObj.userId);
+        $('.setting-bar-chatter .user-name').text(userObj.userName);
         settingBar.show();
         settingBar.animate({
             right: '0px',
@@ -1658,7 +1790,7 @@ function circleClickAddressItem(eventObj) {
         $('.row-circle-message-part-2').hide();
         $('.row-circle-message-part-1').show();
     } else {
-        if (currentTarget.attr('data-group') == '1') {
+        if (currentTarget.attr('data-type') == 'group') {
             currType = 'group';
             $('.row-circle-message-part-1').show();
             $('.row-circle-message-part-2').hide();
@@ -1680,7 +1812,7 @@ function circleBuildNewFriendsList(friends) {
     for (var i = 0; i < friends.length; i++) {
         tmpHTMLArr.push('<div class="row row-circle-address-new-friend-item">');
         tmpHTMLArr.push('   <div class="col-1 col-new-friend-header">');
-        tmpHTMLArr.push('       <img class="img-fluid circle-address-new-friend-hearder" src="' + friends[i].header + '" data-target="' + friends[i].userId + '">');
+        tmpHTMLArr.push('       <img class="img-fluid circle-address-new-friend-header" src="' + friends[i].header + '" data-target="' + friends[i].userId + '">');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('   <div class="col col-new-friend-content">');
         tmpHTMLArr.push('       <div class="container container-fluid">');
@@ -1708,7 +1840,7 @@ function circleBuildNewFriendsList(friends) {
 
     container.empty();
     container.append($(tmpHTMLArr.join('')));
-    $('.circle-address-new-friend-hearder').on('click', function (eventObj) {
+    $('.circle-address-new-friend-header').on('click', function (eventObj) {
         var userObj = circleGetUserObj($(eventObj.currentTarget).attr('data-target'));
         circleBuildFriendDetail(userObj);
     });
@@ -1735,7 +1867,7 @@ function circleBuildChannelList(channels) {
     for (var i = 0; i < channels.length; i++) {
         tmpHTMLArr.push('   <div class="col-1">');
         tmpHTMLArr.push('       <div class="card">');
-        tmpHTMLArr.push('           <img class="card-img-top circle-address-channle-hearder"  src="' + channels[i].header + '" data-target="' + channels[i].id + '">');
+        tmpHTMLArr.push('           <img class="card-img-top circle-address-channle-header"  src="' + channels[i].header + '" data-target="' + channels[i].id + '">');
         tmpHTMLArr.push('           <div class="card-body">');
         tmpHTMLArr.push('           <p>' + channels[i].name + '</p>');
         tmpHTMLArr.push('           </div>');
@@ -1746,7 +1878,7 @@ function circleBuildChannelList(channels) {
     tmpHTMLArr.push('</div>');
     container.empty();
     container.append($(tmpHTMLArr.join('')));
-    $('.circle-address-channle-hearder').on('click', circleBuildChannelPop);
+    $('.circle-address-channle-header').on('click', circleBuildChannelPop);
 };
 
 function circleBuildChannelPop(eventObj) {
@@ -1782,7 +1914,7 @@ function circleBuildChannelPop(eventObj) {
         tmpHTMLArr.push('           <div class="col text-right">');
         tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="分享频道"><i class="far fa-share-square"></i></button>');
         tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="历史数据"><i class="fas fa-history"></i></button>');
-        tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="进入频道"><i class="fas fa-sign-in-alt"></i></button>');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="进入频道"><i class="far fa-sign-in-alt"></i></button>');
         tmpHTMLArr.push('           </div>');
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('   </div>');
@@ -1846,7 +1978,7 @@ function circleBuildFriendDetail(userObj) {
             tmpHTMLArr.push('           <p class="p-circle-friend-item-detail-note"></p>');
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('       <div class="col-3 col-circle-friend-item-detail-header">');
-            tmpHTMLArr.push('           <img class="img-fluid circle-friend-item-detail-hearder" src="">');
+            tmpHTMLArr.push('           <img class="img-fluid circle-friend-item-detail-header" src="">');
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('   </div>');
             tmpHTMLArr.push('   <div class="row row-circle-friend-item-detail-comment">');
@@ -1903,7 +2035,7 @@ function circleBuildFriendDetail(userObj) {
         }
 
         $('.container-circle-friend-item-detail .s-circle-friend-item-detail-name').text(userObj.userName);
-        $('.container-circle-friend-item-detail .circle-friend-item-detail-hearder').attr('src', userObj.header);
+        $('.container-circle-friend-item-detail .circle-friend-item-detail-header').attr('src', userObj.header);
         $('.container-circle-friend-item-detail .p-circle-friend-item-detail-note').text(userObj.note);
         $('.container-circle-friend-item-detail #txt_Circle_Friend_Item_Detail_Comment').val(userObj.comment);
         $('.container-circle-friend-item-detail .col-circle-friend-item-detail-address').text(userObj.address);
@@ -1986,7 +2118,7 @@ function circleBuildGroupDetail(groupId) {
     for (var i = 0; i < currGroup.items.length; i++) {
         tmpHTMLArr.push('   <div class="col-1">');
         tmpHTMLArr.push('       <div class="card">');
-        tmpHTMLArr.push('           <img class="card-img-top circle-address-group-item-hearder"  src="' + currGroup.items[i].header + '" data-target="' + currGroup.items[i].userId + '">');
+        tmpHTMLArr.push('           <img class="card-img-top circle-address-group-item-header"  src="' + currGroup.items[i].header + '" data-target="' + currGroup.items[i].userId + '">');
         tmpHTMLArr.push('           <div class="card-body">');
         tmpHTMLArr.push('           <p>' + currGroup.items[i].userName + '</p>');
         tmpHTMLArr.push('           </div>');
@@ -2005,7 +2137,7 @@ function circleBuildGroupDetail(groupId) {
     container.append($(tmpHTMLArr.join('')));
     var tmpHeight = $('.col-circle-message-history').height() - $('.row-circle-address-group-items').height() - 35;
     $('.row-circle-address-group-button').height((tmpHeight > 35 ? tmpHeight : 35));
-    $('.circle-address-group-item-hearder').on('click', circleBuildGroupItemPop);
+    $('.circle-address-group-item-header').on('click', circleBuildGroupItemPop);
     $('.btn-circle-address-group-item-talk').on('click', function () {
         circleSwitchToTalk($(arguments[0].currentTarget).attr('data-target'), 'group');
     });
@@ -2027,7 +2159,7 @@ function circleBuildGroupItemPop(eventObj) {
         tmpHTMLArr.push('           <p class="p-circle-group-user-detail-note"></p>');
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('       <div class="col-3 col-circle-group-user-detail-header">');
-        tmpHTMLArr.push('           <img class="img-fluid circle-group-user-detail-hearder" src="">');
+        tmpHTMLArr.push('           <img class="img-fluid circle-group-user-detail-header" src="">');
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('   <div class="row" style="padding-top: 15px; border-top:solid 1px rgb(231,231,231);">');
@@ -2045,7 +2177,7 @@ function circleBuildGroupItemPop(eventObj) {
         tmpHTMLArr.push('   <div class="row" style="padding-top: 15px;">');
         tmpHTMLArr.push('       <div class="col text-right">');
         tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-group-user-popover" title="推荐朋友"><i class="far fa-share-square"></i></button>');
-        tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-group-user-popover" title="开始聊天"><i class="fas fa-sign-in-alt"></i></button>');
+        tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-group-user-popover" title="开始聊天"><i class="far fa-comment"></i></button>');
         tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-group-user-popover" title="加为好友"><i class="far fa-plus-square"></i></button>');
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('   </div>');
@@ -2067,7 +2199,7 @@ function circleBuildGroupItemPop(eventObj) {
     }
 
     $('.container-circle-group-user-detail .s-circle-group-user-detail-name').text(userObj.userName);
-    $('.container-circle-group-user-detail .circle-group-user-detail-hearder').attr('src', userObj.header);
+    $('.container-circle-group-user-detail .circle-group-user-detail-header').attr('src', userObj.header);
     $('.container-circle-group-user-detail .p-circle-group-user-detail-note').text(userObj.note);
     $('.container-circle-group-user-detail #txt_Circle_Group_User_Detail_Comment').val(userObj.comment);
     $('.container-circle-group-user-detail .col-circle-group-user-detail-address').text(userObj.address);
@@ -2076,11 +2208,11 @@ function circleBuildGroupItemPop(eventObj) {
 
     if (userObj.isnew == '1') {
         $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-share-square').parent().hide();
-        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-sign-in-alt').parent().hide();
+        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-comment').parent().hide();
         $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-plus-square').parent().show();
     } else {
         $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-share-square').parent().show();
-        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-sign-in-alt').parent().show();
+        $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-comment').parent().show();
         $('.container-circle-group-user-detail .btn-circle-group-user-popover .fa-plus-square').parent().hide();
     }
 
@@ -2104,7 +2236,7 @@ function circleClickGroupItemPopBtn(eventObj) {
     var action = $($(eventObj.currentTarget).find('svg'));
     if (action.hasClass('fa-share-square')) {
         alert('Share Friend with Other People!');
-    } else if (action.hasClass('fa-sign-in-alt')) {
+    } else if (action.hasClass('fa-comment')) {
         circleSwitchToTalk(target.attr('data-target'), 'user');
     } else if (action.hasClass('fa-plus-square')) {
         alert('Add User to Be My Friend!');
@@ -2132,6 +2264,9 @@ function circleClickUserItem(currentTarget) {
     testswebSocketGetCiecleHistory(tmpSymbol);
     $('.label-circle-message-history-user').attr('data-target', tmpSymbol);
     $('.col-circle-message-history-button .btn.btn-sm').attr('data-target', tmpSymbol);
+    $('.col-circle-message-history-button .btn.btn-sm').attr('data-type', currentTarget.attr('data-type'));
+    $('.setting-bar-chatter').hide();
+    $('.user-popover-wrap').hide();
     var symbolEl = $(currentTarget.find('.circle-user-list-item-msg')[0]);
     symbolEl.text('0');
     symbolEl.hide();
@@ -4233,7 +4368,8 @@ function initFriendsForTest() {
             "gender": tmpIdx % 2,
             "address": 'Address ' + i,
             "comment": 'Comment ' + i,
-            "note": 'Note ' + i
+            "note": 'Note ' + i,
+            "type": 'user'
         };
 
         _circleDataSearch.value.push(newUser);
@@ -4256,7 +4392,8 @@ function initNewFriendsForTest() {
             "gender": tmpIdx % 2,
             "address": 'Address ' + i,
             "comment": 'Comment ' + i,
-            "note": 'Note ' + i
+            "note": 'Note ' + i,
+            "type": 'user'
         };
 
         result.push(newUser);
@@ -4279,7 +4416,8 @@ function initGroupForTest() {
             "address": 'Address ' + i,
             "comment": 'Comment ' + i,
             "note": 'Note ' + i,
-            "isnew": randomInt(0, 12) % 2
+            "isnew": randomInt(0, 12) % 2,
+            "type": 'group'
         };
 
         users.push(newUser);
@@ -4324,7 +4462,8 @@ function initChannelForTest() {
             "code": 'channel-' + i,
             "header": "image/header/" + (i % 10) + ".jpg",
             "id": i + 50,
-            "detail": "频道：" + names[i] + " 的简介"
+            "detail": "频道：" + names[i] + " 的简介",
+            "type": 'channel'
         };
 
         result.push(newChannel);
