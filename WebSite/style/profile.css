@@ -517,9 +517,10 @@ footer {
             }
 
             .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-header .group-header-wrap {
-                width: 30px;
-                height: 30px;
-                background-color: rgb(221,222,224);
+                width: 32px;
+                height: 32px;
+                border-radius:2px;
+                background-color: rgb(220,222,223);
             }
 
                 .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-header .group-header-wrap .circle-group-item-header {

@@ -1044,11 +1044,23 @@ function circleBuildFriendItem(tmpHTMLArr, item) {
     tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '" data-type="' + item.type + '">');
     tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-header">');
     if (item.type == 'group') {
-        var imgStyle = (item.items.length <= 4 ? 'style="width:15px;height:15px;"' : '');
+        var imgStyle = (item.items.length <= 4 ? 'width:15px;height:15px;' : '');
         var wrapStyle = (item.items.length > 4 && item.items.length < 7 ? 'style="padding: 5px 0px;"' : '');
+        var marginStyle = '';
         tmpHTMLArr.push('       <div class="group-header-wrap" ' + wrapStyle + '>');
         for (var j = 0; j < item.items.length && j < 9; j++) {
-            tmpHTMLArr.push('           <img class="circle-group-item-header" src="' + item.items[j].header + '" ' + imgStyle + '>');
+            marginStyle = '';
+            if (j > 0) {
+                if ((item.items.length > 4 && j > 3) || (item.items.length <= 4 && j > 2)) {
+                    marginStyle += 'margin-top:1px;';
+                }
+
+                if ((item.items.length > 4 && j % 3 != 0) || (item.items.length <= 4 && j % 2 != 0)) {
+                    marginStyle += 'margin-left:1px;';
+                }
+            }
+
+            tmpHTMLArr.push('           <img class="circle-group-item-header" src="' + item.items[j].header + '" style="' + imgStyle + marginStyle + '">');
         }
 
         tmpHTMLArr.push('       </div>');
@@ -1922,7 +1934,7 @@ function circleBuildChannelPop(eventObj) {
         tmpHTMLArr.push('           <div class="col text-right">');
         tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="分享频道"><i class="far fa-share-square"></i></button>');
         tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="历史数据"><i class="fas fa-history"></i></button>');
-        tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="进入频道"><i class="far fa-sign-in-alt"></i></button>');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-circle-address-channel-popover" title="进入频道"><i class="fas fa-sign-in-alt"></i></button>');
         tmpHTMLArr.push('           </div>');
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('   </div>');
@@ -4470,7 +4482,7 @@ function initChannelForTest() {
         var newChannel = {
             "userName": names[i],
             "userId": 'channel-' + i,
-            "header": "image/header/" + (i % 10) + ".jpg",            
+            "header": "image/header/" + (i % 10) + ".jpg",
             "comment": "频道：" + names[i] + " 的简介",
             "type": 'channel'
         };
