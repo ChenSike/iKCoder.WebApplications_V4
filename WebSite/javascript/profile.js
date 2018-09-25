@@ -54,7 +54,12 @@ var _gCourseTypeMap = {
     p: { icon: 'python', title: 'Python' },
     c: { icon: 'css3-alt', title: 'CSS3' },
     n: { icon: 'node-js', title: 'Node.JS' },
-    s: { icon: 'js-square', title: 'Java Script' }
+    s: { icon: 'js-square', title: 'Java Script' },
+    u: { icon: 'fab fa-uikit', title: 'UI' },
+    //a: { icon: 'fas fa-brain', title: 'AI' },
+    a: { icon: 'fas fa-code-branch', title: 'AI' },
+    b: { icon: 'fab fa-bimobject', title: 'BBBB' },
+    d: { icon: 'fas fa-database', title: 'Database' }
 };
 var _gSTEAMMap = {
     s: { icon: 'js-square', title: 'Science' },
@@ -77,7 +82,9 @@ var _gCourseImgMap = {
     B: { img: 'image/course/course_html.png', color: 'rgb(100,124,185)' },
     C: { img: 'image/course/course_js.png', color: 'rgb(86,181,34)' },
     D: { img: 'image/course/course_python.png', color: 'rgb(100,124,185)' },
-    E: { img: 'image/course/course_cs.png', color: 'rgb(100,124,185)' }
+    E: { img: 'image/course/course_cs.png', color: 'rgb(86,181,34)' },
+    F: { img: 'image/course/course_java.png', color: 'rgb(100,124,185)' },
+    G: { img: 'image/course/course_ios.png', color: 'rgb(86,181,34)' }
 };
 var _gCircleGroups = [];
 var _gCurrentChatter = { id: '', type: '' };
@@ -394,20 +401,20 @@ function buildContent_Courses(items) {
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col no-padding">');
-        tmpStyle = 'color:' + _gCourseImgMap[datas[i].name.trim()].color + ';font-size:12px';
+        itemsHTML.push('                <div class="col no-padding text-12 font-weight-bold">');
+        tmpStyle = 'color:' + _gCourseImgMap[datas[i].name.trim()].color + ';';
         itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col no-padding">');
+        itemsHTML.push('                <div class="col no-padding text-12">');
         tmpPrice = (datas[i].isfree == '1' ? '免费' : parseInt(datas[i].price).toFixed(2));
         itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">价格: <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span></p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         if (datas[i].isfree != '1') {
             itemsHTML.push('            <div class="row no-margin">');
-            itemsHTML.push('                <div class="col no-padding">');
+            itemsHTML.push('                <div class="col no-padding text-12">');
             tmpPrice = (datas[i].discount == '0' ? '无' : parseInt(datas[i].price * 100).toFixed(2));
             itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">折扣: ' + tmpPrice + '</p>');
             itemsHTML.push('                </div>');
@@ -501,8 +508,8 @@ function buildSTEAMHTML(steam) {
     var tmpHTMLArr = [];
     var tmpObj;
     for (var i = 0; i < steam.length; i++) {
-        tmpObj = _gSTEAMMap[steam[i]];
-        tmpHTMLArr.push('<span class="course-staem-' + steam[i] + ' steam-char" title="' + tmpObj.title + '">' + steam[i].toUpperCase() + '</span>');
+        tmpObj = _gSTEAMMap[steam[i].toLowerCase()];
+        tmpHTMLArr.push('<span class="course-staem-' + steam[i].toLowerCase() + ' steam-char" title="' + tmpObj.title + '">' + steam[i].toUpperCase() + '</span>');
     }
 
     return tmpHTMLArr.join('');
@@ -512,8 +519,8 @@ function buildCourseTypeHTML(courseType) {
     var tmpHTMLArr = [];
     var tmpObj;
     for (var i = 0; i < courseType.length; i++) {
-        tmpObj = _gCourseTypeMap[courseType[i]];
-        tmpHTMLArr.push('<i class="fab fa-' + tmpObj.icon + ' course-type-icon" title="' + tmpObj.title + '"></i>');
+        tmpObj = _gCourseTypeMap[courseType[i].toLowerCase()];
+        tmpHTMLArr.push('<i class="' + tmpObj.icon + ' course-type-icon" title="' + tmpObj.title + '"></i>');
     }
 
     return tmpHTMLArr.join('');
