@@ -56,8 +56,8 @@ var _gCourseTypeMap = {
     n: { icon: 'node-js', title: 'Node.JS' },
     s: { icon: 'js-square', title: 'Java Script' },
     u: { icon: 'fab fa-uikit', title: 'UI' },
-    //a: { icon: 'fas fa-brain', title: 'AI' },
-    a: { icon: 'fas fa-code-branch', title: 'AI' },
+    a: { icon: 'fas fa-brain', title: 'AI' },
+    //a: { icon: 'fas fa-code-branch', title: 'AI' },
     b: { icon: 'fab fa-bimobject', title: 'BBBB' },
     d: { icon: 'fas fa-database', title: 'Database' }
 };
@@ -377,13 +377,21 @@ function buildContent_Courses(items) {
     var tmpItem = null;
     for (var i = 0; i < items.length; i++) {
         tmpItem = $(items[i]);
-        datas.push({ id: tmpItem.attr('id'), name: tmpItem.attr('name'), course: tmpItem.attr('title'), price: tmpItem.attr('price'), isfree: tmpItem.attr('isfree'), discount: tmpItem.attr('discount') });
+        datas.push({
+            id: tmpItem.attr('id'),
+            name: tmpItem.attr('name'),
+            course: tmpItem.attr('title'),
+            price: tmpItem.attr('price'),
+            isfree: tmpItem.attr('isfress'),
+            discount: tmpItem.attr('discount')
+        });
     }
 
     var itemCount = datas.length;
     var tmpHTMLArr = [];
     var tmpStyle = '';
     var tmpPrice = '';
+    var tmpBtn = '';
     tmpHTMLArr.push('<div class="container-fluid h-100 wrap-courses-content">');
     tmpHTMLArr.push('    <div class="row align-items-center row-courses-group-list">');
     tmpHTMLArr.push('        <div class="col">');
@@ -392,31 +400,35 @@ function buildContent_Courses(items) {
         tmpStyle = 'padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;';
         itemsHTML.push('<div class="text-center wrap-horizontal-list-item" style="' + tmpStyle + '">');
         itemsHTML.push('    <div class="d-flex align-items-center h-100">');
-        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
-        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '" data-target="' + datas[i].name + '">');
+        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px;';
+        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '">');
         itemsHTML.push('            <div class="row no-margin">');
         itemsHTML.push('                <div class="col no-padding">');
-        tmpStyle = 'height:' + imgHeight + 'px;';
-        itemsHTML.push('                    <img class="img-fluid" src="' + _gCourseImgMap[datas[i].name.trim()].img + '" style="' + tmpStyle + '" />');
+        tmpStyle = 'height:' + imgHeight + 'px; cursor:pointer;';
+        itemsHTML.push('                    <img class="img-fluid img-course-item-detail" src="' + _gCourseImgMap[datas[i].name.trim()].img + '" style="' + tmpStyle + '" data-target="' + datas[i].name + '"/>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
-        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('            <div class="row no-margin" style="padding-top: 8px;">');
         itemsHTML.push('                <div class="col no-padding text-12 font-weight-bold">');
         tmpStyle = 'color:' + _gCourseImgMap[datas[i].name.trim()].color + ';';
-        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
+        itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">' + datas[i].course + '</p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         itemsHTML.push('            <div class="row no-margin">');
         itemsHTML.push('                <div class="col no-padding text-12">');
         tmpPrice = (datas[i].isfree == '1' ? '免费' : parseInt(datas[i].price).toFixed(2));
-        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">价格: <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span></p>');
+        tmpBtn = (datas[i].isfree == '1' ? '' : '<button type="button" class="btn btn-sm btn-warning btn-course-item-buy" data-target="' + datas[i].name + '"><i class="fas fa-shopping-cart "></i></button>');
+        itemsHTML.push('                    <p class="text-center" style="' + tmpStyle + '">价格: ');
+        itemsHTML.push('                        <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span>');
+        itemsHTML.push(tmpBtn);
+        itemsHTML.push('                </p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         if (datas[i].isfree != '1') {
             itemsHTML.push('            <div class="row no-margin">');
             itemsHTML.push('                <div class="col no-padding text-12">');
             tmpPrice = (datas[i].discount == '0' ? '无' : parseInt(datas[i].price * 100).toFixed(2));
-            itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">折扣: ' + tmpPrice + '</p>');
+            itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">折扣: ' + tmpPrice + '</p>');
             itemsHTML.push('                </div>');
             itemsHTML.push('            </div>');
         }
@@ -431,12 +443,103 @@ function buildContent_Courses(items) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('.col-main-content').append($(tmpHTMLArr.join('')));
-    $('.horizontal-list-item').on('click', function (eventObj) {
+    $('.img-course-item-detail').on('click', function (eventObj) {
         ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: $(eventObj.currentTarget).attr('data-target') }), '', buildDetail_Course);
     });
+    $('.btn-course-item-buy').on('click', showCourseBuyModal);
 
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
     ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Course);
+};
+
+function showCourseBuyModal(eventObj) {
+    var courseId = $(eventObj.currentTarget).attr('data-target');
+    var data = {
+        course: "逻辑课程",
+        discount: "0",
+        id: "1",
+        isfree: "1",
+        name: "A",
+        price: "0"
+    };
+
+    var tmpPrice = '';
+    if ($('#modal_Course_Buy').length == 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal fade" id="modal_Course_Buy" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
+        tmpHTMLStr.push('    <div class="modal-dialog modal-lg" role="document">');
+        tmpHTMLStr.push('        <div class="modal-content h-100">');
+        tmpHTMLStr.push('            <div class="modal-header">');
+        tmpHTMLStr.push('                <h5 class="modal-title font-16" id="exampleModalLabel">购买课程</h5>');
+        tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('                </button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-body">');
+        tmpHTMLStr.push('<div class="container-fluid">');
+        tmpHTMLStr.push('   <div class="row">');
+        tmpHTMLStr.push('       <div class="col-4">');
+        tmpHTMLStr.push('           <div class="container-fluid">');
+        tmpHTMLStr.push('               <div class="row no-margin">');
+        tmpHTMLStr.push('                   <div class="col no-padding">');
+        tmpHTMLStr.push('                       <img class="img-fluid" src="' + _gCourseImgMap[data.name.trim()].img + '"/>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('               </div>');
+        tmpHTMLStr.push('               <div class="row no-margin">');
+        tmpHTMLStr.push('                   <div class="col no-paddingfont-weight-bold">');
+        tmpHTMLStr.push('                       <p class="text-center">' + data.course + '</p>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('               </div>');
+        tmpPrice = (data.isfree == '1' ? '免费' : parseInt(data.price).toFixed(2));
+        tmpHTMLStr.push('               <div class="row no-margin">');
+        tmpHTMLStr.push('                   <div class="col no-padding">');
+        tmpHTMLStr.push('                       <p class="text-center">价格: ');
+        tmpHTMLStr.push('                           <span style="' + (data.discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span>');
+        tmpHTMLStr.push('                       </p>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('               </div>');
+        if (data.isfree != '1') {
+            tmpHTMLStr.push('               <div class="row no-margin">');
+            tmpHTMLStr.push('                   <div class="col no-padding text-12">');
+            tmpPrice = (data.discount == '0' ? '无' : parseInt(data.price * 100).toFixed(2));
+            tmpHTMLStr.push('                       <p class="text-center">折扣: </p>');
+            tmpHTMLStr.push('                   </div>');
+            tmpHTMLStr.push('               </div>');
+        }
+
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('       </div>');
+        tmpHTMLStr.push('       <div class="col-8">');
+        tmpHTMLStr.push('<div class="card text-center">');
+        tmpHTMLStr.push('   <div class="card-header">');
+        tmpHTMLStr.push('       <ul class="nav nav-tabs card-header-tabs">');
+        tmpHTMLStr.push('           <li class="nav-item">');
+        tmpHTMLStr.push('               <a class="nav-link active" href="#">课程简介</a>');
+        tmpHTMLStr.push('           </li>');
+        tmpHTMLStr.push('           <li class="nav-item">');
+        tmpHTMLStr.push('               <a class="nav-link" href="#">课程设置</a>');
+        tmpHTMLStr.push('           </li>');
+        tmpHTMLStr.push('       </ul>');
+        tmpHTMLStr.push('   </div>');
+        tmpHTMLStr.push('   <div class="card-body">');
+        tmpHTMLStr.push('   </div>');
+        tmpHTMLStr.push('</div>');
+        tmpHTMLStr.push('       </div>');
+        tmpHTMLStr.push('   </div>');
+        tmpHTMLStr.push('</div>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('            <div class="modal-footer">');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-success btn-sm">确定购买</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-light btn-sm" data-dismiss="modal">取消购买</button>');
+        tmpHTMLStr.push('            </div>');
+        tmpHTMLStr.push('        </div>');
+        tmpHTMLStr.push('    </div>');
+        tmpHTMLStr.push('</div>');
+
+        $('body').append($(tmpHTMLStr.join('')));
+    }
+
+    $('#modal_Course_Buy').modal('show');
 };
 
 function buildDetail_Course(response) {
@@ -569,23 +672,23 @@ function buildContent_Exp(items) {
         itemsHTML.push('                    <img class="img-fluid" src="' + _gCourseImgMap[datas[i].name.trim()].img + '" style="' + tmpStyle + '" />');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
-        itemsHTML.push('            <div class="row no-margin">');
+        itemsHTML.push('            <div class="row no-margin" style="padding-top: 8px;">');
         itemsHTML.push('                <div class="col no-padding">');
         tmpStyle = 'color:' + _gCourseImgMap[datas[i].name.trim()].color + ';font-size:12px';
-        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + datas[i].course + '</p>');
+        itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">' + datas[i].course + '</p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         itemsHTML.push('            <div class="row no-margin">');
         itemsHTML.push('                <div class="col no-padding">');
         tmpPrice = (datas[i].isfree == '1' ? '免费' : parseInt(datas[i].price).toFixed(2));
-        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">价格: <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span></p>');
+        itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">价格: <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span></p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         if (datas[i].isfree != '1') {
             itemsHTML.push('            <div class="row no-margin">');
             itemsHTML.push('                <div class="col no-padding">');
             tmpPrice = (datas[i].discount == '0' ? '无' : parseInt(datas[i].price * 100).toFixed(2));
-            itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">折扣: ' + tmpPrice + '</p>');
+            itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">折扣: ' + tmpPrice + '</p>');
             itemsHTML.push('                </div>');
             itemsHTML.push('            </div>');
         }
@@ -879,7 +982,7 @@ function buildContent_Circle_Old() {
         itemsHTML.push('            <div class="row no-margin">');
         itemsHTML.push('                <div class="col no-padding">');
         tmpStyle = 'font-size:12px';
-        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + dataSystem[i].userName + '</p>');
+        itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">' + dataSystem[i].userName + '</p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         itemsHTML.push('        </div>');
@@ -936,7 +1039,7 @@ function buildContent_Circle_Old() {
         itemsHTML.push('            <div class="row no-margin">');
         itemsHTML.push('                <div class="col no-padding">');
         tmpStyle = 'font-size:12px';
-        itemsHTML.push('                   <p class="text-center overview-course-item-symbol" style="' + tmpStyle + '">' + dataUser[i].userName + '</p>');
+        itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">' + dataUser[i].userName + '</p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         itemsHTML.push('        </div>');

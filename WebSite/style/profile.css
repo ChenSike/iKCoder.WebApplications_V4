@@ -240,6 +240,13 @@ footer {
             font-size: 20px;
         }
 
+.btn-course-item-buy {
+    padding: 0px 3px;
+    font-size: 12px;
+    margin-left: 10px;
+    margin-top: -2px;
+}
+
 .row-courses-group-item-list {
     font-size: 14px;
 }
@@ -519,7 +526,7 @@ footer {
             .col-circle-user-list .circle-user-list-group .col-circle-user-list-item-header .group-header-wrap {
                 width: 32px;
                 height: 32px;
-                border-radius:2px;
+                border-radius: 2px;
                 background-color: rgb(220,222,223);
             }
 
