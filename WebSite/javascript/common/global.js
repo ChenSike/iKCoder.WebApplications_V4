@@ -97,7 +97,9 @@ var _gURLMapping = {
         //Get //接受好友 id=从Relations_Students_GetList取到，
         acceguest: _gHostName.Basic + 'Relations_Students_SetAccecptFriend',
         //Get //用户名，加为好友 suname= 
-        addfriend: _gHostName.Basic + 'Relations_Students_SetNewFriend'
+        addfriend: _gHostName.Basic + 'Relations_Students_SetNewFriend',
+        //Get //operator=ikcoder_operator
+        getaction: _gHostName.Basic + 'Common_Services_GetCSActions'
     }
 };
 //merge url

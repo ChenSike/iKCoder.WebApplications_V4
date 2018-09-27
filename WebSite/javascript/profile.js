@@ -377,13 +377,16 @@ function buildContent_Courses(items) {
     var tmpItem = null;
     for (var i = 0; i < items.length; i++) {
         tmpItem = $(items[i]);
+        //<item name="E" id="5" title="C#" price="1000" discount="0" isfress="0" access="0" enable=""></item>
         datas.push({
             id: tmpItem.attr('id'),
             name: tmpItem.attr('name'),
             course: tmpItem.attr('title'),
             price: tmpItem.attr('price'),
             isfree: tmpItem.attr('isfress'),
-            discount: tmpItem.attr('discount')
+            discount: tmpItem.attr('discount'),
+            access: tmpItem.attr('access'),
+            enable: tmpItem.attr('enable')
         });
     }
 
@@ -391,6 +394,7 @@ function buildContent_Courses(items) {
     var tmpHTMLArr = [];
     var tmpStyle = '';
     var tmpPrice = '';
+    var tmpDiscount = '';
     var tmpBtn = '';
     tmpHTMLArr.push('<div class="container-fluid h-100 wrap-courses-content">');
     tmpHTMLArr.push('    <div class="row align-items-center row-courses-group-list">');
@@ -414,23 +418,40 @@ function buildContent_Courses(items) {
         itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">' + datas[i].course + '</p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
-        itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col no-padding text-12">');
-        tmpPrice = (datas[i].isfree == '1' ? '免费' : parseInt(datas[i].price).toFixed(2));
-        tmpBtn = (datas[i].isfree == '1' ? '' : '<button type="button" class="btn btn-sm btn-warning btn-course-item-buy" data-target="' + datas[i].name + '"><i class="fas fa-shopping-cart "></i></button>');
-        itemsHTML.push('                    <p class="text-center" style="' + tmpStyle + '">价格: ');
-        itemsHTML.push('                        <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span>');
-        itemsHTML.push(tmpBtn);
-        itemsHTML.push('                </p>');
-        itemsHTML.push('                </div>');
-        itemsHTML.push('            </div>');
-        if (datas[i].isfree != '1') {
+        if (datas[i].enable == '1') {
             itemsHTML.push('            <div class="row no-margin">');
             itemsHTML.push('                <div class="col no-padding text-12">');
-            tmpPrice = (datas[i].discount == '0' ? '无' : parseInt(datas[i].price * 100).toFixed(2));
-            itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">折扣: ' + tmpPrice + '</p>');
+            itemsHTML.push('                    <p class="text-center" style="' + tmpStyle + '">即将上线</p>');
             itemsHTML.push('                </div>');
             itemsHTML.push('            </div>');
+        } else {
+            itemsHTML.push('            <div class="row no-margin">');
+            itemsHTML.push('                <div class="col no-padding text-12">');
+            tmpPrice = (datas[i].isfree == '1' ? '免费' : parseInt(datas[i].price).toFixed(2));
+            tmpBtn = '';
+            if (datas[i].isfree != '1') {
+                if (datas[i].access == '1') {
+                    tmpBtn = '<i class="fas fa-check" title="已购买"></i>';
+                } else {
+                    tmpBtn = '<button type="button" class="btn btn-sm btn-warning btn-course-item-buy" data-target="' + datas[i].name + '" title="购买课程"><i class="fas fa-shopping-cart "></i></button>';
+                }
+            }
+
+            itemsHTML.push('                    <p class="text-center" style="' + tmpStyle + '">价格: ');
+            itemsHTML.push('                        <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span>');
+            itemsHTML.push(tmpBtn);
+            itemsHTML.push('                </p>');
+            itemsHTML.push('                </div>');
+            itemsHTML.push('            </div>');
+            if (datas[i].isfree != '1' && datas[i].discount != '0') {
+                itemsHTML.push('            <div class="row no-margin">');
+                itemsHTML.push('                <div class="col no-padding text-12">');
+                tmpDiscount = 1 - parseFloat(datas[i].discount) / 10;
+                tmpPrice = parseInt(parseInt(datas[i].price) * tmpDiscount).toFixed(2);
+                itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">优惠价: ' + tmpPrice + '</p>');
+                itemsHTML.push('                </div>');
+                itemsHTML.push('            </div>');
+            }
         }
 
         itemsHTML.push('        </div>');
@@ -456,21 +477,46 @@ function showCourseBuyModal(eventObj) {
     var courseId = $(eventObj.currentTarget).attr('data-target');
     var data = {
         course: "逻辑课程",
-        discount: "0",
+        discount: "2",
         id: "1",
-        isfree: "1",
+        isfree: "0",
         name: "A",
-        price: "0"
+        price: "1000",
+        access: '0',
+        enable: '1',
+        detail: 'Cards include a few options for working with images. Choose from appending “image caps” at either end of a card, overlaying images with card content, or simply embedding the image in a card.',
+        lessons: [
+            {
+                title: "模式识别", symbol: "A_001", steam: "S", type: "UA", steps: "4"
+            }, {
+                title: "路径跟随", symbol: "A_002", steam: "S", type: "UDA", steps: "4"
+            }, {
+                title: "顺序", symbol: "A_003", steam: "S", type: "UA", steps: "4"
+            }, {
+                title: "条件逻辑", symbol: "A_004", steam: "ST", type: "DA", steps: "4"
+            }, {
+                title: "逻辑判断", symbol: "A_005", steam: "ST", type: "UA", steps: "4"
+            }, {
+                title: "应用高级逻辑判断", symbol: "A_006", steam: "S", type: "UA", steps: "4"
+            }, {
+                title: "应用否定逻辑", symbol: "A_007", steam: "S", type: "DA", steps: "4"
+            }, {
+                title: "练习", symbol: "A_008", steam: "S", type: "DA", steps: "4"
+            }, {
+                title: "条件循环", symbol: "A_009", steam: "T", type: "DA", steps: "4"
+            }, {
+                title: "循环", symbol: "A_010", steam: "ST", type: "UA", steps: "4"
+            }
+        ]
     };
 
-    var tmpPrice = '';
     if ($('#modal_Course_Buy').length == 0) {
         var tmpHTMLStr = [];
         tmpHTMLStr.push('<div class="modal fade" id="modal_Course_Buy" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">');
         tmpHTMLStr.push('    <div class="modal-dialog modal-lg" role="document">');
         tmpHTMLStr.push('        <div class="modal-content h-100">');
         tmpHTMLStr.push('            <div class="modal-header">');
-        tmpHTMLStr.push('                <h5 class="modal-title font-16" id="exampleModalLabel">购买课程</h5>');
+        tmpHTMLStr.push('                <h5 class="modal-title font-16" id="modal_Course_Buy_Title"></h5>');
         tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
         tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
         tmpHTMLStr.push('                </button>');
@@ -478,68 +524,120 @@ function showCourseBuyModal(eventObj) {
         tmpHTMLStr.push('            <div class="modal-body">');
         tmpHTMLStr.push('<div class="container-fluid">');
         tmpHTMLStr.push('   <div class="row">');
-        tmpHTMLStr.push('       <div class="col-4">');
-        tmpHTMLStr.push('           <div class="container-fluid">');
+        tmpHTMLStr.push('       <div class="col-3 col-course-card">');
+        tmpHTMLStr.push('           <div class="container-fluid no-padding">');
         tmpHTMLStr.push('               <div class="row no-margin">');
         tmpHTMLStr.push('                   <div class="col no-padding">');
-        tmpHTMLStr.push('                       <img class="img-fluid" src="' + _gCourseImgMap[data.name.trim()].img + '"/>');
+        tmpHTMLStr.push('                       <img class="img-fluid course-image" src=""/>');
         tmpHTMLStr.push('                   </div>');
         tmpHTMLStr.push('               </div>');
         tmpHTMLStr.push('               <div class="row no-margin">');
         tmpHTMLStr.push('                   <div class="col no-paddingfont-weight-bold">');
-        tmpHTMLStr.push('                       <p class="text-center">' + data.course + '</p>');
+        tmpHTMLStr.push('                       <p class="text-center course-name"></p>');
         tmpHTMLStr.push('                   </div>');
         tmpHTMLStr.push('               </div>');
-        tmpPrice = (data.isfree == '1' ? '免费' : parseInt(data.price).toFixed(2));
         tmpHTMLStr.push('               <div class="row no-margin">');
         tmpHTMLStr.push('                   <div class="col no-padding">');
         tmpHTMLStr.push('                       <p class="text-center">价格: ');
-        tmpHTMLStr.push('                           <span style="' + (data.discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span>');
+        tmpHTMLStr.push('                           <span class="course-price"><span>');
         tmpHTMLStr.push('                       </p>');
         tmpHTMLStr.push('                   </div>');
         tmpHTMLStr.push('               </div>');
-        if (data.isfree != '1') {
-            tmpHTMLStr.push('               <div class="row no-margin">');
-            tmpHTMLStr.push('                   <div class="col no-padding text-12">');
-            tmpPrice = (data.discount == '0' ? '无' : parseInt(data.price * 100).toFixed(2));
-            tmpHTMLStr.push('                       <p class="text-center">折扣: </p>');
-            tmpHTMLStr.push('                   </div>');
-            tmpHTMLStr.push('               </div>');
-        }
-
+        tmpHTMLStr.push('               <div class="row no-margin row-course-discount">');
+        tmpHTMLStr.push('                   <div class="col no-padding text-12">');
+        tmpHTMLStr.push('                       <p class="text-center">优惠价: <span class="course-discount"></span></p>');
+        tmpHTMLStr.push('                   </div>');
+        tmpHTMLStr.push('               </div>');
         tmpHTMLStr.push('           </div>');
         tmpHTMLStr.push('       </div>');
-        tmpHTMLStr.push('       <div class="col-8">');
-        tmpHTMLStr.push('<div class="card text-center">');
-        tmpHTMLStr.push('   <div class="card-header">');
-        tmpHTMLStr.push('       <ul class="nav nav-tabs card-header-tabs">');
-        tmpHTMLStr.push('           <li class="nav-item">');
-        tmpHTMLStr.push('               <a class="nav-link active" href="#">课程简介</a>');
-        tmpHTMLStr.push('           </li>');
-        tmpHTMLStr.push('           <li class="nav-item">');
-        tmpHTMLStr.push('               <a class="nav-link" href="#">课程设置</a>');
-        tmpHTMLStr.push('           </li>');
-        tmpHTMLStr.push('       </ul>');
-        tmpHTMLStr.push('   </div>');
-        tmpHTMLStr.push('   <div class="card-body">');
-        tmpHTMLStr.push('   </div>');
-        tmpHTMLStr.push('</div>');
+        tmpHTMLStr.push('       <div class="col-9 col-course-detail">');
+        tmpHTMLStr.push('           <div class="card text-center">');
+        tmpHTMLStr.push('               <div class="card-header">');
+        tmpHTMLStr.push('                   <ul class="nav nav-tabs course-buy-card-header-tabs">');
+        tmpHTMLStr.push('                       <li class="nav-item">');
+        tmpHTMLStr.push('                           <a class="nav-link" href="#" data-target="detail">课程简介</a>');
+        tmpHTMLStr.push('                       </li>');
+        tmpHTMLStr.push('                       <li class="nav-item">');
+        tmpHTMLStr.push('                           <a class="nav-link" href="#" data-target="lessons">课程设置</a>');
+        tmpHTMLStr.push('                       </li>');
+        tmpHTMLStr.push('                   </ul>');
+        tmpHTMLStr.push('               </div>');
+        tmpHTMLStr.push('               <div class="card-body">');
+        tmpHTMLStr.push('               </div>');
+        tmpHTMLStr.push('           </div>');
         tmpHTMLStr.push('       </div>');
         tmpHTMLStr.push('   </div>');
         tmpHTMLStr.push('</div>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('            <div class="modal-footer">');
-        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-success btn-sm">确定购买</button>');
-        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-light btn-sm" data-dismiss="modal">取消购买</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-success btn-sm btn-course-buy-confirm">确定购买</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-light btn-sm" data-dismiss="modal">关闭</button>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('        </div>');
         tmpHTMLStr.push('    </div>');
         tmpHTMLStr.push('</div>');
 
         $('body').append($(tmpHTMLStr.join('')));
+        $('#modal_Course_Buy .course-buy-card-header-tabs a').on('click', function (eventObj) {
+            $(eventObj.currentTarget).tab('show');
+        })
+
+        $('#modal_Course_Buy .course-buy-card-header-tabs a').on('shown.bs.tab', function (eventObj) {
+            var container = $('#modal_Course_Buy .card .card-body');
+            container.empty();
+            if ($(eventObj.currentTarget).attr('data-target') == 'detail') {
+                container.text(data.detail);
+            } else {
+                var tmpHTMLArr = [];
+                tmpHTMLArr.push('<table class="table table-hover table-sm">');
+                tmpHTMLArr.push('   <thead>');
+                tmpHTMLArr.push('       <tr>');
+                tmpHTMLArr.push('           <th scope="col col-course-title" style="height: 1px;padding: 0px;"></th>');
+                tmpHTMLArr.push('           <th scope="col col-course-step" style="width: 50px;height: 1px;padding: 0px;"></th>');
+                tmpHTMLArr.push('           <th scope="col col-course-steam" style="width: 150px;height: 1px;padding: 0px;"></th>');
+                tmpHTMLArr.push('           <th scope="col col-course-type" style="height: 1px;padding: 0px;"></th>');
+                tmpHTMLArr.push('       </tr>');
+                tmpHTMLArr.push('   </thead>');
+                tmpHTMLArr.push('   <tbody>');
+                for (var i = 0; i < data.lessons.length; i++) {
+                    tmpHTMLArr.push('       <tr>');
+                    tmpHTMLArr.push('           <td>' + data.lessons[i].title + '</td>');
+                    tmpHTMLArr.push('           <td><span class="course-step-total">' + data.lessons[i].steps + '</span></td>');
+                    tmpHTMLArr.push('           <td>' + buildSTEAMHTML(data.lessons[i].steam) + '</td>');
+                    tmpHTMLArr.push('           <td>' + buildCourseTypeHTML(data.lessons[i].type) + '</td>');
+                    tmpHTMLArr.push('       </tr>');
+                }
+
+                tmpHTMLArr.push('   </tbody>');
+                tmpHTMLArr.push('</table>');
+                container.append($(tmpHTMLArr.join('')));
+            }
+        })
+    }
+
+    $('#modal_Course_Buy .course-image').attr('src', _gCourseImgMap[data.name.trim()].img);
+    $('#modal_Course_Buy .course-name').text(data.course);
+    $('#modal_Course_Buy_Title').text(data.access == '1' ? '课程概览' : '购买课程');
+    var tmpPrice = parseInt(data.price);
+    if (data.enable == '1' && data.access != '1' && data.isfree != '1' && data.discount != '0') {
+        var tmpDiscount = 1 - parseFloat(data.discount) / 10;
+        tmpDiscount = parseInt(tmpPrice * tmpDiscount);
+        $('#modal_Course_Buy .course-price').text(tmpPrice.toFixed(2));
+        $('#modal_Course_Buy .course-price').css('text-decoration', 'line-through');
+        $('#modal_Course_Buy .row-course-discount').show();
+        $('#modal_Course_Buy .course-discount').text(tmpDiscount.toFixed(2));
+    } else {
+        $('#modal_Course_Buy .course-price').css('text-decoration', 'none');
+        $('#modal_Course_Buy .row-course-discount').hide();
+        $('#modal_Course_Buy .course-discount').text('');
+        $('#modal_Course_Buy .course-price').text(data.enable != '1' ? '即将上线' : data.access == '1' ? '已经购买' : data.isfree == '1' ? '免费' : tmpPrice.toFixed(2));
+        if (data.access == '1' || data.enable != '1' || data.isfree == '1') {
+            $('#modal_Course_Buy .btn-course-buy-confirm').hide();
+        }
     }
 
     $('#modal_Course_Buy').modal('show');
+    $('#modal_Course_Buy .course-buy-card-header-tabs li:first-child a').tab('show');
 };
 
 function buildDetail_Course(response) {
@@ -833,222 +931,6 @@ function showExperimentAttachs(data) {
     $('#modal_Experiment_Attachs').modal('show');
 };
 
-function buildContent_Circle_Old() {
-    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
-    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
-
-    var dataSystem = [];
-    for (var i = 0; i < 20; i++) {
-        dataSystem.push({
-            "userName": names[i % 13],
-            "header": "image/header/" + (i % 10) + ".jpg",
-            "userId": i
-        });
-    }
-
-    var dataUser = [];
-    for (var i = 0; i < 150; i++) {
-        var tmpIdx = randomInt(0, 149);
-        dataUser.push({
-            "userName": names[tmpIdx % 13],
-            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
-            "userId": i
-        });
-    }
-
-    var dataSearch = { value: [] };
-    for (var i = 0; i < 12; i++) {
-        dataSearch.value.push({
-            "userName": names[i],
-            "shortAccount": shortAccount[i],
-            "userId": i
-        });
-    }
-
-    var defaultOptions = {
-        url: null,                      //请求数据的 URL 地址
-        jsonp: null,                  //设置此参数名，将开启jsonp功能，否则使用json数据结构
-        data: dataSearch,                              //提示所用的数据，注意格式
-        indexId: 0,                     //每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
-        indexKey: 0,                    //每组数据的第几个数据，作为input输入框的内容
-        idField: 'userId',                    //每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
-        keyField: 'userName',                   //每组数据的哪个字段作为输入框内容，优先级高于 indexKey 设置（推荐）
-
-        /* 搜索相关 */
-        autoSelect: true,               //键盘向上/下方向键时，是否自动选择值
-        allowNoKeyword: true,           //是否允许无关键字时请求数据
-        getDataMethod: 'data',    //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
-        delayUntilKeyup: false,         //获取数据的方式 为 firstByUrl 时，是否延迟到有输入时才请求数据
-        ignorecase: true,              //前端搜索匹配时，是否忽略大小写
-        effectiveFields: [],            //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
-        effectiveFieldsAlias: { userName: "姓名" },       //有效字段的别名对象，用于 header 的显示
-        searchFields: [],               //有效搜索字段，从前端搜索过滤数据时使用，但不一定显示在列表中。effectiveFields 配置字段也会用于搜索过滤
-        clearable: true,
-
-        multiWord: false,               //以分隔符号分割的多关键字支持
-        separator: ',',                 //多关键字支持时的分隔符，默认为半角逗号
-
-        /* UI */
-        autoDropup: false,              //选择菜单是否自动判断向上展开。设为 true，则当下拉菜单高度超过窗体，且向上方向不会被窗体覆盖，则选择菜单向上弹出
-        autoMinWidth: false,            //是否自动最小宽度，设为 false 则最小宽度不小于输入框宽度
-        showHeader: false,              //是否显示选择列表的 header。为 true 时，有效字段大于一列则显示表头
-        showBtn: true,                  //是否显示下拉按钮
-        inputBgColor: '',               //输入框背景色，当与容器背景色不同时，可能需要该项的配置
-        inputWarnColor: 'rgba(255,0,0,.1)', //输入框内容不是下拉列表选择时的警告色
-        listStyle: {
-            'padding-top': 0,
-            'max-height': '375px',
-            'max-width': '800px',
-            'overflow': 'auto',
-            'width': 'auto',
-            'transition': '0.3s',
-            '-webkit-transition': '0.3s',
-            '-moz-transition': '0.3s',
-            '-o-transition': '0.3s',
-            'font-size': '12px'
-        },                              //列表的样式控制
-        listAlign: 'left',              //提示列表对齐位置，left/right/auto
-        listHoverStyle: 'background: #07d; color:#fff', //提示框列表鼠标悬浮的样式
-        listHoverCSS: 'jhover',         //提示框列表鼠标悬浮的样式名称
-
-        /* methods */
-        //fnProcessData: null,     //processData 格式化数据的方法，返回数据格式参考 data 参数
-        //fnGetData: null,             //getData获取数据的方法，无特殊需求一般不作设置
-        //fnAdjustAjaxParam: null,        //调整 ajax 请求参数方法，用于更多的请求配置需求。如对请求关键字作进一步处理、修改超时时间等
-        //fnPreprocessKeyword: null       //搜索过滤数据前，对输入关键字作进一步处理方法。注意，应返回字符串
-    };
-
-    var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="container-fluid wrap-circle">');
-    tmpHTMLArr.push('   <div class="row">');
-    tmpHTMLArr.push('       <div class="col">');
-    tmpHTMLArr.push('           <div class="input-group w-100 wrap-circle-search">');
-    //tmpHTMLArr.push('               <i class="clearable glyphicon glyphicon-remove" style="position: absolute; top: 12px; right: 12px; z-index: 4; cursor: pointer; font-size: 12px; display: none;"></i>');
-    tmpHTMLArr.push('               <input type="text" class="form-control form-control-sm" id="search_Circle" style="border-radius:5px; border-color:rgb(17,138,195);" autocomplete="off" placeholder="Search" data-id="" alt="a">');
-    tmpHTMLArr.push('               <div class="input-group-btn">');
-    tmpHTMLArr.push('                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="" style="display: none;">');
-    tmpHTMLArr.push('                       <span class="caret"></span>');
-    tmpHTMLArr.push('                   </button>');
-    tmpHTMLArr.push('                   <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>');
-    tmpHTMLArr.push('               </div>');
-    tmpHTMLArr.push('           </div>');
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('   <div class="row">');
-    tmpHTMLArr.push('       <div class="col">');
-    tmpHTMLArr.push('       <table class="w-100"><tr>');
-    tmpHTMLArr.push('       <td style="width:10%;">');
-    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:1px solid rgba(0,0,0,0.3);"/>');
-    tmpHTMLArr.push('       </td>');
-    tmpHTMLArr.push('       <td style="white-space: nowrap;">');
-    tmpHTMLArr.push('           <span style="line-height: 30px;">系统及顾问</span>');
-    tmpHTMLArr.push('       </td>');
-    tmpHTMLArr.push('       <td style="width:85%;">');
-    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:1px solid rgba(0,0,0,0.3);"/>');
-    tmpHTMLArr.push('       </td>');
-    tmpHTMLArr.push('       </tr></table>');
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('   <div class="row no-wrap">');
-    tmpHTMLArr.push('       <div class="col no-wrap" style="overflow:auto;">');
-    var orgContainerHeight = 100;
-    var orgHeight = 80;
-    var orgWidth = 70;
-    var orgSpace = 10;
-    var orgImgHeight = 50;
-    var availableHeight = $('.col-content').height();
-    var scale = availableHeight / _orgAvailableHeight;
-    var containerheight = Math.floor(scale * orgContainerHeight);
-    var height = Math.floor(scale * orgHeight);
-    var width = Math.floor(scale * orgWidth);
-    var padding = Math.floor((containerheight - height) / 2);
-    var imgheight = Math.floor(scale * orgImgHeight);
-    var space = Math.floor(scale * orgSpace);
-    var itemsHTML = [];
-    var itemCount = dataSystem.length;
-    var tmpStyle = '';
-    for (var i = 0; i < itemCount; i++) {
-        tmpStyle = 'padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px; padding-top:' + padding + 'px;';
-        itemsHTML.push('<div class="text-center wrap-horizontal-list-item" style="' + tmpStyle + '">');
-        itemsHTML.push('    <div class="d-flex align-items-center h-100">');
-        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
-        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '" data-target="' + dataSystem[i].userId + '">');
-        itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col no-padding">');
-        tmpStyle = 'height:' + imgheight + 'px; width:' + imgheight + 'px;';
-        itemsHTML.push('                    <img class="img-fluid circle-item-header" src="' + dataSystem[i].header + '" style="' + tmpStyle + '" />');
-        itemsHTML.push('                </div>');
-        itemsHTML.push('            </div>');
-        itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col no-padding">');
-        tmpStyle = 'font-size:12px';
-        itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">' + dataSystem[i].userName + '</p>');
-        itemsHTML.push('                </div>');
-        itemsHTML.push('            </div>');
-        itemsHTML.push('        </div>');
-        itemsHTML.push('    </div>');
-        itemsHTML.push('</div>');
-    }
-
-    tmpHTMLArr.push(buildHorizontalList(itemsHTML.join(''), "system"));
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('   <div class="row">');
-    tmpHTMLArr.push('       <div class="col">');
-    tmpHTMLArr.push('       <table class="w-100"><tr>');
-    tmpHTMLArr.push('       <td style="width:10%;">');
-    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:1px solid rgba(0,0,0,0.3);"/>');
-    tmpHTMLArr.push('       </td>');
-    tmpHTMLArr.push('       <td style="white-space: nowrap;">');
-    tmpHTMLArr.push('           <span style="line-height: 30px;">我的小伙伴</span>');
-    tmpHTMLArr.push('       </td>');
-    tmpHTMLArr.push('       <td style="width:85%;">');
-    tmpHTMLArr.push('           <hr class="w-100" style="height:1px;border:none;border-top:1px solid rgba(0,0,0,0.3);"/>');
-    tmpHTMLArr.push('       </td>');
-    tmpHTMLArr.push('       </tr></table>');
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('   <div class="row no-wrap row-circle-friend-wrap justify-content-center">');
-    tmpHTMLArr.push('       <div class="col col-circle-friend-wrap" style="overflow:auto; padding:15px;">');
-    tmpHTMLArr.push('       </div>');
-    tmpHTMLArr.push('   </div>');
-    tmpHTMLArr.push('</div>');
-
-    $('.col-main-content').append($(tmpHTMLArr.join('')));
-    $("#search_Circle").bsSuggest(defaultOptions);
-    $('.horizontal-list-item').on('click', function (eventObj) {
-        buildDetail_Course($(eventObj.currentTarget).attr('data-target'));
-    });
-
-    bindHorizontalListEvent(containerheight, width, space, dataSystem.length, "system");
-    $('.row-circle-friend-wrap').height($('.col-main-content').height() - $('.wrap-circle').height());
-    itemsHTML = [];
-    itemCount = dataUser.length;
-    for (var i = 0; i < itemCount; i++) {
-        tmpStyle = 'padding-top:' + padding + 'px; width:' + width + 'px;';
-        itemsHTML.push('<div class="text-center" style="' + tmpStyle + '">');
-        itemsHTML.push('    <div class="d-flex align-items-center h-100">');
-        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
-        itemsHTML.push('        <div class="container-fluid no-wrap horizontal-list-item" style="' + tmpStyle + '" data-target="' + dataUser[i].userId + '">');
-        itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col no-padding">');
-        tmpStyle = 'height:' + imgheight + 'px; width:' + imgheight + 'px;';
-        itemsHTML.push('                    <img class="img-fluid circle-item-header" src="' + dataUser[i].header + '" style="' + tmpStyle + '" />');
-        itemsHTML.push('                </div>');
-        itemsHTML.push('            </div>');
-        itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col no-padding">');
-        tmpStyle = 'font-size:12px';
-        itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">' + dataUser[i].userName + '</p>');
-        itemsHTML.push('                </div>');
-        itemsHTML.push('            </div>');
-        itemsHTML.push('        </div>');
-        itemsHTML.push('    </div>');
-        itemsHTML.push('</div>');
-    }
-    $('.col-circle-friend-wrap').append($(itemsHTML.join('')));
-};
-
 function buildContent_Circle() {
     var successFn = function (reponsse) {
         if (_getExcuted(reponsse)) {
@@ -1096,7 +978,6 @@ function buildContent_Circle_Do(reponsse) {
     $(".col-circle-message-history").height(tmpObj.history);
     //load messages
     webSocketGetCiecleHistory('-1');
-    //circleLoadMessageHistory();
     //init events
     initEvents_Circle();
 };
@@ -3881,7 +3762,9 @@ function initData() {
             var success_header = ($($(response_header).find('executed')[0]).text() == 'true' ? true : false);
             if (success_header) {
                 var tmpImg = $($(response_header).find('msg')[0]).text();
-                if (tmpImg.indexOf('.') < 0) {
+                var tmpFile = tmpImg.split('/');
+                tmpFile = tmpFile[tmpFile.length - 1];
+                if (tmpFile.indexOf('.') < 0) {
                     tmpImg = 'image/tmpheader.jpg';
                 }
 
@@ -4370,7 +4253,7 @@ function getCircleToken() {
 };
 
 function webSocketCreate() {
-    _gSocket = new WebSocket("ws://localhost:9998/echo");
+    _gSocket = new WebSocket("WS://www.ikcoder.com/corebasic?student_token=" + _CookieUtils.get('student_token'));
     //建立websocket连接成功
     _gSocket.onopen = function () {
     };

@@ -1849,3 +1849,54 @@ footer {
         .user-popover-wrap .row-buttons svg {
             font-size: 25px;
         }
+
+#modal_Course_Buy {
+}
+
+    #modal_Course_Buy .modal-body {
+    }
+
+        #modal_Course_Buy .modal-body .col-course-card {
+            height: 280px;
+            padding: 5px 0px;
+        }
+
+        #modal_Course_Buy .modal-body .col-course-detail {
+            height: 280px;
+            padding: 5px 0px 5px 10px;
+        }
+
+            #modal_Course_Buy .modal-body .col-course-detail .card {
+                border: none;
+            }
+
+                #modal_Course_Buy .modal-body .col-course-detail .card .card-header {
+                    padding: 2px 5px;
+                    border-bottom-width: 1px;
+                    background-color: transparent;
+                }
+
+                    #modal_Course_Buy .modal-body .col-course-detail .card .card-header ul {
+                        margin: 0px;
+                        margin-bottom: -2px;
+                        border: none;
+                    }
+
+                        #modal_Course_Buy .modal-body .col-course-detail .card .card-header ul li a {
+                            padding: 3px;
+                            font-size: 14px;
+                        }
+
+                #modal_Course_Buy .modal-body .col-course-detail .card .card-body {
+                    border: solid 1px rgba(0, 0, 0, 0.125);
+                    border-top: none;
+                    height: 240px;
+                    overflow: auto;
+                    font-size: 14px;
+                    text-align: left;
+                    padding: 5px;
+                }
+
+                    #modal_Course_Buy .modal-body .col-course-detail .card .card-body thead th {
+                        border: none;
+                    }
