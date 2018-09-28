@@ -8,7 +8,7 @@ var _gPageMapping = {
     cooperation: { page: 'cooperation.html', text: '合作' },
     contact: { page: 'contact.html', text: '联系我们' },
     about: { page: 'about.html', text: '关于' },
-    center: { page: '/ikcoder/signin.html', text: '学员中心' }
+    center: { page: '/ikcoder/sign.html', text: '学员中心' }
 };
 
 function initHeader() {

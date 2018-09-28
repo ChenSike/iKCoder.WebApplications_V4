@@ -958,7 +958,8 @@ function buildContent_Circle_Do(reponsse) {
     tmpHTMLArr.push(circleBuildSearchPart());
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
-    tmpHTMLArr.push('               <div class="row no-wrap" style="height: calc(100% - 42px);">');
+    //tmpHTMLArr.push('               <div class="row no-wrap" style="height: calc(100% - 42px);">');
+    tmpHTMLArr.push('               <div class="row no-wrap" style="height: calc(100% - 39px);">');
     tmpHTMLArr.push('                   <div class="col no-wrap col-circle-itemlist-container">');
     tmpHTMLArr.push(circleBuildFriendPart());
     tmpHTMLArr.push('                   </div>');
@@ -1303,7 +1304,8 @@ function circleCalcMessageHeight(top) {
     if (circleCheckMsgDragScope(top, true)) {
         var containerHeight = $(".col-circle-message-list").height() - 10 - 39;
         var minHeight = containerHeight * 25 / 100;
-        var tmpHeight = $("body").height() - top - 30 - 39;
+        //var tmpHeight = $("body").height() - top - 30 - 39;
+        var tmpHeight = $("body").height() - top - 30 - 41;
         tmpHeight = (tmpHeight < minHeight ? minHeight : tmpHeight);
         retObj = { input: tmpHeight - 5, history: containerHeight - tmpHeight };
     }
@@ -1685,7 +1687,8 @@ function circleBuildSection_Chat(id, type) {
 function circleBuildSection_Address() {
     $('.col-circle-itemlist-container').append($(circleBuildFriendPart_Address()));
     $('.col-circle-message-list').append($(circleBuildMessagePart_Address()));
-    $('.col-circle-message-history').height($("body").height() - 30 - 35 - 39 - 5);
+    //$('.col-circle-message-history').height($("body").height() - 30 - 35 - 39 - 5);
+    $('.col-circle-message-history').height($("body").height() - 30 - 35 - 39 - 5- 7);
     initEvents_Circle_Address();
 };
 
