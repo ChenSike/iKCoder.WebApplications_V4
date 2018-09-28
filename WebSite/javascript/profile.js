@@ -1277,6 +1277,26 @@ function circleGetUserObj(userId) {
     return tmpObj;
 };
 
+function circleGetGroupObj(groupId) {
+    var tmpObj = null;
+    var groups = [];
+    for (var i = 0; i < _gCircleGroups.length; i++) {
+        if (_gCircleGroups[i].id == 'group') {
+            groups = _gCircleGroups[i].items;
+            break;
+        }
+    }
+
+    for (var i = 0; i < groups.length; i++) {
+        if (groups[i].userId == groupId) {
+            tmpObj = groups[i];
+            break;
+        }
+    }
+
+    return tmpObj;
+};
+
 function circleCalcMessageHeight(top) {
     var retObj = null;
     top = (top == -1 ? $('.row-footer').offset().top - 200 : top);
@@ -1612,7 +1632,6 @@ function circleClickUserPopBtn(eventObj) {
 };
 
 function circleShowSettingBar(userId, userType) {
-    var userObj = circleGetUserObj(userId);
     var settingBar = $('.setting-bar-chatter');
     if (settingBar.css('display') != 'none') {
         $('.col-main-content').css('overflow', 'hidden');
@@ -1622,9 +1641,26 @@ function circleShowSettingBar(userId, userType) {
             opacity: '0'
         }, 500, function () { settingBar.hide(); });
     } else {
+        var userObj = (userType == 'group' ? _gUserInfoObj : circleGetUserObj(userId));
         $('.setting-bar-chatter .user-header').attr('src', userObj.header);
         $('.setting-bar-chatter .user-header').attr('data-target', userObj.userId);
         $('.setting-bar-chatter .user-name').text(userObj.userName);
+
+        if (userType == 'group') {
+            var groupObj = circleGetGroupObj(userId);
+            var tmpHTMLArr = [];
+            for (var i = 0; i < groupObj.items.length; i++) {
+                tmpHTMLArr.push('<div class="col-3">');
+                tmpHTMLArr.push('   <img class="user-header" src="' + groupObj.items[i].header + '" data-target="">');
+                tmpHTMLArr.push('   <p class="user-name">' + groupObj.items[i].userName + '</p>');
+                tmpHTMLArr.push('</div>');
+            }
+
+            $('.setting-bar-chatter .user-header').parent().after($(tmpHTMLArr.join('')));
+        } else {
+            $('.setting-bar-chatter .row-headers .col-3:gt(1)').remove();
+        }
+
         settingBar.show();
         settingBar.animate({
             right: '0px',
@@ -1904,7 +1940,7 @@ function circleBuildChannelPop(eventObj) {
         }
     }
 
-    var container = $('.container-circle-message-history');
+    var container = (target[0].tagName == 'IMG' ? $('.container-circle-message-history') : $('.wrap-circle-message'));
     if ($('.channel-popover-wrap').length <= 0) {
         var tmpHTMLArr = [];
         tmpHTMLArr.push('<div class="channel-popover-wrap">');
@@ -1941,8 +1977,9 @@ function circleBuildChannelPop(eventObj) {
     $('.channel-popover-wrap .col-channel-detail p').text(current.comment);
     $('.btn-circle-address-channel-popover').attr('data-target', current.userId);
 
+    container.append($('.channel-popover-wrap'));
     var tmpTop = eventObj.pageY - container.offset().top + 5;
-    var tmpLeft = eventObj.pageX - container.offset().left + 15;
+    var tmpLeft = eventObj.pageX - container.offset().left + (container.hasClass('wrap-circle-message') ? 0 : 15);
     if (tmpTop + $('.channel-popover-wrap').height() > $('.col-circle-message-history').height()) {
         tmpTop -= $('.channel-popover-wrap').height();
     }
@@ -2278,6 +2315,7 @@ function circleClickUserItem(currentTarget) {
     $('.col-circle-message-history-button .btn.btn-sm').attr('data-type', currentTarget.attr('data-type'));
     $('.setting-bar-chatter').hide();
     $('.user-popover-wrap').hide();
+    $('.channel-popover-wrap').hide();
     var symbolEl = $(currentTarget.find('.circle-user-list-item-msg')[0]);
     symbolEl.text('0');
     symbolEl.hide();

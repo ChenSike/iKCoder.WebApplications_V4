@@ -646,6 +646,10 @@ footer {
             margin: 0px;
             line-height: 29px;
             padding: 5px 15px;
+            overflow: hidden;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
     .col-circle-message-list .col-circle-message-history {
