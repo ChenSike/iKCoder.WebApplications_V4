@@ -245,12 +245,12 @@ function initEvents() {
             var success = _getExcuted(response);
             if (success) {
                 var sFn = function (tmpRes) {
-                    var success = ($($(tmpRes).find('executed')[0]).text() == 'true' ? true : false);
+                    var success = _getExcuted(tmpRes);
                     if (!success) {
                         _showGlobalMessage('无法登录！', 'warning', 'alert_Wrong_SignIn');
                     } else {
-                        if ($($(response).find('msgcode')).text() == 'TOKEN') {
-                            _CookieUtils.set('student_token', $($(response).find('msg')).text());
+                        if ($($(tmpRes).find('msg')).text() == 'TOKEN') {
+                            _CookieUtils.set('student_token', $($(tmpRes).find('msg')).text());
                             window.location.href = "profile.html";
                         } else {
                             _showGlobalMessage('无法获取用户信息，请重新登录！', 'warning', 'alert_Wrong_SignIn');

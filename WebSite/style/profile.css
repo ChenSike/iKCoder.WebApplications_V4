@@ -1686,11 +1686,12 @@ footer {
     display: none;
     border-left: solid 1px rgb(236,236,236);
     background-color: rgb(255,255,255);
-    height: calc(100% - 39px);
-    width: 250px;
+    height: calc(100% - 45px);
+    width: 260px;
     position: absolute;
-    top: 39px;
+    top: 45px;
     right: 0px;
+    overflow-y: auto;
 }
 
     .setting-bar-chatter .row-headers {
@@ -1730,6 +1731,14 @@ footer {
                     border-color: rgb(205,205,205);
                 }
 
+    .setting-bar-chatter .row-show-more .col div {
+        font-size: 12px;
+        text-align: center;
+        padding-top: 5px;
+        color: rgb(153,153,153);
+        cursor: pointer;
+    }
+
     .setting-bar-chatter .row-split {
         padding: 15px;
     }
@@ -1737,6 +1746,26 @@ footer {
         .setting-bar-chatter .row-split .col-split {
             border-bottom: solid 1px rgb(236,236,236);
         }
+
+    .setting-bar-chatter .row-group-option {
+        font-size: 12px;
+        color: rgb(153,153,153);
+    }
+
+        .setting-bar-chatter .row-group-option .form-group {
+            margin-bottom: 10px;
+        }
+
+            .setting-bar-chatter .row-group-option .form-group .textarea-group-option {
+                border: none;
+                background-color: transparent;
+                width: 100%;
+                color: rgb(0,0,0);
+            }
+
+            .setting-bar-chatter .row-group-option .form-group .textarea-group-option:hover {
+                cursor:pointer;
+            }
 
     .setting-bar-chatter .row-switch {
     }

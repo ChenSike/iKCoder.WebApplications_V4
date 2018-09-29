@@ -1062,7 +1062,17 @@ function circleBuildFriendItem(tmpHTMLArr, item) {
 
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="col">');
-    tmpHTMLArr.push(item.userName);
+    if (item.type == 'group' && item.userName == '') {
+        var tmpNameArr = [];
+        for (var j = 0; j < item.items.length; j++) {
+            tmpNameArr.push(item.items[j].userName);
+        }
+
+        tmpHTMLArr.push(tmpNameArr.join(','));
+    } else {
+        tmpHTMLArr.push(item.userName);
+    }
+
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-msg">');
     tmpHTMLArr.push('       <div class="circle-user-list-item-msg">0</div>');
@@ -1129,8 +1139,47 @@ function circleBuildMessagePart() {
     tmpHTMLArr.push('                   <p class="user-name"></p>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row row-show-more">');
+    tmpHTMLArr.push('               <div class="col"><div>查看更多讨论组成员<i class="fas fa-angle-down"></i></div></div>');
+    tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('           <div class="row row-split">');
     tmpHTMLArr.push('               <div class="col col-split"></div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row row-group-option">');
+    tmpHTMLArr.push('               <div class="col col-group-option-title">');
+    tmpHTMLArr.push('                   <div class="form-group">');
+    tmpHTMLArr.push('                       <label for="txt_CSB_Group_Name">讨论组名称</label>');
+    tmpHTMLArr.push('                       <div class="textarea-group-option" id="txt_CSB_Group_Name" contenteditable="true"></div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row row-group-option">');
+    tmpHTMLArr.push('               <div class="col col-group-option-title">');
+    tmpHTMLArr.push('                   <div class="form-group">');
+    tmpHTMLArr.push('                       <label for="txt_CSB_Group_Board">讨论组公告</label>');
+    tmpHTMLArr.push('                       <div class="textarea-group-option" id="txt_CSB_Group_Board" contenteditable="true"></div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row row-group-option">');
+    tmpHTMLArr.push('               <div class="col col-group-option-title">');
+    tmpHTMLArr.push('                   <div class="form-group">');
+    tmpHTMLArr.push('                       <label for="txt_CSB_Group_MyName">我在本讨论组的昵称</label>');
+    tmpHTMLArr.push('                       <div class="textarea-group-option" id="txt_CSB_Group_MyName" contenteditable="true"></div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
+    tmpHTMLArr.push('           </div>');
+    tmpHTMLArr.push('           <div class="row row-switch row-group-option">');
+    tmpHTMLArr.push('               <div class="col">');
+    tmpHTMLArr.push('                   <div class="form-group">');
+    tmpHTMLArr.push('                       <label for="switch_DND_For_User">显示成员昵称</label>');
+    tmpHTMLArr.push('                       <div class="form-control  form-control-sm">');
+    tmpHTMLArr.push('                           <div class="switch switch-small" tabindex="0">');
+    tmpHTMLArr.push('                               <input id="switch_SNN_For_Group" type="checkbox" />');
+    tmpHTMLArr.push('                           </div>');
+    tmpHTMLArr.push('                       </div>');
+    tmpHTMLArr.push('                   </div>');
+    tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('           <div class="row row-switch">');
     tmpHTMLArr.push('               <div class="col">');
@@ -1163,15 +1212,34 @@ function circleBuildMessagePart() {
     return tmpHTMLArr.join('');
 };
 
-function circleUpdateMsgHistory(userSymbol) {
-    var isDisplay = (typeof (userSymbol) == 'string' ? false : true);
-    var currUserId = (isDisplay ? $('.label-circle-message-history-user').attr('data-target') : userSymbol);
-    var currUserType = (isDisplay ? $('.label-circle-message-history-user').attr('data-type') : 'user');
-    var currUserObj = circleGetUserObj(currUserId);
+function circleUpdateMsgHistory(userSymbol, userType) {
+    var isCurrent = (arguments.length == 0 ? true : false);
+    var currUserId = $('.label-circle-message-history-user').attr('data-target');
+    var currUserType = $('.label-circle-message-history-user').attr('data-type');
+    if (arguments.length == 2) {
+        if (currUserId != userSymbol || currUserType != userType) {
+            isCurrent = false;
+        }
+
+        currUserId = userSymbol;
+        currUserType = userType;
+    }
+
+    var currUserObj = (currUserType == 'group' ? circleGetGroupObj(currUserId) : currUserType == 'user' ? circleGetUserObj(currUserId) : circleGetChannelObj(currUserId));
     var currHistory = _gCirleMessages[currUserId];
-    if (!isDisplay) {
+    if (!isCurrent) {
         $('.container-circle-message-history').empty();
-        $('.label-circle-message-history-user').text(currUserObj.userName);
+        if (currUserType == 'group' && currUserObj.userName == '') {
+            var tmpNameArr = [];
+            for (var j = 0; j < currUserObj.items.length; j++) {
+                tmpNameArr.push(currUserObj.items[j].userName);
+            }
+
+            $('.label-circle-message-history-user').text(tmpNameArr.join(','));
+        } else {
+            $('.label-circle-message-history-user').text(currUserObj.userName);
+        }
+
         $('.label-circle-message-history-user').attr('data-target', currUserId);
         $('.label-circle-message-history-user').attr('data-type', currUserObj.type);
     }
@@ -1298,6 +1366,26 @@ function circleGetGroupObj(groupId) {
     return tmpObj;
 };
 
+function circleGetChannelObj(channelId) {
+    var tmpObj = null;
+    var channels = [];
+    for (var i = 0; i < _gCircleGroups.length; i++) {
+        if (_gCircleGroups[i].id == 'channel') {
+            channels = _gCircleGroups[i].items;
+            break;
+        }
+    }
+
+    for (var i = 0; i < channels.length; i++) {
+        if (channels[i].userId == channelId) {
+            tmpObj = channels[i];
+            break;
+        }
+    }
+
+    return tmpObj;
+};
+
 function circleCalcMessageHeight(top) {
     var retObj = null;
     top = (top == -1 ? $('.row-footer').offset().top - 200 : top);
@@ -1411,6 +1499,7 @@ function initEvents_Circle_Chat() {
 
     $('#switch_DND_For_User').wrap('<div class="switch" />').parent().bootstrapSwitch();
     $('#switch_Top_For_User').wrap('<div class="switch" />').parent().bootstrapSwitch();
+    $('#switch_SNN_For_Group').wrap('<div class="switch" />').parent().bootstrapSwitch();
 
     $(".circle-input-drag").mousedown(function (e) {
         var drag = $('.circle-input-drag');
@@ -1534,6 +1623,19 @@ function initEvents_Circle_Chat() {
     $('.setting-bar-chatter .btn-add-user-to-group').on('click', function (eventObj) {
         circleShowAddToGroupPop($(eventObj.currentTarget).attr('data-target'));
     });
+
+    $('.setting-bar-chatter .row-show-more .col div').on('click', function (eventObj) {
+        var groupId = $(eventObj.currentTarget).attr('data-target');
+        var groupObj = circleGetGroupObj(groupId);
+        var tigger = $('.setting-bar-chatter .row-show-more .col div');
+        if (tigger.text().indexOf('查看更多') >= 0) {
+            circleShowSBGroupMember(groupObj, 500);
+            $('.setting-bar-chatter .row-show-more .col div').html('收起讨论组成员<i class="fas fa-angle-up"></i></div>');
+        } else {
+            circleShowSBGroupMember(groupObj, 8);
+            $('.setting-bar-chatter .row-show-more .col div').html('查看更多讨论组成员<i class="fas fa-angle-down"></i></div>');
+        }
+    });
 };
 
 function circleBuildUserPop(eventObj) {
@@ -1647,20 +1749,23 @@ function circleShowSettingBar(userId, userType) {
         $('.setting-bar-chatter .user-header').attr('src', userObj.header);
         $('.setting-bar-chatter .user-header').attr('data-target', userObj.userId);
         $('.setting-bar-chatter .user-name').text(userObj.userName);
-
+        $('.setting-bar-chatter .row-headers .col-3:gt(1)').remove();
+        $('.setting-bar-chatter .row-show-more').hide();
         if (userType == 'group') {
             var groupObj = circleGetGroupObj(userId);
-            var tmpHTMLArr = [];
-            for (var i = 0; i < groupObj.items.length; i++) {
-                tmpHTMLArr.push('<div class="col-3">');
-                tmpHTMLArr.push('   <img class="user-header" src="' + groupObj.items[i].header + '" data-target="">');
-                tmpHTMLArr.push('   <p class="user-name">' + groupObj.items[i].userName + '</p>');
-                tmpHTMLArr.push('</div>');
+            circleShowSBGroupMember(groupObj, 8);
+            if (groupObj.items.length > 8) {
+                $('.setting-bar-chatter .row-show-more').show();
+                $('.setting-bar-chatter .row-show-more .col div').attr('data-target', userId);
+                $('.setting-bar-chatter .row-show-more .col div').html('查看更多讨论组成员<i class="fas fa-angle-down"></i></div>');
             }
 
-            $('.setting-bar-chatter .user-header').parent().after($(tmpHTMLArr.join('')));
+            $('#txt_CSB_Group_Name').text(groupObj.userName == '' ? '点击添加讨论组名称' : groupObj.userName);
+            $('#txt_CSB_Group_Board').text(groupObj.board == '' ? '本讨论组尚无公告' : groupObj.board);
+            $('#txt_CSB_Group_MyName').text(_gUserInfoObj.nickName);
+            $('.setting-bar-chatter .row-group-option').show();
         } else {
-            $('.setting-bar-chatter .row-headers .col-3:gt(1)').remove();
+            $('.setting-bar-chatter .row-group-option').hide();
         }
 
         settingBar.show();
@@ -1669,6 +1774,28 @@ function circleShowSettingBar(userId, userType) {
             opacity: '1'
         }, 500, function () { $('.col-main-content').css('overflow', 'auto'); });
     }
+};
+
+function circleShowSBGroupMember(groupObj, maxCount) {
+    var tmpHTMLArr = [];
+    var count = 2;
+    for (var i = 0; i < groupObj.items.length; i++) {
+        if (count >= maxCount) {
+            break;
+        }
+
+        if (groupObj.items[i].userId != _gUserInfoObj.userId) {
+            tmpHTMLArr.push('<div class="col-3">');
+            tmpHTMLArr.push('   <img class="user-header group-member" src="' + groupObj.items[i].header + '" data-target="' + groupObj.items[i].userId + '">');
+            tmpHTMLArr.push('   <p class="user-name">' + groupObj.items[i].userName + '</p>');
+            tmpHTMLArr.push('</div>');
+            count++;
+        }
+    }
+
+    $('.setting-bar-chatter .row-headers .col-3:gt(1)').remove();
+    $('.setting-bar-chatter .user-header').parent().after($(tmpHTMLArr.join('')));
+    $('.setting-bar-chatter .user-header.group-member').on('click', circleBuildUserPop);
 };
 
 function circleBuildSection_Chat(id, type) {
@@ -1688,7 +1815,7 @@ function circleBuildSection_Address() {
     $('.col-circle-itemlist-container').append($(circleBuildFriendPart_Address()));
     $('.col-circle-message-list').append($(circleBuildMessagePart_Address()));
     //$('.col-circle-message-history').height($("body").height() - 30 - 35 - 39 - 5);
-    $('.col-circle-message-history').height($("body").height() - 30 - 35 - 39 - 5- 7);
+    $('.col-circle-message-history').height($("body").height() - 30 - 35 - 39 - 5 - 7);
     initEvents_Circle_Address();
 };
 
@@ -2309,19 +2436,21 @@ function circleClickChannelPopBtn(eventObj) {
 
 function circleClickUserItem(currentTarget) {
     var tmpSymbol = currentTarget.attr('data-target');
+    var tmpType = currentTarget.attr('data-type');
     $('.row-circle-user-list-item').removeClass('active');
     currentTarget.addClass('active');
     //webSocketGetCiecleHistory(tmpSymbol);
-    testswebSocketGetCiecleHistory(tmpSymbol);
     $('.label-circle-message-history-user').attr('data-target', tmpSymbol);
+    $('.label-circle-message-history-user').attr('data-type', tmpType);
     $('.col-circle-message-history-button .btn.btn-sm').attr('data-target', tmpSymbol);
-    $('.col-circle-message-history-button .btn.btn-sm').attr('data-type', currentTarget.attr('data-type'));
+    $('.col-circle-message-history-button .btn.btn-sm').attr('data-type', tmpType);
     $('.setting-bar-chatter').hide();
     $('.user-popover-wrap').hide();
     $('.channel-popover-wrap').hide();
     var symbolEl = $(currentTarget.find('.circle-user-list-item-msg')[0]);
     symbolEl.text('0');
     symbolEl.hide();
+    testswebSocketGetCiecleHistory(tmpSymbol, tmpType);
 };
 
 function circleDBClickUserItem(eventObj) {
@@ -4410,7 +4539,18 @@ function initFriendsForTest() {
     var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
     var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
     _circleDataSearch = { value: [] };
-    _gCiecleUsers = [{ userName: '系统消息', header: 'image/tmpheader.jpg', userId: '-1' }];
+    _gCiecleUsers = [{
+        userName: '系统消息',
+        header: 'image/tmpheader.jpg',
+        userId: '-1',
+        "msg": '',
+        "accecpt": 1,
+        "gender": '',
+        "address": '',
+        "comment": '系统消息和通知',
+        "note": '',
+        "type": 'user'
+    }];
     for (var i = 0; i < 20; i++) {
         var tmpIdx = randomInt(0, 19);
         var newUser = {
@@ -4473,7 +4613,8 @@ function initGroupForTest() {
             "address": 'Address ' + i,
             "comment": 'Comment ' + i,
             "note": 'Note ' + i,
-            "isnew": randomInt(0, 12) % 2
+            "isnew": randomInt(0, 12) % 2,
+            "type": 'user'
         };
 
         users.push(newUser);
@@ -4482,14 +4623,14 @@ function initGroupForTest() {
     var result = [];
     for (var i = 0; i < 5; i++) {
         var tmpIdx = randomInt(3, 12);
-        var newGroup = { userId: 'group_' + i, items: [], userName: '', type: 'group' };
+        var newGroup = { userId: 'group_' + i, items: [], userName: '', type: 'group', board: '' };
         var tmpName = [];
         for (var j = 0; j < tmpIdx; j++) {
             newGroup.items.push(users[j]);
             tmpName.push(users[j].userName);
         }
 
-        newGroup.userName = (i % 3 == 0 ? '讨论组 ' + i : tmpName.join(','));
+        newGroup.userName = (i % 3 == 0 ? '讨论组 ' + i : '');
         result.push(newGroup);
     }
 
@@ -4527,7 +4668,7 @@ function initChannelForTest() {
     return result;
 };
 
-function testswebSocketGetCiecleHistory(userSymbol) {
+function testswebSocketGetCiecleHistory(userSymbol, userType) {
     var tmpDatas = [
         { type: -1, content: '哪种好主要看具体需求了,innerHTML和crea' },
         { type: -1, content: '可创建文本节点。 此方法可返回 Text 对象' },
@@ -4556,14 +4697,16 @@ function testswebSocketGetCiecleHistory(userSymbol) {
         });
     }
 
-    var currUserSymbol = $('.label-circle-message-history-user').attr('data-target');
-    if (typeof (currUserSymbol) == 'undefined') {
-        currUserSymbol = 'system|1';
+    var currUserObj = null;
+    if (userType == 'user') {
+        currUserObj = circleGetUserObj(userSymbol);
+    } else if (userType == 'group') {
+        currUserObj = circleGetGroupObj(userSymbol);
+    } else {
+        currUserObj = circleGetChannelObj(userSymbol);
     }
 
-    var currUserObj = circleGetUserObj(currUserSymbol);
     var targetUserNoteEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"] .col-circle-user-list-item-msg .circle-user-list-item-msg');
-    var isDisplay = (currUserSymbol == userSymbol ? true : false);
     var newMsgItem;
     _gCirleMessages[userSymbol] = [];
     for (var i = 0; i < tmpDatas.length; i++) {
@@ -4571,5 +4714,5 @@ function testswebSocketGetCiecleHistory(userSymbol) {
         _gCirleMessages[userSymbol].push(newMsgItem);
     }
 
-    circleUpdateMsgHistory(userSymbol);
+    circleUpdateMsgHistory(userSymbol, userType);
 }
