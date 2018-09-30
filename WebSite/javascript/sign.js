@@ -249,7 +249,8 @@ function initEvents() {
                     if (!success) {
                         _showGlobalMessage('无法登录！', 'warning', 'alert_Wrong_SignIn');
                     } else {
-                        if ($($(tmpRes).find('msg')).text() == 'TOKEN') {
+                        //<root><executed>true</executed><msgcode>TOKEN</msgcode><msg>bdffaa7f-fc10-4be0-acdc-fd24b7a706ee</msg></root>
+                        if ($($(tmpRes).find('msgcode')).text() == 'TOKEN') {
                             _CookieUtils.set('student_token', $($(tmpRes).find('msg')).text());
                             window.location.href = "profile.html";
                         } else {

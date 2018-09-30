@@ -1225,23 +1225,11 @@ function circleUpdateMsgHistory(userSymbol, userType) {
         currUserType = userType;
     }
 
-    var currUserObj = (currUserType == 'group' ? circleGetGroupObj(currUserId) : currUserType == 'user' ? circleGetUserObj(currUserId) : circleGetChannelObj(currUserId));
+    var currUserObj = circleGetUserObj(userSymbol, userType);
     var currHistory = _gCirleMessages[currUserId];
     if (!isCurrent) {
         $('.container-circle-message-history').empty();
-        if (currUserType == 'group' && currUserObj.userName == '') {
-            var tmpNameArr = [];
-            for (var j = 0; j < currUserObj.items.length; j++) {
-                tmpNameArr.push(currUserObj.items[j].userName);
-            }
-
-            $('.label-circle-message-history-user').text(tmpNameArr.join(','));
-        } else {
-            $('.label-circle-message-history-user').text(currUserObj.userName);
-        }
-
-        $('.label-circle-message-history-user').attr('data-target', currUserId);
-        $('.label-circle-message-history-user').attr('data-type', currUserObj.type);
+        circleUpdateCurrentLabel(currUserId, currUserType);
     }
 
     var existCount = $('.row-message-item').length;
@@ -1249,6 +1237,23 @@ function circleUpdateMsgHistory(userSymbol, userType) {
         circleAddMsgItem(currHistory[i]);
     }
 };
+
+function circleUpdateCurrentLabel(chatterId, chatterType) {
+    var currChatterObj = circleGetUserObj(chatterId, chatterType);
+    if (chatterType == 'group' && currChatterObj.userName == '') {
+        var tmpNameArr = [];
+        for (var j = 0; j < currChatterObj.items.length; j++) {
+            tmpNameArr.push(currChatterObj.items[j].userName);
+        }
+
+        $('.label-circle-message-history-user').text(tmpNameArr.join(','));
+    } else {
+        $('.label-circle-message-history-user').text(currChatterObj.userName);
+    }
+
+    $('.label-circle-message-history-user').attr('data-target', chatterId);
+    $('.label-circle-message-history-user').attr('data-type', currChatterObj.type);
+}
 
 function circleAddMsgItem(msgItem) {
     $('.container-circle-message-history').append(msgItem);
@@ -1334,31 +1339,11 @@ function circleBuildMessageItem(content, type, userInfo) {
     return tmpHTMLArr.join('');
 };
 
-function circleGetUserObj(userId) {
+function circleGetUserObj(userId, userType) {
     var tmpObj = null;
     for (var i = 0; i < _gCiecleUsers.length; i++) {
-        if (_gCiecleUsers[i].userId == userId) {
+        if (_gCiecleUsers[i].userId == userId && _gCiecleUsers[i].type == userType) {
             tmpObj = _gCiecleUsers[i];
-            break;
-        }
-    }
-
-    return tmpObj;
-};
-
-function circleGetGroupObj(groupId) {
-    var tmpObj = null;
-    var groups = [];
-    for (var i = 0; i < _gCircleGroups.length; i++) {
-        if (_gCircleGroups[i].id == 'group') {
-            groups = _gCircleGroups[i].items;
-            break;
-        }
-    }
-
-    for (var i = 0; i < groups.length; i++) {
-        if (groups[i].userId == groupId) {
-            tmpObj = groups[i];
             break;
         }
     }
@@ -1626,7 +1611,7 @@ function initEvents_Circle_Chat() {
 
     $('.setting-bar-chatter .row-show-more .col div').on('click', function (eventObj) {
         var groupId = $(eventObj.currentTarget).attr('data-target');
-        var groupObj = circleGetGroupObj(groupId);
+        var groupObj = circleGetUserObj(groupId, 'group');
         var tigger = $('.setting-bar-chatter .row-show-more .col div');
         if (tigger.text().indexOf('查看更多') >= 0) {
             circleShowSBGroupMember(groupObj, 500);
@@ -1645,7 +1630,7 @@ function circleBuildUserPop(eventObj) {
 
         var target = $(eventObj.currentTarget);
         var userId = target.attr('data-target');
-        var current = circleGetUserObj(userId);
+        var current = circleGetUserObj(userId, 'user');
         var container = $('.wrap-circle-message');
         if ($('.user-popover-wrap').length <= 0) {
             var tmpHTMLArr = [];
@@ -1678,13 +1663,13 @@ function circleBuildUserPop(eventObj) {
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('       <div class="row row-buttons">');
             tmpHTMLArr.push('           <div class="col text-right">');
-            tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-user-popover btn-add-friend" title="加为好友" data-taget="">');
+            tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-user-popover btn-add-friend" title="加为好友" data-target="">');
             tmpHTMLArr.push('                   <i class="far fa-plus-square"></i>');
             tmpHTMLArr.push('               </button>');
-            tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-user-popover btn-share-friend" title="推荐朋友" data-taget="">');
+            tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-user-popover btn-share-friend" title="推荐朋友" data-target="">');
             tmpHTMLArr.push('                   <i class="far fa-share-square"></i>');
             tmpHTMLArr.push('               </button>');
-            tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-user-popover btn-send-msg" title="开始聊天" data-taget="">');
+            tmpHTMLArr.push('               <button type="button" class="btn btn-sm btn-user-popover btn-send-msg" title="开始聊天" data-target="">');
             tmpHTMLArr.push('                   <i class="far fa-comment"></i>');
             tmpHTMLArr.push('               </button>');
             tmpHTMLArr.push('           </div>');
@@ -1693,6 +1678,16 @@ function circleBuildUserPop(eventObj) {
             tmpHTMLArr.push('</div>');
             container.append($(tmpHTMLArr.join('')));
             $('.user-popover-wrap .btn-user-popover').on('click', circleClickUserPopBtn);
+        }
+
+        if (current.accecpt == '1') {
+            $('.user-popover-wrap .btn-user-popover.btn-add-friend').hide();
+            $('.user-popover-wrap .btn-user-popover.btn-share-friend').show();
+            $('.user-popover-wrap .btn-user-popover.btn-send-msg').show();
+        } else {
+            $('.user-popover-wrap .btn-user-popover.btn-add-friend').show();
+            $('.user-popover-wrap .btn-user-popover.btn-share-friend').hide();
+            $('.user-popover-wrap .btn-user-popover.btn-send-msg').hide();
         }
 
         $('.user-popover-wrap').show();
@@ -1725,7 +1720,7 @@ function circleBuildUserPop(eventObj) {
 
 function circleClickUserPopBtn(eventObj) {
     var btn = $(eventObj.currentTarget);
-    var userId = btn.attr('data-taget');
+    var userId = btn.attr('data-target');
     if (btn.hasClass('btn-add-friend')) {
         alert('Add Friend to Create a Group!');
     } else if (btn.hasClass('btn-share-friend')) {
@@ -1745,14 +1740,14 @@ function circleShowSettingBar(userId, userType) {
             opacity: '0'
         }, 500, function () { settingBar.hide(); });
     } else {
-        var userObj = (userType == 'group' ? _gUserInfoObj : circleGetUserObj(userId));
+        var userObj = (userType == 'group' ? _gUserInfoObj : circleGetUserObj(userId, userType));
         $('.setting-bar-chatter .user-header').attr('src', userObj.header);
         $('.setting-bar-chatter .user-header').attr('data-target', userObj.userId);
         $('.setting-bar-chatter .user-name').text(userObj.userName);
         $('.setting-bar-chatter .row-headers .col-3:gt(1)').remove();
         $('.setting-bar-chatter .row-show-more').hide();
         if (userType == 'group') {
-            var groupObj = circleGetGroupObj(userId);
+            var groupObj = circleGetUserObj(userId, 'group');
             circleShowSBGroupMember(groupObj, 8);
             if (groupObj.items.length > 8) {
                 $('.setting-bar-chatter .row-show-more').show();
@@ -1974,13 +1969,12 @@ function circleClickAddressItem(eventObj) {
             currUserObj = getCurrentGroup(userId);
             circleBuildGroupDetail(userId);
         } else {
-            currUserObj = circleGetUserObj(userId);
+            currUserObj = circleGetUserObj(userId, currType);
             circleBuildFriendDetail(currUserObj);
         }
     }
 
-    $('.label-circle-message-history-user').text(currUserObj.userName);
-    $('.label-circle-message-history-user').attr('data-target', currType);
+    circleUpdateCurrentLabel(userId, currType);
 };
 
 function circleBuildNewFriendsList(friends) {
@@ -2018,13 +2012,13 @@ function circleBuildNewFriendsList(friends) {
     container.empty();
     container.append($(tmpHTMLArr.join('')));
     $('.circle-address-new-friend-header').on('click', function (eventObj) {
-        var userObj = circleGetUserObj($(eventObj.currentTarget).attr('data-target'));
+        var userObj = circleGetUserObj($(eventObj.currentTarget).attr('data-target'), 'user');
         circleBuildFriendDetail(userObj);
     });
 
     $('.btn-new-friend-accept').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
-        var userObj = circleGetUserObj(target.attr('data-target'));
+        var userObj = circleGetUserObj(target.attr('data-target'), 'user');
         userObj.accecpt = '1';
         circleAcceptFriendRequest(userObj.userId);
         var parent = target.parent();
@@ -2188,7 +2182,7 @@ function circleBuildFriendDetail(userObj) {
             tmpHTMLArr.push('           <button type="button" class="btn btn-success btn-sm btn-circle-friend-item-detail-talk">发消息</button>');
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('       <div class="col text-right col-circle-friend-item-detail-reply">');
-            tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-friend-item-detail-replay" title="回复" data-taget="">');
+            tmpHTMLArr.push('           <button type="button" class="btn btn-sm btn-circle-friend-item-detail-replay" title="回复" data-target="">');
             tmpHTMLArr.push('               <i class="fas fa-reply-all"></i>');
             tmpHTMLArr.push('           </button>');
             tmpHTMLArr.push('       </div>');
@@ -2241,6 +2235,9 @@ function circleSwitchToTalk(chatterId, chatterType) {
     circleBuildSection_Chat(chatterId, chatterType);
     $('.row-circle-user-list-item').removeClass('active');
     $('.row-circle-user-list-item[data-target="' + chatterId + '"]').addClass('active');
+    circleUpdateCurrentLabel(chatterId, chatterType);
+    $('.col-circle-message-history-button .btn.btn-sm').attr('data-target', chatterId);
+    $('.col-circle-message-history-button .btn.btn-sm').attr('data-type', chatterType);
     _gCurrentChatter.id = chatterId;
     _gCurrentChatter.type = chatterType;
 };
@@ -2324,7 +2321,7 @@ function circleBuildGroupDetail(groupId) {
 function circleBuildGroupItemPop(eventObj) {
     var target = $(eventObj.currentTarget);
     var userId = target.attr('data-target');
-    var userObj = circleGetUserObj(userId);
+    var userObj = circleGetUserObj(userId, 'group');
     var container = $('.container-circle-message-history');
     var tmpWrap = $('.group-item-popover-wrap');
     if (tmpWrap.length <= 0) {
@@ -2440,8 +2437,7 @@ function circleClickUserItem(currentTarget) {
     $('.row-circle-user-list-item').removeClass('active');
     currentTarget.addClass('active');
     //webSocketGetCiecleHistory(tmpSymbol);
-    $('.label-circle-message-history-user').attr('data-target', tmpSymbol);
-    $('.label-circle-message-history-user').attr('data-type', tmpType);
+    circleUpdateCurrentLabel(tmpSymbol, tmpType);
     $('.col-circle-message-history-button .btn.btn-sm').attr('data-target', tmpSymbol);
     $('.col-circle-message-history-button .btn.btn-sm').attr('data-type', tmpType);
     $('.setting-bar-chatter').hide();
@@ -4498,7 +4494,7 @@ function webSocketReceiveCircle(evt) {
     }
 
     var currUserSymbol = $('.label-circle-message-history-user').attr('data-target');
-    var currUserObj = circleGetUserObj(currUserSymbol);
+    var currUserObj = circleGetUserObj(currUserSymbol, 'user');
     var targetUserNoteEl = $('.row-circle-user-list-item[data-target="' + receiveObj.symbol + '"] .col-circle-user-list-item-msg .circle-user-list-item-msg');
     var isDisplay = (currUserSymbol == receiveObj.symbol ? true : false);
     var newMsgItem;
@@ -4683,7 +4679,7 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
     ];
 
     var targetUserEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"]');
-    var targetUserObj = circleGetUserObj(userSymbol);
+    var targetUserObj = circleGetUserObj(userSymbol, userType);
     if (targetUserEl.length == 0) {
         tmpHTMLArr = [];
         circleBuildFriendItem(tmpHTMLArr, targetUserObj);
@@ -4697,15 +4693,7 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
         });
     }
 
-    var currUserObj = null;
-    if (userType == 'user') {
-        currUserObj = circleGetUserObj(userSymbol);
-    } else if (userType == 'group') {
-        currUserObj = circleGetGroupObj(userSymbol);
-    } else {
-        currUserObj = circleGetChannelObj(userSymbol);
-    }
-
+    var currUserObj = circleGetUserObj(userSymbol, userType);
     var targetUserNoteEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"] .col-circle-user-list-item-msg .circle-user-list-item-msg');
     var newMsgItem;
     _gCirleMessages[userSymbol] = [];

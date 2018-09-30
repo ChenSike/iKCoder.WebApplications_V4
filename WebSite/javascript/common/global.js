@@ -67,6 +67,10 @@ var _gURLMapping = {
         //Get
         getinfo: _gHostName.Basic + 'Profiles_Students_GetTextInfo',
     },
+    report: {
+        //Get //取出所有的包
+        getreport: _gHostName.Main + 'report_get_studentwreport'
+    },
     profile: {
         //Get //取出所有的包
         getcoursepackage: _gHostName.Main + 'course_get_coursepackage',
@@ -100,6 +104,27 @@ var _gURLMapping = {
         addfriend: _gHostName.Basic + 'Relations_Students_SetNewFriend',
         //Get //operator=ikcoder_operator
         getaction: _gHostName.Basic + 'Common_Services_GetCSActions'
+    },
+    course: {
+        //Get //取学习状态的ACTION
+        getlearnacttion: _gHostName.Main + 'Course_Get_LearningActions',
+        //Get //取学习状态的类型
+        getlearntype: _gHostName.Main + 'Course_Get_LearningType',
+        //Get //设置学习状态
+        setlearnaction: _gHostName.Main + 'Course_Set_LearningAction',
+        /*
+        *<root>
+        *<type>
+        * </type>
+        * <action>
+        * </action>
+        * <code>
+        * 课程编号
+        * </code>
+        *</root>
+        */
+        //Get //设置课程为已经完成课程 ?lesson_code=XXXXX    
+        setlessonfinish: _gHostName.Main + 'Course_Set_LessonFinished'
     }
 };
 //merge url
