@@ -748,6 +748,8 @@ footer {
     .row-circle-address-new-friend-item .col-new-friend-header {
         width: fit-content;
         padding-right: 0px;
+        max-width: fit-content;
+        flex: unset;
     }
 
         .row-circle-address-new-friend-item .col-new-friend-header .circle-address-new-friend-header {
@@ -771,6 +773,8 @@ footer {
         width: 70px;
         font-size: 12px;
         color: #999999;
+        max-width: fit-content;
+        flex: unset;
     }
 
         .row-circle-address-new-friend-item .col-new-friend-accept .btn-new-friend-accept {
@@ -783,6 +787,8 @@ footer {
 
     .row-circle-address-channle-items .col-1 {
         width: fit-content;
+        flex: unset;
+        max-width: fit-content;
     }
 
     .row-circle-address-channle-items .card {
@@ -806,6 +812,7 @@ footer {
         .row-circle-address-channle-items .card .card-body {
             font-size: 12px;
             text-align: center;
+            padding: 0px;
         }
 
 .row-circle-address-group-items {
@@ -813,6 +820,8 @@ footer {
 
     .row-circle-address-group-items .col-1 {
         width: fit-content;
+        flex: unset;
+        max-width: fit-content;
     }
 
     .row-circle-address-group-items .card {
@@ -837,6 +846,7 @@ footer {
             font-size: 12px;
             text-align: center;
             color: rgb(153,153,153);
+            padding: 0px;
         }
 
             .row-circle-address-group-items .card .card-body p {
@@ -1512,6 +1522,8 @@ footer {
 
         .row-circle-message-part-2 .container-circle-friend-item-detail .col-circle-friend-item-detail-header {
             width: 90px;
+            flex: unset;
+            max-width: fit-content;
         }
 
         .row-circle-message-part-2 .container-circle-friend-item-detail .circle-friend-item-detail-header {
@@ -1614,6 +1626,8 @@ footer {
 
         .group-item-popover-wrap .container-circle-group-user-detail .col-circle-group-user-detail-header {
             width: 90px;
+            flex: unset;
+            max-width: fit-content;
         }
 
         .group-item-popover-wrap .container-circle-group-user-detail .circle-group-user-detail-header {
@@ -1763,9 +1777,9 @@ footer {
                 color: rgb(0,0,0);
             }
 
-            .setting-bar-chatter .row-group-option .form-group .textarea-group-option:hover {
-                cursor:pointer;
-            }
+                .setting-bar-chatter .row-group-option .form-group .textarea-group-option:hover {
+                    cursor: pointer;
+                }
 
     .setting-bar-chatter .row-switch {
     }
@@ -1859,7 +1873,7 @@ footer {
         padding: 0px;
         background-color: transparent;
     }
-    
+
     .user-popover-wrap .btn-user-popover {
         background-color: transparent;
         color: rgb(153,153,153);

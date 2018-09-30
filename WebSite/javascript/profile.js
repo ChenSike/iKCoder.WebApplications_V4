@@ -959,7 +959,7 @@ function buildContent_Circle_Do(reponsse) {
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
     //tmpHTMLArr.push('               <div class="row no-wrap" style="height: calc(100% - 42px);">');
-    tmpHTMLArr.push('               <div class="row no-wrap" style="height: calc(100% - 39px);">');
+    tmpHTMLArr.push('               <div class="row no-wrap" style="height: calc(100% - 42px);">');
     tmpHTMLArr.push('                   <div class="col no-wrap col-circle-itemlist-container">');
     tmpHTMLArr.push(circleBuildFriendPart());
     tmpHTMLArr.push('                   </div>');
@@ -2321,7 +2321,7 @@ function circleBuildGroupDetail(groupId) {
 function circleBuildGroupItemPop(eventObj) {
     var target = $(eventObj.currentTarget);
     var userId = target.attr('data-target');
-    var userObj = circleGetUserObj(userId, 'group');
+    var userObj = circleGetUserObj(userId, 'user');
     var container = $('.container-circle-message-history');
     var tmpWrap = $('.group-item-popover-wrap');
     if (tmpWrap.length <= 0) {
