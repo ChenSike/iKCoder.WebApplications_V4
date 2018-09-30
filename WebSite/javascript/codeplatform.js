@@ -5,7 +5,7 @@ var _gUserInfoObj = { header: '', nickName: '' };
 function initPage() {
     var successFn = function (response) {
         var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        if (!success) {
+        if (success) {
             $('#mask_Page_Loading').hide();
             $('#mask_Page_Loading').css('visibility', 'hidden');
             updateUserInfo();

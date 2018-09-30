@@ -1947,3 +1947,99 @@ footer {
                     #modal_Course_Buy .modal-body .col-course-detail .card .card-body thead th {
                         border: none;
                     }
+
+#modalFindFriend {
+}
+
+    #modalFindFriend .btn-circle-addfriend-search {
+        margin-left: -1px;
+    }
+
+        #modalFindFriend .btn-circle-addfriend-search div {
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+            cursor: pointer;
+        }
+
+            #modalFindFriend .btn-circle-addfriend-search div:hover {
+                border: 1px solid #e9ecef;
+                background-color: #ced4da;
+            }
+
+    #modalFindFriend .col-result-title {
+        padding: 10px 15px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    #modalFindFriend .col-result-container {
+        height: 200px;
+        overflow: auto;
+    }
+
+    #modalFindFriend .container-result {
+    }
+
+        #modalFindFriend .container-result .row-result-item {
+            padding: 5px 0px;
+            border-bottom: solid 1px rgb(231,231,231);
+        }
+
+            #modalFindFriend .container-result .row-result-item .col-result-item-header {
+                width: fit-content;
+                flex: unset;
+                max-width: fit-content;
+            }
+
+                #modalFindFriend .container-result .row-result-item .col-result-item-header img {
+                    width: 50px;
+                    height: 50px;
+                }
+
+            #modalFindFriend .container-result .row-result-item .col-result-item-content {
+                font-size: 12px;
+                text-align: left;
+                padding-left: 0px;
+            }
+
+                #modalFindFriend .container-result .row-result-item .col-result-item-content .content {
+                    height: 25px;
+                    line-height: 25px;
+                    color: #999999;
+                }
+
+                    #modalFindFriend .container-result .row-result-item .col-result-item-content .content .fa-female {
+                        color: rgb(243,126,125);
+                        margin: 0px 10px;
+                        font-size: 16px;
+                    }
+
+                    #modalFindFriend .container-result .row-result-item .col-result-item-content .content .fa-male {
+                        color: rgb(70,182,239);
+                        margin: 0px 10px;
+                        font-size: 16px;
+                    }
+
+                #modalFindFriend .container-result .row-result-item .col-result-item-content .msg {
+                    height: 25px;
+                    line-height: 25px;
+                }
+
+                    #modalFindFriend .container-result .row-result-item .col-result-item-content .msg input {
+                        border: none;
+                        padding: 0px;
+                        background-color: transparent;
+                    }
+
+            #modalFindFriend .container-result .row-result-item .col-result-item-action {
+                width: 130px;
+                font-size: 12px;
+                color: #999999;
+                max-width: fit-content;
+                flex: unset;
+            }
+
+                #modalFindFriend .container-result .row-result-item .col-result-item-action button {
+                    width: 120px;
+                    padding: 0px 5px;
+                }

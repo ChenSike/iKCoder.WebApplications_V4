@@ -290,7 +290,7 @@
     <link rel="stylesheet" href="style/bootstrap-switch.min.css">
     <link rel="stylesheet" href="style/common.bak.css">
     <link rel="stylesheet" href="style/profile.css">
-    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/jquery-3.2.1.js"></script>
     <script src="javascript/common/fontawesome-all.min.js"></script>
     <script src="javascript/common/tether.min.js"></script>
     <script src="javascript/common/bootstrap.js"></script>
@@ -535,13 +535,25 @@
                         <div class="row">
                             <div class="col">
                                 <form class="form-inline">
-                                    <div class="input-group mb-2 mr-sm-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">@</div>
+                                    <div class="input-group w-100">
+                                        <input type="text" class="form-control form-control-sm" id="txt_Circle_AddFriend_Search" placeholder="搜索用户、讨论组和频道">
+                                        <div class="input-group-prepend btn-circle-addfriend-search">
+                                            <div class="input-group-text"><i class="fas fa-search"></i></div>
                                         </div>
-                                        <input type="text" class="form-control" id="inlineFormInputGroupUsername2" placeholder="Username">
                                     </div>
                                 </form>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col col-result-title">
+                                搜索结果：
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-result-container">
+                                <div class="container container-fluid container-result">
+                                </div>
                             </div>
                         </div>
                     </div>

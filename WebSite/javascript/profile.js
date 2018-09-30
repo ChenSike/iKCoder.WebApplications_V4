@@ -1009,7 +1009,7 @@ function circleBuildSearchPart() {
     tmpHTMLArr.push('               <input type="text" class="form-control form-control-sm" id="search_Circle" style="border-radius:5px; border:none; background-color:rgb(219,217,216);" autocomplete="off" placeholder="Search" data-id="" alt="a"/>');
     tmpHTMLArr.push('               <div class="input-group-btn">');
     tmpHTMLArr.push('                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="" style="display: none;"><span class="caret"></span></button>');
-    tmpHTMLArr.push('                   <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>');
+    tmpHTMLArr.push('                   <ul class="dropdown-menu dropdown-menu-center" role="menu"></ul>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('       </div>');
@@ -1422,6 +1422,47 @@ function initEvents_Circle() {
         }
     });
 
+    $('#modalFindFriend .btn-circle-addfriend-search').on('click', function (eventObj) {
+        var successFn = function (response) {
+            //<root><row id="5" uid="13111111111" sex="1" nickname="13111111111" header="" country="china"></row></root>
+            var container = $('#modalFindFriend .container-result');
+            container.empty();
+            var items = $(response).find('row');
+            var tmpHTMLArr = [];
+            var item, uid, header, name, sex, country;
+            for (var i = 0; i < items.length; i++) {
+                item = $(items[i]);
+                uid = item.attr('uid');
+                name = (item.attr('nickname') == '' ? uid : item.attr('nickname'));
+                header = (item.attr('header') == '' ? 'image/tmpheader.jpg' : item.attr('header'));
+                sex = (item.attr('sex') == '1' ? 'male' : 'female');
+                country = (item.attr('country') == '' ? 'China' : item.attr('country'));
+                tmpHTMLArr.push('<div class="row row-result-item">');
+                tmpHTMLArr.push('   <div class="col col-result-item-header">');
+                tmpHTMLArr.push('       <img class="img-fluid" src="' + header + '">');
+                tmpHTMLArr.push('   </div>');
+                tmpHTMLArr.push('   <div class="col col-result-item-content">');
+                tmpHTMLArr.push('       <p class="content">');
+                tmpHTMLArr.push('           <span>' + name + '</span>');
+                tmpHTMLArr.push('           <i class="fas fa-' + sex + '"></i>');
+                tmpHTMLArr.push('           <span>' + country + '</span>');
+                tmpHTMLArr.push('       </p>');
+                tmpHTMLArr.push('       <p class="msg">');
+                tmpHTMLArr.push('           <input type="text" class="form-control-plaintext" id="txt_User_Popover_Comment" value="" placeholder="点击编辑消息">');
+                tmpHTMLArr.push('       </p>');
+                tmpHTMLArr.push('   </div>');
+                tmpHTMLArr.push('   <div class="col col-result-item-action d-flex align-items-center">');
+                tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm btn-new-friend-accept" data-target="' + uid + '">申请加为好友</button>');
+                tmpHTMLArr.push('   </div>');
+                tmpHTMLArr.push('</div>');
+            }
+
+            container.append($(tmpHTMLArr.join('')));
+        };
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.circle.findfriend, { keyvalue: $('#txt_Circle_AddFriend_Search').val() }), '', successFn);
+    });
+
     initEvents_Circle_Chat();
 };
 
@@ -1468,7 +1509,7 @@ function initEvents_Circle_Chat() {
             '-o-transition': '0.3s',
             'font-size': '12px'
         },                 //列表的样式控制
-        listAlign: 'left',               //提示列表对齐位置，left/right/auto
+        listAlign: 'auto',               //提示列表对齐位置，left/right/auto
         listHoverStyle: 'background: #07d; color:#fff', //提示框列表鼠标悬浮的样式
         listHoverCSS: 'jhover',    //提示框列表鼠标悬浮的样式名称
 
@@ -4406,31 +4447,52 @@ function showSampleImage(image, left, top, width, height, newSize) {
 };
 
 function getCircleToken() {
-    return;
-    ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
-        var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        if (success) {
-            _gToken = '';
-            webSocketCreate();
-        } else {
+    /*<root>
+    <item action="Action_Set_NewDialog"></item>
+    <item action="Action_Get_DialogContent"></item>
+    <item action="Action_Set_SendMessage"></item>
+    <item action="Action_Set_DelDialog"></item>
+    <item action="Action_Get_DialogList"></item>
+    <item action="Action_Get_RelationsList"></item>
+    <item action="Action_Get_RelationsSearch"></item>
+    <item action="Action_Set_NewFriend"></item>
+    </root>*/
+    //var actionFn = function (response) {
+    //    var actions = $(response).find('item');
+    //    if (actions.length > 0) {
+    //        _gToken = '';
+    //        webSocketCreate();
+    //    } else {
 
-        }
-    });
+    //    }
+    //};
+
+    //ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getaction, { operator: 'ikcoder_operator' }), '', actionFn, actionFn);
+    webSocketCreate();
 };
 
 function webSocketCreate() {
-    _gSocket = new WebSocket("WS://www.ikcoder.com/corebasic?student_token=" + _CookieUtils.get('student_token'));
+    //?student_token=" + _CookieUtils.get('student_token')
+    _gSocket = new WebSocket("WS://www.ikcoder.com/corebasic");
     //建立websocket连接成功
     _gSocket.onopen = function () {
+        //alert('ddd');
+        webSocketSend('<root><action>Action_Get_DialogList</action></root>');
     };
 
     //接收服务端数据时
     _gSocket.onmessage = function (evt) {
+        //alert('aaa');
         webSocketReceiveCircle(evt);
     };
 
     //断开websocket连接成功
     _gSocket.onclose = function () {
+        //alert('bbb');
+    };
+
+    _gSocket.onerror = function () {
+        //alert('ccc');
     };
 };
 
@@ -4704,3 +4766,274 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
 
     circleUpdateMsgHistory(userSymbol, userType);
 }
+
+/*
+* <root>
+* <from>
+* token
+* <from>
+* <action>
+* Action_Get_ActiveDialog
+* </action>
+* </root>
+*                   
+ */
+                    
+
+/*
+* <root>
+* <from>
+* token
+* </from>
+* <action>
+* Action_Get_DialogContent
+* </action>
+* </root>
+* 
+ */
+
+
+/*
+* <root>
+* <from>
+* token
+* </from>
+* <target>
+* <item>
+* u1
+* </item>
+* <item>
+* u2
+* </item>
+* </target>
+* <action>
+* Action_Set_NewDialog
+* </action>
+* </root>
+* 
+ */
+//if (paramsNode == null)
+//{
+//    return "<root type='error'><errmsg>noparams</errmsg></root>";
+//}
+//else
+//{
+//    XmlNodeList targetItemNodes = paramsNode.SelectNodes("target/item");
+//    List<string> lstOwners = new List<string>();
+//    foreach(XmlNode itemNode in targetItemNodes)
+//{
+//        string value = Util_XmlOperHelper.GetNodeValue(itemNode);
+//    lstOwners.Add(value);
+//}
+//return Action_Set_NewDialog(lstOwners, existedLoader);
+//}
+                
+                
+//                case Global.ActionsMap.Action_Set_SendMessage:
+/*
+* <root>
+* <from>
+* token
+* </from>
+* <symbol>
+* symbol for message
+* </symbol>
+* <action>
+* Action_Set_OpenDialog
+* </action>
+* <params>
+* <target>
+* <item>
+* u1
+* </item>
+* <item>
+* u2
+* </item>
+* </target>
+* <message>
+* </message>
+* </params>
+* </root>
+* 
+ */
+
+//如果有这样的返回，表示需要触发一个主动调用：
+
+//<root type='passive'><action>Action_Get_DialogList</action></root>
+
+//case Global.ActionsMap.Action_Get_DialogList:
+///*
+//* <root>
+//* <from>
+//* token
+//* <from>
+//* <action>
+//* Action_Get_ActiveDialog
+//* </action>
+//* </root>
+//*                   
+// */
+//return Action_Get_DialogList(from, existedLoader);              
+//                case Global.ActionsMap.Action_Get_DialogContent:
+///*
+//* <root>
+//* <from>
+//* token
+//* </from>
+//* <action>
+//* Action_Get_DialogContent
+//* </action>
+//* </root>
+//* 
+// */
+//return Action_Get_DialogContent(from, existedLoader);
+//                case Global.ActionsMap.Action_Set_NewDialog:
+///*
+//* <root>
+//* <from>
+//* token
+//* </from>
+//* <target>
+//* <item>
+//* u1
+//* </item>
+//* <item>
+//* u2
+//* </item>
+//* </target>
+//* <action>
+//* Action_Get_DialogContent
+//* </action>
+//* </root>
+//* 
+// */
+//if (paramsNode == null)
+//{
+//    return "<root type='error'><errmsg>noparams</errmsg></root>";
+//}
+//else
+//{
+//    XmlNodeList targetItemNodes = paramsNode.SelectNodes("target/item");
+//    List<string> lstOwners = new List<string>();
+//    foreach(XmlNode itemNode in targetItemNodes)
+//{
+//        string value = Util_XmlOperHelper.GetNodeValue(itemNode);
+//    lstOwners.Add(value);
+//}
+//return Action_Set_NewDialog(lstOwners, existedLoader);
+//}
+//                case Global.ActionsMap.Action_Get_RelationsList:
+///*
+//* <root>
+//* <from>
+//* token
+//* </from>
+//* <action>
+//* Action_Get_RelationsList
+//* </action>
+//* </root>
+//*/
+//return Action_Get_RelationsList(from, existedLoader);
+//                case Global.ActionsMap.Action_Get_RelationsSearch:
+///*
+//* <root>
+//* <from>
+//* token
+//* </from>
+//* <action>
+//* Action_Get_RelationsSearch
+//* </action>
+//* <value>
+//* </value>
+//* </root>
+//*/
+//string keyvalue = string.Empty;
+//XmlNode valueNode = protocalMessageDoc.SelectSingleNode("/root/value");
+//if (valueNode == null)
+//    keyvalue = Util_XmlOperHelper.GetNodeValue(valueNode);
+//return Action_Get_RelationsSearch(keyvalue, existedLoader);
+//                case Global.ActionsMap.Action_Get_RelationsAcceptableList:
+//return Action_Get_RelationsAcceptableList(token, existedLoader);
+//                case Global.ActionsMap.Action_Set_NewFriend:
+///*
+//* <root>
+//* <from>
+//* token
+//* </from>
+//* <action>
+//* Action_Set_NewFriend
+//* </action>
+//* <suname>
+//* </suname>
+//* </root>
+//*/
+//string suname = string.Empty;
+//XmlNode sunameNode = protocalMessageDoc.SelectSingleNode("/root/suname");
+//if (sunameNode == null)
+//{
+//    return "<root type='error'><errmsg>nosuname</errmsg></root>";
+//}
+//else
+//{
+//    suname = Util_XmlOperHelper.GetNodeValue(sunameNode);
+//    return Action_Set_NewFriend(from, suname, existedLoader);
+//}
+//                case Global.ActionsMap.Action_Set_SendMessage:
+///*
+//* <root>
+//* <from>
+//* token
+//* </from>
+//* <symbol>
+//* symbol for message
+//* </symbol>
+//* <action>
+//* Action_Set_OpenDialog
+//* </action>
+//* <params>
+//* <target>
+//* <item>
+//* u1
+//* </item>
+//* <item>
+//* u2
+//* </item>
+//* </target>
+//* <message>
+//* </message>
+//* </params>
+//* </root>
+//* 
+// */
+//if (paramsNode == null)
+//{
+//    return "<root type='error'><errmsg>noparams</errmsg></root>";
+//}
+//else
+//{
+//    XmlNode symbolNode = protocalMessageDoc.SelectSingleNode("/root/symbol");
+//    if(symbolNode==null)
+//    {
+//        return "<root type='error'><errmsg>nosymbol</errmsg></root>";
+//    }
+//    string symbolValue = Util_XmlOperHelper.GetNodeValue(symbolNode);
+//    XmlNode targetNode = paramsNode.SelectSingleNode("target");
+//    if (targetNode == null)
+//    {
+//        return "<root type='error'><errmsg>notarget</errmsg></root>";
+//    }
+//    string tagetValue = Util_XmlOperHelper.GetNodeValue(targetNode);                        
+//    XmlNodeList targetItemNodes = paramsNode.SelectNodes("target/item");
+//    List<string> lstOwners = new List<string>();
+//    foreach (XmlNode itemNode in targetItemNodes)
+//{
+//        string value = Util_XmlOperHelper.GetNodeValue(itemNode);
+//    lstOwners.Add(value);
+//}
+//XmlNode messageNode = paramsNode.SelectSingleNode("message");
+//string messageValue = Util_XmlOperHelper.GetNodeValue(messageNode);
+//return Action_Set_SendMessage(symbolValue, message, lstOwners, existedLoader);
+//}
+
+//}
+//return "";
