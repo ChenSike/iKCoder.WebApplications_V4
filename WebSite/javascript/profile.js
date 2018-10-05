@@ -446,7 +446,7 @@ function buildContent_Courses(items) {
             if (datas[i].isfree != '1' && datas[i].discount != '0') {
                 itemsHTML.push('            <div class="row no-margin">');
                 itemsHTML.push('                <div class="col no-padding text-12">');
-                tmpDiscount = 1 - parseFloat(datas[i].discount) / 10;
+                tmpDiscount = 1 - parseFloat(datas[i].discount) / 100;
                 tmpPrice = parseInt(parseInt(datas[i].price) * tmpDiscount).toFixed(2);
                 itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">优惠价: ' + tmpPrice + '</p>');
                 itemsHTML.push('                </div>');
@@ -620,7 +620,7 @@ function showCourseBuyModal(eventObj) {
     $('#modal_Course_Buy_Title').text(data.access == '1' ? '课程概览' : '购买课程');
     var tmpPrice = parseInt(data.price);
     if (data.enable == '1' && data.access != '1' && data.isfree != '1' && data.discount != '0') {
-        var tmpDiscount = 1 - parseFloat(data.discount) / 10;
+        var tmpDiscount = 1 - parseFloat(data.discount) / 100;
         tmpDiscount = parseInt(tmpPrice * tmpDiscount);
         $('#modal_Course_Buy .course-price').text(tmpPrice.toFixed(2));
         $('#modal_Course_Buy .course-price').css('text-decoration', 'line-through');
@@ -1247,6 +1247,13 @@ function circleUpdateCurrentLabel(chatterId, chatterType) {
         }
 
         $('.label-circle-message-history-user').text(tmpNameArr.join(','));
+    } else if (currChatterObj == null) {
+        currChatterObj = { type: 'user' };
+        if (chatterId == '-2') {
+            $('.label-circle-message-history-user').text('新朋友');
+        } else if (chatterId == '-3') {
+            $('.label-circle-message-history-user').text('频道');
+        }
     } else {
         $('.label-circle-message-history-user').text(currChatterObj.userName);
     }
@@ -1410,7 +1417,7 @@ function initEvents_Circle() {
             $('.col-circle-message-list').empty();
             switch (tmpSymbol) {
                 case 'address':
-                    circleBuildSection_Address();
+                    webSocketSend('Action_Get_RelationsList', '', '', [], {});
                     break;
                 case 'chat':
                     circleBuildSection_Chat();
@@ -1423,47 +1430,68 @@ function initEvents_Circle() {
     });
 
     $('#modalFindFriend .btn-circle-addfriend-search').on('click', function (eventObj) {
-        var successFn = function (response) {
-            //<root><row id="5" uid="13111111111" sex="1" nickname="13111111111" header="" country="china"></row></root>
-            var container = $('#modalFindFriend .container-result');
-            container.empty();
-            var items = $(response).find('row');
-            var tmpHTMLArr = [];
-            var item, uid, header, name, sex, country;
-            for (var i = 0; i < items.length; i++) {
-                item = $(items[i]);
-                uid = item.attr('uid');
-                name = (item.attr('nickname') == '' ? uid : item.attr('nickname'));
-                header = (item.attr('header') == '' ? 'image/tmpheader.jpg' : item.attr('header'));
-                sex = (item.attr('sex') == '1' ? 'male' : 'female');
-                country = (item.attr('country') == '' ? 'China' : item.attr('country'));
-                tmpHTMLArr.push('<div class="row row-result-item">');
-                tmpHTMLArr.push('   <div class="col col-result-item-header">');
-                tmpHTMLArr.push('       <img class="img-fluid" src="' + header + '">');
-                tmpHTMLArr.push('   </div>');
-                tmpHTMLArr.push('   <div class="col col-result-item-content">');
-                tmpHTMLArr.push('       <p class="content">');
-                tmpHTMLArr.push('           <span>' + name + '</span>');
-                tmpHTMLArr.push('           <i class="fas fa-' + sex + '"></i>');
-                tmpHTMLArr.push('           <span>' + country + '</span>');
-                tmpHTMLArr.push('       </p>');
-                tmpHTMLArr.push('       <p class="msg">');
-                tmpHTMLArr.push('           <input type="text" class="form-control-plaintext" id="txt_User_Popover_Comment" value="" placeholder="点击编辑消息">');
-                tmpHTMLArr.push('       </p>');
-                tmpHTMLArr.push('   </div>');
-                tmpHTMLArr.push('   <div class="col col-result-item-action d-flex align-items-center">');
-                tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm btn-new-friend-accept" data-target="' + uid + '">申请加为好友</button>');
-                tmpHTMLArr.push('   </div>');
-                tmpHTMLArr.push('</div>');
-            }
-
-            container.append($(tmpHTMLArr.join('')));
-        };
-
-        ajaxFn('GET', _getRequestURL(_gURLMapping.circle.findfriend, { keyvalue: $('#txt_Circle_AddFriend_Search').val() }), '', successFn);
+        webSocketSend('Action_Get_RelationsSearch', '', '', [], { value: $('#txt_Circle_AddFriend_Search').val() });
     });
 
     initEvents_Circle_Chat();
+};
+
+function circleRefresh_SearchResult(doc) {
+    //<root ><row id="3" uid="13122222222" sex="1" nickname="13122222222" birthday="2000-01-01" header="" country="china" state="" city="" schoolmap=""></row></root>
+    if ($('#modalFindFriend').css('display') != 'none') {
+        var container = $('#modalFindFriend .container-result');
+        container.empty();
+        var items = $(doc).find('row');
+        var tmpHTMLArr = [];
+        var item, uid, header, name, sex, country, state, city, school;
+        for (var i = 0; i < items.length; i++) {
+            item = $(items[i]);
+            uid = item.attr('uid');
+            name = (item.attr('nickname') == '' ? uid : item.attr('nickname'));
+            header = (item.attr('header') == '' ? 'image/tmpheader.jpg' : item.attr('header'));
+            sex = (item.attr('sex') == '1' ? 'male' : 'female');
+            country = (item.attr('country') == '' ? 'China' : item.attr('country'));
+            state = (item.attr('state') == '' ? '' : item.attr('state'));
+            city = (item.attr('city') == '' ? '' : item.attr('city'));
+            school = (item.attr('schoolmap') == '' ? '' : item.attr('schoolmap'));
+            tmpHTMLArr.push('<div class="row row-result-item">');
+            tmpHTMLArr.push('   <div class="col col-result-item-header">');
+            tmpHTMLArr.push('       <img class="img-fluid" src="' + header + '">');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('   <div class="col col-result-item-content">');
+            tmpHTMLArr.push('       <p class="content">');
+            tmpHTMLArr.push('           <span>' + name + '</span>');
+            tmpHTMLArr.push('           <i class="fas fa-' + sex + '"></i>');
+            tmpHTMLArr.push('           <span>' + country + '</span>');
+            tmpHTMLArr.push('           <span>' + state + '</span>');
+            tmpHTMLArr.push('           <span>' + city + '</span>');
+            tmpHTMLArr.push('           <span>' + school + '</span>');
+            tmpHTMLArr.push('       </p>');
+            tmpHTMLArr.push('       <p class="msg">');
+            tmpHTMLArr.push('           <input type="text" class="form-control-plaintext" id="txt_User_Popover_Comment" value="" placeholder="点击编辑消息">');
+            tmpHTMLArr.push('       </p>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('   <div class="col col-result-item-action d-flex align-items-center">');
+            tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm btn-new-friend-request" data-target="' + uid + '">申请加为好友</button>');
+            tmpHTMLArr.push('   </div>');
+            tmpHTMLArr.push('</div>');
+        }
+
+        container.append($(tmpHTMLArr.join('')));
+        $('#modalFindFriend .btn-new-friend-request').on('click', function (eventObj) {
+            webSocketSend('Action_Set_NewFriend', '', '', [], { suname: $(eventObj.currentTarget).attr('data-target') });
+        });
+    }
+};
+
+function circleRefresh_SetNewFriend(doc) {
+    //<root><executed>true</executed></root>
+    if (!_getExcuted(doc)) {
+        alert('Add Friend Failed!');
+    } else {
+        $('#modalFindFriend .btn-new-friend-request').text('已申请');
+        $('#modalFindFriend .btn-new-friend-request').attr('disabled', '1');
+    }
 };
 
 function initEvents_Circle_Chat() {
@@ -1848,7 +1876,9 @@ function circleBuildSection_Chat(id, type) {
 };
 
 function circleBuildSection_Address() {
+    $('.col-circle-itemlist-container').empty();
     $('.col-circle-itemlist-container').append($(circleBuildFriendPart_Address()));
+    $('.col-circle-message-list').empty();
     $('.col-circle-message-list').append($(circleBuildMessagePart_Address()));
     //$('.col-circle-message-history').height($("body").height() - 30 - 35 - 39 - 5);
     $('.col-circle-message-history').height($("body").height() - 30 - 35 - 39 - 5 - 7);
@@ -1856,15 +1886,18 @@ function circleBuildSection_Address() {
 };
 
 function circleBuildFriendPart_Address() {
+    var groupObj = { id: 'group', title: '讨论组', items: [] };
     _gCircleGroups = [
         { id: 'new', title: '新朋友', items: [{ userName: "新朋友", header: "image/tmpheader.jpg", userId: "-2" }] },
         { id: 'channel', title: '频道', items: [{ userName: "频道", header: "image/tmpheader.jpg", userId: "-3" }] },
-        { id: 'group', title: '讨论组', items: initGroupForTest() }
+        groupObj
     ];
     var tmpArr = [];
     for (var i = 0; i < _gCiecleUsers.length; i++) {
         if (_gCiecleUsers[i].type == 'user') {
             tmpArr.push(_gCiecleUsers[i]);
+        } else if (_gCiecleUsers[i].type == 'group') {
+            groupObj.items.push(_gCiecleUsers[i]);
         }
     }
 
@@ -1983,12 +2016,7 @@ function circleClickAddressItem(eventObj) {
     var currType = 'user';
     if (userId == '-2') {
         currUserObj = { userName: "新朋友", header: "image/tmpheader.jpg", userId: "-2" };
-        var newFriendFn = function (response) {
-            var newFriends = initNewFriendsForTest();
-            circleBuildNewFriendsList(newFriends);
-        };
-
-        ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getguests, {}), '', newFriendFn);
+        webSocketSend('Action_Get_RelationsAcceptableList', '', '', [], {});
         $('.row-circle-message-part-2').hide();
         $('.row-circle-message-part-1').show();
     } else if (userId == '-3') {
@@ -2018,7 +2046,17 @@ function circleClickAddressItem(eventObj) {
     circleUpdateCurrentLabel(userId, currType);
 };
 
-function circleBuildNewFriendsList(friends) {
+function circleBuildNewFriendsList(doc) {
+    var items = doc.find('row');
+    var friends = [];
+    var itemObj = null;
+    for (var i = 0; i < items.length; i++) {
+        itemObj = $(items[i]);
+        if (itemObj.attr('puname') && itemObj.attr('suname')) {
+            friends.push(_gCiecleUsers[i]);
+        }
+    }
+
     var container = $('.container-circle-message-history');
     var tmpHTMLArr = [];
     for (var i = 0; i < friends.length; i++) {
@@ -2784,6 +2822,145 @@ function circleChangeEmojiGroup(eventObj) {
     $('.emoji-item').on('click', circleInsertEmoji);
 };
 
+function circleUpdateUserList(doc, type) {
+    var tmpArr = [];
+    for (var i = 0; i < _gCiecleUsers.length; i++) {
+        if (_gCiecleUsers[i].type != type) {
+            tmpArr.push(_gCiecleUsers[i]);
+        }
+    }
+
+    _gCiecleUsers = tmpArr;
+    if (type == 'user') {
+        _gCiecleUsers.push({
+            userName: '系统消息',
+            header: 'image/tmpheader.jpg',
+            userId: '-1',
+            "msg": '',
+            "accecpt": 1,
+            "gender": '',
+            "address": '',
+            "comment": '系统消息和通知',
+            "note": '',
+            "type": 'user'
+        });
+    }
+
+    var items = doc.find('row');
+    var itemObj = null;
+    for (var i = 0; i < items.length; i++) {
+        itemObj = $(items[i]);
+        if (itemObj.attr('puname') && itemObj.attr('suname')) {
+            continue;
+        }
+
+        var newUser = null;
+        if (type == 'group') {
+            newUser = circleInitUser_Item_Group(itemObj);
+        } else if (type == 'channel') {
+            newUser = circleInitUser_Item_Channel(itemObj);
+        } else {
+            newUser = circleInitUser_Item_User(itemObj);
+        }
+
+        _gCiecleUsers.push(newUser);
+    }
+
+    _circleDataSearch = { value: [] };
+    for (var i = 0; i < _gCiecleUsers.length; i++) {
+        _circleDataSearch.value.push(_gCiecleUsers[i]);
+    }
+};
+
+function circleInitUser_Item_User(itemObj) {
+    var address = [];
+    address.push(itemObj.attr('country') == '' ? 'China' : itemObj.attr('country'));
+    address.push(itemObj.attr('state') == '' ? '' : itemObj.attr('state'));
+    address.push(itemObj.attr('city') == '' ? '' : itemObj.attr('city'));
+    address.push(itemObj.attr('schoolmap') == '' ? '' : itemObj.attr('schoolmap'));
+    var newUser = {
+        "userName": itemObj.attr('nickname') == '' ? itemObj.attr('uid') : itemObj.attr('nickname'),
+        "header": itemObj.attr('header') == '' ? 'image/tmpheader.jpg' : itemObj.attr('header'),
+        "userId": itemObj.attr('uid'),
+        "msg": itemObj.attr('msg') == '' ? '' : itemObj.attr('msg'),
+        "accecpt": itemObj.attr('accecpt') == '1' ? '1' : '0',
+        "gender": itemObj.attr('sex') == '1' ? '1' : '0',
+        "address": address.join(' '),
+        "comment": itemObj.attr('comment') == '' ? '' : itemObj.attr('comment'),
+        "note": itemObj.attr('note') == '' ? '' : itemObj.attr('note'),
+        "type": 'user'
+    };
+
+    return newUser;
+};
+
+function circleInitUser_Item_NewFriend(itemObj) {
+    var puName = itemObj.attr('puname');
+    var suName = itemObj.attr('suname');
+    var userName = (puName == _gUserInfoObj.userId ? suName : puName);
+
+
+
+    var newUser = {
+        "userName": userName,
+        "header": itemObj.attr('header') == '' ? 'image/tmpheader.jpg' : itemObj.attr('header'),
+        "userId": itemObj.attr('uid'),
+        "msg": itemObj.attr('msg') == '' ? '' : itemObj.attr('msg'),
+        "accecpt": itemObj.attr('accecpt') == '1' ? '1' : '0',
+        "gender": itemObj.attr('sex') == '1' ? '1' : '0',
+        "address": address.join(' '),
+        "comment": itemObj.attr('comment') == '' ? '' : itemObj.attr('comment'),
+        "note": itemObj.attr('note') == '' ? '' : itemObj.attr('note'),
+        "type": 'user'
+    };
+
+    return newUser;
+}
+
+function circleInitUser_Item_Group(itemObj) {
+    var userItems = itemObj.find('item');
+    var users = [];
+    var groupName = [];
+    for (var i = 0; i < userItems.length; i++) {
+        var newUser = circleInitUser_Item_User($(userItems[i]));
+        users.push(newUser);
+        groupName.push(newUser.userName);
+    }
+
+    var newGroup = {
+        "userName": itemObj.attr('nickname') != '' ? itemObj.attr('nickname') : groupName.join(','),
+        "header": '',
+        "userId": itemObj.attr('uid'),
+        "msg": '',
+        "accecpt": '',
+        "gender": '',
+        "address": '',
+        "comment": itemObj.attr('comment') == '' ? '' : itemObj.attr('comment'),
+        "note": '',
+        "board": itemObj.attr('board') == '' ? '' : itemObj.attr('board'),
+        "type": 'group'
+    };
+
+    return newGroup;
+};
+
+function circleInitUser_Item_Channel(itemObj) {
+    var newChannel = {
+        "userName": itemObj.attr('nickname') == '' ? itemObj.attr('uid') : itemObj.attr('nickname'),
+        "header": itemObj.attr('header') == '' ? 'image/tmpheader.jpg' : itemObj.attr('header'),
+        "userId": itemObj.attr('uid'),
+        "msg": '',
+        "accecpt": '',
+        "gender": '',
+        "address": '',
+        "comment": itemObj.attr('comment') == '' ? '' : itemObj.attr('comment'),
+        "note": '',
+        "type": 'channel'
+    };
+
+    return newChannel;
+};
+
 function buildContent_Setting() {
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="card h-100 text-center card-settings">');
@@ -3164,7 +3341,7 @@ function buildContent_Report() {
     var successFn = function (response) {
         //var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
         //if (success) {
-        //reportFormatData(response);       
+        //reportFormatData(response);
         var tmpHTMLArr = [];
         tmpHTMLArr.push('<div class="container-fluid w-100 h-100 wrap-report">');
         tmpHTMLArr.push('    <div class="row row-report-section">');
@@ -3197,7 +3374,7 @@ function buildContent_Report() {
     };
 
     $('.col-main-content').empty();
-    //ajaxFn('GET', _getRequestURL(_gURLMapping.account.gethtmlreport, {}), '', successFn);
+    //ajaxFn('GET', _getRequestURL(_gURLMapping.report.getreport, {}), '', successFn);
     successFn();
 };
 
@@ -3951,7 +4128,7 @@ function initData() {
             _gUserInfoObj = {
                 userName: formatFn('username'),
                 header: '',
-                userId: formatFn('userid'),
+                userId: formatFn('uid'),
                 nickName: formatFn('nickname'),
                 level: formatFn('level'),
                 birthday: formatFn('birthday'),
@@ -4004,7 +4181,7 @@ function initData() {
     };
 
     ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo, {}), '', successFn);
-    initFriendsForTest();
+    //initFriendsForTest();
 };
 
 function updateUserInfo() {
@@ -4457,42 +4634,40 @@ function getCircleToken() {
     <item action="Action_Get_RelationsSearch"></item>
     <item action="Action_Set_NewFriend"></item>
     </root>*/
-    //var actionFn = function (response) {
-    //    var actions = $(response).find('item');
-    //    if (actions.length > 0) {
-    //        _gToken = '';
-    //        webSocketCreate();
-    //    } else {
+    var actionFn = function (response) {
+        var actions = $(response).find('item');
+        if (actions.length > 0) {
+            _gToken = '';
+            webSocketCreate();
+        } else {
 
-    //    }
-    //};
+        }
+    };
 
-    //ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getaction, { operator: 'ikcoder_operator' }), '', actionFn, actionFn);
-    webSocketCreate();
+    ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getaction, { operator: 'ikcoder_operator' }), '', actionFn, actionFn);
+    //webSocketCreate();
 };
 
 function webSocketCreate() {
-    //?student_token=" + _CookieUtils.get('student_token')
-    _gSocket = new WebSocket("WS://www.ikcoder.com/corebasic");
+    _gSocket = new WebSocket("WS://www.ikcoder.com/corebasic?student_token=" + _CookieUtils.get('student_token'));
     //建立websocket连接成功
     _gSocket.onopen = function () {
-        //alert('ddd');
-        webSocketSend('<root><action>Action_Get_DialogList</action></root>');
+        webSocketSend('Action_Get_DialogList', '', '', [], {});
     };
 
     //接收服务端数据时
     _gSocket.onmessage = function (evt) {
-        //alert('aaa');
         webSocketReceiveCircle(evt);
     };
 
     //断开websocket连接成功
     _gSocket.onclose = function () {
-        //alert('bbb');
+        alert('closed');
     };
 
     _gSocket.onerror = function () {
-        //alert('ccc');
+        alert('error');
+        var a = 0;
     };
 };
 
@@ -4501,25 +4676,68 @@ function webSocketGetCiecleHistory(userSymbol) {
     webSocketSend("gethistory");
 }
 
-function webSocketSend(msg) {
-    return;
+var _gCurrentAction = '';
+function webSocketSend(act, iSymbol, iMsg, iTargets, iValue, iBatch) {
+    _gCurrentAction = (act == 'Action_Get_BatchArrProfile' ? _gCurrentAction : act);
+    var symbol = (typeof iSymbol == 'string' ? iSymbol : '');
+    var msg = (typeof iMsg == 'string' ? iMsg : '');
+    var value = '';
+    for (var key in iValue) {
+        value += '<' + key + '>' + iValue[key] + '</' + key + '>';
+    }
+
+    var targets = ($.isArray(iTargets) ? iTargets : []);
+    var batch = ($.isArray(iBatch) ? iBatch : []);
     var tmpMsg = [];
     tmpMsg.push('<root>');
-    tmpMsg.push('   <token>');
-    tmpMsg.push(_gToken);
-    tmpMsg.push('   </token>');
-    tmpMsg.push('   <msg>');
-    tmpMsg.push(msg);
-    tmpMsg.push('   </msg>');
+    tmpMsg.push('<from>');
+    tmpMsg.push(_CookieUtils.get('student_token'));
+    tmpMsg.push('</from>');
+    tmpMsg.push('<symbol>');
+    tmpMsg.push(symbol);
+    tmpMsg.push('</symbol>');
+    tmpMsg.push('<action>');
+    tmpMsg.push(act);
+    tmpMsg.push('</action>');
+    tmpMsg.push(value);
+    tmpMsg.push('<params>');
+    if (targets.length > 0) {
+        tmpMsg.push('<target>');
+        for (var i = 0; i < targets.length; i++) {
+            tmpMsg.push('<item>');
+            tmpMsg.push(targets[i]);
+            tmpMsg.push('</item>');
+        }
+
+        tmpMsg.push('</target>');
+    }
+
+    if (msg != '') {
+        tmpMsg.push('<message>');
+        tmpMsg.push(msg);
+        tmpMsg.push('</message>');
+    }
+
+
+    if (batch.length > 0) {
+        for (var i = 0; i < batch.length; i++) {
+            tmpMsg.push('<item>');
+            tmpMsg.push(batch[i]);
+            tmpMsg.push('</item>');
+        }
+    }
+
+    tmpMsg.push('</params>');
     tmpMsg.push('</root>');
+    tmpMsg = tmpMsg.join('');
     if (_gSocket.readyState == 1) {
         _gSocket.send(tmpMsg);
     } else if (_gSocket.readyState == 2) {
-        window.setTimeout("webSocketSend(" + tmpMsg + ")", 1000);
+        //window.setTimeout("webSocketSend(" + act + ',' + msg + ',' + targets + ")", 1000);
     } else {
         webSocketCreate();
         _gSocket.onopen = function () {
-            webSocketSend(tmpMsg);
+            webSocketSend(act, iSymbol, iMsg, iTargets, iValue);
         };
     }
 };
@@ -4528,7 +4746,65 @@ function webSocketClose() {
     _gSocket.close();
 };
 
+function initBatchProfileArr(doc) {
+    //<root><row id="3" puname="13111111111" suname="13133333333" accepted="0"></row></root>
+    var tmpArr = [];
+    var items = doc.find('row');
+    var itemObj = null;
+    for (var i = 0; i < items.length; i++) {
+        itemObj = $(items[i]);
+        tmpArr.push(itemObj.attr('puname') == _gUserInfoObj.userId ? itemObj.attr('suname') : itemObj.attr('puname'));
+    }
+
+    if (tmpArr.length == 0) {
+        tmpArr.push('13133333333');
+    }
+
+    return tmpArr;
+};
+
 function webSocketReceiveCircle(evt) {
+    //<ret><faction>Action_Get_RelationsSearch</faction><doc></doc></ret>
+    //<root type='passive'><action>Action_Get_RelationsAcceptableList</action></root>
+    var retDoc = $(evt.data);
+    var action = $(retDoc.find('faction')[0]).text();
+    var valDoc = $(retDoc.find('root')[0]);
+    var passive = valDoc.attr('type') == 'passive' ? true : false;
+    switch (action) {
+        case 'Action_Get_RelationsSearch':
+            circleRefresh_SearchResult(valDoc);
+            break;
+        case 'Action_Set_NewFriend':
+            circleRefresh_SetNewFriend(valDoc);
+            break;
+        case 'Action_Get_RelationsList':
+            if (passive) {
+                webSocketSend('Action_Get_RelationsList', '', '', [], {});
+            } else {
+                if ($('.btn-circle-stb-item[data-target="address"]').hasClass('active')) {
+                    webSocketSend('Action_Get_BatchArrProfile', '', '', [], {}, initBatchProfileArr(valDoc));
+                } else {
+                    $('.btn-circle-stb-item[data-target="address"] .alert-circle-stb-item').show();
+                }
+            }
+
+            break;
+        case 'Action_Get_RelationsAcceptableList':
+            circleBuildNewFriendsList(valDoc);
+            break;
+        case 'Action_Get_BatchArrProfile':
+            circleUpdateUserList(valDoc, 'user');
+            switch (_gCurrentAction) {
+                case 'Action_Get_RelationsList':
+                    circleBuildSection_Address();
+                    break;
+            }
+
+            break;
+    }
+
+
+    return;
     var receiveObj = webSocketFormatMsg(evt);
     //list/new/guest
     if (receiveObj.type == 'new' || receiveObj.type == 'guest') {
@@ -4767,31 +5043,9 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
     circleUpdateMsgHistory(userSymbol, userType);
 }
 
-/*
-* <root>
-* <from>
-* token
-* <from>
-* <action>
-* Action_Get_ActiveDialog
-* </action>
-* </root>
-*                   
- */
-                    
-
-/*
-* <root>
-* <from>
-* token
-* </from>
-* <action>
-* Action_Get_DialogContent
-* </action>
-* </root>
-* 
- */
-
+$(window).on('unload', function () {
+    webSocketClose();
+});
 
 /*
 * <root>
@@ -4810,58 +5064,6 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
 * Action_Set_NewDialog
 * </action>
 * </root>
-* 
- */
-//if (paramsNode == null)
-//{
-//    return "<root type='error'><errmsg>noparams</errmsg></root>";
-//}
-//else
-//{
-//    XmlNodeList targetItemNodes = paramsNode.SelectNodes("target/item");
-//    List<string> lstOwners = new List<string>();
-//    foreach(XmlNode itemNode in targetItemNodes)
-//{
-//        string value = Util_XmlOperHelper.GetNodeValue(itemNode);
-//    lstOwners.Add(value);
-//}
-//return Action_Set_NewDialog(lstOwners, existedLoader);
-//}
-                
-                
-//                case Global.ActionsMap.Action_Set_SendMessage:
-/*
-* <root>
-* <from>
-* token
-* </from>
-* <symbol>
-* symbol for message
-* </symbol>
-* <action>
-* Action_Set_OpenDialog
-* </action>
-* <params>
-* <target>
-* <item>
-* u1
-* </item>
-* <item>
-* u2
-* </item>
-* </target>
-* <message>
-* </message>
-* </params>
-* </root>
-* 
- */
-
-//如果有这样的返回，表示需要触发一个主动调用：
-
-//<root type='passive'><action>Action_Get_DialogList</action></root>
-
-//case Global.ActionsMap.Action_Get_DialogList:
 ///*
 //* <root>
 //* <from>
@@ -4873,22 +5075,6 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
 //* </root>
 //*                   
 // */
-//return Action_Get_DialogList(from, existedLoader);              
-//                case Global.ActionsMap.Action_Get_DialogContent:
-///*
-//* <root>
-//* <from>
-//* token
-//* </from>
-//* <action>
-//* Action_Get_DialogContent
-//* </action>
-//* </root>
-//* 
-// */
-//return Action_Get_DialogContent(from, existedLoader);
-//                case Global.ActionsMap.Action_Set_NewDialog:
-///*
 //* <root>
 //* <from>
 //* token
@@ -4906,79 +5092,6 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
 //* </action>
 //* </root>
 //* 
-// */
-//if (paramsNode == null)
-//{
-//    return "<root type='error'><errmsg>noparams</errmsg></root>";
-//}
-//else
-//{
-//    XmlNodeList targetItemNodes = paramsNode.SelectNodes("target/item");
-//    List<string> lstOwners = new List<string>();
-//    foreach(XmlNode itemNode in targetItemNodes)
-//{
-//        string value = Util_XmlOperHelper.GetNodeValue(itemNode);
-//    lstOwners.Add(value);
-//}
-//return Action_Set_NewDialog(lstOwners, existedLoader);
-//}
-//                case Global.ActionsMap.Action_Get_RelationsList:
-///*
-//* <root>
-//* <from>
-//* token
-//* </from>
-//* <action>
-//* Action_Get_RelationsList
-//* </action>
-//* </root>
-//*/
-//return Action_Get_RelationsList(from, existedLoader);
-//                case Global.ActionsMap.Action_Get_RelationsSearch:
-///*
-//* <root>
-//* <from>
-//* token
-//* </from>
-//* <action>
-//* Action_Get_RelationsSearch
-//* </action>
-//* <value>
-//* </value>
-//* </root>
-//*/
-//string keyvalue = string.Empty;
-//XmlNode valueNode = protocalMessageDoc.SelectSingleNode("/root/value");
-//if (valueNode == null)
-//    keyvalue = Util_XmlOperHelper.GetNodeValue(valueNode);
-//return Action_Get_RelationsSearch(keyvalue, existedLoader);
-//                case Global.ActionsMap.Action_Get_RelationsAcceptableList:
-//return Action_Get_RelationsAcceptableList(token, existedLoader);
-//                case Global.ActionsMap.Action_Set_NewFriend:
-///*
-//* <root>
-//* <from>
-//* token
-//* </from>
-//* <action>
-//* Action_Set_NewFriend
-//* </action>
-//* <suname>
-//* </suname>
-//* </root>
-//*/
-//string suname = string.Empty;
-//XmlNode sunameNode = protocalMessageDoc.SelectSingleNode("/root/suname");
-//if (sunameNode == null)
-//{
-//    return "<root type='error'><errmsg>nosuname</errmsg></root>";
-//}
-//else
-//{
-//    suname = Util_XmlOperHelper.GetNodeValue(sunameNode);
-//    return Action_Set_NewFriend(from, suname, existedLoader);
-//}
-//                case Global.ActionsMap.Action_Set_SendMessage:
 ///*
 //* <root>
 //* <from>
@@ -5005,35 +5118,3 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
 //* </root>
 //* 
 // */
-//if (paramsNode == null)
-//{
-//    return "<root type='error'><errmsg>noparams</errmsg></root>";
-//}
-//else
-//{
-//    XmlNode symbolNode = protocalMessageDoc.SelectSingleNode("/root/symbol");
-//    if(symbolNode==null)
-//    {
-//        return "<root type='error'><errmsg>nosymbol</errmsg></root>";
-//    }
-//    string symbolValue = Util_XmlOperHelper.GetNodeValue(symbolNode);
-//    XmlNode targetNode = paramsNode.SelectSingleNode("target");
-//    if (targetNode == null)
-//    {
-//        return "<root type='error'><errmsg>notarget</errmsg></root>";
-//    }
-//    string tagetValue = Util_XmlOperHelper.GetNodeValue(targetNode);                        
-//    XmlNodeList targetItemNodes = paramsNode.SelectNodes("target/item");
-//    List<string> lstOwners = new List<string>();
-//    foreach (XmlNode itemNode in targetItemNodes)
-//{
-//        string value = Util_XmlOperHelper.GetNodeValue(itemNode);
-//    lstOwners.Add(value);
-//}
-//XmlNode messageNode = paramsNode.SelectSingleNode("message");
-//string messageValue = Util_XmlOperHelper.GetNodeValue(messageNode);
-//return Action_Set_SendMessage(symbolValue, message, lstOwners, existedLoader);
-//}
-
-//}
-//return "";

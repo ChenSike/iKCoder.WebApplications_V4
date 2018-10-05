@@ -46,6 +46,7 @@ header {
 
         header #navbar_Header #ul_NavBar_Container .btn-group .btn.btn-sm {
             font-size: 12px;
+            color: rgb(255,255,255);
         }
 
             header #navbar_Header #ul_NavBar_Container .btn-group .btn.btn-sm.btn-mood-first {
