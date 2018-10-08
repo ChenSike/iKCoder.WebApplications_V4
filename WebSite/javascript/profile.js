@@ -2882,12 +2882,12 @@ function circleInitUser_Item_User(itemObj) {
         "userName": itemObj.attr('nickname') == '' ? itemObj.attr('uid') : itemObj.attr('nickname'),
         "header": itemObj.attr('header') == '' ? 'image/tmpheader.jpg' : itemObj.attr('header'),
         "userId": itemObj.attr('uid'),
-        "msg": itemObj.attr('msg') == '' ? '' : itemObj.attr('msg'),
+        "msg": typeof itemObj.attr('msg') == 'undefined' ? '' : itemObj.attr('msg'),
         "accecpt": itemObj.attr('accecpt') == '1' ? '1' : '0',
         "gender": itemObj.attr('sex') == '1' ? '1' : '0',
         "address": address.join(' '),
-        "comment": itemObj.attr('comment') == '' ? '' : itemObj.attr('comment'),
-        "note": itemObj.attr('note') == '' ? '' : itemObj.attr('note'),
+        "comment": typeof itemObj.attr('comment') == 'undefined' ? '' : itemObj.attr('comment'),
+        "note": typeof itemObj.attr('note') == 'undefined' ? '' : itemObj.attr('note'),
         "type": 'user'
     };
 
@@ -2898,9 +2898,6 @@ function circleInitUser_Item_NewFriend(itemObj) {
     var puName = itemObj.attr('puname');
     var suName = itemObj.attr('suname');
     var userName = (puName == _gUserInfoObj.userId ? suName : puName);
-
-
-
     var newUser = {
         "userName": userName,
         "header": itemObj.attr('header') == '' ? 'image/tmpheader.jpg' : itemObj.attr('header'),
@@ -4770,6 +4767,10 @@ function webSocketReceiveCircle(evt) {
     var action = $(retDoc.find('faction')[0]).text();
     var valDoc = $(retDoc.find('root')[0]);
     var passive = valDoc.attr('type') == 'passive' ? true : false;
+    var addressItem = $('.btn-circle-stb-item[data-target="address"]');
+    var addressAlert = $('.btn-circle-stb-item[data-target="address"] .alert-circle-stb-item');
+    var newFriendItem = $('.row-circle-user-list-item[data-target="-2"]');
+    var newFriendAlert = $('.row-circle-user-list-item[data-target="-2"] .circle-user-list-item-msg');
     switch (action) {
         case 'Action_Get_RelationsSearch':
             circleRefresh_SearchResult(valDoc);
@@ -4781,16 +4782,29 @@ function webSocketReceiveCircle(evt) {
             if (passive) {
                 webSocketSend('Action_Get_RelationsList', '', '', [], {});
             } else {
-                if ($('.btn-circle-stb-item[data-target="address"]').hasClass('active')) {
+                if (addressItem.hasClass('active')) {
                     webSocketSend('Action_Get_BatchArrProfile', '', '', [], {}, initBatchProfileArr(valDoc));
                 } else {
-                    $('.btn-circle-stb-item[data-target="address"] .alert-circle-stb-item').show();
+                    addressAlert.text('').show();
                 }
             }
 
             break;
         case 'Action_Get_RelationsAcceptableList':
-            circleBuildNewFriendsList(valDoc);
+            if (passive) {
+                webSocketSend('Action_Get_RelationsAcceptableList', '', '', [], {});
+            } else {
+                if (newFriendItem.hasClass('active')) {
+                    circleBuildNewFriendsList(valDoc);
+                } else {
+                    var newCount = valDoc.find('row').length;
+                    var tmpCount = newFriendAlert.text() == '' ? 0 : parseInt(newFriendAlert.text());
+                    addressAlert.text(tmpCount + newCount).show();
+                    if (addressItem.hasClass('active')) {
+                        newFriendAlert.text(newCount).show();
+                    }
+                }
+            }
             break;
         case 'Action_Get_BatchArrProfile':
             circleUpdateUserList(valDoc, 'user');
