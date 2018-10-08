@@ -30,6 +30,58 @@
     <script src="football/javascript/argumentFns.js"></script>
     <script src="football/javascript/entryFn.js"></script>
     <script type="text/javascript" src="javascript/codewindow.js"></script>
+    <style>
+        .modal-mask {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1;
+            display: none;
+        }
+
+            .modal-mask .modal-wrap {
+                width: 500px;
+                height: 300px;
+                background-color: rgba(255,255,255, 0.7);
+                border-radius: 10px;
+                position: relative;
+                top: calc(50% - 200px);
+                left: calc(50% - 250px);
+            }
+
+                .modal-mask .modal-wrap table {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                    .modal-mask .modal-wrap table .row-qr-code td {
+                        width: 50%;
+                        padding: 10px 25px;
+                    }
+
+        .text-center {
+            text-align: center;
+            font-family: 微软雅黑;
+            font-size: 14px;
+        }
+
+        #btn_breakContinue {
+            width: 100px;
+            height: 25px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-family: 微软雅黑;
+            font-size: 14px;
+        }
+
+            #btn_breakContinue:hover {
+                background-color: gray;
+            }
+    </style>
 </head>
 <body>
     <div class="text-center no-padding" id="game_container" style="width:100%; height:100%;"></div>
@@ -59,5 +111,32 @@
             timeoutCode = window.setTimeout(startGame, 500);
         });
     </script>
+    <div class="modal-mask">
+        <div class="modal-wrap">
+            <table>
+                <tr class="row-qr-code">
+                    <td>
+                        <img src="image/index.png" width="200" />
+                    </td>
+                    <td>
+                        <img src="image/sign.png" width="200" />
+                    </td>
+                </tr>
+                <tr class="text-center">
+                    <td>
+                        访问iKCoder网站
+                    </td>
+                    <td>
+                        注册成为iKCoder会员
+                    </td>
+                </tr>
+                <tr class="text-center">
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
 </body>
 </html>

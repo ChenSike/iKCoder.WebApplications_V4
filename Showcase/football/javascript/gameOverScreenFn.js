@@ -83,6 +83,7 @@
         GameoverScreen.prototype.onShow = function () {
             this.updateContent(),
             this.bg.scale.set(0),
+            $('.modal-mask').show();
             this.app.topMenu.setState("home"), TweenLite.to(this.bg.scale, 1, {
                 x: 1,
                 y: 1,

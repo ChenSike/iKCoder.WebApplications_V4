@@ -6,73 +6,73 @@ var configuration = {
         cn: "鼠标",
         en: "Mouse",
         dt: "左键，右键以及滚轮",
-        path: "image/scene/intrcourse/svg/mouse.png"
+        path: "javascript/scene/image/intrcourse/svg/mouse.png"
     }, {
         cn: "键盘",
         en: "Keyboard",
         dt: "输入文字，数字，字母以及特殊字符， 命令",
-        path: "image/scene/intrcourse/svg/keyboard.png"
+        path: "javascript/scene/image/intrcourse/svg/keyboard.png"
     }],
     "Output Device": [{
         cn: "显示器",
         en: "Monitor",
         dt: "显示图像，播放动画片以及游戏",
-        path: "image/scene/intrcourse/svg/monitor.png"
+        path: "javascript/scene/image/intrcourse/svg/monitor.png"
     }, {
         cn: "打印机",
         en: "Printer",
         dt: "将文字,图片输出在纸张上",
-        path: "image/scene/intrcourse/svg/printer.png"
+        path: "javascript/scene/image/intrcourse/svg/printer.png"
     }, {
         cn: "耳机",
         en: "Earphones",
         dt: "输出声音",
-        path: "image/scene/intrcourse/svg/earphones.png"
+        path: "javascript/scene/image/intrcourse/svg/earphones.png"
     }],
     "Storage": [{
         cn: "硬盘",
         en: "Harddrive",
         dt: "存放数据，书柜",
-        path: "image/scene/intrcourse/svg/hard-drive.png"
+        path: "javascript/scene/image/intrcourse/svg/hard-drive.png"
     }, {
         cn: "光盘",
         en: "CD",
         dt: "Compact Disc",
-        path: "image/scene/intrcourse/svg/cd.png"
+        path: "javascript/scene/image/intrcourse/svg/cd.png"
     }, {
         cn: "USB闪存盘",
         en: "USB Flash Disk",
         dt: "使用USB接口的移动存储设备",
-        path: "image/scene/intrcourse/svg/pendrive.png"
+        path: "javascript/scene/image/intrcourse/svg/pendrive.png"
     }, {
         cn: "内存",
         en: "RAM",
         dt: "临时存储数据， 书包（根据需要存放数据）",
-        path: "image/scene/intrcourse/svg/ram-memory.png"
+        path: "javascript/scene/image/intrcourse/svg/ram-memory.png"
     }],
     "Computing": [{
         cn: "中央处理器",
         en: "CPU",
         dt: "运算中心，大脑",
-        path: "image/scene/intrcourse/svg/cpu.png"
+        path: "javascript/scene/image/intrcourse/svg/cpu.png"
     }, {
         cn: "显卡",
         en: "Grahpics Card",
         dt: "显示适配器",
-        path: "image/scene/intrcourse/svg/graphics-card.png"
+        path: "javascript/scene/image/intrcourse/svg/graphics-card.png"
     }, {
         cn: "主机",
         en: "Computer Tower",
         dt: "主机",
-        path: "image/scene/intrcourse/svg/computer.svg"
+        path: "javascript/scene/image/intrcourse/svg/computer.svg"
     }]
 };
 
 var groupNameMap = {
-    'Input Device': { name: '输入设备', color: 'rgb(29,185,124)', icon: 'image/scene/intrcourse/svg/input.svg' },
-    'Output Device': { name: '输出设备', color: 'rgb(52,151,216)', icon: 'image/scene/intrcourse/svg/output.svg' },
-    'Storage': { name: '存储设备', color: 'rgb(234,85,60)', icon: 'image/scene/intrcourse/svg/database.svg' },
-    'Computing': { name: '运算设备', color: 'rgb(255,153,0)', icon: 'image/scene/intrcourse/svg/calculator.svg' },
+    'Input Device': { name: '输入设备', color: 'rgb(29,185,124)', icon: 'javascript/scene/image/intrcourse/svg/input.svg' },
+    'Output Device': { name: '输出设备', color: 'rgb(52,151,216)', icon: 'javascript/scene/image/intrcourse/svg/output.svg' },
+    'Storage': { name: '存储设备', color: 'rgb(234,85,60)', icon: 'javascript/scene/image/intrcourse/svg/database.svg' },
+    'Computing': { name: '运算设备', color: 'rgb(255,153,0)', icon: 'javascript/scene/image/intrcourse/svg/calculator.svg' },
 }
 
 function searchForGroup(key, config, predicate) {

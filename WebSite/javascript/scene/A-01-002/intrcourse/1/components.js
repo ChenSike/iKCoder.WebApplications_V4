@@ -154,7 +154,7 @@
             Konva.Image.prototype.draw.apply(this);
 
             var imageObj = new Image();
-            var tmpSrc = !this._isAssigned ? null : this._isAssignedCorrectly ? 'image/scene/intrcourse/svg/success.svg' : 'image/scene/intrcourse/svg/error.svg';
+            var tmpSrc = !this._isAssigned ? null : this._isAssignedCorrectly ? 'javascript/scene/image/intrcourse/svg/success.svg' : 'javascript/scene/image/intrcourse/svg/error.svg';
             if (tmpSrc == null) {
                 imageObj.src = tmpSrc;
                 that.resultImage.image(imageObj);

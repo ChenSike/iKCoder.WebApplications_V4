@@ -569,6 +569,7 @@ function init() {
 
 		gameMode = GAME_MODE.GAME_OVER;
 		interactive = false;
+		$('.modal-mask').show();
 	}
 
 	//отй╬сно╥╫АйЬ

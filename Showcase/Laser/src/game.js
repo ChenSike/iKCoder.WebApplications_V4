@@ -146,7 +146,7 @@ Game.prototype.update = function (deltaTime) {
             this.level.successState.id === Level.SuccessState.FADE_OUT &&
             this.level.successState.time > 1.0 &&
             !this.level.editor) {
-            this.nextLevel();
+            $('.modal-mask').show();
         }
     }
 
@@ -255,4 +255,8 @@ window['start'] = function () {
     startMainLoop([resizer, game, loadingBar, resizer.pixelator()], { debugMode: DEBUG_MAIN_LOOP });
     var scripts = ['Laser/src/game.js'];
     showCodeButton(scripts);
+    $('#btn_breakContinue').on('click', function () {
+        $('.modal-mask').hide();
+        game.nextLevel();
+    });
 };

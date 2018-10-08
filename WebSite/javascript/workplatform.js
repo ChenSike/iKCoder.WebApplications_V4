@@ -13,6 +13,7 @@ var _workspaceCfg = {};
 var _codeEditor_HTML = null;
 var _codeEditor_JS = null;
 var _forceReset = true;
+var _topTooltip = [];
 
 function initPage() {
     $('#mask_Page_Loading').hide();
@@ -339,8 +340,10 @@ function initDataBlockly(response) {
     _gStageData.blockly.lib = [];
     var currStageId = _gStageData.course.id.toLowerCase();
     if (currStageId == 'a_01_001' || currStageId == 'a_01_002' || currStageId == 'a_01_003') {
+        _topTooltip = _gStageData.course.note;
         loadStageLibs_1(currStageId);
     } else if (currStageId == 'a_02_001' || currStageId == 'a_02_002' || currStageId == 'a_02_003') {
+        _topTooltip = _gStageData.course.note;
         loadStageLibs_2(currStageId);
     } else {
         loadStageLibs_3(response);

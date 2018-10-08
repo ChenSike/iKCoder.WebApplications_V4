@@ -1,70 +1,69 @@
 //(function () {
 'use strict';
-
 var configuration = {
     "Input Device": [{
         cn: "鼠标",
         en: "Mouse",
         dt: "输入设备，它可以对当前屏幕上的游标进行定位，并通过按键和滚轮装置对游标所经过位置的屏幕元素进行操作，按其工作原理的不同分为机械鼠标和光电鼠标。",
-        path: "image/scene/intrcourse/svg/mouse.png"
+        path: "javascript/scene/image/intrcourse/svg/mouse.png"
     }, {
         cn: "键盘",
         en: "Keyboard",
         dt: "输入设备，通过键盘可以将英文字母、数字、标点符号等输入到计算机中，从而向计算机发出命令、输入数据等。",
-        path: "image/scene/intrcourse/svg/keyboard.png"
+        path: "javascript/scene/image/intrcourse/svg/keyboard.png"
     }],
     "Output Device": [{
         cn: "显示器",
         en: "Monitor",
         dt: "输出设备，一种将一定的电子文件通过特定的传输设备显示到屏幕上再反射到人眼的显示工具。",
-        path: "image/scene/intrcourse/svg/monitor.png"
+        path: "javascript/scene/image/intrcourse/svg/monitor.png"
     }, {
         cn: "打印机",
         en: "Printer",
         dt: "输出设备，用于将计算机处理结果打印在相关介质上",
-        path: "image/scene/intrcourse/svg/printer.png"
+        path: "javascript/scene/image/intrcourse/svg/printer.png"
     }, {
         cn: "耳机",
         en: "Earphones",
         dt: "输出设备，输出声音，是随身音响的象征， 从佩带形式上分类则有耳塞式，挂耳式，入耳式和头戴式。",
-        path: "image/scene/intrcourse/svg/earphones.png"
+        path: "javascript/scene/image/intrcourse/svg/earphones.png"
     }],
     "Storage": [{
         cn: "硬盘",
         en: "Harddrive",
         dt: "存储设备，是电脑主要的存储媒介。",
-        path: "image/scene/intrcourse/svg/hard-drive.png"
+        path: "javascript/scene/image/intrcourse/svg/hard-drive.png"
     }, {
         cn: "光盘",
         en: "CD",
         dt: "存储设备，是以光信息做为存储的载体并用来存储数据的一种物品，可以存放各种文字、声音、图形、图像和动画等多媒体数字信息。",
-        path: "image/scene/intrcourse/svg/cd.png"
+        path: "javascript/scene/image/intrcourse/svg/cd.png"
     }, {
         cn: "USB闪存盘",
         en: "USB Flash Disk",
         dt: "存储设备，是一种使用USB接口的微型高容量移动存储产品，通过USB接口与电脑连接，实现即插即用。",
-        path: "image/scene/intrcourse/svg/pendrive.png"
+        path: "javascript/scene/image/intrcourse/svg/pendrive.png"
     }, {
         cn: "内存",
         en: "RAM",
         dt: "存储设备，内存是计算机中重要的部件之一，它是与CPU进行沟通的桥梁。其作用是用于暂时存放CPU中的运算数据，以及与硬盘等外部存储器交换的数据。",
-        path: "image/scene/intrcourse/svg/ram-memory.png"
+        path: "javascript/scene/image/intrcourse/svg/ram-memory.png"
     }],
     "Computing": [{
         cn: "中央处理器",
         en: "CPU",
         dt: "计算设备，是一台计算机的运算核心（Core）和控制核心（ Control Unit），功能主要是解释计算机指令以及处理计算机软件中的数据。",
-        path: "image/scene/intrcourse/svg/cpu.png"
+        path: "javascript/scene/image/intrcourse/svg/cpu.png"
     }, {
         cn: "显卡",
         en: "Graphics Card",
         dt: "计算设备，作为电脑主机里的一个重要组成部分，承担输出显示图形的任务。",
-        path: "image/scene/intrcourse/svg/graphics-card.png"
+        path: "javascript/scene/image/intrcourse/svg/graphics-card.png"
     }, {
         cn: "主板",
         en: "Mother Board",
         dt: "计算设备，是计算机最基本的也是最重要的部件之一，是构成复杂电子系统例如电子计算机的中心或者主电路板。",
-        path: "image/scene/intrcourse/svg/mainboard.png"
+        path: "javascript/scene/image/intrcourse/svg/mainboard.png"
     }]
 };
 
@@ -642,3 +641,41 @@ Scene.reset = function () {
 //window.ComputerScene = new Scene(configuration);
 //ComputerScene.start();
 //})();
+
+function updateTipsText(data) {
+    $('.course-stage-note').empty();
+    if (typeof (data) == 'string') {
+        $('.course-stage-note').html(data);
+    } else {
+        data = (data == null ? _topTooltip : data);
+        var needEvent = false;
+        var tmpStrArr = [];
+        for (var i = 0; i < data.length; i++) {
+            tmpStrArr.push('<strong style="padding-right:5px;">');
+            tmpStrArr.push(data[i].idx);
+            tmpStrArr.push('.</strong>');
+
+            for (var j = 0; j < data[i].content.length; j++) {
+                if (data[i].content[j].btype != '') {
+                    needEvent = true;
+                    tmpStrArr.push('<strong>');
+                    tmpStrArr.push('   <a href="#" class="link-button-block-example" data-target="' + data[i].content[j].btype + '" title="点击查看对应的块">');
+                    tmpStrArr.push(data[i].content[j].text);
+                    tmpStrArr.push('   </a>');
+                    tmpStrArr.push('</strong>');
+                } else {
+                    tmpStrArr.push('<span>');
+                    tmpStrArr.push(data[i].content[j].text);
+                    tmpStrArr.push('</span>');
+                }
+            }
+
+            tmpStrArr.push('</br>');
+        }
+
+        $('.course-stage-note').html(tmpStrArr.join(''));
+        if (needEvent) {
+            $(".link-button-block-example").click(hightlightExampleBlock);
+        }
+    }
+}
