@@ -338,7 +338,7 @@ function buildCategoryContent(categoryId) {
             break;
         case 'circle':
             buildContent_Circle();
-            webSocketSend('Action_Get_ActiveDialog', '', '', [], {}, []);
+            webSocketSend('Action_Get_DialogList', '', '', [], {}, []);
             break;
         case 'report':
             buildContent_Report();
@@ -940,7 +940,7 @@ function circleInitChats(doc) {
         itemObj = $(items[i]);
         exist = false;
         for (var j = 0; j < _gCircleChats.length; j++) {
-            if (typeof _gCircleChats[j].chatId == itemObj.attr('id')) {
+            if (typeof _gCircleChats[j].chatId == itemObj.attr('symbol')) {
                 exist = true;
                 break;
             }
@@ -949,7 +949,7 @@ function circleInitChats(doc) {
         if (!exist) {
             _gCircleChats.push({
                 chatId: itemObj.attr('id'),
-                chater: '',
+                chatter: '',
                 type: '',
                 msgs: []
             });
@@ -959,7 +959,7 @@ function circleInitChats(doc) {
     if (_gCircleChats.length <= 0) {
         _gCircleChats.push({
             chatId: '-1',
-            chater: '-1',
+            chatter: '-1',
             type: 'user',
             msgs: []
         })
@@ -1041,15 +1041,15 @@ function circleBuildFriendPart() {
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="container-fluid circle-user-list-group">');
     for (var i = 0; i < _gCircleChats.length; i++) {
-        circleBuildFriendItem(tmpHTMLArr, circleGetUserObj(_gCircleChats[i].chater, _gCircleChats[i].type));
+        circleBuildFriendItem(tmpHTMLArr, circleGetUserObj(_gCircleChats[i].chatter, _gCircleChats[i].type), _gCircleChats[i].chatId);
     }
 
     tmpHTMLArr.push('</div>');
     return tmpHTMLArr.join('');
 };
 
-function circleBuildFriendItem(tmpHTMLArr, item) {
-    tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '" data-type="' + item.type + '">');
+function circleBuildFriendItem(tmpHTMLArr, item, chatId) {
+    tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '" data-type="' + item.type + '" data-chat="' + chatId + '">');
     tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-header">');
     if (item.type == 'group') {
         var imgStyle = (item.items.length <= 4 ? 'width:15px;height:15px;' : '');
@@ -1886,8 +1886,20 @@ function circleBuildSection_Chat(id, type) {
     //load messages
     var chatterId = (arguments.length == 2 ? id : _gCurrentChatter.id == '' ? '-1' : _gCurrentChatter.id);
     var chatterType = (arguments.length == 2 ? type : _gCurrentChatter.type == '' ? 'user' : _gCurrentChatter.type);
-    //webSocketGetCiecleHistory(chatterId, chatterType);
-    webSocketSend('Action_Get_DialogContent', '', '', [chatterId], {}, []);
+    var exist = false;
+    for (var i = 0; i < _gCircleChats.length; i++) {
+        if (_gCircleChats[i].chatter == chatterId) {
+            exist = true;
+            break;
+        }
+    }
+
+    if (exist) {
+        webSocketSend('Action_Get_DialogContent', '', '', [chatterId], {}, []);
+    } else {
+        webSocketSend('Action_Set_NewDialog', '', '', [chatterId], {}, []);
+    }
+
     initEvents_Circle_Chat();
 };
 
@@ -1933,7 +1945,7 @@ function circleBuildFriendPart_Address() {
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('   </div>');
             for (var j = 0; j < _gCircleGroups[i].items.length; j++) {
-                circleBuildFriendItem(tmpHTMLArr, _gCircleGroups[i].items[j]);
+                circleBuildFriendItem(tmpHTMLArr, _gCircleGroups[i].items[j], '');
             }
 
             tmpHTMLArr.push('</div>');
@@ -2518,6 +2530,7 @@ function circleClickChannelPopBtn(eventObj) {
 function circleClickUserItem(currentTarget) {
     var tmpSymbol = currentTarget.attr('data-target');
     var tmpType = currentTarget.attr('data-type');
+    var tmpChatId = currentTarget.attr('data-chat');
     $('.row-circle-user-list-item').removeClass('active');
     currentTarget.addClass('active');
     //webSocketGetCiecleHistory(tmpSymbol);
@@ -2530,10 +2543,12 @@ function circleClickUserItem(currentTarget) {
     var symbolEl = $(currentTarget.find('.circle-user-list-item-msg')[0]);
     symbolEl.text('0');
     symbolEl.hide();
-    testswebSocketGetCiecleHistory(tmpSymbol, tmpType);
+    //act, iSymbol, iMsg, iTargets, iValue, iBatch
+    webSocketSend('Action_Get_DialogContent', tmpChatId, '', [], {}, []);
 };
 
 function circleDBClickUserItem(eventObj) {
+    return;
     var tmpSymbol = $(eventObj.currentTarget).attr('data-target');
     $('#modalCircleUserInfor').modal('show');
 };
@@ -4675,7 +4690,7 @@ function webSocketCreate() {
     _gSocket = new WebSocket("WS://www.ikcoder.com/corebasic?student_token=" + _CookieUtils.get('student_token'));
     //建立websocket连接成功
     _gSocket.onopen = function () {
-        webSocketSend('Action_Get_DialogList', '', '', [], {});
+        //webSocketSend('Action_Get_DialogList', '', '', [], {});
     };
 
     //接收服务端数据时
@@ -4861,8 +4876,14 @@ function webSocketReceiveCircle(evt) {
                 }
             }
             break;
-        case 'Action_Get_ActiveDialog':
+        case 'Action_Get_DialogList':
             circleInitChats(valDoc);
+            break;
+        case 'Action_Get_DialogContent':
+            webSocketFormatMsg(valDoc);
+            break;
+        case 'Action_Set_NewDialog':
+            
             break;
         case 'Action_Get_BatchArrProfile':
             circleUpdateUserList(valDoc, 'user');
@@ -4928,23 +4949,13 @@ function webSocketReceiveCircle(evt) {
     }
 };
 
-function webSocketFormatMsg(msgs) {
-    //{ type: 'new', items: [{ user: { type: 'system', id: 1 }, msg: 'aaaaa' }] }
-    var userSymbol = msgs.userType + '|' + msgs.userId;
-    if (typeof _gCircleChats[userSymbol] == 'undefined' || !$.isArray(_gCircleChats[userSymbol])) {
-        _gCircleChats[userSymbol] = [];
-    }
+function webSocketFormatMsg(doc) {
 
-    var tmpItem = null;
-    var newItems = [];
-    for (var i = 0; i < msgs.msg.length; i++) {
-        tmpItem = { type: -1, content: 'Apply a CSS fade transition to the popover' };
-        _gCircleChats[userSymbol].push(tmpItem);
-        newItems.push(tmpItem);
-    }
-
-    return { type: 'list', symbol: userSymbol, items: newItems };
 };
+
+
+
+
 
 function initFriendsForTest() {
     var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
@@ -5123,65 +5134,3 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
 $(window).on('unload', function () {
     webSocketClose();
 });
-
-/*
-* <root>
-* <from>
-* token
-* </from>
-* <target>
-* <item>
-* u1
-* </item>
-* <item>
-* u2
-* </item>
-* </target>
-* <action>
-* Action_Set_NewDialog
-* </action>
-* </root>
-//
-//* <root>
-//* <from>
-//* token
-//* </from>
-//* <target>
-//* <item>
-//* u1
-//* </item>
-//* <item>
-//* u2
-//* </item>
-//* </target>
-//* <action>
-//* Action_Get_DialogContent
-//* </action>
-//* </root>
-//* 
-///*
-//* <root>
-//* <from>
-//* token
-//* </from>
-//* <symbol>
-//* symbol for message
-//* </symbol>
-//* <action>
-//* Action_Set_OpenDialog
-//* </action>
-//* <params>
-//* <target>
-//* <item>
-//* u1
-//* </item>
-//* <item>
-//* u2
-//* </item>
-//* </target>
-//* <message>
-//* </message>
-//* </params>
-//* </root>
-//* 
-// */
