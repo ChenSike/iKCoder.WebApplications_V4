@@ -206,6 +206,8 @@ footer {
     .siderbar-user-infors p {
         text-align: left;
         font-size: 14px;
+        height: 30px;
+        line-height: 30px;
     }
 
 .row-courses-group-list {
@@ -1947,6 +1949,10 @@ footer {
 
                     #modal_Course_Buy .modal-body .col-course-detail .card .card-body thead th {
                         border: none;
+                    }
+
+                    #modal_Course_Buy .modal-body .col-course-detail .card .card-body thead th.th-course-diff svg{
+                        color: gold;
                     }
 
 #modalFindFriend {

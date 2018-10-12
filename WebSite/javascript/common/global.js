@@ -72,12 +72,6 @@ var _gURLMapping = {
         getreport: _gHostName.Main + 'report_get_studentwreport'
     },
     profile: {
-        //Get //取出所有的包
-        getcoursepackage: _gHostName.Main + 'course_get_coursepackage',
-        //Get course_name //取出对应包的所有课程
-        getlessonslist: _gHostName.Main + 'course_get_lessonslist',
-        //Get //取出已经付费或者免费的包
-        getcourselist: _gHostName.Main + 'course_get_list',
         //Get //检查签到情况，可以每次调用，如果今天已经签到就会一直TRUE
         getcheckon: _gHostName.Main + 'students_get_checkon',
         //Get //签到，无论调用多少次，每天只会记录一次
@@ -89,7 +83,9 @@ var _gURLMapping = {
         //Get //获取情绪
         getmood: _gHostName.Main + 'students_get_mood',
         //Get //设置情绪 mood=1 / 2 / 3 
-        setmood: _gHostName.Main + 'students_set_mood'
+        setmood: _gHostName.Main + 'students_set_mood',
+        //Get //获取头衔
+        gettitle: _gHostName.Main + 'students_get_title'
     },
     circle: {
         //Get //取出好友列表
@@ -106,6 +102,12 @@ var _gURLMapping = {
         getaction: _gHostName.Basic + 'Common_Services_GetCSActions'
     },
     course: {
+        //Get //取出所有的包
+        getcoursepackage: _gHostName.Main + 'course_get_coursepackage',
+        //Get course_name //取出对应包的所有课程
+        getlessonslist: _gHostName.Main + 'Course_Get_Agrr_LessonList',
+        //Get //取出已经付费或者免费的包
+        getcourselist: _gHostName.Main + 'course_get_list',
         //Get //取学习状态的ACTION
         getlearnacttion: _gHostName.Main + 'Course_Get_LearningActions',
         //Get //取学习状态的类型
@@ -124,7 +126,9 @@ var _gURLMapping = {
         *</root>
         */
         //Get //设置课程为已经完成课程 ?lesson_code=XXXXX    
-        setlessonfinish: _gHostName.Main + 'Course_Set_LessonFinished'
+        setlessonfinish: _gHostName.Main + 'Course_Set_LessonFinished',
+        //Get //获取实验列表
+        getexplist: _gHostName.Main + 'Exp_Get_List'
     }
 };
 //merge url

@@ -230,7 +230,7 @@ function adjustMainSize(isCodeModal) {
         //$('.course-tip-loading-col').height();
         tipHeight = $('.course-tip-container-row').height();
     }
-    
+
     var toolbarHeight = $('.toolbar-container-row').height();
     toolbarHeight = toolbarHeight >= 30 ? toolbarHeight : toolbarHeight + 8;
     var bbarHeight = $('.bottom-toolbar-container-row').height();
@@ -552,6 +552,10 @@ function initHeaderEvents() {
         _signOut();
         window.close();
     });
+
+    $('#btn_Lesson_Finish').on('click', function () {
+        ajaxFn('GET', _getRequestURL(_gURLMapping.course.setlessonfinish, { lesson_code: getQueryString('scene') }), '', function () { });
+    });
 };
 
 function gotoSpecialStep(step) {
@@ -564,7 +568,7 @@ function gotoSpecialStep(step) {
     //    window.location.href = 'workplatform.html?scene=' + _gStageData.course.id + '&rnd=' + Date.now();
     //}
     //ajaxFn('POST', url, '<root></root>', successFn, _gEmptyFn);
-    window.location.href = 'workplatform.html?scene=' + _gStageData.course.id + '&step=' + step;
+    window.location.href = 'workplatform.html?scene=' + getQueryString('scene') + '&step=' + (step - 1);
 };
 
 function initToolbarEvents() {

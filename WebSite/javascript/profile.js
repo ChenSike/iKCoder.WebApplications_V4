@@ -59,7 +59,8 @@ var _gCourseTypeMap = {
     a: { icon: 'fas fa-brain', title: 'AI' },
     //a: { icon: 'fas fa-code-branch', title: 'AI' },
     b: { icon: 'fab fa-bimobject', title: 'BBBB' },
-    d: { icon: 'fas fa-database', title: 'Database' }
+    d: { icon: 'fas fa-database', title: 'Database' },
+    m: { icon: 'fab fa-meetup', title: 'MMMM' },
 };
 var _gCourseImgMap = {
     A: { img: 'image/course/course_logic.png', color: 'rgb(86,181,34)' },
@@ -322,7 +323,7 @@ function buildCategoryContent(categoryId) {
                 }
             };
 
-            ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcoursepackage, {}), '', successFn);
+            ajaxFn('GET', _getRequestURL(_gURLMapping.course.getcoursepackage, {}), '', successFn);
             break;
         case 'experiment':
             successFn = function (response) {
@@ -334,7 +335,7 @@ function buildCategoryContent(categoryId) {
                 }
             };
 
-            ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcoursepackage, {}), '', successFn);
+            ajaxFn('GET', _getRequestURL(_gURLMapping.course.getcoursepackage, {}), '', successFn);
             break;
         case 'circle':
             buildContent_Circle();
@@ -359,6 +360,7 @@ function buildCategoryContent(categoryId) {
 };
 
 function buildContent_Courses(items) {
+    var courseObjs = [];
     var orgContainerHeight = 235;
     var orgHeight = 225;
     var orgWidth = 155;
@@ -387,7 +389,10 @@ function buildContent_Courses(items) {
             isfree: tmpItem.attr('isfress'),
             discount: tmpItem.attr('discount'),
             access: tmpItem.attr('access'),
-            enable: tmpItem.attr('enable')
+            enable: tmpItem.attr('enable'),
+            diff: tmpItem.attr('diff'),
+            des: tmpItem.attr('des'),
+            type: tmpItem.attr('udma'),
         });
     }
 
@@ -419,7 +424,7 @@ function buildContent_Courses(items) {
         itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">' + datas[i].course + '</p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
-        if (datas[i].enable == '1') {
+        if (datas[i].enable == '0') {
             itemsHTML.push('            <div class="row no-margin">');
             itemsHTML.push('                <div class="col no-padding text-12">');
             itemsHTML.push('                    <p class="text-center" style="' + tmpStyle + '">即将上线</p>');
@@ -436,6 +441,8 @@ function buildContent_Courses(items) {
                 } else {
                     tmpBtn = '<button type="button" class="btn btn-sm btn-warning btn-course-item-buy" data-target="' + datas[i].name + '" title="购买课程"><i class="fas fa-shopping-cart "></i></button>';
                 }
+            } else {
+                tmpBtn = '<button type="button" class="btn btn-sm btn-warning btn-course-item-buy" data-target="' + datas[i].name + '" title="课程详情"><i class="fas fa-info-circle"></i></button>';
             }
 
             itemsHTML.push('                    <p class="text-center" style="' + tmpStyle + '">价格: ');
@@ -466,50 +473,42 @@ function buildContent_Courses(items) {
     tmpHTMLArr.push('</div>');
     $('.col-main-content').append($(tmpHTMLArr.join('')));
     $('.img-course-item-detail').on('click', function (eventObj) {
-        ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: $(eventObj.currentTarget).attr('data-target') }), '', buildDetail_Course);
+        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: $(eventObj.currentTarget).attr('data-target') }), '', buildDetail_Course);
     });
-    $('.btn-course-item-buy').on('click', showCourseBuyModal);
+    $('.btn-course-item-buy').on('click', function (eventObj) {
+        var courseName = $(eventObj.currentTarget).attr('data-target');
+        var currCourse = null;
+        for (var i = 0; i < datas.length; i++) {
+            if (courseName == datas[i].name) {
+                currCourse = datas[i];
+                break;
+            }
+        }
+        var successFn = function (response) {
+            showCourseBuyModal(response, currCourse);
+        }
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: courseName }), '', successFn);
+    });
 
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
-    ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Course);
+    ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Course);
 };
 
-function showCourseBuyModal(eventObj) {
-    var courseId = $(eventObj.currentTarget).attr('data-target');
-    var data = {
-        course: "逻辑课程",
-        discount: "2",
-        id: "1",
-        isfree: "0",
-        name: "A",
-        price: "1000",
-        access: '0',
-        enable: '1',
-        detail: 'Cards include a few options for working with images. Choose from appending “image caps” at either end of a card, overlaying images with card content, or simply embedding the image in a card.',
-        lessons: [
-            {
-                title: "模式识别", symbol: "A_001", steam: "S", type: "UA", steps: "4"
-            }, {
-                title: "路径跟随", symbol: "A_002", steam: "S", type: "UDA", steps: "4"
-            }, {
-                title: "顺序", symbol: "A_003", steam: "S", type: "UA", steps: "4"
-            }, {
-                title: "条件逻辑", symbol: "A_004", steam: "ST", type: "DA", steps: "4"
-            }, {
-                title: "逻辑判断", symbol: "A_005", steam: "ST", type: "UA", steps: "4"
-            }, {
-                title: "应用高级逻辑判断", symbol: "A_006", steam: "S", type: "UA", steps: "4"
-            }, {
-                title: "应用否定逻辑", symbol: "A_007", steam: "S", type: "DA", steps: "4"
-            }, {
-                title: "练习", symbol: "A_008", steam: "S", type: "DA", steps: "4"
-            }, {
-                title: "条件循环", symbol: "A_009", steam: "T", type: "DA", steps: "4"
-            }, {
-                title: "循环", symbol: "A_010", steam: "ST", type: "UA", steps: "4"
-            }
-        ]
-    };
+function showCourseBuyModal(response, course) {
+    var items = $(response).find('item');
+    var lessons = [];
+    var tmpItem;
+    for (var i = 0; i < items.length; i++) {
+        tmpItem = $(items[i]);
+        lessons.push({
+            title: tmpItem.attr('lesson_title'),
+            symbol: tmpItem.attr('lesson_code'),
+            steam: tmpItem.attr('steam'),
+            type: tmpItem.attr('udba'),
+            steps: tmpItem.attr('totalsteps')
+        });
+    }
 
     if ($('#modal_Course_Buy').length == 0) {
         var tmpHTMLStr = [];
@@ -572,7 +571,7 @@ function showCourseBuyModal(eventObj) {
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('            <div class="modal-footer">');
         tmpHTMLStr.push('                <button type="button" class="btn btn-outline-success btn-sm btn-course-buy-confirm">确定购买</button>');
-        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-light btn-sm" data-dismiss="modal">关闭</button>');
+        tmpHTMLStr.push('                <button type="button" class="btn btn-outline-dark btn-sm" data-dismiss="modal">关闭</button>');
         tmpHTMLStr.push('            </div>');
         tmpHTMLStr.push('        </div>');
         tmpHTMLStr.push('    </div>');
@@ -581,15 +580,34 @@ function showCourseBuyModal(eventObj) {
         $('body').append($(tmpHTMLStr.join('')));
         $('#modal_Course_Buy .course-buy-card-header-tabs a').on('click', function (eventObj) {
             $(eventObj.currentTarget).tab('show');
-        })
-
+        });
         $('#modal_Course_Buy .course-buy-card-header-tabs a').on('shown.bs.tab', function (eventObj) {
             var container = $('#modal_Course_Buy .card .card-body');
             container.empty();
+            var tmpHTMLArr = [];
             if ($(eventObj.currentTarget).attr('data-target') == 'detail') {
-                container.text(data.detail);
+                tmpHTMLArr.push('<table class="table table-sm">');
+                tmpHTMLArr.push('   <thead>');
+                tmpHTMLArr.push('       <tr>');
+                tmpHTMLArr.push('           <th class="th-course-diff" scope="col">难度: ');
+                var diff = parseFloat(course.diff);
+                var tmpDiff = '';
+                for (var j = 0; j < 5; j++) {
+                    tmpDiff = (diff > j ? diff < j + 1 ? 'fas fa-star-half-alt' : 'fas fa-star' : 'far fa-star');
+                    tmpHTMLArr.push('<i class="' + tmpDiff + '"></i>');
+                }
+
+                tmpHTMLArr.push('           </th>');
+                tmpHTMLArr.push('           <th scope="col">相关技术: ' + buildCourseTypeHTML(course.type) + '</th>');
+                tmpHTMLArr.push('       </tr>');
+                tmpHTMLArr.push('   </thead>');
+                tmpHTMLArr.push('   <tbody>');
+                tmpHTMLArr.push('       <tr>');
+                tmpHTMLArr.push('           <td colspan="2">' + course.des + '</td>');
+                tmpHTMLArr.push('       </tr>');
+                tmpHTMLArr.push('   </tbody>');
+                tmpHTMLArr.push('</table>');
             } else {
-                var tmpHTMLArr = [];
                 tmpHTMLArr.push('<table class="table table-hover table-sm">');
                 tmpHTMLArr.push('   <thead>');
                 tmpHTMLArr.push('       <tr>');
@@ -600,28 +618,32 @@ function showCourseBuyModal(eventObj) {
                 tmpHTMLArr.push('       </tr>');
                 tmpHTMLArr.push('   </thead>');
                 tmpHTMLArr.push('   <tbody>');
-                for (var i = 0; i < data.lessons.length; i++) {
+                for (var i = 0; i < lessons.length; i++) {
                     tmpHTMLArr.push('       <tr>');
-                    tmpHTMLArr.push('           <td>' + data.lessons[i].title + '</td>');
-                    tmpHTMLArr.push('           <td><span class="course-step-total">' + data.lessons[i].steps + '</span></td>');
-                    tmpHTMLArr.push('           <td>' + buildSTEAMHTML(data.lessons[i].steam) + '</td>');
-                    tmpHTMLArr.push('           <td>' + buildCourseTypeHTML(data.lessons[i].type) + '</td>');
+                    tmpHTMLArr.push('           <td>' + lessons[i].title + '</td>');
+                    tmpHTMLArr.push('           <td><span class="course-step-total">' + lessons[i].steps + '</span></td>');
+                    tmpHTMLArr.push('           <td>' + buildSTEAMHTML(lessons[i].steam) + '</td>');
+                    tmpHTMLArr.push('           <td>' + buildCourseTypeHTML(lessons[i].type) + '</td>');
                     tmpHTMLArr.push('       </tr>');
                 }
 
                 tmpHTMLArr.push('   </tbody>');
                 tmpHTMLArr.push('</table>');
-                container.append($(tmpHTMLArr.join('')));
             }
-        })
+
+            container.append($(tmpHTMLArr.join('')));
+        });
+        $('#modal_Course_Buy').on('shown.bs.modal', function (eventObj) {
+            $('body').css('padding', '0px');
+        });
     }
 
-    $('#modal_Course_Buy .course-image').attr('src', _gCourseImgMap[data.name.trim()].img);
-    $('#modal_Course_Buy .course-name').text(data.course);
-    $('#modal_Course_Buy_Title').text(data.access == '1' ? '课程概览' : '购买课程');
-    var tmpPrice = parseInt(data.price);
-    if (data.enable == '1' && data.access != '1' && data.isfree != '1' && data.discount != '0') {
-        var tmpDiscount = 1 - parseFloat(data.discount) / 100;
+    $('#modal_Course_Buy .course-image').attr('src', _gCourseImgMap[course.name.trim()].img);
+    $('#modal_Course_Buy .course-name').text(course.course);
+    $('#modal_Course_Buy_Title').text(course.access == '1' ? '课程概览' : '购买课程');
+    var tmpPrice = parseInt(course.price);
+    if (course.enable == '1' && course.access != '1' && course.isfree != '1' && course.discount != '0') {
+        var tmpDiscount = 1 - parseFloat(course.discount) / 100;
         tmpDiscount = parseInt(tmpPrice * tmpDiscount);
         $('#modal_Course_Buy .course-price').text(tmpPrice.toFixed(2));
         $('#modal_Course_Buy .course-price').css('text-decoration', 'line-through');
@@ -631,8 +653,8 @@ function showCourseBuyModal(eventObj) {
         $('#modal_Course_Buy .course-price').css('text-decoration', 'none');
         $('#modal_Course_Buy .row-course-discount').hide();
         $('#modal_Course_Buy .course-discount').text('');
-        $('#modal_Course_Buy .course-price').text(data.enable != '1' ? '即将上线' : data.access == '1' ? '已经购买' : data.isfree == '1' ? '免费' : tmpPrice.toFixed(2));
-        if (data.access == '1' || data.enable != '1' || data.isfree == '1') {
+        $('#modal_Course_Buy .course-price').text(course.enable != '1' ? '即将上线' : course.isfree == '1' ? '免费' : course.access == '1' ? '已经购买' : tmpPrice.toFixed(2));
+        if (course.access == '1' || course.enable != '1' || course.isfree == '1') {
             $('#modal_Course_Buy .btn-course-buy-confirm').hide();
         }
     }
@@ -642,22 +664,20 @@ function showCourseBuyModal(eventObj) {
 };
 
 function buildDetail_Course(response) {
-    //<root itemcount="1">
-    //<row index="1" id="1" course_name="A" lesson_title="模式识别" isfree="1" lesson_code="A_01_001" steam="s" udba="l" totalsteps="4" exp="100"></row>
-    //</root>
-    var items = $(response).find('row');
+    var items = $(response).find('item');
     var datas = [];
     var currItem = null;
     for (var i = 0; i < items.length; i++) {
         currItem = $(items[i]);
         datas.push({
+            //<item lesson_title="认识计算机-A" lesson_code="A_001" steam="E" udba="UD" totalsteps="1" order="1" status="0"/>
             symbol: currItem.attr('lesson_code'),
             title: currItem.attr('lesson_title'),
             steps: currItem.attr('totalsteps'),
-            complete: typeof currItem.attr('complete') == 'undefined' ? '0' : currItem.attr('complete'),
             steam: currItem.attr('steam'),
             type: currItem.attr('udba'),
-            course: currItem.attr('course_name')
+            course: currItem.attr('course_name'),
+            status: currItem.attr('status')
         });
     }
 
@@ -679,15 +699,15 @@ function buildDetail_Course(response) {
 
     var tmpState;
     for (var i = 0; i < datas.length; i++) {
-        tmpState = (datas[i].complete == datas[i].steps ? 'star' : 'star-half-alt');
+        tmpState = (datas[i].status == '1' ? 'fas fa-star-half-alt' : datas[i].status == '2' ? 'fas fa-star' : 'far fa-star');
         tmpHTMLArr.push('       <tr>');
-        tmpHTMLArr.push('           <td class="text-center"><i class="fas fa-' + tmpState + ' course-state"></i></td>');
+        tmpHTMLArr.push('           <td class="text-center"><i class="' + tmpState + ' course-state" data-target="' + datas[i].status + '"></i></td>');
         tmpHTMLArr.push('           <td>' + datas[i].title + '</td>');
-        tmpHTMLArr.push('           <td><span class="course-step-complete">' + datas[i].complete + '</span>/<span class="course-step-total">' + datas[i].steps + '</span></td>');
+        tmpHTMLArr.push('           <td><span class="course-step-total">' + datas[i].steps + '</span></td>');
         tmpHTMLArr.push('           <td>' + buildSTEAMHTML(datas[i].steam) + '</td>');
         tmpHTMLArr.push('           <td>' + buildCourseTypeHTML(datas[i].type) + '</td>');
         tmpHTMLArr.push('           <td>');
-        tmpHTMLArr.push('               <button type="button" class="btn btn-link course-start" data-target="' + datas[i].symbol + '|' + datas[i].complete + '">');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-link course-start" data-target="' + datas[i].symbol + '">');
         tmpHTMLArr.push('                   <i class="far fa-hand-point-right cursor-hand"></i>');
         tmpHTMLArr.push('               </button>');
         tmpHTMLArr.push('           </td>');
@@ -701,8 +721,7 @@ function buildDetail_Course(response) {
     $('.row-courses-group-item-list').remove();
     $('.row-courses-group-list').after($(tmpHTMLArr.join('')));
     $('.row-courses-group-item-list .course-start').on('click', function (eventObj) {
-        var target = $(eventObj.currentTarget).attr('data-target').split('|');
-        window.open("workplatform.html?scene=" + target[0] + '&step=' + target[1]);
+        window.open("workplatform.html?scene=" + $(eventObj.currentTarget).attr('data-target') + '&step=0');
     });
 };
 
@@ -802,12 +821,16 @@ function buildContent_Exp(items) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('.col-main-content').append($(tmpHTMLArr.join('')));
+    var successFn = function (response) {
+        buildDetail_Exp(response);
+    };
+
     $('.horizontal-list-item').on('click', function (eventObj) {
-        ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: $(eventObj.currentTarget).attr('data-target') }), '', buildDetail_Exp);
+        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getexplist, { course_name: $(eventObj.currentTarget).attr('data-target') }), '', successFn);
     });
 
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
-    ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Exp);
+    ajaxFn('GET', _getRequestURL(_gURLMapping.course.getexplist, { course_name: datas[0].name }), '', successFn);
 };
 
 function buildDetail_Exp(response) {
@@ -4181,46 +4204,48 @@ function initData() {
             _CookieUtils.set("logined_user_nickname", _gUserInfoObj.nickName);
         }
 
-        var headerFn = function (response_header) {
-            var success_header = ($($(response_header).find('executed')[0]).text() == 'true' ? true : false);
-            if (success_header) {
-                var tmpImg = $($(response_header).find('msg')[0]).text();
-                var tmpFile = tmpImg.split('/');
-                tmpFile = tmpFile[tmpFile.length - 1];
-                if (tmpFile.indexOf('.') < 0) {
-                    tmpImg = 'image/tmpheader.jpg';
-                }
-
-                _gUserInfoObj.header = tmpImg;
-            } else {
-                _gUserInfoObj.header = 'image/tmpheader.jpg';
+        var levelFn = function (levelResponse) {
+            _gUserInfoObj.level = $($(levelResponse).find('root')[0]).text();
+            if (_gUserInfoObj.level == '') {
+                _gUserInfoObj.level = '初级程序员';
             }
 
-            _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
-            updateUserInfo();
-            var checkOnFn = function (response_checkon) {
-                var success = ($($(response_checkon).find('executed')[0]).text() == 'true' ? true : false);
-                if (success) {
-                    $('#btn_Student_SignIn .mood-text').text('已签到');
+            var headerFn = function (response_header) {
+                var success_header = ($($(response_header).find('executed')[0]).text() == 'true' ? true : false);
+                if (success_header) {
+                    var tmpImg = $($(response_header).find('msg')[0]).text();
+                    var tmpFile = tmpImg.split('/');
+                    tmpFile = tmpFile[tmpFile.length - 1];
+                    if (tmpFile.indexOf('.') < 0) {
+                        tmpImg = 'image/tmpheader.jpg';
+                    }
+
+                    _gUserInfoObj.header = tmpImg;
+                } else {
+                    _gUserInfoObj.header = 'image/tmpheader.jpg';
                 }
-            };
 
-            ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcheckon, {}), '', checkOnFn);
-        }
+                _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
+                updateUserInfo();
+                var checkOnFn = function (response_checkon) {
+                    var success = ($($(response_checkon).find('executed')[0]).text() == 'true' ? true : false);
+                    if (success) {
+                        $('#btn_Student_SignIn .mood-text').text('已签到');
+                    }
+                };
 
-        ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', headerFn);
-        //ajaxFn('GET', _getRequestURL(_gURLMapping.account.getCircleNews, {}), '', function () {
-        //    var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        //    if (success) {
-        //        updateCircleNews();
-        //    }
-        //});
+                ajaxFn('GET', _getRequestURL(_gURLMapping.profile.getcheckon, {}), '', checkOnFn);
+            }
+
+            ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', headerFn);
+        };
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.profile.gettitle, {}), '', levelFn);
         buildCategoryContent();
         hideLoadingMask();
     };
 
     ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo, {}), '', successFn);
-    //initFriendsForTest();
 };
 
 function updateUserInfo() {
@@ -4883,7 +4908,7 @@ function webSocketReceiveCircle(evt) {
             webSocketFormatMsg(valDoc);
             break;
         case 'Action_Set_NewDialog':
-            
+
             break;
         case 'Action_Get_BatchArrProfile':
             circleUpdateUserList(valDoc, 'user');

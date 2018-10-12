@@ -302,8 +302,7 @@
     <script src="javascript/ace/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="javascript/common/ExtendBlockly.js"></script>
     <script src="javascript/common/ExtendBlockRenderSvg.js"></script>
-    <script src="javascript/common/common.js"></script>
-    <script src="javascript/common.js"></script>
+    <script src="javascript/common/global.js"></script>
     <script src="javascript/common/blocklycommon.js"></script>
     <script src="javascript/workplatform.js"></script>
 </head>
@@ -350,6 +349,7 @@
                             <div class="container">
                                 <div class="row header-user-info-container">
                                     <div class="col">
+                                        <button type="button" class="btn btn-outline-light" id="btn_Lesson_Finish" style="margin-right: 10px;">完成</button>
                                         <img class="header-user-info-image" src="image/tmpheader.jpg" width="40" height="40" />
                                         <span class="header-user-info-name"></span>
                                         <img class="sign-out-button" src="image/exit.svg" width="25" height="25" title="退出登录" />
@@ -646,7 +646,6 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            _loadLabels();
             initPage();
             //_startCheckState();
             //showLoadingMask();
