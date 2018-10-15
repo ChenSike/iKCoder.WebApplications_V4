@@ -707,7 +707,7 @@ function buildDetail_Course(response) {
         tmpHTMLArr.push('           <td>' + buildSTEAMHTML(datas[i].steam) + '</td>');
         tmpHTMLArr.push('           <td>' + buildCourseTypeHTML(datas[i].type) + '</td>');
         tmpHTMLArr.push('           <td>');
-        tmpHTMLArr.push('               <button type="button" class="btn btn-link course-start" data-target="' + datas[i].symbol + '">');
+        tmpHTMLArr.push('               <button type="button" class="btn btn-link course-start" data-target="' + datas[i].symbol + '" data-title="' + datas[i].title + '">');
         tmpHTMLArr.push('                   <i class="far fa-hand-point-right cursor-hand"></i>');
         tmpHTMLArr.push('               </button>');
         tmpHTMLArr.push('           </td>');
@@ -721,7 +721,8 @@ function buildDetail_Course(response) {
     $('.row-courses-group-item-list').remove();
     $('.row-courses-group-list').after($(tmpHTMLArr.join('')));
     $('.row-courses-group-item-list .course-start').on('click', function (eventObj) {
-        window.open("workplatform.html?scene=" + $(eventObj.currentTarget).attr('data-target') + '&step=0');
+        var target = $(eventObj.currentTarget);
+        window.open("workplatform.html?scene=" + target.attr('data-target') + '&step=0&title=' + target.attr('data-title'));
     });
 };
 

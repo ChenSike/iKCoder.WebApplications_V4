@@ -52,6 +52,7 @@ body {
     padding: 0px 10px;
     color: rgb(203,204,203);
     line-height: 40px;
+    font-size:14px;
 }
 
 .sign-out-button {

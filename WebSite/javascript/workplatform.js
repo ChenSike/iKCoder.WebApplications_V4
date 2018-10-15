@@ -21,6 +21,7 @@ function initPage() {
     var tmpStage = getQueryString('scene');
     var tmpStep = getQueryString('step');
     adjustMainSize(tmpStep == '' ? true : false);
+
     //var url = _getRequestURL(_gURLMapping.account.signstatus);
     //var successFn = function (response, status) {
     //    if ($(response).find('err').length > 0) {
@@ -90,7 +91,7 @@ function initialCodeModalComp() {
     _codeEditor_JS.setFontSize(16);
 
     $('#wrap_Workspace_CodeModal .cm-toolbar-wrap-row .cm-toolbar-buttons-item').on('click', onClickCodeModalToolbarBtn);
-    $('.header-course-name').html('L1 JavaScript基础');
+    $('.header-course-name').html('');
     $('.header-course-name').css('line-height', ($('.header-container').height() - parseInt($('.header-course-name').css('padding-top')) * 2) + 'px')
 }
 
@@ -409,7 +410,7 @@ function buildHeaderHTML() {
 }
 
 function buildStageTitleHTML() {
-    var titleText = _gStageData.course.name;
+    var titleText = decodeURIComponent(getQueryString('title'));
     var tmpWrap = $('.header-course-name');
     var titleWidth = testTextWidth(titleText, '16px', 'bold', '', '2px');
     if (titleWidth > $('#wrap_Head_Course_Name').width()) {
@@ -482,8 +483,10 @@ function buildStageStepHTML() {
 };
 
 function buildUserInfoHTML() {
-    $('.header-user-image').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
-    $('.header-user-info-name').text(_gStageData.user.name);
+    $('.header-user-info-image').attr('src', _CookieUtils.get("logined_user_header"));
+    $('.header-user-info-name').text(_CookieUtils.get("logined_user_nickname"));
+    //$('.header-user-image').attr('src', _getRequestURL(_gURLMapping.account.getheader, {}));
+    //$('.header-user-info-name').text(_gStageData.user.name);
 };
 
 function buildCourseTips() {
@@ -548,9 +551,9 @@ function initHeaderEvents() {
     });
 
     $('.sign-out-button').on('click', function () {
-        WorkScene.saveStatus();
-        _signOut();
-        window.close();
+        ajaxFn('GET', _getRequestURL(_gURLMapping.account.signout, {}), '', function () {
+            window.close();
+        });
     });
 
     $('#btn_Lesson_Finish').on('click', function () {
