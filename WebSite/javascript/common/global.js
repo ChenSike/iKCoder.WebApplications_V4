@@ -291,7 +291,7 @@ function ajaxFn(type, url, data, success, failed, async) {
 function _getExcuted(response) {
     return ($($(response).find('executed')[0]).text() == 'true' ? true : false);
 };
-
+//this is an empty function for callback
 function _gEmptyFn() {
 };
 //referesh check code

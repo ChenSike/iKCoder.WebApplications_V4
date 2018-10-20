@@ -10429,7 +10429,7 @@
             }
             // clear content inside container
             //container.innerHTML = EMPTY_STRING;
-            this.playButton = document.getElementsByClassName('run-scene-fullscreen-play-button')[0];
+            this.playButton = document.getElementsByClassName('siderbar-button-run')[0];
             this.playButton.style.zIndex = '10';
 
             // content

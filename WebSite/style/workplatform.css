@@ -1026,3 +1026,18 @@ body {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
 }
+
+#modalFinishLesson{
+    z-index: 1080;
+}
+
+#modalFinishLesson .modal-dialog .modal-content{
+    height:225px;
+    width: 400px;
+    left: calc(50% - 200px);
+}
+
+#modalFinishLesson .modal-dialog .modal-content .modal-body{
+    padding:15px;
+    font-size:14px;
+}

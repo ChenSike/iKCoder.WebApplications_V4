@@ -71,6 +71,7 @@ var _gCourseImgMap = {
     F: { img: 'image/course/course_java.png', color: 'rgb(100,124,185)' },
     G: { img: 'image/course/course_ios.png', color: 'rgb(86,181,34)' }
 };
+var _gCourseTimeout = '';
 var _gSTEAMMap = {
     s: { icon: 'js-square', title: 'Science' },
     t: { icon: 'python', title: 'Technology' },
@@ -89,6 +90,7 @@ var _gCircleUsers = [];
 var _gCircleGroups = [];
 var _gCurrentChatter = { id: '', type: '' };
 
+
 function initPage() {
     globalResize();
     showLoadingMask();
@@ -96,6 +98,7 @@ function initPage() {
     initEvents();
     initData();
     circleInitUserList();
+    _gCourseTimeout = window.setTimeout('refereshCourseState()', 1000);
 };
 
 function initEvents() {
@@ -140,9 +143,9 @@ function initEvents() {
         initCustomHeaderImg();
     });
 
-    $('#file_Upload').on('change', function () {
-        initCustomHeaderImg('image/tmpclip.jpg');
-        return;
+    $('#file_Upload').on('change', function (eventObj) {
+        //initCustomHeaderImg('image/tmpclip.jpg');
+        //return;
         var regExp = /(\.|\/)(gif|jpe?g|png|bmp)$/i;
         var fileName = $(this).val();
         if (fileName != '' && !regExp.test(fileName)) {
@@ -157,7 +160,7 @@ function initEvents() {
             var formData = new FormData();
             formData.append('file', $('#file_Upload')[0].files[0]);
             $.ajax({
-                url: _getRequestURL(_gURLMapping.setheader.setheader, {}),
+                url: _getRequestURL(_gURLMapping.account.setheader, {}),
                 type: 'POST',
                 cache: false,
                 data: formData,
@@ -185,6 +188,13 @@ function initEvents() {
                             var tmpImg = $($(response_header).find('msg')[0]).text();
                             if (tmpImg.indexOf('.') < 0) {
                                 tmpImg = 'image/tmpheader.jpg';
+                            } else {
+                                var img = new Image();
+                                img.src = tmpImg;
+                                img.onerror = function () {
+                                    _gUserInfoObj.header = 'image/tmpheader.jpg';
+                                    _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
+                                };
                             }
 
                             _gUserInfoObj.header = tmpImg;
@@ -199,6 +209,18 @@ function initEvents() {
             ajaxFn('POST', _getRequestURL(_gURLMapping.account.setheader, {}), { data: document.getElementById("canvas_Sample_1").toDataURL() }, successFn);
         }
     });
+};
+
+function refereshCourseState() {
+    if ($('.row-category-item[data-target="courses"]').hasClass('active-item')) {
+        var target = $('.img-course-item-detail.active');
+        if (target.length == 1) {
+            ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: target.attr('data-target') }), '', function (response) {
+                buildDetail_Course(response);
+                _gCourseTimeout = window.setTimeout('refereshCourseState()', 100000);
+            });
+        }
+    }
 };
 
 function globalResize() {
@@ -473,7 +495,10 @@ function buildContent_Courses(items) {
     tmpHTMLArr.push('</div>');
     $('.col-main-content').append($(tmpHTMLArr.join('')));
     $('.img-course-item-detail').on('click', function (eventObj) {
-        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: $(eventObj.currentTarget).attr('data-target') }), '', buildDetail_Course);
+        var target = $(eventObj.currentTarget);
+        $('.img-course-item-detail').removeClass('active');
+        target.addClass('active');
+        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: target.attr('data-target') }), '', buildDetail_Course);
     });
     $('.btn-course-item-buy').on('click', function (eventObj) {
         var courseName = $(eventObj.currentTarget).attr('data-target');
@@ -492,6 +517,7 @@ function buildContent_Courses(items) {
     });
 
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
+    $($('.img-course-item-detail')[0]).addClass('active');
     ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Course);
 };
 
@@ -972,8 +998,8 @@ function circleInitChats(doc) {
 
         if (!exist) {
             _gCircleChats.push({
-                chatId: itemObj.attr('id'),
-                chatter: '',
+                chatId: itemObj.attr('symbol'),
+                chatter: itemObj.attr('uid'),
                 type: '',
                 msgs: []
             });
@@ -1356,7 +1382,7 @@ function circleBuildEmojiPopover() {
 function circleBuildMessageItem(content, type, userInfo) {
     userInfo = (typeof (userInfo) == 'string' ? circleGetUserObj(userInfo.split('|')[0], userInfo.split('|')[1]) : userInfo);
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('<div class="row row-message-item">');
+    tmpHTMLArr.push('<div class="row row-message-item" data-sender="' + userInfo.userId + '">');
     if (type == -1) {
         tmpHTMLArr.push('   <div class="col-1">');
         tmpHTMLArr.push('       <img class="img-fluid user-header" src="' + userInfo.header + '" />');
@@ -1672,12 +1698,12 @@ function initEvents_Circle_Chat() {
     $('.circle-message-input-send').on('click', function () {
         if (!circleCheckEmptyInput()) {
             var msg = circleBuildMessageItem($('.circle-message-input-field').html(), 0, _gUserInfoObj);
-            var tmpSymbol = $('.label-circle-message-history-user').attr('data-target');
-            if (typeof _gCircleChats[tmpSymbol] == undefined || !$.isArray(_gCircleChats[tmpSymbol])) {
-                _gCircleChats[tmpSymbol] = [];
+            var symbol = $('.label-circle-message-history-user').attr('data-target');
+            if (typeof _gCircleChats[symbol] == undefined || !$.isArray(_gCircleChats[symbol])) {
+                _gCircleChats[symbol] = [];
             }
 
-            _gCircleChats[tmpSymbol].push(msg);
+            _gCircleChats[symbol].push(msg);
             webSocketSend('send', msg);
             circleUpdateMsgHistory();
         }
@@ -1946,7 +1972,7 @@ function circleBuildFriendPart_Address() {
     ];
     var tmpArr = [];
     for (var i = 0; i < _gCircleUsers.length; i++) {
-        if (_gCircleUsers[i].type == 'user') {
+        if (_gCircleUsers[i].type == 'user' && _gCircleUsers[i].accecpt) {
             tmpArr.push(_gCircleUsers[i]);
         } else if (_gCircleUsers[i].type == 'group') {
             groupObj.items.push(_gCircleUsers[i]);
@@ -2969,7 +2995,7 @@ function circleUpdateUser_Item_User(itemObj, currUser) {
     currUser["header"] = itemObj.attr('header') == '' ? 'image/tmpheader.jpg' : itemObj.attr('header'),
     //newUser["userId"] = itemObj.attr('uid'),
     //newUser["msg"] = typeof itemObj.attr('msg') == 'undefined' ? '' : itemObj.attr('msg'),
-    currUser["accecpt"] = itemObj.attr('accecpt') == '1' ? true : false,
+    currUser["accecpt"] = typeof itemObj.attr('accecpt') == 'undefined' ? currUser["accecpt"] : itemObj.attr('accecpt') == '1' ? true : false,
     currUser["gender"] = itemObj.attr('sex') == '1' ? '1' : '0',
     currUser["address"] = address.join(' '),
     currUser["comment"] = typeof itemObj.attr('comment') == 'undefined' ? '' : itemObj.attr('comment'),
@@ -4221,6 +4247,14 @@ function initData() {
                         tmpImg = 'image/tmpheader.jpg';
                     }
 
+                    var img = new Image();
+                    img.src = tmpImg;
+                    img.onerror = function () {
+                        _gUserInfoObj.header = 'image/tmpheader.jpg';
+                        _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
+                        updateUserInfo();
+                    };
+
                     _gUserInfoObj.header = tmpImg;
                 } else {
                     _gUserInfoObj.header = 'image/tmpheader.jpg';
@@ -4455,12 +4489,19 @@ function _checkPwdIntension(value, lbField) {
 };
 
 function initCustomHeaderImg(path) {
-    var successFn = function () {
+    var successFn = function (response) {
         var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
         if (success) {
             var tmpImg = $($(response_header).find('msg')[0]).text();
             if (tmpImg.indexOf('.') < 0) {
                 tmpImg = 'image/tmpheader.jpg';
+            } else {
+                var img = new Image();
+                img.src = tmpImg;
+                img.onerror = function () {
+                    _gUserInfoObj.header = 'image/tmpheader.jpg';
+                    _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
+                };
             }
 
             _gUserInfoObj.header = tmpImg;
@@ -4976,9 +5017,11 @@ function webSocketReceiveCircle(evt) {
 };
 
 function webSocketFormatMsg(doc) {
+    var row = $(doc).find('row');
+    var content = row.attr('content');
+    var symbol = row.attr('symbol');
 
 };
-
 
 
 
