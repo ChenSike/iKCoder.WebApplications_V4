@@ -116,6 +116,18 @@ function initEvents() {
         ajaxFn('GET', _getRequestURL(_gURLMapping.profile.setcheckon, {}), '', checkOnFn);
     });
 
+    $('#btn_Student_SignOut').on('click', function () {
+        var signOutFn = function (response) {
+            if (_getExcuted(response)) {
+                window.location.href = "http://www.ikcoder.com";
+            } else {
+                _showGlobalMessage('暂时无法安全退出，请重试!', 'warning', 'alert_SignOut_Error');
+            }
+        };
+
+        ajaxFn('GET', _getRequestURL(_gURLMapping.account.signout, {}), '', signOutFn);
+    });
+
     $('.btn-header-mood').on('click', function () {
         var moodFn = function (response) {
             var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
@@ -3351,8 +3363,8 @@ function settingUpdateProfile() {
     };
 
     var successFn = function (response) {
-        var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        if (success) {
+        if (_getExcuted(response)) {
+            _showGlobalMessage('更新个人信息成功!', 'success', 'alert_UpdateProfile_Success');
             _CookieUtils.set("logined_user_nickname", $('#txt_Settings_Profile_NickName').val());
             _gUserInfoObj.nickName = $('#txt_Settings_Profile_NickName').val();
             updateUserInfo();
