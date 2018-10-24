@@ -379,7 +379,15 @@ function buildCategoryContent(categoryId) {
             buildContent_Report();
             break;
         case 'settings':
-            buildContent_Setting();
+            successFn = function (response) {
+                if (_getExcuted(response)) {
+                    buildContent_Setting(response);
+                } else {
+
+                }
+            };
+
+            ajaxFn('GET', _getRequestURL(_gURLMapping.account.getinfo, {}), '', successFn);
             break;
         case 'studio':
             window.open("appstudio/index.html");
@@ -3062,7 +3070,7 @@ function circleInitUser_Item_Channel(itemObj) {
     return newChannel;
 };
 
-function buildContent_Setting() {
+function buildContent_Setting(response) {
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="card h-100 text-center card-settings">');
     tmpHTMLArr.push('   <div class="card-header">');
@@ -3079,6 +3087,7 @@ function buildContent_Setting() {
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('</div>');
     $('.col-main-content').append($(tmpHTMLArr.join('')));
+    settingFormatData(response);
     settingBuildInfors();
     initEvents_Settings();
 };
@@ -3094,6 +3103,26 @@ function initEvents_Settings() {
             settingBuildChange();
         }
     });
+};
+
+function settingFormatData(response) {
+    var tmpMap = {
+        nickname: 'nickName',
+        birthday: 'birthday',
+        country: 'country',
+        state: 'province',
+        city: 'city',
+        school: 'school',
+        gender: 'gender',
+        uid: 'userId'
+    };
+
+    var items = $(response).find('item');
+    var tmpItem, tmpKey;
+    for (var i = 0; i < items.length; i++) {
+        tmpItem = $(items[i]);
+        _gUserInfoObj[tmpMap[tmpItem.attr('attr')]] = tmpItem.attr('value');
+    }
 };
 
 function settingBuildInfors() {
@@ -3117,7 +3146,7 @@ function settingBuildInfors() {
     tmpHTMLArr.push('                       <input type="text" class="form-control" id="txt_Settings_Profile_NickName" placeholder="请输入昵称">');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
-    tmpHTMLArr.push('               <div class="form-group row">');
+    tmpHTMLArr.push('               <div class="form-group row" style="display:none;">');
     tmpHTMLArr.push('                   <label for="txt_Settings_Profile_Name" class="col-2 col-form-label">姓名</label>');
     tmpHTMLArr.push('                   <div class="col-8">');
     tmpHTMLArr.push('                       <input type="text" class="form-control" id="txt_Settings_Profile_Name" placeholder="请输入姓名">');
@@ -4502,9 +4531,8 @@ function _checkPwdIntension(value, lbField) {
 
 function initCustomHeaderImg(path) {
     var successFn = function (response) {
-        var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        if (success) {
-            var tmpImg = $($(response_header).find('msg')[0]).text();
+        if (_getExcuted(response)) {
+            var tmpImg = $($(response).find('msg')[0]).text();
             if (tmpImg.indexOf('.') < 0) {
                 tmpImg = 'image/tmpheader.jpg';
             } else {
@@ -4528,11 +4556,12 @@ function initCustomHeaderImg(path) {
                 fnImageCropRot(image, { w: tmpSize.nw, h: tmpSize.nh });
                 $('#progress_HeaderUpload').hide();
             };
-
             image.onerror = function () {
-                var tmpSize = calcExhibitionSize(_currentHeaderImage);
-                ctx.drawImage(_currentHeaderImage, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
-                fnImageCropRot(_currentHeaderImage, { w: tmpSize.nw, h: tmpSize.nh });
+                var img = new Image();
+                img.src = 'image/tmpheader.jpg';
+                var tmpSize = calcExhibitionSize(img);
+                ctx.drawImage(img, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
+                fnImageCropRot(img, { w: tmpSize.nw, h: tmpSize.nh });
                 $('#progress_HeaderUpload').hide();
             };
 

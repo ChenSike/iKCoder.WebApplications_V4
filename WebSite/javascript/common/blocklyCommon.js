@@ -308,10 +308,10 @@ function CheckSceneObject() {
         Scene.ResetConfig = function () { };
     }
 
-    //Scene.stepComplete = showCompleteAlert;
-    //Scene.stepFaild = showFaildAlert;
-    Scene.stepComplete = function () { };
-    Scene.stepFaild = function () { };
+    Scene.stepComplete = showCompleteAlert;
+    Scene.stepFaild = showFaildAlert;
+    //Scene.stepComplete = function () { };
+    //Scene.stepFaild = function () { };
 };
 
 function showCompleteAlert() {
@@ -320,7 +320,7 @@ function showCompleteAlert() {
     $('.wrap-alert-content.completed').show();
     $('.wrap-alert-content.failed').hide();
     $('.wrap-alert-content.completed .step-status-title').html(_gStageData.course.msg.success);
-    $('.wrap-alert-content.completed .step-status-button.next span').text((_gStageData.course.current == _gStageData.course._totalSteps ? '挑战下一课' : '挑战下一步'));
+    $('.wrap-alert-content.completed .step-status-button.next span').text((_gStageData.course.total - 1 == parseInt(getQueryString('step')) ? '完成本课' : '挑战下一步'));
     WorkScene.saveStatus();
 };
 
@@ -340,27 +340,27 @@ function buildStatusAlertWindow() {
         tmppHTMLStr.push('        <div class="container">');
         tmppHTMLStr.push('            <div class="row justify-content-center">');
         tmppHTMLStr.push('                <div class="col-8 text-center container-status-title">');
-        tmppHTMLStr.push('                    <i class="fa fa-check-circle-o fa-5x" aria-hidden="true"></i>');
+        tmppHTMLStr.push('                    <i class="far fa-check-circle fa-5x"></i>');
         tmppHTMLStr.push('                    <div class="step-status-title"></div>');
         tmppHTMLStr.push('                </div>');
         tmppHTMLStr.push('            </div>');
         tmppHTMLStr.push('            <div class="row justify-content-center my-3">');
         tmppHTMLStr.push('                <div class="col-2 text-center">');
         tmppHTMLStr.push('                    <div class="step-status-button restart">');
-        tmppHTMLStr.push('                      <i class="fa fa-undo"></i><span>重新开始</span>');
+        tmppHTMLStr.push('                      <i class="fa fa-undo"></i><span style="margin-left:5px;">重新开始</span>');
         tmppHTMLStr.push('                    </div>');
         tmppHTMLStr.push('                </div>');
         tmppHTMLStr.push('                <div class="col-2">');
         tmppHTMLStr.push('                    <div class="step-status-button next">');
-        tmppHTMLStr.push('                      <i class="fa fa-hand-o-right"></i><span>挑战下一步</span>');
+        tmppHTMLStr.push('                      <i class="far fa-hand-point-right"></i><span style="margin-left:5px;">挑战下一步</span>');
         tmppHTMLStr.push('                    </div>');
         tmppHTMLStr.push('                </div>');
         tmppHTMLStr.push('            </div>');
         tmppHTMLStr.push('            <div class="row">');
         tmppHTMLStr.push('                <div class="col text-center step-evaluate-wrap">');
         tmppHTMLStr.push('                    <span>喜欢这个课程吗?</span>');
-        tmppHTMLStr.push('                    <span class="fa fa-thumbs-o-up step-evaluate-button yes" data-target="1" title="喜欢"></span>');
-        tmppHTMLStr.push('                    <span class="fa fa-thumbs-o-down step-evaluate-button no" data-target="0" title="不喜欢"></span>');
+        tmppHTMLStr.push('                    <span class="far fa-thumbs-up step-evaluate-button yes" data-target="1" title="喜欢"></span>');
+        tmppHTMLStr.push('                    <span class="far fa-thumbs-down step-evaluate-button no" data-target="0" title="不喜欢"></span>');
         tmppHTMLStr.push('                </div>');
         tmppHTMLStr.push('            </div>');
         tmppHTMLStr.push('        </div>');
@@ -369,7 +369,7 @@ function buildStatusAlertWindow() {
         tmppHTMLStr.push('        <div class="container my-5">');
         tmppHTMLStr.push('            <div class="row justify-content-center">');
         tmppHTMLStr.push('                <div class="col-6 text-center container-status-title">');
-        tmppHTMLStr.push('                    <i class="fa fa-exclamation-circle fa-5x" aria-hidden="true"></i>');
+        tmppHTMLStr.push('                    <i class="far fa-times-circle fa-5x"></i>');
         tmppHTMLStr.push('                    <div class="step-status-title" id="title_StepFaild">非常抱歉，您的工作出现错误，请检查后继续运行.</div>');
         tmppHTMLStr.push('                </div>');
         tmppHTMLStr.push('            </div>');
@@ -426,7 +426,15 @@ function initStatusAlertEvents() {
 
     //for static code
     $('.step-status-button.next').on('click', function (e) {
-        window.location.href = "workplatform.html?scene=" + _gStageData.course.id + "&step=" + _gStageData.course.next;
+        var total = _gStageData.course.total;
+        var current = parseInt(getQueryString('step'));
+        if (total - 1 == current) {
+            window.opener = null;
+            window.open("", "_self");
+            window.close();
+        } else {
+            window.location.href = "workplatform.html?scene=" + _gStageData.course.id + "&step=" + (current + 1);
+        }
     });
 
     $('.step-status-button.find-error').on('click', function (e) {
