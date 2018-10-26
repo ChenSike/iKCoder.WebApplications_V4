@@ -556,26 +556,26 @@ function initHeaderEvents() {
 
     $('.sign-out-button').on('click', function () {
         ajaxFn('GET', _getRequestURL(_gURLMapping.account.signout, {}), '', function () {
+            window.opener = null;
+            window.open("", "_self");
             window.close();
         });
     });
 
-    $('#btn_Lesson_Finish').on('click', function () {
-        _showGlobalMessage('确认完成本课学习吗？', 'warning', 'alert_Finish_Lesson');
-        $('.custom-global-alert').append('<button type="button" class="btn btn-sm btn-outline-primary btn-finish-lesson" style="margin-left: 20px;">确定</button>');
-        $('.custom-global-alert').append('<button type="button" class="btn btn-sm btn-outline-secondary" style="margin-left: 20px;" data-dismiss="alert" aria-hidden="true">取消</button>');
-        $('.btn-finish-lesson').on('click', function () {
-            ajaxFn('GET', _getRequestURL(_gURLMapping.course.setlessonfinish, { lesson_code: getQueryString('scene') }), '', function (response) {
-                if (_getExcuted(response)) {
-                    window.opener = null;
-                    window.open("", "_self");
-                    window.close();
-                }
-            });
-        });
-
-                
-    });
+    //$('#btn_Lesson_Finish').on('click', function () {
+    //    _showGlobalMessage('确认完成本课学习吗？', 'warning', 'alert_Finish_Lesson');
+    //    $('.custom-global-alert').append('<button type="button" class="btn btn-sm btn-outline-primary btn-finish-lesson" style="margin-left: 20px;">确定</button>');
+    //    $('.custom-global-alert').append('<button type="button" class="btn btn-sm btn-outline-secondary" style="margin-left: 20px;" data-dismiss="alert" aria-hidden="true">取消</button>');
+    //    $('.btn-finish-lesson').on('click', function () {
+    //        ajaxFn('GET', _getRequestURL(_gURLMapping.course.setlessonfinish, { lesson_code: getQueryString('scene') }), '', function (response) {
+    //            if (_getExcuted(response)) {
+    //                window.opener = null;
+    //                window.open("", "_self");
+    //                window.close();
+    //            }
+    //        });
+    //    });                
+    //});
 
     //$('#modalFinishLesson').on('shown.bs.modal', function (e) {
     //    $('body').css('padding', '0px');

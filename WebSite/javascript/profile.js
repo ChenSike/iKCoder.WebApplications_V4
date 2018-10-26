@@ -56,7 +56,8 @@ var _gCourseTypeMap = {
     n: { icon: 'node-js', title: 'Node.JS' },
     s: { icon: 'js-square', title: 'Java Script' },
     u: { icon: 'fab fa-uikit', title: 'UI' },
-    a: { icon: 'fas fa-brain', title: 'AI' },
+    a: { icon: 'fas fa-robot', title: 'AI' },
+    //a: { icon: 'fas fa-brain', title: 'AI' },
     //a: { icon: 'fas fa-code-branch', title: 'AI' },
     b: { icon: 'fab fa-bimobject', title: 'BBBB' },
     d: { icon: 'fas fa-database', title: 'Database' },
@@ -201,6 +202,7 @@ function initEvents() {
                             if (tmpImg.indexOf('.') < 0) {
                                 tmpImg = 'image/tmpheader.jpg';
                             } else {
+                                tmpImg = (tmpImg.indexOf('http://') != 0 ? 'http://' + tmpImg : tmpImg);
                                 var img = new Image();
                                 img.src = tmpImg;
                                 img.onerror = function () {
@@ -1004,7 +1006,7 @@ function showExperimentAttachs(data) {
 
 function circleInitChats(doc) {
     _gCircleChats = [];
-    var items = doc.find('row');
+    var items = doc.find('item');
     var itemObj, exist;
     for (var i = 0; i < items.length; i++) {
         itemObj = $(items[i]);
@@ -1525,12 +1527,18 @@ function circleRefresh_SearchResult(doc) {
         container.empty();
         var items = $(doc).find('row');
         var tmpHTMLArr = [];
-        var item, uid, header, name, sex, country, state, city, school;
+        var item, uid, header, name, sex, country, state, city, school, tmpImg;
         for (var i = 0; i < items.length; i++) {
             item = $(items[i]);
+            header = (item.attr('header') == '' ? 'image/tmpheader.jpg' : item.attr('header'));
+            tmpImg = new Image();
+            tmpImg.src = header;
+            tmpImg.onerror = function () {
+                $('.search-result-header[data-target="' + uid + '"]').attr('src', 'image/tmpheader.jpg');
+            };
+
             uid = item.attr('uid');
             name = (item.attr('nickname') == '' ? uid : item.attr('nickname'));
-            header = (item.attr('header') == '' ? 'image/tmpheader.jpg' : item.attr('header'));
             sex = (item.attr('sex') == '1' ? 'male' : 'female');
             country = (item.attr('country') == '' ? 'China' : item.attr('country'));
             state = (item.attr('state') == '' ? '' : item.attr('state'));
@@ -1538,7 +1546,7 @@ function circleRefresh_SearchResult(doc) {
             school = (item.attr('schoolmap') == '' ? '' : item.attr('schoolmap'));
             tmpHTMLArr.push('<div class="row row-result-item">');
             tmpHTMLArr.push('   <div class="col col-result-item-header">');
-            tmpHTMLArr.push('       <img class="img-fluid" src="' + header + '">');
+            tmpHTMLArr.push('       <img class="img-fluid search-result-header" src="' + header + '" data-target="' + uid + '">');
             tmpHTMLArr.push('   </div>');
             tmpHTMLArr.push('   <div class="col col-result-item-content">');
             tmpHTMLArr.push('       <p class="content">');
@@ -3108,6 +3116,7 @@ function initEvents_Settings() {
 function settingFormatData(response) {
     var tmpMap = {
         nickname: 'nickName',
+        realname: 'userName',
         birthday: 'birthday',
         country: 'country',
         state: 'province',
@@ -3146,7 +3155,7 @@ function settingBuildInfors() {
     tmpHTMLArr.push('                       <input type="text" class="form-control" id="txt_Settings_Profile_NickName" placeholder="请输入昵称">');
     tmpHTMLArr.push('                   </div>');
     tmpHTMLArr.push('               </div>');
-    tmpHTMLArr.push('               <div class="form-group row" style="display:none;">');
+    tmpHTMLArr.push('               <div class="form-group row">');
     tmpHTMLArr.push('                   <label for="txt_Settings_Profile_Name" class="col-2 col-form-label">姓名</label>');
     tmpHTMLArr.push('                   <div class="col-8">');
     tmpHTMLArr.push('                       <input type="text" class="form-control" id="txt_Settings_Profile_Name" placeholder="请输入姓名">');
@@ -4286,6 +4295,8 @@ function initData() {
                     tmpFile = tmpFile[tmpFile.length - 1];
                     if (tmpFile.indexOf('.') < 0) {
                         tmpImg = 'image/tmpheader.jpg';
+                    } else {
+                        tmpImg = (tmpImg.indexOf('http://') != 0 ? 'http://' + tmpImg : tmpImg);
                     }
 
                     var img = new Image();
@@ -4536,6 +4547,7 @@ function initCustomHeaderImg(path) {
             if (tmpImg.indexOf('.') < 0) {
                 tmpImg = 'image/tmpheader.jpg';
             } else {
+                tmpImg = (tmpImg.indexOf('http://') != 0 ? 'http://' + tmpImg : tmpImg);
                 var img = new Image();
                 img.src = tmpImg;
                 img.onerror = function () {
