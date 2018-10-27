@@ -541,7 +541,7 @@ function loadImage(config, layer, categoryLayer) {
             if (this._isAssigned) {
                 this._isAssigned = false;
                 var imageObj = new Image();
-                imageObj.src = null;
+                imageObj.src = 'javascript/scene/image/intrcourse/s.png';
                 this.resultImage.image(imageObj);
                 var anim = createAnimation(this, null, 0, 0);
                 anim.start();
