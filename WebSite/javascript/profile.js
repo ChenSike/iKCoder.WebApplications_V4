@@ -5003,6 +5003,12 @@ function webSocketReceiveCircle(evt) {
             webSocketFormatMsg(valDoc);
             break;
         case 'Action_Set_NewDialog':
+            //"<ret><faction>Action_Set_NewDialog</faction><doc><root type='passive'><action>Action_Get_DialogList</action></root></doc></ret>"
+            if (passive) {
+
+            } else {
+
+            }
 
             break;
         case 'Action_Get_BatchArrProfile':

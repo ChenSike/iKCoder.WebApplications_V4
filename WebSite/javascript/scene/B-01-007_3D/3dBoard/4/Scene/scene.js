@@ -6,7 +6,7 @@ var expectedArc = {cx : 4, cy : -4, radius : 2};
 var arcCount = 0;
 
 Scene.initEnvironment = function (containerId) {
-    changeSiderBarWidth(700);
+    //changeSiderBarWidth(700);
     Scene.initGlobalParams();
     
     var params = {

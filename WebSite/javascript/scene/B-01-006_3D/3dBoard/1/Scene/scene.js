@@ -7,7 +7,7 @@ Scene.rotatePoint = [{ x: 0, y: 0 }];
 var patternPoint = [0, 0, 6, 10.392, 6, 10.392, 12, 0, 12, 0, 0 , 0];
 
 Scene.initEnvironment = function (containerId) {
-    changeSiderBarWidth(700);
+    //changeSiderBarWidth(700);
     Scene.initGlobalParams();
     var params = {
         fog: null,
