@@ -618,3 +618,19 @@ function _groupSortZh(sourceArr, sortAttr) {
 
     return retObj;
 };
+
+function _startIntroJs() {
+    $('head').find('link').each(function (index, ele) {
+        if ($(ele).attr('href').indexOf('introjs.min.css') >= 0) {
+            introJs().setOptions({
+                'showButtons': true,
+                "nextLabel": "下一步",
+                "prevLabel": "上一步",
+                "skipLabel": "跳过",
+                "doneLabel": "完成",
+                "exitOnEsc": true,
+                "keyboardNavigation": true
+            }).start();
+        }
+    });
+};

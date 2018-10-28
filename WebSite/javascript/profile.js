@@ -91,7 +91,6 @@ var _gCircleUsers = [];
 var _gCircleGroups = [];
 var _gCurrentChatter = { id: '', type: '' };
 
-
 function initPage() {
     globalResize();
     showLoadingMask();
@@ -748,7 +747,7 @@ function buildDetail_Course(response) {
     var tmpState;
     for (var i = 0; i < datas.length; i++) {
         tmpState = (datas[i].status == '1' ? 'fas fa-star-half-alt' : datas[i].status == '2' ? 'fas fa-star' : 'far fa-star');
-        tmpHTMLArr.push('       <tr>');
+        tmpHTMLArr.push('       <tr class="row-courses-group-item" data-target="' + datas[i].symbol + '" data-title="' + datas[i].title + '" style="cursor: pointer;">');
         tmpHTMLArr.push('           <td class="text-center"><i class="' + tmpState + ' course-state" data-target="' + datas[i].status + '"></i></td>');
         tmpHTMLArr.push('           <td>' + datas[i].title + '</td>');
         tmpHTMLArr.push('           <td><span class="course-step-total">' + datas[i].steps + '</span></td>');
@@ -768,7 +767,8 @@ function buildDetail_Course(response) {
     tmpHTMLArr.push('    </div>');
     $('.row-courses-group-item-list').remove();
     $('.row-courses-group-list').after($(tmpHTMLArr.join('')));
-    $('.row-courses-group-item-list .course-start').on('click', function (eventObj) {
+    //$('.row-courses-group-item-list .course-start').on('click', function (eventObj) {
+    $('.row-courses-group-item-list .row-courses-group-item').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
         window.open("workplatform.html?scene=" + target.attr('data-target') + '&step=0&title=' + target.attr('data-title'));
     });
@@ -1005,9 +1005,9 @@ function showExperimentAttachs(data) {
 };
 
 function circleInitChats(doc) {
-    _gCircleChats = [];
     var items = doc.find('item');
     var itemObj, exist;
+    var hasSysChat = false;
     for (var i = 0; i < items.length; i++) {
         itemObj = $(items[i]);
         exist = false;
@@ -1019,25 +1019,44 @@ function circleInitChats(doc) {
         }
 
         if (!exist) {
+            var userID = itemObj.attr('uid');
             _gCircleChats.push({
                 chatId: itemObj.attr('symbol'),
-                chatter: itemObj.attr('uid'),
-                type: '',
+                chatter: userID,
+                type: userID == '-1' ? 'user' : _checkPhoneNumber(userID) ? 'user' : _checkGUID(userID) ? 'group' : 'channel',
                 msgs: []
             });
         }
     }
+    //_gCircleChats = [{ chatId: '-1', chatter: '-1', type: 'user', msgs: [] }];
+    var unknowUsers = [];
+    for (var i = 0; i < _gCircleChats.length; i++) {
+        exist = false;
+        for (var j = 0; j < _gCircleUsers.length; j++) {
+            if (_gCircleUsers[j].userId == _gCircleChats[i].chatter) {
+                exist = true;
+                break;
+            }
+        }
 
-    if (_gCircleChats.length <= 0) {
-        _gCircleChats.push({
-            chatId: '-1',
-            chatter: '-1',
-            type: 'user',
-            msgs: []
-        })
+        if (!exist) {
+            unknowUsers.push(_gCircleChats[i].chatter);
+        }
+
+        if (_gCircleChats[i].chatter == '-1') {
+            hasSysChat = true;
+        }
     }
 
-    circleBuildSection_Chat('-1', 'user');
+    if (hasSysChat) {
+        if (unknowUsers.length > 0) {
+            webSocketSend('Action_Get_BatchArrProfile', '', '', [], {}, unknowUsers);
+        } else {
+            circleBuildSection_Chat('-1', 'user');
+        }
+    } else {
+        webSocketSend('Action_Set_NewDialog', '', '', ['-1'], {}, []);
+    }
 };
 
 function buildContent_Circle() {
@@ -1732,7 +1751,7 @@ function initEvents_Circle_Chat() {
             }
 
             _gCircleChats[symbol].push(msg);
-            webSocketSend('send', msg);
+            webSocketSend('Action_Set_SendMessage', '', '', [chatterId], {}, []);
             circleUpdateMsgHistory();
         }
     });
@@ -1964,6 +1983,8 @@ function circleBuildSection_Chat(id, type) {
     //load messages
     var chatterId = (arguments.length == 2 ? id : _gCurrentChatter.id == '' ? '-1' : _gCurrentChatter.id);
     var chatterType = (arguments.length == 2 ? type : _gCurrentChatter.type == '' ? 'user' : _gCurrentChatter.type);
+    _gCurrentChatter.id = chatterId;
+    _gCurrentChatter.type = chatterType;
     var exist = false;
     for (var i = 0; i < _gCircleChats.length; i++) {
         if (_gCircleChats[i].chatter == chatterId) {
@@ -5002,14 +5023,8 @@ function webSocketReceiveCircle(evt) {
         case 'Action_Get_DialogContent':
             webSocketFormatMsg(valDoc);
             break;
-        case 'Action_Set_NewDialog':
-            //"<ret><faction>Action_Set_NewDialog</faction><doc><root type='passive'><action>Action_Get_DialogList</action></root></doc></ret>"
-            if (passive) {
-
-            } else {
-
-            }
-
+        case 'Action_Set_NewDialog':            
+            
             break;
         case 'Action_Get_BatchArrProfile':
             circleUpdateUserList(valDoc, 'user');
@@ -5019,6 +5034,9 @@ function webSocketReceiveCircle(evt) {
                     break;
                 case 'Action_Get_RelationsAcceptableList':
                     circleBuildNewFriendsList();
+                    break;
+                case 'Action_Get_DialogList':
+                    circleBuildSection_Chat('-1', 'user');
                     break;
             }
 
@@ -5262,3 +5280,21 @@ function testswebSocketGetCiecleHistory(userSymbol, userType) {
 $(window).on('unload', function () {
     webSocketClose();
 });
+
+function _checkPhoneNumber(phone) {
+    var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    if (!phoneReg.test(phone)) {
+        return false;
+    } else {
+        return true;
+    }
+};
+
+function _checkGUID(guid) {
+    var guidReg = /[?a-zA-Z0-9]{8}-[?a-zA-Z0-9]{4}-[?a-zA-Z0-9]{4}-[?a-zA-Z0-9]{4}-[?a-zA-Z0-9]{12}/;
+    if (!guidReg.test(guid)) {
+        return false;
+    } else {
+        return true;
+    }
+}

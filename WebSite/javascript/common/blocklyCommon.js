@@ -433,7 +433,7 @@ function initStatusAlertEvents() {
             window.open("", "_self");
             window.close();
         } else {
-            window.location.href = "workplatform.html?scene=" + _gStageData.course.id + "&step=" + (current + 1);
+            window.location.href = "workplatform.html?scene=" + getQueryString('scene') + "&step=" + (current + 1);
         }
     });
 
