@@ -2,7 +2,7 @@
   <basic>
     <usr id="42" nickname="iKCoder"/>
   </basic>
-  <sence name="萌宠大逃亡" symbol="OE_01_001" id="" totalstage="3" currentstage="3" finishstage="2" next="OE_01_001"/>
+  <sence name="萌宠大逃亡" symbol="OE_001" id="" totalstage="3" currentstage="3" finishstage="2" next="OE_001"/>
   <tips>
   </tips>
   <toolbox src="OE-01-001_3D/3/Blocks/blocks.JS">

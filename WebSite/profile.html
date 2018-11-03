@@ -291,6 +291,7 @@
     <link rel="stylesheet" href="style/common.bak.css">
     <link rel="stylesheet" href="style/profile.css">
     <script src="javascript/common/jquery-3.2.1.js"></script>
+    <script src="javascript/common/jquery.base64.js"></script>
     <script src="javascript/common/fontawesome-all.min.js"></script>
     <script src="javascript/common/tether.min.js"></script>
     <script src="javascript/common/bootstrap.js"></script>
@@ -346,7 +347,7 @@
                                                 </div>
                                             </li>
                                             <li class="nav-item">
-                                                <button type="button" class="btn btn-sm btn-light" id="btn_Student_SignOut" style="margin-left:10px;">                                                    
+                                                <button type="button" class="btn btn-sm btn-light" id="btn_Student_SignOut" style="margin-left:10px;">
                                                     <i class="fas fa-sign-out-alt text-16"></i>
                                                     <span class="mood-text">安全退出</span>
                                                 </button>
@@ -398,8 +399,12 @@
                                         <img class="img-fluid" id="img_Siderbar_Header" src="image/tmpheader.jpg" />
                                     </div>
                                     <div class="col text-center siderbar-user-infors">
-                                        <p id="txt_Siderbar_NickName" style="margin-left: -10px;"></p>
-                                        <p class="font-weight-bold text-12" id="txt_Siderbar_UserTitle" style="margin-left: -10px;"></p>
+                                        <div style="margin-left: -10px;">
+                                            <p id="txt_Siderbar_NickName"></p>
+                                        </div>
+                                        <div style="margin-left: -10px;">
+                                            <p class="font-weight-bold text-12" id="txt_Siderbar_UserTitle"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -206,8 +206,10 @@ footer {
     .siderbar-user-infors p {
         text-align: left;
         font-size: 14px;
-        height: 30px;
-        line-height: 30px;
+        height: 35px;
+        /*line-height: 30px;*/
+        vertical-align: middle;
+        display: table-cell;
     }
 
 .row-courses-group-list {
@@ -668,6 +670,9 @@ footer {
 
         .col-circle-message-list .row-message-item img.user-header {
             max-width: 30px;
+            max-height: 30px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             border: solid 2px rgb(17,138,195);
             box-shadow: 1px 1px 5px rgb(142,142,142);

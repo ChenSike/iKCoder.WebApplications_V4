@@ -89,7 +89,7 @@ var _circleDataSearch = { value: [] };
 var _gCircleChats = [];
 var _gCircleUsers = [];
 var _gCircleGroups = [];
-var _gCurrentChatter = { id: '', type: '' };
+var _gCurrentChatter = { id: '', type: '', chat: '' };
 
 function initPage() {
     globalResize();
@@ -194,24 +194,33 @@ function initEvents() {
                 var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
                 if (success) {
                     $('#modalCustomHeader').modal('hide');
-                    ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function () {
-                        var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
+                    ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', function (response_header) {
+                        var success = ($($(response_header).find('executed')[0]).text() == 'true' ? true : false);
                         if (success) {
                             var tmpImg = $($(response_header).find('msg')[0]).text();
                             if (tmpImg.indexOf('.') < 0) {
                                 tmpImg = 'image/tmpheader.jpg';
                             } else {
-                                tmpImg = (tmpImg.indexOf('http://') != 0 ? 'http://' + tmpImg : tmpImg);
+                                tmpImg = (tmpImg.indexOf('http://') != 0 ? 'http://' + tmpImg : tmpImg) + '?rnd=' + (new Date()).valueOf();
                                 var img = new Image();
+                                //img.setAttribute('crossOrigin', 'anonymous');
                                 img.src = tmpImg;
                                 img.onerror = function () {
                                     _gUserInfoObj.header = 'image/tmpheader.jpg';
                                     _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
+                                    $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header);
+                                    $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header);
+                                    $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header);
+                                    $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header);
                                 };
                             }
 
                             _gUserInfoObj.header = tmpImg;
                             _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
+                            $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header);
+                            $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header);
+                            $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header);
+                            $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header);
                         }
                     });
                 } else {
@@ -219,7 +228,9 @@ function initEvents() {
                 }
             };
 
-            ajaxFn('POST', _getRequestURL(_gURLMapping.account.setheader, {}), { data: document.getElementById("canvas_Sample_1").toDataURL() }, successFn);
+            var data64 = document.getElementById("canvas_Sample_1").toDataURL().split(',');
+            var tmpHead = data64.shift();
+            ajaxFn('POST', _getRequestURL(_gURLMapping.account.setheader64, {}), { data: data64.join(',') }, successFn);
         }
     });
 };
@@ -374,7 +385,7 @@ function buildCategoryContent(categoryId) {
             break;
         case 'circle':
             buildContent_Circle();
-            webSocketSend('Action_Get_DialogList', '', '', [], {}, []);
+            webSocketSend('Action_Get_DialogList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
             break;
         case 'report':
             buildContent_Report();
@@ -1012,7 +1023,7 @@ function circleInitChats(doc) {
         itemObj = $(items[i]);
         exist = false;
         for (var j = 0; j < _gCircleChats.length; j++) {
-            if (typeof _gCircleChats[j].chatId == itemObj.attr('symbol')) {
+            if (_gCircleChats[j].chatId == itemObj.attr('symbol')) {
                 exist = true;
                 break;
             }
@@ -1050,12 +1061,12 @@ function circleInitChats(doc) {
 
     if (hasSysChat) {
         if (unknowUsers.length > 0) {
-            webSocketSend('Action_Get_BatchArrProfile', '', '', [], {}, unknowUsers);
+            webSocketSend('Action_Get_BatchArrProfile', { symbol: '', msg: '', targets: [], values: {}, batch: unknowUsers, id: '' });
         } else {
             circleBuildSection_Chat('-1', 'user');
         }
     } else {
-        webSocketSend('Action_Set_NewDialog', '', '', ['-1'], {}, []);
+        webSocketSend('Action_Set_NewDialog', { symbol: '', msg: '', targets: ['-1'], values: {}, batch: [], id: '' });
     }
 };
 
@@ -1142,6 +1153,7 @@ function circleBuildFriendPart() {
 function circleBuildFriendItem(tmpHTMLArr, item, chatId) {
     tmpHTMLArr.push('<div class="row row-circle-user-list-item" data-target="' + item.userId + '" data-type="' + item.type + '" data-chat="' + chatId + '">');
     tmpHTMLArr.push('   <div class="col-1 col-circle-user-list-item-header">');
+    var tmpImg = '';
     if (item.type == 'group') {
         var imgStyle = (item.items.length <= 4 ? 'width:15px;height:15px;' : '');
         var wrapStyle = (item.items.length > 4 && item.items.length < 7 ? 'style="padding: 5px 0px;"' : '');
@@ -1158,13 +1170,14 @@ function circleBuildFriendItem(tmpHTMLArr, item, chatId) {
                     marginStyle += 'margin-left:1px;';
                 }
             }
-
-            tmpHTMLArr.push('           <img class="circle-group-item-header" src="' + item.items[j].header + '" style="' + imgStyle + marginStyle + '">');
+            tmpImg = (item.items[j].header != 'image/tmpheader.jpg' ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: item.userId }) : item.items[j].header);
+            tmpHTMLArr.push('           <img class="circle-group-item-header" src="' + tmpImg + '" style="' + imgStyle + marginStyle + '">');
         }
 
         tmpHTMLArr.push('       </div>');
     } else {
-        tmpHTMLArr.push('       <img class="img-fluid circle-user-list-item-header" src="' + item.header + '">');
+        tmpImg = (item.header != 'image/tmpheader.jpg' ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: item.userId }) : item.header);
+        tmpHTMLArr.push('       <img class="img-fluid circle-user-list-item-header" src="' + tmpImg + '">');
     }
 
     tmpHTMLArr.push('   </div>');
@@ -1522,7 +1535,7 @@ function initEvents_Circle() {
             $(eventObj.currentTarget).addClass('active');
             switch (tmpSymbol) {
                 case 'address':
-                    webSocketSend('Action_Get_RelationsList', '', '', [], {});
+                    webSocketSend('Action_Get_RelationsList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
                     break;
                 case 'chat':
                     circleBuildSection_Chat();
@@ -1535,7 +1548,7 @@ function initEvents_Circle() {
     });
 
     $('#modalFindFriend .btn-circle-addfriend-search').on('click', function (eventObj) {
-        webSocketSend('Action_Get_RelationsSearch', '', '', [], { value: $('#txt_Circle_AddFriend_Search').val() });
+        webSocketSend('Action_Get_RelationsSearch', { symbol: '', msg: '', targets: [], values: { value: $('#txt_Circle_AddFriend_Search').val() }, batch: [], id: '' });
     });
 };
 
@@ -1549,6 +1562,7 @@ function circleRefresh_SearchResult(doc) {
         var item, uid, header, name, sex, country, state, city, school, tmpImg;
         for (var i = 0; i < items.length; i++) {
             item = $(items[i]);
+            uid = item.attr('uid');
             header = (item.attr('header') == '' ? 'image/tmpheader.jpg' : item.attr('header'));
             tmpImg = new Image();
             tmpImg.src = header;
@@ -1556,7 +1570,6 @@ function circleRefresh_SearchResult(doc) {
                 $('.search-result-header[data-target="' + uid + '"]').attr('src', 'image/tmpheader.jpg');
             };
 
-            uid = item.attr('uid');
             name = (item.attr('nickname') == '' ? uid : item.attr('nickname'));
             sex = (item.attr('sex') == '1' ? 'male' : 'female');
             country = (item.attr('country') == '' ? 'China' : item.attr('country'));
@@ -1588,7 +1601,7 @@ function circleRefresh_SearchResult(doc) {
 
         container.append($(tmpHTMLArr.join('')));
         $('#modalFindFriend .btn-new-friend-request').on('click', function (eventObj) {
-            webSocketSend('Action_Set_NewFriend', '', '', [], { suname: $(eventObj.currentTarget).attr('data-target') });
+            webSocketSend('Action_Set_NewFriend', { symbol: '', msg: '', targets: [], values: { suname: $(eventObj.currentTarget).attr('data-target') }, batch: [], id: '' });
         });
     }
 };
@@ -1744,15 +1757,19 @@ function initEvents_Circle_Chat() {
 
     $('.circle-message-input-send').on('click', function () {
         if (!circleCheckEmptyInput()) {
-            var msg = circleBuildMessageItem($('.circle-message-input-field').html(), 0, _gUserInfoObj);
-            var symbol = $('.label-circle-message-history-user').attr('data-target');
-            if (typeof _gCircleChats[symbol] == undefined || !$.isArray(_gCircleChats[symbol])) {
-                _gCircleChats[symbol] = [];
+            var input = $('.circle-message-input-field').html();
+            var msg = circleBuildMessageItem(input, 0, _gUserInfoObj);
+            var chatterId = $('.label-circle-message-history-user').attr('data-target');
+            var symbol = '';
+            for (var i = 0; i < _gCircleChats.length; i++) {
+                if (_gCircleChats[i].chatter == chatterId) {
+                    symbol = _gCircleChats[i].chatId;
+                    _gCircleChats[i].msgs.push(msg);
+                }
             }
 
-            _gCircleChats[symbol].push(msg);
-            webSocketSend('Action_Set_SendMessage', '', '', [chatterId], {}, []);
-            circleUpdateMsgHistory();
+            $('.container-circle-message-history').append(msg);
+            webSocketSend('Action_Set_SendMessage', { symbol: symbol, msg: $.base64.atob(input), targets: [chatterId], values: {}, batch: [], id: '' });
         }
     });
 
@@ -1766,10 +1783,10 @@ function initEvents_Circle_Chat() {
 
     $('#search_Circle').on('onSetSelectValue', function () {
         var user = arguments[2];
-        circleUpdateMsgHistory(user.id);
-        $('.row-circle-user-list-item').removeClass('active');
-        var currItem = $(eventObj.currentTarget);
-        currItem.addClass('active');
+        //circleUpdateMsgHistory(user.id);
+        //$('.row-circle-user-list-item').removeClass('active');
+        //var currItem = $(eventObj.currentTarget);
+        //currItem.addClass('active');
     });
 
     $('.col-circle-message-history-button .btn.btn-sm').on('click', function (eventObj) {
@@ -1985,18 +2002,18 @@ function circleBuildSection_Chat(id, type) {
     var chatterType = (arguments.length == 2 ? type : _gCurrentChatter.type == '' ? 'user' : _gCurrentChatter.type);
     _gCurrentChatter.id = chatterId;
     _gCurrentChatter.type = chatterType;
-    var exist = false;
+    _gCurrentChatter.chat = '';
     for (var i = 0; i < _gCircleChats.length; i++) {
         if (_gCircleChats[i].chatter == chatterId) {
-            exist = true;
+            _gCurrentChatter.chat = _gCircleChats[i].chatId;
             break;
         }
     }
 
-    if (exist) {
-        webSocketSend('Action_Get_DialogContent', '', '', [chatterId], {}, []);
+    if (_gCurrentChatter.chat != '') {
+        webSocketSend('Action_Get_DialogContent', { symbol: _gCurrentChatter.chat, msg: '', targets: [], values: {}, batch: [], id: '' });
     } else {
-        webSocketSend('Action_Set_NewDialog', '', '', [chatterId], {}, []);
+        webSocketSend('Action_Set_NewDialog', { symbol: '', msg: '', targets: [chatterId], values: {}, batch: [], id: '' });
     }
 
     initEvents_Circle_Chat();
@@ -2143,15 +2160,14 @@ function circleClickAddressItem(eventObj) {
     var currType = 'user';
     if (userId == '-2') {
         currUserObj = { userName: "新朋友", header: "image/tmpheader.jpg", userId: "-2" };
-        webSocketSend('Action_Get_RelationsAcceptableList', '', '', [], {});
+        webSocketSend('Action_Get_RelationsAcceptableList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
         $('.row-circle-message-part-2').hide();
         $('.row-circle-message-part-1').show();
     } else if (userId == '-3') {
         currType = 'channel';
         currUserObj = { userName: "频道", header: "image/tmpheader.jpg", userId: "-3" };
         var channelFn = function (response) {
-            var channels = initChannelForTest();
-            circleBuildChannelList(channels);
+            circleBuildChannelList([]);
         };
 
         ajaxFn('GET', _getRequestURL(_gURLMapping.circle.getguests, {}), '', channelFn);
@@ -2162,7 +2178,7 @@ function circleClickAddressItem(eventObj) {
             currType = 'group';
             $('.row-circle-message-part-1').show();
             $('.row-circle-message-part-2').hide();
-            currUserObj = getCurrentGroup(userId);
+            currUserObj = circleGetUserObj(userId, 'group');
             circleBuildGroupDetail(userId);
         } else {
             currUserObj = circleGetUserObj(userId, currType);
@@ -2226,7 +2242,7 @@ function circleBuildNewFriendsList() {
 };
 
 function circleAcceptFriendRequest(userId) {
-
+    //'Action_Set_AcceptFriend'
 };
 
 function circleBuildChannelList(channels) {
@@ -2435,6 +2451,12 @@ function circleSwitchToTalk(chatterId, chatterType) {
     $('.col-circle-message-history-button .btn.btn-sm').attr('data-type', chatterType);
     _gCurrentChatter.id = chatterId;
     _gCurrentChatter.type = chatterType;
+    for (var i = 0; i < _gCircleChats.length; i++) {
+        if (_gCircleChats[i].chatter == chatterId) {
+            _gCurrentChatter.chat = _gCircleChats[i].chatId;
+            break;
+        }
+    }
 };
 
 function circleOpenRelpayPop(chatterId) {
@@ -2474,14 +2496,7 @@ function circleOpenRelpayPop(chatterId) {
 };
 
 function circleBuildGroupDetail(groupId) {
-    var currGroup = getCurrentGroup(groupId);
-    for (var i = 0; i < _testGroups.length; i++) {
-        if (groupId == _testGroups[i].userId) {
-            currGroup = _testGroups[i];
-            break;
-        }
-    }
-
+    var currGroup = circleGetUserObj(groupId, 'group');
     var container = $('.container-circle-message-history');
     var tmpHTMLArr = [];
     tmpHTMLArr.push('<div class="row row-circle-address-group-items">');
@@ -2642,8 +2657,7 @@ function circleClickUserItem(currentTarget) {
     var symbolEl = $(currentTarget.find('.circle-user-list-item-msg')[0]);
     symbolEl.text('0');
     symbolEl.hide();
-    //act, iSymbol, iMsg, iTargets, iValue, iBatch
-    webSocketSend('Action_Get_DialogContent', tmpChatId, '', [], {}, []);
+    webSocketSend('Action_Get_DialogContent', { symbol: tmpChatId, msg: '', targets: [], values: {}, batch: [], id: '' });
 };
 
 function circleDBClickUserItem(eventObj) {
@@ -4563,26 +4577,13 @@ function _checkPwdIntension(value, lbField) {
 
 function initCustomHeaderImg(path) {
     var successFn = function (response) {
-        if (_getExcuted(response)) {
-            var tmpImg = $($(response).find('msg')[0]).text();
-            if (tmpImg.indexOf('.') < 0) {
-                tmpImg = 'image/tmpheader.jpg';
-            } else {
-                tmpImg = (tmpImg.indexOf('http://') != 0 ? 'http://' + tmpImg : tmpImg);
-                var img = new Image();
-                img.src = tmpImg;
-                img.onerror = function () {
-                    _gUserInfoObj.header = 'image/tmpheader.jpg';
-                    _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
-                };
-            }
-
-            _gUserInfoObj.header = tmpImg;
+        if (response != '') {
             var canvas = document.getElementById("canvas_CustomHeader");
             var ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, 320, 320);
             var image = new Image();
-            image.src = (typeof path == 'string' ? path : _gUserInfoObj.header);
+            image.setAttribute('crossOrigin', 'anonymous');
+            image.src = response;
             image.onload = function () {
                 var tmpSize = calcExhibitionSize(image);
                 ctx.drawImage(image, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
@@ -4591,6 +4592,7 @@ function initCustomHeaderImg(path) {
             };
             image.onerror = function () {
                 var img = new Image();
+                img.setAttribute('crossOrigin', 'anonymous');
                 img.src = 'image/tmpheader.jpg';
                 var tmpSize = calcExhibitionSize(img);
                 ctx.drawImage(img, 0, 0, tmpSize.w, tmpSize.h, (320 - tmpSize.nw) / 2, (320 - tmpSize.nh) / 2, tmpSize.nw, tmpSize.nh);
@@ -4607,7 +4609,7 @@ function initCustomHeaderImg(path) {
         }
     };
 
-    ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader, {}), '', successFn);
+    ajaxFn('GET', _getRequestURL(_gURLMapping.account.getheader64, {}), '', successFn);
 }
 
 var _eventBinded = false;
@@ -4804,16 +4806,6 @@ function showSampleImage(image, left, top, width, height, newSize) {
 };
 
 function getCircleToken() {
-    /*<root>
-    <item action="Action_Set_NewDialog"></item>
-    <item action="Action_Get_DialogContent"></item>
-    <item action="Action_Set_SendMessage"></item>
-    <item action="Action_Set_DelDialog"></item>
-    <item action="Action_Get_DialogList"></item>
-    <item action="Action_Get_RelationsList"></item>
-    <item action="Action_Get_RelationsSearch"></item>
-    <item action="Action_Set_NewFriend"></item>
-    </root>*/
     var actionFn = function (response) {
         var actions = $(response).find('item');
         if (actions.length > 0) {
@@ -4850,23 +4842,20 @@ function webSocketCreate() {
     };
 };
 
-function webSocketGetCiecleHistory(userSymbol) {
-    return;
-    webSocketSend("gethistory");
-}
-
 var _gCurrentAction = '';
-function webSocketSend(act, iSymbol, iMsg, iTargets, iValue, iBatch) {
+//iSymbol, iMsg, iTargets, iValue, iBatch
+function webSocketSend(act, paramsObj) {
     _gCurrentAction = (act == 'Action_Get_BatchArrProfile' ? _gCurrentAction : act);
-    var symbol = (typeof iSymbol == 'string' ? iSymbol : '');
-    var msg = (typeof iMsg == 'string' ? iMsg : '');
+    var symbol = (typeof paramsObj.symbol == 'string' ? paramsObj.symbol : '');
+    var msg = (typeof paramsObj.msg == 'string' ? paramsObj.msg : '');
     var value = '';
-    for (var key in iValue) {
-        value += '<' + key + '>' + iValue[key] + '</' + key + '>';
+    for (var key in paramsObj.values) {
+        value += '<' + key + '>' + paramsObj.values[key] + '</' + key + '>';
     }
 
-    var targets = ($.isArray(iTargets) ? iTargets : []);
-    var batch = ($.isArray(iBatch) ? iBatch : []);
+    var targets = ($.isArray(paramsObj.targets) ? paramsObj.targets : []);
+    var batch = ($.isArray(paramsObj.batch) ? paramsObj.batch : []);
+    var id = (typeof paramsObj.id == 'string' ? paramsObj.id : '');
     var tmpMsg = [];
     tmpMsg.push('<root>');
     tmpMsg.push('<from>');
@@ -4875,6 +4864,9 @@ function webSocketSend(act, iSymbol, iMsg, iTargets, iValue, iBatch) {
     tmpMsg.push('<symbol>');
     tmpMsg.push(symbol);
     tmpMsg.push('</symbol>');
+    tmpMsg.push('<id>');
+    tmpMsg.push(id);
+    tmpMsg.push('</id>');
     tmpMsg.push('<action>');
     tmpMsg.push(act);
     tmpMsg.push('</action>');
@@ -4915,7 +4907,7 @@ function webSocketSend(act, iSymbol, iMsg, iTargets, iValue, iBatch) {
     } else {
         webSocketCreate();
         _gSocket.onopen = function () {
-            webSocketSend(act, iSymbol, iMsg, iTargets, iValue);
+            webSocketSend(act, paramsObj);
         };
     }
 };
@@ -4986,10 +4978,10 @@ function webSocketReceiveCircle(evt) {
             break;
         case 'Action_Get_RelationsList':
             if (passive) {
-                webSocketSend('Action_Get_RelationsList', '', '', [], {});
+                webSocketSend('Action_Get_RelationsList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
             } else {
                 if (addressItem.hasClass('active')) {
-                    webSocketSend('Action_Get_BatchArrProfile', '', '', [], {}, getUesrIdArrFromNewFriendDoc(valDoc));
+                    webSocketSend('Action_Get_BatchArrProfile', { symbol: '', msg: '', targets: [], values: {}, batch: getUesrIdArrFromNewFriendDoc(valDoc), id: '' });
                 } else {
                     addressAlert.text('').show();
                 }
@@ -4998,12 +4990,12 @@ function webSocketReceiveCircle(evt) {
             break;
         case 'Action_Get_RelationsAcceptableList':
             if (passive) {
-                webSocketSend('Action_Get_RelationsAcceptableList', '', '', [], {});
+                webSocketSend('Action_Get_RelationsAcceptableList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
             } else {
                 if (newFriendItem.hasClass('active')) {
                     var tmpArr = circleCheckUnexistNewFriend(valDoc);
                     if (tmpArr.length > 0) {
-                        webSocketSend('Action_Get_BatchArrProfile', '', '', [], {}, tmpArr);
+                        webSocketSend('Action_Get_BatchArrProfile', { symbol: '', msg: '', targets: [], values: {}, batch: tmpArr, id: '' });
                     } else {
                         circleBuildNewFriendsList();
                     }
@@ -5016,6 +5008,10 @@ function webSocketReceiveCircle(evt) {
                     }
                 }
             }
+
+            break;
+        case 'Action_Set_AcceptFriend':
+            webSocketSend('Action_Get_RelationsList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
             break;
         case 'Action_Get_DialogList':
             circleInitChats(valDoc);
@@ -5023,8 +5019,8 @@ function webSocketReceiveCircle(evt) {
         case 'Action_Get_DialogContent':
             webSocketFormatMsg(valDoc);
             break;
-        case 'Action_Set_NewDialog':            
-            
+        case 'Action_Set_NewDialog':
+            webSocketSend('Action_Get_DialogList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
             break;
         case 'Action_Get_BatchArrProfile':
             circleUpdateUserList(valDoc, 'user');
@@ -5089,7 +5085,7 @@ function webSocketReceiveCircle(evt) {
     }
 
     if (isDisplay) {
-        circleUpdateMsgHistory();
+        // circleUpdateMsgHistory();
     }
 };
 
@@ -5099,183 +5095,6 @@ function webSocketFormatMsg(doc) {
     var symbol = row.attr('symbol');
 
 };
-
-
-
-
-function initFriendsForTest() {
-    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
-    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
-    _circleDataSearch = { value: [] };
-    _gCircleUsers = [{
-        userName: '系统消息',
-        header: 'image/tmpheader.jpg',
-        userId: '-1',
-        "msg": '',
-        "accecpt": true,
-        "gender": '',
-        "address": '',
-        "comment": '系统消息和通知',
-        "note": '',
-        "type": 'user'
-    }];
-    for (var i = 0; i < 20; i++) {
-        var tmpIdx = randomInt(0, 19);
-        var newUser = {
-            "userName": names[tmpIdx % 13],
-            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
-            "userId": i + 99,
-            "msg": ['申请成文好友的信息：' + i],
-            "accecpt": tmpIdx % 5 % 2,
-            "gender": tmpIdx % 2,
-            "address": 'Address ' + i,
-            "comment": 'Comment ' + i,
-            "note": 'Note ' + i,
-            "type": 'user'
-        };
-
-        _circleDataSearch.value.push(newUser);
-        _gCircleUsers.push(newUser);
-    }
-
-    _gCircleUsers = _gCircleUsers.concat(initGroupForTest());
-    _gCircleUsers = _gCircleUsers.concat(initChannelForTest());
-};
-
-function initNewFriendsForTest() {
-    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
-    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
-    var result = [];
-    for (var i = 0; i < 20; i++) {
-        var tmpIdx = randomInt(0, 19);
-        var newUser = {
-            "userName": names[tmpIdx % 13],
-            "header": "image/header/" + (tmpIdx % 10) + ".jpg",
-            "userId": i + 99,
-            "msg": ['申请成为好友的信息：' + i],
-            "accecpt": tmpIdx % 5 % 2,
-            "gender": tmpIdx % 2,
-            "address": 'Address ' + i,
-            "comment": 'Comment ' + i,
-            "note": 'Note ' + i,
-            "type": 'user'
-        };
-
-        result.push(newUser);
-    }
-
-    return result;
-};
-
-var _testGroups = [];
-function initGroupForTest() {
-    var names = ["淳芸", "orion-01", "唐宏禹", "穆晓晨", "张欢引", "吴琼", "吴东鹏", "黄少铅", "胡运燕", "刘幸", "陈媛媛", "李大鹏", "旷东林"];
-    var shortAccount = ["chunyun", "orion-01", "tanghongyu", "mUXIAOCHEN", "zhanghuanyin", "wuqiong", "wudongpeng", "huangshaoqian", "yunyan", "liuxing", "CHENYUANYUAN", "dapeng", "kuangdonglin"];
-    var users = [];
-    for (var i = 0; i < 13; i++) {
-        var newUser = {
-            "userName": names[i],
-            "header": "image/header/" + (i % 10) + ".jpg",
-            "userId": i + 99,
-            "gender": i % 2,
-            "address": 'Address ' + i,
-            "comment": 'Comment ' + i,
-            "note": 'Note ' + i,
-            "isnew": randomInt(0, 12) % 2,
-            "type": 'user'
-        };
-
-        users.push(newUser);
-    }
-
-    var result = [];
-    for (var i = 0; i < 5; i++) {
-        var tmpIdx = randomInt(3, 12);
-        var newGroup = { userId: 'group_' + i, items: [], userName: '', type: 'group', board: '' };
-        var tmpName = [];
-        for (var j = 0; j < tmpIdx; j++) {
-            newGroup.items.push(users[j]);
-            tmpName.push(users[j].userName);
-        }
-
-        newGroup.userName = (i % 3 == 0 ? '讨论组 ' + i : '');
-        result.push(newGroup);
-    }
-
-    _testGroups = result;
-    return result;
-};
-
-function getCurrentGroup(groupId) {
-    var currGroup = null;
-    for (var i = 0; i < _testGroups.length; i++) {
-        if (groupId == _testGroups[i].userId) {
-            currGroup = _testGroups[i];
-            break;
-        }
-    }
-
-    return currGroup;
-}
-
-function initChannelForTest() {
-    var names = ["C#讲堂", "JAVA讲堂", "Node.JS讲堂", "JavaScript讲堂", "Python讲堂", "C++讲堂", "Windows讲堂", "Lunix讲堂", "HTML5讲堂", "CSS3讲堂", "Three3D讲堂"];
-    var result = [];
-    for (var i = 0; i < names.length; i++) {
-        var newChannel = {
-            "userName": names[i],
-            "userId": 'channel-' + i,
-            "header": "image/header/" + (i % 10) + ".jpg",
-            "comment": "频道：" + names[i] + " 的简介",
-            "type": 'channel'
-        };
-
-        result.push(newChannel);
-    }
-
-    return result;
-};
-
-function testswebSocketGetCiecleHistory(userSymbol, userType) {
-    var tmpDatas = [
-        { type: -1, content: '哪种好主要看具体需求了,innerHTML和crea' },
-        { type: -1, content: '可创建文本节点。 此方法可返回 Text 对象' },
-        { type: 1, content: '2017年9月13日 - 用法: innerHTML的用法 Object.innerHTML createTextNode的用法 document.createTextNode(data)         parendNode.' },
-        { type: -1, content: '最佳答案: 哪种好主要看具体需求了,innerHTML和createTextNode都可以把一段内容添加到一个节点中,区别是如果这段内容中有html标签' },
-        { type: 1, content: '美媒称，主要的汽车生产国将在没有美国的情况下举行会谈' },
-        { type: 1, content: '据彭博社7月29日报道，三位知情人士称，来自欧盟、加拿大、墨西' },
-        { type: -1, content: '日本的代表将于7月31日在日内瓦召开会议' },
-        { type: 1, content: '车关税的国际协议的可能性，但另外两名官员表示这不' },
-        { type: -1, content: '报道称，尽管欧盟委员会主席容克和美国总统特朗普为避免“单边行动”而达成贸易协定，' },
-        { type: 1, content: '彭博社的报道称，“总统指示我们继续调查并汇总材料' }
-    ];
-
-    var targetUserEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"]');
-    var targetUserObj = circleGetUserObj(userSymbol, userType);
-    if (targetUserEl.length == 0) {
-        tmpHTMLArr = [];
-        circleBuildFriendItem(tmpHTMLArr, targetUserObj);
-        targetUserEl = $(tmpHTMLArr.join(''));
-        $('#collapse_Circle_' + targetUserGroupID + ' .circle-user-list-group .container-fluid').append(targetUserEl);
-        targetUserEl.on('click', function (eventObj) {
-            circleClickUserItem($(eventObj.currentTarget));
-        });
-        targetUserEl.on('dblclick', function (eventObj) {
-            circleDBClickUserItem(eventObj);
-        });
-    }
-
-    var currUserObj = circleGetUserObj(userSymbol, userType);
-    var targetUserNoteEl = $('.row-circle-user-list-item[data-target="' + userSymbol + '"] .col-circle-user-list-item-msg .circle-user-list-item-msg');
-    var newMsgItem;
-    _gCircleChats[userSymbol] = [];
-    for (var i = 0; i < tmpDatas.length; i++) {
-        newMsgItem = circleBuildMessageItem(tmpDatas[i].content, tmpDatas[i].type, (tmpDatas[i].type == -1 ? targetUserObj : _gUserInfoObj));
-        _gCircleChats[userSymbol].push(newMsgItem);
-    }
-
-    circleUpdateMsgHistory(userSymbol, userType);
-}
 
 $(window).on('unload', function () {
     webSocketClose();
@@ -5297,4 +5116,4 @@ function _checkGUID(guid) {
     } else {
         return true;
     }
-}
+};

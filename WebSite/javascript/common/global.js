@@ -60,8 +60,16 @@ var _gURLMapping = {
         updatepwd: _gHostName.Basic + 'Account_Students_ChangePWD',
         //Get	string withpath="1"
         getheader: _gHostName.Basic + 'Profiles_Students_GetHeader',
+        //get
+        getheader64: _gHostName.Basic + 'Profile_Students_GetHeaderB64',
+        //get ？uname=XXX
+        getuserheader64: _gHostName.Basic + 'Profiles_Students_GetUserHeaderB64',
+        //get ？uname=XXX
+        getuserheaderImg: _gHostName.Basic + 'Profiles_Students_GetUserHeaderImg',
         //Post
         setheader: _gHostName.Basic + 'Profiles_Students_SetHeader',
+        //Post
+        setheader64: _gHostName.Basic + 'Profiles_Students_SetHeaderB64',
         //Get	string sex, string nickname, string birthday, string state, string city , string country = "China"
         setinfo: _gHostName.Basic + 'Profiles_Students_SetTextInfo',
         //Get
