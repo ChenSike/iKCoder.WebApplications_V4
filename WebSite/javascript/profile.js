@@ -4529,52 +4529,6 @@ function formatDate(date) {
     return dateArr.join('-');
 };
 
-function _checkPassword(pwd) {
-    pwd = pwd.trim();
-    if (pwd.length < 8) {
-        if (pwd.length == 0) {
-            return -100;
-        } else {
-            return -200;
-        }
-    } else if (pwd.length > 16) {
-        return -300;
-    } else {
-        if (/^((?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%^&*]+$)(?![\d!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+){8}$/.test(pwd)) {
-            return 3;
-        } else if (/^((?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+){8}$/.test(pwd)) {
-            return 2;
-        } else if (/^(?:\d+|[a-zA-Z]+|[!@#$%^&*]+){8}$/.test(pwd)) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-};
-
-function _checkPwdIntension(value, lbField) {
-    var checkVal = _checkPassword(value);
-    if (checkVal == 1) {
-        lbField.text('弱');
-        lbField.css('color', 'rgb(255,0,0)');
-    } else if (checkVal == 2) {
-        lbField.text('中');
-        lbField.css('color', 'rgb(255,215,0)');
-    } else if (checkVal == 3) {
-        lbField.text('强');
-        lbField.css('color', 'rgb(50,205,50)');
-    } else if (checkVal == -100) {
-        lbField.html('&nbsp;&nbsp;&nbsp;&nbsp;');
-        lbField.css('color', 'rgb(255,255,255)');
-    } else if (checkVal == -200) {
-        lbField.text('过短');
-        lbField.css('color', 'rgb(255,0,0)');
-    } else if (checkVal == -300) {
-        lbField.text('过长');
-        lbField.css('color', 'rgb(255,0,0)');
-    }
-};
-
 function initCustomHeaderImg(path) {
     var successFn = function (response) {
         if (response != '') {
@@ -5099,15 +5053,6 @@ function webSocketFormatMsg(doc) {
 $(window).on('unload', function () {
     webSocketClose();
 });
-
-function _checkPhoneNumber(phone) {
-    var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
-    if (!phoneReg.test(phone)) {
-        return false;
-    } else {
-        return true;
-    }
-};
 
 function _checkGUID(guid) {
     var guidReg = /[?a-zA-Z0-9]{8}-[?a-zA-Z0-9]{4}-[?a-zA-Z0-9]{4}-[?a-zA-Z0-9]{4}-[?a-zA-Z0-9]{12}/;

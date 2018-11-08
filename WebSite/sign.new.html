@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>iKCoder・中国儿童编程教育创导者</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/common.bak.css">
+    <link rel="stylesheet" href="style/sign.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/fontawesome-all.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.js"></script>
+    <script src="javascript/common/global.js"></script>
+    <script src="javascript/sign/three.min.js"></script>
+    <script src="javascript/common/TweenMax.min.js"></script>
+    <script src="javascript/sign/EasePack.min.js"></script>
+    <script src="javascript/sign/OrbitControls.js"></script>
+    <script src="javascript/sign.js"></script>
+</head>
+<body>
+    <div class="container-fluid no-wrap" id="wrap_Global">
+        <div class="row no-wrap">
+            <div class="col no-wrap" id="col_Wrap_Global">
+                <div id="wrap_Logo">
+                    <div class="container-fluid no-wrap">
+                        <div class="row no-wrap">
+                            <div class="col-5  no-wrap">
+                                <img src="image/logo-new-white.png" width="150" height="50" alt="">
+                            </div>
+                            <div class="col-7 no-wrap">
+                                <div class="container-fluid no-wrap" id="wrap_Logo_Buttons">
+                                    <div class="row no-wrap">
+                                        <div class="col-4 no-wrap text-right">
+                                            <div class="logo-sign-button" id="signin_ForgetPWD_Btn">找回密码</div>
+                                        </div>
+                                        <div class="col-1 no-wrap text-center font-bold">
+                                            <div>|</div>
+                                        </div>
+                                        <div class="col-5 no-wrap text-left">
+                                            <div class="logo-sign-button" id="signin_Go_SignUp_Btn">创建新用户</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="wrap_SignIn" class="wrap-input-form">
+                    <div class="container-fluid no-wrap">
+                        <div class="form-group row title-field-row">
+                            <label for="" class="col-sm-2 col-form-label">登&nbsp;&nbsp;录</label>
+                        </div>
+                        <div class="form-group row input-field-row signin-username-row">
+                            <label for="txt_Signin_UserName" class="col-2 col-form-label">用&nbsp;户&nbsp;名</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control form-control-lg" id="txt_Signin_UserName" placeholder="请输入用户名" autocomplete="off">
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-lg next-step-button" id="signin_UserName_Next_Btn">
+                                    <i class="fas fa-arrow-circle-right fa-2x"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group row input-field-row signin-password-row" style="display:none;">
+                            <label for="txt_Signin_Password" class="col-2 col-form-label">密&nbsp;&nbsp;码</label>
+                            <div class="col-8">
+                                <input type="password" class="form-control form-control-lg" id="txt_Signin_Password" autocomplete="off" placeholder="请输入密码">
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-lg next-step-button" id="signin_Password_Next_Btn">
+                                    <i class="fas fa-arrow-circle-right fa-2x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="wrap_SignUp" class="wrap-input-form" style="display:none;">
+                    <div class="container-fluid no-wrap">
+                        <div class="form-group row title-field-row">
+                            <label for="" class="col col-form-label">创建用户</label>
+                        </div>
+                        <div class="form-group row input-field-row signup-username-row">
+                            <label for="txt_SignUp_UserName" class="col-2 col-form-label">用&nbsp;户&nbsp;名</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control form-control-lg" id="txt_SignUp_UserName" placeholder="请输入手机号码">
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-lg next-step-button" id="signup_UserName_Next_Btn">
+                                    <i class="fas fa-arrow-circle-right fa-2x"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group row input-field-row signup-password-row">
+                            <label for="txt_SignUp_Password" class="col-2 col-form-label">密&nbsp;&nbsp;码</label>
+                            <div class="col-8">
+                                <input type="password" class="form-control form-control-lg" id="txt_SignUp_Password" placeholder="请输入密码">
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-lg next-step-button" id="signup_Password_Next_Btn">
+                                    <i class="fas fa-arrow-circle-right fa-2x"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group row input-field-row signup-cfgpwd-row">
+                            <label for="txt_SignUp_CfgPwd" class="col-2 col-form-label">确认密码</label>
+                            <div class="col-8">
+                                <input type="password" class="form-control form-control-lg" id="txt_SignUp_CfgPwd" autocomplete="off" placeholder="请再次输入密码">
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-lg next-step-button" id="signup_CfgPwd_Next_Btn">
+                                    <i class="fas fa-arrow-circle-right fa-2x"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group row input-field-row signup-checkcode-row">
+                            <label for="txt_SignUp_CheckCode" class="col-2 col-form-label">验证码</label>
+                            <div class="col">
+                                <input type="password" class="form-control form-control-lg" id="txt_SignUp_CheckCode" autocomplete="off" placeholder="请输入验证码">
+                            </div>
+                            <div class="col-2">
+                                <img class="img-signup-checkcode" id="img_SignUp_CheckCode" src="" style="height:46px;border-radius: 23px;"/>
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-primary btn-lg next-step-button" id="signup_CheckCode_Next_Btn">
+                                    <i class="fas fa-arrow-circle-right fa-2x"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="wrap_Forget" class="wrap-input-form" style="display:none;">
+                    <div class="container-fluid no-wrap">
+                        <div class="form-group row title-field-row">
+                            <label for="" class="col col-form-label">找回密码</label>
+                        </div>
+                        <div class="form-group row input-field-row forget-username-row">
+                            <label for="txt_Forget_UserName" class="col-2 col-form-label">用&nbsp;户&nbsp;名</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control form-control-lg" id="txt_Forget_UserName" placeholder="请输入注册的手机号码, 新密码将通过短信发送!" autocomplete="off">
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-lg next-step-button" id="forget_UserName_Next_Btn">
+                                    <i class="fas fa-arrow-circle-right fa-2x"></i>
+                                </button>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_Agreement" tabindex="-1" role="dialog" aria-labelledby="label_Agreement_Modal" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="label_Agreement_Modal">《鹏博教育用户协议》</h5>
+                </div>
+                <div class="modal-body">
+                    <iframe src="agreement.html"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn_Cancel_Agreement_Modal" data-dismiss="modal">不同意</button>
+                    <button type="button" class="btn btn-primary" id="btn_OK_Agreement_Modal"  data-dismiss="modal">同意</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initPage();
+        });
+    </script>
+</body>
+</html>
