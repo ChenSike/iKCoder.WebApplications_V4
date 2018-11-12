@@ -482,12 +482,14 @@ Engine.setControl = function (device, eventKeyCode) {
     Engine.container.unbind();
     Engine.container.on("touchend", Engine.handleMouseDown);
     Engine.params.control = { device: 'm', key: 0 };
-    if (Engine.params.speed.monster.pursue) {
+    if (Engine.params.speed.monster.pursue) {        
         if (device == 'm') {
             Engine.container.on('mousedown', Engine.handleMouseDown);
             Engine.params.control = { device: 'm', key: eventKeyCode };
         } else {
-            Engine.container.on('keydown', Engine.handleKeyDown);
+            $(document).unbind();
+            $(document).on('keydown', Engine.handleKeyDown);
+            //Engine.container.on('keydown', Engine.handleKeyDown);
             Engine.params.control = { device: 'k', key: eventKeyCode };
         }
     }

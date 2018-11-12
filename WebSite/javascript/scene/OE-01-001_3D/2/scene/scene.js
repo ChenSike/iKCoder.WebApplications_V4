@@ -38,7 +38,7 @@ Scene.init = function () {
     var wrap = $('.siderbar-content');
     container.height(wrap.height() - 20);
     container.width(wrap.width() - 20);
-    _dataForSave = StringToXML(window.localStorage.getItem('qc01_state_storage'));
+    _dataForSave = StringToXML(window.localStorage.getItem(getQueryString('scene') + '_state_storage'));
     Engine.initScreenAnd3D('game_container', {
         speed: {
             player: { min: 6, max: 48, freq: 3000, step: 2 },
@@ -59,7 +59,7 @@ Scene.init = function () {
     Engine.start();
 };
 
-Scene.start = function () {
+Scene.start = function () {    
     Engine.start();
 };
 
@@ -93,6 +93,7 @@ Scene.settingComplete = function () {
     wolfNode.attr('ear', wolfModule.earL.scale.x);
     wolfNode.attr('color', '#' + wolfModule.head.material.color.getHexString());
     _dataForSave = XMLToString(_dataForSave);
+    window.localStorage.setItem(getQueryString('scene') + '_state_storage', _dataForSave);
     showCompleteAlert();
 };
 

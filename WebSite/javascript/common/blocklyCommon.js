@@ -429,9 +429,15 @@ function initStatusAlertEvents() {
         var total = _gStageData.course.total;
         var current = parseInt(getQueryString('step'));
         if (total - 1 == current) {
-            window.opener = null;
-            window.open("", "_self");
-            window.close();
+            ajaxFn('GET', _getRequestURL(_gURLMapping.course.setlessonfinish, { lesson_code: getQueryString('scene') }), '', function (response) {
+                if (_getExcuted(response)) {
+                    var data = '<root><type>Type_Lesson</type><action>End</action><code>' + getQueryString('scene') + '</code></root>';
+                    ajaxFn('POST', _getRequestURL(_gURLMapping.course.setlearnaction, {}), data, _gEmptyFn);
+                    window.opener = null;
+                    window.open("", "_self");
+                    window.close();
+                }
+            });
         } else {
             window.location.href = "workplatform.html?scene=" + getQueryString('scene') + "&step=" + (current + 1);
         }

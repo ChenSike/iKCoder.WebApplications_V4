@@ -51,6 +51,7 @@ Scene.start = function () {
     _dataForSave.push('<music path="' + Engine.audio.src + '"/>');
     _dataForSave.push('</data>');
     _dataForSave = _dataForSave.join('');
+    window.localStorage.setItem(getQueryString('scene') + '_state_storage', _dataForSave);
     Scene.stepComplete();
 };
 

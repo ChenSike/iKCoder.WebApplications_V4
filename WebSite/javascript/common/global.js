@@ -270,7 +270,7 @@ function _signOut() {
     });
 };
 //format ajax request
-function ajaxFn(type, url, data, success, failed, async) {
+function ajaxFn(type, url, data, success, failed, async, contentType) {
     var asyncType = true;
     if (typeof async != 'undefined' && async === false) {
         asyncType = false;
@@ -278,6 +278,7 @@ function ajaxFn(type, url, data, success, failed, async) {
 
     var failedFn = typeof failed == 'function' ? failed : _gEmptyFn;
     var errorFn = typeof error == 'function' ? error : _gEmptyFn;
+    //var cType = typeof contentType == 'undefined' ? 'text/plain' : contentType;
     $.ajax({
         type: type,
         async: asyncType,
@@ -286,6 +287,7 @@ function ajaxFn(type, url, data, success, failed, async) {
         success: function (response, status) {
             success(response);
         },
+        //contentType: cType,
         dataType: 'text',
         xhrFields: {
             withCredentials: true

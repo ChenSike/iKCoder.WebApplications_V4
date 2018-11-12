@@ -355,6 +355,7 @@ function getCurrentCategoryObj(categoryId) {
 };
 
 function buildCategoryContent(categoryId) {
+    window.clearTimeout(_gRefreshCourseCode);
     getCurrentCategoryObj(categoryId);
     $('.col-main-content').empty();
     var successFn;
@@ -551,6 +552,14 @@ function buildContent_Courses(items) {
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
     $($('.img-course-item-detail')[0]).addClass('active');
     ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Course);
+};
+
+var _gRefreshCourseCode = '';
+function courseRefreshList() {
+    if ($('.row-category-item.active-item').attr('data-target') == 'courses') {
+        buildCategoryContent('courses');
+        _gRefreshCourseCode = window.setTimeout('courseRefreshList()', 60000);
+    }
 };
 
 function showCourseBuyModal(response, course) {
@@ -781,7 +790,10 @@ function buildDetail_Course(response) {
     //$('.row-courses-group-item-list .course-start').on('click', function (eventObj) {
     $('.row-courses-group-item-list .row-courses-group-item').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
-        window.open("workplatform.html?scene=" + target.attr('data-target') + '&step=0&title=' + target.attr('data-title'));
+        var courseCode = target.attr('data-target');
+        var data = '<root><type>Type_Lesson</type><action>Start</action><code>' + courseCode + '</code></root>';
+        ajaxFn('POST', _getRequestURL(_gURLMapping.course.setlearnaction, {}), data, _gEmptyFn);
+        window.open("workplatform.html?scene=" + courseCode + '&step=0&title=' + target.attr('data-title'));
     });
 };
 
@@ -2215,7 +2227,7 @@ function circleBuildNewFriendsList() {
             if (_gCircleUsers[i].accecpt) {
                 tmpHTMLArr.push('已添加');
             } else {
-                tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm btn-new-friend-accept" data-target="' + _gCircleUsers[i].userId + '">接受</button>');
+                tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm btn-new-friend-accept" data-target="' + _gCircleUsers[i].accecptId + '" data-uid="' + _gCircleUsers[i].userId + '">接受</button>');
             }
 
             tmpHTMLArr.push('   </div>');
@@ -2963,6 +2975,7 @@ function circleInitUserList() {
         userId: '-1',
         "msg": '',
         "accecpt": true,
+        "accecptId": '',
         "gender": '',
         "address": '',
         "comment": '系统消息和通知',
@@ -3013,6 +3026,7 @@ function circleCreateAddNewFriend(itemObj) {
         "userId": itemObj.attr('puname'),
         "msg": typeof itemObj.attr('msg') == 'undefined' ? '' : itemObj.attr('msg'),
         "accecpt": itemObj.attr('accecpt') == '1' ? true : false,
+        "accecptId": typeof itemObj.attr('id') == 'undefined' ? '' : itemObj.attr('id'),
         "gender": '',
         "address": '',
         "comment": '',
@@ -3037,6 +3051,7 @@ function circleInitUser_Item_User(itemObj) {
         "userId": itemObj.attr('uid'),
         "msg": typeof itemObj.attr('msg') == 'undefined' ? '' : itemObj.attr('msg'),
         "accecpt": typeof itemObj.attr('accecpt') == 'undefined' ? true : itemObj.attr('accecpt') == '1' ? true : false,
+        "accecptId": '',
         "gender": itemObj.attr('sex') == '1' ? '1' : '0',
         "address": address.join(' '),
         "comment": typeof itemObj.attr('comment') == 'undefined' ? '' : itemObj.attr('comment'),
@@ -3059,6 +3074,7 @@ function circleUpdateUser_Item_User(itemObj, currUser) {
     //newUser["userId"] = itemObj.attr('uid'),
     //newUser["msg"] = typeof itemObj.attr('msg') == 'undefined' ? '' : itemObj.attr('msg'),
     currUser["accecpt"] = typeof itemObj.attr('accecpt') == 'undefined' ? currUser["accecpt"] : itemObj.attr('accecpt') == '1' ? true : false,
+    //currUser["accecptId"] = typeof itemObj.attr('id') == 'undefined' ? currUser["accecptId"] : itemObj.attr('msg'),
     currUser["gender"] = itemObj.attr('sex') == '1' ? '1' : '0',
     currUser["address"] = address.join(' '),
     currUser["comment"] = typeof itemObj.attr('comment') == 'undefined' ? '' : itemObj.attr('comment'),

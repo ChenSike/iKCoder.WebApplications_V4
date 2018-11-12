@@ -1114,3 +1114,10 @@ function unselectBlockExample() {
 
     setTimeout('selectBlockExample();', 500);
 };
+
+window.onbeforeunload = function () {
+    var data = '<root><type>Type_Lesson</type><action>End</action><code>' + getQueryString('scene') + '</code></root>';
+    ajaxFn('POST', _getRequestURL(_gURLMapping.course.setlearnaction, {}), data, _gEmptyFn);
+    window.opener = null;
+    window.open("", "_self");
+}

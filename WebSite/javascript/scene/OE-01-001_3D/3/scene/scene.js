@@ -26,6 +26,7 @@ Scene.setControl = function (device, eventKey) {
 Scene.init = function () {
     Engine.setOverCallbackFn(function () {
         resetPlayBtn('R');
+        Scene.buildCompleteHTML();
     });
     //_registerRemoteServer();
     //$.ajax({
@@ -49,7 +50,7 @@ Scene.init = function () {
     //    error: function () {
     //    }
     //});
-    _dataForSave = StringToXML(window.localStorage.getItem('qc01_state_storage'));
+    _dataForSave = StringToXML(window.localStorage.getItem(getQueryString('scene') + '_state_storage'));
     Scene.prepareForRun();
 };
 
@@ -138,24 +139,24 @@ Scene.settingComplete = function () {
         $(_dataForSave).find('data').append($('<event device="' + Engine.params.control.device + '" key="' + Engine.params.control.key + '"/>'));
     }
 
-    var symbol = getQueryString('scene').split('_')[0] + '_state_storage';
+    var symbol = getQueryString('scene') + '_state_storage';
     if ($(_dataForSave).find('data').find('lib').length <= 0) {
         $(_dataForSave).find('data').append('<lib/>');
         var libNode = $($(_dataForSave).find('data').find('lib')[0]);
-        var currSymbol = _currentStage.split('_')[0];
         var libArr = [
-            '<item src="javascript/qualitycourse/' + currSymbol + '/main.js"/>',
-            '<item src="javascript/qualitycourse/' + currSymbol + '/Materials.js"/>',
-            '<item src="javascript/qualitycourse/' + currSymbol + '/objects.js"/>',
-            '<item src="javascript/qualitycourse/' + currSymbol + '/share.js"/>'
+            '<item src="javascript/scene/OE-01-001_3D/main.js"/>',
+            '<item src="javascript/scene/OE-01-001_3D/Materials.js"/>',
+            '<item src="javascript/scene/OE-01-001_3D/objects.js"/>',
+            '<item src="javascript/scene/OE-01-001_3D/share.js"/>'
         ];
         libNode.append(libArr.join(''));
     }
 
-    Scene.buildCompleteHTML(symbol);
+    //Scene.buildCompleteHTML(symbol);
+    Scene.buildCompleteHTML();
 };
 
-Scene.buildCompleteHTML = function (symbol) {
+Scene.buildCompleteHTML_1 = function (symbol) {
     var tmpHTMLArr = [];
     tmpHTMLArr.push('    <div class="wrap-complete-alert" style="display: block; height:auto;">');
     tmpHTMLArr.push('        <div class="container">');
@@ -227,7 +228,7 @@ Scene.buildCompleteHTML = function (symbol) {
                             }
                         }
 
-                        Scene.buildCompleteHTML_1(qrSymbol, qrSymbolRpt);
+                        Scene.buildCompleteHTML_2(qrSymbol, qrSymbolRpt);
                     },
                     dataType: 'xml',
                     xhrFields: {
@@ -255,7 +256,7 @@ Scene.buildCompleteHTML = function (symbol) {
     });
 };
 
-Scene.buildCompleteHTML_1 = function (qrSymbol, qrSymbolRpt) {
+Scene.buildCompleteHTML_2 = function (qrSymbol, qrSymbolRpt) {
     var qrSrc = _getRequestURL(_gURLMapping.data.getimage, { operation: 'AllowedOperation', symbol: qrSymbol });
     var qrSrcRpt = _getRequestURL(_gURLMapping.data.getimage, { operation: 'AllowedOperation', symbol: qrSymbolRpt });
     var tmpHTMLArr = [];
@@ -353,6 +354,94 @@ Scene.buildCompleteHTML_1 = function (qrSymbol, qrSymbolRpt) {
         window.localStorage.removeItem('qc01_state_storage');
         window.location.href = "OnlineExperience.html?qid=" + _gCID;
     });
+};
+
+Scene.buildCompleteHTML = function () {
+    if ($('#complete_modal_mask').length <= 0) {
+        var tmpHTMLArr = [];
+        tmpHTMLArr.push('<style>');
+        tmpHTMLArr.push('.modal-mask {');
+        tmpHTMLArr.push('    height: 100%;');
+        tmpHTMLArr.push('    width: 100%;');
+        tmpHTMLArr.push('    position: absolute;');
+        tmpHTMLArr.push('    top: 0px;');
+        tmpHTMLArr.push('    left: 0px;');
+        tmpHTMLArr.push('    background-color: rgba(0,0,0,0.5);');
+        tmpHTMLArr.push('    z-index: 9999;');
+        tmpHTMLArr.push('    display: none;');
+        tmpHTMLArr.push('}');
+        tmpHTMLArr.push('.modal-mask .modal-wrap {');
+        tmpHTMLArr.push('    width: 500px;');
+        tmpHTMLArr.push('    height: 300px;');
+        tmpHTMLArr.push('    background-color: rgba(255,255,255, 0.7);');
+        tmpHTMLArr.push('    border-radius: 10px;');
+        tmpHTMLArr.push('    position: relative;');
+        tmpHTMLArr.push('    top: calc(50% - 200px);');
+        tmpHTMLArr.push('    left: calc(50% - 250px);');
+        tmpHTMLArr.push('}');
+        tmpHTMLArr.push('.modal-mask .modal-wrap table {');
+        tmpHTMLArr.push('    width: 100%;');
+        tmpHTMLArr.push('    height: 100%;');
+        tmpHTMLArr.push('}');
+        tmpHTMLArr.push('.modal-mask .modal-wrap table .row-qr-code td {');
+        tmpHTMLArr.push('    padding: 0px 25px;');
+        tmpHTMLArr.push('    padding-top: 20px;');
+        tmpHTMLArr.push('}');
+        tmpHTMLArr.push('.text-center {');
+        tmpHTMLArr.push('text-align: center;');
+        tmpHTMLArr.push('    font-family: 微软雅黑;');
+        tmpHTMLArr.push('    font-size: 14px;');
+        tmpHTMLArr.push('}');
+        tmpHTMLArr.push('#btn_breakContinue {');
+        tmpHTMLArr.push('    width: 140px;');
+        tmpHTMLArr.push('    height: 30px;');
+        tmpHTMLArr.push('    border-radius: 15px;');
+        tmpHTMLArr.push('    border: none;');
+        tmpHTMLArr.push('    cursor: pointer;');
+        tmpHTMLArr.push('    font-family: 微软雅黑;');
+        tmpHTMLArr.push('    font-size: 16px;');
+        tmpHTMLArr.push('    background-color: #2ea7e0;');
+        tmpHTMLArr.push('    color: white;');
+        tmpHTMLArr.push('    margin-bottom: 15px;');
+        tmpHTMLArr.push('}');
+        tmpHTMLArr.push('    #btn_breakContinue:hover {');
+        tmpHTMLArr.push('    background-color: gray;');
+        tmpHTMLArr.push('}');
+        tmpHTMLArr.push('</style>');
+        tmpHTMLArr.push('<div id="complete_modal_mask" class="modal-mask" style="display: block;">');
+        tmpHTMLArr.push('    <div class="modal-wrap">');
+        tmpHTMLArr.push('        <table>');
+        tmpHTMLArr.push('            <tbody><tr class="row-qr-code">');
+        tmpHTMLArr.push('                <td>');
+        tmpHTMLArr.push('                    <img src="image/index.png" width="200">');
+        tmpHTMLArr.push('                </td>');
+        tmpHTMLArr.push('                <td>');
+        tmpHTMLArr.push('                    <img src="image/sign.png" width="200">');
+        tmpHTMLArr.push('                </td>');
+        tmpHTMLArr.push('            </tr>');
+        tmpHTMLArr.push('            <tr class="text-center">');
+        tmpHTMLArr.push('                <td>');
+        tmpHTMLArr.push('                    <a href="http://www.ikcoder.com/index.html">访问iKCoder网站</a>');
+        tmpHTMLArr.push('                </td>');
+        tmpHTMLArr.push('                <td>');
+        tmpHTMLArr.push('                    <a href="http://www.ikcoder.com/ikcoder/sign.html"> 注册成为iKCoder会员</a>');
+        tmpHTMLArr.push('                </td>');
+        tmpHTMLArr.push('            </tr>');
+        tmpHTMLArr.push('            <tr class="text-center">');
+        tmpHTMLArr.push('                <td colspan="2">');
+        tmpHTMLArr.push('                    <button id="btn_breakContinue" type="button">继续</button>');
+        tmpHTMLArr.push('                </td>');
+        tmpHTMLArr.push('            </tr>');
+        tmpHTMLArr.push('        </tbody></table>');
+        tmpHTMLArr.push('    </div>');
+        tmpHTMLArr.push('</div>');
+        $('body').append($(tmpHTMLArr.join('')));
+        $('#btn_breakContinue').on('click', function () {
+            $('#complete_modal_mask').hide();
+        });
+    }
+
+    $('#complete_modal_mask').show('slow');
 };
 
 function removeRptQR(qrSymbolRpt) {
