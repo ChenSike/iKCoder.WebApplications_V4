@@ -74,11 +74,11 @@ var _gCourseImgMap = {
 };
 var _gCourseTimeout = '';
 var _gSTEAMMap = {
-    s: { icon: 'js-square', title: 'Science' },
-    t: { icon: 'python', title: 'Technology' },
-    e: { icon: 'java', title: 'Engineering' },
-    a: { icon: 'node-js', title: 'Arts' },
-    m: { icon: 'html5', title: 'Mathematics' }
+    s: { icon: 'js-square', title: 'Science', name: '科学', color: 'rgb(36,90,186)' },
+    t: { icon: 'python', title: 'Technology', name: '技术', color: 'rgb(236,15,33)' },
+    e: { icon: 'java', title: 'Engineering', name: '工程', color: 'rgb(165,165,165)' },
+    a: { icon: 'node-js', title: 'Arts', name: '艺术', color: 'rgb(71,143,208)' },
+    m: { icon: 'html5', title: 'Mathematics', name: '数学', color: 'rgb(255,191,0)' }
 };
 var _gEmojiGroups = [];
 var _gCurrentEmojiGroup = null;
@@ -470,7 +470,7 @@ function buildContent_Courses(items) {
         itemsHTML.push('            <div class="row no-margin">');
         itemsHTML.push('                <div class="col no-padding">');
         tmpStyle = 'height:' + imgHeight + 'px; cursor:pointer;';
-        itemsHTML.push('                    <img class="img-fluid img-course-item-detail" src="' + _gCourseImgMap[datas[i].name.trim()].img + '" style="' + tmpStyle + '" data-target="' + datas[i].name + '"/>');
+        itemsHTML.push('                    <img class="img-fluid img-course-item-detail" src="' + _gCourseImgMap[datas[i].name.trim()].img + '" style="' + tmpStyle + '" data-target="' + datas[i].name + '" data-access="' + datas[i].access + '"/>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         itemsHTML.push('            <div class="row no-margin" style="padding-top: 8px;">');
@@ -531,7 +531,14 @@ function buildContent_Courses(items) {
         var target = $(eventObj.currentTarget);
         $('.img-course-item-detail').removeClass('active');
         target.addClass('active');
-        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: target.attr('data-target') }), '', buildDetail_Course);
+        var courseCode = target.attr('data-target');
+        var courseAcce = target.attr('data-access');
+        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: courseCode }),
+            '',
+            function (response) {
+                buildDetail_Course(response, courseAcce);
+            }
+        );
     });
     $('.btn-course-item-buy').on('click', function (eventObj) {
         var courseName = $(eventObj.currentTarget).attr('data-target');
@@ -551,7 +558,7 @@ function buildContent_Courses(items) {
 
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
     $($('.img-course-item-detail')[0]).addClass('active');
-    ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: datas[0].name }), '', buildDetail_Course);
+    ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: datas[0].name }), '', function (response) { buildDetail_Course(response, '1'); });
 };
 
 var _gRefreshCourseCode = '';
@@ -730,7 +737,7 @@ function showCourseBuyModal(response, course) {
     $('#modal_Course_Buy .course-buy-card-header-tabs li:first-child a').tab('show');
 };
 
-function buildDetail_Course(response) {
+function buildDetail_Course(response, access) {
     var items = $(response).find('item');
     var datas = [];
     var currItem = null;
@@ -791,9 +798,17 @@ function buildDetail_Course(response) {
     $('.row-courses-group-item-list .row-courses-group-item').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
         var courseCode = target.attr('data-target');
+        //if (access == '0') {
+        //    _showGlobalMessage('您尚未购买此课程，无法开始学习', 'warning', 'alert_Start_Course');
+        //} else {
         var data = '<root><type>Type_Lesson</type><action>Start</action><code>' + courseCode + '</code></root>';
         ajaxFn('POST', _getRequestURL(_gURLMapping.course.setlearnaction, {}), data, _gEmptyFn);
-        window.open("workplatform.html?scene=" + courseCode + '&step=0&title=' + target.attr('data-title'));
+        if (courseCode.toUpperCase().indexOf('A_') == 0) {
+            window.open("workplatform.html?scene=" + courseCode + '&step=0&title=' + target.attr('data-title'));
+        } else {
+            window.open("codeplatform.html?scene=" + courseCode + '&step=0&title=' + target.attr('data-title'));
+        }
+        //}
     });
 };
 
@@ -3466,6 +3481,7 @@ function settingUpdateProfile() {
 };
 
 function buildContent_Report() {
+    /*
     var data = {
         user: {
             header: _gUserInfoObj.header,
@@ -3526,121 +3542,145 @@ function buildContent_Report() {
             { name: '工程', value: 20 },
             { name: '语言', value: 10 }
         ]
-    }
+    }*/
 
     var successFn = function (response) {
-        //var success = ($($(response).find('executed')[0]).text() == 'true' ? true : false);
-        //if (success) {
-        //reportFormatData(response);
-        var tmpHTMLArr = [];
-        tmpHTMLArr.push('<div class="container-fluid w-100 h-100 wrap-report">');
-        tmpHTMLArr.push('    <div class="row row-report-section">');
-        tmpHTMLArr.push('        <div class="col col-report-overview"></div>');
-        tmpHTMLArr.push('    </div>');
-        tmpHTMLArr.push('    <div class="row row-report-section">');
-        tmpHTMLArr.push('        <div class="col col-report-achieve"></div>');
-        tmpHTMLArr.push('    </div>');
-        tmpHTMLArr.push('    <div class="row row-report-section">');
-        tmpHTMLArr.push('        <div class="col col-report-ability"></div>');
-        tmpHTMLArr.push('    </div>');
-        tmpHTMLArr.push('    <div class="row row-report-section">');
-        tmpHTMLArr.push('        <div class="col col-report-time"></div>');
-        tmpHTMLArr.push('    </div>');
-        tmpHTMLArr.push('    <div class="row row-report-section">');
-        tmpHTMLArr.push('        <div class="col col-report-attention"></div>');
-        tmpHTMLArr.push('    </div>');
-        tmpHTMLArr.push('</div>');
+        var success = ($(response).find('sumary').length == 1 ? true : false);
+        if (success) {
+            var data = reportFormatData(response);
+            var tmpHTMLArr = [];
+            tmpHTMLArr.push('<div class="container-fluid w-100 h-100 wrap-report">');
+            tmpHTMLArr.push('    <div class="row row-report-section">');
+            tmpHTMLArr.push('        <div class="col col-report-overview"></div>');
+            tmpHTMLArr.push('    </div>');
+            tmpHTMLArr.push('    <div class="row row-report-section">');
+            tmpHTMLArr.push('        <div class="col col-report-achieve"></div>');
+            tmpHTMLArr.push('    </div>');
+            tmpHTMLArr.push('    <div class="row row-report-section">');
+            tmpHTMLArr.push('        <div class="col col-report-ability"></div>');
+            tmpHTMLArr.push('    </div>');
+            tmpHTMLArr.push('    <div class="row row-report-section">');
+            tmpHTMLArr.push('        <div class="col col-report-time"></div>');
+            tmpHTMLArr.push('    </div>');
+            tmpHTMLArr.push('    <div class="row row-report-section">');
+            tmpHTMLArr.push('        <div class="col col-report-attention"></div>');
+            tmpHTMLArr.push('    </div>');
+            tmpHTMLArr.push('</div>');
 
-        $('.col-main-content').append($(tmpHTMLArr.join('')));
+            $('.col-main-content').append($(tmpHTMLArr.join('')));
 
-        reportBuildOverview(data.user);
-        reportBuildAchieve(data.achieve);
-        reportBuildAbility(data.ability);
-        reportBuildTime(data.time);
-        reportBuildAttention(data.user);
-        //} else {
-        //    _showGlobalMessage('无法获取报告，请联系技术支持！', 'warning', 'alert_GetReport_Error');
-        //}
+            reportBuildOverview(data.user);
+            reportBuildAchieve(data.achieve);
+            reportBuildAbility(data.ability);
+            reportBuildTime(data.time);
+            reportBuildAttention(data.user);
+        } else {
+            _showGlobalMessage('无法获取报告，请联系技术支持！', 'warning', 'alert_GetReport_Error');
+        }
     };
 
     $('.col-main-content').empty();
-    //ajaxFn('GET', _getRequestURL(_gURLMapping.report.getreport, {}), '', successFn);
-    successFn();
+    ajaxFn('GET', _getRequestURL(_gURLMapping.report.getreport, {}), '', successFn);
+    //successFn();
 };
 
 function reportFormatData(response) {
-    var tmpNode = $($(response).find('overview')[0]);
+    /*
+    <root gdate="2018-11-15">
+	<sumary exp="220" over="88.24" finished="3"/>
+	<achieved>
+		<item title="逻辑探索先驱" content="恭喜你，你已经开始了奇妙的编程之旅，奇妙的大门为你打开，从现在开始，你已经是一名数字斗士，为了战胜数字世界的敌人而继续努力吧。"/>
+	</achieved>
+	<ability>
+		<lstlessons>
+			<item lesson_title="认识计算机-A"/>
+			<item lesson_title="认识计算机-B"/>
+			<item lesson_title="模式识别"/>
+		</lstlessons>
+		<steam>
+			<E>200</E>
+			<T>100</T>
+		</steam>
+	</ability>
+	<timeline>
+		<item hours="0" minutes="0" dt="2018-11-15"/>
+		<item hours="0" minutes="0" dt="2018-11-15"/>
+		<item hours="-17" minutes="-35" dt="2018-11-15"/>
+		<item hours="0" minutes="0" dt="2018-11-15"/>
+	</timeline>
+</root>
+*/
+    var doc = $(response);
+    var summaryNode = $(doc.find('sumary')[0]);
     var basicData = {
         header: _gUserInfoObj.header,
-        name: tmpNode.attr('usr_nickname') == '' ? $.cookie('logined_user_nickname') : tmpNode.attr('usr_nickname'),
-        title: tmpNode.attr('usr_title'),
-        exp: parseInt(tmpNode.attr('exprate')),
-        over: parseInt(tmpNode.attr('overrate')),
-        course: parseInt(tmpNode.attr('finish')),
-        date: $($(response).find('report')[0]).attr('date'),
+        name: _gUserInfoObj.nickName == '' ? _gUserInfoObj.userName : _gUserInfoObj.nickName,
+        title: _gUserInfoObj.level,
+        exp: parseInt(summaryNode.attr('exp')),
+        over: parseInt(summaryNode.attr('over')),
+        course: parseInt(summaryNode.attr('finished')),
+        date: doc.attr('gdate'),
         qr: 'image/qr_wechat.png'
     };
 
-    var tmpNodes = $(response).find('honor').find('item');
+    var achieveNodes = $(doc.find('achieved')[0]).find('item');
     var honorData = [];
-    for (var i = 0; i < tmpNodes.length; i++) {
-        tmpNode = $(tmpNodes[i]);
+    var tmpNode, tmpNodes;
+    for (var i = 0; i < achieveNodes.length; i++) {
+        tmpNode = $(achieveNodes[i]);
         honorData.push({
             id: i + 1,
-            title: tmpNode.attr('name'),
+            title: tmpNode.attr('title'),
             content: typeof tmpNode.attr('content') == 'undefined' ? '' : tmpNode.attr('content')
         });
     }
 
-    tmpNode = $($(response).find('ability')[0]);
+    var timelineNode = $(doc.find('timeline')[0]);
+    var timeItemNodes = timelineNode.find('item');
+    var timeData = { times: [], total: 0, course: [] };
+    var tmpMin;
+    for (var i = 0; i < timeItemNodes.length; i++) {
+        tmpNode = $(timeItemNodes[i]);
+        tmpMin = Math.abs(parseFloat(tmpNode.attr('minutes')));
+        tmpMin += Math.abs(parseFloat(tmpNode.attr('hours')) * 60);
+        timeData.total += tmpMin;
+        timeData.times.push({
+            date: tmpNode.attr('dt'),
+            time: new Number(tmpMin).toFixed(2)
+        });
+    }
+
+    //tmpNode = $($(response).find('level')[0]);
+    //var timeData = {
+    //    over: isNaN(tmpNode.attr('over')) ? 0 : parseInt(tmpNode.attr('over')),
+    //    total: isNaN(tmpNode.attr('total')) ? 0 : parseInt(tmpNode.attr('total')),
+    //    times: [],
+    //    course: []
+    //};
+
+    var abilityNode = $(doc.find('ability')[0]);
+    var ablLessonNode = $(abilityNode.find('lstlessons')[0]);
+    var ablSteamNode = $(abilityNode.find('steam')[0]);
     var abilityData = {
         type: [],
         items: [],
-        course: isNaN(tmpNode.attr('course')) ? 0 : parseInt(tmpNode.attr('course')),
-        time: isNaN(tmpNode.attr('time')) ? 0 : parseInt(tmpNode.attr('time')),
+        course: ablLessonNode.find('item').length,
+        time: parseInt(timeData.total / 60)
     };
 
-    tmpNode = $($(response).find('ability').find('steml')[0]);
-    for (var key in _distributionMap) {
+    for (var key in _gSTEAMMap) {
+        tmpNodes = ablSteamNode.find(key.toUpperCase());
         abilityData.type.push({
-            name: _distributionMap[key].name,
-            value: tmpNode.attr(key.toLowerCase())
+            name: _gSTEAMMap[key].name,
+            value: tmpNodes.length == 0 ? 0 : parseInt($(tmpNodes[0]).text())
         });
     }
 
-    tmpNodes = $(response).find('ability').find('finishedcourse').find('item');
+    tmpNodes = ablLessonNode.find('item');
     for (var i = 0; i < tmpNodes.length; i++) {
-        abilityData.items.push($(tmpNodes[i]).attr('title'));
+        abilityData.items.push($(tmpNodes[i]).attr('lesson_title'));
     }
 
-    tmpNode = $($(response).find('level')[0]);
-    var timeData = {
-        over: isNaN(tmpNode.attr('over')) ? 0 : parseInt(tmpNode.attr('over')),
-        total: isNaN(tmpNode.attr('total')) ? 0 : parseInt(tmpNode.attr('total')),
-        times: [],
-        course: []
-    };
-
-    tmpNodes = $(response).find('level').find('item');
-    for (var i = 0; i < tmpNodes.length; i++) {
-        timeData.course.push({
-            id: $(tmpNodes[i]).attr('id'),
-            rate: $(tmpNodes[i]).attr('value') == '' ? 0 : parseInt($(tmpNodes[i]).attr('value')),
-            name: typeof $(tmpNodes[i]).attr('name') == 'undefined' ? $(tmpNodes[i]).attr('id') : $(tmpNodes[i]).attr('name')
-        });
-    }
-
-    tmpNodes = $(response).find('codetimes').find('item');
-    for (var i = 0; i < tmpNodes.length; i++) {
-        timeData.times.push({
-            date: $(tmpNodes[i]).attr('date'),
-            time: new Number($(tmpNodes[i]).attr('value')).toFixed(2)
-        });
-    }
-
-    tmpNode = $($(response).find('codetimes')[0]);
-    var tmpVal = isNaN(tmpNode.attr('totaltime')) ? 0 : new Number(tmpNode.attr('totaltime'));
-    timeData.total = (Math.round(tmpVal / 60 * 100) / 100).toFixed(2);
     var data = {
         user: basicData,
         achieve: honorData,
@@ -3701,10 +3741,13 @@ function reportBuildOverviewHeader(data, tmpHTMLArr) {
     tmpHTMLArr.push('       <div class="container-fluid no-padding">');
     tmpHTMLArr.push('           <div class="row no-margin">');
     tmpHTMLArr.push('               <div class="col no-padding">');
-    tmpHTMLArr.push('                   <p class="text-10">' + data.name + ',' + data.title + '</p>');
+    tmpHTMLArr.push('                   <p class="text-10 text-fc8823">' + data.name);
+    tmpHTMLArr.push('                       <span class="text-000000">,</span>');
+    tmpHTMLArr.push('                       <span class="text-90c553">' + data.title + '</span>');
+    tmpHTMLArr.push('                   </p>');
     tmpHTMLArr.push('                   <p class="text-10" style="min-width: 120px;">');
     tmpHTMLArr.push('                       当前课程经验值: ');
-    tmpHTMLArr.push('                       <span class="text-12 text-fc8823">' + data.exp + '%</span>');
+    tmpHTMLArr.push('                       <span class="text-12 text-fc8823">' + data.exp + '</span>');
     tmpHTMLArr.push('                   </p>');
     tmpHTMLArr.push('                   <hr class="hr-report-overview-header"/>');
     tmpHTMLArr.push('               </div>');
@@ -4034,7 +4077,7 @@ function reportBuildTime(data) {
     tmpHTMLArr.push('        <div class="col">');
     tmpHTMLArr.push('            <p class="text-10">');
     tmpHTMLArr.push('               到今天为止，您的孩子已经累计学习编程 ');
-    tmpHTMLArr.push('               <span class="text-16 text-fc8823">' + data.total + '</span>');
+    tmpHTMLArr.push('               <span class="text-16 text-fc8823">' + (new Number(data.total / 60).toFixed(2)) + '</span>');
     tmpHTMLArr.push('                小时');
     tmpHTMLArr.push('            </p>');
     tmpHTMLArr.push('        </div>');
@@ -4164,12 +4207,12 @@ function reportDrawTimeBarGraph(datas, canvasId) {
             context.stroke();
             //draw time label
             //tmpX = barX + 4;
-            tmpTextWidth = testTextWidth(datas[i].time, '10px', 'bold', '微软雅黑', '');
+            tmpTextWidth = testTextWidth((datas[i].time / 60).toFixed(2), '10px', 'bold', '微软雅黑', '');
             tmpX = startX + (barWidth + barSpace - tmpTextWidth) / 2;
             tmpY = lineRTY - 2;
             context.font = "normal normal normal 10px \"微软雅黑\"";
             context.fillStyle = "rgb(97,97,97)";
-            context.fillText(datas[i].time, tmpX, tmpY);
+            context.fillText((datas[i].time / 60).toFixed(2), tmpX, tmpY);
             //draw date label
             tmpX = startX + 5;
             tmpY = startY + 12;

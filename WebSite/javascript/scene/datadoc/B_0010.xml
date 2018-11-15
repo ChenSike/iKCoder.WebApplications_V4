@@ -1,0 +1,77 @@
+<root>
+<basic lesson_code="B_001">
+</basic>
+<content>
+<step title="认识HTML" countitems="" index="1">
+<item index="1" title="什么是HTML" opentype="s">
+	<conetnt index="1" type="text" attr="d" ><txt>HTML可以做什么呢？请看如下的图片。</txt></conetnt>
+	<conetnt index="2" type="img" ><img>B_001_S1_F1_01.fw.png</img></conetnt>
+	<conetnt index="3" type="text" attr="q" isclick="true"><ques>看了上面的图片，你能猜出来，HTML能做什么呢？</ques><ans>你猜对了吗？对了，就是网站，学会了HTML，我们就可以创建自己的网站了！</ans></conetnt>	
+</item>
+<item index="2" title="你要知道的" opentype="s">
+	<conetnt index="1" type="text" attr="d"><txt>我们家里的小猫叫球球，那么HTML叫什么呢？我们在开始学习之前，我们需要知道HTML叫什么，HTML的全称叫{%b%}{%u%}超文本标记语言{$u$}{$b$}</txt></conetnt>
+	<conetnt index="2" type="text" attr="d"><txt>其实，HTML不是一种编程语言，而是一种被称为标记语言的语言，他们的区别就是标记语言无法表达逻辑，所以简单说，HTML只能告诉计算机，我要显示什么内容，无法告诉计算机去做一些复杂逻辑运算。</txt></conetnt>	
+	<conetnt index="3" type="text" attr="d"><txt>我们要学到一个新的名词{%b%}{%u%}标签{$u$}{$b$}，标签就是符号，就是由一串可见的单词组成的代表某种意思的词语，简单说：fish , 我们都知道，这个单词是鱼的意思，但是计算机是不知道鱼的，它有可能代表着鸡的意思，那么fish就是一个标签，它是一个代表，可以代表鱼，可以代表鸡，可以代表鱼以外的任意东西，这就是一个标签，代表的是计算机能认可的符号。</txt></conetnt>
+	<conetnt index="4" type="img"><img>B_001_S1_F2_01.fw.png</img></conetnt>
+	<conetnt index="5" type="text" attr="d"><txt>	上一张图片，是一个软件的图标，他经常在我们的计算机中出现，这个软件我们称为{%b%}{%u%}浏览器{$u$}{$b$}，我们可以打开它，在地址栏输入一个网址，那么你就可以打开一个网站，你可以看见网站的样子了。我们的标记只能在浏览器中才能看得见哦，在其他地方，是无法看见HTML标记的样子哦。我们常用的浏览器有：Chrome（它的图标就是上图的图片）,Edge(它的图标是一个蓝色的E字母).
+	</txt>
+</item>
+<item index="3" title="整理一下" opentype="c">
+	<conetnt index="1" type="text" attr="q" answer="超文本标记语言">
+	<ques>你好,工程师，是时候展现你的能力，你知道HTML的全称是什么吗？</ques>
+	</conetnt>
+	<conetnt index="2" type="text" attr="q" answer="B">
+	<ques>工程师，再次发挥你的能力了，标记能在什么软件上显示？</ques>
+	<options>
+		<item value="A" text="记事本"></item>
+		<item value="B" text="浏览器"></item>
+		<item value="C" text="王者荣耀"></item>
+		<item value="D" text="QQ音乐"></item>
+	</options>
+	</conetnt>
+	<conetnt index="3" type="text" attr="d">
+	<txt>工程师，行动起来吧，打开你的计算机，拿起你的鼠标，找到CHROME或者EDGE，访问HTTP://WWW.BAIDU.COM</txt>
+	</conetnt>
+</item>
+<item index="4" title="HELLO,iKCoder实验室" opentype="g">
+</item>
+</step>
+<step title="建造第一个页面" countitems="" index="2">
+<item index="1" title="标签的基本知识" opentype="s">
+	<conetnt index="1" type="text" attr="d"><txt>每一个漂亮的网页，都是由各种各样的标签组成的，每一个网页，我们称为一个页面，都是有基本的结构的，今天我们一起来学习我们的第一个标签，在HTML里面，每一个标签，都是成对出现的，意思就是：有开始就有结束，例如： {%start%}{% start%}，我们可以看见，标记都是成对出现的，有开始的标签，那么就有结束的标签，请记住，如果标签没有成对出现，那么在浏览器上面看到的，就是一个格式混乱的页面，在后面的实验中，你可以自己动手试一试。</txt></conetnt>
+	<conetnt index="2" type="text" attr="d"><txt>请记住，标签是不区分大小写的，当然，你也可以大写字母跟小写字母混合在一起，例如：{%sTArt%}{%/STart%}，虽然前面的标签混合了各种字母，但是其实他们是同一个单词start,所以他们是一样的，因为HTML是不区分大小写的。</txt></conetnt>
+</item>
+<item index="2" title="开始建造" opentype="s">
+	<conetnt index="1" type="text" attr="d"><txt>现在我们开始学习建立一个空的PAGE，每一个PAGE，都有一对标签：{%html%}{%/html%},所以，我们建立一个自己的网页的时候，请在我们的实验室输入区，输入这一对标签。 </txt></conetnt>
+	<conetnt index="2" type="img" ><img>B_001_S2_F2_01.fw.png</img></conetnt>
+	<conetnt index="3" type="text" attr="d"><txt>现在我们开始建立一个介绍自己的页面，那么我们需要学习几个新的标签：{%head%}{%/head%},{%title%}{%/title%>,{%body%}{%/body%},那这几个标签代表了什么意义,head代表的头的意思，title表示的是网页左上角的名称，body表示的是主体内容。</txt></conetnt>
+	<conetnt index="4" type="text" attr="d"><txt>好的，现在你可以建立一个属于自己的网页了：{%html%}{%head%}{%title%}这是我的第一个网页{%/title%}{%/head%}{%body%}我是一个快乐的工程师。{%/body%}{%/html%}
+	</txt></conetnt>
+	<conetnt index="5" type="text" attr="d"><txt>下一步，将开始我们第一个网页的实验。</txt></conetnt>
+</item>
+<item index="3" title="动手建造自己第一个网页" opentype="O">	
+</item>
+<item index="4" title="请改动属于的描述" opentype="O">	
+</item>
+</step>
+<step title="几个新的标签" countitems="" index="3">
+<item index="1" title="段落标签:P" opentype="s">
+	<conetnt index="1" type="text" attr="d"><txt>现在，我们学习一个新的标签，这个标签就是段落标签：{%P%}{%/P%},这个标签，我们可以理解为类似我们语文学习中遇到的段落，使用方法：{%P%}这是一个段落{%/P%}。</txt></conetnt>
+	<conetnt index="2" type="text" attr="d"><txt>我们建立一个使用段落标签的网页：{%html%}{%head%}{%title%}这是我的第一个网页{%/title%}{%/head%}{%body%}{%P%}我是一个快乐的工程师。{%/P}{%/body%}{%/html%}</txt></conetnt>	
+</item>
+<item index="2" title="标题标签:H1" opentype="s">
+	<conetnt index="1" type="text" attr="d"><txt>现在，我们学习一个新的标签，这个标签就是标题标签：{%H1%}{%/H1%},使用这个标签的效果就是对一段文字标记为标题样式：{%H1%}这是一个标题{%/H1%}。当然，我们可以发现，其实标题标签还有其他的样式，我们可以观察到H后面有一个数字1，那么H2、H3、H4是否成立呢，答案是当然的，我们的HTML默认标题标签是H1-H6，请记住。</txt></conetnt>
+	<conetnt index="2" type="text" attr="d"><txt>我们建立一个使用段落标签的网页：{%html%}{%head%}{%title%}这是我的第一个网页{%/title%}{%/head%}{%body%}{%H1%}我是一个快乐的工程师。{%/H1%}{%/body%}{%/html%}</txt></conetnt>	
+	<conetnt index="3" type="text" attr="q" answer="可以">
+	<ques>问题来了，H1标签跟P标签能否混合使用？如何混合呢？</ques>
+	</conetnt>
+</item>
+<item index="3" title="动手试试P标签" opentype="O">	
+</item>
+<item index="4" title="动手试试H1-H6标签" opentype="O">	
+</item>
+<item index="5" title="动手试试P跟H标签混合" opentype="O">	
+</item>
+</step>
+</content>
+</root>
