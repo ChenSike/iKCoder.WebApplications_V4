@@ -212,6 +212,8 @@ body {
             color: #ea5415;
         }
 
+
+
     .keypoint-container-col .card.complete .card-header div.item-mark {
         background-color: #28a745;
         box-shadow: 0px 0px 15px#28a745;
@@ -230,11 +232,124 @@ body {
         color: #007bff;
     }
 
-    .keypoint-container-col .card .card-body button {
-        padding: 0px 5px;
-        margin: 5px;
+    .keypoint-container-col .card .card-body {
+        padding: 10px;
     }
 
-    .keypoint-container-col .card .card-body ul li {
-        font-size: 13px;
+        .keypoint-container-col .card .card-body button {
+            padding: 0px 5px;
+            margin: 5px;
+        }
+
+        .keypoint-container-col .card .card-body ul li {
+            font-size: 13px;
+        }
+
+            .keypoint-container-col .card .card-body ul li.list-group-item {
+                cursor: pointer;
+                padding: 5px;
+            }
+
+                .keypoint-container-col .card .card-body ul li.list-group-item svg {
+                    margin-right: 5px;
+                    width: 18px;
+                }
+
+                .keypoint-container-col .card .card-body ul li.list-group-item .fa-chalkboard-teacher {
+                    color: #f29700;
+                }
+
+                .keypoint-container-col .card .card-body ul li.list-group-item .fa-question-circle {
+                    color: #ea5415;
+                }
+
+                .keypoint-container-col .card .card-body ul li.list-group-item .fa-walking {
+                    color: #2fa8e1;
+                }
+
+.lesson-step-item-content-board {
+    display: block;
+    position: absolute;
+    background-color: rgba(255,255,255,1);
+    z-index: 1000;
+    border-radius: 3px;
+    padding: 10px;
+    overflow: auto;
+}
+
+    .lesson-step-item-content-board .col-lesson-step-item-content {
+        padding: 5px 0px;
     }
+
+    .lesson-step-item-content-board .lesson-step-item-content-img {
+    }
+
+    .lesson-step-item-content-board .lesson-step-item-content-symbol {
+        width: 20px;
+        height: 15px;
+        margin-right: 5px;
+    }
+
+        .lesson-step-item-content-board .lesson-step-item-content-symbol.fa-exclamation {
+            color: #2fa8e1;
+        }
+
+        .lesson-step-item-content-board .lesson-step-item-content-symbol.fa-question {
+            color: #ea5415;
+        }
+
+
+.flip-wrap {
+    perspective: 1000;
+    transform-style: preserve-3d;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+    .flip-wrap, .flip-wrap .flip-container .flip-front, .flip-wrap .flip-container .flip-back {
+        width: 380px;
+        height: 270px;
+        width: 20px;
+        height: 20px;
+    }
+
+        .flip-wrap .flip-container {
+            position: relative;
+            transition: 0.6s;
+            transform-style: preserve-3d;
+        }
+
+            .flip-wrap .flip-container .flip-front, .flip-wrap .flip-container .flip-back {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                backface-visibility: hidden;
+            }
+
+            .flip-wrap .flip-container .flip-front {
+                z-index: 2;
+            }
+
+            .flip-wrap .flip-container .flip-back {
+                transform: rotateY(-180deg);
+            }
+
+        .flip-wrap:hover .flip-wrap .flip-container {
+            transform: rotateY(180deg);
+        }
+
+.lesson-step-item-content-qus-acc {
+}
+
+    .lesson-step-item-content-qus-acc .card {
+        background-color: rgba(0,0,0,0.2);
+    }
+
+    .lesson-step-item-content-qus-acc .card-header {
+        padding: 0px 15px;
+    }
+
+        .lesson-step-item-content-qus-acc .card-header:hover .flip-wrap .flip-container {
+            transform: rotateY(180deg);
+        }
