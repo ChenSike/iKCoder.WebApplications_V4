@@ -53,24 +53,24 @@
 		<step title="建造第一个页面" countitems="" index="2">
 			<item index="1" title="标签的基本知识" opentype="s">
 				<conetnt index="1" type="text" attr="d">
-					<txt>每一个漂亮的网页，都是由各种各样的标签组成的，每一个网页，我们称为一个页面，都是有基本的结构的，今天我们一起来学习我们的第一个标签，在HTML里面，每一个标签，都是成对出现的，意思就是：有开始就有结束，例如： {%start%}{% start%}，我们可以看见，标记都是成对出现的，有开始的标签，那么就有结束的标签，请记住，如果标签没有成对出现，那么在浏览器上面看到的，就是一个格式混乱的页面，在后面的实验中，你可以自己动手试一试。</txt>
+					<txt>每一个漂亮的网页，都是由各种各样的标签组成的，每一个网页，我们称为一个页面，都是有基本的结构的，今天我们一起来学习我们的第一个标签，在HTML里面，每一个标签，都是成对出现的，意思就是：有开始就有结束，例如： %lt%start%gt%%lt%/start%gt%，我们可以看见，标记都是成对出现的，有开始的标签，那么就有结束的标签，请记住，如果标签没有成对出现，那么在浏览器上面看到的，就是一个格式混乱的页面，在后面的实验中，你可以自己动手试一试。</txt>
 				</conetnt>
 				<conetnt index="2" type="text" attr="d">
-					<txt>请记住，标签是不区分大小写的，当然，你也可以大写字母跟小写字母混合在一起，例如：{%sTArt%}{%/STart%}，虽然前面的标签混合了各种字母，但是其实他们是同一个单词start,所以他们是一样的，因为HTML是不区分大小写的。</txt>
+					<txt>请记住，标签是不区分大小写的，当然，你也可以大写字母跟小写字母混合在一起，例如：%lt%sTart%gt%%lt%/stART%gt%;，虽然前面的标签混合了各种字母，但是其实他们是同一个单词start,所以他们是一样的，因为HTML是不区分大小写的。</txt>
 				</conetnt>
 			</item>
 			<item index="2" title="开始建造" opentype="s">
 				<conetnt index="1" type="text" attr="d">
-					<txt>现在我们开始学习建立一个空的PAGE，每一个PAGE，都有一对标签：{%html%}{%/html%},所以，我们建立一个自己的网页的时候，请在我们的实验室输入区，输入这一对标签。 </txt>
+					<txt>现在我们开始学习建立一个空的PAGE，每一个PAGE，都有一对标签：%lt%html%gt%%lt%/html%gt%,所以，我们建立一个自己的网页的时候，请在我们的实验室输入区，输入这一对标签。 </txt>
 				</conetnt>
 				<conetnt index="2" type="img">
 					<img>B_001_S2_F2_01.fw.png</img>
 				</conetnt>
 				<conetnt index="3" type="text" attr="d">
-					<txt>现在我们开始建立一个介绍自己的页面，那么我们需要学习几个新的标签：{%head%}{%/head%},{%title%}{%/title%>,{%body%}{%/body%},那这几个标签代表了什么意义,head代表的头的意思，title表示的是网页左上角的名称，body表示的是主体内容。</txt>
+					<txt>现在我们开始建立一个介绍自己的页面，那么我们需要学习几个新的标签：%lt%head%gt%%lt%/head%gt%%lt%title%gt%%lt%/title%gt%>,{%body%}{%/body%},那这几个标签代表了什么意义,head代表的头的意思，title表示的是网页左上角的名称，body表示的是主体内容。</txt>
 				</conetnt>
 				<conetnt index="4" type="text" attr="d">
-					<txt>好的，现在你可以建立一个属于自己的网页了：{%html%}{%head%}{%title%}这是我的第一个网页{%/title%}{%/head%}{%body%}我是一个快乐的工程师。{%/body%}{%/html%}	</txt>
+					<txt>好的，现在你可以建立一个属于自己的网页了：%lt%html%gt%%lt%head%gt%%lt%title%gt%这是我的第一个网页%lt%/title%gt%%lt%/head%gt%%lt%body%gt%我是一个快乐的工程师。%lt%/body%gt%%lt%/html%gt%	</txt>
 				</conetnt>
 				<conetnt index="5" type="text" attr="d">
 					<txt>下一步，将开始我们第一个网页的实验。</txt>
@@ -82,18 +82,18 @@
 		<step title="几个新的标签" countitems="" index="3">
 			<item index="1" title="段落标签:P" opentype="s">
 				<conetnt index="1" type="text" attr="d">
-					<txt>现在，我们学习一个新的标签，这个标签就是段落标签：{%P%}{%/P%},这个标签，我们可以理解为类似我们语文学习中遇到的段落，使用方法：{%P%}这是一个段落{%/P%}。</txt>
+					<txt>现在，我们学习一个新的标签，这个标签就是段落标签：%lt%%P%gt%%lt%/P%gt%，这个标签，我们可以理解为类似我们语文学习中遇到的段落，使用方法：%lt%P%gt%这是一个段落%lt%/P%gt%。</txt>
 				</conetnt>
 				<conetnt index="2" type="text" attr="d">
-					<txt>我们建立一个使用段落标签的网页：{%html%}{%head%}{%title%}这是我的第一个网页{%/title%}{%/head%}{%body%}{%P%}我是一个快乐的工程师。{%/P}{%/body%}{%/html%}</txt>
+					<txt>我们建立一个使用段落标签的网页：%lt%html%gt%%lt%head%gt%%lt%title%gt%这是我的第一个网页%lt%/title%gt%%lt%/head%gt%%lt%body%gt%%lt%P%gt%我是一个快乐的工程师。%lt%/P%gt%%lt%/body%gt%%lt%/html%gt%</txt>
 				</conetnt>
 			</item>
 			<item index="2" title="标题标签:H1" opentype="s">
 				<conetnt index="1" type="text" attr="d">
-					<txt>现在，我们学习一个新的标签，这个标签就是标题标签：{%H1%}{%/H1%},使用这个标签的效果就是对一段文字标记为标题样式：{%H1%}这是一个标题{%/H1%}。当然，我们可以发现，其实标题标签还有其他的样式，我们可以观察到H后面有一个数字1，那么H2、H3、H4是否成立呢，答案是当然的，我们的HTML默认标题标签是H1-H6，请记住。</txt>
+					<txt>现在，我们学习一个新的标签，这个标签就是标题标签：%lt%H1%gt%%lt%/H1%gt%,使用这个标签的效果就是对一段文字标记为标题样式：%lt%H1%gt%这是一个标题%lt%/H1%gt%。当然，我们可以发现，其实标题标签还有其他的样式，我们可以观察到H后面有一个数字1，那么H2、H3、H4是否成立呢，答案是当然的，我们的HTML默认标题标签是H1-H6，请记住。</txt>
 				</conetnt>
 				<conetnt index="2" type="text" attr="d">
-					<txt>我们建立一个使用段落标签的网页：{%html%}{%head%}{%title%}这是我的第一个网页{%/title%}{%/head%}{%body%}{%H1%}我是一个快乐的工程师。{%/H1%}{%/body%}{%/html%}</txt>
+					<txt>我们建立一个使用段落标签的网页：%lt%html%gt%%lt%head%gt%%lt%title%gt%这是我的第一个网页%lt%/title%gt%%lt%/head%gt%%lt%body%gt%%lt%H1%gt%我是一个快乐的工程师。%lt%/H1%gt%%lt%/body%gt%%lt%/html%gt%</txt>
 				</conetnt>
 				<conetnt index="3" type="text" attr="q" answer="可以">
 					<ques>问题来了，H1标签跟P标签能否混合使用？如何混合呢？</ques>

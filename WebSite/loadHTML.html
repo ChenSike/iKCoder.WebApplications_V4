@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+
+</body>
+<script src="javascript/common/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="javascript/common/global.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        try {
+            var code = opener._gEditor.getValue();
+            var doc = $(StringToXML(code));
+            if (doc.length == 1) {
+                $('head').html($(doc.find('head')[0]).html());
+                $('body').html($(doc.find('body')[0]).html());
+            } else {
+                $('body').html("您的HTML代码有误，无法正常显示！完整代码如下:</br>" + code);
+            }
+        } catch (ex) {
+            $('body').html(ex);
+        }
+    });
+</script>
+</html>

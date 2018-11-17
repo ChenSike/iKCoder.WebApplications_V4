@@ -2,6 +2,7 @@
 
 var _gUserInfoObj = { header: '', nickName: '' };
 var _gLessonData = null;
+var _gEditor = null;
 var _gOpenTypeMap = {
     S: {
         icon: 'fas fa-chalkboard-teacher',
@@ -16,13 +17,15 @@ var _gOpenTypeMap = {
         icon: 'fas fa-user-edit',
     }
 };
-
 var _gContentAttrMap = {
     d: {
         icon: 'fas fa-exclamation',
     },
     q: {
         icon: 'fas fa-question',
+    },
+    qa: {
+        icon: 'fas fa-question'
     }
 };
 
@@ -34,11 +37,12 @@ function initPage() {
             $('#mask_Page_Loading').css('visibility', 'hidden');
             updateUserInfo();
             adjustMainSize();
+            resetSideBarByType();
             buildKeyPoint();
             initEditor();
             initEvents();
         } else {
-
+            window.location.href(window.location.origin + '/ikcoder/sign.html');
         }
     };
 
@@ -70,7 +74,12 @@ function adjustMainSize() {
     $('.keypoint-container-col').height(tmpHeight);
     $('.siderbar-wrap').height(tmpHeight);
     $('.siderbar-wrap').css('top', $('.main-container-col').offset().top + 'px');
+    $('#content_Editor').width('calc(100% - ' + ($('.siderbar-wrap').width() + 4) + 'px)');
 };
+
+function formatString(source) {
+    return source.replace(/{%/g, '&nbsp;<').replace(/%}/g, '>').replace(/{\$/g, '</').replace(/\$}/g, '>&nbsp;').replace(/%lt%/g, '&lt;').replace(/%gt%/g, '&gt;');
+}
 
 function loadCourseData() {
     var itemsDoc = $(LoadXMLFile('javascript/scene/datadoc/' + getQueryString("scene") + getQueryString("step") + '.xml'));
@@ -103,13 +112,18 @@ function loadCourseData() {
                 tmpContentNode = $(tmpContentNodes[k]);
                 tmpContent = {
                     type: tmpContentNode.attr('type'),
-                    attr: tmpContentNode.attr('attr'),
+                    attr: typeof tmpContentNode.attr('attr') != 'undefined' ? tmpContentNode.attr('attr') : '',
                     isclick: typeof tmpContentNode.attr('isclick') != 'undefined' ? tmpContentNode.attr('attr') == 'true' ? true : false : false,
-                    txt: $(tmpContentNode.find('txt')).text().replace(/{%/g, '<').replace(/%}/g, '>').replace(/{\$/g, '</').replace(/\$}/g, '>'),
-                    img: $(tmpContentNode.find('img')).text(),
-                    ques: $(tmpContentNode.find('ques')).text(),
-                    ans: $(tmpContentNode.find('ans')).text(),
+                    txt: formatString($(tmpContentNode.find('txt')[0]).text()),
+                    img: $(tmpContentNode.find('img')[0]).text(),
+                    ques: $(tmpContentNode.find('ques')[0]).text(),
+                    ans: $(tmpContentNode.find('ans')[0]).text(),
+                    answer: typeof tmpContentNode.attr('answer') != 'undefined' ? tmpContentNode.attr('answer') : '',
                     options: []
+                };
+
+                if (tmpContent.attr == 'q' && tmpContent.answer == '') {
+                    tmpContent.attr = 'qa'
                 }
 
                 if (tmpContentNode.find('options').length > 0) {
@@ -168,25 +182,35 @@ function buildKeyPoint() {
     $('.keypoint-container-col').append($(htmlStrArr.join('')));
     $('#accordion_keypoint .card-body button').on('click', function () {
         var tmpIdx = $(arguments[0].currentTarget).attr('data-target');
-        var tmpCard = $('#card_keypoint_' + tmpIdx);
-        var tmpCollapse = $('#collapse_keypoint_' + tmpIdx);
-        tmpCard.removeClass('current');
-        tmpCard.addClass('complete');
-        tmpCollapse.on('hidden.bs.collapse', function () {
-            var nextCard = tmpCard.next();
-            $(nextCard.find('.card-header button')).removeAttr('disabled');
-            if (nextCard.length > 0) {
-                nextCard.addClass('current');
-                $('#collapse_keypoint_' + (parseInt(tmpIdx) + 1)).collapse('show');
-            } else {
-                alert('全部完成');
-            }
+        var callback = function () {
+            $('.lesson-step-item-content-board').remove();
+            var tmpCard = $('#card_keypoint_' + tmpIdx);
+            var tmpCollapse = $('#collapse_keypoint_' + tmpIdx);
+            tmpCard.removeClass('current');
+            tmpCard.addClass('complete');
+            tmpCollapse.on('hidden.bs.collapse', function () {
+                var nextCard = tmpCard.next();
+                $(nextCard.find('.card-header button')).removeAttr('disabled');
+                if (nextCard.length > 0) {
+                    nextCard.addClass('current');
+                    $('#collapse_keypoint_' + (parseInt(tmpIdx) + 1)).collapse('show');
+                } else {
+                    //alert('全部完成');
+                }
 
-            tmpCollapse.unbind();
-        });
+                tmpCollapse.unbind();
+            });
 
-        tmpCollapse.collapse('hide');
+            tmpCollapse.collapse('hide');
+        };
+
+        if ($('.lesson-step-item-content-board').length > 0) {
+            $('.lesson-step-item-content-board').animate({ opacity: 0, }, 1000, callback);
+        } else {
+            callback();
+        }
     });
+
     $('.keypoint-step-item').on('click', function () {
         var target = $(arguments[0].currentTarget);
         buildStepItemShow(target.attr('data-step'), target.attr('data-item'));
@@ -194,54 +218,82 @@ function buildKeyPoint() {
 };
 
 function buildStepItemShow(stepIdx, itemIdx) {
-    /*
-type: tmpContentNode.attr('type'),
-attr: tmpContentNode.attr('attr'),
-isclick: typeof tmpContentNode.attr('isclick') != 'undefined' ? tmpContentNode.attr('attr') == 'true' ? true : false : false,
-txt: $(tmpContentNode.find('txt')).text().replace(/{%/g, '<').replace(/%}/g, '>').replace(/{$/g, '</').replace(/%$/g, '>'),
-img: $(tmpContentNode.find('img')).text(),
-ques: $(tmpContentNode.find('ques')).text(),
-ans: $(tmpContentNode.find('ans')).text(),
-options: []
-    */
     var step = _gLessonData.steps[stepIdx];
     var item = step.items[itemIdx];
-    $('.lesson-step-item-content-board').remove();
-    if (item.opentype == 'G' || item.opentype == 'O') {
-        return;
-    }
-
-    var contents = item.contents;
-    var tmpHTMLStr = [];
-    tmpHTMLStr.push('<div class="lesson-step-item-content-board">');
-    tmpHTMLStr.push('   <div class="container-fluid">');
-    for (var i = 0; i < contents.length; i++) {
-        tmpHTMLStr.push('       <div class="row no-wrap">');
-        tmpHTMLStr.push('           <div class="col no-wrap col-lesson-step-item-content">');
-        if (contents[i].type == 'text') {
-            if (contents[i].attr == 'q') {
-                tmpHTMLStr.push(buildQuestionHTMLStr(contents[i], stepIdx, itemIdx, i));
-            } else if (contents[i].attr == 'd') {
-                tmpHTMLStr.push('<i class="' + _gContentAttrMap[contents[i].attr].icon + ' lesson-step-item-content-symbol"></i>');
-                tmpHTMLStr.push(contents[i].txt);
-            }
-        } else if (contents[i].type == 'img') {
-            //tmpHTMLStr.push('<img class="img-fluid lesson-step-item-content-img" src="' + contents[i].img + '"></img>');
-            tmpHTMLStr.push('<img class="img-fluid lesson-step-item-content-img" src="image/gaosiback.jpg"></img>');
+    var callback = function () {
+        $('.lesson-step-item-content-board').remove();
+        if (item.opentype == 'G' || item.opentype == 'O') {
+            return;
         }
 
-        tmpHTMLStr.push('           </div>');
-        tmpHTMLStr.push('       </div>');
+        var contents = item.contents;
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="lesson-step-item-content-board">');
+        tmpHTMLStr.push('   <div class="container-fluid">');
+        for (var i = 0; i < contents.length; i++) {
+            tmpHTMLStr.push('       <div class="row no-wrap">');
+            tmpHTMLStr.push('           <div class="col no-wrap col-lesson-step-item-content">');
+            if (contents[i].type == 'text') {
+                if (contents[i].attr == 'q' || contents[i].attr == 'qa') {
+                    tmpHTMLStr.push(buildQuestionHTMLStr(contents[i], stepIdx, itemIdx, i));
+                } else if (contents[i].attr == 'd') {
+                    tmpHTMLStr.push('<i class="' + _gContentAttrMap[contents[i].attr].icon + ' lesson-step-item-content-symbol"></i>');
+                    tmpHTMLStr.push(contents[i].txt);
+                }
+            } else if (contents[i].type == 'img') {
+                //tmpHTMLStr.push('<img class="img-fluid lesson-step-item-content-img" src="' + contents[i].img + '"></img>');
+                tmpHTMLStr.push('<img class="img-fluid lesson-step-item-content-img" src="image/gaosiback.jpg"></img>');
+            }
+
+            tmpHTMLStr.push('           </div>');
+            tmpHTMLStr.push('       </div>');
+        }
+
+        tmpHTMLStr.push('   </div>');
+        tmpHTMLStr.push('</div>');
+        var board = $(tmpHTMLStr.join(''));
+        board.css('opacity', '0');
+        $('body').append(board);
+        board.animate({ opacity: 1 }, 500, _gEmptyFn);
+        $('.lesson-step-item-content-submit').on('click', function () {
+            var target = $(arguments[0].currentTarget);
+            var targetIdx = target.attr('data-target').split('|');
+            var currContent = _gLessonData.steps[targetIdx[0]].items[targetIdx[1]].contents[targetIdx[2]];
+            var answer = currContent.answer;
+            var specialId = 'Lesson_Step_' + targetIdx[0] + '_Item_' + targetIdx[1] + '_Content_' + targetIdx[2];
+            var txtField = $('#txt_' + specialId);
+            if (txtField.val() == answer) {
+                $('#result_correct_' + specialId).show();
+                $('#result_incorrect_' + specialId).hide();
+            } else {
+                $('#result_correct_' + specialId).hide();
+                $('#result_incorrect_' + specialId).show();
+            }
+        });
+
+        $('.lesson-step-item-content-radio').on('click', function () {
+            var target = $(arguments[0].currentTarget);
+            var targetIdx = target.attr('data-target').split('|');
+            var specialId = 'Lesson_Step_' + targetIdx[0] + '_Item_' + targetIdx[1] + '_Content_' + targetIdx[2];
+            var currContent = _gLessonData.steps[targetIdx[0]].items[targetIdx[1]].contents[targetIdx[2]];
+            var answer = currContent.answer;
+            if (target.val() == answer) {
+                $('#result_correct_' + specialId).show();
+                $('#result_incorrect_' + specialId).hide();
+            } else {
+                $('#result_correct_' + specialId).hide();
+                $('#result_incorrect_' + specialId).show();
+            }
+        });
+
+        adjustPosition(board);
+    };
+
+    if ($('.lesson-step-item-content-board').length > 0) {
+        $('.lesson-step-item-content-board').animate({ opacity: 0, }, 1000, callback);
+    } else {
+        callback();
     }
-
-    tmpHTMLStr.push('   </div>');
-    tmpHTMLStr.push('</div>');
-    var board = $(tmpHTMLStr.join(''))
-    $('body').append(board);
-    $('.lesson-step-item-content-submit').on('click', function () {
-
-    });
-    adjustPosition(board);
 };
 
 function buildFlipHTMLStr(img) {
@@ -267,17 +319,22 @@ function buildQuestionHTMLStr(content, stepIdx, itemIdx, contentIdx) {
     tmpArr.push('   <div class="card">');
     tmpArr.push('       <div class="card-header" id="heading_' + specialId + '">');
     tmpArr.push('           <h5 class="mb-0">');
-    tmpArr.push('               <div class="flip-wrap">');
-    tmpArr.push('                   <div class="flip-container">');
-    tmpArr.push('                       <div class="flip-front">');
-    tmpArr.push('                           <img src="image/question-circle-regular.svg" alt="">');
-    tmpArr.push('                       </div>');
-    tmpArr.push('                       <div class="flip-back">');
-    tmpArr.push('                           <img src="image/question-circle-regular.svg" alt="">');
-    tmpArr.push('                       </div>');
-    tmpArr.push('                   </div>');
-    tmpArr.push('               </div>');
+    //tmpArr.push('               <div class="flip-wrap">');
+    //tmpArr.push('                   <div class="flip-container">');
+    //tmpArr.push('                       <div class="flip-front">');
+    //tmpArr.push('                           <img src="image/question-circle-regular.svg" alt="">');
+    //tmpArr.push('                       </div>');
+    //tmpArr.push('                       <div class="flip-back">');
+    //tmpArr.push('                           <img src="image/question-circle-regular.svg" alt="">');
+    //tmpArr.push('                       </div>');
+    //tmpArr.push('                   </div>');
+    //tmpArr.push('               </div>');
     tmpArr.push('               <button class="btn btn-link" data-toggle="collapse" data-target="#collapse_' + specialId + '" aria-expanded="true" aria-controls="collapse_' + specialId + '">');
+    tmpArr.push('                   <i class="far fa-question-circle anim-flip"></i>');
+    tmpArr.push('                   <div class="lesson-step-item-content-qus-result-container">');
+    tmpArr.push('<i class="fas fa-check lesson-step-item-content-qus-result text-success" id="result_correct_' + specialId + '"></i>');
+    tmpArr.push('<i class="fas fa-times lesson-step-item-content-qus-result text-danger" id="result_incorrect_' + specialId + '"></i>');
+    tmpArr.push('                   </div>');
     tmpArr.push(content.ques);
     tmpArr.push('               </button>');
     tmpArr.push('           </h5>');
@@ -287,17 +344,38 @@ function buildQuestionHTMLStr(content, stepIdx, itemIdx, contentIdx) {
     if (content.options.length == 0) {
         tmpArr.push('<form>');
         tmpArr.push('   <div class="row">');
-        tmpArr.push('       <div class="col-8">');
-        tmpArr.push('           <input type="text" class="form-control form-control-sm" id="txt_' + specialId + '" value="" placeholder="请输入你的回答...">');
-        tmpArr.push('       </div>');
-        tmpArr.push('       <div class="col-2">');
-        tmpArr.push('           <button type="button" class="btn btn-sm btn-primary mb-2 lesson-step-item-content-submit" style="margin-left:10px;" data-target="' + dataTarget + '">提交</button>');
-        tmpArr.push('       </div>');
+        if (content.attr == 'q') {
+            tmpArr.push('       <div class="col-8">');
+            tmpArr.push('           <input type="text" class="form-control form-control-sm" id="txt_' + specialId + '" value="" placeholder="请输入你的回答...">');
+            tmpArr.push('       </div>');
+            tmpArr.push('       <div class="col-2">');
+            tmpArr.push('           <button type="button" class="btn btn-sm btn-primary mb-2 lesson-step-item-content-submit" style="margin-left:10px;" data-target="' + dataTarget + '">提交</button>');
+            tmpArr.push('       </div>');
+        } else {
+            tmpArr.push('       <div class="col-8">');
+            tmpArr.push(content.ans);
+            tmpArr.push('       </div>');
+        }
         tmpArr.push('   </div>');
         tmpArr.push('</form>');
     } else {
+        if (content.answer.split('|').length == 1) {
+            tmpArr.push('<form style="padding-left:15px;">');
+            for (var k = 0; k < content.options.length; k++) {
+                tmpArr.push('   <div class="form-check">');
+                tmpArr.push('       <input class="form-check-input lesson-step-item-content-radio" type="radio" name="radios_' + specialId + '" id="radios_' + specialId + '_' + k + '" value="' + content.options[k].value + '" data-target="' + dataTarget + '">');
+                tmpArr.push('       <label class="form-check-label" for="radios_' + specialId + '_' + k + '">');
+                tmpArr.push(content.options[k].text);
+                tmpArr.push('       </label>');
+                tmpArr.push('   </div>');
+            }
 
+            tmpArr.push('</form>');
+        } else {
+
+        }
     }
+
     tmpArr.push('           </div>');
     tmpArr.push('       </div>  ');
     tmpArr.push('   </div>');
@@ -317,11 +395,11 @@ function adjustPosition(board) {
 };
 
 function initEditor() {
-    var editor = ace.edit("content_Editor");
-    editor.setTheme("ace/theme/monokai");
+    _gEditor = ace.edit("content_Editor");
+    _gEditor.setTheme("ace/theme/monokai");
     //var tmpLanguage = getQueryString('language');
     //editor.getSession().setMode('ace/mode/' + (tmpLanguage == '' ? 'javascript' : tmpLanguage));
-    editor.getSession().setMode('ace/mode/' + _gLessonData.basic.language);
+    _gEditor.getSession().setMode('ace/mode/' + _gLessonData.basic.language);
 };
 
 function initEvents(isCodeModal) {
@@ -342,19 +420,19 @@ function initHeaderEvents() {
 };
 
 function initToolbarEvents() {
-    $('.toolbar-buttons-item .toolbar-button-save').on('click', function (e) {
+    $('.toolbar-buttons-item.toolbar-button-save').on('click', function (e) {
         alert("'Save' will coming soon!");
     });
 
-    $('.toolbar-buttons-item .toolbar-button-load').on('click', function (e) {
+    $('.toolbar-buttons-item.toolbar-button-load').on('click', function (e) {
         alert("'Load' will coming soon!");
     });
 
-    $('.toolbar-buttons-item .toolbar-button-run').on('click', function (e) {
-        alert("'Run' will coming soon!");
+    $('.toolbar-buttons-item.toolbar-button-run').on('click', function (e) {
+        runCode();
     });
 
-    $('.toolbar-buttons-item .toolbar-button-clear').on('click', function (e) {
+    $('.toolbar-buttons-item.toolbar-button-clear').on('click', function (e) {
         alert("'Clear' will coming soon!");
     });
 };
@@ -378,6 +456,8 @@ function initSiderBarEvents() {
             $(".siderbar-drag-proxy").css("display", "none");
             $(".siderbar-drag-proxy").css("visibility", "hidden");
         }
+
+        $('#content_Editor').width('calc(100% - ' + ($('.siderbar-wrap').width() + 4) + 'px)');
     });
 
     $(".siderbar-drag").mousedown(function (e) {
@@ -415,4 +495,22 @@ function siderBarExpand() {
     });
 
     $('.siderbar-drag').toggleClass('expanded');
+    $('#content_Editor').width('calc(100% - ' + ($('.siderbar-wrap').width() + 4) + 'px)');
+};
+
+function resetSideBarByType() {
+    if (_gLessonData.basic.language == "html") {
+        $('.siderbar-wrap').remove();
+        $('#content_Editor').width('100%');
+    }
+};
+
+function runCode() {
+    if (_gLessonData.basic.language == "html") {
+        runCode_HTML();
+    }
+};
+
+function runCode_HTML() {
+    window.open('loadHTML.html', '_blank');
 };
