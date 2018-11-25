@@ -906,7 +906,7 @@ function circleChat_BuildMessageItem(msgObj, userInfo, showAlert) {
             tmpStyle = ' style="display:none;"';
         }
 
-        tmpImg = (_gUserInfoObj.header != 'image/tmpheader.jpg' ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: _gUserInfoObj.userId }) : _gUserInfoObj.header);
+        tmpImg = (_gUserInfoObj.header != 'image/tmpheader.jpg' ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: _gUserInfoObj.userId }) : _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
         tmpHTMLArr.push('<div class="row row-message-item">');
         tmpHTMLArr.push('   <div class="col-3"></div>');
         tmpHTMLArr.push('   <div class="col-8">');

@@ -208,7 +208,7 @@ function initEvents() {
                                 };
                             }
 
-                            _gUserInfoObj.header = tmpImg;
+                            _gUserInfoObj.header = tmpImg.indexOf('?') < 0 ? tmpImg + '?rnd=' + Date.now() : tmpImg;
                             _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
                             $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header);
                             $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header);
@@ -467,7 +467,7 @@ function initData() {
                         updateUserInfo();
                     };
 
-                    _gUserInfoObj.header = tmpImg;
+                    _gUserInfoObj.header = tmpImg.indexOf('?') < 0 ? tmpImg + '?rnd=' + Date.now() : tmpImg;
                 } else {
                     _gUserInfoObj.header = 'image/tmpheader.jpg';
                 }
@@ -496,7 +496,7 @@ function initData() {
 };
 
 function updateUserInfo() {
-    $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header);
+    $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
     $('#txt_Siderbar_NickName').text(_gUserInfoObj.nickName);
     $('#txt_Siderbar_UserTitle').text(_gUserInfoObj.level);
 };

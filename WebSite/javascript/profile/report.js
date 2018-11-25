@@ -133,7 +133,7 @@ function reportFormatData(response) {
     var doc = $(response);
     var summaryNode = $(doc.find('sumary')[0]);
     var basicData = {
-        header: _gUserInfoObj.header,
+        header: _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header,
         name: _gUserInfoObj.nickName == '' ? _gUserInfoObj.userName : _gUserInfoObj.nickName,
         title: _gUserInfoObj.level,
         exp: parseInt(summaryNode.attr('exp')),

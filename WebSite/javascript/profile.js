@@ -207,20 +207,20 @@ function initEvents() {
                                 img.src = tmpImg;
                                 img.onerror = function () {
                                     _gUserInfoObj.header = 'image/tmpheader.jpg';
-                                    _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
-                                    $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header);
-                                    $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header);
-                                    $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header);
-                                    $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header);
+                                    _CookieUtils.set("logined_user_header", _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+                                    $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+                                    $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+                                    $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+                                    $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
                                 };
                             }
 
                             _gUserInfoObj.header = tmpImg;
-                            _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
-                            $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header);
-                            $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header);
-                            $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header);
-                            $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header);
+                            _CookieUtils.set("logined_user_header", _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+                            $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+                            $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+                            $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+                            $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
                         }
                     });
                 } else {
@@ -3317,9 +3317,9 @@ function settingBuildInfors() {
 };
 
 function settingsLoadUserProfile() {
-    $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header);
-    $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header);
-    $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header);
+    $('#img_Settings_Profile_Header_B').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+    $('#img_Settings_Profile_Header_M').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+    $('#img_Settings_Profile_Header_S').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
     $('#txt_Settings_Profile_NickName').val(_gUserInfoObj.nickName);
     $('#txt_Settings_Profile_Name').val(_gUserInfoObj.userName);
     _gUserInfoObj.gender = (_gUserInfoObj.gender == '' ? '1' : _gUserInfoObj.gender);
@@ -3610,7 +3610,7 @@ function reportFormatData(response) {
     var doc = $(response);
     var summaryNode = $(doc.find('sumary')[0]);
     var basicData = {
-        header: _gUserInfoObj.header,
+        header: _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header,
         name: _gUserInfoObj.nickName == '' ? _gUserInfoObj.userName : _gUserInfoObj.nickName,
         title: _gUserInfoObj.level,
         exp: parseInt(summaryNode.attr('exp')),
@@ -3732,7 +3732,7 @@ function reportBuildOverviewHeader(data, tmpHTMLArr) {
     tmpHTMLArr.push('       超越<span class="text-21 text-fc8823">' + data.over + '%</span>的全国学员');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="padding-10">');
-    tmpHTMLArr.push('       <img class="img-report-overview-header" src="' + _gUserInfoObj.header + '"  />');
+    tmpHTMLArr.push('       <img class="img-report-overview-header" src="' + _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header + '"  />');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div>');
     tmpHTMLArr.push('       <div class="container-fluid no-padding">');
@@ -4305,7 +4305,7 @@ function reportBuildAttention(data) {
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('        <div class="col-6 padding-l-30">');
     tmpHTMLArr.push('            <img src="image/iphone7.png" class="img-fluid report-attention-bakcground" />');
-    tmpHTMLArr.push('            <img src="' + _gUserInfoObj.header + '"  class="report-attention-header header-img"/>');
+    tmpHTMLArr.push('            <img src="' + _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header + '"  class="report-attention-header header-img"/>');
     tmpHTMLArr.push('            <div class="report-attention-header header-point"></div>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
@@ -4394,7 +4394,7 @@ function initData() {
                     img.src = tmpImg;
                     img.onerror = function () {
                         _gUserInfoObj.header = 'image/tmpheader.jpg';
-                        _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
+                        _CookieUtils.set("logined_user_header", _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
                         updateUserInfo();
                     };
 
@@ -4403,7 +4403,7 @@ function initData() {
                     _gUserInfoObj.header = 'image/tmpheader.jpg';
                 }
 
-                _CookieUtils.set("logined_user_header", _gUserInfoObj.header);
+                _CookieUtils.set("logined_user_header", _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
                 updateUserInfo();
                 var checkOnFn = function (response_checkon) {
                     var success = ($($(response_checkon).find('executed')[0]).text() == 'true' ? true : false);
@@ -4427,7 +4427,7 @@ function initData() {
 };
 
 function updateUserInfo() {
-    $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header);
+    $('#img_Siderbar_Header').attr('src', _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
     $('#txt_Siderbar_NickName').text(_gUserInfoObj.nickName);
     $('#txt_Siderbar_UserTitle').text(_gUserInfoObj.level);
 };

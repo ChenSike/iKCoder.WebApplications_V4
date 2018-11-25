@@ -66,6 +66,10 @@ function initPage() {
         initialCodeModalComp();
     }
 
+    if (tmpStage == 'OE_001') {
+        $('.col-toolbar-item-share').show();
+    }
+
     initEvents(tmpStep == '' ? true : false);
 };
 
@@ -372,7 +376,7 @@ function loadStageLibs_3(response) {
     //return;
     var tmpPaths = $(response).find("game").find('script');
     var include3D = false;
-    for (var i = 0; i < tmpPaths.length ; i++) {
+    for (var i = 0; i < tmpPaths.length; i++) {
         if ($(tmpPaths[i]).attr('src').toLowerCase().indexOf('_3d') >= 0) {
             include3D = true;
             break;
@@ -398,7 +402,7 @@ function loadStageLibs_3(response) {
     }
 
     addLibPathFn($($(response).find("toolbox")[0]));
-    for (var i = 0; i < tmpPaths.length ; i++) {
+    for (var i = 0; i < tmpPaths.length; i++) {
         addLibPathFn($(tmpPaths[i]));
     }
 };
@@ -620,7 +624,8 @@ function initToolbarEvents() {
     });
 
     $('.toolbar-button-referesh').on('click', function (e) {
-        WorkScene.reset(_forceReset);
+        //WorkScene.reset(_forceReset);
+        window.location.reload();
     });
 
     $('.run-scene-fullscreen-close-button').on('click', function (e) {
@@ -704,11 +709,43 @@ function playScence() {
                 WorkScene.startGame();
                 resetPlayBtn('R');
             } else if (currentBtn.hasClass('fa-undo-alt')) {
-                WorkScene.resetScene();
-                resetPlayBtn('P');
+                showResetWarnning();                
             }
         }
     }
+};
+
+function showResetWarnning() {
+    if ($('#modal_ShowResetWarnning').length == 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal" tabindex="-1" role="dialog" id="modal_ShowResetWarnning">');
+        tmpHTMLStr.push('   <div class="modal-dialog" role="document">');
+        tmpHTMLStr.push('       <div class="modal-content">');
+        tmpHTMLStr.push('           <div class="modal-header">');
+        tmpHTMLStr.push('               <h5 class="modal-title">温馨提示</h5>');
+        tmpHTMLStr.push('               <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                   <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('               </button>');
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('           <div class="modal-body">');
+        tmpHTMLStr.push('               <p class="text-center">您确定要重新开始吗？确定后工作区将恢复初始状态！</p>');
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('           <div class="modal-footer">');
+        tmpHTMLStr.push('               <button type="button" class="btn btn-primary" id="btn_OK_ShowResetWarnning">确认</button>');
+        tmpHTMLStr.push('               <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>');
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('       </div>');
+        tmpHTMLStr.push('   </div>');
+        tmpHTMLStr.push('</div>');
+        $('body').append($(tmpHTMLStr.join('')));
+        $('#btn_OK_ShowResetWarnning').on('click', function () {
+            $('#modal_ShowResetWarnning').modal('hide');
+            WorkScene.resetScene();
+            resetPlayBtn('P');
+        });
+    }
+
+    $('#modal_ShowResetWarnning').modal('show');
 };
 
 function resetPlayBtn(operation) {
