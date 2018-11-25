@@ -2,6 +2,10 @@
     min-width: 330px;
 }
 
+.custom-global-alert {
+    z-index: 99;
+}
+
 .wrap-background-body {
     /*background-image: url(../image/gaosiback.jpg);
     background-size: 100% 100%;

@@ -3,6 +3,10 @@
     min-width: 1150px;
 }
 
+div.alert {
+    z-index: 2;
+}
+
 header {
     height: 35px;
     /*background-color: rgb(246,246,246);*/
@@ -428,18 +432,23 @@ footer {
         border: none;
     }
 
-        .col-circle-sidetoolbar .btn-circle-stb-item .alert-circle-stb-item {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            border-radius: 50%;
-            background-color: red;
-            font-size: 10px;
-            width: 16px;
-            height: 16px;
-            line-height: 16px;
-            color: white;
-        }
+    .col-circle-sidetoolbar .btn.btn-circle-stb-item:focus {
+        box-shadow: none !important;
+    }
+
+    .col-circle-sidetoolbar .btn-circle-stb-item .alert-circle-stb-item {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        border-radius: 50%;
+        background-color: red;
+        font-size: 10px;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        color: white;
+        display: none;
+    }
 
 .col-circle-user-list {
     min-width: 240px;
@@ -585,6 +594,15 @@ footer {
         padding: 15px;
     }
 
+        .col-circle-message-list .container-circle-message-history .span-msg-datetime {
+            background-color: rgb(218,218,218);
+            font-size: 12px;
+            color: white;
+            text-align: center;
+            padding: 2px 10px;
+            border-radius: 3px;
+        }
+
     .col-circle-message-list .circle-input-drag {
         height: 5px;
         width: 100%;
@@ -678,6 +696,36 @@ footer {
             box-shadow: 1px 1px 5px rgb(142,142,142);
         }
 
+        .col-circle-message-list .row-message-item .col-msg-item-wrap {
+            max-width: 90%;
+        }
+
+        .col-circle-message-list .row-message-item .col-msg-item-alert-wrap {
+            text-align: right;
+        }
+
+            .col-circle-message-list .row-message-item .col-msg-item-alert-wrap button {
+                border: none;
+                padding: 0px;
+            }
+
+                .col-circle-message-list .row-message-item .col-msg-item-alert-wrap button:hover {
+                    background-color: transparent;
+                }
+
+                .col-circle-message-list .row-message-item .col-msg-item-alert-wrap button:not(:disabled):not(.disabled):active:focus {
+                    box-shadow: none;
+                }
+
+                .col-circle-message-list .row-message-item .col-msg-item-alert-wrap button:focus {
+                    box-shadow: none;
+                }
+
+            .col-circle-message-list .row-message-item .col-msg-item-alert-wrap svg {
+                margin-top: 9px;
+                color: #dc3545;
+            }
+
         .col-circle-message-list .row-message-item .message-item-wrap {
             font-size: 14px;
         }
@@ -705,6 +753,7 @@ footer {
                     margin-left: auto;
                     background-color: rgb(158,234,106);
                     border: none;
+                    overflow-x:auto;
                 }
 
             .col-circle-message-list .row-message-item .message-item-wrap .arrow-back {
@@ -965,12 +1014,17 @@ footer {
                 .popover .wrap-emoji-popover .row-emoji-groups .col-emoji-groups .container-emoji-groups {
                     width: max-content;
                     position: relative;
+                    padding: 0px 3px;
                 }
 
                     .popover .wrap-emoji-popover .row-emoji-groups .col-emoji-groups .container-emoji-groups .emoji-groups-item {
                         width: 25px;
                         cursor: pointer;
                     }
+
+                        .popover .wrap-emoji-popover .row-emoji-groups .col-emoji-groups .container-emoji-groups .emoji-groups-item.active {
+                            box-shadow: 0px 0px 1px 1px #2fa8e1;
+                        }
 
             .popover .wrap-emoji-popover .row-emoji-groups .col-emoji-groups-buttons {
                 max-width: 70px;
@@ -1541,6 +1595,8 @@ footer {
         .row-circle-message-part-2 .container-circle-friend-item-detail .circle-friend-item-detail-header {
             width: 60px;
             height: 60px;
+            max-width: 60px;
+            max-height: 60px;
         }
 
         .row-circle-message-part-2 .container-circle-friend-item-detail .s-circle-friend-item-detail-name {

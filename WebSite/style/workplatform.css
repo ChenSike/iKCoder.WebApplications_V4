@@ -16,7 +16,7 @@ body {
 
 .wrap-container {
     min-height: 450px;
-    min-width:700px;
+    min-width: 700px;
     width: 100%;
     height: 100%;
     padding: 0px;
@@ -52,7 +52,7 @@ body {
     padding: 0px 10px;
     color: rgb(203,204,203);
     line-height: 40px;
-    font-size:14px;
+    font-size: 14px;
 }
 
 .sign-out-button {
@@ -776,11 +776,12 @@ body {
                 cursor: pointer;
                 padding-left: 20px;
                 width: 40px;
+                color: white;
             }
 
                 .wrap-workstatus-alert .wrap-alert-content .step-evaluate-wrap .step-evaluate-button:hover {
                     font-weight: bold;
-                    font-size: 20px;
+                    font-size: 18px;
                 }
 
 .mask-course-msg-alert {
@@ -1027,17 +1028,17 @@ body {
     border-top-right-radius: 0px;
 }
 
-#modalFinishLesson{
+#modalFinishLesson {
     z-index: 1080;
 }
 
-#modalFinishLesson .modal-dialog .modal-content{
-    height:225px;
-    width: 400px;
-    left: calc(50% - 200px);
-}
+    #modalFinishLesson .modal-dialog .modal-content {
+        height: 225px;
+        width: 400px;
+        left: calc(50% - 200px);
+    }
 
-#modalFinishLesson .modal-dialog .modal-content .modal-body{
-    padding:15px;
-    font-size:14px;
-}
+        #modalFinishLesson .modal-dialog .modal-content .modal-body {
+            padding: 15px;
+            font-size: 14px;
+        }

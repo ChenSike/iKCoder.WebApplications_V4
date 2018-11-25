@@ -359,8 +359,8 @@ function buildStatusAlertWindow() {
         tmppHTMLStr.push('            <div class="row">');
         tmppHTMLStr.push('                <div class="col text-center step-evaluate-wrap">');
         tmppHTMLStr.push('                    <span>喜欢这个课程吗?</span>');
-        tmppHTMLStr.push('                    <span class="far fa-thumbs-up step-evaluate-button yes" data-target="1" title="喜欢"></span>');
-        tmppHTMLStr.push('                    <span class="far fa-thumbs-down step-evaluate-button no" data-target="0" title="不喜欢"></span>');
+        tmppHTMLStr.push('                    <a href="#" class="step-evaluate-button yes"><span class="far fa-thumbs-up" data-target="1" title="喜欢"></span></a>');
+        tmppHTMLStr.push('                    <a href="#" class="step-evaluate-button no"><span class="far fa-thumbs-down" data-target="0" title="不喜欢"></span></a>');
         tmppHTMLStr.push('                </div>');
         tmppHTMLStr.push('            </div>');
         tmppHTMLStr.push('        </div>');
@@ -449,10 +449,11 @@ function initStatusAlertEvents() {
 
     $('.step-evaluate-button').on('click', function () {
         var currBtn = $(arguments[0].target);
+        currBtn.css('color', 'rgb(255,255,255)');
         if (currBtn.hasClass('yes')) {
-
+            $('.step-evaluate-button.no').css('color', '#aaaaaa');
         } else {
-
+            $('.step-evaluate-button.yes').css('color', '#aaaaaa');
         }
     });
 }

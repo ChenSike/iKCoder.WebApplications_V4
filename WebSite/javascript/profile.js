@@ -2259,17 +2259,14 @@ function circleBuildNewFriendsList() {
 
     $('.btn-new-friend-accept').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
-        var userObj = circleGetUserObj(target.attr('data-target'), 'user');
+        var userObj = circleGetUserObj(target.attr('data-uid'), 'user');
+        webSocketSend('Action_Set_AcceptFriend', { id: userObj.accecptId });
         userObj.accecpt = true;
-        circleAcceptFriendRequest(userObj.userId);
+        userObj.accecptId = '';
         var parent = target.parent();
         parent.empty();
         parent.text('已添加');
     });
-};
-
-function circleAcceptFriendRequest(userId) {
-    //'Action_Set_AcceptFriend'
 };
 
 function circleBuildChannelList(channels) {

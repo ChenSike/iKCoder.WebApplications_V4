@@ -59,11 +59,16 @@ Scene.init = function () {
     Engine.start();
 };
 
-Scene.start = function () {    
+Scene.start = function () {
     Engine.start();
 };
 
 Scene.reset = function () {
+    WorkScene.WORKSPACE.clear();
+    var defaultXml = (!_workspaceCfg.workspace ? '<xml></xml>' : _workspaceCfg.workspace);
+    WorkScene.loadBlocks(defaultXml);
+    resetPlayBtn('P');
+
     Engine.reset();
     Engine.changeRoleModule('rabbit', 'player');
     Engine.changeRoleModule('wolf', 'monster');
@@ -80,6 +85,7 @@ Scene.resetSize = function () {
 };
 
 Scene.settingComplete = function () {
+    _dataForSave = $(_dataForSave);
     var rabbitNode = $($(_dataForSave).find('item[module="rabbit"]')[0]);
     var rabbitModule = Engine.moduleLib['rabbit'];
     rabbitNode.attr('head', rabbitModule.head.scale.x);
@@ -92,7 +98,12 @@ Scene.settingComplete = function () {
     wolfNode.attr('body', wolfModule.torso.scale.x);
     wolfNode.attr('ear', wolfModule.earL.scale.x);
     wolfNode.attr('color', '#' + wolfModule.head.material.color.getHexString());
-    _dataForSave = XMLToString(_dataForSave);
+    if (typeof _dataForSave[0].documentElement != 'undefined') {
+        _dataForSave = _dataForSave[0].documentElement.outerHTML;
+    } else {
+        XMLToString(_dataForSave[0])
+    }
+
     window.localStorage.setItem(getQueryString('scene') + '_state_storage', _dataForSave);
     showCompleteAlert();
 };

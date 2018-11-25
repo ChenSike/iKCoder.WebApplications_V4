@@ -342,28 +342,30 @@ function getQueryString(key) {
     return retValue;
 };
 //start introduce
-function _startIntroJs() {
-    var flag = true;
-    $('head').find('link').each(function (index, ele) {
-        if ($(ele).attr('href').indexOf('introjs.css') >= 0) {
-            flag = false;
-        }
-    });
-
-    if (flag) {
-        $('head').append('<link rel="stylesheet" href="intro.js-2.4.0/introjs.css">');
-        $('head').append('<link rel="stylesheet" href="intro.js-2.4.0/themes/introjs-modern.css">');
-        $.getScript("intro.js-2.4.0/intro.js", function () {
-            introJs().setOptions({
-                'showButtons': true,
-                "nextLabel": "下一步",
-                "prevLabel": "上一步",
-                "skipLabel": "跳过",
-                "doneLabel": "完成",
-                "exitOnEsc": true,
-                "keyboardNavigation": true
-            }).start();
+function _startIntroJsLoad() {
+    if (getQueryString('scene') == 'OE_001' && getQueryString('step') == '0') {
+        var flag = true;
+        $('head').find('link').each(function (index, ele) {
+            if ($(ele).attr('href').indexOf('introjs.css') >= 0) {
+                flag = false;
+            }
         });
+
+        if (flag) {
+            $('head').append('<link rel="stylesheet" href="intro.js-2.4.0/introjs.css">');
+            $('head').append('<link rel="stylesheet" href="intro.js-2.4.0/themes/introjs-modern.css">');
+            $.getScript("intro.js-2.4.0/intro.js", function () {
+                introJs().setOptions({
+                    'showButtons': true,
+                    "nextLabel": "下一步",
+                    "prevLabel": "上一步",
+                    "skipLabel": "跳过",
+                    "doneLabel": "完成",
+                    "exitOnEsc": true,
+                    "keyboardNavigation": true
+                }).start();
+            });
+        }
     }
 };
 //show global message
@@ -573,7 +575,7 @@ function _GroupSortArray(sourceArr, sortAttr) {
             var enObj = _groupSortEn(enArr, currSortAttr);
             var zhObj = _groupSortZh(zhArr, currSortAttr);
             for (var key in enObj) {
-                result.push({ id: key, title: key, items: enObj[key].concat(zhObj[key]) });
+                result.push({ id: key, title: key, subs: enObj[key].concat(zhObj[key]) });
             }
         }
     }
@@ -630,19 +632,21 @@ function _groupSortZh(sourceArr, sortAttr) {
 };
 
 function _startIntroJs() {
-    $('head').find('link').each(function (index, ele) {
-        if ($(ele).attr('href').indexOf('introjs.min.css') >= 0) {
-            introJs().setOptions({
-                'showButtons': true,
-                "nextLabel": "下一步",
-                "prevLabel": "上一步",
-                "skipLabel": "跳过",
-                "doneLabel": "完成",
-                "exitOnEsc": true,
-                "keyboardNavigation": true
-            }).start();
-        }
-    });
+    if (getQueryString('scene') == 'OE_001' && getQueryString('step') == '0') {
+        $('head').find('link').each(function (index, ele) {
+            if ($(ele).attr('href').indexOf('introjs.min.css') >= 0) {
+                introJs().setOptions({
+                    'showButtons': true,
+                    "nextLabel": "下一步",
+                    "prevLabel": "上一步",
+                    "skipLabel": "跳过",
+                    "doneLabel": "完成",
+                    "exitOnEsc": true,
+                    "keyboardNavigation": true
+                }).start();
+            }
+        });
+    }
 };
 
 function _checkPwdIntension(value, lbField) {

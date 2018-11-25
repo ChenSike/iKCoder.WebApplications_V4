@@ -433,7 +433,7 @@ function initToolbarEvents() {
     });
 
     $('.toolbar-buttons-item.toolbar-button-clear').on('click', function (e) {
-        alert("'Clear' will coming soon!");
+        _gEditor.setValue('');
     });
 };
 

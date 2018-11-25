@@ -299,7 +299,13 @@
     <script src="javascript/common/bootstrap-suggest.min.js"></script>
     <script src="javascript/common/bootstrap-switch.min.js"></script>
     <script src="javascript/common/global.js"></script>
-    <script src="javascript/profile.js"></script>
+    <script src="javascript/profile/profile.js"></script>
+    <script src="javascript/profile/course.js"></script>
+    <script src="javascript/profile/experiment.js"></script>
+    <script src="javascript/profile/circle.js"></script>
+    <script src="javascript/profile/report.js"></script>
+    <script src="javascript/profile/setting.js"></script>
+    <script src="javascript/profile/websocket.js"></script>
 </head>
 <body style="height:100%;">
     <div class="container-fluid h-100 w-100 no-wrap main-container">
@@ -606,10 +612,11 @@
             <button type="reset" id="btn_Form_File_Upload"></button>
         </form>
         <iframe name="iFrame_Upload"></iframe>
+        <canvas id="canvasForMsgInputImg"></canvas>
+        <image id="imageForMsgInputImg"></image>
     </div>
     <script type="text/javascript">
-        $(document).ready(function () {
-            getCircleToken();
+        $(document).ready(function () {            
             initPage();
             _startCheckState();
         });
