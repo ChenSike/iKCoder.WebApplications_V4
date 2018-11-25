@@ -102,9 +102,9 @@ function circleInitBasicData() {
     _gCircleCurrentAddress = null;
     _gCircleUsers = [];
     _gCircleGroups = [
-       { id: 'guest', title: '新朋友', userId: "-2", subs: [{ userName: "新朋友", userId: "-2", header: "image/tmpheader.jpg" }] },
-       { id: 'channel', title: '频道', userId: "-3", subs: [{ userName: "频道", userId: "-3", header: "image/tmpheader.jpg" }] },
-       { id: 'group', title: '讨论组', userId: "-4", subs: [] }
+        { id: 'guest', title: '新朋友', userId: "-2", subs: [{ userName: "新朋友", userId: "-2", header: "image/tmpheader.jpg" }] },
+        { id: 'channel', title: '频道', userId: "-3", subs: [{ userName: "频道", userId: "-3", header: "image/tmpheader.jpg" }] },
+        { id: 'group', title: '讨论组', userId: "-4", subs: [] }
     ];
 
     _gCircleUsers.push({
@@ -1757,9 +1757,9 @@ function circleInitData_Address() {
     var groups = { id: 'group', title: '讨论组', userId: "-4", subs: [] };
     var channels = { id: 'channel', title: '频道', userId: "-3", subs: [{ userName: "频道", userId: "-3", header: "image/tmpheader.jpg" }] };
     _gCircleGroups = [
-       { id: 'guest', title: '新朋友', userId: "-2", subs: [{ userName: "新朋友", userId: "-2", header: "image/tmpheader.jpg" }] },
-       channels,
-       groups
+        { id: 'guest', title: '新朋友', userId: "-2", subs: [{ userName: "新朋友", userId: "-2", header: "image/tmpheader.jpg" }] },
+        channels,
+        groups
     ];
 
     var friends = [];
@@ -2199,7 +2199,7 @@ function circleChat_InsertContent(contentString) {
 
     var range = selection.getRangeAt(0);
     //如果是选择区域插入内容的，先处理清理选区内的内容，变为光标插入
-    var prepare = (selection.type == 'Range' ? circleChat_InsertContentPrepareRange(range, inputFieldEl) : true);
+    var prepare = (selection.type == 'Range' ? circleChat_ClearSelectionRange(range, inputFieldEl) : true);
     var childCount = inputFieldEl.childNodes.length;
     //如果插入位置不是在text中
     if (selection.anchorNode.nodeName != '#text') {
@@ -2211,7 +2211,7 @@ function circleChat_InsertContent(contentString) {
                 tmpNode = contentObj.el[i];
             }
         } else {
-            for (var i = 0 ; i < contentObj.el.length ; i++) {
+            for (var i = 0; i < contentObj.el.length; i++) {
                 inputFieldEl.appendChild(contentObj.el[i]);
             }
         }
@@ -2308,70 +2308,71 @@ function circleChat_ResizeImage(image) {
     }
 }
 
-function circleChat_InsertContentPrepareRange(range, inputFieldEl) {
+function circleChat_ClearSelectionRange(range, inputFieldEl) {
     try {
         var comContainer = range.commonAncestorContainer;
         var endContainer = range.endContainer;
         var startContainer = range.startContainer;
-        var tmpNodeVal = '';
-        if (comContainer.nodeName == '#text' && startContainer.nodeName == '#text' && endContainer.nodeName == '#text') {
-            var tmpNodeVal = startContainer.nodeValue;
-            startContainer.nodeValue = tmpNodeVal.substring(0, range.startOffset) + tmpNodeVal.substring(0, range.endOffset);
-        } else if (comContainer.nodeName != '#text') {
-            var startIdx = 0;
-            var endIdx = 0;
-            var orgStart = range.startOffset;
+        var tmpNodeVal, resultValue, startIdx, endIdx;
+        //range In Same Text Block
+        if (comContainer.nodeName == '#text' && comContainer.childNodes.length == 0) {
+            startIdx = range.startOffset;
+            endIdx = range.endOffset;
+            tmpNodeVal = startContainer.nodeValue;
+            startContainer.nodeValue = tmpNodeVal.substring(0, startIdx) + tmpNodeVal.substring(endIdx);
+            range.setStart(startContainer, startIdx);
+            range.collapse(true);
+            return true;
+            //range include multi block
+        } else if (comContainer.nodeName != '#text' && comContainer.childNodes.length > 0) {
+            var remSIdx, remEIdx;
+            startIdx = range.startOffset;
+            endIdx = range.endOffset;
             if (startContainer.nodeName == '#text') {
+                remSIdx = circleChat_GetIndexOfNode(startContainer.nextSibling, inputFieldEl);
                 tmpNodeVal = startContainer.nodeValue;
-                startContainer.nodeValue = tmpNodeVal.substring(0, range.startOffset);
-                startIdx = circleChat_GetIndexOfNode(startContainer, inputFieldEl) + 1;
-                range.setStart(startContainer, orgStart);
+                startContainer.nodeValue = tmpNodeVal.substring(0, startIdx);
+                range.setStart(startContainer, startIdx);
             } else {
-                startIdx = range.startOffset;
+                remSIdx = startIdx;
             }
 
             if (endContainer.nodeName == '#text') {
+                remEIdx = circleChat_GetIndexOfNode(endContainer.previousSibling, inputFieldEl);
                 tmpNodeVal = endContainer.nodeValue;
-                endContainer.nodeValue = tmpNodeVal.substring(range.endOffset);
-                endIdx = circleChat_GetIndexOfNode(endContainer, inputFieldEl) - 1;
+                endContainer.nodeValue = tmpNodeVal.substring(endIdx);
             } else {
-                endIdx = range.endOffset;
+                remEIdx = endIdx;
             }
 
-            var childNodes = inputFieldEl.childNodes;
-            if (startIdx <= endIdx && startIdx >= 0 && endIdx < childNodes.length) {
-                for (var i = endIdx; i >= startIdx; i--) {
-                    childNodes[i].remove();
+            if (remSIdx >= 0 && remEIdx > 0 && remEIdx < inputFieldEl.childNodes.length) {
+                for (var i = remEIdx; i >= remSIdx; i--) {
+                    $(inputFieldEl.childNodes[i]).remove();
                 }
+
+                range.collapse(true);
+                return true;
             }
+
+            return false;
         }
 
-        range.collapse(true);
-        return true;
+        return false;
     } catch (ex) {
         return false;
     }
+
+    return true;
 };
 
 function circleChat_GetIndexOfNode(node, parentNode) {
     var childNodes = parentNode.childNodes;
-    var index = 0;
-    var prevNode = node;
-    if (node.nodeName == '#text') {
-        prevNode = node.previousSibling;
-    }
-
-    if (prevNode != null) {
-        for (var i = 0; i < childNodes.length; i++) {
-            if (childNodes[i].isEqualNode(prevNode)) {
-                index = i
-                break;
-            }
+    var index = -1;
+    for (var i = 0; i < childNodes.length; i++) {
+        if (childNodes[i].isEqualNode(node)) {
+            index = i
+            break;
         }
-    }
-
-    if (node.nodeName == '#text' && prevNode != null) {
-        index++;
     }
 
     return index;
@@ -2481,7 +2482,7 @@ function circleChat_DealWithPasteByDataType(data, callback) {
                     };
 
                     for (var i = 0; i < imgURLs.length; i++) {
-                        dealWithImage_URL(imgURLs[i].url, callbackFn, imgURLs[i].id);
+                        circleChat_DealWithImage_URL(imgURLs[i].url, callbackFn, imgURLs[i].id);
                     }
                 } else {
                     callback(resultTxt);
@@ -2499,7 +2500,7 @@ function circleChat_DealWithPasteByDataType(data, callback) {
                         tmpId = 'img-' + _GUID();
                         tmpURL = childrens[i].outerHTML.split('alt=&quot;')[1].split('&quot;')[0];
                         if (tmpURL.indexOf('http') == 0) {
-                            imgURLs.push({ id: tmpId, url: tmpURL });
+                            imgURLs.push({ id: tmpId, url: tmpURL.replace(/&amp;/g, '&'); });
                         }
 
                         resultTxt += '{%image%}' + tmpId + '{%image%}';
@@ -2509,7 +2510,7 @@ function circleChat_DealWithPasteByDataType(data, callback) {
                             tmpId = 'img-' + _GUID();
                             tmpURL = images[j].outerHTML.split('alt=&quot;')[1].split('&quot;')[0];
                             if (tmpURL.indexOf('http') == 0) {
-                                imgURLs.push({ id: tmpId, url: tmpURL });
+                                imgURLs.push({ id: tmpId, url: tmpURL.replace(/&amp;/g, '&'); });
                                 $(images[j]).after($('<p>{%image%}' + tmpId + '{%image%}<p/>'));
                             }
 
@@ -2532,7 +2533,7 @@ function circleChat_DealWithPasteByDataType(data, callback) {
                 };
 
                 for (var i = 0; i < imgURLs.length; i++) {
-                    dealWithImage_Local(imgURLs[i].url, callbackFn, imgURLs[i].id);
+                    circleChat_DealWithImage_URL(imgURLs[i].url, callbackFn, imgURLs[i].id);
                 }
             } else {
                 callback(resultTxt);
