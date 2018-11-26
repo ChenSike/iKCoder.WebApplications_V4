@@ -744,6 +744,9 @@ function circleInitEvents_Chat() {
                 webSocketSend('Action_Set_SendMessage', { symbol: _gCircleCurrentChat.chatId, msg: $.base64.btoa(dataXml), targets: [_gCircleCurrentChat.chatterId], values: {}, batch: [], id: '' });
             });
 
+            var historyImgs = $($('.container-circle-message-history').find('img'));
+            historyImgs.unbind()
+            historyImgs.on('click', circleChat_ShowChatImage);
             webSocketSend('Action_Set_SendMessage', { symbol: _gCircleCurrentChat.chatId, msg: $.base64.btoa(dataXml), targets: [_gCircleCurrentChat.chatterId], values: {}, batch: [], id: '' });
         }
     });
@@ -1016,7 +1019,7 @@ function circleChat_InputEmoji(eventObj) {
         }
     }
 
-    circleChat_InsertContent($('<img class="img-fluid emoji-item-in-field" src="' + img + '"/>'));
+    circleChat_InsertContent('<img src="' + img + '" class="img-fluid emoji-item-in-field"/>');
     $('.circle-message-input-type.input-type-emoji').popover('hide');
 };
 
@@ -2238,6 +2241,7 @@ function circleChat_InsertContent(contentString) {
     }
 
     _gLastEditRange = selection.getRangeAt(0);
+    $(inputField.find('img')).on('click', circleChat_ShowChatImage);
 };
 
 function circleChat_InsertContentCreateObject(contentStr) {
@@ -2246,6 +2250,7 @@ function circleChat_InsertContentCreateObject(contentStr) {
     var imageIds = [];
     var newImageId = "";
     var contentType = 'string';
+    var tmpNodeEl;
     if (contentStr.indexOf('<img src="') >= 0) {
         contentType = 'html';
         var tmpRootEl = $('<p>' + contentStr + '</p>')[0];
@@ -2255,8 +2260,10 @@ function circleChat_InsertContentCreateObject(contentStr) {
                 contentHTML += tmpChildNodes[i].nodeValue;
             } else if (tmpChildNodes[i].nodeName == "IMG") {
                 newImageId = "img_" + _GUID();
-                $(tmpChildNodes[i]).css('vertical-align', 'baseline');
-                $(tmpChildNodes[i]).attr('id', newImageId);
+                tmpNodeEl = $(tmpChildNodes[i]);
+                tmpNodeEl.css('vertical-align', tmpNodeEl.hasClass('emoji-item-in-field') ? 'unset' : 'text-bottom');
+                tmpNodeEl.css('cursor', 'pointer');
+                tmpNodeEl.attr('id', newImageId);
                 tmpChildNodes[i].onload = function () {
                     circleChat_ResizeImage(arguments[0].srcElement);
                 };
@@ -2488,6 +2495,9 @@ function circleChat_DealWithPasteByDataType(data, callback) {
                     callback(resultTxt);
                 }
             }
+            //code in vs
+        } else if (data.types.length == 2 && data.types[0] == 'text/plain' && data.types[1] == 'text/rtf') {
+            callback(data.getData('text/plain').replace(/\n|\r|\n\r/g, ''));
             //text in word - mix in word
         } else if (data.types.length == 3 && data.types[0] == 'text/plain' && data.types[1] == 'text/html' && data.types[2] == 'text/rtf') {
             var childrens = $(data.getData('text/html').replace(/\n|\r|\n\r/g, ''));
@@ -2500,7 +2510,7 @@ function circleChat_DealWithPasteByDataType(data, callback) {
                         tmpId = 'img-' + _GUID();
                         tmpURL = childrens[i].outerHTML.split('alt=&quot;')[1].split('&quot;')[0];
                         if (tmpURL.indexOf('http') == 0) {
-                            imgURLs.push({ id: tmpId, url: tmpURL.replace(/&amp;/g, '&'); });
+                            imgURLs.push({ id: tmpId, url: tmpURL.replace(/&amp;/g, '&') });
                         }
 
                         resultTxt += '{%image%}' + tmpId + '{%image%}';
@@ -2510,7 +2520,7 @@ function circleChat_DealWithPasteByDataType(data, callback) {
                             tmpId = 'img-' + _GUID();
                             tmpURL = images[j].outerHTML.split('alt=&quot;')[1].split('&quot;')[0];
                             if (tmpURL.indexOf('http') == 0) {
-                                imgURLs.push({ id: tmpId, url: tmpURL.replace(/&amp;/g, '&'); });
+                                imgURLs.push({ id: tmpId, url: tmpURL.replace(/&amp;/g, '&') });
                                 $(images[j]).after($('<p>{%image%}' + tmpId + '{%image%}<p/>'));
                             }
 
@@ -2544,12 +2554,9 @@ function circleChat_DealWithPasteByDataType(data, callback) {
 
 function circleChat_DealWithImage_File(imageItem, callback) {
     var img = document.getElementById('imageForMsgInputImg');
-    var canvas = document.getElementById('canvasForMsgInputImg');
-    var ctx = canvas.getContext('2d');
     $(img).on('load', function () {
         $(img).unbind();
-        ctx.drawImage(img, 0, 0);
-        callback(canvas.toDataURL());
+        callback(circleChat_CoverPasteImgToBase64(img));
     });
 
     img.src = window.URL.createObjectURL(imageItem.getAsFile().slice());
@@ -2560,14 +2567,11 @@ function circleChat_DealWithImage_URL(imgURL, callback, id) {
     img.setAttribute('crossOrigin', 'anonymous');
     $(img).on('load', function () {
         $(img).unbind();
-        ctx.drawImage(img, 0, 0);
         if (typeof callback != 'undefined') {
-            callback(canvas.toDataURL(), id);
+            callback(circleChat_CoverPasteImgToBase64(img), id);
         }
     });
 
-    var canvas = document.getElementById('canvasForMsgInputImg');
-    var ctx = canvas.getContext('2d');
     var imgResponse = '';
     var getImageBlob = function (url, cb) {
         var xhr = new XMLHttpRequest();
@@ -2590,4 +2594,72 @@ function circleChat_DealWithImage_URL(imgURL, callback, id) {
     }
 
     getImageBlob(imgURL);
+};
+
+function circleChat_CalcImageSize(img) {
+    var height = img.height;
+    var width = img.width;
+    if (height > width) {
+        width = (height / 3 * 4 > width ? height / 3 * 4 : width);
+    } else {
+        height = (width / 4 * 3 > height ? width / 4 * 3 : height);
+    }
+
+    var left = (width > img.width ? (width - img.width) / 2 : 0);
+    var top = (height > img.height ? (height - img.height) / 2 : 0);
+    return { w: width, h: height, l: left, t: top };
+};
+
+function circleChat_CoverPasteImgToBase64(img) {
+    var canvas = document.getElementById('canvasForMsgInputImg');
+    var ctx = canvas.getContext('2d');
+    var sizeObj = circleChat_CalcImageSize(img);
+    canvas.width = sizeObj.w;
+    canvas.height = sizeObj.h;
+    ctx.rect(0, 0, sizeObj.w, sizeObj.h);
+    ctx.fillStyle = "#000000";
+    ctx.fill();
+    ctx.drawImage(img, sizeObj.l, sizeObj.t);
+    return canvas.toDataURL();
+};
+
+function circleChat_ShowChatImage(evtObj) {
+    if ($('#modal_ShowChatImage').length == 0) {
+        var tmpHTMLStr = [];
+        tmpHTMLStr.push('<div class="modal" tabindex="-1" role="dialog" id="modal_ShowChatImage">');
+        tmpHTMLStr.push('   <div class="modal-dialog" role="document">');
+        tmpHTMLStr.push('       <div class="modal-content h-100">');
+        tmpHTMLStr.push('           <div class="modal-header">');
+        tmpHTMLStr.push('               <h5 class="modal-title">浏览原图</h5>');
+        tmpHTMLStr.push('               <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+        tmpHTMLStr.push('                   <span aria-hidden="true">&times;</span>');
+        tmpHTMLStr.push('               </button>');
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('           <div class="modal-body">');
+        tmpHTMLStr.push('               <canvas id="canvas_ShowChatImage">');
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('           <div class="modal-footer">');
+        tmpHTMLStr.push('               <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>');
+        tmpHTMLStr.push('           </div>');
+        tmpHTMLStr.push('       </div>');
+        tmpHTMLStr.push('   </div>');
+        tmpHTMLStr.push('</div>');
+        $('body').append($(tmpHTMLStr.join('')));
+
+        $('#modal_ShowChatImage').on('show.bs.modal', function (e) {
+            var dialog = $('#modal_ShowChatImage .modal-dialog');
+            var canvas = $('#canvas_ShowChatImage');
+            dialog.height($('body').height() * 50 / 100);
+            canvas.height(dialog.height() - 100);
+            canvas.width(canvas.height() / 3 * 4);
+            dialog.width(canvas.width() + 30);
+            canvas.height = canvas.height();
+            canvas.width = canvas.width();
+            var ctx = canvas[0].getContext('2d');
+            var img = evtObj.currentTarget;
+            ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, canvas[0].width, canvas[0].height);
+        });
+    }
+
+    $('#modal_ShowChatImage').modal('show');
 };

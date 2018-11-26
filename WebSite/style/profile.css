@@ -2115,3 +2115,9 @@ footer {
                     width: 120px;
                     padding: 0px 5px;
                 }
+
+#modal_ShowChatImage .modal-dialog {
+    height: 50%;
+    max-width: 100%;
+    max-height: 50%;
+}
