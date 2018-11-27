@@ -357,6 +357,10 @@ function circleBuildList_Chat() {
     tmpHTMLArr.push('</div>');
     container.empty();
     container.append($(tmpHTMLArr.join('')));
+    if (_gCircleCurrentChat.chatId == '') {
+       _gCircleCurrentChat = circleGetChatByChatterId('99999999999');
+        circleChat_SwitchChat(_gCircleCurrentChat.chatId);
+    }
 };
 
 function circleBuildList_Address() {
@@ -1199,7 +1203,7 @@ function circleChat_BuildUserPop(eventObj) {
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('   </div>');
             tmpHTMLArr.push('</div>');
-            container.append($(tmpHTMLArr.join('')));
+            container.append($(tmpHTMLArr.join('')));            
             $('.user-popover-wrap .btn-user-popover').on('click', circleChat_ClickUserPopBtn);
         }
 

@@ -1814,12 +1814,14 @@ footer {
             .setting-bar-chatter .row-headers .col-3 .btn-add-user-to-group {
                 background-color: transparent;
                 border: solid 1px rgb(226,226,226);
+                color: rgb(205,205,205);
                 width: 35px;
                 height: 35px;
             }
 
                 .setting-bar-chatter .row-headers .col-3 .btn-add-user-to-group:hover {
                     border-color: rgb(205,205,205);
+                    color: #212529;
                 }
 
     .setting-bar-chatter .row-show-more .col div {
