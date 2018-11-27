@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 function buildContent_Exp(items) {
+    var courseObjs = [];
     var orgContainerHeight = 235;
     var orgHeight = 225;
     var orgWidth = 155;
@@ -20,13 +21,27 @@ function buildContent_Exp(items) {
     var tmpItem = null;
     for (var i = 0; i < items.length; i++) {
         tmpItem = $(items[i]);
-        datas.push({ id: tmpItem.attr('id'), name: tmpItem.attr('name'), course: tmpItem.attr('title'), price: tmpItem.attr('price'), isfree: tmpItem.attr('isfree'), discount: tmpItem.attr('discount') });
+        datas.push({
+            id: tmpItem.attr('id'),
+            name: tmpItem.attr('name'),
+            course: tmpItem.attr('title'),
+            price: tmpItem.attr('price'),
+            isfree: tmpItem.attr('isfress'),
+            discount: tmpItem.attr('discount'),
+            access: tmpItem.attr('access'),
+            enable: tmpItem.attr('enable'),
+            diff: tmpItem.attr('diff'),
+            des: tmpItem.attr('des'),
+            type: tmpItem.attr('udma'),
+        });
     }
 
     var itemCount = datas.length;
     var tmpHTMLArr = [];
     var tmpStyle = '';
     var tmpPrice = '';
+    var tmpDiscount = '';
+    var tmpBtn = '';
     tmpHTMLArr.push('<div class="container-fluid h-100 wrap-experiment-content">');
     tmpHTMLArr.push('    <div class="row align-items-center row-experiment-group-list">');
     tmpHTMLArr.push('        <div class="col">');
@@ -35,33 +50,56 @@ function buildContent_Exp(items) {
         tmpStyle = 'padding-right:' + (i == itemCount - 1 ? 0 : space) + 'px;';
         itemsHTML.push('<div class="text-center wrap-horizontal-list-item" style="' + tmpStyle + '">');
         itemsHTML.push('    <div class="d-flex align-items-center h-100">');
-        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px; cursor:pointer;';
-        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '" data-target="' + datas[i].name + '">');
+        tmpStyle = 'width:' + (width - 2) + 'px; height:' + height + 'px;';
+        itemsHTML.push('        <div class="container-fluid horizontal-list-item" style="' + tmpStyle + '">');
         itemsHTML.push('            <div class="row no-margin">');
         itemsHTML.push('                <div class="col no-padding">');
-        tmpStyle = 'height:' + imgHeight + 'px;';
-        itemsHTML.push('                    <img class="img-fluid" src="' + _gCourseImgMap[datas[i].name.trim()].img + '" style="' + tmpStyle + '" />');
+        tmpStyle = 'height:' + imgHeight + 'px; cursor:pointer;';
+        itemsHTML.push('                    <img class="img-fluid img-experiment-item-detail" src="' + _gCourseImgMap[datas[i].name.trim()].img + '" style="' + tmpStyle + '" data-target="' + datas[i].name + '" data-access="' + datas[i].access + '"/>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
         itemsHTML.push('            <div class="row no-margin" style="padding-top: 8px;">');
-        itemsHTML.push('                <div class="col no-padding">');
-        tmpStyle = 'color:' + _gCourseImgMap[datas[i].name.trim()].color + ';font-size:12px';
+        itemsHTML.push('                <div class="col no-padding text-12 font-weight-bold">');
+        tmpStyle = 'color:' + _gCourseImgMap[datas[i].name.trim()].color + ';';
         itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">' + datas[i].course + '</p>');
         itemsHTML.push('                </div>');
         itemsHTML.push('            </div>');
-        itemsHTML.push('            <div class="row no-margin">');
-        itemsHTML.push('                <div class="col no-padding">');
-        tmpPrice = (datas[i].isfree == '1' ? '免费' : parseInt(datas[i].price).toFixed(2));
-        itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">价格: <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span></p>');
-        itemsHTML.push('                </div>');
-        itemsHTML.push('            </div>');
-        if (datas[i].isfree != '1') {
+        if (datas[i].enable == '0') {
             itemsHTML.push('            <div class="row no-margin">');
-            itemsHTML.push('                <div class="col no-padding">');
-            tmpPrice = (datas[i].discount == '0' ? '无' : parseInt(datas[i].price * 100).toFixed(2));
-            itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">折扣: ' + tmpPrice + '</p>');
+            itemsHTML.push('                <div class="col no-padding text-12">');
+            itemsHTML.push('                    <p class="text-center" style="' + tmpStyle + '">即将上线</p>');
             itemsHTML.push('                </div>');
             itemsHTML.push('            </div>');
+        } else {
+            itemsHTML.push('            <div class="row no-margin">');
+            itemsHTML.push('                <div class="col no-padding text-12">');
+            tmpPrice = (datas[i].isfree == '1' ? '免费' : parseInt(datas[i].price).toFixed(2));
+            tmpBtn = '';
+            if (datas[i].isfree != '1') {
+                if (datas[i].access == '1') {
+                    tmpBtn = '<i class="fas fa-check" title="已购买"></i>';
+                } else {
+                    tmpBtn = '<button type="button" class="btn btn-sm btn-warning btn-course-item-buy" data-target="' + datas[i].name + '" title="购买课程"><i class="fas fa-shopping-cart "></i></button>';
+                }
+            } else {
+                tmpBtn = '<button type="button" class="btn btn-sm btn-warning btn-course-item-buy" data-target="' + datas[i].name + '" title="课程详情"><i class="fas fa-info-circle"></i></button>';
+            }
+
+            itemsHTML.push('                    <p class="text-center" style="' + tmpStyle + '">价格: ');
+            itemsHTML.push('                        <span style="' + (datas[i].discount != '0' ? 'text-decoration:line-through;' : '') + '">' + tmpPrice + '<span>');
+            itemsHTML.push(tmpBtn);
+            itemsHTML.push('                </p>');
+            itemsHTML.push('                </div>');
+            itemsHTML.push('            </div>');
+            if (datas[i].isfree != '1' && datas[i].discount != '0') {
+                itemsHTML.push('            <div class="row no-margin">');
+                itemsHTML.push('                <div class="col no-padding text-12">');
+                tmpDiscount = 1 - parseFloat(datas[i].discount) / 100;
+                tmpPrice = parseInt(parseInt(datas[i].price) * tmpDiscount).toFixed(2);
+                itemsHTML.push('                   <p class="text-center" style="' + tmpStyle + '">优惠价: ' + tmpPrice + '</p>');
+                itemsHTML.push('                </div>');
+                itemsHTML.push('            </div>');
+            }
         }
 
         itemsHTML.push('        </div>');
@@ -74,19 +112,39 @@ function buildContent_Exp(items) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('</div>');
     $('.col-main-content').append($(tmpHTMLArr.join('')));
-    var successFn = function (response) {
-        buildDetail_Exp(response);
-    };
+    $('.img-experiment-item-detail').on('click', function (eventObj) {
+        var target = $(eventObj.currentTarget);
+        $('.img-course-item-detail').removeClass('active');
+        target.addClass('active');
+        var courseCode = target.attr('data-target');
+        var courseAcce = target.attr('data-access');
+        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getexplist, { course_name: courseCode }),
+            '',
+            function (response) {
+                buildDetail_Exp(response, courseAcce);
+            }
+        );
+    });
 
-    $('.horizontal-list-item').on('click', function (eventObj) {
-        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getexplist, { course_name: $(eventObj.currentTarget).attr('data-target') }), '', successFn);
+    $('.btn-course-item-buy').on('click', function (eventObj) {
+        var courseName = $(eventObj.currentTarget).attr('data-target');
+        var currCourse = null;
+        for (var i = 0; i < datas.length; i++) {
+            if (courseName == datas[i].name) {
+                currCourse = datas[i];
+                break;
+            }
+        }
+
+        showCourseBuyModal(currCourse);
     });
 
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
-    ajaxFn('GET', _getRequestURL(_gURLMapping.course.getexplist, { course_name: datas[0].name }), '', successFn);
+    $($('.img-experiment-item-detail')[0]).addClass('active');
+    ajaxFn('GET', _getRequestURL(_gURLMapping.course.getexplist, { course_name: datas[0].name }), '', function (response) { buildDetail_Exp(response, '1'); });
 };
 
-function buildDetail_Exp(response) {
+function buildDetail_Exp(response, access) {
     var datas = [
        {
            id: 1,
@@ -110,7 +168,7 @@ function buildDetail_Exp(response) {
     tmpHTMLArr.push('           <th scope="col col-experiment-state" style="width: 50px; min-width:50px; height: 1px; padding: 0px;"></th>');
     tmpHTMLArr.push('           <th scope="col col-experiment-title" style="width: 100px; min-width:50px; height: 1px; padding: 0px;"></th>');
     tmpHTMLArr.push('           <th scope="col col-experiment-content" style="height: 1px; padding: 0px;"></th>');
-    tmpHTMLArr.push('           <th scope="col col-experiment-attach" style="width: 60px; min-width:60px; height: 1px; padding: 0px;"></th>');
+    tmpHTMLArr.push('           <th scope="col col-experiment-attach" style="min-width:60px; height: 1px; padding: 0px; width: ' + (access == '1' ? 60 : 100) + 'px;"></th>');
     tmpHTMLArr.push('           <th scope="col col-experiment-author" style="width: 120px; min-width:120px; height: 1px; padding: 0px;"></th>');
     tmpHTMLArr.push('           <th scope="col col-experiment-date" style="width: 120px; min-width:120px; height: 1px; padding: 0px;"></th>');
     tmpHTMLArr.push('       </tr>');
@@ -119,12 +177,12 @@ function buildDetail_Exp(response) {
 
     var tmpState;
     for (var i = 0; i < datas.length; i++) {
-        tmpState = (datas[i].status == '1' ? 'star' : 'star-half-alt');
+        tmpState = (datas[i].status == '1' ? 'fas fa-star-half-alt' : datas[i].status == '2' ? 'fas fa-star' : 'far fa-star');
         tmpHTMLArr.push('       <tr style="line-height: 30px;">');
-        tmpHTMLArr.push('           <td class="text-center"><i class="fas fa-' + tmpState + ' course-state"></i></td>');
+        tmpHTMLArr.push('           <td class="text-center"><i class="' + tmpState + ' course-state"></i></td>');
         tmpHTMLArr.push('           <td class="text-bold">' + datas[i].title + '</td>');
         tmpHTMLArr.push('           <td><div class="experiment-content-text">' + datas[i].content + '</div></td>');
-        tmpHTMLArr.push('           <td><button type="button" class="btn btn-outline-info btn-sm experiment-attach-btn" data-target="' + datas[i].id + '">View</button></td>');
+        tmpHTMLArr.push('           <td><button type="button" class="btn btn-outline-info btn-sm experiment-attach-btn" data-target="' + datas[i].id + '">' + (access == '1' ? 'View' : '购买后查看') + '</button></td>');
         tmpHTMLArr.push('           <td>' + datas[i].author + '</td>');
         tmpHTMLArr.push('           <td>' + datas[i].date + '</td>');
         tmpHTMLArr.push('       </tr>');
@@ -137,11 +195,15 @@ function buildDetail_Exp(response) {
     $('.row-experiment-group-item-list').remove();
     $('.row-experiment-group-list').after($(tmpHTMLArr.join('')));
     $('.experiment-attach-btn').on('click', function () {
-        var dataId = $(arguments[0].target).attr('data-target');
-        var attachs = [];
-        for (var i = 0; i < datas.length; i++) {
-            if (dataId == datas[i].id) {
-                showExperimentAttachs(datas[i]);
+        if (access == '0') {
+            _showGlobalMessage('您尚未购买此课程，无法查看实验内容', 'warning', 'alert_Exp_Course');
+        } else {
+            var dataId = $(arguments[0].target).attr('data-target');
+            var attachs = [];
+            for (var i = 0; i < datas.length; i++) {
+                if (dataId == datas[i].id) {
+                    showExperimentAttachs(datas[i]);
+                }
             }
         }
     });
@@ -154,7 +216,7 @@ function showExperimentAttachs(data) {
         tmpHTMLStr.push('    <div class="modal-dialog modal-lg" role="document">');
         tmpHTMLStr.push('        <div class="modal-content h-100">');
         tmpHTMLStr.push('            <div class="modal-header">');
-        tmpHTMLStr.push('                <h5 class="modal-title font-16" id="exampleModalLabel">题目详情</h5>');
+        tmpHTMLStr.push('                <h5 class="modal-title font-16" id="exampleModalLabel">实验详情</h5>');
         tmpHTMLStr.push('                <button type="button" class="close" data-dismiss="modal" aria-label="Close">');
         tmpHTMLStr.push('                    <span aria-hidden="true">&times;</span>');
         tmpHTMLStr.push('                </button>');

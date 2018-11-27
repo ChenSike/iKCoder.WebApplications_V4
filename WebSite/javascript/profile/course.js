@@ -347,7 +347,7 @@ function buildDetail_Course(response, access) {
     }
 
     var tmpHTMLArr = [];
-    tmpHTMLArr.push('    <div class="row align-items-center row-courses-group-item-list">');
+    tmpHTMLArr.push('    <div class="row row-courses-group-item-list">');
     tmpHTMLArr.push('        <div class="col no-padding">');
     tmpHTMLArr.push('<table class="table table-hover table-sm">');
     tmpHTMLArr.push('   <thead>');
@@ -385,13 +385,13 @@ function buildDetail_Course(response, access) {
     tmpHTMLArr.push('    </div>');
     $('.row-courses-group-item-list').remove();
     $('.row-courses-group-list').after($(tmpHTMLArr.join('')));
-    //$('.row-courses-group-item-list .course-start').on('click', function (eventObj) {
+    $('.row-courses-group-item-list').height($('.wrap-courses-content').height() - $('.row-courses-group-list').height());
     $('.row-courses-group-item-list .row-courses-group-item').on('click', function (eventObj) {
         var target = $(eventObj.currentTarget);
         var courseCode = target.attr('data-target');
-        //if (access == '0') {
-        //    _showGlobalMessage('您尚未购买此课程，无法开始学习', 'warning', 'alert_Start_Course');
-        //} else {
+        if (access == '0') {
+            _showGlobalMessage('您尚未购买此课程，无法开始学习', 'warning', 'alert_Start_Course');
+        } else {
         var data = '<root><type>Type_Lesson</type><action>Start</action><code>' + courseCode + '</code></root>';
         ajaxFn('POST', _getRequestURL(_gURLMapping.course.setlearnaction, {}), data, _gEmptyFn);
         if (courseCode.toUpperCase().indexOf('A_') == 0) {
@@ -399,7 +399,7 @@ function buildDetail_Course(response, access) {
         } else {
             window.open("codeplatform.html?scene=" + courseCode + '&step=0&title=' + target.attr('data-title'));
         }
-        //}
+        }
     });
 };
 
