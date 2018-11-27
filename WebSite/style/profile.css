@@ -753,7 +753,7 @@ footer {
                     margin-left: auto;
                     background-color: rgb(158,234,106);
                     border: none;
-                    overflow-x:auto;
+                    overflow-x: auto;
                 }
 
             .col-circle-message-list .row-message-item .message-item-wrap .arrow-back {
@@ -1304,7 +1304,7 @@ footer {
         .wrap-report .col-report-overview .report-date-text {
             color: rgb(144,197,83);
             letter-spacing: 3px;
-            font-size: 11px;
+            font-size: 13px;
         }
 
         .wrap-report .col-report-overview .row-report-overview-header {
@@ -1452,8 +1452,16 @@ footer {
     font-size: 14px;
 }
 
+.text-15 {
+    font-size: 15px;
+}
+
 .text-16 {
     font-size: 16px;
+}
+
+.text-18 {
+    font-size: 18px;
 }
 
 .text-21 {

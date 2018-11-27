@@ -846,6 +846,14 @@ function siderBarExpand() {
     $('.siderbar-drag').toggleClass('expanded');
 };
 
+function changeSiderBarWidth(width){
+    $(".siderbar-wrap").width(width);
+    $(".siderbar-wrap").css("left", $("body").width() - width + "px");
+    $(".siderbar-drag-proxy").css("display", "none");
+    $(".siderbar-drag-proxy").css("visibility", "hidden");
+    adjustCanvasSize(true);
+};
+
 function initBottomTBEvents() {
     if (_gStageData.course.kps.length == 0) {
         var tmpItem = $('.bottom-toolbar-item.fa-book');

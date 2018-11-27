@@ -135,11 +135,8 @@ function buildContent_Courses(items) {
                 break;
             }
         }
-        var successFn = function (response) {
-            showCourseBuyModal(response, currCourse);
-        }
 
-        ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: courseName }), '', successFn);
+        showCourseBuyModal(currCourse);        
     });
 
     bindHorizontalListEvent(containerHeight, width, space, itemCount, 'course_package');
@@ -155,20 +152,7 @@ function courseRefreshList() {
     }
 };
 
-function showCourseBuyModal(response, course) {
-    var items = $(response).find('item');
-    var lessons = [];
-    var tmpItem;
-    for (var i = 0; i < items.length; i++) {
-        tmpItem = $(items[i]);
-        lessons.push({
-            title: tmpItem.attr('lesson_title'),
-            symbol: tmpItem.attr('lesson_code'),
-            steam: tmpItem.attr('steam'),
-            type: tmpItem.attr('udba'),
-            steps: tmpItem.attr('totalsteps')
-        });
-    }
+function showCourseBuyModal( course) {    
 
     if ($('#modal_Course_Buy').length == 0) {
         var tmpHTMLStr = [];
@@ -267,32 +251,52 @@ function showCourseBuyModal(response, course) {
                 tmpHTMLArr.push('       </tr>');
                 tmpHTMLArr.push('   </tbody>');
                 tmpHTMLArr.push('</table>');
+                container.append($(tmpHTMLArr.join('')));
             } else {
-                tmpHTMLArr.push('<table class="table table-hover table-sm">');
-                tmpHTMLArr.push('   <thead>');
-                tmpHTMLArr.push('       <tr>');
-                tmpHTMLArr.push('           <th scope="col col-course-title" style="height: 1px;padding: 0px;"></th>');
-                tmpHTMLArr.push('           <th scope="col col-course-step" style="width: 50px;height: 1px;padding: 0px;"></th>');
-                tmpHTMLArr.push('           <th scope="col col-course-steam" style="width: 150px;height: 1px;padding: 0px;"></th>');
-                tmpHTMLArr.push('           <th scope="col col-course-type" style="height: 1px;padding: 0px;"></th>');
-                tmpHTMLArr.push('       </tr>');
-                tmpHTMLArr.push('   </thead>');
-                tmpHTMLArr.push('   <tbody>');
-                for (var i = 0; i < lessons.length; i++) {
+                var successFn = function (response) {
+                    var items = $(response).find('item');
+                    var lessons = [];
+                    var tmpItem;
+                    for (var i = 0; i < items.length; i++) {
+                        tmpItem = $(items[i]);
+                        lessons.push({
+                            title: tmpItem.attr('lesson_title'),
+                            symbol: tmpItem.attr('lesson_code'),
+                            steam: tmpItem.attr('steam'),
+                            type: tmpItem.attr('udba'),
+                            steps: tmpItem.attr('totalsteps')
+                        });
+                    }
+
+                    var tmpHTMLArr = [];
+                    tmpHTMLArr.push('<table class="table table-hover table-sm">');
+                    tmpHTMLArr.push('   <thead>');
                     tmpHTMLArr.push('       <tr>');
-                    tmpHTMLArr.push('           <td>' + lessons[i].title + '</td>');
-                    tmpHTMLArr.push('           <td><span class="course-step-total">' + lessons[i].steps + '</span></td>');
-                    tmpHTMLArr.push('           <td>' + buildSTEAMHTML(lessons[i].steam) + '</td>');
-                    tmpHTMLArr.push('           <td>' + buildCourseTypeHTML(lessons[i].type) + '</td>');
+                    tmpHTMLArr.push('           <th scope="col col-course-title" style="height: 1px;padding: 0px;"></th>');
+                    tmpHTMLArr.push('           <th scope="col col-course-step" style="width: 50px;height: 1px;padding: 0px;"></th>');
+                    tmpHTMLArr.push('           <th scope="col col-course-steam" style="width: 150px;height: 1px;padding: 0px;"></th>');
+                    tmpHTMLArr.push('           <th scope="col col-course-type" style="height: 1px;padding: 0px;"></th>');
                     tmpHTMLArr.push('       </tr>');
-                }
+                    tmpHTMLArr.push('   </thead>');
+                    tmpHTMLArr.push('   <tbody>');
+                    for (var i = 0; i < lessons.length; i++) {
+                        tmpHTMLArr.push('       <tr>');
+                        tmpHTMLArr.push('           <td>' + lessons[i].title + '</td>');
+                        tmpHTMLArr.push('           <td><span class="course-step-total">' + lessons[i].steps + '</span></td>');
+                        tmpHTMLArr.push('           <td>' + buildSTEAMHTML(lessons[i].steam) + '</td>');
+                        tmpHTMLArr.push('           <td>' + buildCourseTypeHTML(lessons[i].type) + '</td>');
+                        tmpHTMLArr.push('       </tr>');
+                    }
 
-                tmpHTMLArr.push('   </tbody>');
-                tmpHTMLArr.push('</table>');
+                    tmpHTMLArr.push('   </tbody>');
+                    tmpHTMLArr.push('</table>');
+                    container.append($(tmpHTMLArr.join('')));
+                };
+                
+                ajaxFn('GET', _getRequestURL(_gURLMapping.course.getlessonslist, { course_name: $('#modal_Course_Buy .col-course-detail').attr('data-target') }), '', successFn);
             }
-
-            container.append($(tmpHTMLArr.join('')));
         });
+
         $('#modal_Course_Buy').on('shown.bs.modal', function (eventObj) {
             $('body').css('padding', '0px');
         });
@@ -300,6 +304,7 @@ function showCourseBuyModal(response, course) {
 
     $('#modal_Course_Buy .course-image').attr('src', _gCourseImgMap[course.name.trim()].img);
     $('#modal_Course_Buy .course-name').text(course.course);
+    $('#modal_Course_Buy .col-course-detail').attr('data-target', course.name.trim());
     $('#modal_Course_Buy_Title').text(course.access == '1' ? '课程概览' : '购买课程');
     var tmpPrice = parseInt(course.price);
     if (course.enable == '1' && course.access != '1' && course.isfree != '1' && course.discount != '0') {

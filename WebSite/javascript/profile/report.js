@@ -318,7 +318,7 @@ function reportBuildOverview(data) {
 
 function reportBuildOverviewHeader(data, tmpHTMLArr) {
     tmpHTMLArr.push('<div class="d-flex align-items-center wrap-report-overview-header">');
-    tmpHTMLArr.push('   <div class="text-13 text-right">');
+    tmpHTMLArr.push('   <div class="text-15 text-right">');
     tmpHTMLArr.push('       超越<span class="text-21 text-fc8823">' + data.over + '%</span>的全国学员');
     tmpHTMLArr.push('   </div>');
     tmpHTMLArr.push('   <div class="padding-10">');
@@ -328,23 +328,23 @@ function reportBuildOverviewHeader(data, tmpHTMLArr) {
     tmpHTMLArr.push('       <div class="container-fluid no-padding">');
     tmpHTMLArr.push('           <div class="row no-margin">');
     tmpHTMLArr.push('               <div class="col no-padding">');
-    tmpHTMLArr.push('                   <p class="text-10 text-fc8823">' + data.name);
+    tmpHTMLArr.push('                   <p class="text-12 text-fc8823">' + data.name);
     tmpHTMLArr.push('                       <span class="text-000000">,</span>');
     tmpHTMLArr.push('                       <span class="text-90c553">' + data.title + '</span>');
     tmpHTMLArr.push('                   </p>');
-    tmpHTMLArr.push('                   <p class="text-10" style="min-width: 120px;">');
+    tmpHTMLArr.push('                   <p class="text-12" style="min-width: 120px;">');
     tmpHTMLArr.push('                       当前课程经验值: ');
-    tmpHTMLArr.push('                       <span class="text-12 text-fc8823">' + data.exp + '</span>');
+    tmpHTMLArr.push('                       <span class="text-14 text-fc8823">' + data.exp + '</span>');
     tmpHTMLArr.push('                   </p>');
     tmpHTMLArr.push('                   <hr class="hr-report-overview-header"/>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('           <div class="row no-margin">');
     tmpHTMLArr.push('               <div class="col-10 no-padding text-left">');
-    tmpHTMLArr.push('                   <p class="text-10">已经完成的课程:</p>');
+    tmpHTMLArr.push('                   <p class="text-12">已经完成的课程:</p>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('               <div class="col-2 no-padding">');
-    tmpHTMLArr.push('                   <p class="text-10 text-fc8823 text-center">' + data.course + '</p>');
+    tmpHTMLArr.push('                   <p class="text-12 text-fc8823 text-center">' + data.course + '</p>');
     tmpHTMLArr.push('               </div>');
     tmpHTMLArr.push('           </div>');
     tmpHTMLArr.push('       </div>');
@@ -413,8 +413,8 @@ function reportBuildAchieve(data) {
         tmpHTMLArr.push('                <div class="row no-margin">');
         tmpHTMLArr.push('                    <div class="col-4 no-padding text-eaeaea" style="' + idxFontStyle + '">' + tmpId + '</div>');
         tmpHTMLArr.push('                    <div class="col-8">');
-        tmpHTMLArr.push('                        <p class="text-13 text-90c553">' + data[i].title + '</p>');
-        tmpHTMLArr.push('                        <p class="text-10">' + data[i].content + '</p>');
+        tmpHTMLArr.push('                        <p class="text-15 text-90c553">' + data[i].title + '</p>');
+        tmpHTMLArr.push('                        <p class="text-12">' + data[i].content + '</p>');
         tmpHTMLArr.push('                    </div>');
         tmpHTMLArr.push('                </div>');
         tmpHTMLArr.push('            </div>');
@@ -438,7 +438,7 @@ function reportBuildAbility(data) {
     tmpHTMLArr.push('            <div class="container-fluid">');
     tmpHTMLArr.push('                <div class="row">');
     tmpHTMLArr.push('                    <div class="col">');
-    tmpHTMLArr.push('                        <p class="text-10">');
+    tmpHTMLArr.push('                        <p class="text-12">');
     tmpHTMLArr.push('                            基于艾酷为中国孩子开发的STEML课程体系，目前您的孩子已经进行了');
     tmpHTMLArr.push('                               <span>' + data.type.length + '</span>');
     tmpHTMLArr.push('                                   大类，');
@@ -464,7 +464,7 @@ function reportBuildAbility(data) {
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="row">');
     tmpHTMLArr.push('                    <div class="col">');
-    tmpHTMLArr.push('                        <p class="text-13 text-90c553" style="padding-top:50px;">已完成课程列表</p>');
+    tmpHTMLArr.push('                        <p class="text-15 text-90c553" style="padding-top:50px;">已完成课程列表</p>');
     tmpHTMLArr.push('                    </div>');
     tmpHTMLArr.push('                </div>');
     tmpHTMLArr.push('                <div class="row">');
@@ -472,7 +472,7 @@ function reportBuildAbility(data) {
     tmpHTMLArr.push('                        <div class="container-fluid">');
     tmpHTMLArr.push('                            <div class="row" style="padding-top:10px;">');
     for (var i = 0; i < data.items.length; i++) {
-        tmpHTMLArr.push('                                <div class="col-4 text-10"><span>');
+        tmpHTMLArr.push('                                <div class="col-4 text-12"><span>');
         tmpHTMLArr.push('                                    【' + (i + 1) + '】' + data.items[i]);
         tmpHTMLArr.push('                                </span></div>');
     }
@@ -662,15 +662,15 @@ function reportBuildTime(data) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('    <div class="row">');
     tmpHTMLArr.push('        <div class="col">');
-    tmpHTMLArr.push('            <p class="text-10">');
+    tmpHTMLArr.push('            <p class="text-12">');
     tmpHTMLArr.push('               到今天为止，您的孩子已经累计学习编程 ');
-    tmpHTMLArr.push('               <span class="text-16 text-fc8823">' + (new Number(data.total / 60).toFixed(2)) + '</span>');
+    tmpHTMLArr.push('               <span class="text-18 text-fc8823">' + (new Number(data.total / 60).toFixed(2)) + '</span>');
     tmpHTMLArr.push('                小时');
     tmpHTMLArr.push('            </p>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('    <div class="row padding-30-0">');
-    tmpHTMLArr.push('        <div class="col text-center text-13 text-90c553">');
+    tmpHTMLArr.push('        <div class="col text-center text-15 text-90c553">');
     tmpHTMLArr.push('            本月学习时间及趋势');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
@@ -698,7 +698,7 @@ function reportBuildTime(data) {
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>')
     tmpHTMLArr.push('    <div class="row padding-30-0">');
-    tmpHTMLArr.push('        <div class="col text-center text-13 text-90c553">');
+    tmpHTMLArr.push('        <div class="col text-center text-15 text-90c553">');
     tmpHTMLArr.push('            各级课程完成率');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('    </div>');
@@ -917,13 +917,13 @@ function reportBuildAttention(data) {
     tmpHTMLArr.push('    </div>');
     tmpHTMLArr.push('    <div class="row">');
     tmpHTMLArr.push('        <div class="col-6 padding-l-30">');
-    tmpHTMLArr.push('            <p class="text-10">感谢您阅读' + data.name + '的鹏博学习报告。我们为您孩子的进步和成就感到同样骄傲。</p>');
-    tmpHTMLArr.push('            <p class="text-10 padding-20-0">您可以通过点击下面的链接下载本报告全文。</p>');
+    tmpHTMLArr.push('            <p class="text-12">感谢您阅读' + data.name + '的鹏博学习报告。我们为您孩子的进步和成就感到同样骄傲。</p>');
+    tmpHTMLArr.push('            <p class="text-12 padding-20-0">您可以通过点击下面的链接下载本报告全文。</p>');
     tmpHTMLArr.push('            <p class="text-center"><img src="image/pdf.png" class="report-attention-pdf-button" width="60" height="80" /></p>');
-    tmpHTMLArr.push('            <p class="text-10 text-center report-attention-pdf-button">' + data.name + '的鹏博学习报告</p>');
-    tmpHTMLArr.push('            <p class="text-center text-10 padding-30-0">或者，您可以扫描添加鹏博微信号，让我们可以第一时间把孩子的信息推送到您的指尖。</p>');
+    tmpHTMLArr.push('            <p class="text-12 text-center report-attention-pdf-button">' + data.name + '的鹏博学习报告</p>');
+    tmpHTMLArr.push('            <p class="text-center text-12 padding-30-0">或者，您可以扫描添加鹏博微信号，让我们可以第一时间把孩子的信息推送到您的指尖。</p>');
     tmpHTMLArr.push('            <p class="text-center"><img src="' + data.qr + '" width="100" height="100" /></p>');
-    tmpHTMLArr.push('            <p class="text-center text-10 text-90c553">鹏博教育，为中国孩子学习编程而生</p>');
+    tmpHTMLArr.push('            <p class="text-center text-12 text-90c553">鹏博教育，为中国孩子学习编程而生</p>');
     tmpHTMLArr.push('        </div>');
     tmpHTMLArr.push('        <div class="col-6 padding-l-30">');
     tmpHTMLArr.push('            <img src="image/iphone7.png" class="img-fluid report-attention-bakcground" />');

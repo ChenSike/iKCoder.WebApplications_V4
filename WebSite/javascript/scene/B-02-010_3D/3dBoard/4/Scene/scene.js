@@ -5,7 +5,7 @@ var patternPoint = [0, 0, 2, 0, 2, 0, 2, 3, 2, 3, -2, 3,-2, 3, -2, -2, -2, -2, 4
 
 Scene.initEnvironment = function (containerId) {
     var browserWidth = $(window).width();
-    changeSiderBarWidth(browserWidth/2);
+    changeSiderBarWidth($(window).width()/2);
     Scene.initGlobalParams();
     var params = {
         fog: null,
