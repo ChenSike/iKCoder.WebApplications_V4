@@ -62,7 +62,7 @@ var _gCourseTypeMap = {
     //a: { icon: 'fas fa-code-branch', title: 'AI' },
     b: { icon: 'fab fa-bimobject', title: 'BBBB' },
     d: { icon: 'fas fa-database', title: 'Database' },
-    m: { icon: 'fab fa-meetup', title: 'MMMM' },
+    m: { icon: 'fab fa-meetup', title: 'Match' },
 };
 var _gCourseImgMap = {
     A: { img: 'image/course/course_logic.png', color: 'rgb(86,181,34)' },

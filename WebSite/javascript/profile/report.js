@@ -106,8 +106,8 @@ function buildContent_Report() {
 
 function reportFormatData(response) {
     /*
-    <root gdate="2018-11-15">
-	<sumary exp="220" over="88.24" finished="3"/>
+<root gdate="2018-11-27">
+	<sumary exp="220" over="92" finished="3"/>
 	<achieved>
 		<item title="逻辑探索先驱" content="恭喜你，你已经开始了奇妙的编程之旅，奇妙的大门为你打开，从现在开始，你已经是一名数字斗士，为了战胜数字世界的敌人而继续努力吧。"/>
 	</achieved>
@@ -122,11 +122,24 @@ function reportFormatData(response) {
 			<T>100</T>
 		</steam>
 	</ability>
+	<coursefinished>
+		<item name="A" title="逻辑课程" count_finished="" count_total="23" rate="0"/>
+		<item name="B " title="HTML" count_finished="0" count_total="1" rate="0"/>
+		<item name="C" title="JavaScript" count_finished="0" count_total="1" rate="0"/>
+		<item name="D" title="Python" count_finished="0" count_total="1" rate="0"/>
+		<item name="E" title="C#" count_finished="0" count_total="1" rate="0"/>
+		<item name="F" title="Java" count_finished="0" count_total="1" rate="0"/>
+		<item name="G" title="IOS" count_finished="0" count_total="1" rate="0"/>
+	</coursefinished>
 	<timeline>
 		<item hours="0" minutes="0" dt="2018-11-15"/>
 		<item hours="0" minutes="0" dt="2018-11-15"/>
-		<item hours="-17" minutes="-35" dt="2018-11-15"/>
-		<item hours="0" minutes="0" dt="2018-11-15"/>
+		<item hours="0" minutes="0" dt="2018-11-27"/>
+		<item hours="0" minutes="0" dt="2018-11-27"/>
+		<item hours="0" minutes="0" dt="2018-11-27"/>
+		<item hours="0" minutes="0" dt="2018-11-24"/>
+		<item hours="0" minutes="0" dt="2018-11-27"/>
+		<item hours="0" minutes="1" dt="2018-11-25"/>
 	</timeline>
 </root>
 */
@@ -158,25 +171,21 @@ function reportFormatData(response) {
     var timelineNode = $(doc.find('timeline')[0]);
     var timeItemNodes = timelineNode.find('item');
     var timeData = { times: [], total: 0, course: [] };
-    var tmpMin;
-    for (var i = 0; i < timeItemNodes.length; i++) {
-        tmpNode = $(timeItemNodes[i]);
-        tmpMin = Math.abs(parseFloat(tmpNode.attr('minutes')));
-        tmpMin += Math.abs(parseFloat(tmpNode.attr('hours')) * 60);
-        timeData.total += tmpMin;
-        timeData.times.push({
-            date: tmpNode.attr('dt'),
-            time: new Number(tmpMin).toFixed(2)
+    var tmpTimeObj = reportFormatTimelineData(timeItemNodes);
+    timeData.times = tmpTimeObj.times;
+    timeData.total = tmpTimeObj.total;
+    tmpNode = $($(response).find('coursefinished')[0]);
+    tmpNodes = tmpNode.find('item');
+    for (var i = 0; i < tmpNodes.length; i++) {
+        tmpNode = $(tmpNodes[i]);
+        timeData.course.push({
+            id: tmpNode.attr('name'),
+            title: tmpNode.attr('title'),
+            total: parseInt(tmpNode.attr('count_total')),
+            finish: tmpNode.attr('count_total') == '' ? 0 : parseInt(tmpNode.attr('count_total')),
+            rate: parseFloat(tmpNode.attr('rate'))
         });
     }
-
-    //tmpNode = $($(response).find('level')[0]);
-    //var timeData = {
-    //    over: isNaN(tmpNode.attr('over')) ? 0 : parseInt(tmpNode.attr('over')),
-    //    total: isNaN(tmpNode.attr('total')) ? 0 : parseInt(tmpNode.attr('total')),
-    //    times: [],
-    //    course: []
-    //};
 
     var abilityNode = $(doc.find('ability')[0]);
     var ablLessonNode = $(abilityNode.find('lstlessons')[0]);
@@ -209,6 +218,64 @@ function reportFormatData(response) {
     };
 
     return data;
+};
+
+function reportFormatTimelineData(timeNodes) {
+    var tmpMin, tmpNode, tmpNode_1, tmpDate, dateExist, newItem;
+    var total = 0;
+    var times = [];
+    var tmpTimes = [];
+    for (var i = 0; i < timeNodes.length; i++) {
+        tmpNode = $(timeNodes[i]);
+        tmpDate = tmpNode.attr('dt');
+        dateExist = false;
+        for (var k = 0; k < tmpTimes.length; k++) {
+            if (tmpTimes[k].date == tmpDate) {
+                dateExist = true;
+                break;
+            }
+        }
+
+        if (!dateExist) {
+            newItem = { date: tmpDate, time: 0 };
+            for (var j = 0; j < timeNodes.length; j++) {
+                tmpNode_1 = $(timeNodes[j]);
+                if (tmpDate == tmpNode_1.attr('dt')) {
+                    tmpMin = Math.abs(parseFloat(tmpNode.attr('minutes')));
+                    tmpMin += Math.abs(parseFloat(tmpNode.attr('hours')) * 60);
+                    newItem.time += tmpMin;
+                }
+            }
+
+            tmpTimes.push(newItem);
+        }
+    }
+
+    tmpTimes.sort(function (a, b) {
+        return new Date(a.date).valueOf() - new Date(b.date).valueOf();
+    });
+
+    for (var i = 0; i < tmpTimes.length; i++) {
+        total += tmpTimes[i].time;
+    }
+
+    var endIdx = new Date().getDate();
+    var tmpDateStr = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
+    for (var i = endIdx - 29; i <= endIdx ; i++) {
+        tmpDate = new Date(tmpDateStr).setDate(i);
+        tmpMin = 0;
+        for (var j = 0; j < tmpTimes.length; j++) {            
+            if (new Date(tmpTimes[j].date).valueOf() == tmpDate) {
+                tmpMin = tmpTimes[j].time;
+                break;
+            }
+        }
+
+        tmpDate = new Date(tmpDate);
+        times.push({ date: tmpDate.getFullYear() + '-' + (tmpDate.getMonth() + 1) + '-' + tmpDate.getDate(), time: tmpMin });
+    }
+
+    return { total: total, times: times };
 };
 
 function reportBuildOverview(data) {
@@ -669,8 +736,9 @@ function reportDrawTimeGraph(data) {
     if ($('#canvas_Report_Time_TimeBar').width() <= $('.wrap-report-time-timebar-graph').width()) {
         $('.wrap-report .col-report-time .col-report-time-arrow .timebar').hide();
     } else {
-        $('.wrap-report .col-report-time .col-report-time-arrow .report-time-arrow-right.timebar').on('click', { cls: "#canvas_Report_Time_TimeBar", step: timeBarStep }, listMovePrev);
-        $('.wrap-report .col-report-time .col-report-time-arrow .report-time-arrow-left.timebar').on('click', { cls: "#canvas_Report_Time_TimeBar", step: timeBarStep }, listMoveNext);
+        $('.wrap-report .col-report-time .col-report-time-arrow .report-time-arrow-right.timebar').on('click', { cls: "#canvas_Report_Time_TimeBar", step: timeBarStep }, listMoveNext);
+        $('.wrap-report .col-report-time .col-report-time-arrow .report-time-arrow-left.timebar').on('click', { cls: "#canvas_Report_Time_TimeBar", step: timeBarStep }, listMovePrev);        
+        $('#canvas_Report_Time_TimeBar').css('margin-left', $('.wrap-report-time-timebar-graph').width() - $('#canvas_Report_Time_TimeBar').width());
     }
 
     if ($('#canvas_Report_Time_Course').width() <= $('.wrap-report-time-piechat-graph').width()) {
@@ -706,7 +774,7 @@ function reportDrawTimeBarGraph(datas, canvasId) {
     var startY = height - 15;
     var linearGradient, barHeight, barX, tmpX, tmpY, lineRTX, lineRTY, tmpDate, tmpMonth, tmpTextWidth;
     for (var i = 0; i < datas.length; i++) {
-        if (datas[i].time > 0) {
+        if (datas[i].time >= 0) {
             //draw bar
             barHeight = datas[i].time * unit;
             barX = startX + barSpace / 2;
@@ -747,11 +815,35 @@ function reportDrawTimeBarGraph(datas, canvasId) {
         startX += barWidth + barSpace;
     }
     //draw base line
+    context.beginPath();
     context.strokeStyle = 'rgba(210,210,210,0.5)';
     context.lineWidth = lineWidth;
     context.moveTo(0, startY);
     context.lineTo(canvas.width, startY);
+    context.closePath();
     context.stroke();
+
+    //draw the curve    
+    context.beginPath();
+    context.strokeStyle = 'rgb(234,84,19)';
+    context.lineWidth = 2;
+    startX = 0;
+    context.moveTo(startX, startY);
+    for (var i = 0; i < datas.length; i++) {
+        if (datas[i].time >= 0) {
+            tmpY = startY - datas[i].time * unit;
+            tmpX = startX + barWidth / 2 + barSpace/2;
+        }
+
+        context.lineTo(tmpX, tmpY);
+        startX += barWidth + barSpace;
+    }
+
+    context.lineTo(startX, startY);
+    context.stroke();
+
+    //context.stroke();
+
     return (barWidth + barSpace) * 3;
 };
 
@@ -797,12 +889,19 @@ function reportDrawTimeCompleteRate(datas) {
         context.fillStyle = "rgb(105,105,105)";
         context.fillText(datas[i].rate + '%', tmpX, tmpY);
 
-        tmpTextWidth = testTextWidth(datas[i].name, textFontSize + 'px', 'bold', '微软雅黑', '');
+        tmpTextWidth = testTextWidth(datas[i].title, textFontSize + 'px', 'bold', '微软雅黑', '');
         tmpX = centerX - tmpTextWidth / 2;
         tmpY = radius * 2 + lineWidth + textFontSize + 20;
+        //context.lineWidth = 1;
+        //context.strokeStyle = 'rgb(0,0,0)';
+        //context.beginPath();
+        //context.moveTo(centerX, 0);
+        //context.lineTo(centerX, tmpY * 2);
+        //context.stroke();
+        //context.closePath();
         context.font = "normal normal bold " + textFontSize + "px \"微软雅黑\"";
         context.fillStyle = "rgb(61,61,61)";
-        context.fillText(datas[i].name, tmpX, tmpY);
+        context.fillText(datas[i].title, tmpX, tmpY);
     }
 
     return itemWidth;
