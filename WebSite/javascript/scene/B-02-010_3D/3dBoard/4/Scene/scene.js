@@ -1,12 +1,12 @@
 ﻿'use strict';
 
 var Scene = {};
-var patternPoint = [0, 0, 0, 8, 0, 8, 12, 8, 12, 8, 12, 0,12, 0, 0, 0];
+var patternPoint = [0, 0, 2, 0, 2, 0, 2, 3, 2, 3, -2, 3,-2, 3, -2, -2, -2, -2, 4, -2, 4, -2, 4, 5, 4, 5, -4, 5, -4, 5, -4, -4, -4, -4, 6, -4, 6, -4, 6, 7, 6, 7, -6, 7, -6, 7, -6, -6, -6, -6, 8, -6];
 
 Scene.initEnvironment = function (containerId) {
-    changeSiderBarWidth($(window).width()/2);
+    var browserWidth = $(window).width();
+    changeSiderBarWidth(browserWidth/2);
     Scene.initGlobalParams();
-    
     var params = {
         fog: null,
         camera: {
@@ -55,7 +55,7 @@ Scene.initEnvironment = function (containerId) {
         grid: {
             type: 'xy',
             line: '#000000',
-            base: '#FF0000',
+            base: '#FF6666',
             step: 20,
             scope: 500
         }
@@ -65,15 +65,25 @@ Scene.initEnvironment = function (containerId) {
     Engine.prepareForStart();
     Scene.Brush = Scene.getBrush();
     Scene.Brush.setBuildBackgroundFn(function () {
-
-        //长方形 --- 长 = 12，宽 = 8
-        Scene.Brush.buildBackgroundLine(0, 0, 0, 8, 6, '#919191');
-        Scene.Brush.buildBackgroundLine(0, 8, 12, 8, 6, '#919191');
-        Scene.Brush.buildBackgroundLine(12, 8, 12, 0, 6, '#919191');
-        Scene.Brush.buildBackgroundLine(12, 0, 0, 0, 6, '#919191');
-
+       
+        //长方形 --- 长 = 5，宽 = 10
+        Scene.Brush.buildBackgroundLine(0, 0, 2, 0, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(2, 0, 2, 3, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(2, 3, -2, 3, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(-2, 3, -2, -2, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(-2, -2, 4, -2, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(4, -2, 4, 5, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(4, 5, -4, 5, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(-4, 5, -4, -4, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(-4, -4, 6, -4, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(6, -4, 6, 7, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(6, 7, -6, 7, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(-6, 7, -6, -6, 4, '#919191');
+        Scene.Brush.buildBackgroundLine(-6, -6, 8, -6, 4, '#919191');
+        
     });
     Scene.Brush.prepareBackground();
+    
 };
 
 Scene.initGlobalParams = function () {
@@ -96,7 +106,7 @@ Scene.start = function () {
 
 Scene.reset = function () {
     // Engine.resetScene();
-   TweenMax.killAll();
+    TweenMax.killAll();
     Scene.Brush.reset();
     Scene.Brush.clearPatterns();
 };
@@ -125,9 +135,9 @@ Scene.MoveForward = function (px) {
     Scene.Brush.lineLength(px);
 };
 
-Scene.jump = function () {
-    Scene.Brush.moveTo();
-}
+Scene.MoveBrush = function () {
+    Scene.Brush.moveTo(-5, 0);
+};
 
 Scene.SetColor = function (color) {
     Scene.Brush.setColor(color);
@@ -137,10 +147,9 @@ Scene.SetLineWidth = function (width) {
     Scene.Brush.setLineWidth(width);
 };
 
-Scene.RotateLine = function (degree, direction){
+Scene.RotateLine = function (degree, direction) {
     Scene.Brush.lineRotate(degree, direction);
 };
-
 
 Scene.GetLinePoint = function () {
     var pattern;
@@ -164,9 +173,10 @@ Scene.GetLinePoint = function () {
 
 Scene.StepCompleteFn = function (){
     var actualLinePoint = Scene.GetLinePoint();
-    if (actualLinePoint.length == '16' && ((patternPoint.sort(function(a,b){ return b-a}).toString() == actualLinePoint.sort(function(a,b){ return b-a}).toString()))){
+    if (actualLinePoint.length == '52' && ((patternPoint.sort(function(a,b){ return b-a}).toString() == actualLinePoint.sort(function(a,b){ return b-a}).toString()))){
         return true;
     }else{
         return false;
     }
 };
+

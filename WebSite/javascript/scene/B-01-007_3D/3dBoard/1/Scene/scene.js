@@ -5,7 +5,7 @@ var patternPoint = [0, 0, -6, 10.39, 6, 10.39, 0, 0, 6, 10.39, 12, 0, 0, 0, 12, 
 var patternCount = 0;
 
 Scene.initEnvironment = function (containerId) {
-    //changeSiderBarWidth(700);
+    changeSiderBarWidth($(window).width()/2);
     Scene.initGlobalParams();
     
     var params = {
