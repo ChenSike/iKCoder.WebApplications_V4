@@ -258,6 +258,7 @@ footer {
 
 .row-courses-group-item-list {
     font-size: 14px;
+    overflow:auto;
 }
 
     .row-courses-group-item-list tbody tr td {
@@ -266,13 +267,13 @@ footer {
 
 .course-state {
     font-size: 18px;
+    color: darkgreen;
 }
 
     .course-state.fa-star-half-alt {
     }
 
     .course-state.fa-star {
-        color: darkgreen;
     }
 
 .course-staem-s {
