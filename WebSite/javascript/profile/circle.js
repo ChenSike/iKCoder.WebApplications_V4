@@ -406,7 +406,7 @@ function circleBuildListItem(tmpHTMLArr, itemObj, chatId) {
         if (itemObj.type == 'group') {
             circleBuildListItemHeader_Group(tmpHTMLArr, itemObj);
         } else {
-            var tmpImg = (itemObj.header != 'image/tmpheader.jpg' ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: itemObj.userId }) : itemObj.header);
+            var tmpImg = (itemObj.header.indexOf('image/tmpheader.jpg') != 0 ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: itemObj.userId }) : itemObj.header);
             var tmpSymbol = itemObj.userId + '|' + itemObj.type;
             tmpHTMLArr.push('       <img class="img-fluid circle-user-list-item-header" src="' + tmpImg + '" data-target="' + tmpSymbol + '">');
         }
@@ -437,7 +437,7 @@ function circleBuildListItemHeader_Group(tmpHTMLArr, itemObj) {
             }
         }
 
-        tmpImg = (itemObj.items[j].header != 'image/tmpheader.jpg' ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: itemObj.userId }) : itemObj.items[j].header);
+        tmpImg = (itemObj.items[j].header.indexOf('image/tmpheader.jpg') != 0 ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: itemObj.userId }) : itemObj.items[j].header);
         tmpHTMLArr.push('   <img class="circle-group-item-header" src="' + tmpImg + '" style="' + imgStyle + marginStyle + '">');
     }
 
@@ -895,7 +895,7 @@ function circleChat_BuildMessageItem(msgObj, userInfo, showAlert) {
     tmpHTMLArr.push('<div class="row"><div class="col text-center" style="padding: 3px;"><span class="span-msg-datetime">' + dt + '</span></div></div>');
     if (typeof (userInfo) != 'undefined' && userInfo && userInfo.userId != _gUserInfoObj.userId) {
         userInfo = (typeof (userInfo) == 'string' ? circleGetUserObj(userInfo) : userInfo);
-        tmpImg = (userInfo.header != 'image/tmpheader.jpg' ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: userInfo.userId }) : userInfo.header)
+        tmpImg = (userInfo.header.indexOf('image/tmpheader.jpg') != 0 ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: userInfo.userId }) : userInfo.header)
         tmpHTMLArr.push('<div class="row row-message-item" data-sender="' + userInfo.userId + '">');
         tmpHTMLArr.push('   <div class="col-1">');
         tmpHTMLArr.push('       <img class="img-fluid user-header" src="' + tmpImg + '" />');
@@ -913,7 +913,7 @@ function circleChat_BuildMessageItem(msgObj, userInfo, showAlert) {
             tmpStyle = ' style="display:none;"';
         }
 
-        tmpImg = (_gUserInfoObj.header != 'image/tmpheader.jpg' ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: _gUserInfoObj.userId }) : _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
+        tmpImg = (_gUserInfoObj.header.indexOf('image/tmpheader.jpg') != 0 ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: _gUserInfoObj.userId }) : _gUserInfoObj.header.indexOf('?') < 0 ? _gUserInfoObj.header + '?rnd=' + Date.now() : _gUserInfoObj.header);
         tmpHTMLArr.push('<div class="row row-message-item">');
         tmpHTMLArr.push('   <div class="col-3"></div>');
         tmpHTMLArr.push('   <div class="col-8">');
@@ -1462,7 +1462,7 @@ function circleAddress_BuildUserDetail(userId) {
         }
 
         $('.container-circle-friend-item-detail .s-circle-friend-item-detail-name').text(userObj.userName);
-        var tmpImg = (userObj.header != 'image/tmpheader.jpg' ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: userObj.userId }) : userObj.header);
+        var tmpImg = (userObj.header.indexOf('image/tmpheader.jpg') != 0 ? _getRequestURL(_gURLMapping.account.getuserheaderImg, { uname: userObj.userId }) : userObj.header);
         $('.container-circle-friend-item-detail .circle-friend-item-detail-header').attr('src', tmpImg);
         $('.container-circle-friend-item-detail .p-circle-friend-item-detail-note').text(userObj.note);
         $('.container-circle-friend-item-detail #txt_Circle_Friend_Item_Detail_Comment').val(userObj.comment);
