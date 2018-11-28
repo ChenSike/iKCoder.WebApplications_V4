@@ -358,7 +358,7 @@ function circleBuildList_Chat() {
     container.empty();
     container.append($(tmpHTMLArr.join('')));
     if (_gCircleCurrentChat.chatId == '') {
-       _gCircleCurrentChat = circleGetChatByChatterId('99999999999');
+        _gCircleCurrentChat = circleGetChatByChatterId('99999999999');
         circleChat_SwitchChat(_gCircleCurrentChat.chatId);
     }
 };
@@ -949,7 +949,6 @@ function circleChat_BuildEmojiPopover() {
     }
 
     var popoverHTML = [];
-
     popoverHTML.push('<div class="container-fluid wrap-emoji-popover">');
     popoverHTML.push('  <div class="row">');
     popoverHTML.push('      <div class="col col-emoji-items">');
@@ -1084,6 +1083,7 @@ function circleChat_SwitchChat(chatId) {
             $('.setting-bar-chatter').hide();
             $('.user-popover-wrap').hide();
             $('.channel-popover-wrap').hide();
+            $('.circle-message-input-field').empty();
             webSocketSend('Action_Get_DialogContent', { symbol: _gCircleCurrentChat.chatId, msg: '', targets: [], values: {}, batch: [], id: '' });
         }
     }
@@ -1152,16 +1152,15 @@ function circleChat_ShowSettingBarGroupMember(groupObj, maxCount) {
 };
 
 function circleChat_BuildUserPop(eventObj) {
-    if ($('.user-popover-wrap').length > 0 && $('.user-popover-wrap').css('display') != 'none') {
-        $('.user-popover-wrap').hide();
-    } else {
-        var target = $(eventObj.currentTarget);
-        var userId = target.attr('data-target');
-        var current = circleGetUserObj(userId, 'user');
-        var container = $('.wrap-circle-message');
+    var popover = $('.user-popover-wrap');
+    var target = $(eventObj.currentTarget);
+    var userId = target.attr('data-target');
+    var current = circleGetUserObj(userId, 'user');
+    var container = $('.wrap-circle-message');
+    if (popover.length == 0) {
         if ($('.user-popover-wrap').length <= 0) {
             var tmpHTMLArr = [];
-            tmpHTMLArr.push('<div class="user-popover-wrap">');
+            tmpHTMLArr.push('<div class="user-popover-wrap" tabindex="0" hidefocus="true">');
             tmpHTMLArr.push('   <div class="container-fluid container-user-popover">');
             tmpHTMLArr.push('       <div class="row" style="padding-bottom: 15px;">');
             tmpHTMLArr.push('           <div class="col-8">');
@@ -1203,46 +1202,66 @@ function circleChat_BuildUserPop(eventObj) {
             tmpHTMLArr.push('       </div>');
             tmpHTMLArr.push('   </div>');
             tmpHTMLArr.push('</div>');
-            container.append($(tmpHTMLArr.join('')));            
-            $('.user-popover-wrap .btn-user-popover').on('click', circleChat_ClickUserPopBtn);
-        }
+            container.append($(tmpHTMLArr.join('')));
+            popover = $('.user-popover-wrap');
+            $('.user-popover-wrap .btn-user-popover').on('click', function (eventObj) {
+                circleChat_ClickUserPopBtn(eventObj);
+                popover.hide();
+            });
 
-        if (current.accecpt) {
-            $('.user-popover-wrap .btn-user-popover.btn-add-friend').hide();
-            $('.user-popover-wrap .btn-user-popover.btn-share-friend').show();
-            $('.user-popover-wrap .btn-user-popover.btn-send-msg').show();
-        } else {
-            $('.user-popover-wrap .btn-user-popover.btn-add-friend').show();
-            $('.user-popover-wrap .btn-user-popover.btn-share-friend').hide();
-            $('.user-popover-wrap .btn-user-popover.btn-send-msg').hide();
-        }
+            popover.on('blur', function () {
+                var relatedTarget = $(arguments[0].relatedTarget);
+                if (!relatedTarget.hasClass('btn-user-popover') && relatedTarget.attr('id') != 'txt_User_Popover_Comment') {
+                    popover.hide();
+                }
+            });
 
-        $('.user-popover-wrap').show();
-        $('.user-popover-wrap .user-popover-name').text(current.userName);
-        if (typeof current.gender != 'undefined') {
-            if (current.gender == '1') {
-                $('.user-popover-wrap .fa-female').hide();
-                $('.user-popover-wrap .fa-male').show();
-            } else {
-                $('.user-popover-wrap .fa-female').show();
-                $('.user-popover-wrap .fa-male').hide();
-            }
-        } else {
+            $('#txt_User_Popover_Comment').on('change', function () {
+                //update comment
+                popover.hide();
+            });
+        }
+    }
+
+    if (current.accecpt) {
+        $('.user-popover-wrap .btn-user-popover.btn-add-friend').hide();
+        $('.user-popover-wrap .btn-user-popover.btn-share-friend').show();
+        $('.user-popover-wrap .btn-user-popover.btn-send-msg').show();
+    } else {
+        $('.user-popover-wrap .btn-user-popover.btn-add-friend').show();
+        $('.user-popover-wrap .btn-user-popover.btn-share-friend').hide();
+        $('.user-popover-wrap .btn-user-popover.btn-send-msg').hide();
+    }
+
+    popover.show();
+    $('.user-popover-wrap .user-popover-name').text(current.userName);
+    if (typeof current.gender != 'undefined') {
+        if (current.gender == '1') {
             $('.user-popover-wrap .fa-female').hide();
+            $('.user-popover-wrap .fa-male').show();
+        } else {
+            $('.user-popover-wrap .fa-female').show();
             $('.user-popover-wrap .fa-male').hide();
         }
-
-        $('.user-popover-wrap .user-popover-symbol').text(current.userId);
-        $('.user-popover-wrap .user-popover-header').attr('src', current.header);
-        $('.user-popover-wrap #txt_User_Popover_Comment').val(current.comment);
-        $('.user-popover-wrap .col-user-popover-address').text(current.address);
-        $('.user-popover-wrap .btn-user-popover').attr('data-target', current.userId);
-
-        var tmpTop = eventObj.pageY - container.offset().top;
-        var tmpLeft = eventObj.pageX - container.offset().left - $('.user-popover-wrap').width();
-        $('.user-popover-wrap').css('top', tmpTop + 'px');
-        $('.user-popover-wrap').css('left', tmpLeft + 'px');
+    } else {
+        $('.user-popover-wrap .fa-female').hide();
+        $('.user-popover-wrap .fa-male').hide();
     }
+
+    $('.user-popover-wrap .user-popover-symbol').text(current.userId);
+    $('.user-popover-wrap .user-popover-header').attr('src', current.header);
+    $('.user-popover-wrap #txt_User_Popover_Comment').val(current.comment);
+    $('.user-popover-wrap .col-user-popover-address').text(current.address);
+    $('.user-popover-wrap .btn-user-popover').attr('data-target', current.userId);
+
+    var targetEl = $(eventObj.currentTarget);
+    var targetOffset = targetEl.offset();
+    var containerOffset = $('.wrap-circle-message').offset();
+    var tmpTop = targetOffset.top - containerOffset.top + targetEl.height() / 2;
+    var tmpLeft = targetOffset.left - containerOffset.left + targetEl.width() / 2 - popover.width();
+    popover.css('top', tmpTop + 'px');
+    popover.css('left', tmpLeft + 'px');
+    popover.focus();
 };
 
 function circleChat_ClickUserPopBtn(eventObj) {

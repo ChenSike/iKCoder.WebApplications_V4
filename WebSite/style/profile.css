@@ -258,7 +258,7 @@ footer {
 
 .row-courses-group-item-list {
     font-size: 14px;
-    overflow:auto;
+    overflow: auto;
 }
 
     .row-courses-group-item-list tbody tr td {
@@ -1903,6 +1903,7 @@ footer {
     background-color: rgba(255,255,255,1);
     box-shadow: 2px 2px 5px rgb(153,153,153);
     border-radius: 5px;
+    outline:none;
 }
 
     .user-popover-wrap .container-user-popover {

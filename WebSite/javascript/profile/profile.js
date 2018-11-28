@@ -112,7 +112,7 @@ function initEvents() {
     $('#btn_Student_SignOut').on('click', function () {
         var signOutFn = function (response) {
             if (_getExcuted(response)) {
-                window.location.href = "http://www.ikcoder.com";
+                _signOut("http://www.ikcoder.com/index.html");
             } else {
                 _showGlobalMessage('暂时无法安全退出，请重试!', 'warning', 'alert_SignOut_Error');
             }

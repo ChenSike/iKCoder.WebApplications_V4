@@ -261,12 +261,17 @@ function _startCheckState() {
     ajaxFn('GET', _getRequestURL(_gURLMapping.account.signstatus), '', checkSuccessFn, _signOut);
 };
 //sign out
-function _signOut() {
+function _signOut(url) {
     ajaxFn('GET', _getRequestURL(_gURLMapping.account.signout), '', function () {
+        _CookieUtils.delete('user_header');
         _CookieUtils.delete('logined_user_name');
         _CookieUtils.delete('logined_user_nickname');
-        //window.location.href = "http://www.ikcoder.com/signin.html?rnd=" + Date.now();
-        window.location.href = "http://ikcoder.ikcoder.com/ikcoderv4/sign.html?rnd=" + Date.now();
+        _CookieUtils.delete('student_token');
+        if (typeof url == 'undefined') {
+            window.location.href = window.location.origin + '/ikcoder/signin.html?rnd=' + Date.now();
+        } else {
+            window.location.href = url + '?rnd=' + Date.now();
+        }
     });
 };
 //format ajax request
