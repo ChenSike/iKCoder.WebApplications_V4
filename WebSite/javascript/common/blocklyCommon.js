@@ -347,7 +347,12 @@ function buildStatusAlertWindow() {
         tmppHTMLStr.push('            <div class="row justify-content-center my-3">');
         tmppHTMLStr.push('                <div class="col-2 text-center">');
         tmppHTMLStr.push('                    <div class="step-status-button restart">');
-        tmppHTMLStr.push('                      <i class="fa fa-undo"></i><span style="margin-left:5px;">重新开始</span>');
+        tmppHTMLStr.push('                      <i class="fas fa-undo-alt"></i><span style="margin-left:5px;">重新开始</span>');
+        tmppHTMLStr.push('                    </div>');
+        tmppHTMLStr.push('                </div>');
+        tmppHTMLStr.push('                <div class="col-2 text-center">');
+        tmppHTMLStr.push('                    <div class="step-status-button closen-alert">');
+        tmppHTMLStr.push('                      <i class="fas fa-times"></i><span style="margin-left:5px;">关闭提示</span>');
         tmppHTMLStr.push('                    </div>');
         tmppHTMLStr.push('                </div>');
         tmppHTMLStr.push('                <div class="col-2">');
@@ -390,7 +395,7 @@ function buildStatusAlertWindow() {
 
 function initStatusAlertEvents() {
     $('.step-status-button.restart').on('click', function (e) {
-        WorkScene.reset(true);
+        WorkScene.reset();
         $('.wrap-workstatus-alert').hide();
     });
     //for dynamic code
@@ -443,6 +448,10 @@ function initStatusAlertEvents() {
         }
     });
 
+    $('.step-status-button.closen-alert').on('click', function (e) {
+        $('.wrap-workstatus-alert').hide();
+    });
+
     $('.step-status-button.find-error').on('click', function (e) {
         $('.wrap-workstatus-alert').hide();
     });
@@ -450,7 +459,7 @@ function initStatusAlertEvents() {
     $('.step-evaluate-button').on('click', function () {
         var currBtn = $(arguments[0].target);
         currBtn.css('color', 'rgb(255,255,255)');
-        if (currBtn.hasClass('yes')) {
+        if (currBtn.hasClass('yes') || currBtn.parent().hasClass('yes')) {
             $('.step-evaluate-button.no').css('color', '#aaaaaa');
         } else {
             $('.step-evaluate-button.yes').css('color', '#aaaaaa');

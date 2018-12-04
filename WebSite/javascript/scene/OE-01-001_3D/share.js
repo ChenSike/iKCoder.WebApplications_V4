@@ -85,5 +85,3 @@ Scene.resetSize = function () {
 window.onresize = function () {
     Engine.handleWindowResize();
 };
-
-Scene.init();

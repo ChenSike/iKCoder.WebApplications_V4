@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html style="height:100%">
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/jquery.base64.js"></script>
+    <script src="javascript/common/global.js"></script>
+    <script src="javascript/common/three.min.js"></script>
+    <script src="javascript/common/TweenMax.min.js"></script>
+    <script src="javascript/scene/OE-01-001_3D/main.js"></script>
+    <script src="javascript/scene/OE-01-001_3D/Materials.js"></script>
+    <script src="javascript/scene/OE-01-001_3D/objects.js"></script>
+    <script src="javascript/scene/OE-01-001_3D/share.js"></script>
+
+    <style>
+        .logo-home {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .wrap-title {
+            position: absolute;
+            top: 16px;
+            left: 0px;
+            width: 100%;
+        }
+
+        #title_Content {
+            font-size: 30px;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="height:100%; margin:0px;padding:0px;">
+    <div id="game_container" style="width:100%;height:calc(100% - 5px);"></div>
+    <a class="logo-home" href="index.html">
+        <img src="image/logo-new-gray.png" width="150" height="50" class="d-inline-block align-top img-header-logo" alt="">
+    </a>
+    <div class="wrap-title">
+        <div id="title_Content" style="color: rgb(0,0,0);"><span style="padding-right:10px;">|</span>在线体验课<span style="color:rgb(232,118,7);padding:0px 10px;">萌宠大逃亡</span>|</div>
+    </div>
+    <script type="text/javascript">
+        var _shareData = null;
+        //var dataArr = [];
+        //dataArr.push('<data>');
+        //dataArr.push('<item role="monster" module="wolf" head="1" body="1" ear="1" color="#0f0707"/>');
+        //dataArr.push('<item role="player" module="rabbit" head="1" body="1" ear="1" color="#dc5f45"/>');
+        //dataArr.push('<item role="obstacle" module="hedgehog"/>');
+        //dataArr.push('<item role="prop" module="carrot"/>');
+        //dataArr.push('<item role="floor" module="forest"/>');
+        //dataArr.push('<music path="http://ikcoder.ikcoder.com/ikcoder/media/sound_1.mp3"/>');
+        //dataArr.push('<event xmlns="http://www.w3.org/1999/xhtml" device="m" key="0"/>');
+        //dataArr.push('</data>');
+        $(document).ready(function () {
+            //_shareData = $(dataArr.join(''));
+            //Scene.init();
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: _getRequestURL(_gURLMapping.demo.getcontent, { Symbol: getQueryString('symbol') }),
+                data: '',
+                success: function (response, status) {
+                    if ($(response).find('err').length > 0) {
+                        _showGlobalMessage($(response).find('err').attr('msg'), 'danger', 'alert_Share_Load');
+                        return;
+                    }
+
+                    _shareData = $($.base64.atob(response));
+                    Scene.init();
+                },
+                dataType: 'text',
+                xhrFields: {
+                    withCredentials: true
+                },
+                error: function () {
+                }
+            });
+        });
+    </script>
+</body>
+</html>

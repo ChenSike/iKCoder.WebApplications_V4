@@ -3,25 +3,27 @@
 var _gCurrentAction = '';
 
 function webSocketCreate() {
-    _gSocket = new WebSocket("WS://www.ikcoder.com/corebasic?student_token=" + _CookieUtils.get('student_token'));
-    //建立websocket连接成功
-    _gSocket.onopen = function () {
+    if (!_gSocket || _gSocket.readyState != 1) {
+        _gSocket = new WebSocket("WS://www.ikcoder.com/corebasic?student_token=" + _CookieUtils.get('student_token'));
+        //建立websocket连接成功
+        _gSocket.onopen = function () {
 
-    };
+        };
 
-    //接收服务端数据时
-    _gSocket.onmessage = function (evt) {
-        webSocketReceiveCircle(evt);
-    };
+        //接收服务端数据时
+        _gSocket.onmessage = function (evt) {
+            webSocketReceiveCircle(evt);
+        };
 
-    //断开websocket连接成功
-    _gSocket.onclose = function () {
-        _showGlobalMessage('链接已关闭，请重新登录!', 'warning', 'alert_WSClose_Error');
-    };
+        //断开websocket连接成功
+        _gSocket.onclose = function () {
+            _showGlobalMessage('链接已关闭，请重新登录!', 'warning', 'alert_WSClose_Error');
+        };
 
-    _gSocket.onerror = function () {
-        _showGlobalMessage('服务异常，请联系客服!', 'warning', 'alert_WSError_Error');
-    };
+        _gSocket.onerror = function () {
+            _showGlobalMessage('服务异常，请联系客服!', 'warning', 'alert_WSError_Error');
+        };
+    }
 };
 
 function webSocketSend(act, paramsObj) {
@@ -196,27 +198,29 @@ function webSocketReceiveCircle(evt) {
             break;
         case 'Action_Get_BatchArrProfile':
             circleUpdateUserList(valDoc);
-            switch (_gCurrentAction) {
-                case 'Action_Get_RelationsList':
-                    circleInitData_Address();
-                    circleBuildList_Address();
-                    circleBuildContent_Address();
-                    circleAdjust_Address();
-                    circleInitEvents_Address();
-                    break;
-                case 'Action_Get_RelationsAcceptableList':
-                    circleAddress_BuildGuestList();
-                    break;
-                case 'Action_Get_ChannelList':
-                    circleAddress_BuildChannelList();
-                    break;
-                case 'Action_Get_DialogList':
-                    circleBuildList_Chat();
-                    circleBuildContent_Chat();
-                    circleAdjust_Chat();
-                    circleInitEvents_Chat();
-                    circleChat_SwitchChat();
-                    break;
+            if ($('.row-category-item[data-target="circle"]').hasClass('active-item')) {
+                switch (_gCurrentAction) {
+                    case 'Action_Get_RelationsList':
+                        circleInitData_Address();
+                        circleBuildList_Address();
+                        circleBuildContent_Address();
+                        circleAdjust_Address();
+                        circleInitEvents_Address();
+                        break;
+                    case 'Action_Get_RelationsAcceptableList':
+                        circleAddress_BuildGuestList();
+                        break;
+                    case 'Action_Get_ChannelList':
+                        circleAddress_BuildChannelList();
+                        break;
+                    case 'Action_Get_DialogList':
+                        circleBuildList_Chat();
+                        circleBuildContent_Chat();
+                        circleAdjust_Chat();
+                        circleInitEvents_Chat();
+                        circleChat_SwitchChat();
+                        break;
+                }
             }
 
             break;

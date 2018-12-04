@@ -137,6 +137,14 @@ var _gURLMapping = {
         setlessonfinish: _gHostName.Main + 'Course_Set_LessonFinished',
         //Get //获取实验列表
         getexplist: _gHostName.Main + 'Exp_Get_List'
+    },
+    demo: {
+        //POST 过来BASE64，返回SYMBOL。
+        setcontent: _gHostName.Main + 'Demo_Set_RAWContent',
+        //Get , Symbol = XXXXX
+        getcontent: _gHostName.Main + 'Demo_Get_RAWContent',
+        //Get, Symbol = XXXXXX,返回图片
+        getqrcode: _gHostName.Main + 'Demo_Get_QRCode'
     }
 };
 //merge url
@@ -266,6 +274,7 @@ function _signOut(url) {
         _CookieUtils.delete('user_header');
         _CookieUtils.delete('logined_user_name');
         _CookieUtils.delete('logined_user_nickname');
+        _CookieUtils.delete('logined_user_header');
         _CookieUtils.delete('student_token');
         if (typeof url == 'undefined') {
             window.location.href = window.location.origin + '/ikcoder/signin.html?rnd=' + Date.now();

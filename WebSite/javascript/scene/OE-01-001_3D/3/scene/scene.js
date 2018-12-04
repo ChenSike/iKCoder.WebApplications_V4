@@ -26,7 +26,7 @@ Scene.setControl = function (device, eventKey) {
 Scene.init = function () {
     Engine.setOverCallbackFn(function () {
         resetPlayBtn('R');
-        Scene.buildCompleteHTML();
+        //Scene.buildCompleteHTML();
     });
     //_registerRemoteServer();
     //$.ajax({
@@ -139,21 +139,28 @@ Scene.settingComplete = function () {
         $(_dataForSave).find('data').append($('<event device="' + Engine.params.control.device + '" key="' + Engine.params.control.key + '"/>'));
     }
 
-    var symbol = getQueryString('scene') + '_state_storage';
-    if ($(_dataForSave).find('data').find('lib').length <= 0) {
-        $(_dataForSave).find('data').append('<lib/>');
-        var libNode = $($(_dataForSave).find('data').find('lib')[0]);
-        var libArr = [
-            '<item src="javascript/scene/OE-01-001_3D/main.js"/>',
-            '<item src="javascript/scene/OE-01-001_3D/Materials.js"/>',
-            '<item src="javascript/scene/OE-01-001_3D/objects.js"/>',
-            '<item src="javascript/scene/OE-01-001_3D/share.js"/>'
-        ];
-        libNode.append(libArr.join(''));
-    }
+    //if ($(_dataForSave).find('data').find('lib').length <= 0) {
+    //    $(_dataForSave).find('data').append('<lib/>');
+    //    var libNode = $($(_dataForSave).find('data').find('lib')[0]);
+    //    var libArr = [
+    //        '<item src="javascript/scene/OE-01-001_3D/main.js"/>',
+    //        '<item src="javascript/scene/OE-01-001_3D/Materials.js"/>',
+    //        '<item src="javascript/scene/OE-01-001_3D/objects.js"/>',
+    //        '<item src="javascript/scene/OE-01-001_3D/share.js"/>'
+    //    ];
+    //    libNode.append(libArr.join(''));
+    //}
 
-    //Scene.buildCompleteHTML(symbol);
-    Scene.buildCompleteHTML();
+    var dataStr = $(_dataForSave)[0].documentElement.outerHTML;
+    window.localStorage.setItem(getQueryString('scene') + '_state_storage', dataStr);
+    ajaxFn('POST', _getRequestURL(_gURLMapping.demo.setcontent), $.base64.btoa(dataStr), function (response) {
+        //<root><executed>true</executed><msgcode>symbol</msgcode><msg>cf534458-17a8-4ce5-9f52-180edb2725fb</msg></root>
+        if (_getExcuted(response)) {
+            var qrCode = $($(response).find('msg')[0]).text();
+            Scene.buildCompleteHTML(qrCode);
+        }
+    });
+    //Scene.buildCompleteHTML(symbol);    
 };
 
 Scene.buildCompleteHTML_1 = function (symbol) {
@@ -356,8 +363,9 @@ Scene.buildCompleteHTML_2 = function (qrSymbol, qrSymbolRpt) {
     });
 };
 
-Scene.buildCompleteHTML = function () {
-    if ($('#complete_modal_mask').length <= 0) {
+Scene.buildCompleteHTML = function (qrCode) {
+    $('#complete_modal_mask').remove();
+    //if ($('#complete_modal_mask').length <= 0) {
         var tmpHTMLArr = [];
         tmpHTMLArr.push('<style>');
         tmpHTMLArr.push('.modal-mask {');
@@ -413,7 +421,7 @@ Scene.buildCompleteHTML = function () {
         tmpHTMLArr.push('        <table>');
         tmpHTMLArr.push('            <tbody><tr class="row-qr-code">');
         tmpHTMLArr.push('                <td>');
-        tmpHTMLArr.push('                    <img src="image/index.png" width="200">');
+        tmpHTMLArr.push('                    <img src="' + _getRequestURL(_gURLMapping.demo.getqrcode, { Symbol: qrCode }) + '" width="200">');
         tmpHTMLArr.push('                </td>');
         tmpHTMLArr.push('                <td>');
         tmpHTMLArr.push('                    <img src="image/sign.png" width="200">');
@@ -421,7 +429,7 @@ Scene.buildCompleteHTML = function () {
         tmpHTMLArr.push('            </tr>');
         tmpHTMLArr.push('            <tr class="text-center">');
         tmpHTMLArr.push('                <td>');
-        tmpHTMLArr.push('                    <a href="http://www.ikcoder.com/index.html">访问iKCoder网站</a>');
+        tmpHTMLArr.push('                    <a href="' + window.location.origin + '/ikcoder/demo_raw.html?symbol=' + qrCode + '" target="_blank">分享我的作品</a>');
         tmpHTMLArr.push('                </td>');
         tmpHTMLArr.push('                <td>');
         tmpHTMLArr.push('                    <a href="http://www.ikcoder.com/ikcoder/sign.html"> 注册成为iKCoder会员</a>');
@@ -439,7 +447,7 @@ Scene.buildCompleteHTML = function () {
         $('#btn_breakContinue').on('click', function () {
             $('#complete_modal_mask').hide();
         });
-    }
+    //}
 
     $('#complete_modal_mask').show('slow');
 };

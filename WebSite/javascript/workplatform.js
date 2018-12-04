@@ -18,6 +18,10 @@ var _topTooltip = [];
 function initPage() {
     $('#mask_Page_Loading').hide();
     $('#mask_Page_Loading').css('visibility', 'hidden');
+    if (_CookieUtils.get('student_token') == '') {
+        $('.header-user-info-container').hide();
+    }
+
     var tmpStage = getQueryString('scene');
     var tmpStep = getQueryString('step');
     adjustMainSize(tmpStep == '' ? true : false);
@@ -685,7 +689,6 @@ function playScence() {
         //    } else {
         //        currentBtn = $(arguments[0].target);
         //    }
-
         //    if (currentBtn.hasClass('fa-play-circle') || currentBtn.hasClass('fa-play')) {
         //        WorkScene.startGame();
         //        resetPlayBtn('R');
@@ -709,7 +712,7 @@ function playScence() {
                 WorkScene.startGame();
                 resetPlayBtn('R');
             } else if (currentBtn.hasClass('fa-undo-alt')) {
-                showResetWarnning();                
+                showResetWarnning();
             }
         }
     }
@@ -846,7 +849,7 @@ function siderBarExpand() {
     $('.siderbar-drag').toggleClass('expanded');
 };
 
-function changeSiderBarWidth(width){
+function changeSiderBarWidth(width) {
     $(".siderbar-wrap").width(width);
     $(".siderbar-wrap").css("left", $("body").width() - width + "px");
     $(".siderbar-drag-proxy").css("display", "none");

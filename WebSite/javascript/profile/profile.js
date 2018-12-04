@@ -110,15 +110,16 @@ function initEvents() {
     });
 
     $('#btn_Student_SignOut').on('click', function () {
-        var signOutFn = function (response) {
-            if (_getExcuted(response)) {
-                _signOut("http://www.ikcoder.com/index.html");
-            } else {
-                _showGlobalMessage('暂时无法安全退出，请重试!', 'warning', 'alert_SignOut_Error');
-            }
-        };
+        _signOut("http://www.ikcoder.com/index.html");
+        //var signOutFn = function (response) {
+        //    if (_getExcuted(response)) {
+        //        _signOut("http://www.ikcoder.com/index.html");
+        //    } else {
+        //        _showGlobalMessage('暂时无法安全退出，请重试!', 'warning', 'alert_SignOut_Error');
+        //    }
+        //};
 
-        ajaxFn('GET', _getRequestURL(_gURLMapping.account.signout, {}), '', signOutFn);
+        //ajaxFn('GET', _getRequestURL(_gURLMapping.account.signout, {}), '', signOutFn);
     });
 
     $('.btn-header-mood').on('click', function () {
