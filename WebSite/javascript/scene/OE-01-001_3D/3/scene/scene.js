@@ -363,93 +363,176 @@ Scene.buildCompleteHTML_2 = function (qrSymbol, qrSymbolRpt) {
     });
 };
 
-Scene.buildCompleteHTML = function (qrCode) {
+Scene.buildCompleteHTML_3 = function (qrCode) {
     $('#complete_modal_mask').remove();
     //if ($('#complete_modal_mask').length <= 0) {
-        var tmpHTMLArr = [];
-        tmpHTMLArr.push('<style>');
-        tmpHTMLArr.push('.modal-mask {');
-        tmpHTMLArr.push('    height: 100%;');
-        tmpHTMLArr.push('    width: 100%;');
-        tmpHTMLArr.push('    position: absolute;');
-        tmpHTMLArr.push('    top: 0px;');
-        tmpHTMLArr.push('    left: 0px;');
-        tmpHTMLArr.push('    background-color: rgba(0,0,0,0.5);');
-        tmpHTMLArr.push('    z-index: 9999;');
-        tmpHTMLArr.push('    display: none;');
-        tmpHTMLArr.push('}');
-        tmpHTMLArr.push('.modal-mask .modal-wrap {');
-        tmpHTMLArr.push('    width: 500px;');
-        tmpHTMLArr.push('    height: 300px;');
-        tmpHTMLArr.push('    background-color: rgba(255,255,255, 0.7);');
-        tmpHTMLArr.push('    border-radius: 10px;');
-        tmpHTMLArr.push('    position: relative;');
-        tmpHTMLArr.push('    top: calc(50% - 200px);');
-        tmpHTMLArr.push('    left: calc(50% - 250px);');
-        tmpHTMLArr.push('}');
-        tmpHTMLArr.push('.modal-mask .modal-wrap table {');
-        tmpHTMLArr.push('    width: 100%;');
-        tmpHTMLArr.push('    height: 100%;');
-        tmpHTMLArr.push('}');
-        tmpHTMLArr.push('.modal-mask .modal-wrap table .row-qr-code td {');
-        tmpHTMLArr.push('    padding: 0px 25px;');
-        tmpHTMLArr.push('    padding-top: 20px;');
-        tmpHTMLArr.push('}');
-        tmpHTMLArr.push('.text-center {');
-        tmpHTMLArr.push('text-align: center;');
-        tmpHTMLArr.push('    font-family: 微软雅黑;');
-        tmpHTMLArr.push('    font-size: 14px;');
-        tmpHTMLArr.push('}');
-        tmpHTMLArr.push('#btn_breakContinue {');
-        tmpHTMLArr.push('    width: 140px;');
-        tmpHTMLArr.push('    height: 30px;');
-        tmpHTMLArr.push('    border-radius: 15px;');
-        tmpHTMLArr.push('    border: none;');
-        tmpHTMLArr.push('    cursor: pointer;');
-        tmpHTMLArr.push('    font-family: 微软雅黑;');
-        tmpHTMLArr.push('    font-size: 16px;');
-        tmpHTMLArr.push('    background-color: #2ea7e0;');
-        tmpHTMLArr.push('    color: white;');
-        tmpHTMLArr.push('    margin-bottom: 15px;');
-        tmpHTMLArr.push('}');
-        tmpHTMLArr.push('    #btn_breakContinue:hover {');
-        tmpHTMLArr.push('    background-color: gray;');
-        tmpHTMLArr.push('}');
-        tmpHTMLArr.push('</style>');
-        tmpHTMLArr.push('<div id="complete_modal_mask" class="modal-mask" style="display: block;">');
-        tmpHTMLArr.push('    <div class="modal-wrap">');
-        tmpHTMLArr.push('        <table>');
-        tmpHTMLArr.push('            <tbody><tr class="row-qr-code">');
-        tmpHTMLArr.push('                <td>');
-        tmpHTMLArr.push('                    <img src="' + _getRequestURL(_gURLMapping.demo.getqrcode, { Symbol: qrCode }) + '" width="200">');
-        tmpHTMLArr.push('                </td>');
-        tmpHTMLArr.push('                <td>');
-        tmpHTMLArr.push('                    <img src="image/sign.png" width="200">');
-        tmpHTMLArr.push('                </td>');
-        tmpHTMLArr.push('            </tr>');
-        tmpHTMLArr.push('            <tr class="text-center">');
-        tmpHTMLArr.push('                <td>');
-        tmpHTMLArr.push('                    <a href="' + window.location.origin + '/ikcoder/demo_raw.html?symbol=' + qrCode + '" target="_blank">分享我的作品</a>');
-        tmpHTMLArr.push('                </td>');
-        tmpHTMLArr.push('                <td>');
-        tmpHTMLArr.push('                    <a href="http://www.ikcoder.com/ikcoder/sign.html"> 注册成为iKCoder会员</a>');
-        tmpHTMLArr.push('                </td>');
-        tmpHTMLArr.push('            </tr>');
-        tmpHTMLArr.push('            <tr class="text-center">');
-        tmpHTMLArr.push('                <td colspan="2">');
-        tmpHTMLArr.push('                    <button id="btn_breakContinue" type="button">继续</button>');
-        tmpHTMLArr.push('                </td>');
-        tmpHTMLArr.push('            </tr>');
-        tmpHTMLArr.push('        </tbody></table>');
-        tmpHTMLArr.push('    </div>');
-        tmpHTMLArr.push('</div>');
-        $('body').append($(tmpHTMLArr.join('')));
-        $('#btn_breakContinue').on('click', function () {
-            $('#complete_modal_mask').hide();
-        });
+    var tmpHTMLArr = [];
+    tmpHTMLArr.push('<style>');
+    tmpHTMLArr.push('.modal-mask {');
+    tmpHTMLArr.push('    height: 100%;');
+    tmpHTMLArr.push('    width: 100%;');
+    tmpHTMLArr.push('    position: absolute;');
+    tmpHTMLArr.push('    top: 0px;');
+    tmpHTMLArr.push('    left: 0px;');
+    tmpHTMLArr.push('    background-color: rgba(0,0,0,0.5);');
+    tmpHTMLArr.push('    z-index: 9999;');
+    tmpHTMLArr.push('    display: none;');
+    tmpHTMLArr.push('}');
+    tmpHTMLArr.push('.modal-mask .modal-wrap {');
+    tmpHTMLArr.push('    width: 500px;');
+    tmpHTMLArr.push('    height: 300px;');
+    tmpHTMLArr.push('    background-color: rgba(255,255,255, 0.7);');
+    tmpHTMLArr.push('    border-radius: 10px;');
+    tmpHTMLArr.push('    position: relative;');
+    tmpHTMLArr.push('    top: calc(50% - 200px);');
+    tmpHTMLArr.push('    left: calc(50% - 250px);');
+    tmpHTMLArr.push('}');
+    tmpHTMLArr.push('.modal-mask .modal-wrap table {');
+    tmpHTMLArr.push('    width: 100%;');
+    tmpHTMLArr.push('    height: 100%;');
+    tmpHTMLArr.push('}');
+    tmpHTMLArr.push('.modal-mask .modal-wrap table .row-qr-code td {');
+    tmpHTMLArr.push('    padding: 0px 25px;');
+    tmpHTMLArr.push('    padding-top: 20px;');
+    tmpHTMLArr.push('}');
+    tmpHTMLArr.push('.text-center {');
+    tmpHTMLArr.push('text-align: center;');
+    tmpHTMLArr.push('    font-family: 微软雅黑;');
+    tmpHTMLArr.push('    font-size: 14px;');
+    tmpHTMLArr.push('}');
+    tmpHTMLArr.push('#btn_breakContinue {');
+    tmpHTMLArr.push('    width: 140px;');
+    tmpHTMLArr.push('    height: 30px;');
+    tmpHTMLArr.push('    border-radius: 15px;');
+    tmpHTMLArr.push('    border: none;');
+    tmpHTMLArr.push('    cursor: pointer;');
+    tmpHTMLArr.push('    font-family: 微软雅黑;');
+    tmpHTMLArr.push('    font-size: 16px;');
+    tmpHTMLArr.push('    background-color: #2ea7e0;');
+    tmpHTMLArr.push('    color: white;');
+    tmpHTMLArr.push('    margin-bottom: 15px;');
+    tmpHTMLArr.push('}');
+    tmpHTMLArr.push('    #btn_breakContinue:hover {');
+    tmpHTMLArr.push('    background-color: gray;');
+    tmpHTMLArr.push('}');
+    tmpHTMLArr.push('</style>');
+    tmpHTMLArr.push('<div id="complete_modal_mask" class="modal-mask" style="display: block;">');
+    tmpHTMLArr.push('    <div class="modal-wrap">');
+    tmpHTMLArr.push('        <table>');
+    tmpHTMLArr.push('            <tbody><tr class="row-qr-code">');
+    tmpHTMLArr.push('                <td>');
+    tmpHTMLArr.push('                   ');
+    tmpHTMLArr.push('                </td>');
+    tmpHTMLArr.push('                <td>');
+    tmpHTMLArr.push('                    <img src="image/sign.png" width="200">');
+    tmpHTMLArr.push('                </td>');
+    tmpHTMLArr.push('            </tr>');
+    tmpHTMLArr.push('            <tr class="text-center">');
+    tmpHTMLArr.push('                <td>');
+    tmpHTMLArr.push('                    <a href="' + window.location.origin + '/ikcoder/demo_raw.html?symbol=' + qrCode + '" target="_blank">分享我的作品</a>');
+    tmpHTMLArr.push('                </td>');
+    tmpHTMLArr.push('                <td>');
+    tmpHTMLArr.push('                    <a href="http://www.ikcoder.com/ikcoder/sign.html"> 注册成为iKCoder会员</a>');
+    tmpHTMLArr.push('                </td>');
+    tmpHTMLArr.push('            </tr>');
+    tmpHTMLArr.push('            <tr class="text-center">');
+    tmpHTMLArr.push('                <td colspan="2">');
+    tmpHTMLArr.push('                    <button id="btn_breakContinue" type="button">继续</button>');
+    tmpHTMLArr.push('                </td>');
+    tmpHTMLArr.push('            </tr>');
+    tmpHTMLArr.push('        </tbody></table>');
+    tmpHTMLArr.push('    </div>');
+    tmpHTMLArr.push('</div>');
+    $('body').append($(tmpHTMLArr.join('')));
+    $('#btn_breakContinue').on('click', function () {
+        $('#complete_modal_mask').hide();
+    });
     //}
 
     $('#complete_modal_mask').show('slow');
+};
+
+Scene.buildCompleteHTML = function (qrCode) {
+    $('.wrap-workstatus-alert').remove();
+    var tmppHTMLStr = [];
+    tmppHTMLStr.push('<div class="wrap-workstatus-alert">');
+    tmppHTMLStr.push('    <div class="wrap-alert-content completed">');
+    tmppHTMLStr.push('        <div class="completed-close-btn"><i class="far fa-times-circle"></i></div>');
+    tmppHTMLStr.push('        <div class="container">');
+    tmppHTMLStr.push('            <div class="row justify-content-center">');
+    tmppHTMLStr.push('                <div class="col-8 text-center container-status-title">');
+    tmppHTMLStr.push('                    <i class="fas fa-trophy fa-3x"></i>');
+    tmppHTMLStr.push('                    <div class="step-status-title" style="margin-top:20px;">恭喜您, 已经顺利完成了本次体验课, 接下来您可以: </div>');
+    tmppHTMLStr.push('                </div>');
+    tmppHTMLStr.push('            </div>');
+    tmppHTMLStr.push('            <div class="row justify-content-center my-3">');
+    tmppHTMLStr.push('                <div class="col text-center" style="height:35px;">');
+    tmppHTMLStr.push('                    <div class="step-status-button experience restart">');
+    tmppHTMLStr.push('                      <i class="fas fa-undo-alt"></i><span style="margin-left:5px;">重新开始体验课</span>');
+    tmppHTMLStr.push('                    </div>');
+    tmppHTMLStr.push('                    <div class="step-status-button experience sign-up">');
+    tmppHTMLStr.push('                      <i class="fas fa-times"></i><span style="margin-left:5px;">注册成为学员, 开始免费课程</span>');
+    tmppHTMLStr.push('                    </div>');
+    tmppHTMLStr.push('                    <div class="step-status-button experience share-work" tabindex="0" data-placement="top" hidefocus="true">');
+    tmppHTMLStr.push('                      <i class="far fa-hand-point-right"></i><span style="margin-left:5px;">分享刚才完成的作品</span>');
+    tmppHTMLStr.push('                    </div>');
+    tmppHTMLStr.push('                </div>');
+    tmppHTMLStr.push('            </div>');
+    tmppHTMLStr.push('            <div class="row">');
+    tmppHTMLStr.push('                <div class="col text-center step-evaluate-wrap">');
+    tmppHTMLStr.push('        <div class="container">');
+    tmppHTMLStr.push('            <div class="row">');
+    tmppHTMLStr.push('                <div class="col-2 offset-4" style="min-width: 170px !important;">');
+    tmppHTMLStr.push('                    <span>喜欢本次体验课吗? </span>');
+    tmppHTMLStr.push('                </div>');
+    tmppHTMLStr.push('                <div class="col-1">');
+    tmppHTMLStr.push('                    <a href="#" class="step-evaluate-button yes"><span class="far fa-thumbs-up" data-target="1" title="喜欢"></span></a>');
+    tmppHTMLStr.push('                </div>');
+    tmppHTMLStr.push('                <div class="col-1">');
+    tmppHTMLStr.push('                    <a href="#" class="step-evaluate-button no"><span class="far fa-thumbs-down" data-target="0" title="不喜欢"></span></a>');
+    tmppHTMLStr.push('                </div>');
+    tmppHTMLStr.push('            </div>');
+    tmppHTMLStr.push('        </div>');
+    tmppHTMLStr.push('                </div>');
+    tmppHTMLStr.push('            </div>');
+    tmppHTMLStr.push('        </div>');
+    tmppHTMLStr.push('    </div>');
+    tmppHTMLStr.push('</div>');
+    $('body').append($(tmppHTMLStr.join('')));
+    $('.step-status-button.share-work').tooltip({
+        html: true,
+        title: ' <img src="' + _getRequestURL(_gURLMapping.demo.getqrcode, { Symbol: qrCode }) + '" width="200">'
+    });
+
+    $('.step-status-button.restart').on('click', function () {
+        window.location.href = window.location.origin + "/ikcoder/workplatform.html?scene=OE_001&step=0";
+    });
+
+    $('.step-status-button.sign-up').on('click', function () {
+        window.location.href = window.location.origin + "/ikcoder/sign.html";
+    });
+
+    $('.step-evaluate-button').on('click', function () {
+        var currBtn = $(arguments[0].target);
+        currBtn.css('color', 'rgb(255,255,255)');
+        $(currBtn.find('path')).css('color', 'rgb(255,255,255)');
+        if (currBtn.hasClass('yes') || currBtn.parent().hasClass('yes')) {
+            $('.step-evaluate-button.no').css('color', '#aaaaaa');
+            $('.step-evaluate-button.no svg').css('color', '#aaaaaa');
+            $('.step-evaluate-button.no svg path').css('color', '#aaaaaa');
+        } else {
+            $('.step-evaluate-button.yes').css('color', '#aaaaaa');
+            $('.step-evaluate-button.yes svg').css('color', '#aaaaaa');
+            $('.step-evaluate-button.yes svg path').css('color', '#aaaaaa');
+        }
+    });
+
+    $('.completed-close-btn').on('click', function () {
+        $('.wrap-workstatus-alert').hide('slow');
+    });
+        
+    $('.wrap-workstatus-alert').show();
+    $('.wrap-alert-content.completed').show();
 };
 
 function removeRptQR(qrSymbolRpt) {

@@ -1043,6 +1043,38 @@ body {
             font-size: 14px;
         }
 
-.col-toolbar-item-share{
-    display:none;
+.col-toolbar-item-share {
+    display: none;
 }
+
+.step-status-button.experience {
+    display: inline-block;
+    width: 220px;
+    margin: 0px 5px;
+}
+
+.completed-close-btn {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 26px;
+}
+
+    .completed-close-btn:hover {
+        cursor: pointer;
+        font-size: 28px;
+    }
+
+.tooltip.bs-tooltip-top.show {
+    z-index: 9999;
+    opacity: 1;
+}
+
+    .tooltip.bs-tooltip-top.show .arrow::before {
+        border-top-color: white;
+    }
+
+    .tooltip.bs-tooltip-top.show .tooltip-inner {
+        max-width: unset;
+        background-color: white;
+    }
