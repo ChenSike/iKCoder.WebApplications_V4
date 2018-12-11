@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 var Scene = {};
-var patternPoint = [0, 0, 4, 0,4, 0, 4, 2,4, 2, 8, 2,8, 2, 8, 4,8, 4, 12, 4, 12, 4, 12, 6,12, 6, 16, 6,16, 6, 16, 8,16, 8, 20, 8,20, 8, 20, 10];
+var patternPoint = [0, 0, 4, 0,4, 0, 4, 2,4, 2, 8, 2,8, 2, 8, 4,8, 4, 12, 4, 12, 4, 12, 6,12, 6, 16, 6,16, 6, 16, 8,16, 8, 20, 8;
 
 Scene.initEnvironment = function (containerId) {
     changeSiderBarWidth($(window).width()/2);
@@ -76,7 +76,6 @@ Scene.initEnvironment = function (containerId) {
         Scene.Brush.buildBackgroundLine(12, 6, 16, 6, 6, '#919191');
         Scene.Brush.buildBackgroundLine(16, 6, 16, 8, 6, '#919191');
         Scene.Brush.buildBackgroundLine(16, 8, 20, 8, 6, '#919191');
-        Scene.Brush.buildBackgroundLine(20, 8, 20, 10, 6, '#919191');
         
     });
     Scene.Brush.prepareBackground();
@@ -171,7 +170,7 @@ Scene.GetLinePoint = function () {
 
 Scene.StepCompleteFn = function (){
     var actualLinePoint = Scene.GetLinePoint();
-    if (actualLinePoint.length == '40' && ((patternPoint.sort(function(a,b){ return b-a}).toString() == actualLinePoint.sort(function(a,b){ return b-a}).toString()))){
+    if (actualLinePoint.length == '36' && ((patternPoint.sort(function(a,b){ return b-a}).toString() == actualLinePoint.sort(function(a,b){ return b-a}).toString()))){
         return true;
     }else{
         return false;

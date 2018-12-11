@@ -5,7 +5,9 @@
   <sence name="初级第三课：绘图基础" symbol="B_02_010" id="" totalstage="4" currentstage="3" finishstage="4" next="B_02_010"/>
   <tips>
     <item index="1">
-      <content chinese="绘制一个完全覆盖灰色三角形的红色三角形。" english="" blocktype=""/>
+      <content chinese="我们来画一个正六边形。
+      这里有一个叫做“sides(边数)”的变量需要设置为6。
+      需要使用旋转线段的数学模块和“sides”变量模块计算出每次旋转线段的度数。" english="" blocktype=""/>
     </item>
   </tips>
   <toolbox src="B-02-010_3D/3dBoard/3/Blocks/blocks.JS">

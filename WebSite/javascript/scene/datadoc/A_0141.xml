@@ -5,7 +5,7 @@
   <sence name="第二课：路径跟随" symbol="B_02_011" id="" totalstage="2" currentstage="2" finishstage="2" next="B_01_001"/>
   <tips>
     <item index="1">
-      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+      <content chinese="使用“重复”和“如果”模块来帮助吃豆人吃到橙色豆子。" english="" blocktype=""/>
     </item>
   </tips>
   <toolbox src="B-02-011_3D/pacman/2/Blocks/blocks.JS">

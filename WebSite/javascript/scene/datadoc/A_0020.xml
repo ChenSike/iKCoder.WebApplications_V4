@@ -5,19 +5,10 @@
   <sence name="初级第一课：模式设别" symbol="A_01_002" id="" totalstage="1" currentstage="1" finishstage="0" next="A_01_002"/>
   <tips>
     <item index="1">
-      <content chinese="1向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+      <content chinese="根据前面的学习将计算机硬件的各个组件分类吧。" english="" blocktype=""/>
     </item>
     <item index="2">
-      <content chinese="2向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
-    </item>
-    <item index="3">
-      <content chinese="3向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
-    </item>
-    <item index="4">
-      <content chinese="4向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
-    </item>
-    <item index="5">
-      <content chinese="5向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+      <content chinese="用鼠标拖动组件到下面对应的方框内。" english="" blocktype=""/>
     </item>
   </tips>
   <toolbox src=""></toolbox>

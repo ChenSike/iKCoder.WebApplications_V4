@@ -5,7 +5,7 @@
   <sence name="初级第三课：绘图基础" symbol="B_01_006" id="" totalstage="4" currentstage="2" finishstage="4" next="B_01_007"/>
   <tips>
     <item index="1">
-      <content chinese="绘制一个完全覆盖灰色正方形蓝色正方形。" english="" blocktype=""/>
+      <content chinese="让我们来画一个正方形。正方形的边长为灰色格子的数量，画笔可以设置成自己喜欢的颜色。" english="" blocktype=""/>
     </item>
   </tips>
   <toolbox src="B-01-006_3D/3dBoard/2/Blocks/blocks.JS">

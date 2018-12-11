@@ -232,7 +232,7 @@ Blockly.JavaScript['forloop'] = function (block) {
 Blockly.Blocks['whileloop'] = {
 	init: function () {
 		this.appendDummyInput()
-			.appendField("重复直到 吃到红色豆子");
+			.appendField("重复直到 吃到橙色豆子");
 		this.appendStatementInput("do")
 			.setCheck(null)
 			.appendField("执行");

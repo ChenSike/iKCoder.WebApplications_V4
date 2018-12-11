@@ -5,7 +5,7 @@
   <sence name="初级第三课：绘图基础" symbol="B_02_006" id="" totalstage="4" currentstage="2" finishstage="4" next="B_02_006"/>
   <tips>
     <item index="1">
-      <content chinese="绘制一个完全覆盖灰色三角形的红色三角形。" english="" blocktype=""/>
+      <content chinese="这里有一个叫做“LENGTH(长度)”的常量需要设置为4，向前移动模块需要使用“LENGTH”模块设置长度。" english="" blocktype=""/>
     </item>
   </tips>
   <toolbox src="B-02-006_3D/3dBoard/2/Blocks/blocks.JS">

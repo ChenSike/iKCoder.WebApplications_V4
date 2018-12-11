@@ -5,7 +5,7 @@
   <sence name="初级第三课：绘图基础" symbol="B_01_006" id="" totalstage="4" currentstage="4" finishstage="4" next="B_01_001"/>
   <tips>
     <item index="1">
-      <content chinese="绘制一个完全覆盖灰色阶梯的红色阶梯。" english="" blocktype=""/>
+      <content chinese="将哪些模块重复4次可以画出这些楼梯？" english="" blocktype=""/>
     </item>
   </tips>
   <toolbox src="B-01-006_3D/3dBoard/4/Blocks/blocks.JS">

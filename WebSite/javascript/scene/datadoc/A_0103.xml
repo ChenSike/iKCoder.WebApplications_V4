@@ -5,7 +5,7 @@
   <sence name="初级第三课：绘图基础" symbol="B_01_007" id="" totalstage="4" currentstage="4" finishstage="4" next="B_01_008"/>
   <tips>
     <item index="1">
-      <content chinese="绘制一个完全覆盖灰色三角形的红色三角形。" english="" blocktype=""/>
+      <content chinese="使用画正方形、画三角形、画圆形组合画出这个房子吧。" english="" blocktype=""/>
     </item>
   </tips>
   <toolbox src="B-01-007_3D/3dBoard/4/Blocks/blocks.JS">

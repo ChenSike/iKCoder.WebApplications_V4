@@ -5,7 +5,7 @@
 	<sence name="初级第一课：模式设别" symbol="B_01_001" id="" totalstage="4" currentstage="4" finishstage="4" next="B_01_002"/>
 	<tips>
 		<item index="1">
-			<content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+			<content chinese="需要怎样移动吃豆人使用尽可能少的移动步数吃到橙色的豆子？  注意：移动和转向是分开的。" english="" blocktype=""/>
 		</item>
 	</tips>
 	<toolbox src="B-01-001_3D/pacman/4/Blocks/blocks.JS">

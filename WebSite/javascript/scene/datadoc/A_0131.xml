@@ -5,7 +5,8 @@
   <sence name="第二课：路径跟随" symbol="B_02_002" id="" totalstage="6" currentstage="2" finishstage="6" next="B_02_011"/>
   <tips>
     <item index="1">
-      <content chinese="向正确的方向移动足够的步数，最后吃到橙色的豆子。" english="" blocktype=""/>
+      <content chinese="“小跳跃”和“大跳跃”的高度是不一样的。
+      重复哪些模块能帮助人物到达终点？" english="" blocktype=""/>
     </item>
   </tips>
   <toolbox src="B-02-002_2D/run/2/Blocks/blocks.JS">

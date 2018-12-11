@@ -5,7 +5,8 @@
   <sence name="初级第三课：绘图基础" symbol="B_02_010" id="" totalstage="4" currentstage="4" finishstage="4" next="B_02_010"/>
   <tips>
     <item index="1">
-      <content chinese="绘制一个完全覆盖灰色三角形的红色三角形。" english="" blocktype=""/>
+      <content chinese="这里有一个叫做“length(长度)”的变量需要设置为2，画完一条边后需要改变“length(长度)”变量的值。
+      需要重复多少次能画出这个图形呢？" english="" blocktype=""/>
     </item>
   </tips>
   <toolbox src="B-02-010_3D/3dBoard/4/Blocks/blocks.JS">
