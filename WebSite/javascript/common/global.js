@@ -656,6 +656,7 @@ function _startIntroJs() {
                     "skipLabel": "跳过",
                     "doneLabel": "完成",
                     "exitOnEsc": true,
+                    "positionPrecedence": ["bottom", "top", "right", "left"],
                     "keyboardNavigation": true
                 }).start();
             }

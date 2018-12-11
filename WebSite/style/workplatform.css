@@ -1078,3 +1078,8 @@ body {
         max-width: unset;
         background-color: white;
     }
+
+.introjs-helperNumberLayer {
+    top: 2px;
+    left: 1px;
+}
