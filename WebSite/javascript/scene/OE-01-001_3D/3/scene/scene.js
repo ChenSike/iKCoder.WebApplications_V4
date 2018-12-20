@@ -471,10 +471,10 @@ Scene.buildCompleteHTML = function (qrCode) {
     tmppHTMLStr.push('                      <i class="fas fa-undo-alt"></i><span style="margin-left:5px;">重新开始体验课</span>');
     tmppHTMLStr.push('                    </div>');
     tmppHTMLStr.push('                    <div class="step-status-button experience sign-up">');
-    tmppHTMLStr.push('                      <i class="fas fa-times"></i><span style="margin-left:5px;">注册成为学员, 开始免费课程</span>');
+    tmppHTMLStr.push('                      <i class="fas fa-user-plus"></i><span style="margin-left:5px;">注册成为学员, 开始免费课程</span>');
     tmppHTMLStr.push('                    </div>');
     tmppHTMLStr.push('                    <div class="step-status-button experience share-work" tabindex="0" data-placement="top" hidefocus="true">');
-    tmppHTMLStr.push('                      <i class="far fa-hand-point-right"></i><span style="margin-left:5px;">分享刚才完成的作品</span>');
+    tmppHTMLStr.push('                      <i class="fas fa-share-alt"></i><span style="margin-left:5px;">分享刚才完成的作品</span>');
     tmppHTMLStr.push('                    </div>');
     tmppHTMLStr.push('                </div>');
     tmppHTMLStr.push('            </div>');
