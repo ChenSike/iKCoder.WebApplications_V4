@@ -18,6 +18,7 @@ function webSocketCreate() {
         //断开websocket连接成功
         _gSocket.onclose = function () {
             _showGlobalMessage('链接已关闭，请重新登录!', 'warning', 'alert_WSClose_Error');
+            _startCheckState();
         };
 
         _gSocket.onerror = function () {
@@ -136,20 +137,22 @@ function webSocketReceiveCircle(evt) {
             if (passive) {
                 webSocketSend('Action_Get_RelationsAcceptableList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
                 var newFriendAlert = $('.row-circle-user-list-item[data-target="-2"] .circle-user-list-item-msg')
-                var tmpCount = addressAlert.text() == '' ? 0 : parseInt(addressAlert.text());
-                addressAlert.text(tmpCount + 1).show();
+                updateAlertCount(addressAlert);
                 if (addressItem.hasClass('active')) {
-                    tmpCount = newFriendAlert.text() == '' ? 0 : parseInt(newFriendAlert.text());
-                    newFriendAlert.text(tmpCount + 1).show();
+                    updateAlertCount(newFriendAlert);
                 }
             } else {
-                if ($('.row-circle-user-list-item[data-target="-2"]').hasClass('active')) {
+                if (addressItem.hasClass('active') && $('.row-circle-user-list-item[data-target="-2"]').hasClass('active')) {
                     var tmpArr = getUnknowUserForAcceptableList(valDoc);
                     if (tmpArr.length > 0) {
                         webSocketSend('Action_Get_BatchArrProfile', { symbol: '', msg: '', targets: [], values: {}, batch: tmpArr, id: '' });
                     } else {
                         circleAddress_BuildGuestList();
                     }
+                } else if (addressItem.hasClass('active')) {
+
+                } else {
+                    updateAlertCount(addressAlert);
                 }
             }
 
@@ -158,11 +161,9 @@ function webSocketReceiveCircle(evt) {
             if (passive) {
                 webSocketSend('Action_Get_ChannelList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
                 var channelAlert = $('.row-circle-user-list-item[data-target="-3"] .circle-user-list-item-msg')
-                var tmpCount = addressAlert.text() == '' ? 0 : parseInt(addressAlert.text());
-                addressAlert.text(tmpCount + 1).show();
+                updateAlertCount(addressAlert);
                 if (addressItem.hasClass('active')) {
-                    tmpCount = channelAlert.text() == '' ? 0 : parseInt(channelAlert.text());
-                    channelAlert.text(newCount + 1).show();
+                    updateAlertCount(channelAlert);
                 }
             } else {
                 if ($('.row-circle-user-list-item[data-target="-3"]').hasClass('active')) {
@@ -191,6 +192,13 @@ function webSocketReceiveCircle(evt) {
             }
             break;
         case 'Action_Get_DialogContent':
+            valDoc = retDoc.find('root');
+            if (valDoc.length > 0) {
+                valDoc = $(valDoc[0]);
+            } else {
+                valDoc = $(retDoc.find('msg')[0]);
+            }
+
             circleChat_FormatMsgHistory(valDoc);
             break;
         case 'Action_Receive_Msg_Direct':
@@ -201,11 +209,17 @@ function webSocketReceiveCircle(evt) {
             if ($('.row-category-item[data-target="circle"]').hasClass('active-item')) {
                 switch (_gCurrentAction) {
                     case 'Action_Get_RelationsList':
-                        circleInitData_Address();
-                        circleBuildList_Address();
-                        circleBuildContent_Address();
-                        circleAdjust_Address();
-                        circleInitEvents_Address();
+                        if (addressItem.hasClass('active')) {
+                            circleInitData_Address();
+                            circleBuildList_Address();
+                            circleBuildContent_Address();
+                            circleAdjust_Address();
+                            circleInitEvents_Address();
+                            $('.row-circle-user-list-item[data-target="-2"]').click();
+                        } else {
+                            updateAlertCount(channelAlert);
+                        }
+
                         break;
                     case 'Action_Get_RelationsAcceptableList':
                         circleAddress_BuildGuestList();
@@ -220,6 +234,18 @@ function webSocketReceiveCircle(evt) {
                         circleInitEvents_Chat();
                         circleChat_SwitchChat();
                         break;
+                }
+            }
+
+            break;
+        case 'Action_Set_NewFriend':
+            if ($(valDoc.find('executed')[0]).text() == 'true') {
+                var tmpButtons = $('.btn-new-friend-request');
+                if (tmpButtons.length == 1) {
+                    tmpButtons.removeClass('btn-success').addClass('btn-secondary');
+                    tmpButtons.text('已申请');
+                    tmpButtons.prop('disabled', true);
+                    tmpButtons.css('cursor', 'unset');
                 }
             }
 

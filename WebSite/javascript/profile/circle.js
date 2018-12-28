@@ -50,6 +50,7 @@ function buildContent_Circle() {
     $('.col-main-content').append($(tmpHTMLArr.join('')));
     circleInitBasicData();
     circleInitEvents();
+    webSocketSend('Action_Get_RelationsAcceptableList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
     webSocketSend('Action_Get_DialogList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
 };
 
@@ -281,12 +282,6 @@ function circleInitSearchPart() {
 
     //init search suggest
     $('#search_Circle').bsSuggest(defaultOptions);
-};
-
-function circleShowNoteSymol(type, amount) {
-    var target = $('.btn-circle-stb-item[data-target="chat"] .alert-circle-stb-item');
-    target.show();
-    target.text(amount);
 };
 
 function circleCurrentFeature() {
@@ -792,7 +787,7 @@ function circleInitEvents_Chat() {
 };
 
 function circleChat_FormatMsgHistory(doc) {
-    //<root><root><item date=\"2018-11-23\" time=\"17:45:50\" dt=\"2018/11/23 17:45:50\">º(³ïìzw^«ýw×}÷ß}÷Ûÿìzw^«ïæ²Ú±×ìi×ìi×¿þk ÿë¢\u008b?</item></root>
+    //<msg><item date=\"2018-11-23\" time=\"17:45:50\" dt=\"2018/11/23 17:45:50\">º(³ïìzw^«ýw×}÷ß}÷Ûÿìzw^«ïæ²Ú±×ìi×ìi×¿þk ÿë¢\u008b?</item></msg>
     var items = doc.find('item');
     var date, time, dt, msg;
     var tmpChat = null;
@@ -846,17 +841,14 @@ function circleChat_ReceiveMsgHistoryDirect(doc) {
         $('.container-circle-message-history').append(tmpResult.el);
     } else {
         var tmpChat = circleGetChatByChatterId(userId);
+        var tmpCount;
         if (tmpChat != null) {
             tmpChat.msgs.push(msgObj);
             var featureBtn = $('.btn-circle-stb-item[data-target="chat"]');
-            var alertEl = $(featureBtn.find('.alert-circle-stb-item'));
-            alertEl.text(alertEl.text().trim() != '' ? parseInt(alertEl.text().trim()) + 1 : 1);
-            alertEl.show();
+            updateAlertCount($(featureBtn.find('.alert-circle-stb-item')[0]));
             var chatEl = $('.row-circle-user-list-item[data-chat="' + tmpChat.chatId + '"]');
             if (!chatEl.hasClass('active')) {
-                var alertEl = $(chatEl.find('.circle-user-list-item-msg'));
-                alertEl.text(alertEl.text().trim() != '' ? parseInt(alertEl.text().trim()) + 1 : 1);
-                alertEl.show();
+                updateAlertCount($(chatEl.find('.circle-user-list-item-msg')[0]));
             }
         }
     }
@@ -1327,7 +1319,7 @@ function circleAddress_BuildGuestList() {
     var guestes = circleGetUserObjGuest();
     var tmpHTMLArr = [];
     for (var i = 0; i < guestes.length; i++) {
-        tmpHTMLArr.push('<div class="row row-circle-address-new-friend-item" data-target="' + guestes[i].userId + '">');
+        tmpHTMLArr.push('<div class="row row-circle-address-new-friend-item" data-target="' + guestes[i].userId + '" data-accecpt="' + guestes[i].accecptId + '">');
         tmpHTMLArr.push('   <div class="col-1 col-new-friend-header">');
         tmpHTMLArr.push('       <img class="img-fluid circle-address-new-friend-header" src="' + guestes[i].header + '" data-target="' + guestes[i].userId + '">');
         tmpHTMLArr.push('   </div>');
@@ -1345,7 +1337,7 @@ function circleAddress_BuildGuestList() {
         tmpHTMLArr.push('       </div>');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('   <div class="col-1 d-flex align-items-center col-new-friend-accept">');
-        tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm btn-new-friend-accept" data-target="' + guestes[i].userId + '">接受</button>');
+        tmpHTMLArr.push('       <button type="button" class="btn btn-success btn-sm btn-new-friend-accept" data-target="' + guestes[i].userId + '" data-accecpt="' + guestes[i].accecptId + '">接受</button>');
         tmpHTMLArr.push('   </div>');
         tmpHTMLArr.push('</div>');
     }
@@ -1664,12 +1656,13 @@ function circleAddress_ClickGroupItemPopBtn(eventObj) {
 
 function circleAddress_AcceptGuest(doc) {
     if ($(doc.find('executed')[0]).text() == 'true') {
-        var tmpBtn = $('.btn-new-friend-accept[data-target="' + _gCircleCurrentGuestId + '"]');
+        var tmpBtn = $('.btn-new-friend-accept[data-accecpt="' + _gCircleCurrentGuestId + '"]');
         if (tmpBtn.length > 0) {
-            var userObj = circleGetUserObj(_gCircleCurrentGuestId);
+            var userObj = circleGetUserObj(tmpBtn.attr('data-target'));
             userObj.accecpt = true;
             userObj.accecptId = '';
-            $('.row-circle-address-new-friend-item[data-target="' + _gCircleCurrentGuestId + '"]').remove();
+            $('.row-circle-address-new-friend-item[data-accecpt="' + _gCircleCurrentGuestId + '"]').remove();
+            webSocketSend('Action_Get_RelationsList', { symbol: '', msg: '', targets: [], values: {}, batch: [], id: '' });
         }
     } else {
         _showGlobalMessage('暂时无法通过好友申请，请联系管理员或重试!', 'warning', 'alert_AcceptGuest_Error');
@@ -2685,4 +2678,10 @@ function circleChat_ShowChatImage(evtObj) {
     }
 
     $('#modal_ShowChatImage').modal('show');
+};
+
+function updateAlertCount(alertEl) {
+    var tmpCount = alertEl.text().trim() == '' ? 0 : parseInt(alertEl.text().trim());
+    tmpCount = isNaN(tmpCount) ? 0 : tmpCount;
+    alertEl.text(tmpCount + 1).show();
 };

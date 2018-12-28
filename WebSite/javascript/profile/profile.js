@@ -110,7 +110,7 @@ function initEvents() {
     });
 
     $('#btn_Student_SignOut').on('click', function () {
-        _signOut("http://www.ikcoder.com/index.html");
+        _signOut(window.location.origin + '/index.html');
         //var signOutFn = function (response) {
         //    if (_getExcuted(response)) {
         //        _signOut("http://www.ikcoder.com/index.html");
