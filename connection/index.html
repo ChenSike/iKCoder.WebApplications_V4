@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html style="height:100%;">
+<head>
+    <title>Connection</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/font-awesome.min.css">
+    <link rel="stylesheet" href="style/file-input.min.css">
+    <link rel="stylesheet" href="style/common.css">
+    <script src="javascript/jquery-3.2.1.min.js"></script>
+    <script src="javascript/tether.min.js"></script>
+    <script src="javascript/bootstrap.js"></script>
+    <script src="javascript/fileinput.min.js"></script>
+    <script src="javascript/common.js"></script>
+    <script src="javascript/xmloperator.js"></script>
+    <script src="javascript/signin.js"></script>
+    <style>
+        .form-control-label {
+            font-family: 微软雅黑;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="height:100%;">
+    <div class="container-fluid" style="margin:0px; padding:0px;">
+        <div class="row" style="margin:0px; padding:0px;">
+            <div class="col-7" style="margin:0px; padding:0px;">
+                <img src="image/bg_sign.png" class="img-fluid" id="image_page_bg" alt="Responsive image" style="width:100%;">
+            </div>
+            <div class="col-5" style="margin:0px; padding:0px;">
+                <div class="container-fluid" style="padding-top:50px;">
+                    <div class="row">
+                        <div class="col" style="text-align:right; padding-right:50px;">
+                            <h4>iKCoder Management System</h4>
+                            <p style="font-size:10px;font-family: 微软雅黑;">深圳市鹏博教育科技有限公司 | Education Reseach Center</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="padding:100px 30px;">
+                        <div class="col">
+                            <div class="container" style="border:solid 2px #666666; border-radius:20px;">
+                                <div class="row">
+                                    <div class="col" style="padding:30px 20px;">
+                                        <form target="_self" name="form_SignIn" id="form_SignIn" autocomplete="off">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="txt_SignIn">用户名</label>
+                                                <input type="text" class="form-control" id="txt_SignIn" name="txt_SignIn" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="pwd_SignIn">密码</label>
+                                                <input type="password" class="form-control" id="pwd_SignIn" name="pwd_SignIn" placeholder="">
+                                            </div>                                            
+                                            <button type="button" class="btn btn-primary btn-block" id="btn_SignIn">登录</button>
+                                            <button type="button" class="btn btn-info btn-block" id="btn_SignUp">注册</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="position:absolute;bottom:20px; width:100%;">
+                    <div class="container-fluid" style="margin:0px; padding:0px;">
+                        <div class="row" style="margin:0px; padding:0px;">
+                            <div class="col" style="padding-left:50px;">
+                                <table style="border:none; column-span:none;">
+                                    <tr>
+                                        <td style="padding-right:20px;">
+                                            © 2017 iKCoder
+                                        </td>
+                                        <td>
+                                            <img src="image/logo-new-gray.png" id="image_logo" style="width: 60px;height: 20px; margin-bottom: 4px;">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initPage();
+        });
+    </script>
+</body>
+</html>
