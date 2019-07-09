@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html style="height:100%">
+
+<head>
+    <title>商品详情</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="image/logotop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="style/tether.min.css">
+    <link rel="stylesheet" href="style/bootstrap.css">
+    <link rel="stylesheet" href="style/common.css">
+    <link rel="stylesheet" href="style/itemdetail.css">
+    <script src="javascript/common/jquery-3.2.1.min.js"></script>
+    <script src="javascript/common/tether.min.js"></script>
+    <script src="javascript/common/bootstrap.js"></script>
+    <script src="https://kit.fontawesome.com/b6de2e5436.js"></script>
+    <script src="javascript/common/common.js"></script>
+    <script src="javascript/common/xmloperator.js"></script>
+    <script src="javascript/footer.js"></script>
+    <script src="javascript/itemdetail.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid full-wrap" id="wrap_Main">
+        <div class="row">
+            <div class="col">
+                <div id="detail_Carousel" class="carousel slide" data-ride="carousel">
+
+                </div>
+            </div>
+        </div>
+        <div class="row no-margin detail-price-row">
+            <div class="col-2 current">
+                ￥<span id="span_Detail_Price_Current">79.90</span>
+            </div>
+            <div class="col no-padding" id="col_Detail_Price_Original">
+                ￥99.00
+            </div>
+            <div class="col" id="col_Detail_Price_Activity">
+            </div>
+        </div>
+        <div class="row no-margin detail-title-row">
+            <div class="col">
+                盆栽项目简介—1
+            </div>
+        </div>
+        <div class="row no-margin detail-inventory-row">
+            <div class="col">
+                累计销售<span>77</span>件
+            </div>
+            <div class="col">
+                剩余<span>26</span>件
+            </div>
+        </div>
+        <div class="row no-margin detail-arrival-row">
+            <div class="col">
+                预计到货时间
+            </div>
+            <div class="col text-right">
+                次日到达
+            </div>
+        </div>
+        <div class="row no-margin detail-comment-title-row">
+            <div class="col">
+                商品描述
+            </div>
+        </div>
+        <div class="row no-margin detail-comment-detail-row">
+            <div class="col">
+                盆栽项目简介—1，盆栽项目简介—1，盆栽项目简介—1，盆栽项目简介
+            </div>
+        </div>
+        <div class="row no-margin detail-detail-title-row">
+            <div class="col">
+                商品详情
+            </div>
+        </div>
+        <div class="row no-margin detail-detail-title-row">
+            <div class="col no-padding">
+                <div class="container-fluid full-wrap" id="wrap_Item_Detail">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer> </footer>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initFooter();
+            initPage();
+        });
+    </script>
+</body>
+
+</html>

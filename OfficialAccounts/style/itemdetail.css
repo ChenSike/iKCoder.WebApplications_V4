@@ -1,0 +1,68 @@
+﻿#wrap_Main {
+    height: calc(100% - 45px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#detail_Carousel img {
+    height: 300px;
+}
+
+.detail-price-row {
+    background-color: rgba(234, 84, 20, 1);
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    height: 30px;
+}
+
+#span_Detail_Price_Current {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 30px;
+}
+
+#col_Detail_Price_Original {
+    line-height: 34px;
+    text-decoration: line-through;
+}
+
+.detail-price-row .current {
+    width: 100px;
+}
+
+.detail-title-row {
+    font-size: 12px;
+    line-height: 30px;
+    font-weight: bold;
+}
+
+.detail-inventory-row {
+    font-size: 12px;
+    line-height: 30px;
+    color: gray;
+}
+
+.detail-arrival-row {
+    border-top: 5px solid rgb(187, 184, 184);
+    border-bottom: 1px solid rgb(187, 184, 184);
+    font-size: 12px;
+    line-height: 30px;
+}
+
+.detail-comment-title-row {
+    border-bottom: 1px solid rgb(187, 184, 184);
+    font-size: 12px;
+    line-height: 30px;
+}
+
+.detail-comment-detail-row {
+    border-bottom: 5px solid rgb(187, 184, 184);
+    font-size: 12px;
+    color: gray;
+    line-height: 30px;
+}
+
+.detail-detail-title-row {
+    font-size: 12px;
+    line-height: 30px;
+}
