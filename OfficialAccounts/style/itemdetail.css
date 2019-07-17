@@ -4,8 +4,116 @@
     overflow-x: hidden;
 }
 
-#detail_Carousel img {
-    height: 300px;
+#item_Top_Image {
+    height: 200px;
+}
+
+.container-item-intro {
+    /* border: solid 1px seagreen;*/
+    border-radius: 10px;
+    -webkit-box-shadow: rgb(56, 4, 87) 0px 0px 5px;
+    -moz-box-shadow: rgb(56, 4, 87) 0px 0px 5px;
+    box-shadow: rgb(56, 4, 87) 0px 0px 5px;
+    margin-top: -20px;
+}
+
+.container-item-intro .row-item-price {
+    background-color: rgb(56, 4, 87);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 40px;
+}
+
+.container-item-intro .col-item-price {
+    height: 40px;
+}
+
+.container-item-intro .col-item-status {
+    font-size: 16px;
+}
+
+.container-item-intro .col-item-title {
+    font-size: 18px;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.container-item-intro .col-item-intro {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 16px;
+    color: dimgray;
+}
+
+.row-item-option .col {
+    padding-top: 20px;
+    padding-bottom: 5px;
+    border-bottom: solid 10px rgb(200, 200, 200);
+}
+
+.row-item-option .btn {
+    font-size: 12px;
+    font-weight: 100;
+    padding: 5px;
+    color: slategray;
+}
+
+.row-item-detail-title {
+    line-height: 20px;
+}
+
+.row-item-detail-title .div-item-detail-title {
+    background-color: rgb(56, 4, 87);
+    width: 10px;
+    height: 30px;
+    display: inline-block;
+}
+
+.row-item-detail-title .col-item-detail-title {
+    line-height: 30px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#detail_Carousel .carousel-item {
+    padding: 20px 8%;
+}
+
+#detail_Carousel .carousel-item img {
+    height: 200px;
+    width: 100%;
+    -webkit-box-shadow: rgb(56, 4, 87) 0px 0px 15px;
+    -moz-box-shadow: rgb(56, 4, 87) 0px 0px 15px;
+    box-shadow: rgb(56, 4, 87) 0px 0px 15px;
+}
+
+.col-item-infor {
+    font-size: 14px;
+    padding: 20px;
+}
+
+.row-item-datum-title {
+    padding-top: 20px;
+}
+
+.col-item-datum{
+    margin: 15px;
+}
+.container-item-datum{
+    background-color: rgb(218,218,218);
+}
+
+.col-item-datum-title{
+    padding: 10px;
+    font-weight: bold;
+}
+
+.col-item-datum-detail{
+    padding: 10px;
+    color: gray;
 }
 
 .detail-price-row {

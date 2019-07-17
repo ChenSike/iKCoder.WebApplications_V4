@@ -2,6 +2,7 @@
     font-family: 微软雅黑;
     font-size: 14px;
     height: 100%;
+    background-color: rgb(230,230,230);
 }
 
 .no-padding {
@@ -104,36 +105,9 @@ header .navbar-light .topmenu-item.active .selected-symbol {
     }
 }
 
-/*Footer*/
-footer {
-    height: 45px;
-    z-index: 1000;
-    background-color: rgba(255, 255, 255, 1);
-    border-top: 1px solid rgb(0, 0, 0);
-}
-
-footer .navbar {
-    padding: 0px 5px;
-}
-
-footer .nav-item {
-    padding: 0px 5px;
-    width: 25%;
-}
-
-footer .nav-link i {
-    font-size: 18px;
-    color: rgba(234, 84, 20, 1);
-}
-
-footer .nav-link h6 {
-    font-size: 10px;
-    color: rgba(234, 84, 20, 1);
-}
-
 /*Content Main*/
 #wrap_Main {
-    height: calc(100% - 85px);
+    height: calc(100% - 45px);
     overflow-y: auto;
     overflow-x: hidden;
 }

@@ -1,0 +1,20 @@
+<root id="1" title="大型绿植-1" topImg="image/l2/b/1.png">
+    <price value="95" symbol="￥" unit="元" period="月"></price>
+    <intro>大型绿植-1大型绿植-1大型绿植-1大型绿植-1大型绿植-1 大型绿植-1大型绿植-1大型绿植-1大型绿植-1</intro>
+    <detail>
+        <carousel>
+            <item>image/l2/m/1.jpg</item>
+            <item>image/l2/m/2.jpg</item>
+            <item>image/l2/m/3.jpg</item>
+            <item>image/l2/m/4.jpg</item>
+            <item>image/l2/m/5.jpg</item>
+        </carousel>
+        <detail>
+            <item>image/l2/m/1.jpg</item>
+            <item>image/l2/m/2.jpg</item>
+            <item>image/l2/m/3.jpg</item>
+            <item>image/l2/m/4.jpg</item>
+            <item>image/l2/m/5.jpg</item>
+        </detail> 
+    </detail>
+</root>

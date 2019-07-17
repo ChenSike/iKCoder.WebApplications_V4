@@ -2,9 +2,8 @@
 
 var _gFooterItems = {
     f_page_1: { page: 'index.html', text: '首页', icon: "fa-home" },
-    f_page_2: { page: 'product.html', text: '消息', icon: "fa-comments" },
-    f_page_3: { page: 'index.html', text: '购物车', icon: "fa-shopping-cart" },
-    f_page_4: { page: 'product.html', text: '我的', icon: "fa-user-cog" }
+    f_page_2: { page: 'discover.html', text: '发现', icon: "fa-comments" },
+    f_page_3: { page: 'account.html', text: '我的', icon: "fa-shopping-cart" }
 };
 
 function initFooter() {

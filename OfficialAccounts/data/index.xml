@@ -1,0 +1,14 @@
+<root>
+    <items>
+        <item id="large" title="大型绿植" img="image/l1/b/B_ENETER_1.png"/>
+        <item id="medium" title="中型绿植" img="image/l1/m/M_ENTER_1.jpg"/>
+        <item id="small" title="小型绿植" img="image/l1/s/S_ENTER_1.jpg"/>
+    </items>
+    <carousel>
+        <item>image/l2/m/1.jpg</item>
+        <item>image/l2/m/2.jpg</item>
+        <item>image/l2/m/3.jpg</item>
+        <item>image/l2/m/4.jpg</item>
+        <item>image/l2/m/5.jpg</item>
+    </carousel>
+</root>
